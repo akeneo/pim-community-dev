@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInter
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidAttributeMappingTypeException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidExternalAttributeTypeException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -79,33 +78,13 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ->during('handle', [$command]);
     }
 
-    public function it_throws_an_exception_if_external_attribute_type_is_unknown(
-        UpdateAttributesMappingByFamilyCommand $command,
-        AttributeMapping $attributeMapping,
-        FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $attribute
-    ) {
-        $command->getFamilyCode()->willReturn('router');
-        $command->getAttributesMapping()->willReturn([$attributeMapping]);
-
-        $attributeCode = 'memory';
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
-        $attributeMapping->getPimAttributeCode()->willReturn($attributeCode);
-
-        $attributeMapping->getPimAiAttributeType()->willReturn('unknown_type');
-
-        $this->shouldThrow(InvalidExternalAttributeTypeException::class)->during('handle', [$command]);
-    }
-
     public function it_throws_an_exception_if_mapping_type_is_invalid(
         UpdateAttributesMappingByFamilyCommand $command,
         AttributeMapping $attributeMapping,
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $attribute
-    ) {
+    ): void {
         $command->getFamilyCode()->willReturn('router');
         $command->getAttributesMapping()->willReturn([$attributeMapping]);
 
@@ -115,7 +94,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeMapping->getPimAttributeCode()->willReturn($attributeCode);
         $attributeMapping->setAttribute($attribute)->shouldNotBeCalled();
 
-        $attributeMapping->getPimAiAttributeType()->willReturn('multiselect');
+        $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
         $attribute->getType()->willReturn('pim_catalog_metric');
 
         $this->shouldThrow(InvalidAttributeMappingTypeException::class)->during('handle', [$command]);
@@ -139,7 +118,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $command->getAttributesMapping()->willReturn([$attributeMapping]);
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
 
-        $attributeMapping->getPimAiAttributeType()->willReturn('multiselect');
+        $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
         $attribute->getType()->willReturn('pim_catalog_multiselect');
 
         $attributeMapping->setAttribute($attribute)->shouldBeCalled();

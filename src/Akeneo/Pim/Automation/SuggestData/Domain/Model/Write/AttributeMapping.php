@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -29,14 +30,25 @@ class AttributeMapping
     /** The attribute was registered to not be mapped */
     public const ATTRIBUTE_UNMAPPED = 2;
 
+    /** @var array */
+    public const ATTRIBUTE_TYPES_MAPPING = [
+        'metric' => AttributeTypes::METRIC,
+        'select' => AttributeTypes::OPTION_SIMPLE_SELECT,
+        'multiselect' => AttributeTypes::OPTION_MULTI_SELECT,
+        'number' => AttributeTypes::NUMBER,
+        'text' => AttributeTypes::TEXT,
+        'boolean' => AttributeTypes::BOOLEAN,
+        'identifier' => AttributeTypes::IDENTIFIER,
+    ];
+
     /** @var string */
     private $targetAttributeCode;
 
+    /** @var string */
+    private $targetAttributeType;
+
     /** @var string|null */
     private $pimAttributeCode;
-
-    /** @var string */
-    private $pimAiAttributeType;
 
     /** @var AttributeInterface */
     private $attribute;
@@ -47,13 +59,13 @@ class AttributeMapping
     /**
      * @param string $targetAttributeCode
      * @param int $status
+     * @param string $targetAttributeType
      * @param null|string $pimAttributeCode
-     * @param string $pimAiAttributeType
      */
     public function __construct(
         string $targetAttributeCode,
         int $status,
-        string $pimAiAttributeType,
+        string $targetAttributeType,
         ?string $pimAttributeCode
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
@@ -70,7 +82,16 @@ class AttributeMapping
             $this->pimAttributeCode = $pimAttributeCode;
         }
 
-        $this->pimAiAttributeType = $pimAiAttributeType;
+        if (array_key_exists($this->targetAttributeType, self::ATTRIBUTE_TYPES_MAPPING)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Type "%s" does not match with expected types (%s)',
+                    $this->targetAttributeType,
+                    implode(', ', self::ATTRIBUTE_TYPES_MAPPING)
+                )
+            );
+        }
+        $this->targetAttributeType = $targetAttributeType;
     }
 
     /**
@@ -120,8 +141,8 @@ class AttributeMapping
     /**
      * @return string
      */
-    public function getPimAiAttributeType(): string
+    public function getTargetAttributeType(): string
     {
-        return $this->pimAiAttributeType;
+        return $this->targetAttributeType;
     }
 }

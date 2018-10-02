@@ -16,9 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidAttributeMappingTypeException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidExternalAttributeTypeException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -98,33 +97,18 @@ class UpdateAttributesMappingByFamilyHandler
 
     /**
      * @param AttributeMapping $attributeMapping
-     * @param $pimAttribute
+     * @param AttributeInterface $pimAttribute
      */
-    private function validateAttributeTypesMapping(AttributeMapping $attributeMapping, $pimAttribute): void
-    {
-        $attributeTypesMapping = [
-            'metric' => AttributeTypes::METRIC,
-            'select' => AttributeTypes::OPTION_SIMPLE_SELECT,
-            'multiselect' => AttributeTypes::OPTION_MULTI_SELECT,
-            'number' => AttributeTypes::NUMBER,
-            'text' => AttributeTypes::TEXT,
-            'boolean' => AttributeTypes::BOOLEAN,
-            'identifier' => AttributeTypes::IDENTIFIER,
-        ];
-
-        if (! array_key_exists($attributeMapping->getPimAiAttributeType(), $attributeTypesMapping)) {
-            throw new InvalidExternalAttributeTypeException(sprintf(
-                'The external attribute type "%" is unknown and cannot be mapped',
-                $attributeMapping->getPimAiAttributeType()
-            ));
-        }
-
-        if ($attributeTypesMapping[$attributeMapping->getPimAiAttributeType()] !== $pimAttribute->getType()) {
+    private function validateAttributeTypesMapping(
+        AttributeMapping $attributeMapping,
+        AttributeInterface $pimAttribute
+    ): void {
+        if (AttributeMapping::ATTRIBUTE_TYPES_MAPPING[$attributeMapping->getTargetAttributeType()] !== $pimAttribute->getType()) {
             throw new InvalidAttributeMappingTypeException(sprintf(
-                'The external attribute type "%s" cannot be mapped to pim attribute type "%s"',
-                $attributeMapping->getPimAiAttributeType(),
+                'The external attribute type "%s" cannot be mapped to PIM attribute type "%s"',
+                $attributeMapping->getTargetAttributeType(),
                 $pimAttribute->getType()
-            ));;
+            ));
         }
     }
 }
