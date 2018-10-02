@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\HttpFoundation\RequestStack;
