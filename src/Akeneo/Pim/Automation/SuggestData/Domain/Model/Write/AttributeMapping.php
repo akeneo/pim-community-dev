@@ -58,17 +58,29 @@ class AttributeMapping
 
     /**
      * @param string $targetAttributeCode
-     * @param int $status
      * @param string $targetAttributeType
+     * @param int $status
      * @param null|string $pimAttributeCode
      */
     public function __construct(
         string $targetAttributeCode,
-        int $status,
         string $targetAttributeType,
+        int $status,
         ?string $pimAttributeCode
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
+
+        if (!array_key_exists($targetAttributeType, self::ATTRIBUTE_TYPES_MAPPING)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Type "%s" does not match with expected types (%s)',
+                    $targetAttributeType,
+                    implode(', ', array_keys(self::ATTRIBUTE_TYPES_MAPPING))
+                )
+            );
+        }
+        $this->targetAttributeType = $targetAttributeType;
+
         if (!in_array($status, [self::ATTRIBUTE_PENDING, self::ATTRIBUTE_MAPPED, self::ATTRIBUTE_UNMAPPED])) {
             throw new \InvalidArgumentException('Status "%s" does not match with expected types (0, 1, 2)', $status);
         }
@@ -81,17 +93,6 @@ class AttributeMapping
         } else {
             $this->pimAttributeCode = $pimAttributeCode;
         }
-
-        if (array_key_exists($this->targetAttributeType, self::ATTRIBUTE_TYPES_MAPPING)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Type "%s" does not match with expected types (%s)',
-                    $this->targetAttributeType,
-                    implode(', ', self::ATTRIBUTE_TYPES_MAPPING)
-                )
-            );
-        }
-        $this->targetAttributeType = $targetAttributeType;
     }
 
     /**
