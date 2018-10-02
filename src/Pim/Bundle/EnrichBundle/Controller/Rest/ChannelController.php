@@ -105,7 +105,11 @@ class ChannelController
         $channel = $this->getChannel($identifier);
 
         return new JsonResponse(
-            $this->normalizer->normalize($channel, 'internal_api')
+            $this->normalizer->normalize(
+                $channel,
+                'internal_api',
+                ['filter_locales' => false]
+            )
         );
     }
 
@@ -239,7 +243,8 @@ class ChannelController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $channel,
-                'internal_api'
+                'internal_api',
+                ['filter_locales' => false]
             )
         );
     }

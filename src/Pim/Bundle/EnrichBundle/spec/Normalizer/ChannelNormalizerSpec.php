@@ -71,6 +71,49 @@ class ChannelNormalizerSpec extends ObjectBehavior
         );
     }
 
+    function it_normalizes_a_channel_without_filtering_locales(
+        $collectionFilter,
+        $localeNormalizer,
+        $channelNormalizer,
+        ChannelInterface $channel,
+        LocaleInterface $frFR,
+        LocaleInterface $enUS
+    ) {
+        $channel->getLocales()->willReturn([$frFR, $enUS]);
+        $channel->getId()->willReturn(10);
+        $collectionFilter->filterCollection([$frFR, $enUS], 'pim.internal_api.locale.view')
+            ->shouldNotBeCalled();
+        $localeNormalizer->normalize($frFR, 'standard')->willReturn([
+            'code' => 'fr_FR',
+            'label' => 'French'
+        ]);
+        $localeNormalizer->normalize($enUS, 'standard')->willReturn([
+            'code' => 'en_US',
+            'label' => 'English'
+        ]);
+
+        $channelNormalizer->normalize($channel, 'standard', ['filter_locales' => false])->willReturn([
+            'keyFromNormalizer' => 'dataFromNormalizer'
+        ]);
+
+        $this->normalize($channel, 'internal_api', ['filter_locales' => false])->shouldReturn(
+            [
+                'keyFromNormalizer' => 'dataFromNormalizer',
+                'locales' => [
+                    ['code' => 'fr_FR', 'label' => 'French'],
+                    ['code' => 'en_US', 'label' => 'English']
+                ],
+
+                'meta' => [
+                    'id' => 10,
+                    'form' => 'pim-channel-edit-form',
+                    'created' => null,
+                    'updated' => null,
+                ]
+            ]
+        );
+    }
+
     function it_supports_channels_and_internal_api(ChannelInterface $channel)
     {
         $this->supportsNormalization($channel, 'internal_api')->shouldReturn(true);

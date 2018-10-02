@@ -62,7 +62,7 @@ class ChannelNormalizer implements NormalizerInterface
     {
         $normalizedChannel = $this->channelNormalizer->normalize($channel, 'standard', $context);
 
-        $normalizedChannel['locales'] = $this->normalizeLocales($channel->getLocales());
+        $normalizedChannel['locales'] = $this->normalizeLocales($channel->getLocales(), isset($context['filter_locales']) ? $context['filter_locales'] : true);
 
         $firstVersion = $this->versionManager->getOldestLogEntry($channel);
         $lastVersion = $this->versionManager->getNewestLogEntry($channel);
@@ -96,14 +96,16 @@ class ChannelNormalizer implements NormalizerInterface
      * Normalize and return given $locales
      *
      * @param $locales
+     * @param bool $filterLocales
      *
      * @return array|\ArrayAccess
      */
-    protected function normalizeLocales($locales)
+    protected function normalizeLocales($locales, bool $filterLocales)
     {
         $normalizedLocales = [];
+        $locales = $filterLocales ? $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') : $locales;
 
-        foreach ($this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') as $locale) {
+        foreach ($locales as $locale) {
             $normalizedLocales[] = $this->localeNormalizer->normalize($locale, 'standard');
         }
 
