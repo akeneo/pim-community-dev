@@ -1,6 +1,5 @@
 parameters:
     # Normalizers
-    pim_serializer.normalizer.flat.category.class:          Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer
     pim_serializer.normalizer.flat.group.class:             Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer
     pim_serializer.normalizer.flat.job_instance.class:      Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer
     pim_serializer.normalizer.flat.label_translation.class: Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer
@@ -27,14 +26,6 @@ services:
     pim_versioning.serializer.normalizer.flat.value:
         public: false
         class: '%pim_serializer.normalizer.flat.value.class%'
-        tags:
-            - { name: pim_versioning.serializer.normalizer, priority: 90 }
-
-    pim_versioning.serializer.normalizer.flat.category:
-        class: '%pim_serializer.normalizer.flat.category.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.category'
-            - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

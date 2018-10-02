@@ -1,13 +1,14 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer;
+use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior
 {
@@ -25,7 +26,7 @@ class CategoryNormalizerSpec extends ObjectBehavior
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_supports_category_normalization_into_flat(

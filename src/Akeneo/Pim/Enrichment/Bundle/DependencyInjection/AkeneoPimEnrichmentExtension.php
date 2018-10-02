@@ -76,6 +76,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_storage.yml');
+        $loader->load('serializers_versionning.yml');
         $loader->load('serializers.yml');
         $loader->load('builders.yml');
         $loader->load('controllers.yml');

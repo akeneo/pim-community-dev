@@ -16,6 +16,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning`
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
@@ -562,7 +563,7 @@
 - Move namespace `Pim\Component\Buffer` to `Akeneo\Tool\Component\Buffer`
 - Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
 - Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
-- Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
+- Move namespace `Pim\Component\Versionning` except Normalizers to `Akeneo\Tool\Component\Versionning`
 - Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
 - Move namespace `Pim\Component\FileStorage` to `Akeneo\Tool\Component\FileStorage`
 - Move namespace `Pim\Bundle\FileStorageBundle` to `Akeneo\Tool\Bundle\FileStorageBundle`
