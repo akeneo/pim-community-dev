@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7673: Fix permissions on locales applied on channel settings page
+- PIM-7664: ReferenceDataCollectionValueFactory can now ignore unknown reference data with an optionnal argument and not throw an exception.
 
 # 2.3.10 (2018-10-01)
 

@@ -112,6 +112,9 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                 'sku'    => [
                     ['locale' => null, 'scope' => null, 'data' => 'product_invalid_multi_reference_data'],
                 ],
+                'a_ref_data_multi_select'            => [
+                    ['locale' => null, 'scope' => null, 'data' => ['fabricA']]
+                ],
             ]
         );
         $product = $this->findProductByIdentifier('product_invalid_multi_reference_data');
