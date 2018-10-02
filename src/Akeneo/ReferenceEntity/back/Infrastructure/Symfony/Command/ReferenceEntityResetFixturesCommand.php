@@ -112,24 +112,21 @@ DROP TABLE IF EXISTS `akeneo_reference_entity_record`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity`;
 
 CREATE TABLE `akeneo_reference_entity_reference_entity` (
-    `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `image` VARCHAR(255) NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE `akeneoreference_entity_reference_entity_identifier_index` (`identifier`)
+    PRIMARY KEY (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `akeneo_reference_entity_record` (
-    `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
     `code` VARCHAR(255) NOT NULL,
     `reference_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `image` VARCHAR(255) NULL,
     `value_collection` JSON NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE `akeneoreference_entity_record_identifier_index` (`identifier`, `reference_entity_identifier`),
+    PRIMARY KEY (`identifier`),
+    UNIQUE `akeneoreference_entity_record_identifier_index` (`code`, `reference_entity_identifier`),
     CONSTRAINT akeneoreference_entity_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
