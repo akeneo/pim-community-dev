@@ -21,3 +21,9 @@ services:
                 -
                     section: pim_ui
                     name: loading_messages
+
+    pim_localization.controller.locale:
+        class: 'Oro\Bundle\ConfigBundle\Controller\Rest\LocaleController'
+        arguments:
+            - '@pim_localization.provider.ui_locale'
+            - '@pim_internal_api_serializer'

@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Controller;
+namespace Oro\Bundle\ConfigBundle\Controller\Rest;
 
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
+use Pim\Bundle\LocalizationBundle\Controller\NormalizeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
