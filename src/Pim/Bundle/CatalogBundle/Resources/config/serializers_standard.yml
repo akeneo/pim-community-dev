@@ -176,7 +176,7 @@ services:
     pim_catalog.normalizer.standard.translation:
         class: '%pim_catalog.normalizer.standard.translation.class%'
         arguments:
-            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_serializer.normalizer, priority: 80 }
 

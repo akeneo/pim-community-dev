@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -13,10 +13,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class TranslationNormalizer implements NormalizerInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var LocaleRepositoryInterface */
     private $localeRepository;
+    private $activeLocales = [];
 
-    public function __construct(IdentifiableObjectRepositoryInterface $localeRepository = null)
+    public function __construct(LocaleRepositoryInterface $localeRepository = null)
     {
         $this->localeRepository = $localeRepository;
     }
@@ -35,15 +36,18 @@ class TranslationNormalizer implements NormalizerInterface
         );
 
         $translations = array_fill_keys($context['locales'], null);
+
+        // TODO merge: remove null in master
+        if (null !== $this->localeRepository) {
+            $this->activeLocales = $this->activeLocales ?: $this->localeRepository->getActivatedLocaleCodes();
+            $translations = array_combine($this->activeLocales, array_fill(0, count($this->activeLocales), null));
+        }
+
         $method = sprintf('get%s', ucfirst($context['property']));
 
         foreach ($object->getTranslations() as $translation) {
-            // TODO merge: remove null in master
-            if (null !== $this->localeRepository) {
-                $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
-                if (null === $locale || !$locale->isActivated()) {
-                    continue;
-                }
+            if (!in_array($translation->getLocale(), $this->activeLocales)) {
+                continue;
             }
 
             if (false === method_exists($translation, $method)) {

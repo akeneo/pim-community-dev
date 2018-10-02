@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7681: Harmonize entity exports for locales
+
 # 2.3.10 (2018-10-01)
 
 ## Bug fixes
