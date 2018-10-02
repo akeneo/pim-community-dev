@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -86,8 +85,10 @@ final class AttributesMappingContext implements Context
     /**
      * @When the attributes are mapped for the family :familyCode as follows:
      *
-     * @param string $familyCode
+     * @param           $familyCode
      * @param TableNode $mappings
+     *
+     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException
      */
     public function theAttributesAreMappedForTheFamilyAsFollows($familyCode, TableNode $mappings): void
     {
@@ -120,7 +121,7 @@ final class AttributesMappingContext implements Context
      *
      * @When I search a family with the query :familyCodeOrLabel
      */
-    public function iSearchAFamilyWithTheQuery(string $familyCodeOrLabel): void
+    public function iSearchOneFamilyWithTheQuery(string $familyCodeOrLabel): void
     {
         $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, [], $familyCodeOrLabel));
     }
@@ -147,6 +148,11 @@ final class AttributesMappingContext implements Context
         }
     }
 
+    /**
+     * @param TableNode $expectedAttributes
+     *
+     * @return array|TableNode
+     */
     private function buildExpectedAttributesMapping(TableNode $expectedAttributes)
     {
         $statusMapping = $this->getStatusMapping();
@@ -159,7 +165,10 @@ final class AttributesMappingContext implements Context
         return $expectedAttributes;
     }
 
-    private function getStatusMapping()
+    /**
+     * @return array
+     */
+    private function getStatusMapping(): array
     {
         return [
             'pending' => AttributeMapping::ATTRIBUTE_PENDING,

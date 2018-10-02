@@ -54,11 +54,10 @@ final class PimAiConfigurationContext extends PimContext
     /**
      * @When a system administrator configures PIM.ai using a valid token
      *
-     * @throws \Behat\Mink\Exception\ElementNotFoundException
      * @throws \Context\Spin\TimeoutException
      * @throws \Exception
      */
-    public function pimAiIsConfiguredWithAValidToken(): void
+    public function pimAiIsConfiguredWithValidToken(): void
     {
         $this->loadDefaultCatalog();
         $this->loginAsAdmin();
@@ -93,7 +92,6 @@ final class PimAiConfigurationContext extends PimContext
     }
 
     /**
-     * @throws \Behat\Mink\Exception\ElementNotFoundException
      * @throws \Context\Spin\TimeoutException
      */
     private function configureValidToken(): void

@@ -56,7 +56,7 @@ class ProposalContext implements Context
      *
      * @param string îdentifier
      */
-    public function thereShouldBeAProposalForProduct(string $identifier): void
+    public function thereShouldBeOneProposalForProduct(string $identifier): void
     {
         Assert::true($this->proposalUpsert->hasProposalForProduct($identifier, ProposalAuthor::USERNAME));
     }
@@ -66,7 +66,7 @@ class ProposalContext implements Context
      *
      * @param string $identifier
      */
-    public function thereShouldNotBeAProposalForProduct(string $identifier): void
+    public function thereShouldNotBeAnyProposalForProduct(string $identifier): void
     {
         Assert::false($this->proposalUpsert->hasProposalForProduct($identifier, ProposalAuthor::USERNAME));
     }
