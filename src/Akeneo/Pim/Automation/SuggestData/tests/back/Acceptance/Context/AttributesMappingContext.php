@@ -61,10 +61,10 @@ final class AttributesMappingContext implements Context
     /**
      * @Then the retrieved attributes mapping for the family :familyCode should be:
      *
-     * @param $familyCode
+     * @param string $familyCode
      * @param TableNode $expectedAttributes
      */
-    public function theRetrievedAttributesMappingShouldBe($familyCode, TableNode $expectedAttributes): void
+    public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $expectedAttributes): void
     {
         $query = new GetAttributesMappingByFamilyQuery($familyCode);
         $attributesMappingResponse = $this->getAttributesMappingByFamilyHandler->handle($query);
@@ -85,12 +85,10 @@ final class AttributesMappingContext implements Context
     /**
      * @When the attributes are mapped for the family :familyCode as follows:
      *
-     * @param           $familyCode
+     * @param string $familyCode
      * @param TableNode $mappings
-     *
-     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException
      */
-    public function theAttributesAreMappedForTheFamilyAsFollows($familyCode, TableNode $mappings): void
+    public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $mappings): void
     {
         $requestMapping = [];
         foreach ($mappings->getColumnsHash() as $mapping) {

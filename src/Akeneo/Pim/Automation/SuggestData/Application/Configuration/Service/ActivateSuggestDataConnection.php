@@ -37,8 +37,6 @@ class ActivateSuggestDataConnection
      * Throws an invalid argument exception if anything goes wrong during the activation.
      *
      * @param array $configuration
-     *
-     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException
      */
     public function activate(array $configuration): void
     {
