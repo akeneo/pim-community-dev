@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Twig;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Twig;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class CategoryExtensionSpec extends ObjectBehavior
