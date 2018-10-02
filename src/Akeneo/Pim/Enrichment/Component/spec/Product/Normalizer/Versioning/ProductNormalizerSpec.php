@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
