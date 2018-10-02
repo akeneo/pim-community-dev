@@ -4,6 +4,14 @@
   margin-bottom: 20px;
   position: relative;
 
+  &--packed {
+    margin-bottom: 5px;
+
+    &:first-of-type() {
+      margin-top: 20px;
+    }
+  }
+
   &-header {
     display: flex;
     justify-content: space-between;
@@ -11,7 +19,7 @@
     margin-bottom: 10px;
 
     &--light {
-      margin-bottom: 0;
+      margin-bottom: 1px;
 
       & .AknFieldContainer-label {
         font-size: 11px;
@@ -24,10 +32,15 @@
     color: @AknSlateGrey;
     flex-grow: 1;
     font-size: @AknDefaultFontSize;
+    display: flex;
 
     &--grey {
       color: @AknGrey;
       font-size: 10px;
+    }
+
+    &--inline {
+      color: @AknDarkBlue;
     }
 
     &--withImage {
