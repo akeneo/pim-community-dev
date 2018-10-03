@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidAttributeMappingTypeException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -98,17 +98,18 @@ class UpdateAttributesMappingByFamilyHandler
     /**
      * @param AttributeMapping $attributeMapping
      * @param AttributeInterface $pimAttribute
+     *
+     * @throws AttributeMappingException
      */
     private function validateAttributeTypesMapping(
         AttributeMapping $attributeMapping,
         AttributeInterface $pimAttribute
     ): void {
         if (AttributeMapping::ATTRIBUTE_TYPES_MAPPING[$attributeMapping->getTargetAttributeType()] !== $pimAttribute->getType()) {
-            throw new InvalidAttributeMappingTypeException(sprintf(
-                'The external attribute type "%s" cannot be mapped to PIM attribute type "%s"',
+            throw AttributeMappingException::incompatibleAttributeTypeMapping(
                 $attributeMapping->getTargetAttributeType(),
                 $pimAttribute->getType()
-            ));
+            );
         }
     }
 }

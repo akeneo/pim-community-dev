@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFacto
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidAttributeMappingTypeException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -97,7 +97,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
         $attribute->getType()->willReturn('pim_catalog_metric');
 
-        $this->shouldThrow(InvalidAttributeMappingTypeException::class)->during('handle', [$command]);
+        $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
     }
 
     public function it_fills_attribute_and_calls_data_provider(
