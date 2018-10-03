@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Flash;
+namespace Akeneo\Platform\Bundle\UIBundle\Flash;
 
 /**
  * A flash message

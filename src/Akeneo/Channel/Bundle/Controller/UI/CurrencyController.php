@@ -4,9 +4,9 @@ namespace Akeneo\Channel\Bundle\Controller\UI;
 
 use Akeneo\Channel\Component\Exception\LinkedChannelException;
 use Akeneo\Channel\Component\Model\Currency;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
