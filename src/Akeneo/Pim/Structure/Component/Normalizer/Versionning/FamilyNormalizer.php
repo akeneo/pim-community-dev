@@ -49,7 +49,7 @@ class FamilyNormalizer implements NormalizerInterface
         $standardFamily = $this->standardNormalizer->normalize($family, 'standard', $context);
         $flatFamily = $standardFamily;
 
-        $flatFamily['attributes'] = implode(self::ITEM_SEPARATOR, $flatFamily['attributes']);
+        $flatFamily['attributes'] = implode(static::ITEM_SEPARATOR, $flatFamily['attributes']);
 
         unset($flatFamily['attribute_requirements']);
         $flatFamily += $this->normalizeRequirements($standardFamily['attribute_requirements']);
@@ -79,7 +79,7 @@ class FamilyNormalizer implements NormalizerInterface
     {
         $flat = [];
         foreach ($requirements as $channelCode => $attributeCodes) {
-            $flat['requirements-' . $channelCode] = implode(self::ITEM_SEPARATOR, $attributeCodes);
+            $flat['requirements-' . $channelCode] = implode(static::ITEM_SEPARATOR, $attributeCodes);
         }
 
         return $flat;
