@@ -1261,6 +1261,17 @@ final class EditRecordContext implements Context
         Assert::assertEquals($expectedLabel, $record->getLabel('fr_FR'), 'Labels are not equal');
     }
 
+    /**
+     * @Then /^there should be (\d+) records$/
+     */
+    public function thereShouldBeRecords(int $expectedCount)
+    {
+        $this->violationsContext->assertThereIsNoViolations();
+        $this->violationsContext->assertThereIsNoViolations();
+        $recordsCount = $this->recordRepository->count();
+        Assert::assertEquals($expectedCount, $recordsCount);
+    }
+
     private function createReferenceEntity(): void
     {
         $this->referenceEntityRepository->create(ReferenceEntity::create(

@@ -98,3 +98,9 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_record_handler'
             - '@oro_security.security_facade'
+
+    akeneo_referenceentity.infrastructure.action.record.delete_all:
+        class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\DeleteAllAction
+        arguments:
+            - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
+            - '@oro_security.security_facade'

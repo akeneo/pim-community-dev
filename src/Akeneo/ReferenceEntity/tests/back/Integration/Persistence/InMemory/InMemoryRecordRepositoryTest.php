@@ -89,6 +89,38 @@ class InMemoryRecordRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_when_creating_an_existing_record_with_same_entity_identifier_and_same_code()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
+        $recordCode = RecordCode::fromString('record_code');
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->recordRepository->create($record);
+
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+
+        $this->expectException(\RuntimeException::class);
+        $this->recordRepository->create($record);
+    }
+
+    /**
+     * @test
+     */
     public function it_updates_a_record_and_returns_it()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');

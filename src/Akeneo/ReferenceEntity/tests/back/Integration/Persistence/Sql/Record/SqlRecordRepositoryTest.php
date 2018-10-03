@@ -45,6 +45,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
+use PHPUnit\Framework\Assert;
 
 class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 {
@@ -81,6 +82,41 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $recordFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($record->normalize(), $recordFound->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_creating_an_existing_record_with_same_entity_identifier_and_same_code()
+    {
+        $recordCode = RecordCode::fromString('starck');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+
+        $this->repository->create($record);
+
+        $recordCode = RecordCode::fromString('starck');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+
+        $this->expectException(DBALException::class);
+        $this->repository->create($record);
     }
 
     /**
@@ -310,6 +346,52 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_deletes_records_by_reference_entity_identifier()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create($identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($record);
+
+        $recordCode = RecordCode::fromString('dyson');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create($identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($record);
+
+        $referenceEntityIdentifierBrand = ReferenceEntityIdentifier::fromString('brand');
+        $recordCode = RecordCode::fromString('bar');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifierBrand, $recordCode);
+        $record = Record::create($identifier,
+            $referenceEntityIdentifierBrand,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($record);
+
+        Assert::assertEquals(3, $this->repository->count());
+        $this->repository->deleteByReferenceEntity($referenceEntityIdentifier);
+        Assert::assertEquals(1, $this->repository->count());
+    }
+
+    /**
+     * @test
+     */
     public function it_deletes_a_record_by_code_and_entity_identifier()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
@@ -355,6 +437,15 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer'
+            ],
+            Image::createEmpty()
+        );
+        $repository->create($referenceEntity);
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
+            [
+                'fr_FR' => 'Marque',
+                'en_US' => 'Brand'
             ],
             Image::createEmpty()
         );

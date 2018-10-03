@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -34,7 +35,16 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         if (isset($this->records[$record->getIdentifier()->__toString()])) {
             throw new \RuntimeException('Record already exists');
         }
-        $this->records[$record->getIdentifier()->__toString()] = $record;
+
+        try {
+            $this->getByReferenceEntityAndCode($record->getReferenceEntityIdentifier(), $record->getCode());
+        } catch (RecordNotFoundException $exception) {
+            $this->records[$record->getIdentifier()->__toString()] = $record;
+
+            return;
+        }
+
+        throw new \RuntimeException('Record already exists');
     }
 
     public function update(Record $record): void
@@ -55,8 +65,10 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return $this->records[$identifier->__toString()];
     }
 
-    public function getByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): Record
-    {
+    public function getByReferenceEntityAndCode(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        RecordCode $code
+    ): Record {
         foreach ($this->records as $record) {
             if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
                 return $record;
@@ -66,11 +78,14 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
-    public function deleteByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): void
-    {
+    public function deleteByReferenceEntityAndCode(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        RecordCode $code
+    ): void {
         foreach ($this->records as $index => $record) {
             if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
                 unset($this->records[$index]);
+
                 return;
             }
         }
@@ -78,9 +93,29 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
+    public function deleteByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
+    {
+        foreach ($this->records as $index => $record) {
+            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+                unset($this->records[$index]);
+            }
+        }
+    }
+
     public function count(): int
     {
         return count($this->records);
+    }
+
+    public function nextIdentifier(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        RecordCode $code
+    ): RecordIdentifier {
+        return RecordIdentifier::create(
+            $referenceEntityIdentifier->__toString(),
+            $code->__toString(),
+            Uuid::uuid4()->toString()
+        );
     }
 
     public function hasRecord(RecordIdentifier $identifier)
@@ -99,12 +134,15 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return false;
     }
 
-    public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): RecordIdentifier
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
     {
-        return RecordIdentifier::create(
-            $referenceEntityIdentifier->__toString(),
-            $code->__toString(),
-            md5('fingerprint')
-        );
+        $count = 0;
+        foreach ($this->records as $record) {
+            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+                $count ++;
+            }
+        }
+
+        return $count;
     }
 }

@@ -177,6 +177,21 @@ SQL;
         return $this->hydrateRecord($result);
     }
 
+    public function deleteByReferenceEntity(
+        ReferenceEntityIdentifier $referenceEntityIdentifier
+    ): void {
+        $sql = <<<SQL
+        DELETE FROM akeneo_reference_entity_record 
+        WHERE reference_entity_identifier = :reference_entity_identifier;
+SQL;
+        $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
+            ]
+        );
+    }
+
     public function deleteByReferenceEntityAndCode(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code

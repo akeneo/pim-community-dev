@@ -78,7 +78,7 @@ final class DeleteRecordContext implements Context
      * @Given /^an reference entity with one record$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithTwoRecords()
+    public function aReferenceEntityWithOneRecord()
     {
         $this->createReferenceEntity();
         $this->createRecord();

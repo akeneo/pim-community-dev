@@ -51,3 +51,8 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'

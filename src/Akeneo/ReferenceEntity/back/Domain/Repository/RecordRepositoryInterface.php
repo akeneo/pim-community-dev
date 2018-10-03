@@ -39,6 +39,8 @@ interface RecordRepositoryInterface
      */
     public function deleteByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): void;
 
+    public function deleteByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void;
+
     public function count(): int;
 
     public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code):  RecordIdentifier;

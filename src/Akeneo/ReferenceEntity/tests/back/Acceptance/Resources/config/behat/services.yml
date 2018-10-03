@@ -82,6 +82,7 @@ services:
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
         tags:
             - { name: fob.context_service }
+
     akeneo_referenceentity.tests.back.acceptance.context.delete_record_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\DeleteRecordContext
         arguments:
@@ -94,6 +95,17 @@ services:
         tags:
         - { name: fob.context_service }
 
+    akeneo_referenceentity.tests.back.acceptance.context.delete_all_records_context:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\DeleteAllRecordsContext
+        arguments:
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@__symfony__.akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
+            - '@__symfony__.validator'
+            - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+        tags:
+        - { name: fob.context_service }
 
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\Test\Acceptance\FileStorage\InMemoryFileStorer
