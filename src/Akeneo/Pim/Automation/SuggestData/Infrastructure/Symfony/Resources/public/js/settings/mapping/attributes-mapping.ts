@@ -31,7 +31,7 @@ interface AttributeMappingConfig {
     pim_ai_attribute: string,
     catalog_attribute: string,
     suggest_data: string, // TODO Rename to attribute_mapping_status
-  };
+  }
 }
 
 /**
@@ -275,7 +275,7 @@ class AttributeMapping extends BaseForm {
   }
 
   private updateAttributeOptionsMapping(event: any) {
-    //console.log(event);
+    console.log(event);
     this.manageAttributeOptionsMapping();
     //.then(attributeOptionsMapping => {
     //  console.log(attributeOptionsMapping);
@@ -308,6 +308,8 @@ class AttributeMapping extends BaseForm {
       form
         .setFamilyLabel('family')
         .setPimAiAttributeLabel('Pim Ai Attribute')
+        .setPimAttributeCode('color')
+        .setFamilyCode('router')
         .setElement(modal.$('.modal-body'))
         .render();
 

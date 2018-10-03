@@ -2,7 +2,12 @@ import BaseForm = require('pimenrich/js/view/base');
 import * as _ from "underscore";
 
 const __ = require('oro/translator');
+const FetcherRegistry = require('pim/fetcher-registry');
 const template = require('pimee/template/settings/mapping/attribute-options-mapping');
+
+interface NormalizedAttributeOptionsMapping {
+
+}
 
 interface Config {
   labels: {
@@ -26,6 +31,8 @@ class AttributeOptionsMapping extends BaseForm {
   private static readonly ATTRIBUTE_OPTION_UNMAPPED: number = 2;
   readonly template: any = _.template(template);
   private familyLabel: string;
+  private familyCode: string;
+  private pimAttributeCode: string;
   private pimAiAttributeLabel: string;
   readonly config: Config = {
     labels: {
@@ -37,6 +44,7 @@ class AttributeOptionsMapping extends BaseForm {
       suggest_data: '', // TODO Rename to attribute_option_code_mapping
     }
   };
+  private mapping: NormalizedAttributeOptionsMapping | null = null;
 
   /**
    * {@inheritdoc}
@@ -51,6 +59,9 @@ class AttributeOptionsMapping extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
+    if (this.mapping === null) {
+      this.mapping = this.fetchMapping();
+    }
     this.$el.html(this.template({
       title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
         familyLabel: this.familyLabel,
@@ -80,6 +91,18 @@ class AttributeOptionsMapping extends BaseForm {
     return this;
   }
 
+  public setFamilyCode(familyCode: string): AttributeOptionsMapping {
+    this.familyCode = familyCode;
+
+    return this;
+  }
+
+  public setPimAttributeCode(pimAttributeCode: string): AttributeOptionsMapping {
+    this.pimAttributeCode = pimAttributeCode;
+
+    return this;
+  }
+
   /**
    * @returns {{ [ key: number ]: string }}
    */
@@ -90,6 +113,17 @@ class AttributeOptionsMapping extends BaseForm {
     statuses[AttributeOptionsMapping.ATTRIBUTE_OPTION_UNMAPPED] = __(this.config.labels.unmapped);
 
     return statuses;
+  }
+
+  private fetchMapping(): NormalizedAttributeOptionsMapping {
+    FetcherRegistry
+      .getFetcher('attribute-options-mapping')
+      .fetch(this.familyCode, {attributeCode: this.pimAttributeCode})
+      .then((toto: any) => {
+        console.log(toto);
+      });
+
+    return {};
   }
 }
 

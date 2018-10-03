@@ -29,3 +29,6 @@ services:
             - '@akeneo.pim.automation.suggest_data.handler.get_families'
             - '@akeneo.pim.automation.suggest_data.normalizers.families'
             - '@akeneo.pim.automation.suggest_data.normalizers.attributes_mapping'
+
+    akeneo.pim.automation.suggest_data.controller.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeOptionsMappingController'

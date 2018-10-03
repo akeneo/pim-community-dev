@@ -43,6 +43,11 @@ config:
                     options:
                         urls:
                             get: akeneo_sugggest_data_attributes_mapping_get
+                attribute-options-mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: akeneo_suggest_data_attribute_options_mapping_get
 
     paths:
         # Fetchers
