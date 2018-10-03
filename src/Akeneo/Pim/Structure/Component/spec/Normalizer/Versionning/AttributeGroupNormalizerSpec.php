@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 
 use Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Prophecy\Argument;
 

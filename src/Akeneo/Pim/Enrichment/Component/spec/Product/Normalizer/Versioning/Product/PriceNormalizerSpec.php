@@ -1,15 +1,16 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceNormalizerSpec extends ObjectBehavior
 {
     function it_is_a_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldBeAnInstanceOf(NormalizerInterface::class);
     }
 
     function it_supports_flat_normalization_of_product_price(ProductPriceInterface $price)

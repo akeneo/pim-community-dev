@@ -1,15 +1,16 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior
 {
     function it_is_a_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldBeAnInstanceOf(NormalizerInterface::class);
     }
 
     function it_supports_csv_normalization_reference_data(ReferenceDataInterface $referenceData)

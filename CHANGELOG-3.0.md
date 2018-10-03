@@ -18,8 +18,14 @@
 
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\TranslationNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\GroupNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\GroupNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\ValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\DateTimeNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\FileNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\MetricNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\PriceNormalizer`
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
@@ -47,7 +53,7 @@
 - Move `Pim\Component\ReferenceData\ConfigurationRegistryInterface` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface`
 - Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer`
 - Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer`
-- Move `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer` to `Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\ReferenceDataNormalizer`
+- Move `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ReferenceDataNormalizer`
 - Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier`
 - Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier`
 - Move `Pim\Component\ReferenceData\Model\ReferenceDataInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface`

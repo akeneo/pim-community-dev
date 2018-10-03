@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\Versioning;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -81,7 +81,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ConfigurationRegistryInterface/Akeneo\\Pim\\Structure\\Component\\ReferenceData\\ConfigurationRegistryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Indexing\\ProductValue\\ReferenceDataNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Indexing\\Value\\ReferenceDataNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Indexing\\ProductValue\\ReferenceDataCollectionNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Indexing\\Value\\ReferenceDataCollectionNormalizer/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Flat\\ReferenceDataNormalizer/Akeneo\\Tool\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ReferenceDataNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Flat\\ReferenceDataNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\ReferenceDataNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Updater\\Copier\\ReferenceDataAttributeCopier/Akeneo\\Pim\\Enrichment\\Component\\Product\\Updater\\Copier\\ReferenceDataAttributeCopier/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Updater\\Copier\\ReferenceDataCollectionAttributeCopier/Akeneo\\Pim\\Enrichment\\Component\\Product\\Updater\\Copier\\ReferenceDataCollectionAttributeCopier/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Model\\ReferenceDataInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ReferenceDataInterface/g'
@@ -551,7 +551,13 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Versioning/A
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\CategoryNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Category\\Normalizer\\Versioning/\\CategoryNormalizer/g`
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\ProductNormalizer/g`
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductModelNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\ProductModelNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\GroupNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\GroupNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\TranslationNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\TranslationNormalizer/g`
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ValueNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\ValueNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\DateTimeNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\DateTimeNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\FileNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\FileNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\MetricNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\MetricNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\PriceNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\PriceNormalizer/g`
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\MeasureBundle/Akeneo\\Tool\\Bundle\\MeasureBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileStorage/Akeneo\\Tool\\Component\\FileStorage/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\FileStorageBundle/Akeneo\\Tool\\Bundle\\FileStorageBundle/g'

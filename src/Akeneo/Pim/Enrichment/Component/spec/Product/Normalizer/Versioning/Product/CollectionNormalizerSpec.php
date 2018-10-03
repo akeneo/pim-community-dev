@@ -1,24 +1,26 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CollectionNormalizerSpec extends ObjectBehavior
 {
     function let(SerializerInterface $serializer)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
     }
 
     function it_is_a_serializer_aware_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldBeAnInstanceOf(NormalizerInterface::class);
+        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
     }
 
     function it_supports_flat_normalization_of_collection(Collection $collection)

@@ -1,12 +1,13 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\GroupNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GroupNormalizerSpec extends ObjectBehavior
 {
@@ -24,7 +25,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_only_supports_flat_normalization_of_group(GroupInterface $group)

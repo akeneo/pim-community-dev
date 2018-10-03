@@ -1,10 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\Versioning;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer;
+use Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\Versioning\JobInstanceNormalizer;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class JobInstanceNormalizerSpec extends ObjectBehavior
 {
@@ -15,7 +16,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_supports_job_instance_normalization_into_flat(JobInstance $jobinstance)

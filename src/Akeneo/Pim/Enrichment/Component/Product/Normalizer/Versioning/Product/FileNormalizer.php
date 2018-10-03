@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 

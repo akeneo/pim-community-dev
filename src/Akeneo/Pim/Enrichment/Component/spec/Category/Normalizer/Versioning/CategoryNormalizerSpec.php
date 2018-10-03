@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
