@@ -116,9 +116,9 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    *
    * @param {object} item
    *
-   * @return {object}
+   * @return {string}
    */
-  private onGetResult(item: { text: string, group: { text: string } }): object {
+  private onGetResult(item: { text: string, group: { text: string } }): string {
     return this.lineView({item});
   }
 }

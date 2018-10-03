@@ -151,7 +151,7 @@ class AttributeMapping extends BaseForm {
    * @param {{value: string, type: "equals" | "search", field: string}} filter
    */
   private filter(filter: { value: string, type: 'equals'|'search', field: string }): void {
-    this.$el.find('.searchable-row').each((i: number, row: any) => {
+    this.$el.find('.searchable-row').each((_i: number, row: any) => {
       const value = $(row).data(filter.field);
       let filteredByThisFilter = false;
       switch (filter.type) {
