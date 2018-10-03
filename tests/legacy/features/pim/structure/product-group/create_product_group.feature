@@ -11,6 +11,7 @@ Feature: Product group creation
     And I create a new product group
     Then I should see the Code and Type fields
 
+  @critical
   Scenario: Successfully create a cross sell
     And I should not see the Axis field
     When I fill in the following information in the popin:

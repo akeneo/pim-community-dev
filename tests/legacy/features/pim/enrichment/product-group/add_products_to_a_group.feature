@@ -16,6 +16,7 @@ Feature: Add products to a group
       | sandal-white-39 | sandals | winter_collection | 39   | white |
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully add products in groups
     Given I am on the "CROSS_SELL" product group page
     And I should see products sandal-white-37 and sandal-white-38
