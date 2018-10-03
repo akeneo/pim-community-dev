@@ -1,6 +1,13 @@
 mappings:
-    pimee_workflow_published_product:
+    pimee_reference_entity_record:
         properties:
-            # "completeness" property is handled by the "completeness" dynamic template
-            code:
+            identifier:
                 type: 'keyword'
+            reference_entity_identifier:
+                type: 'keyword'
+        dynamic_templates:
+            -
+                record_list_search:
+                    path_match: 'record_list_search.*.*'
+                    mapping:
+                        normalizer: 'text_normalizer'
