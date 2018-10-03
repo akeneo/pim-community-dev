@@ -30,13 +30,13 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\At
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -51,7 +51,8 @@ class PimAISpec extends ObjectBehavior
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
-        AttributesMappingNormalizer $attributesMappingNormalizer
+        AttributesMappingNormalizer $attributesMappingNormalizer,
+        FamilyNormalizer $familyNormalizer
     ): void {
         $this->beConstructedWith(
             $authenticationApi,
@@ -60,7 +61,8 @@ class PimAISpec extends ObjectBehavior
             $identifiersMappingApi,
             $attributesMappingApi,
             $identifiersMappingNormalizer,
-            $attributesMappingNormalizer
+            $attributesMappingNormalizer,
+            $familyNormalizer
         );
     }
 
@@ -98,21 +100,22 @@ class PimAISpec extends ObjectBehavior
         $eanValue->hasData()->willReturn(false);
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn(123456);
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
-        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product with id "42"'))
+        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product with id "123456"'))
              ->during('subscribe', [$productSubscriptionRequest]);
     }
 
-    public function it_catches_client_exceptions(
+    public function it_catches_client_exceptions_during_subscription(
         $identifiersMappingRepository,
         $subscriptionApi,
+        $familyNormalizer,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue,
-        FamilyInterface $family,
-        FamilyTranslation $familyTranslation
+        FamilyInterface $family
     ): void {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
@@ -124,24 +127,26 @@ class PimAISpec extends ObjectBehavior
 
         $ean->getCode()->willReturn('ean');
 
-        $family->getCode()->willReturn('tshirt');
-        $family->getLabel()->willReturn('T-shirt');
-        $family->getTranslation()->willReturn($familyTranslation);
-        $familyTranslation->getLocale()->willReturn('en_US');
-
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
         $product->getValue('ean')->willReturn($eanValue);
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('123456789');
 
+        $normalizedFamily = [
+            'code' => 'tshirt',
+            'label' => [
+                'en_US' => 'T-shirt',
+                'fr_FR' => 'T-shirt',
+            ],
+        ];
+        $familyNormalizer->normalize($family)->willReturn($normalizedFamily);
+
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
-        $subscriptionApi->subscribeProduct(
-            ['upc' => '123456789'],
-            42,
-            ['code' => 'tshirt', 'label' => ['en_US' => 'T-shirt']]
-        )->willThrow(new ClientException('exception-message'));
+        $subscriptionApi
+            ->subscribeProduct(['upc' => '123456789'], 42, $normalizedFamily)
+            ->willThrow(new ClientException('exception-message'));
 
         $this->shouldThrow(new ProductSubscriptionException('exception-message'))->during(
             'subscribe',
@@ -152,13 +157,13 @@ class PimAISpec extends ObjectBehavior
     public function it_subscribes_product_to_pim_ai(
         $identifiersMappingRepository,
         $subscriptionApi,
+        $familyNormalizer,
         ProductInterface $product,
         AttributeInterface $ean,
         AttributeInterface $sku,
         ValueInterface $eanValue,
         ValueInterface $skuValue,
-        FamilyInterface $family,
-        FamilyTranslation $familyTranslation
+        FamilyInterface $family
     ): void {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
@@ -172,11 +177,6 @@ class PimAISpec extends ObjectBehavior
         $ean->getCode()->willReturn('ean');
         $sku->getCode()->willReturn('sku');
 
-        $family->getCode()->willReturn('tshirt');
-        $family->getLabel()->willReturn('T-shirt');
-        $family->getTranslation()->willReturn($familyTranslation);
-        $familyTranslation->getLocale()->willReturn('en_US');
-
         $product->getId()->willReturn(42);
         $product->getFamily()->willReturn($family);
         $product->getValue('ean')->willReturn($eanValue);
@@ -187,6 +187,15 @@ class PimAISpec extends ObjectBehavior
         $eanValue->__toString()->willReturn('123456789');
         $skuValue->__toString()->willReturn('987654321');
 
+        $normalizedFamily = [
+            'code' => 'tshirt',
+            'label' => [
+                'en_US' => 'T-shirt',
+                'fr_FR' => 'T-shirt',
+            ],
+        ];
+        $familyNormalizer->normalize($family)->willReturn($normalizedFamily);
+
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
 
@@ -196,7 +205,7 @@ class PimAISpec extends ObjectBehavior
                 'asin' => '987654321',
             ],
             42,
-            ['code' => 'tshirt', 'label' => ['en_US' => 'T-shirt']]
+            $normalizedFamily
         )->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this

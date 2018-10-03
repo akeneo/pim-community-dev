@@ -29,6 +29,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscripti
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 
@@ -60,6 +61,9 @@ class PimAI implements DataProviderInterface
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
+    /** @var FamilyNormalizer */
+    private $familyNormalizer;
+
     /**
      * @param AuthenticationApiInterface $authenticationApi
      * @param SubscriptionApiInterface $subscriptionApi
@@ -68,6 +72,7 @@ class PimAI implements DataProviderInterface
      * @param AttributesMappingApiInterface $attributesMappingApi
      * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
+     * @param FamilyNormalizer $familyNormalizer
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,
@@ -76,7 +81,8 @@ class PimAI implements DataProviderInterface
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
-        AttributesMappingNormalizer $attributesMappingNormalizer
+        AttributesMappingNormalizer $attributesMappingNormalizer,
+        FamilyNormalizer $familyNormalizer
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
@@ -85,6 +91,7 @@ class PimAI implements DataProviderInterface
         $this->attributesMappingApi = $attributesMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
+        $this->familyNormalizer = $familyNormalizer;
     }
 
     /**
@@ -97,24 +104,17 @@ class PimAI implements DataProviderInterface
             throw new ProductSubscriptionException('No mapping defined');
         }
 
+        $product = $request->getProduct();
         $mapped = $request->getMappedValues($identifiersMapping);
         if (empty($mapped)) {
             throw new ProductSubscriptionException(
-                sprintf('No mapped values for product with id "%s"', $request->getProduct()->getId())
+                sprintf('No mapped values for product with id "%s"', (string) $product->getIdentifier())
             );
         }
 
-        $productId = $request->getProduct()->getId();
-        $family = $request->getProduct()->getFamily();
-        $familyInfos = [
-            'code' => $family->getCode(),
-            'label' => [
-                $family->getTranslation()->getLocale() => $family->getLabel(),
-            ],
-        ];
-
+        $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
         try {
-            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $productId, $familyInfos);
+            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $product->getId(), $familyInfos);
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
