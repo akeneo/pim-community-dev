@@ -25,6 +25,10 @@ class PimUIExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $configurationLocalization = new LocalizationConfiguration();
+        $configLocalization = $this->processConfiguration($configurationLocalization, $configs);
+        $container->prependExtensionConfig('pim_localization', $configLocalization);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ .'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('forms.yml');
