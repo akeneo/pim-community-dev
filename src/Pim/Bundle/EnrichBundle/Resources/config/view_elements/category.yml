@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.view_element.category.tab.property.template: 'PimEnrichBundle:CategoryTree:Tab/property.html.twig'
+    pim_enrich.view_element.category.tab.property.template: 'AkeneoPimEnrichmentBundle:CategoryTree:Tab/property.html.twig'
     pim_enrich.view_element.category.tab.history.template:  'PimEnrichBundle:Form:Tab/history.html.twig'
 
 services:

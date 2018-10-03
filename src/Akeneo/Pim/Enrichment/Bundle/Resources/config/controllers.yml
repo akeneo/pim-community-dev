@@ -250,4 +250,18 @@ services:
             - '@oro_security.security_facade'
             - '%pim_catalog.entity.category.class%'
             - 'pim_enrich_product_model_categories_view'
-            - '@@PimEnrich/ProductModel/listCategories.json.twig'
+            - '@@AkeneoPimEnrichmentBundle/ProductModel/listCategories.json.twig'
+
+    pim_enrich.controller.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '%pim_catalog.entity.category.class%'
+            - '@oro_security.security_facade'
+            - 'pim_enrich_product_categories_view'
+            - '@@PimEnrich/Product/listCategories.json.twig'

@@ -979,4 +979,6 @@
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to `Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController`
 - Move `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController` to `Akeneo\Platform\Bundle\UIBundle\Controller\InternalApi\FormExtensionController`
-
+- Remove `Pim\Bundle\EnrichBundle\Controller\GroupController`
+- Remove `Pim\Bundle\EnrichBundle\Controller\JobExecutionController`
+- Remove `Pim\Bundle\EnrichBundle\Controller\ProductController`
