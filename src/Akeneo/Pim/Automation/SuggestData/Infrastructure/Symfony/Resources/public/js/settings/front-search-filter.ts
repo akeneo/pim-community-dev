@@ -1,6 +1,6 @@
-import * as _ from "underscore";
 import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
+import * as _ from 'underscore';
 const __ = require('oro/translator');
 const template = require('pim/template/datagrid/filter/search-filter');
 
@@ -12,7 +12,7 @@ const TIMEOUT_DELAY = 250;
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class FrontSearchFilter extends BaseForm {
-  readonly template = _.template(template);
+  public readonly template = _.template(template);
   private timer: number|null = null;
 
   /**
@@ -20,7 +20,7 @@ class FrontSearchFilter extends BaseForm {
    */
   constructor(options: { config: Object }) {
     super({...options, ...{ className: 'AknFilterBox-searchContainer' }});
-  };
+  }
 
   /**
    * {@inheritdoc}
@@ -28,9 +28,9 @@ class FrontSearchFilter extends BaseForm {
   public events(): EventsHash {
     return {
       'keydown input[name="value"]': this.runTimeout,
-      'keypress input[name="value"]': this.runTimeout
-    }
-  };
+      'keypress input[name="value"]': this.runTimeout,
+    };
+  }
 
   /**
    * {@inheritdoc}
@@ -38,8 +38,8 @@ class FrontSearchFilter extends BaseForm {
   public render(): BaseForm {
     this.$el.html(this.template({
       label: __('pim_datagrid.search', {
-        label: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute')
-      })
+        label: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'),
+      }),
     }));
 
     return this;
@@ -61,17 +61,17 @@ class FrontSearchFilter extends BaseForm {
     } else {
       this.timer = setTimeout(this.doSearch.bind(this), TIMEOUT_DELAY);
     }
-  };
+  }
 
   /**
    * Trigger an event to the grid to execute the search.
    */
   private doSearch() {
-    const value = (<string> this.$el.find('input').val());
+    const value = (this.$el.find('input').val() as string);
     this.trigger('pim_datagrid:filter-front', {
       value,
       type: 'search',
-      field: 'pim_ai_attribute'
+      field: 'pim_ai_attribute',
     });
   }
 }

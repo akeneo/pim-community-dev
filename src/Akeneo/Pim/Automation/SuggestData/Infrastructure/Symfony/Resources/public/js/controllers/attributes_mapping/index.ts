@@ -23,7 +23,7 @@ class IndexAttributeMappingController extends BaseController {
         if (0 === Object.keys(families).length) {
           return $.Deferred().reject({
             status: 404,
-            statusText: __('akeneo_suggest_data.entity.attributes_mapping.module.index.error')
+            statusText: __('akeneo_suggest_data.entity.attributes_mapping.module.index.error'),
           });
         }
 
@@ -36,4 +36,4 @@ class IndexAttributeMappingController extends BaseController {
   }
 }
 
-export = IndexAttributeMappingController
+export = IndexAttributeMappingController;

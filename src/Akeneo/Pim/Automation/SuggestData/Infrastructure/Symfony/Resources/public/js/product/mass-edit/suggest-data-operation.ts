@@ -1,5 +1,5 @@
-import * as _ from 'underscore';
 import * as $ from 'jquery';
+import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
@@ -24,8 +24,8 @@ interface SuggestDataOperationConfig {
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class SuggestDataOperation extends Operation {
-  readonly template: any = _.template(template);
-  readonly config: SuggestDataOperationConfig = {
+  public readonly template: any = _.template(template);
+  public readonly config: SuggestDataOperationConfig = {
     title: '',
     label: '',
     subLabel: '',
@@ -44,13 +44,12 @@ class SuggestDataOperation extends Operation {
   constructor(options: { config: SuggestDataOperationConfig }) {
     super({
       ...options, ...{
-        className: 'AknButtonList AknButtonList--single'
-      }
+        className: 'AknButtonList AknButtonList--single',
+      },
     });
 
     this.config = {...this.config, ...options.config};
-  };
-
+  }
 
   /**
    * {@inheritdoc}
@@ -58,7 +57,7 @@ class SuggestDataOperation extends Operation {
   public events(): Backbone.EventsHash {
     return {
       'click .AknButton': 'switchAction',
-    }
+    };
   }
 
   /**
@@ -82,7 +81,7 @@ class SuggestDataOperation extends Operation {
    * @param event
    */
   protected switchAction(event: any): void {
-    const action: string = <string> $(event.target).attr('data-value');
+    const action: string = $(event.target).attr('data-value') as string;
     const $button = $(event.target).parent().find('.AknButton--apply');
 
     this.setAction(action);
@@ -94,7 +93,7 @@ class SuggestDataOperation extends Operation {
    * @param {string} action
    */
   protected setAction(action: string): void {
-    let data = this.getFormData();
+    const data = this.getFormData();
 
     data.jobInstanceCode = this.config.jobInstanceCode.replace('%s', action);
     data.action = action;

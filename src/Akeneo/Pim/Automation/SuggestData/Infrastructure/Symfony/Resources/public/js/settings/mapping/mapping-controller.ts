@@ -11,7 +11,7 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  initialize(options: { config: { connectionCode: string, entity: string } }) {
+  public initialize(options: { config: { connectionCode: string, entity: string } }) {
     BaseController.prototype.initialize.apply(this, arguments);
     this.options = options;
   }
@@ -19,9 +19,9 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  renderForm() {
+  public renderForm() {
     return isConnectionActivated()
-      .then(connectionIsActivated => {
+      .then((connectionIsActivated) => {
         const entity = this.options.config.entity;
         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';
         if (connectionIsActivated) {
@@ -40,4 +40,4 @@ class MappingController extends BaseController {
   }
 }
 
-export = MappingController
+export = MappingController;

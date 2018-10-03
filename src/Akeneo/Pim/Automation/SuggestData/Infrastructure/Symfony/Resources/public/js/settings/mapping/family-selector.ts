@@ -17,7 +17,7 @@ const MAPPING_FULL: number = 1;
 const MAPPING_PENDING_ATTRIBUTES: number = 2;
 
 class FamilySelector extends BaseSelect {
-  readonly lineView = _.template(lineTemplate);
+  public readonly lineView = _.template(lineTemplate);
 
   constructor(config: { config: Object }) {
     super(config);
@@ -27,7 +27,7 @@ class FamilySelector extends BaseSelect {
           .fetch(this.getFieldValue(event.target), {cached: false})
           .then((family: { code: string }) => {
             const hasRedirected = Router.redirectToRoute('akeneo_suggest_data_attributes_mapping_edit', {
-              familyCode: family.code
+              familyCode: family.code,
             });
             if (false === hasRedirected) {
               this.render();
@@ -35,14 +35,14 @@ class FamilySelector extends BaseSelect {
               return hasRedirected;
             }
           });
-      }
-    }
+      },
+    };
   }
 
   /**
    * {@inheritdoc}
    */
-  getSelect2Options() {
+  public getSelect2Options() {
     const parent = BaseSelect.prototype.getSelect2Options.apply(this, arguments);
     parent.formatResult = this.onGetResult.bind(this);
     parent.dropdownCssClass = 'select2--withIcon ' + parent.dropdownCssClass;
@@ -56,14 +56,14 @@ class FamilySelector extends BaseSelect {
    *
    * @return {Object}
    */
-  onGetResult(item: { text: string }) {
+  public onGetResult(item: { text: string }) {
     return this.lineView({item});
   }
 
   /**
    * {@inheritdoc}
    */
-  convertBackendItem(item: { status: number }) {
+  public convertBackendItem(item: { status: number }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
       case MAPPING_FULL:
@@ -80,4 +80,4 @@ class FamilySelector extends BaseSelect {
   }
 }
 
-export = FamilySelector
+export = FamilySelector;

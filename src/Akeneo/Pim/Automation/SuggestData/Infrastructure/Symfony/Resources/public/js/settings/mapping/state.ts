@@ -10,7 +10,7 @@ class State extends BaseState {
   /**
    * {@inheritdoc}
    */
-  hasModelChanged(): boolean {
+  public hasModelChanged(): boolean {
     return JSON.stringify(this.emptyToNullValues(JSON.parse(this.state))) !==
       JSON.stringify(this.emptyToNullValues(this.getFormData()));
   }
@@ -22,7 +22,7 @@ class State extends BaseState {
    *
    * @returns anyœ
    */
-  emptyToNullValues(object: any): any {
+  public emptyToNullValues(object: any): any {
     return Object.keys(object).reduce((accumulator: any, identifier: string) => {
       accumulator[identifier] = object[identifier] === '' ? null : object[identifier];
 
@@ -31,4 +31,4 @@ class State extends BaseState {
   }
 }
 
-export = State
+export = State;

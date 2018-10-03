@@ -23,12 +23,12 @@ interface NormalizedAttributeGroupInterface {
 }
 
 class SimpleSelectAttribute extends BaseSimpleSelect {
-  readonly lineView = _.template(LineTemplate);
+  public readonly lineView = _.template(LineTemplate);
   private attributeGroups: { [key: string]: NormalizedAttributeGroupInterface } = {};
 
   constructor(options: { config: Object, className: string }) {
     super({
-      ...{ className: 'AknFieldContainer AknFieldContainer--withoutMargin' }, ...options
+      ...{ className: 'AknFieldContainer AknFieldContainer--withoutMargin' }, ...options,
     });
   }
 
@@ -43,7 +43,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
         .fetchAll()
         .then((attributeGroups: { [key: string]: NormalizedAttributeGroupInterface }) => {
           this.attributeGroups = attributeGroups;
-        })
+        }),
     );
   }
 
@@ -72,10 +72,10 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
             i18n.getLabel(
               this.attributeGroups[item.group].labels,
               UserContext.get('catalogLocale'),
-              this.attributeGroups[item.group]
+              this.attributeGroups[item.group],
             ) : ''
-        )
-      }
+        ),
+      },
     };
   }
 
@@ -93,8 +93,8 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       types: this.config.types.join(','),
       options: {
         limit: this.resultsPerPage,
-        page: page
-      }
+        page,
+      },
     };
   }
 
@@ -104,8 +104,8 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    * Has been overrode because translations should be handle front side.
    * Translates messages.
    */
-  protected getFieldErrors(errors: { [index: string] : { message: string, messageParams: any } }) {
-    Object.keys(errors).map(index => {
+  protected getFieldErrors(errors: { [index: string]: { message: string, messageParams: any } }) {
+    Object.keys(errors).map((index) => {
       errors[index].message = __(errors[index].message, errors[index].messageParams);
     });
     return BaseSimpleSelect.prototype.getFieldErrors.apply(this, arguments);
@@ -123,4 +123,4 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   }
 }
 
-export = SimpleSelectAttribute
+export = SimpleSelectAttribute;
