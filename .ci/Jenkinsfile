@@ -103,11 +103,18 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && vendor/akeneo/pim-community-dev/bin/check-pullup"
             )},
-            "front-code-style": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && yarn run lint"
-            )},
+            "front-code-style": {
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && yarn run lint"
+                )
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && yarn run tslint -c src/Akeneo/Pim/Automation/SuggestData/tests/front/tslint.json src/Akeneo/Pim/Automation/SuggestData/**/*.ts"
+                )
+            },
             "front-unit": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
