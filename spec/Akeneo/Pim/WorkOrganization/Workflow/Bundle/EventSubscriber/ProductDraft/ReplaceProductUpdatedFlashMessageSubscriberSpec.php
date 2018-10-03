@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
+use Doctrine\Common\Persistence\ObjectRepository;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;

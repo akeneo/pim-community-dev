@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

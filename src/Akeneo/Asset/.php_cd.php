@@ -58,7 +58,7 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
-        'Pim\Bundle\EnrichBundle\Flash\Message', // Related to the front end
+        'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // Related to the front end
         'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType',
         'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
         'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
