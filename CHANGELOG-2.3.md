@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7676: Add code filter on attribute and family grid
 - PIM-7673: Fix permissions on locales applied on channel settings page
 
 # 2.3.10 (2018-10-01)
