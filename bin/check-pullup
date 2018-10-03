@@ -150,6 +150,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Bundle/FilterBundle', new Moved('src/Oro/Bundle/PimFilterBundle')),
         new ForbiddenDirectory('src/Pim/Bundle/ReferenceDataBundle', new Moved('src/Akeneo/Pim')),
         new ForbiddenDirectory('src/Pim/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/LocalizationBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Platform/Bundle/UIBundle'])),
 
         // Community Components
         new ForbiddenDirectory('src/Pim/Component/Api', Dispatched::everywhereCommunity()),
