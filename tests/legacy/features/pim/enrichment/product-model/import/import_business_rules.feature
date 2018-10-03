@@ -40,6 +40,7 @@ Feature: Create product models through CSV import
     Then I should see the text "skipped 1"
     And I should see the text "Attribute \"color\" cannot be empty, as it is defined as an axis for this entity"
 
+  @critical
   Scenario: Only the attributes with values defined as "common attributes" in the family variant are updated.
     Given the following CSV file to import:
       """
@@ -53,6 +54,7 @@ Feature: Create product models through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then the product model "code-001" should not have the following values "composition, name-en_US, color"
 
+  @critical
   Scenario: Only the attributes with values defined as variant attributes level 1 in the family variant are updated.
     Given the following CSV file to import:
       """

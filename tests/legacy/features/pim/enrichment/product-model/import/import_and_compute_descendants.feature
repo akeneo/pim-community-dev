@@ -16,6 +16,7 @@ Feature: Create product models through CSV import and update their descendants
       | filePath | %file to import% |
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully compute products' completenesses of the product models
     Given I am on the "tshirt-divided-navy-blue-m" product page
     And I visit the "Completeness" column tab
@@ -36,6 +37,7 @@ Feature: Create product models through CSV import and update their descendants
       | ecommerce | en_US  | success | 0              | 100%  |
       | ecommerce | fr_FR  | warning | 1              | 90%   |
 
+  # to remove, should be tested in the test above
   Scenario: Successfully compute products' indexation of the product models
     Given I am on the products grid
     And I show the filter "supplier"

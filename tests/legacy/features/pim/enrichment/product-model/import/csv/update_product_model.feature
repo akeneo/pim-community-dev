@@ -8,6 +8,7 @@ Feature: Update product models through CSV import
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Julia successfully updates an exiting root product model through CSV import
     Given the following root product model:
       | code     | parent | family_variant      | categories | collection | description-en_US-ecommerce | erp_name-en_US | price   | color | variation_name-en_US | composition |
@@ -27,6 +28,7 @@ Feature: Update product models through CSV import
       | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price     |
       | code-001 | master_men | clothing_color_size | [Spring2017] | A new description           | Blazers_1654   | 50.00 EUR |
 
+  @critical
   Scenario: Julia successfully updates an exiting product sub product model through CSV import
     Given the following root product model:
       | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
