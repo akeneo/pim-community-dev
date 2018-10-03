@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Event;
+namespace Akeneo\Pim\Structure\Bundle\Event;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>

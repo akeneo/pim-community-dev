@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Event;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Event;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
