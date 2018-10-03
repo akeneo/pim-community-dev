@@ -6,6 +6,7 @@ Feature: Create product models through CSV import
   Background:
     Given the "catalog_modeling" catalog configuration
 
+  @critical
   Scenario: Julia imports new root products models in CSV
     Given the following CSV file to import:
       """
@@ -17,6 +18,7 @@ Feature: Create product models through CSV import
       | code     | categories | family_variant     | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | code-001 | master_men | clothing_colorsize | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
 
+  @critical
   Scenario: Julia imports new products sub product models in CSV
     Given the following CSV file to import:
       """
