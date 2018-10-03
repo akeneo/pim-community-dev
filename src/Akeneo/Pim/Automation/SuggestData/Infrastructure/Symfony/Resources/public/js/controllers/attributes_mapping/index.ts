@@ -6,7 +6,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
 
 interface Families {
-  [index: string]: Object;
+  [index: string]: object;
 }
 
 /**
@@ -16,14 +16,14 @@ interface Families {
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class IndexAttributeMappingController extends BaseController {
-  public renderForm(): Object {
+  public renderForm(): object {
     return FetcherRegistry.getFetcher('family')
       .fetchAll()
       .then((families: Families) => {
         if (0 === Object.keys(families).length) {
           return $.Deferred().reject({
             status: 404,
-            statusText: __('akeneo_suggest_data.entity.attributes_mapping.module.index.error')
+            statusText: __('akeneo_suggest_data.entity.attributes_mapping.module.index.error'),
           });
         }
 
@@ -36,4 +36,4 @@ class IndexAttributeMappingController extends BaseController {
   }
 }
 
-export = IndexAttributeMappingController
+export = IndexAttributeMappingController;

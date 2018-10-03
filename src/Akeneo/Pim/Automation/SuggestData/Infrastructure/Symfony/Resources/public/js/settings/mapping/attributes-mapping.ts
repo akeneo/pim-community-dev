@@ -1,6 +1,6 @@
-import * as _ from 'underscore';
-import BaseForm = require('pimenrich/js/view/base');
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+import BaseForm = require('pimenrich/js/view/base');
+import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
@@ -8,14 +8,14 @@ const noDataTemplate = require('pim/template/common/no-data');
 
 interface NormalizedAttributeMappingInterface {
   mapping: {
-    [key: string] : {
+    [key: string]: {
       pim_ai_attribute: {
         label: string,
-        type: string
+        type: string,
       },
       attribute: string,
-      status: number
-    }
+      status: number,
+    },
   };
 }
 
@@ -26,8 +26,8 @@ interface AttributeMappingConfig {
     unmapped: string,
     pim_ai_attribute: string,
     catalog_attribute: string,
-    suggest_data: string
-  }
+    suggest_data: string,
+  };
 }
 
 /**
@@ -44,16 +44,16 @@ class AttributeMapping extends BaseForm {
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
   private static readonly VALID_MAPPING: { [key: string]: string[] } = {
-    'metric': [ 'pim_catalog_metric' ],
-    'select': [ 'pim_catalog_simpleselect' ],
-    'multiselect': [ 'pim_catalog_multiselect' ],
-    'number': [ 'pim_catalog_number' ],
-    'text': [ 'pim_catalog_text' ],
+    metric: [ 'pim_catalog_metric' ],
+    select: [ 'pim_catalog_simpleselect' ],
+    multiselect: [ 'pim_catalog_multiselect' ],
+    number: [ 'pim_catalog_number' ],
+    text: [ 'pim_catalog_text' ],
   };
 
-  readonly template = _.template(template);
-  readonly noDataTemplate = _.template(noDataTemplate);
-  readonly config: AttributeMappingConfig = {
+  private readonly template = _.template(template);
+  private readonly noDataTemplate = _.template(noDataTemplate);
+  private readonly config: AttributeMappingConfig = {
     labels: {
       pending: '',
       mapped: '',
@@ -61,7 +61,7 @@ class AttributeMapping extends BaseForm {
       pim_ai_attribute: '',
       catalog_attribute: '',
       suggest_data: '',
-    }
+    },
   };
 
   /**
@@ -76,9 +76,9 @@ class AttributeMapping extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  configure(): JQueryPromise<any> {
+  public configure(): JQueryPromise<any> {
     return $.when(
-      this.onExtensions('pim_datagrid:filter-front', this.filter.bind(this))
+      this.onExtensions('pim_datagrid:filter-front', this.filter.bind(this)),
     );
   }
 
@@ -104,14 +104,14 @@ class AttributeMapping extends BaseForm {
       __,
       imageClass: '',
       hint: __('pim_datagrid.no_results', {
-        entityHint: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute')
+        entityHint: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'),
       }),
       subHint: 'pim_datagrid.no_results_subtitle',
     }));
 
-    Object.keys(mapping).forEach((pim_ai_attribute_code) => {
+    Object.keys(mapping).forEach((pimAiAttributeCode) => {
       const $dom = this.$el.find(
-        '.attribute-selector[data-pim-ai-attribute-code="' + pim_ai_attribute_code + '"]'
+        '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]',
       );
       const attributeSelector = new SimpleSelectAttribute({
         config: {
@@ -122,12 +122,12 @@ class AttributeMapping extends BaseForm {
            *     pim_ai_attribute_code_2: { attribute: 'bar' ... }
            * } }
            */
-          fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
+          fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
           label: '',
           choiceRoute: 'pim_enrich_attribute_rest_index',
-          types: AttributeMapping.VALID_MAPPING[mapping[pim_ai_attribute_code].pim_ai_attribute.type],
+          types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
         },
-        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
+        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
       });
       attributeSelector.configure().then(() => {
         attributeSelector.setParent(this);
@@ -154,7 +154,7 @@ class AttributeMapping extends BaseForm {
     this.$el.find('.searchable-row').each((_i: number, row: any) => {
       const value = $(row).data(filter.field);
       let filteredByThisFilter = false;
-      switch(filter.type) {
+      switch (filter.type) {
         case 'equals': filteredByThisFilter = !this.filterEquals(filter.value, value); break;
         case 'search': filteredByThisFilter = !this.filterSearch(filter.value, value); break;
       }
@@ -215,4 +215,4 @@ class AttributeMapping extends BaseForm {
   }
 }
 
-export = AttributeMapping
+export = AttributeMapping;

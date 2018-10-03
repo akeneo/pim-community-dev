@@ -30,3 +30,14 @@ To apply the changes to your code, use the code beautifier provided by PHP Code 
 ```bash
 $ vendor/bin/phpcbf
 ```
+
+### TSLint
+
+The SuggestData bounded context contains a dedicated configuration file for `TSLint`.
+
+You can run it in dry mode (no modification of the code) with the following command, from the root of the PIM:
+```bash
+$ yarn tslint -c src/Akeneo/Pim/Automation/SuggestData/tests/front/tslint.json src/Akeneo/Pim/Automation/SuggestData/**/*.ts
+```
+
+To apply the changes to your code, add the `--fix` option to the previous command.

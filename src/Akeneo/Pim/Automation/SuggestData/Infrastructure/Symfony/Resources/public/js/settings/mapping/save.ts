@@ -13,7 +13,7 @@ interface MappingInterface {
  * @author Willy MESNAGE <willy.mesnage@akeneo.com>
  */
 class MappingSave extends BaseSave {
-  readonly updateFailureMessage: string = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.fail');
+  public readonly updateFailureMessage: string = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.fail');
   protected updateSuccessMessage: string = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.success');
   protected isFlash: boolean = true;
 
@@ -30,9 +30,9 @@ class MappingSave extends BaseSave {
             this.updateSuccessMessage = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.first');
             this.isFlash = false;
           }
-        }
+        },
       ),
-      BaseSave.prototype.configure.apply(this, arguments)
+      BaseSave.prototype.configure.apply(this, arguments),
     );
   }
 
@@ -67,7 +67,7 @@ class MappingSave extends BaseSave {
    */
   private isMappingEmpty(identifiersMapping: MappingInterface): boolean {
     const mappedAttributes = Object.keys(identifiersMapping).filter(
-      (franklinIdentifier: string) => null !== identifiersMapping[franklinIdentifier]
+      (franklinIdentifier: string) => null !== identifiersMapping[franklinIdentifier],
     );
 
     return $.isEmptyObject(mappedAttributes);
@@ -77,7 +77,7 @@ class MappingSave extends BaseSave {
    * When you clear data in select2 choice it puts an empty string instead of null.
    * This function put null instead of empty string in mapping values.
    *
-   * @param {Object} identifiersMapping
+   * @param {object} identifiersMapping
    *
    * @return {MappingInterface}
    */
@@ -90,4 +90,4 @@ class MappingSave extends BaseSave {
   }
 }
 
-export = MappingSave
+export = MappingSave;

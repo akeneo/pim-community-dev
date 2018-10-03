@@ -1,6 +1,6 @@
-import * as _ from 'underscore';
-import BaseView = require('pimenrich/js/view/base');
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+import BaseView = require('pimenrich/js/view/base');
+import * as _ from 'underscore';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
@@ -10,11 +10,12 @@ const template = require('pimee/template/settings/mapping/identifiers');
  * Maps pim.ai identifiers with akeneo attributes.
  *
  * The attribute types authorized for the identifiers mapping are defined in
- * Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
+ * UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class EditIdentifiersMappingView extends BaseView {
+
   private static readonly VALID_MAPPING: string[] = [
     'pim_catalog_identifier',
     'pim_catalog_number',
@@ -22,34 +23,48 @@ class EditIdentifiersMappingView extends BaseView {
     'pim_catalog_text',
   ];
 
-  private identifiersStatuses: { [key: string]: string } = {};
+  /**
+   * Returns the class for a row depending of the identifier mapping status
+   *
+   * @param {string} status
+   *
+   * @returns {string}
+   */
+  private static getRowClass(status: string): string {
+    if (status === 'active') {
+      return 'AknGrid-bodyRow--success';
+    }
 
-  readonly template = _.template(template);
-  readonly config: Object = {};
-  readonly headers = {
-    'identifiersLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.label'),
-    'attributeLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute'),
-    'suggestDataLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data'),
+    return '';
+  }
+
+  public readonly template = _.template(template);
+  public readonly config: object = {};
+  public readonly headers = {
+    identifiersLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.label'),
+    attributeLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute'),
+    suggestDataLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data'),
   };
+
+  private identifiersStatuses: { [key: string]: string } = {};
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Object }) {
+  constructor(options: { config: object }) {
     super({
       ...options, ...{
         className: 'AknGrid AknGrid--unclickable AknFormContainer--withPadding AknGrid--stretched',
-        tagName: 'table'
-      }
+        tagName: 'table',
+      },
     });
 
     this.config = {...this.config, ...options.config};
-  };
-
+  }
   /**
    * {@inheritdoc}
    */
-  configure(): JQueryPromise<any> {
+  public configure(): JQueryPromise<any> {
     return $.when(
       fetcherRegistry.getFetcher('identifiers-mapping')
         .fetchAll()
@@ -60,12 +75,11 @@ class EditIdentifiersMappingView extends BaseView {
           this.listenTo(
             this.getRoot(),
             'pim_enrich:form:entity:post_save',
-            this.triggerUpdateIdentifierStatuses.bind(this)
+            this.triggerUpdateIdentifierStatuses.bind(this),
           );
-        })
+        }),
     );
-  };
-
+  }
   /**
    * {@inheritdoc}
    */
@@ -77,7 +91,7 @@ class EditIdentifiersMappingView extends BaseView {
       identifiers: identifiersMapping,
       identifiersStatuses: this.identifiersStatuses,
       getRowClass: EditIdentifiersMappingView.getRowClass,
-      __
+      __,
     }));
 
     this.renderAttributeSelectors(identifiersMapping);
@@ -93,13 +107,13 @@ class EditIdentifiersMappingView extends BaseView {
   private renderAttributeSelectors(identifiersMapping: { [key: string]: string }): void {
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
       const attributeSelector = new SimpleSelectAttribute({
+        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
         config: {
+          choiceRoute: 'pim_enrich_attribute_rest_index',
           fieldName: pimAiAttributeCode,
           label: '',
-          choiceRoute: 'pim_enrich_attribute_rest_index',
           types: EditIdentifiersMappingView.VALID_MAPPING,
         },
-        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
       });
       attributeSelector.setParent(this);
 
@@ -129,21 +143,6 @@ class EditIdentifiersMappingView extends BaseView {
         ? this.identifiersStatuses[pimAiAttributeCode] = 'inactive'
         : this.identifiersStatuses[pimAiAttributeCode] = 'active';
     });
-  }
-
-  /**
-   * Returns the class for a row depending of the identifier mapping status
-   *
-   * @param {string} status
-   *
-   * @returns {string}
-   */
-  private static getRowClass(status: string): string {
-    if (status === 'active') {
-      return 'AknGrid-bodyRow--success';
-    }
-
-    return '';
   }
 }
 

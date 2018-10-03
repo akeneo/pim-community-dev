@@ -1,6 +1,6 @@
-import * as _ from "underscore";
+import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
-import {EventsHash} from "backbone";
+import * as _ from 'underscore';
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/status-filter');
 
@@ -12,20 +12,33 @@ const template = require('pimee/template/settings/mapping/status-filter');
  */
 
 interface Filter {
-  value: number|string,
-  label: string
+  value: number|string;
+  label: string;
 }
 
 class StatusFilter extends BaseForm {
-  readonly template = _.template(template);
+
+  /**
+   * Returns the available filters
+   *
+   * @returns {{value: number|string, label: string}[]}
+   */
+  private static getFilters(): Filter[] {
+    return [
+      { value: '', label: __('pim_common.all') },
+      { value: 0, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending') },
+      { value: 1, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped') },
+      { value: 2, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped') },
+    ];
+  }
+  public readonly template = _.template(template);
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Object }) {
+  constructor(options: { config: object }) {
     super({...options, ...{ className: 'AknDropdown AknFilterBox-filterContainer' }});
-  };
-
+  }
   /**
    * {@inheritdoc}
    */
@@ -42,7 +55,7 @@ class StatusFilter extends BaseForm {
     this.$el.html(this.template({
       label: __('pim_common.status'),
       currentValue: '',
-      filters: StatusFilter.getFilters()
+      filters: StatusFilter.getFilters(),
     }));
 
     return this;
@@ -54,33 +67,19 @@ class StatusFilter extends BaseForm {
    * @param {{currentTarget: any}} event
    */
   private filter(event: { currentTarget: any }): void {
-    const value = <string> $(event.currentTarget).data('value');
+    const value = $(event.currentTarget).data('value') as string;
     this.trigger('pim_datagrid:filter-front', {
       value,
       type: 'equals',
-      field: 'status'
+      field: 'status',
     });
 
     this.$el.find('.filter-criteria-hint').html(
-      (<Filter> StatusFilter.getFilters().find((filter: Filter) => {
+      (StatusFilter.getFilters().find((filter: Filter) => {
         return filter.value === value;
-      })).label
+      }) as Filter).label,
     );
-  }
-
-  /**
-   * Returns the available filters
-   *
-   * @returns {{value: number|string, label: string}[]}
-   */
-  private static getFilters(): Filter[] {
-    return [
-      { value: '', label: __('pim_common.all') },
-      { value: 0, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending') },
-      { value: 1, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped') },
-      { value: 2, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped') },
-    ]
   }
 }
 
-export = StatusFilter
+export = StatusFilter;
