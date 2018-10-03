@@ -105,18 +105,16 @@ class PimAI implements DataProviderInterface
         }
 
         $product = $request->getProduct();
-        $productId = $product->getId();
         $mapped = $request->getMappedValues($identifiersMapping);
         if (empty($mapped)) {
             throw new ProductSubscriptionException(
-                // Shouldn't we send the product identifier instead of id ? Could be more relevant.
-                sprintf('No mapped values for product with id "%s"', $productId)
+                sprintf('No mapped values for product with id "%s"', (string) $product->getIdentifier())
             );
         }
 
         $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
         try {
-            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $productId, $familyInfos);
+            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $product->getId(), $familyInfos);
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }

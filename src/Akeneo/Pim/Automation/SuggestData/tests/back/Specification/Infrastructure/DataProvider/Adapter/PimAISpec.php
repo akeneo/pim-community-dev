@@ -100,10 +100,11 @@ class PimAISpec extends ObjectBehavior
         $eanValue->hasData()->willReturn(false);
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn(123456);
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
-        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product with id "42"'))
+        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product with id "123456"'))
              ->during('subscribe', [$productSubscriptionRequest]);
     }
 
