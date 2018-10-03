@@ -16,11 +16,11 @@
     <% Object.keys(mapping).forEach((pim_ai_attribute_option_code) => { %>
     <tr
             class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row"
-            data-pim_ai_attribute="<%- mapping[pim_ai_attribute_option_code].pim_ai_attribute_code.label %>"
+            data-pim_ai_attribute_code="<%- mapping[pim_ai_attribute_option_code].pim_ai_attribute_code.label %>"
             data-status="<%- mapping[pim_ai_attribute_option_code].status %>"
     >
         <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
-            <%- mapping[pim_ai_attribute_option_code].pim_ai_attribute.label %>
+            <%- mapping[pim_ai_attribute_option_code].pim_ai_attribute_code.label %>
         </td>
         <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute-code="<%- pim_ai_attribute_option_code %>"></td>
         <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">

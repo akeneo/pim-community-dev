@@ -1,7 +1,14 @@
 extensions:
     pimee-suggest-data-settings-attribute-options-mapping-edit:
         module: pimee/settings/mapping/attribute-options-mapping
-        config: {}
+        config:
+            labels:
+                pending: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending
+                mapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped
+                unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
+                pim_ai_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.pim_ai_attribute_option
+                catalog_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.catalog_attribute_option
+                suggest_data: akeneo_suggest_data.entity.attribute_options_mapping.fields.status
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-description-header:
         module: pim/common/simple-view

@@ -25,6 +25,16 @@ class AttributeOptionsMappingController
      */
     public function getAction(): JsonResponse
     {
-        return new JsonResponse([]);
+        return new JsonResponse([
+            'mapping' => [
+                'color_1' => [
+                    'pim_ai_attribute_code' => [
+                        'label' => 'Color 1',
+                    ],
+                    'attribute_option' => null,
+                    'status' => 0
+                ]
+            ]
+        ]);
     }
 }

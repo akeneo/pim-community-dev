@@ -6,6 +6,15 @@ const FetcherRegistry = require('pim/fetcher-registry');
 const template = require('pimee/template/settings/mapping/attribute-options-mapping');
 
 interface NormalizedAttributeOptionsMapping {
+  mapping: {
+    [pim_ai_attribute_option_code: string] : {
+      pim_ai_attribute_code: {
+        label: string
+      },
+      attribute_option: string,
+      status: number,
+    }
+  }
 
 }
 
@@ -44,7 +53,7 @@ class AttributeOptionsMapping extends BaseForm {
       suggest_data: '', // TODO Rename to attribute_option_code_mapping
     }
   };
-  private mapping: NormalizedAttributeOptionsMapping | null = null;
+  private attributeOptionsMapping: NormalizedAttributeOptionsMapping | undefined = undefined;
 
   /**
    * {@inheritdoc}
@@ -59,23 +68,14 @@ class AttributeOptionsMapping extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    if (this.mapping === null) {
-      this.mapping = this.fetchMapping();
+    if (this.attributeOptionsMapping === undefined) {
+      this.fetchMapping().then((attributeOptionsMapping: NormalizedAttributeOptionsMapping) => {
+        this.attributeOptionsMapping = attributeOptionsMapping;
+        this.innerRender();
+      });
+    } else {
+      this.innerRender();
     }
-    this.$el.html(this.template({
-      title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
-        familyLabel: this.familyLabel,
-        pimAiAttributeLabel: this.pimAiAttributeLabel,
-      }),
-      mapping: {},
-      pim_ai_attribute_option: __(this.config.labels.pim_ai_attribute_option),
-      catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
-      suggest_data: __(this.config.labels.suggest_data),
-      statuses: this.getMappingStatuses(),
-    }));
-
-    this.renderExtensions();
-
     return this;
   }
 
@@ -115,15 +115,31 @@ class AttributeOptionsMapping extends BaseForm {
     return statuses;
   }
 
-  private fetchMapping(): NormalizedAttributeOptionsMapping {
-    FetcherRegistry
-      .getFetcher('attribute-options-mapping')
-      .fetch(this.familyCode, {attributeCode: this.pimAttributeCode})
-      .then((toto: any) => {
-        console.log(toto);
-      });
+  private fetchMapping(): JQuery.Promise<any> {
+    return $.when(
+      FetcherRegistry
+        .getFetcher('attribute-options-mapping')
+        .fetch(this.familyCode, {attributeCode: this.pimAttributeCode})
+        .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
+          return attributeOptionMapping;
+        })
+    );
+  }
 
-    return {};
+  private innerRender() {
+    this.$el.html(this.template({
+      title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
+        familyLabel: this.familyLabel,
+        pimAiAttributeLabel: this.pimAiAttributeLabel,
+      }),
+      mapping: (<NormalizedAttributeOptionsMapping> this.attributeOptionsMapping).mapping,
+      pim_ai_attribute_option: __(this.config.labels.pim_ai_attribute_option),
+      catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
+      suggest_data: __(this.config.labels.suggest_data),
+      statuses: this.getMappingStatuses(),
+    }));
+
+    this.renderExtensions();
   }
 }
 
