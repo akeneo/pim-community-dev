@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
+use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchIndexHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -29,12 +30,17 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     /** @var KernelInterface */
     protected $testKernel;
 
+    /** @var SearchIndexHelper */
+    protected $searchIndexHelper;
+
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->bootTestKernel();
+        $this->searchIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
+        $this->searchIndexHelper->resetIndex();
     }
 
     protected function bootTestKernel(): void

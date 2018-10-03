@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch;
 
-use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchIndexHelper;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -18,14 +17,10 @@ use PHPUnit\Framework\Assert;
  */
 class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
 {
-    /** @var SearchIndexHelper */
-    private $searchIndexHelper;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->searchIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
         $this->loadDataset();
     }
 
@@ -52,7 +47,7 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function part_of_a_word_search()
+    public function partial_match_search()
     {
         $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['play']);
         sort($matchingIdentifiers);
@@ -62,7 +57,7 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function exact_word_search()
+    public function exact_matching_search()
     {
         $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['display']);
         sort($matchingIdentifiers);
@@ -139,17 +134,17 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
         $kartellDescriptionEnUs = 'Kartell - The Culture of Plastics’’… In just over 50 years, this famous Italian company has revolutionised plastic, elevating it and propelling it into the refined world of luxury. Today, Kartell has more than a hundred showrooms all over the world and a good number of its creations have become cult pieces on display in the most prestigious museums. The famous Kartell Louis Ghost armchair has the most sales for armchairs in the world, with 1.5 million sales! Challenging the material, constantly researching new tactile, visual and aesthetic effects - Kartell faces every challenge! With more than 60 years of experience in dealing with plastic, the brand has a unique know-how and an unquenchable thirst for innovation. Kartellharnesses technological progress: notably, we owe them for the first totally transparent plastic chair, injection moulds, laser welding and more!';
         $kartellDesigner = 'Philippe Starck';
         $kartell = [
-            'reference_entity_identifier' => 'brand',
+            'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_kartell',
             'record_list_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
         ];
 
         // Those properties are not indexed
-        $alessiCode = 'kartell';
+        $alessiCode = 'alessi';
         $alessiDescriptionEnUs = 'Alessi is truly a "dream factory"! This famous Italian brand has been enhancing our daily lives for more than 80 years thanks to its beautiful and functional items which are designed by leading architects and designers. At Alessi, design has been a family affair since 1921. Initially focusing on coffee services and trays, Alessi acquired international popularity during the 1950s through working with renowned architects and designers such as Ettore Sottsass.';
         $alessiDesigner = 'Marcel Wanders';
         $alessi = [
-            'reference_entity_identifier' => 'brand',
+            'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_alessi',
             'record_list_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
         ];
@@ -163,15 +158,15 @@ B&O PLAY delivers stand-alone products with clear and simple operations - portab
 TEXT;
         $bangolufsenDesigner = 'Cecilie Manz';
         $bangolufsen = [
-            'reference_entity_identifier' => 'brand',
-            'identifier'                  => 'brand_bangolufsen',
-            'record_list_search'          => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
+            'reference_entity_code' => 'brand',
+            'identifier'            => 'brand_bangolufsen',
+            'record_list_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
         ];
 
         $wrongEnrichedEntity = [
-            'identifier'                  => 'another_reference_entity',
-            'reference_entity_identifier' => 'manufacturer',
-            'record_list_search'          => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
+            'identifier'            => 'another_reference_entity',
+            'reference_entity_code' => 'manufacturer',
+            'record_list_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
         ];
         $this->searchIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongEnrichedEntity]);
     }

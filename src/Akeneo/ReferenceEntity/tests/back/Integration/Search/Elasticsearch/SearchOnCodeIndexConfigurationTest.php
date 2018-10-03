@@ -17,14 +17,10 @@ use PHPUnit\Framework\Assert;
  */
 class SearchOnCodeIndexConfigurationTest extends SearchIntegrationTestCase
 {
-    /** @var SearchIndexHelper */
-    private $searchIndexHelper;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->searchIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
         $this->loadFixtures();
     }
 
@@ -61,17 +57,17 @@ class SearchOnCodeIndexConfigurationTest extends SearchIntegrationTestCase
 
         $rightCode = [
             'identifier'                  => 'designer_stark',
-            'reference_entity_identifier' => 'designer',
+            'reference_entity_code' => 'designer',
             'record_list_search'          => ['ecommerce' => ['fr_FR' => 'stark']] // Lets say the labels are empty
         ];
         $wrongCode = [
             'identifier'                  => 'designer_coco',
-            'reference_entity_identifier' => 'designer',
+            'reference_entity_code' => 'designer',
             'record_list_search'          => ['ecommerce' => ['fr_FR' => 'coco']],
         ];
         $wrongEnrichedEntity = [
             'identifier'                  => 'manufacturer_stark',
-            'reference_entity_identifier' => 'manufacturer',
+            'reference_entity_code' => 'manufacturer',
             'record_list_search'          => ['ecommerce' => ['fr_FR' => 'stark']],
         ];
         $this->searchIndexHelper->index([$rightCode, $wrongCode, $wrongEnrichedEntity]);

@@ -18,14 +18,10 @@ use PHPUnit\Framework\Assert;
  */
 class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCase
 {
-    /** @var SearchIndexHelper */
-    private $searchIndexHelper;
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->searchIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
         $this->loadFixtures();
     }
 
@@ -114,9 +110,8 @@ class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCa
 
     private function loadFixtures()
     {
-        $this->searchIndexHelper->resetIndex();
         $shoe = [
-            'reference_entity_identifier' => 'brand',
+            'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_shoes',
             'record_list_search'          => [
                 'ecommerce' => [
@@ -128,7 +123,7 @@ class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCa
             ],
         ];
         $tea = [
-            'reference_entity_identifier' => 'brand',
+            'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_teas',
             'record_list_search'          => [
                 'ecommerce' => [
@@ -140,7 +135,7 @@ class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCa
         ];
         $wrongEnrichedEntity = [
             'identifier' => 'manufacturer_coco',
-            'reference_entity_identifier' => 'manufacturer',
+            'reference_entity_code' => 'manufacturer',
             'record_list_search' => [
                 'ecommerce' => [
                     'fr_FR' => 'stark Designer supérieure',

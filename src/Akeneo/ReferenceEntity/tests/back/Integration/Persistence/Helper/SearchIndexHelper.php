@@ -42,7 +42,7 @@ class SearchIndexHelper
     {
         foreach ($records as $record) {
             if (!array_key_exists('identifier', $record)) {
-                throw new \InvalidArgumentException('Expect to index record with a "code" property. None found.');
+                throw new \InvalidArgumentException('Expect to index record with a "identifier" property. None found.');
             }
 
             $this->recordClient->index(self::INDEX_TYPE, $record['identifier'], $record);
@@ -83,7 +83,7 @@ class SearchIndexHelper
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_identifier' => $referenceEntityCode,
+                                        'reference_entity_code' => $referenceEntityCode,
                                     ],
                                 ],
                             ],

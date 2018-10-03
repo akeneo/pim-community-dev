@@ -3,7 +3,7 @@ mappings:
         properties:
             identifier:
                 type: 'keyword'
-            reference_entity_identifier:
+            reference_entity_code:
                 type: 'keyword'
         dynamic_templates:
             -
