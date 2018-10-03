@@ -927,4 +927,11 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Cont
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\JobInstanceController/Akeneo\\Platform\\Bundle\\ImportExportBundle\\Controller\\InternalApi\\JobInstanceController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\JobTrackerController/Akeneo\\Platform\\Bundle\\ImportExportBundle\\Controller\\Ui\\JobTrackerController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\FormExtensionController/Akeneo\\Platform\\Bundle\\UIBundle\\Controller\\InternalApi\\FormExtensionController/g'
-
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\LocaleExtension/Akeneo\Channel\Bundle\Twig\LocaleExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\CategoryExtension/Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\CategoryExtension/Akeneo\Pim\Structure\Bundle\Twig\CategoryExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension/Akeneo\Platform\Bundle\UIBundle\Twig\ObjectClassExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\TranslationsExtension/Akeneo\Platform\Bundle\UIBundle\Twig\TranslationsExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\VersionExtension/Akeneo\Platform\Bundle\UIBundle\Twig\VersionExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Twig\ViewElementExtension/Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Exception\MissingOptionException/Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException/g'

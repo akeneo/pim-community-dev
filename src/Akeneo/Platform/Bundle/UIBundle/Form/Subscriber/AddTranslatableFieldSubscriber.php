@@ -238,7 +238,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param string $name
      *
-     * @throws \Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException
+     * @throws MissingOptionException
      *
      * @return mixed
      */
