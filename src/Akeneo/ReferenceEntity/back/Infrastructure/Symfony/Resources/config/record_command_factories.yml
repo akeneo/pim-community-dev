@@ -18,3 +18,8 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_record_value_command_factory }
+
+    akeneo_referenceentity.application.factory.record.edit_empty_value_command_factory:
+            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditEmptyValueCommandFactory
+            tags:
+                - { name: akeneo_referenceentity.edit_record_value_command_factory }

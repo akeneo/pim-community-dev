@@ -69,6 +69,11 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValu
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditFileValueCommand: ~
 
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditEmptyValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditEmptyValueCommand: ~
+
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
         - CreateTextAttributeCommand
