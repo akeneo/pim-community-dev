@@ -62,8 +62,10 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->current()->shouldReturn(null);
     }
 
-    public function it_is_able_to_get_next_page(SubscriptionWebservice $webservice, SubscriptionsCollection $nextPage): void
-    {
+    public function it_is_able_to_get_next_page(
+        SubscriptionWebservice $webservice,
+        SubscriptionsCollection $nextPage
+    ): void {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
         $webservice->fetchProducts('/next/uri')->willReturn($nextPage)->shouldBeCalled();

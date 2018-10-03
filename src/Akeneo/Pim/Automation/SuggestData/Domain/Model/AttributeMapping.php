@@ -46,11 +46,16 @@ class AttributeMapping
      * @param string $targetAttributeCode
      * @param null|string $targetAttributeLabel
      * @param null|string $pimAttributeCode
-     * @param string $status
+     * @param int $status
      * @param string $type
      */
-    public function __construct(string $targetAttributeCode, ?string $targetAttributeLabel, ?string $pimAttributeCode, int $status, string $type)
-    {
+    public function __construct(
+        string $targetAttributeCode,
+        ?string $targetAttributeLabel,
+        ?string $pimAttributeCode,
+        int $status,
+        string $type
+    ) {
         $this->targetAttributeCode = $targetAttributeCode;
         $this->targetAttributeLabel = $targetAttributeLabel;
         $this->pimAttributeCode = $pimAttributeCode;

@@ -105,7 +105,8 @@ class UpdateAttributesMappingByFamilyHandler
         AttributeMapping $attributeMapping,
         AttributeInterface $pimAttribute
     ): void {
-        if (AttributeMapping::ATTRIBUTE_TYPES_MAPPING[$attributeMapping->getTargetAttributeType()] !== $pimAttribute->getType()) {
+        $expectedAttributeType = AttributeMapping::ATTRIBUTE_TYPES_MAPPING[$attributeMapping->getTargetAttributeType()];
+        if ($pimAttribute->getType() !== $expectedAttributeType) {
             throw AttributeMappingException::incompatibleAttributeTypeMapping(
                 $attributeMapping->getTargetAttributeType(),
                 $pimAttribute->getType()

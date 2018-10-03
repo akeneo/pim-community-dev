@@ -29,8 +29,9 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AttributesMappingNormalizer::class);
     }
 
-    public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(DomainAttributeMapping $attributeMapping): void
-    {
+    public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(
+        DomainAttributeMapping $attributeMapping
+    ): void {
         $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
         $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_UNMAPPED);
         $attributeMapping->getAttribute()->willReturn(null);

@@ -77,7 +77,9 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
         }
 
         $families = array_filter($families, function (Family $family) use ($search) {
-            if ($this->stringContains($family->getCode(), $search) || $this->stringContains($family->getLabel(), $search)) {
+            if ($this->stringContains($family->getCode(), $search)
+                || $this->stringContains($family->getLabel(), $search)
+            ) {
                 return true;
             }
 

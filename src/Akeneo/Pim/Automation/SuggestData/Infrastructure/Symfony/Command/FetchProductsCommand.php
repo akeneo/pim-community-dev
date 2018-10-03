@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand as AppFetchProductsCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand
+    as AppFetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

@@ -24,8 +24,10 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $this->shouldHaveType(SubscriptionsCursor::class);
     }
 
-    public function it_returns_the_current_value_as_a_response_if_it_has_one($currentPage, Subscription $subscription): void
-    {
+    public function it_returns_the_current_value_as_a_response_if_it_has_one(
+        $currentPage,
+        Subscription $subscription
+    ): void {
         $currentPage->current()->willReturn($subscription);
         $subscription->getTrackerId()->willReturn(42);
         $subscription->getSubscriptionId()->willReturn('id-42');
@@ -62,8 +64,10 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $this->key()->shouldReturn(1);
     }
 
-    public function it_loads_the_next_page_if_current_index_is_not_valid($currentPage, SubscriptionsCollection $nextPage): void
-    {
+    public function it_loads_the_next_page_if_current_index_is_not_valid(
+        $currentPage,
+        SubscriptionsCollection $nextPage
+    ): void {
         $currentPage->next()->shouldBeCalled();
         $currentPage->valid()->willReturn(false);
         $currentPage->hasNextPage()->willReturn(true);

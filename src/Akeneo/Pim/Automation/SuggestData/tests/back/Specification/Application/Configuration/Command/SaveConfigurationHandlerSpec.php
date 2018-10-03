@@ -39,8 +39,11 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SaveConfigurationHandler::class);
     }
 
-    public function it_updates_an_existing_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository): void
-    {
+    public function it_updates_an_existing_configuration(
+        DataProviderInterface $dataProvider,
+        $dataProviderFactory,
+        $repository
+    ): void {
         $command = new SaveConfigurationCommand(['token' => 'bar']);
         $configuration = new Configuration(['token' => 'bar']);
 
@@ -53,8 +56,11 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_saves_a_new_connector_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository): void
-    {
+    public function it_saves_a_new_connector_configuration(
+        DataProviderInterface $dataProvider,
+        $dataProviderFactory,
+        $repository
+    ): void {
         $command = new SaveConfigurationCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
@@ -66,8 +72,10 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_throws_an_exception_if_configuration_is_invalid(DataProviderInterface $dataProvider, $dataProviderFactory): void
-    {
+    public function it_throws_an_exception_if_configuration_is_invalid(
+        DataProviderInterface $dataProvider,
+        $dataProviderFactory
+    ): void {
         $command = new SaveConfigurationCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);

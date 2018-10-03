@@ -31,7 +31,13 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
     public function it_normalizes_attributes_mapping(): void
     {
         $attributesMapping = new AttributesMappingResponse();
-        $attributesMapping->addAttribute(new AttributeMapping('product_weight', 'Product Weight', null, AttributeMapping::ATTRIBUTE_PENDING, 'metric'));
+        $attributesMapping->addAttribute(new AttributeMapping(
+            'product_weight',
+            'Product Weight',
+            null,
+            AttributeMapping::ATTRIBUTE_PENDING,
+            'metric'
+        ));
 
         $expectedMapping = [
             'product_weight' => [
