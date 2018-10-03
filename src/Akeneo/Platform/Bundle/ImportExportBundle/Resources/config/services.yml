@@ -1,9 +1,6 @@
-parameters:
-    pim_enrich.factory.mass_edit_notification.class: Pim\Bundle\EnrichBundle\Factory\MassEditNotificationFactory
-
 services:
     pim_enrich.factory.mass_edit_notification:
-        class: '%pim_enrich.factory.mass_edit_notification.class%'
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Factory\MassEditNotificationFactory'
         arguments:
             - ['quick_export', 'mass_edit', 'mass_delete']
             - '%pim_notification.entity.notification.class%'

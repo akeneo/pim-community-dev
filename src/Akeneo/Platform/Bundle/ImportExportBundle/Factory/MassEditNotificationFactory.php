@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Factory;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Factory;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;

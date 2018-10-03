@@ -43,7 +43,6 @@ class PimEnrichExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');
-        $loader->load('factories.yml');
         $loader->load('files.yml');
         $loader->load('filters.yml');
         $loader->load('forms.yml');
