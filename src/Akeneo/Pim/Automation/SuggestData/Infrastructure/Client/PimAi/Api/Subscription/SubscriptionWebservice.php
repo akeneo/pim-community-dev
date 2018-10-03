@@ -69,7 +69,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
 
             return new ApiResponse($response->getStatusCode(), new SubscriptionCollection($content));
         } catch (ServerException | PimAiServerException $e) {
-            throw new PimAiServerException(sprintf('Something went wrong on PIM.ai side during product subscription: %s', $e->getMessage()));
+            throw new PimAiServerException(sprintf(
+                'Something went wrong on PIM.ai side during product subscription: %s',
+                $e->getMessage()
+            ));
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
                 throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
@@ -78,7 +81,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
                 throw new InvalidTokenException('The PIM.ai token is missing or invalid');
             }
 
-            throw new BadRequestException(sprintf('Something went wrong during product subscription: ', $e->getMessage()));
+            throw new BadRequestException(sprintf(
+                'Something went wrong during product subscription: ',
+                $e->getMessage()
+            ));
         }
     }
 

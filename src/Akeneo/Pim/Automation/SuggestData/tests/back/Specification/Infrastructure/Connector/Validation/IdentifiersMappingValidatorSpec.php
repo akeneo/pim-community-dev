@@ -49,8 +49,10 @@ class IdentifiersMappingValidatorSpec extends ObjectBehavior
              ->during('validate', [Argument::any()]);
     }
 
-    public function it_does_nothing_if_identifiers_mapping_is_valid($identifiersMappingRepo, AttributeInterface $asin): void
-    {
+    public function it_does_nothing_if_identifiers_mapping_is_valid(
+        $identifiersMappingRepo,
+        AttributeInterface $asin
+    ): void {
         $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping(['asin' => $asin]));
         $this->validate(Argument::any())->shouldReturn(null);
     }

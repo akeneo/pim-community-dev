@@ -82,7 +82,9 @@ class SubscriptionCollection implements \Countable
      */
     private function validateResponseFormat(array $rawApiResponse): void
     {
-        if (!isset($rawApiResponse['_embedded']['subscription']) || !is_array($rawApiResponse['_embedded']['subscription'])) {
+        if (!isset($rawApiResponse['_embedded']['subscription'])
+            || !is_array($rawApiResponse['_embedded']['subscription'])
+        ) {
             throw new \InvalidArgumentException('Missing "_embeded" and/or "subscription" keys in API response');
         }
     }

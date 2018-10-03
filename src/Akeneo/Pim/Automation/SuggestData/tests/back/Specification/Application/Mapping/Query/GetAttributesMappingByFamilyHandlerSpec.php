@@ -50,8 +50,11 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$query]);
     }
 
-    public function it_handles_a_get_attributes_mapping_query(FamilyInterface $family, $familyRepository, $dataProvider): void
-    {
+    public function it_handles_a_get_attributes_mapping_query(
+        FamilyInterface $family,
+        $familyRepository,
+        $dataProvider
+    ): void {
         $attributesMappingResponse = new AttributesMappingResponse();
 
         $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);

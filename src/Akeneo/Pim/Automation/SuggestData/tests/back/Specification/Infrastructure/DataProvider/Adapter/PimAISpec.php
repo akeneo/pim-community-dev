@@ -293,8 +293,9 @@ class PimAISpec extends ObjectBehavior
         $cursor->shouldBeAnInstanceOf(SubscriptionsCursor::class);
     }
 
-    public function it_throws_product_subscription_exception_if_something_went_wrong_during_fetch($subscriptionApi): void
-    {
+    public function it_throws_product_subscription_exception_if_something_went_wrong_during_fetch(
+        $subscriptionApi
+    ): void {
         $clientException = new ClientException('An exception message');
         $subscriptionApi->fetchProducts()->willThrow($clientException);
 
