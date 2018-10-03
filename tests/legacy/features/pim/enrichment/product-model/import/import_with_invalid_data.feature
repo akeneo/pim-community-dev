@@ -102,6 +102,7 @@ Feature: Skip invalid product models through CSV
       code-002;code-001;clothing_colorsize;master_men;Spring2017;A description for 002;Blazers_1654;50 EUR;;;;;;;
       """
 
+  @critical
   Scenario: The variant axis values of a product model are immutable
     Given the following root product model:
       | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
