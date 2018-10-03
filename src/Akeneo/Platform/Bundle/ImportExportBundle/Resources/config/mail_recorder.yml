@@ -1,9 +1,6 @@
-parameters:
-    pim_enrich.mailer.mail_recorder.class: Pim\Bundle\EnrichBundle\Mailer\MailRecorder
-
 services:
     pim_enrich.mailer.mail_recorder:
-        class: '%pim_enrich.mailer.mail_recorder.class%'
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Test\MailRecorder'
         arguments:
             - '%kernel.cache_dir%/mailer_mail_store.meta'
         tags:

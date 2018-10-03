@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Mailer;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Test;
 
 /**
  * Mail recorder for test purpose
