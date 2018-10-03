@@ -62,7 +62,7 @@ class ChannelNormalizer implements NormalizerInterface
     {
         $normalizedChannel = $this->channelNormalizer->normalize($channel, 'standard', $context);
 
-        $normalizedChannel['locales'] = $this->normalizeLocales($channel->getLocales(), isset($context['filter_locales']) ? $context['filter_locales'] : true);
+        $normalizedChannel['locales'] = $this->normalizeLocales($channel->getLocales(), $context['filter_locales'] ?? true);
 
         $firstVersion = $this->versionManager->getOldestLogEntry($channel);
         $lastVersion = $this->versionManager->getNewestLogEntry($channel);

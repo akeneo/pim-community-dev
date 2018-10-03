@@ -11,8 +11,8 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          */
         initialize: function (options) {
             this.entityListPromise = null;
-            this.entityPromises    = {};
-            this.options           = options || {};
+            this.entityPromises = {};
+            this.options = options || {};
         },
 
         /**
@@ -116,7 +116,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             return $.when(
                 this.getJSON(
                     this.options.urls.list,
-                    _.extend({ identifiers: uncachedIdentifiers.join(',') }, options)
+                    _.extend({identifiers: uncachedIdentifiers.join(',')}, options)
                 ).then(_.identity),
                 this.getIdentifierField()
             ).then(function (entities, identifierCode) {
@@ -159,7 +159,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                 delete this.entityPromises[identifier];
             } else {
                 this.entityListPromise = null;
-                this.entityPromises    = {};
+                this.entityPromises = {};
             }
         },
 
