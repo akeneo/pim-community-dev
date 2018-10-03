@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Component\tests\Integration\Normalizer\Versionning;
+namespace Akeneo\Pim\Structure\Component\tests\Integration\Normalizer\Versioning;
 
 use Akeneo\Test\Integration\TestCase;
 

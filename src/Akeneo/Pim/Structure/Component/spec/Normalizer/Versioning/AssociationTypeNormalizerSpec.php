@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
-use Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Versioning\AssociationTypeNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;

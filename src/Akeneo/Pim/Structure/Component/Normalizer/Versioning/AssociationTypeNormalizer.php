@@ -1,21 +1,19 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Component\Normalizer\Versionning;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Flat attribute group normalizer
+ * Flat association type normalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupNormalizer implements NormalizerInterface
+class AssociationTypeNormalizer implements NormalizerInterface
 {
-    const ITEM_SEPARATOR = ',';
-
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
@@ -40,25 +38,23 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param AttributeGroupInterface $attributeGroup
+     * @param AssociationTypeInterface $associationType
      *
      * @return array
      */
-    public function normalize($attributeGroup, $format = null, array $context = [])
+    public function normalize($associationType, $format = null, array $context = [])
     {
-        $standardAttributeGroup = $this->standardNormalizer->normalize($attributeGroup, 'standard', $context);
-        $flatAttributeGroup = $standardAttributeGroup;
+        $standardAssociationType = $this->standardNormalizer->normalize($associationType, 'standard', $context);
+        $flatAssociationType = $standardAssociationType;
 
-        $flatAttributeGroup['attributes'] = implode(self::ITEM_SEPARATOR, $standardAttributeGroup['attributes']);
-
-        unset($flatAttributeGroup['labels']);
-        $flatAttributeGroup += $this->translationNormalizer->normalize(
-            $standardAttributeGroup['labels'],
+        unset($flatAssociationType['labels']);
+        $flatAssociationType += $this->translationNormalizer->normalize(
+            $standardAssociationType['labels'],
             'flat',
             $context
         );
 
-        return $flatAttributeGroup;
+        return $flatAssociationType;
     }
 
     /**
@@ -66,6 +62,6 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof AssociationTypeInterface && in_array($format, $this->supportedFormats);
     }
 }

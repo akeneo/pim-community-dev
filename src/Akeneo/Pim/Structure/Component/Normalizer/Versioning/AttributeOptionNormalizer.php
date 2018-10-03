@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Component\Normalizer\Versionning;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer as BaseNormalizer;

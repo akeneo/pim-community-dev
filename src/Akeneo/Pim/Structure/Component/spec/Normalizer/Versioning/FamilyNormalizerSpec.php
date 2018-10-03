@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versioning;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Versioning\FamilyNormalizer;
 use Prophecy\Argument;
 
 class FamilyNormalizerSpec extends ObjectBehavior
