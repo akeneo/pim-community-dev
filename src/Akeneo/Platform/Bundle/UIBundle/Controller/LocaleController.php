@@ -1,9 +1,8 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\Controller\Rest;
+namespace Akeneo\Platform\Bundle\UIBundle\Controller;
 
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
-use Pim\Bundle\LocalizationBundle\Controller\NormalizeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -19,7 +18,7 @@ class LocaleController
     /** @var LocaleProviderInterface */
     protected $localeProvider;
 
-    /** @var NormalizeInterface */
+    /** @var NormalizerInterface */
     protected $normalizer;
 
     /**

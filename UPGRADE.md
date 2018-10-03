@@ -56,7 +56,7 @@ Several classes and services have been moved or renamed. The following commands 
 ```bash
 
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\LocalizationBundle\\Controller\\FormatController/Oro\\Bundle\\ConfigBundle\\Controller\\Rest\\FormatController/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\LocalizationBundle\\Controller\\LocaleController/Oro\\Bundle\\ConfigBundle\\Controller\\Rest\\LocaleController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\LocalizationBundle\\Controller\\LocaleController/Akeneo\\Platform\\Bundle\\UIBundle\\Controller\\LocaleController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\LocalizationBundle\\Provider\\UiLocaleProvider/Akeneo\\Platform\\Bundle\\UIBundle\\UiLocaleProvider/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\LocalizationBundle\\Form\\Type\\LocaleType/Akeneo\\Platform\\Bundle\\UIBundle\\Form\\Type\\LocaleType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\LocalizationBundle\\Twig\\AttributeExtension/Akeneo\\Platform\\Bundle\\UIBundle\\Twig\\AttributeExtension/g'

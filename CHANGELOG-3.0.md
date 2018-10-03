@@ -17,7 +17,7 @@
 ## BC breaks
 
 - Move `Pim\Bundle\LocalizationBundle\Controller\FormatController` to `Oro\Bundle\ConfigBundle\Controller\Rest\FormatController`
-- Move `Pim\Bundle\LocalizationBundle\Controller\LocaleController` to `Oro\Bundle\ConfigBundle\Controller\Rest\LocaleController`
+- Move `Pim\Bundle\LocalizationBundle\Controller\LocaleController` to `Akeneo\Platform\Bundle\UIBundle\Controller\LocaleController`
 - Move `Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider` to `Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider`
 - Move `Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\NumberLocalizerTransformer`
 - Move `Pim\Bundle\LocalizationBundle\Form\Type\LocaleType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType`
