@@ -19,7 +19,7 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  public renderForm() {
+  public renderForm(): object {
     return isConnectionActivated()
       .then((connectionIsActivated) => {
         const entity = this.options.config.entity;
@@ -27,6 +27,7 @@ class MappingController extends BaseController {
         if (connectionIsActivated) {
           formToBuild = 'pimee-' + entity + '-index';
         }
+
         return FormBuilder
           .build(formToBuild)
           .then((form: any) => {
@@ -34,6 +35,7 @@ class MappingController extends BaseController {
               form.trigger('pim_enrich:form:can-leave', event);
             });
             form.setElement(this.$el).render();
+
             return form;
           });
       });

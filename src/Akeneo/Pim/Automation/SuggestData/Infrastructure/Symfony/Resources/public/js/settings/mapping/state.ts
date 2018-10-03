@@ -22,7 +22,7 @@ class State extends BaseState {
    *
    * @returns any
    */
-  public emptyToNullValues(object: any): any {
+  private emptyToNullValues(object: any): any {
     return Object.keys(object).reduce((accumulator: any, identifier: string) => {
       accumulator[identifier] = object[identifier] === '' ? null : object[identifier];
 

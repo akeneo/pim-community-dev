@@ -23,9 +23,9 @@ interface Configuration {
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class SubscriptionStatusSwitcher extends BaseView {
-  public readonly template: any = _.template(template);
-  public readonly config: Configuration;
   protected currentStatus: boolean;
+  private readonly template: any = _.template(template);
+  private readonly config: Configuration;
 
   /**
    * {@inheritdoc}
@@ -48,7 +48,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   /**
    * {@inheritdoc}
    */
-  public render() {
+  public render(): BaseView {
     const productId = this.getFormData().meta.id;
 
     getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatusInterface) => {

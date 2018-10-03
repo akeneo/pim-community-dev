@@ -23,7 +23,7 @@ interface NormalizedAttributeGroupInterface {
 }
 
 class SimpleSelectAttribute extends BaseSimpleSelect {
-  public readonly lineView = _.template(LineTemplate);
+  private readonly lineView = _.template(LineTemplate);
   private attributeGroups: { [key: string]: NormalizedAttributeGroupInterface } = {};
 
   constructor(options: { config: object, className: string }) {

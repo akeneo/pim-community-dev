@@ -17,7 +17,7 @@ const MAPPING_FULL: number = 1;
 const MAPPING_PENDING_ATTRIBUTES: number = 2;
 
 class FamilySelector extends BaseSelect {
-  public readonly lineView = _.template(lineTemplate);
+  private readonly lineView = _.template(lineTemplate);
 
   constructor(config: { config: object }) {
     super(config);

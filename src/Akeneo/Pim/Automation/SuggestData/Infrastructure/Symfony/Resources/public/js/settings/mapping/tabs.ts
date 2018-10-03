@@ -1,3 +1,4 @@
+import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
@@ -17,12 +18,12 @@ interface Config {
 }
 
 class Tabs extends BaseView {
-  public readonly template = _.template(template);
-  public readonly config: Config = {
+  private readonly template = _.template(template);
+  private readonly config: Config = {
     tabs: [],
     selected: null,
   };
-  public stateFullAllowed: boolean[];
+  private stateFullAllowed: boolean[];
 
   /**
    * {@inheritdoc}
@@ -37,10 +38,10 @@ class Tabs extends BaseView {
   /**
    * {@inheritdoc}
    */
-  public events() {
+  public events(): EventsHash {
     return {
       'click .tab-link': (event: { currentTarget: any }) => {
-        const index = parseInt($(event.currentTarget).data('index') + '', 10);
+        const index = parseInt($(event.currentTarget).data('index') + '');
         if (this.checkAllowed(index)) {
           const tabConfig = this.config.tabs[index];
           Router.redirectToRoute(tabConfig.route);
@@ -87,7 +88,7 @@ class Tabs extends BaseView {
   /**
    * {@inheritdoc}
    */
-  public render() {
+  public render(): BaseView {
     this.$el.html(this.template({
       tabs: this.config.tabs,
       selected: this.config.selected,

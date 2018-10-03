@@ -24,8 +24,8 @@ interface SuggestDataOperationConfig {
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class SuggestDataOperation extends Operation {
-  public readonly template: any = _.template(template);
-  public readonly config: SuggestDataOperationConfig = {
+  private readonly template: any = _.template(template);
+  private readonly config: SuggestDataOperationConfig = {
     title: '',
     label: '',
     subLabel: '',
@@ -63,7 +63,7 @@ class SuggestDataOperation extends Operation {
   /**
    * {@inheritdoc}
    */
-  public render() {
+  public render(): object {
     if (undefined === this.getFormData().action) {
       this.setAction('subscribe');
     }

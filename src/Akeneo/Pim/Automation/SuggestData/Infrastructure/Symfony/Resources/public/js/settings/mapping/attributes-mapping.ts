@@ -51,9 +51,9 @@ class AttributeMapping extends BaseForm {
     text: [ 'pim_catalog_text' ],
   };
 
-  public readonly template = _.template(template);
-  public readonly noDataTemplate = _.template(noDataTemplate);
-  public readonly config: AttributeMappingConfig = {
+  private readonly template = _.template(template);
+  private readonly noDataTemplate = _.template(noDataTemplate);
+  private readonly config: AttributeMappingConfig = {
     labels: {
       pending: '',
       mapped: '',

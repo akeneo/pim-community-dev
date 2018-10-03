@@ -24,9 +24,9 @@ interface EditConfig {
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class EditView extends BaseView {
-  public readonly template: any = _.template(template);
+  private readonly template: any = _.template(template);
 
-  public readonly config: EditConfig = {
+  private readonly config: EditConfig = {
     token_label_content: '',
     token_field_title: '',
     token_field_placeholder: '',
