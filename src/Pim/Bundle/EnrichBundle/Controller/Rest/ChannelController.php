@@ -100,12 +100,17 @@ class ChannelController
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(Request $request, $identifier)
     {
         $channel = $this->getChannel($identifier);
+        $filterLocales = $request->query->getBoolean('filter_locales', true);
 
         return new JsonResponse(
-            $this->normalizer->normalize($channel, 'internal_api')
+            $this->normalizer->normalize(
+                $channel,
+                'internal_api',
+                ['filter_locales' => $filterLocales]
+            )
         );
     }
 
@@ -239,7 +244,8 @@ class ChannelController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $channel,
-                'internal_api'
+                'internal_api',
+                ['filter_locales' => false]
             )
         );
     }
