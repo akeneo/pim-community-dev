@@ -91,8 +91,12 @@ class UpdateAttributesMappingByFamilyCommand
                 throw InvalidMappingException::expectedKey($targetKey, 'status');
             }
 
-            $this->attributesMapping[] =
-                new AttributeMapping($targetKey, $mappingRow['status'], $mappingRow['attribute']);
+            $this->attributesMapping[] = new AttributeMapping(
+                $targetKey,
+                $mappingRow['pim_ai_attribute']['type'],
+                $mappingRow['status'],
+                $mappingRow['attribute']
+            );
         }
     }
 }

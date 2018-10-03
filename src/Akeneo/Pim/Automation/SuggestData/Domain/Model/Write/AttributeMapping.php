@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -29,8 +30,22 @@ class AttributeMapping
     /** The attribute was registered to not be mapped */
     public const ATTRIBUTE_UNMAPPED = 2;
 
+    /** @var array */
+    public const ATTRIBUTE_TYPES_MAPPING = [
+        'metric' => AttributeTypes::METRIC,
+        'select' => AttributeTypes::OPTION_SIMPLE_SELECT,
+        'multiselect' => AttributeTypes::OPTION_MULTI_SELECT,
+        'number' => AttributeTypes::NUMBER,
+        'text' => AttributeTypes::TEXT,
+        'boolean' => AttributeTypes::BOOLEAN,
+        'identifier' => AttributeTypes::IDENTIFIER,
+    ];
+
     /** @var string */
     private $targetAttributeCode;
+
+    /** @var string */
+    private $targetAttributeType;
 
     /** @var string|null */
     private $pimAttributeCode;
@@ -43,15 +58,29 @@ class AttributeMapping
 
     /**
      * @param string $targetAttributeCode
-     * @param string $pimAttributeCode
+     * @param string $targetAttributeType
      * @param int $status
+     * @param null|string $pimAttributeCode
      */
     public function __construct(
         string $targetAttributeCode,
+        string $targetAttributeType,
         int $status,
         ?string $pimAttributeCode
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
+
+        if (!array_key_exists($targetAttributeType, self::ATTRIBUTE_TYPES_MAPPING)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Type "%s" does not match with expected types (%s)',
+                    $targetAttributeType,
+                    implode(', ', array_keys(self::ATTRIBUTE_TYPES_MAPPING))
+                )
+            );
+        }
+        $this->targetAttributeType = $targetAttributeType;
+
         if (!in_array($status, [self::ATTRIBUTE_PENDING, self::ATTRIBUTE_MAPPED, self::ATTRIBUTE_UNMAPPED])) {
             throw new \InvalidArgumentException('Status "%s" does not match with expected types (0, 1, 2)', $status);
         }
@@ -108,5 +137,13 @@ class AttributeMapping
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetAttributeType(): string
+    {
+        return $this->targetAttributeType;
     }
 }

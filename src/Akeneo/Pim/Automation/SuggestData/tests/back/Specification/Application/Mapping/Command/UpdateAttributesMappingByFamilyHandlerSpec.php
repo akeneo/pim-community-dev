@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFacto
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -77,6 +78,28 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ->during('handle', [$command]);
     }
 
+    public function it_throws_an_exception_if_mapping_type_is_invalid(
+        UpdateAttributesMappingByFamilyCommand $command,
+        AttributeMapping $attributeMapping,
+        FamilyRepositoryInterface $familyRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $attribute
+    ): void {
+        $command->getFamilyCode()->willReturn('router');
+        $command->getAttributesMapping()->willReturn([$attributeMapping]);
+
+        $attributeCode = 'memory';
+        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
+        $attributeMapping->getPimAttributeCode()->willReturn($attributeCode);
+        $attributeMapping->setAttribute($attribute)->shouldNotBeCalled();
+
+        $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
+        $attribute->getType()->willReturn('pim_catalog_metric');
+
+        $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
+    }
+
     public function it_fills_attribute_and_calls_data_provider(
         UpdateAttributesMappingByFamilyCommand $command,
         FamilyRepositoryInterface $familyRepository,
@@ -94,6 +117,9 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
         $command->getAttributesMapping()->willReturn([$attributeMapping]);
         $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
+
+        $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
 
         $attributeMapping->setAttribute($attribute)->shouldBeCalled();
         $dataProvider->updateAttributesMapping('router', [$attributeMapping])->shouldBeCalled();
