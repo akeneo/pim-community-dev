@@ -178,11 +178,6 @@ suites:
         psr4_prefix: Pim\Bundle\EnrichBundle
         spec_path: src/Pim/Bundle/EnrichBundle
         src_path: src/Pim/Bundle/EnrichBundle
-    LocalizationBundle:
-        namespace: Pim\Bundle\LocalizationBundle
-        psr4_prefix: Pim\Bundle\LocalizationBundle
-        spec_path: src/Pim/Bundle/LocalizationBundle
-        src_path: src/Pim/Bundle/LocalizationBundle
     User:
         namespace: Akeneo\UserManagement
         psr4_prefix: Akeneo\UserManagement
