@@ -1,0 +1,93 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_record_edit_rest",
+    "query": {
+      "recordCode": "celine_dion",
+      "referenceEntityIdentifier": "singer"
+    },
+    "body": {
+      "identifier": "singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392",
+      "code": "celine_dion",
+      "reference_entity_identifier": "singer",
+      "labels": {
+        "en_US": "Celine Dion",
+        "fr_FR": "Madame Celine Dion"
+      },
+      "image": {
+        "filePath": "test/image_1.jpg",
+        "originalFilename": "image_1.jpg"
+      },
+      "values": [
+        {
+          "attribute": "website_singer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": "hello world"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "This value is not a valid URL.",
+        "parameters": {
+          "{{ value }}": "\u0022hello world\u0022"
+        },
+        "plural": null,
+        "message": "This value is not a valid URL.",
+        "root": {
+          "referenceEntityIdentifier": "singer",
+          "code": "celine_dion",
+          "labels": {
+            "en_US": "Celine Dion",
+            "fr_FR": "Madame Celine Dion"
+          },
+          "image": {
+            "filePath": "test\/image_1.jpg",
+            "originalFilename": "image_1.jpg"
+          },
+          "editRecordValueCommands": [
+            {
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
+                },
+                "maxLength": [],
+                "textarea": false,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": true,
+                "validationRule": false,
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "en_US"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": false
+              },
+              "text": "hello world",
+              "channel": null,
+              "locale": null
+            }
+          ]
+        },
+        "propertyPath": "values.website",
+        "invalidValue": "hello world",
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null
+        },
+        "cause": null,
+        "code": "57c2f299-1154-4870-89bb-ef3b1f5ad229"
+      }
+    ]
+  }
+}
