@@ -20,7 +20,7 @@ class State extends BaseState {
    *
    * @param object: any
    *
-   * @returns anyœ
+   * @returns any
    */
   public emptyToNullValues(object: any): any {
     return Object.keys(object).reduce((accumulator: any, identifier: string) => {

@@ -7,7 +7,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 interface Route {
   name: string;
   params: { familyCode: string };
-  route: Object;
+  route: object;
 }
 
 interface FamilyMapping {
@@ -37,7 +37,7 @@ class EditAttributeMappingController extends BaseController {
 
         return FormBuilder.build('pim-suggest-data-settings-attributes-mapping-edit')
           .then((form: BaseView) => {
-            this.on('pim:controller:can-leave', function(event: CanLeaveEvent) {
+            this.on('pim:controller:can-leave', (event: CanLeaveEvent) => {
               form.trigger('pim_enrich:form:can-leave', event);
             });
             form.setData(familyMapping);

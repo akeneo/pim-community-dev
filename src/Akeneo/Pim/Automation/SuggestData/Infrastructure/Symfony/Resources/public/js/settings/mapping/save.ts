@@ -77,7 +77,7 @@ class MappingSave extends BaseSave {
    * When you clear data in select2 choice it puts an empty string instead of null.
    * This function put null instead of empty string in mapping values.
    *
-   * @param {Object} identifiersMapping
+   * @param {object} identifiersMapping
    *
    * @return {MappingInterface}
    */

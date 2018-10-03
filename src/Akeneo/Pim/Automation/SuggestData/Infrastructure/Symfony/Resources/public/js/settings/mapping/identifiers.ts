@@ -10,7 +10,7 @@ const template = require('pimee/template/settings/mapping/identifiers');
  * Maps pim.ai identifiers with akeneo attributes.
  *
  * The attribute types authorized for the identifiers mapping are defined in
- * Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
+ * UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
@@ -39,7 +39,7 @@ class EditIdentifiersMappingView extends BaseView {
   }
 
   public readonly template = _.template(template);
-  public readonly config: Object = {};
+  public readonly config: object = {};
   public readonly headers = {
     identifiersLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.label'),
     attributeLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute'),
@@ -51,7 +51,7 @@ class EditIdentifiersMappingView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Object }) {
+  constructor(options: { config: object }) {
     super({
       ...options, ...{
         className: 'AknGrid AknGrid--unclickable AknFormContainer--withPadding AknGrid--stretched',
@@ -107,13 +107,13 @@ class EditIdentifiersMappingView extends BaseView {
   private renderAttributeSelectors(identifiersMapping: { [key: string]: string }): void {
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
       const attributeSelector = new SimpleSelectAttribute({
+        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
         config: {
+          choiceRoute: 'pim_enrich_attribute_rest_index',
           fieldName: pimAiAttributeCode,
           label: '',
-          choiceRoute: 'pim_enrich_attribute_rest_index',
           types: EditIdentifiersMappingView.VALID_MAPPING,
         },
-        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
       });
       attributeSelector.setParent(this);
 

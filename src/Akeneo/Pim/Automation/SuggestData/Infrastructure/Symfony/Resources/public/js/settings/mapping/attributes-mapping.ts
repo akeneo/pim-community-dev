@@ -109,9 +109,9 @@ class AttributeMapping extends BaseForm {
       subHint: 'pim_datagrid.no_results_subtitle',
     }));
 
-    Object.keys(mapping).forEach((pim_ai_attribute_code) => {
+    Object.keys(mapping).forEach((pimAiAttributeCode) => {
       const $dom = this.$el.find(
-        '.attribute-selector[data-pim-ai-attribute-code="' + pim_ai_attribute_code + '"]',
+        '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]',
       );
       const attributeSelector = new SimpleSelectAttribute({
         config: {
@@ -122,10 +122,10 @@ class AttributeMapping extends BaseForm {
            *     pim_ai_attribute_code_2: { attribute: 'bar' ... }
            * } }
            */
-          fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
+          fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
           label: '',
           choiceRoute: 'pim_enrich_attribute_rest_index',
-          types: AttributeMapping.VALID_MAPPING[mapping[pim_ai_attribute_code].pim_ai_attribute.type],
+          types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
         },
         className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
       });
@@ -151,7 +151,7 @@ class AttributeMapping extends BaseForm {
    * @param {{value: string, type: "equals" | "search", field: string}} filter
    */
   private filter(filter: { value: string, type: 'equals'|'search', field: string }): void {
-    this.$el.find('.searchable-row').each((_i: number, row: any) => {
+    this.$el.find('.searchable-row').each((i: number, row: any) => {
       const value = $(row).data(filter.field);
       let filteredByThisFilter = false;
       switch (filter.type) {

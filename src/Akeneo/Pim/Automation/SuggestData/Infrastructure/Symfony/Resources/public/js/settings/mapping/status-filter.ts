@@ -36,7 +36,7 @@ class StatusFilter extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Object }) {
+  constructor(options: { config: object }) {
     super({...options, ...{ className: 'AknDropdown AknFilterBox-filterContainer' }});
   }
   /**

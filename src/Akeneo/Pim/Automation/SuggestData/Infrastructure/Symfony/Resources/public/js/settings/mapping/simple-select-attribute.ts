@@ -26,7 +26,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   public readonly lineView = _.template(LineTemplate);
   private attributeGroups: { [key: string]: NormalizedAttributeGroupInterface } = {};
 
-  constructor(options: { config: Object, className: string }) {
+  constructor(options: { config: object, className: string }) {
     super({
       ...{ className: 'AknFieldContainer AknFieldContainer--withoutMargin' }, ...options,
     });
@@ -62,7 +62,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   /**
    * {@inheritdoc}
    */
-  protected convertBackendItem(item: NormalizedAttributeInterface): Object {
+  protected convertBackendItem(item: NormalizedAttributeInterface): object {
     return {
       id: item.code,
       text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
@@ -84,7 +84,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    *
    * Removes the useless catalogLocale field, and adds localizable, is_locale_specific and scopable filters.
    */
-  protected select2Data(term: string, page: number): Object {
+  protected select2Data(term: string, page: number): object {
     return {
       localizable: false,
       is_locale_specific: false,
@@ -114,11 +114,11 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   /**
    * Formats and updates list of items
    *
-   * @param {Object} item
+   * @param {object} item
    *
-   * @return {Object}
+   * @return {object}
    */
-  private onGetResult(item: { text: string, group: { text: string } }): Object {
+  private onGetResult(item: { text: string, group: { text: string } }): object {
     return this.lineView({item});
   }
 }

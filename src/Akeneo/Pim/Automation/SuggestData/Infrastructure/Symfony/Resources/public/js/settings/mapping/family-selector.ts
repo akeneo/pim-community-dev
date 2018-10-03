@@ -19,7 +19,7 @@ const MAPPING_PENDING_ATTRIBUTES: number = 2;
 class FamilySelector extends BaseSelect {
   public readonly lineView = _.template(lineTemplate);
 
-  constructor(config: { config: Object }) {
+  constructor(config: { config: object }) {
     super(config);
     this.events = {
       'change input': (event: { target: any }) => {
@@ -52,9 +52,9 @@ class FamilySelector extends BaseSelect {
   /**
    * Formats and updates list of items
    *
-   * @param {Object} item
+   * @param {object} item
    *
-   * @return {Object}
+   * @return {object}
    */
   public onGetResult(item: { text: string }) {
     return this.lineView({item});

@@ -78,11 +78,11 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    isConnectionActivated().then((isConnectionActivated: any) => {
+    isConnectionActivated().then((isActivated: any) => {
       const formData = this.getFormData();
 
-      this.isConnectionActivated = isConnectionActivated;
-      true === isConnectionActivated
+      this.isConnectionActivated = isActivated;
+      true === isActivated
         ? this.renderActivatedConnection(formData.token)
         : this.renderUnactivatedConnection(formData.token);
     });
@@ -123,7 +123,9 @@ class EditView extends BaseView {
     this.setData({token});
 
     if (true === this.isConnectionActivated) {
-      this.storedToken !== token ? this.buttonAllowedToActivateConnection() : this.buttonDisallowedToActivateConnection();
+      this.storedToken !== token
+        ? this.buttonAllowedToActivateConnection()
+        : this.buttonDisallowedToActivateConnection();
     }
   }
 

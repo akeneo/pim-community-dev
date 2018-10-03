@@ -40,7 +40,7 @@ class Tabs extends BaseView {
   public events() {
     return {
       'click .tab-link': (event: { currentTarget: any }) => {
-        const index = parseInt($(event.currentTarget).data('index') + '');
+        const index = parseInt($(event.currentTarget).data('index') + '', 10);
         if (this.checkAllowed(index)) {
           const tabConfig = this.config.tabs[index];
           Router.redirectToRoute(tabConfig.route);
