@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\File;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\File;
 
+use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\File\FileTypes;
 use Prophecy\Argument;
 
 class DefaultImageProviderSpec extends ObjectBehavior

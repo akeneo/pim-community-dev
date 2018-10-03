@@ -2,17 +2,16 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
+use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
+use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
-use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
-use Pim\Bundle\EnrichBundle\File\FileTypes;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

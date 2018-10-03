@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\File;
+namespace Akeneo\Pim\Enrichment\Bundle\File;
 
 /**
  * Filetype guesser interface implementation

@@ -91,6 +91,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('widgets.yml');
         $loader->load('providers.yml');
         $loader->load('twig.yml');
+        $loader->load('filters.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);
