@@ -30,7 +30,7 @@ interface AttributeMappingConfig {
     unmapped: string,
     pim_ai_attribute: string,
     catalog_attribute: string,
-    suggest_data: string,
+    suggest_data: string, // TODO Rename to attribute_mapping_status
   };
 }
 
@@ -234,7 +234,6 @@ class AttributeMapping extends BaseForm {
   }
 
   /**
-   *
    * @returns {{ [ key: number ]: string }}
    */
   private getMappingStatuses() {
@@ -276,18 +275,19 @@ class AttributeMapping extends BaseForm {
   }
 
   private updateAttributeOptionsMapping(event: any) {
-    console.log(event);
-    this.manageAttributeOptionsMapping().then(attributeOptionsMapping => {
-      console.log(attributeOptionsMapping);
+    //console.log(event);
+    this.manageAttributeOptionsMapping();
+    //.then(attributeOptionsMapping => {
+    //  console.log(attributeOptionsMapping);
       //this.data = assets;
 
       //this.trigger('collection:change', assets);
       //this.render();
-    });
+    //});
   }
 
   private manageAttributeOptionsMapping() {
-    const deferred = $.Deferred();
+    //const deferred = $.Deferred();
 
     FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit').then((form: any) => {
       let modal = new BootstrapModal({
@@ -301,7 +301,7 @@ class AttributeMapping extends BaseForm {
         title: '',
         content: '',
         cancelText: ' ',
-        okText: __('pim_common.confirm')
+        okText: __('pim_common.save')
       });
       modal.open();
 
@@ -311,16 +311,16 @@ class AttributeMapping extends BaseForm {
         .setElement(modal.$('.modal-body'))
         .render();
 
-      modal.on('cancel', deferred.reject);
+      //modal.on('cancel', deferred.reject);
       modal.on('ok', () => {
-        const attributeOptions = _.sortBy(form.getItems(), 'code');
+        //const attributeOptions = _.sortBy(form.getItems(), 'code');
         modal.close();
 
-        deferred.resolve(attributeOptions);
+        //deferred.resolve(attributeOptions);
       });
     });
 
-    return deferred.promise();
+    //return deferred.promise();
   }
 }
 
