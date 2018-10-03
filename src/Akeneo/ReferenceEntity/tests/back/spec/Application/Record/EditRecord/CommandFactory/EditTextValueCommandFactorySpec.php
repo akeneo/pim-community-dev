@@ -20,8 +20,8 @@ class EditTextValueCommandFactorySpec extends ObjectBehavior
         ImageAttribute $image,
         TextAttribute $text
     ) {
-        $this->supports($image)->shouldReturn(false);
-        $this->supports($text)->shouldReturn(true);
+        $this->supports($image, [])->shouldReturn(false);
+        $this->supports($text, [])->shouldReturn(true);
     }
 
     function it_creates_text_value(TextAttribute $textAttribute)

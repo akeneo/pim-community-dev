@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditEmptyValueCommand extends Constraint
+class EmptyValueCommand extends Constraint
 {
     public function getTargets()
     {

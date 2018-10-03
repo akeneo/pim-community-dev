@@ -16,6 +16,6 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditEmptyValueCommand extends AbstractEditValueCommand
+class EmptyValueCommand extends AbstractEditValueCommand
 {
 }

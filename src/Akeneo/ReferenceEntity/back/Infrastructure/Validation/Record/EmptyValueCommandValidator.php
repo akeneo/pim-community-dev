@@ -13,22 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditEmptyValueCommand as EditEmptyValueCommandConstraint;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand;
+use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EmptyValueCommand as EmptyValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditEmptyValueCommandValidator extends ConstraintValidator
+class EmptyValueCommandValidator extends ConstraintValidator
 {
     public function validate($command, Constraint $constraint)
     {
@@ -41,10 +36,10 @@ class EditEmptyValueCommandValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof EditFileValueCommand) {
+        if (!$command instanceof EmptyValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditFileValueCommand::class,
+                    'Expected argument to be of class "%s", "%s" given', EmptyValueCommand::class,
                     get_class($command)
                 )
             );
@@ -56,8 +51,8 @@ class EditEmptyValueCommandValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EditEmptyValueCommandConstraint) {
-            throw new UnexpectedTypeException($constraint, EditEmptyValueCommandConstraint::class);
+        if (!$constraint instanceof EmptyValueCommandConstraint) {
+            throw new UnexpectedTypeException($constraint, EmptyValueCommandConstraint::class);
         }
     }
 }

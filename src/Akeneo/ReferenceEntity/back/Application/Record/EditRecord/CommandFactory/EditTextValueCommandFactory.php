@@ -21,18 +21,18 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
  */
 class EditTextValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    public function supports(AbstractAttribute $abstractAttribute): bool
+    public function supports(AbstractAttribute $abstractAttribute, array $normalizedValue): bool
     {
         return $abstractAttribute instanceof TextAttribute;
     }
 
-    public function create(AbstractAttribute $attribute, $normalizedCommand)
+    public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
         $command = new EditTextValueCommand();
         $command->attribute = $attribute;
-        $command->channel = $normalizedCommand['channel'];
-        $command->locale = $normalizedCommand['locale'];
-        $command->text = $normalizedCommand['data'];
+        $command->channel = $normalizedValue['channel'];
+        $command->locale = $normalizedValue['locale'];
+        $command->text = $normalizedValue['data'];
 
         return $command;
     }

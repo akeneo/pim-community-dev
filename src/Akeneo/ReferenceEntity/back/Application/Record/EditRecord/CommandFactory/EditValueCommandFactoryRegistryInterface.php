@@ -9,5 +9,5 @@ interface EditValueCommandFactoryRegistryInterface
 {
     public function register(EditValueCommandFactoryInterface $editDataCommandFactory): void;
 
-    public function getFactory(AbstractAttribute $attribute): EditValueCommandFactoryInterface;
+    public function getFactory(AbstractAttribute $attribute, array $normalizedValue): EditValueCommandFactoryInterface;
 }

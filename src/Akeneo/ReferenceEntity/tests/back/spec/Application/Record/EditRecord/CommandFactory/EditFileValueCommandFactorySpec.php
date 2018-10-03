@@ -18,8 +18,8 @@ class EditFileValueCommandFactorySpec extends ObjectBehavior
 
     function it_only_supports_create_value_of_image_attribute(ImageAttribute $image, TextAttribute $text)
     {
-        $this->supports($image)->shouldReturn(true);
-        $this->supports($text)->shouldReturn(false);
+        $this->supports($image, [])->shouldReturn(true);
+        $this->supports($text, [])->shouldReturn(false);
     }
 
     function it_creates_file_value(ImageAttribute $imageAttribute)

@@ -18,19 +18,19 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditEmptyValueCommandFactory implements EditValueCommandFactoryInterface
+class EmptyValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    public function supports(AbstractAttribute $attribute): bool
+    public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        return $attribute instanceof AbstractAttribute;
+        return $attribute instanceof AbstractAttribute && null === $normalizedValue['data'];
     }
 
-    public function create(AbstractAttribute $attribute, $normalizedCommand)
+    public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditEmptyValueCommand();
+        $command = new EmptyValueCommand();
         $command->attribute = $attribute;
-        $command->channel = $normalizedCommand['channel'];
-        $command->locale = $normalizedCommand['locale'];
+        $command->channel = $normalizedValue['channel'];
+        $command->locale = $normalizedValue['locale'];
 
         return $command;
     }

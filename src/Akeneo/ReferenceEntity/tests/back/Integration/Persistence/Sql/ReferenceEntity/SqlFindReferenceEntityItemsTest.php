@@ -72,8 +72,8 @@ class SqlFindReferenceEntityItemsTest extends SqlIntegrationTestCase
         $coco->code = RecordCode::fromString('coco');
         $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
 
-        $this->assertRecordItem($coco, $recordItems[0]);
-        $this->assertRecordItem($starck, $recordItems[1]);
+        $this->assertRecordItem($starck, $recordItems[0]);
+        $this->assertRecordItem($coco, $recordItems[1]);
     }
 
     private function resetDB(): void

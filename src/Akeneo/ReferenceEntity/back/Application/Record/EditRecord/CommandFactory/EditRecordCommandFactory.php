@@ -63,7 +63,7 @@ class EditRecordCommandFactory
 
             $attribute = $attributesIndexedByIdentifier[$normalizedValue['attribute']];
             $command->editRecordValueCommands[] = $this->editValueCommandFactoryRegistry
-                ->getFactory($attribute)
+                ->getFactory($attribute, $normalizedValue)
                 ->create($attribute, $normalizedValue);
         }
 
