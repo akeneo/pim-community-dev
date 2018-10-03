@@ -74,7 +74,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
             SELECT
                 channel.code as channel_code,
                 COALESCE(channel_translation.label, CONCAT('[', channel.code, ']') ) as channel_label,
-                JSON_ARRAY_APPEND(child.children_codes, '$', root.code) as category_codes_in_channel,
+                JSON_ARRAY_APPEND(COALESCE(child.children_codes, "[]"), '$', root.code) as category_codes_in_channel,
                 pim_locales.json_locales as locales
             FROM
                 pim_catalog_category AS root
