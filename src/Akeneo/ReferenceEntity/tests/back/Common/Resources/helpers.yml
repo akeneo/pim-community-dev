@@ -8,3 +8,8 @@ services:
         class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\DatabaseHelper
         arguments:
             - '@database_connection'
+
+    akeneoreference_entity.tests.helper.search_index_helper:
+        class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchIndexHelper
+        arguments:
+            - '@akeneo_referenceentity.client.record'
