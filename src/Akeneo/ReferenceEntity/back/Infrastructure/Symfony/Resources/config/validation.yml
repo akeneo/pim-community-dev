@@ -72,7 +72,6 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValu
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EmptyValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
