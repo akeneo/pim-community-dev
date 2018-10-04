@@ -25,7 +25,7 @@ class NumberPresenter extends AbstractProductValuePresenter
     /** @var BasePresenterInterface */
     protected $numberPresenter;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
+    /** @var LocaleResolver */
     protected $localeResolver;
 
     /**

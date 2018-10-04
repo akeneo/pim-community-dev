@@ -25,12 +25,12 @@ class DatePresenter extends AbstractProductValuePresenter
     /** @var BasePresenterInterface */
     protected $datePresenter;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
+    /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param BasePresenterInterface                                   $datePresenter
-     * @param \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver $localeResolver
+     * @param BasePresenterInterface $datePresenter
+     * @param LocaleResolver         $localeResolver
      */
     public function __construct(BasePresenterInterface $datePresenter, LocaleResolver $localeResolver)
     {

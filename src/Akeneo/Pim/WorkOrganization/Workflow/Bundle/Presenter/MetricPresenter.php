@@ -27,7 +27,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     /** @var BasePresenterInterface */
     protected $metricPresenter;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
+    /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
