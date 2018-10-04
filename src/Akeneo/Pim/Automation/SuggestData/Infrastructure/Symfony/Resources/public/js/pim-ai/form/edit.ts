@@ -1,7 +1,7 @@
-import {getConfiguration, isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
 import {EventsHash} from 'backbone';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import {ConnectionStatus, getConfiguration, getConnectionStatus} from '../fetcher/connection-fetcher';
 
 const __ = require('oro/translator');
 const ConnectionSaver = require('pimee/saver/pim-ai-connection');
@@ -78,11 +78,11 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    isConnectionActivated().then((isActivated: any) => {
+    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
       const formData = this.getFormData();
 
-      this.isConnectionActivated = isActivated;
-      true === isActivated
+      this.isConnectionActivated = connectionStatus.is_active;
+      true === connectionStatus.is_active
         ? this.renderActivatedConnection(formData.token)
         : this.renderUnactivatedConnection(formData.token);
     });

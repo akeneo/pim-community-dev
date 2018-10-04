@@ -127,8 +127,8 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsActivated(): void
     {
-        $isActive = $this->getConnectionStatus->isActive();
-        Assert::assertTrue($isActive);
+        $connectionStatus = $this->getConnectionStatus->getStatus();
+        Assert::assertTrue($connectionStatus->isActive());
     }
 
     /**
@@ -136,8 +136,8 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsNotActivated(): void
     {
-        $isActive = $this->getConnectionStatus->isActive();
-        Assert::assertFalse($isActive);
+        $connectionStatus = $this->getConnectionStatus->getStatus();
+        Assert::assertFalse($connectionStatus->isActive());
     }
 
     /**

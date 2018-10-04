@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\Activate
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +37,9 @@ class PimAiConnectionController
     /** @var GetSuggestDataConnectionStatus */
     private $getSuggestDataConnectionStatus;
 
+    /** @var ConnectionStatusNormalizer */
+    private $connectionStatusNormalizer;
+
     /** @var TranslatorInterface */
     private $translator;
 
@@ -43,17 +47,20 @@ class PimAiConnectionController
      * @param ActivateSuggestDataConnection $activateSuggestDataConnection
      * @param GetNormalizedConfiguration $getNormalizedConfiguration
      * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
+     * @param ConnectionStatusNormalizer $connectionStatusNormalizer
      * @param TranslatorInterface $translator
      */
     public function __construct(
         ActivateSuggestDataConnection $activateSuggestDataConnection,
         GetNormalizedConfiguration $getNormalizedConfiguration,
         GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus,
+        ConnectionStatusNormalizer $connectionStatusNormalizer,
         TranslatorInterface $translator
     ) {
         $this->activateSuggestDataConnection = $activateSuggestDataConnection;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->getSuggestDataConnectionStatus = $getSuggestDataConnectionStatus;
+        $this->connectionStatusNormalizer = $connectionStatusNormalizer;
         $this->translator = $translator;
     }
 
@@ -72,9 +79,9 @@ class PimAiConnectionController
      */
     public function isActiveAction(): Response
     {
-        $isActive = $this->getSuggestDataConnectionStatus->isActive();
+        $connectionStatus = $this->getSuggestDataConnectionStatus->getStatus();
 
-        return new JsonResponse($isActive);
+        return new JsonResponse($this->connectionStatusNormalizer->normalize($connectionStatus));
     }
 
     /**

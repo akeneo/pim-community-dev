@@ -2,14 +2,18 @@ import * as JQuery from 'jquery';
 
 const Routing = require('routing');
 
+export interface ConnectionStatus {
+  is_active: boolean;
+}
+
 export function getConfiguration(): JQueryPromise<any> {
   const url = Routing.generate('akeneo_suggest_data_connection_get');
 
   return JQuery.get(url);
 }
 
-export function isConnectionActivated(): JQueryPromise<any> {
-  const url = Routing.generate('akeneo_suggest_data_is_connection_activated');
+export function getConnectionStatus(): JQueryPromise<any> {
+  const url = Routing.generate('akeneo_suggest_data_connection_status_get');
 
   return JQuery.get(url);
 }

@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configurat
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -42,7 +43,7 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
 
-        $this->isActive()->shouldReturn(true);
+        $this->getStatus()->shouldReturnAnActiveStatus();
     }
 
     public function it_checks_that_a_connection_is_inactive(
@@ -56,13 +57,28 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);
 
-        $this->isActive()->shouldReturn(false);
+        $this->getStatus()->shouldReturnAnInactiveStatus();
     }
 
     public function it_checks_that_a_connection_does_not_exist($configurationRepository): void
     {
         $configurationRepository->find()->willReturn(null);
 
-        $this->isActive()->shouldReturn(false);
+        $this->getStatus()->shouldReturnAnInactiveStatus();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMatchers(): array
+    {
+        return [
+            'returnAnActiveStatus' => function (ConnectionStatus $connectionStatus) {
+                return true === $connectionStatus->isActive();
+            },
+            'returnAnInactiveStatus' => function (ConnectionStatus $connectionStatus) {
+                return false === $connectionStatus->isActive();
+            },
+        ];
     }
 }
