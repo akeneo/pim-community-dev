@@ -53,16 +53,14 @@ class VersionNormalizer implements NormalizerInterface
      * @param PresenterRegistryInterface   $presenterRegistry
      * @param AttributeRepositoryInterface $attributeRepository
      * @param UserContext                  $userContext
-     *
-     * @todo merge: remove the "= null` on master and add to BC breaks
      */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository = null,
-        UserContext $userContext = null
+        AttributeRepositoryInterface $attributeRepository,
+        UserContext $userContext
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
@@ -139,51 +137,30 @@ class VersionNormalizer implements NormalizerInterface
      */
     protected function convertChangeset(array $changeset, array $context)
     {
-        // TODO on master: remove this check and old behavior
-        if (null === $this->attributeRepository) {
-            // TODO on master: remove this behavior (previous behavior kept to avoid BC break)
-            foreach ($changeset as $attribute => $changes) {
-                $context['versioned_attribute'] = $attribute;
-                $attributeName = $attribute;
-                if (preg_match('/^(?<attribute>[a-zA-Z0-9_]+)-.+$/', $attribute, $matches)) {
-                    $attributeName = $matches['attribute'];
-                }
-                $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeName);
-                if (null !== $presenter) {
-                    foreach ($changes as $key => $value) {
-                        $changeset[$attribute][$key] = $presenter->present($value, $context);
-                    }
-                }
-            }
+        $attributeCodes = [];
+        foreach (array_keys($changeset) as $valueHeader) {
+            $attributeCode = $this->extractAttributeCode($valueHeader);
 
-            return $changeset;
-        } else {
-            // TODO on master: keep only this behavior
-            $attributeCodes = [];
-            foreach (array_keys($changeset) as $valueHeader) {
-                $attributeCode = $this->extractAttributeCode($valueHeader);
-
-                $attributeCodes[$attributeCode] = true;
-            }
-
-            $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
-
-            foreach ($changeset as $valueHeader => $valueChanges) {
-                $context['versioned_attribute'] = $valueHeader;
-                $attributeCode = $this->extractAttributeCode($valueHeader);
-
-                if (isset($attributeTypes[$attributeCode])) {
-                    $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
-                    if (null !== $presenter) {
-                        foreach ($valueChanges as $key => $value) {
-                            $changeset[$valueHeader][$key] = $presenter->present($value, $context);
-                        }
-                    }
-                }
-            }
-
-            return $changeset;
+            $attributeCodes[$attributeCode] = true;
         }
+
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
+
+        foreach ($changeset as $valueHeader => $valueChanges) {
+            $context['versioned_attribute'] = $valueHeader;
+            $attributeCode = $this->extractAttributeCode($valueHeader);
+
+            if (isset($attributeTypes[$attributeCode])) {
+                $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
+                if (null !== $presenter) {
+                    foreach ($valueChanges as $key => $value) {
+                        $changeset[$valueHeader][$key] = $presenter->present($value, $context);
+                    }
+                }
+            }
+        }
+
+        return $changeset;
     }
 
     /**
