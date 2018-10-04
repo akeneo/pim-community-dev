@@ -1,5 +1,15 @@
 # 2.3.x
 
+# 2.3.10 (2018-10-01)
+
+## Bug fixes
+
+- PIM-7662: Fix migration script to index only the proposed product drafts
+
+## Improvements
+
+- PIM-7662: Add a command to index the product proposals into Elasticsearch
+
 # 2.3.9 (2018-09-25)
 
 ## Bug fixes
