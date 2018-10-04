@@ -7,7 +7,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
 interface EditValueCommandFactoryInterface
 {
-    public function supports(AbstractAttribute $attribute): bool;
+    public function supports(AbstractAttribute $attribute, array $normalizedValue): bool;
 
-    public function create(AbstractAttribute $attribute, $normalizedCommand);
+    public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand;
 }

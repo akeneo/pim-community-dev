@@ -20,9 +20,9 @@ class EditValueCommandFactoryRegistrySpec extends ObjectBehavior
         EditTextValueCommandFactory $editTextValueCommandFactory,
         TextAttribute $name
     ) {
-        $editTextValueCommandFactory->supports($name)->willReturn(true);
+        $editTextValueCommandFactory->supports($name, [])->willReturn(true);
         $this->register($editTextValueCommandFactory);
-        $this->getFactory($name)->shouldReturn($editTextValueCommandFactory);
+        $this->getFactory($name, [])->shouldReturn($editTextValueCommandFactory);
     }
 
     function it_throws_if_it_does_not_find_a_value_command_factory_that_supports(
@@ -30,10 +30,10 @@ class EditValueCommandFactoryRegistrySpec extends ObjectBehavior
         AttributeIdentifier $attributeIdentifier,
         TextAttribute $name
     ) {
-        $editTextValueCommandFactory->supports($name)->willReturn(false);
+        $editTextValueCommandFactory->supports($name, [])->willReturn(false);
         $attributeIdentifier->normalize()->willReturn('designer_name_fingerprint');
         $name->getIdentifier()->willReturn($attributeIdentifier);
         $this->register($editTextValueCommandFactory);
-        $this->shouldThrow(\RuntimeException::class)->during('getFactory', [$name]);
+        $this->shouldThrow(\RuntimeException::class)->during('getFactory', [$name, []]);
     }
 }

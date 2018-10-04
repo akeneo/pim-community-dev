@@ -21,21 +21,21 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
  */
 class EditFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    public function supports(AbstractAttribute $attribute): bool
+    public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        return $attribute instanceof ImageAttribute;
+        return $attribute instanceof ImageAttribute && null !== $normalizedValue['data'];
     }
 
-    public function create(AbstractAttribute $attribute, $normalizedCommand)
+    public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
         $command = new EditFileValueCommand();
         $command->attribute = $attribute;
-        $command->channel = $normalizedCommand['channel'];
-        $command->locale = $normalizedCommand['locale'];
-        $command->data = $normalizedCommand['data'];
+        $command->channel = $normalizedValue['channel'];
+        $command->locale = $normalizedValue['locale'];
+        $command->data = $normalizedValue['data'];
 
-        $command->filePath = $normalizedCommand['data']['filePath'];
-        $command->originalFilename = $normalizedCommand['data']['originalFilename'];
+        $command->filePath = $normalizedValue['data']['filePath'];
+        $command->originalFilename = $normalizedValue['data']['originalFilename'];
 
         return $command;
     }

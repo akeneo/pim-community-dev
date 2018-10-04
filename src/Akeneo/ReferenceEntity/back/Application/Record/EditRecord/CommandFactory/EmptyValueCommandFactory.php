@@ -18,25 +18,21 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommandFactory
+class EmptyValueCommandFactory implements EditValueCommandFactoryInterface
 {
-    /** @var EditValueCommandFactoryRegistryInterface */
-    private $valueCommandFactoryRegistry;
-
-    public function __construct(EditValueCommandFactoryRegistryInterface $valueCommandFactoryRegistry)
+    public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        $this->valueCommandFactoryRegistry = $valueCommandFactoryRegistry;
+        return
+            $attribute instanceof AbstractAttribute &&
+            (null === $normalizedValue['data'] || '' === $normalizedValue['data']);
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new AbstractEditValueCommand();
+        $command = new EmptyValueCommand();
         $command->attribute = $attribute;
         $command->channel = $normalizedValue['channel'];
         $command->locale = $normalizedValue['locale'];
-        $command->data = $this->valueCommandFactoryRegistry
-            ->getFactory($attribute)
-            ->create($attribute, $normalizedValue['data']);
 
         return $command;
     }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\TextUpdater;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -15,56 +15,58 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class TextUpdaterSpec extends ObjectBehavior
+class EmptyUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(TextUpdater::class);
+        $this->shouldHaveType(EmptyUpdater::class);
     }
 
-    function it_only_supports_edit_text_value_command()
+    function it_only_supports_empty_value_command()
     {
-        $this->supports(new EditFileValueCommand())->shouldReturn(false);
-        $this->supports(new EditTextValueCommand())->shouldReturn(true);
+        $this->supports(new EmptyValueCommand())->shouldReturn(true);
+        $this->supports(new EditTextValueCommand())->shouldReturn(false);
     }
 
-    function it_edits_the_text_value_of_a_record(Record $record) {
+    function it_empty_value_of_a_record(
+        Record $record
+    ) {
         $textAttribute = $this->getAttribute();
 
-        $editTextValueCommand = new EditTextValueCommand();
-        $editTextValueCommand->attribute = $textAttribute;
-        $editTextValueCommand->channel = 'ecommerce';
-        $editTextValueCommand->locale = 'fr_FR';
-        $editTextValueCommand->text = 'A name';
-        $value = Value::create(
-            $editTextValueCommand->attribute->getIdentifier(),
-            ChannelReference::createfromNormalized($editTextValueCommand->channel),
-            LocaleReference::createfromNormalized($editTextValueCommand->locale),
-            TextData::createFromNormalize($editTextValueCommand->text)
-        );
+        $editEmptyValueCommand = new EmptyValueCommand();
+        $editEmptyValueCommand->attribute = $textAttribute;
+        $editEmptyValueCommand->channel = 'ecommerce';
+        $editEmptyValueCommand->locale = 'fr_FR';
 
-        $this->__invoke($record, $editTextValueCommand);
+        $value = Value::create(
+            $editEmptyValueCommand->attribute->getIdentifier(),
+            ChannelReference::createfromNormalized($editEmptyValueCommand->channel),
+            LocaleReference::createfromNormalized($editEmptyValueCommand->locale),
+            EmptyData::create()
+        );
+        $this->__invoke($record, $editEmptyValueCommand);
         $record->setValue($value)->shouldBeCalled();
     }
 
     function it_throws_if_it_does_not_support_the_command(Record $record)
     {
-        $wrongCommand = new EditFileValueCommand();
+        $wrongCommand = new EditTextValueCommand();
         $this->supports($wrongCommand)->shouldReturn(false);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
     }

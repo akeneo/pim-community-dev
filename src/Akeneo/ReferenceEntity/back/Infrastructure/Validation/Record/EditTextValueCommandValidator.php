@@ -108,7 +108,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
     private function checkValidationRule(EditTextValueCommand $command)
     : ConstraintViolationListInterface
     {
-        if ($command->attribute->hasValidationRule() || null === $command->text) {
+        if ($command->attribute->hasValidationRule()) {
             return new ConstraintViolationList();
         }
 

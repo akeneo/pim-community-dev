@@ -80,7 +80,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
 
-        $editRecordValueCommandFactoryRegistry->getFactory($descriptionAttribute)->willReturn($textValueCommandFactory);
+        $editRecordValueCommandFactoryRegistry->getFactory($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($textValueCommandFactory);
         $textValueCommandFactory->create($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($editDescriptionCommand);
 
         $command = $this->create($normalizedCommand);
