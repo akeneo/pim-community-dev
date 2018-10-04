@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\UnsubscriptionWriter;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -25,8 +28,9 @@ use PhpSpec\ObjectBehavior;
  */
 class UnsubscriptionWriterSpec extends ObjectBehavior
 {
-    public function let(StepExecution $stepExecution): void
+    public function let(UnsubscribeProductHandler $handler, StepExecution $stepExecution): void
     {
+        $this->beConstructedWith($handler);
         $this->setStepExecution($stepExecution);
     }
 
@@ -40,14 +44,31 @@ class UnsubscriptionWriterSpec extends ObjectBehavior
         $this->shouldHaveType(UnsubscriptionWriter::class);
     }
 
-    public function it_unsusbscribes_products($stepExecution): void
-    {
-        $stepExecution->incrementSummaryInfo('unsubscribed')->shouldBeCalledTimes(2);
+    public function it_unsusbscribes_products(
+        $handler,
+        $stepExecution,
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(42);
+        $handler->handle(new UnsubscribeProductCommand(42))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('unsubscribed')->shouldBeCalled();
 
-        $items = [
-            new ProductSubscription(new Product(), 'fake-subscription-id'),
-            new ProductSubscription(new Product(), 'another-fake-subscription-id'),
-        ];
-        $this->write($items)->shouldReturn(null);
+        $this->write([$product])->shouldReturn(null);
+    }
+
+    public function it_throws_an_exception_if_product_is_not_subscribed(
+        $handler,
+        $stepExecution,
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn('a-sku');
+
+        $handler->handle(new UnsubscribeProductCommand(42))->willThrow(
+            new ProductSubscriptionException('Product is not subscribed')
+        );
+
+        $stepExecution->incrementSummaryInfo('unsubscribed')->shouldNotBeCalled();
+        $this->shouldThrow(InvalidItemException::class)->during('write', [[$product]]);
     }
 }

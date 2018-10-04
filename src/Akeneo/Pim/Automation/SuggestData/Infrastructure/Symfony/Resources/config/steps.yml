@@ -37,3 +37,4 @@ services:
             - '@pim_enrich.reader.database.product'
             - '@akeneo.pim.automation.suggest_data.connector.processor.unsubscription'
             - '@akeneo.pim.automation.suggest_data.connector.writer.unsubscription'
+            - 1
