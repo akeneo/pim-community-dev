@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor\UnsubscriptionProcessor;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -25,11 +23,6 @@ use PhpSpec\ObjectBehavior;
  */
 class UnsubscriptionProcessorSpec extends ObjectBehavior
 {
-    public function let(ProductSubscriptionRepository $productSubscriptionRepository): void
-    {
-        $this->beConstructedWith($productSubscriptionRepository);
-    }
-
     public function it_is_an_item_processor(): void
     {
         $this->shouldImplement(ItemProcessorInterface::class);
@@ -40,14 +33,8 @@ class UnsubscriptionProcessorSpec extends ObjectBehavior
         $this->shouldHaveType(UnsubscriptionProcessor::class);
     }
 
-    public function it_does_not_process_unsubscribed_products(
-        $productSubscriptionRepository,
-        ProductInterface $product
-    ): void {
-        $product->getId()->willReturn(42);
-        $product->getIdentifier()->willReturn('foo');
-        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
-
-        $this->shouldThrow(InvalidItemException::class)->during('process', [$product]);
+    public function it_processes_products(ProductInterface $product): void
+    {
+        $this->process($product)->shouldReturn($product);
     }
 }

@@ -31,9 +31,10 @@ services:
     akeneo.pim.automation.suggest_data.connector.step.unsubscribe_products:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'subscribe_products'
+            - 'unsubscribe_products'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.product'
             - '@akeneo.pim.automation.suggest_data.connector.processor.unsubscription'
             - '@akeneo.pim.automation.suggest_data.connector.writer.unsubscription'
+            - 1

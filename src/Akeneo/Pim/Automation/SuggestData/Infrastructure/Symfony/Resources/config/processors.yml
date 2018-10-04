@@ -7,5 +7,3 @@ services:
             
     akeneo.pim.automation.suggest_data.connector.processor.unsubscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor\UnsubscriptionProcessor'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
