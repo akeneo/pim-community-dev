@@ -5,8 +5,7 @@ namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFacto
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommandFactory;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EmptyValueCommandFactorySpec extends ObjectBehavior
@@ -16,7 +15,7 @@ class EmptyValueCommandFactorySpec extends ObjectBehavior
         $this->shouldHaveType(EmptyValueCommandFactory::class);
     }
 
-    function it_only_supports_create_empty_value_of_any_attributes(ImageAttribute $image, TextAttribute $text)
+    function it_only_supports_create_empty_value_of_any_attributes(AbstractAttribute $attribute)
     {
         $normalizedValue = [
             'channel' => 'ecommerce',
@@ -24,21 +23,20 @@ class EmptyValueCommandFactorySpec extends ObjectBehavior
             'data'    => null
         ];
 
-        $this->supports($image, $normalizedValue)->shouldReturn(true);
-        $this->supports($text, $normalizedValue)->shouldReturn(true);
+        $this->supports($attribute, $normalizedValue)->shouldReturn(true);
     }
 
-    function it_creates_file_value(ImageAttribute $imageAttribute)
+    function it_creates_file_value(AbstractAttribute $attribute)
     {
         $normalizedValue = [
             'channel' => 'ecommerce',
             'locale'  => 'fr_FR',
             'data' => null
         ];
-        $command = $this->create($imageAttribute, $normalizedValue);
+        $command = $this->create($attribute, $normalizedValue);
 
         $command->shouldBeAnInstanceOf(EmptyValueCommand::class);
-        $command->attribute->shouldBeEqualTo($imageAttribute);
+        $command->attribute->shouldBeEqualTo($attribute);
         $command->channel->shouldBeEqualTo('ecommerce');
         $command->locale->shouldBeEqualTo('fr_FR');
     }
