@@ -288,7 +288,6 @@ services:
         arguments:
             - '@translator'
             - '@pim_connector.event_listener.archivist'
-            - '@pim_standard_format_serializer'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
             - '@pim_internal_api_serializer'
