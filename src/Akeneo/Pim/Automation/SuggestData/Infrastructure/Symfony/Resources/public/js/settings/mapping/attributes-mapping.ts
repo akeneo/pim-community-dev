@@ -1,5 +1,7 @@
+import BaseForm = require('pimenrich/js/view/base');
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 import BaseForm = require('pimenrich/js/view/base');
+import * as $ from 'jquery';
 import * as _ from 'underscore';
 import {EventsHash} from "backbone";
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
@@ -275,20 +277,14 @@ class AttributeMapping extends BaseForm {
   }
 
   private updateAttributeOptionsMapping(event: any) {
-    console.log(event);
-    this.manageAttributeOptionsMapping();
-    //.then(attributeOptionsMapping => {
-    //  console.log(attributeOptionsMapping);
-      //this.data = assets;
+    const $line = $(event.currentTarget).closest('.line');
+    const pimAiAttributeCode = $line.find('.attribute-selector').data('pim-ai-attribute-code');
+    const catalogAttributeCode = $line.find('input[name="mapping.' + pimAiAttributeCode + '.attribute"]').val() as string;
 
-      //this.trigger('collection:change', assets);
-      //this.render();
-    //});
+    this.manageAttributeOptionsMapping(catalogAttributeCode);
   }
 
-  private manageAttributeOptionsMapping() {
-    //const deferred = $.Deferred();
-
+  private manageAttributeOptionsMapping(catalogAttributeCode: string) {
     FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit').then((form: any) => {
       let modal = new BootstrapModal({
         className: 'modal modal--fullPage modal--topButton',
@@ -308,17 +304,13 @@ class AttributeMapping extends BaseForm {
       form
         .setFamilyLabel('family')
         .setPimAiAttributeLabel('Pim Ai Attribute')
-        .setPimAttributeCode('color')
+        .setPimAttributeCode(catalogAttributeCode)
         .setFamilyCode('router')
         .setElement(modal.$('.modal-body'))
         .render();
 
-      //modal.on('cancel', deferred.reject);
       modal.on('ok', () => {
-        //const attributeOptions = _.sortBy(form.getItems(), 'code');
         modal.close();
-
-        //deferred.resolve(attributeOptions);
       });
     });
 

@@ -18,5 +18,5 @@ extensions:
             template: pim/template/common/description-header
             templateParams:
                 title: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.sub_title
-                illustration: Helpcenter-settings.svg
+                illustration: Robot.svg
                 description: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.description

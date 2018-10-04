@@ -1,8 +1,10 @@
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from "underscore";
+import SimpleSelectAttributeOption = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute-option');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
+const Routing = require('routing');
 const template = require('pimee/template/settings/mapping/attribute-options-mapping');
 
 interface NormalizedAttributeOptionsMapping {
@@ -127,19 +129,47 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   private innerRender() {
+    const mapping = (<NormalizedAttributeOptionsMapping> this.attributeOptionsMapping).mapping;
     this.$el.html(this.template({
       title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
         familyLabel: this.familyLabel,
         pimAiAttributeLabel: this.pimAiAttributeLabel,
       }),
-      mapping: (<NormalizedAttributeOptionsMapping> this.attributeOptionsMapping).mapping,
+      mapping,
       pim_ai_attribute_option: __(this.config.labels.pim_ai_attribute_option),
       catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
       suggest_data: __(this.config.labels.suggest_data),
       statuses: this.getMappingStatuses(),
     }));
 
+    Object.keys(mapping).forEach((pimAiAttributeOptionCode: string) => {
+      this.appendAttributeOptionSelector(pimAiAttributeOptionCode);
+    });
+
     this.renderExtensions();
+  }
+
+  /**
+   * @param {string} pimAiAttributeOptionCode
+   */
+  private appendAttributeOptionSelector(pimAiAttributeOptionCode: string) {
+    const $dom = this.$el.find(
+      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeOptionCode + '"]'
+    );
+    const attributeSelector = new SimpleSelectAttributeOption({
+      config: {
+        fieldName: 'mapping.' + pimAiAttributeOptionCode + '.attribute_option',
+        label: '',
+      },
+      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
+    });
+    attributeSelector.setChoiceUrl(
+      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.pimAttributeCode})
+    );
+    attributeSelector.configure().then(() => {
+      attributeSelector.setParent(this);
+      $dom.html(attributeSelector.render().$el);
+    });
   }
 }
 
