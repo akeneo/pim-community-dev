@@ -3,11 +3,11 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -10,12 +11,8 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
-use Pim\Bundle\EnrichBundle\Flash\Message;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -278,7 +275,6 @@ class CategoryTreeController extends Controller
         }
 
         $category->setCode($request->get('label'));
-        $this->eventDispatcher->dispatch(CategoryEvents::PRE_CREATE, new GenericEvent($category));
         $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -288,7 +284,6 @@ class CategoryTreeController extends Controller
                 $this->categorySaver->save($category);
                 $message = new Message(sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
                 $this->addFlash('success', $message);
-                $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
                 return new JsonResponse(
                     [
@@ -327,7 +322,6 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->findCategory($id);
-        $this->eventDispatcher->dispatch(CategoryEvents::PRE_EDIT, new GenericEvent($category));
         $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -337,7 +331,6 @@ class CategoryTreeController extends Controller
                 $this->categorySaver->save($category);
                 $message = new Message(sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
                 $this->addFlash('success', $message);
-                $this->eventDispatcher->dispatch(CategoryEvents::POST_EDIT, new GenericEvent($category));
             }
         }
 

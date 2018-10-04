@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\EventListener;
 
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;

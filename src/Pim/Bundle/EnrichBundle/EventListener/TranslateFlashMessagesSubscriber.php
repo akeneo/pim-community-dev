@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
-use Pim\Bundle\EnrichBundle\Flash\Message;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

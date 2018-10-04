@@ -28,7 +28,6 @@ class PimEnrichExtension extends Extension
             'pim_enrich_max_products_category_removal',
             $configs[0]['max_products_category_removal']
         );
-        $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('category_counters.yml');
@@ -43,9 +42,7 @@ class PimEnrichExtension extends Extension
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');
-        $loader->load('factories.yml');
         $loader->load('files.yml');
-        $loader->load('filters.yml');
         $loader->load('forms.yml');
         $loader->load('handlers.yml');
         $loader->load('job_constraints.yml');
@@ -67,9 +64,5 @@ class PimEnrichExtension extends Extension
         $loader->load('view_elements/group_type.yml');
         $loader->load('view_elements/mass_edit.yml');
         $loader->load('writers.yml');
-
-        if ($config['record_mails']) {
-            $loader->load('mail_recorder.yml');
-        }
     }
 }

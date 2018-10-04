@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\File;
+namespace Akeneo\Pim\Enrichment\Bundle\File;
 
 /**
  * Filetype guesser interface
@@ -12,7 +12,7 @@ namespace Pim\Bundle\EnrichBundle\File;
 interface FileTypeGuesserInterface
 {
     /**
-     * Return the type (defined in Pim\Bundle\EnrichBundle\File\FileTypes) corresponding to the specified MIME type
+     * Return the type (defined in Akeneo\Pim\Enrichment\Bundle\File\FileTypes) corresponding to the specified MIME type
      *
      * @param string $mimeType
      *

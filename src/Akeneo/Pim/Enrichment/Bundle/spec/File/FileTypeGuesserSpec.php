@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\File;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\File;
 
-use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
+use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
+use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\File\FileTypes;
 
 class FileTypeGuesserSpec extends ObjectBehavior
 {

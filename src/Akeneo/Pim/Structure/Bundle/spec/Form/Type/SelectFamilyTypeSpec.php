@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Type;
+namespace spec\Akeneo\Pim\Structure\Bundle\Form\Type;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType;
 use Akeneo\Pim\Structure\Bundle\Form\Type\SelectFamilyType;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
