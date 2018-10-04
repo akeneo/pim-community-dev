@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\StructureVersion\EventListener;
+namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Bridge\Doctrine\RegistryInterface;

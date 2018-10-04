@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\StructureVersion\Provider;
+namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;

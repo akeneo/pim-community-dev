@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\StructureVersion\EventListener;
+namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
