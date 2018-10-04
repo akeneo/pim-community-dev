@@ -3,6 +3,8 @@ parameters:
     pim_enrich.query.elasticsearch.sorter.in_group.class: Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter
     pim_enrich.elasticsearch.from_size_cursor_factory.class: Pim\Bundle\EnrichBundle\Elasticsearch\FromSizeCursorFactory
     pim_enrich.query.product_and_product_model_query_builder.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
+    pim_enrich.query.product_and_product_model_search_aggregator.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelSearchAggregator
+    pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilderFactory
     pim_enrich.datagrid.product_batch_size: 25
 
 services:
@@ -28,10 +30,11 @@ services:
     # Services used by the products and product models' grid
     # here, products and product models should be gathered by the most top level product model
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
-        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
 
     pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
         public: false
@@ -53,3 +56,9 @@ services:
             - '@pim_catalog.repository.product_model'
             - '%pim_enrich.datagrid.product_batch_size%'
             - 'pim_catalog_product'
+
+    pim_enrich.query.product_and_product_model_search_aggregator:
+        public: false
+        class: '%pim_enrich.query.product_and_product_model_search_aggregator.class%'
+        arguments:
+            - '@pim_catalog.repository.category'

@@ -291,6 +291,7 @@ services:
             - '@pim_standard_format_serializer'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.rest.api_client:
         class: '%pim_enrich.controller.rest.api_client.class%'

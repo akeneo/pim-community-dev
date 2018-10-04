@@ -25,12 +25,21 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /** @var ProductQueryBuilderInterface */
     private $pqb;
 
+    /** @var ProductAndProductModelSearchAggregator */
+    private $searchAggregator;
+
     /**
-     * @param ProductQueryBuilderInterface $pqb
+     * @param ProductQueryBuilderInterface                $pqb
+     * @param ProductAndProductModelSearchAggregator|null $searchAggregator
+     *
+     * @todo @merge - remove null
      */
-    public function __construct(ProductQueryBuilderInterface $pqb)
-    {
+    public function __construct(
+        ProductQueryBuilderInterface $pqb,
+        ProductAndProductModelSearchAggregator $searchAggregator = null
+    ) {
         $this->pqb = $pqb;
+        $this->searchAggregator = $searchAggregator;
     }
 
     /**
@@ -88,8 +97,9 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             $this->addFilter('parent', Operators::IS_EMPTY, null);
         }
 
-        if (!$this->hasRawFilter('field', 'parent')) {
-            $this->aggregateResults();
+        /** @todo @merge remove null != $this->searchAggregator on master */
+        if (!$this->hasRawFilter('field', 'parent') && null !== $this->searchAggregator) {
+            $this->searchAggregator->aggregateResults($this->getQueryBuilder(), $this->getRawFilters());
         }
 
         return $this->pqb->execute();
@@ -122,6 +132,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasEntityTypeFilter = $this->hasRawFilter('field', 'entity_type');
         $hasAncestorsIdsFilter = $this->hasRawFilter('field', 'ancestor.id');
         $hasSelfAndAncestorsIdsFilter = $this->hasRawFilter('field', 'self_and_ancestor.id');
+        $hasGroupsFilter = $this->hasRawFilter('field', 'groups');
         $hasCategoryFilter = $this->hasFilterOnCategoryWhichImplyAggregation();
 
         return !$hasAttributeFilters &&
@@ -131,6 +142,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             !$hasEntityTypeFilter &&
             !$hasAncestorsIdsFilter &&
             !$hasSelfAndAncestorsIdsFilter &&
+            !$hasGroupsFilter &&
             !$hasCategoryFilter;
     }
 
@@ -169,113 +181,5 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         ));
 
         return $hasFilter;
-    }
-
-    /**
-     * Aggregates the results by taking advantage of the raw filters defined on the attributes and the categories.
-     */
-    private function aggregateResults(): void
-    {
-        $clauses = [];
-        $attributeCodes = $this->getAttributeCodes();
-        foreach ($attributeCodes as $attributeCode) {
-            $clauses[] = [
-                'terms' => ['attributes_of_ancestors' => [$attributeCode]],
-            ];
-        }
-
-        $categoryCodes = $this->getCategoryCodes();
-        if (!empty($categoryCodes)) {
-            $clauses[] = [
-                'terms' => ['categories_of_ancestors' => $categoryCodes],
-            ];
-        }
-
-        if (!empty($clauses)) {
-            $this->getQueryBuilder()->addFilter([
-                'bool' => [
-                    'must_not' => [
-                        'bool' => [
-                            'filter' => $clauses,
-                        ],
-                    ],
-                ],
-            ]);
-        }
-
-        $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator();
-        if (!empty($attributeCodesWithIsEmptyOperator)) {
-            $this->getQueryBuilder()->addFilter([
-                'terms' => [
-                    'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator,
-                ],
-            ]);
-        }
-    }
-
-    /**
-     * Returns the attribute codes for which there is a filter on.
-     *
-     * @return string[]
-     */
-    private function getAttributeCodes(): array
-    {
-        $attributeFilters = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                return 'attribute' === $filter['type'];
-            }
-        );
-
-        return array_column($attributeFilters, 'field');
-    }
-
-    /**
-     * Returns the category codes for which there is a filter on.
-     *
-     * @return string[]
-     */
-    private function getCategoryCodes(): array
-    {
-        $categoriesFilter = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                return 'field' === $filter['type'] &&
-                    'categories' === $filter['field'] &&
-                    (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator']);
-            }
-        );
-
-        $categoryCodes = [];
-        foreach ($categoriesFilter as $categoryFilter) {
-            $categoryCodes = array_merge($categoryCodes, $categoryFilter['value']);
-        }
-
-        return $categoryCodes;
-    }
-
-    /**
-     * Returns the attribute codes for which there is a filter on with operator IsEmpty
-     *
-     * @return string[]
-     */
-    private function getAttributeCodesWithIsEmptyOperator(): array
-    {
-        $attributeFilters = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                $operator = $filter['operator'];
-
-                return
-                    'attribute' === $filter['type'] &&
-                    (
-                        Operators::IS_EMPTY === $operator ||
-                        Operators::IS_EMPTY_FOR_CURRENCY === $operator ||
-                        Operators::IS_EMPTY_ON_ALL_CURRENCIES === $operator
-                    );
-            }
-        );
-
-        return array_column($attributeFilters, 'field');
     }
 }

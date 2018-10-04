@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
@@ -19,9 +20,17 @@ class VersionNormalizerSpec extends ObjectBehavior
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        UserContext $userContext
     ) {
-        $this->beConstructedWith($userManager, $translator, $datetimePresenter, $presenterRegistry, $attributeRepository);
+        $this->beConstructedWith(
+            $userManager,
+            $translator,
+            $datetimePresenter,
+            $presenterRegistry,
+            $attributeRepository,
+            $userContext
+        );
     }
 
     function it_supports_versions(Version $version)
@@ -34,6 +43,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $translator,
         $datetimePresenter,
         $presenterRegistry,
+        $userContext,
         Version $version,
         User $steve,
         PresenterInterface $numberPresenter,
@@ -57,7 +67,6 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getVersion()->willReturn(12);
         $version->getLoggedAt()->willReturn($versionTime);
         $translator->getLocale()->willReturn('en_US');
-        $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
@@ -71,8 +80,15 @@ class VersionNormalizerSpec extends ObjectBehavior
             'weight'             => ['old' => '', 'new' => '10,1234'],
         ];
 
-        $options = ['locale' => 'fr_FR'];
+        $options = [
+            'locale' => 'fr_FR',
+        ];
+        $datetimePresenterOtions = [
+            'locale' => 'fr_FR',
+            'timezone' => 'Europe/Paris',
+        ];
         $translator->getLocale()->willReturn('fr_FR');
+        $userContext->getUserTimezone()->willReturn('Europe/Paris');
 
         $attributeRepository
             ->getAttributeTypeByCodes(['maximum_frame_rate', 'price', 'weight'])
@@ -96,6 +112,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $numberPresenter->present('', $options + ['versioned_attribute' => 'maximum_frame_rate'])->willReturn('');
         $pricesPresenter->present('', $options)->willReturn('');
         $metricPresenter->present('', $options + ['versioned_attribute' => 'weight'])->willReturn('');
+        $datetimePresenter->present($versionTime, $datetimePresenterOtions)->willReturn('01/01/1985 09:41 AM');
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
@@ -114,6 +131,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userManager,
         $translator,
         $datetimePresenter,
+        $userContext,
         Version $version
     ) {
         $versionTime = new \DateTime();
@@ -133,6 +151,8 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userManager->findUserByUsername('steve')->willReturn(null);
 
         $translator->trans('pim_user.user.removed_user')->willReturn('Utilisateur supprimé');
+
+        $userContext->getUserTimezone()->willThrow(\RuntimeException::class);
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,

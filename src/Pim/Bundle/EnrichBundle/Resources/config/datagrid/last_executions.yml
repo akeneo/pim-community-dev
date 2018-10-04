@@ -10,7 +10,7 @@ datagrid:
             date:
                 label:         job_tracker.filter.started_at
                 data_name:     createTime
-                type:          datetime
+                type:          datetime_with_user_timezone
                 frontend_type: datetime
             status:
                 label:         Status
