@@ -31,7 +31,7 @@ interface Config {
 }
 
 /**
- * TODO
+ * Displays the full modal for the attribute options mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -79,24 +79,48 @@ class AttributeOptionsMapping extends BaseForm {
     return this;
   }
 
+  /**
+   * Sets the Family label (for the header display)
+   *
+   * @param {string} familyLabel
+   * @return AttributeOptionsMapping
+   */
   public setFamilyLabel(familyLabel: string): AttributeOptionsMapping {
     this.familyLabel = familyLabel;
 
     return this;
   }
 
+  /**
+   * Sets the PIM.ai attribute label (for the header display)
+   *
+   * @param {string} pimAiAttributeLabel
+   * @return AttributeOptionsMapping
+   */
   public setPimAiAttributeLabel(pimAiAttributeLabel: string): AttributeOptionsMapping {
     this.pimAiAttributeLabel = pimAiAttributeLabel;
 
     return this;
   }
 
+  /**
+   * Sets the Catalog family code (for the current attribute options fetching)
+   *
+   * @param {string} familyCode
+   * @return AttributeOptionsMapping
+   */
   public setFamilyCode(familyCode: string): AttributeOptionsMapping {
     this.familyCode = familyCode;
 
     return this;
   }
 
+  /**
+   * Sets the PIM.ai attribute code (for the current attribute options fetching)
+   *
+   * @param {string} pimAttributeCode
+   * @return AttributeOptionsMapping
+   */
   public setPimAttributeCode(pimAttributeCode: string): AttributeOptionsMapping {
     this.pimAttributeCode = pimAttributeCode;
 
@@ -115,7 +139,12 @@ class AttributeOptionsMapping extends BaseForm {
     return statuses;
   }
 
-  private fetchMapping(): JQuery.Promise<any> {
+  /**
+   * Fetch the mapping and return a
+   *
+   * @return {JQueryPromise<NormalizedAttributeOptionsMapping>}
+   */
+  private fetchMapping(): JQueryPromise<NormalizedAttributeOptionsMapping> {
     return $.when(
       FetcherRegistry
         .getFetcher('attribute-options-mapping')
@@ -126,8 +155,11 @@ class AttributeOptionsMapping extends BaseForm {
     );
   }
 
-  private innerRender() {
-    const mapping = (<NormalizedAttributeOptionsMapping> this.getFormData()).mapping;
+  /**
+   * Renders the full modal
+   */
+  private innerRender(): void {
+    const mapping = this.getFormData().mapping as NormalizedAttributeOptionsMapping;
     this.$el.html(this.template({
       title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
         familyLabel: this.familyLabel,

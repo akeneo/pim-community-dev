@@ -139,7 +139,7 @@ class AttributeMapping extends BaseForm {
    */
   public events(): EventsHash {
     return {
-      'click .option-mapping': this.updateAttributeOptionsMapping,
+      'click .option-mapping': this.openAttributeOptionsMappingModal,
     }
   }
 
@@ -252,11 +252,11 @@ class AttributeMapping extends BaseForm {
 
   /**
    * This method will show or hide the Attribute Option buttons.
-   * The first parameter is the current mapping, from pimAiAttribute to pimAttribute.
+   * The first parameter is the current mapping, from pimAiAttributeCode to pimAttributeCode.
    *
-   * @param {{ [key: string]: string | null}} mapping
+   * @param { [pimAiAttributeCode: string]: string | null} mapping
    */
-  private toggleAttributeOptionButtons(mapping: { [key: string]: string | null }) {
+  private toggleAttributeOptionButtons(mapping: { [pimAiAttributeCode: string]: string | null }) {
     const pimAttributes = Object.values(mapping).filter((pimAttribute) => {
       return '' !== pimAttribute && null !== pimAttribute;
     });
@@ -279,16 +279,17 @@ class AttributeMapping extends BaseForm {
     });
   }
 
-  private updateAttributeOptionsMapping(event: any) {
+  /**
+   * Open the modal for the attribute options mapping
+   *
+   * @param { currentTarget: any } event
+   */
+  private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
     const $line = $(event.currentTarget).closest('.line');
     const pimAiAttributeLabel = $line.data('pim_ai_attribute');
     const pimAiAttributeCode = $line.find('.attribute-selector').data('pim-ai-attribute-code');
     const catalogAttributeCode = $line.find('input[name="mapping.' + pimAiAttributeCode + '.attribute"]').val() as string;
 
-    this.manageAttributeOptionsMapping(catalogAttributeCode, pimAiAttributeLabel);
-  }
-
-  private manageAttributeOptionsMapping(catalogAttributeCode: string, pimAiAttributeLabel: string) {
     const familyCode = Router.match(window.location.hash).params.familyCode;
     $.when(
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
@@ -321,8 +322,6 @@ class AttributeMapping extends BaseForm {
         modal.close();
       });
     });
-
-    //return deferred.promise();
   }
 }
 
