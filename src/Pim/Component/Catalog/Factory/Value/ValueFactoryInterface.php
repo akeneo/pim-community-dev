@@ -25,6 +25,8 @@ interface ValueFactoryInterface
      * @param mixed              $data
      *
      * @return ValueInterface
+     *
+     * @todo merge master : add an argument at the end  : "bool $ignoreUnknownData". Cf ReferenceDataCollectionValueFactory class.
      */
     public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data);
 

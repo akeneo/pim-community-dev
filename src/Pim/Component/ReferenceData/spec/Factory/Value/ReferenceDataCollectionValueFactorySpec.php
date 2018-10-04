@@ -206,7 +206,7 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foo' => ['bar']]]);
     }
 
-    function it_throws_an_exception_when_provided_data_is_not_an_existing_reference_data_code(
+    function it_throws_an_exception_when_reference_data_code_does_not_exist_with_inactive_ignore_unknown_data_option(
         $repositoryResolver,
         ReferenceDataRepositoryInterface $referenceDataRepository,
         AttributeInterface $attribute
@@ -230,7 +230,39 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foobar']]);
+        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foobar'], false]);
+    }
+
+    function it_does_not_stop_when_provided_data_is_not_an_existing_reference_data_code_with_ignore_unknown_data_option_active(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        Fabric $silk,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn(null);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            ['silk', 'cotton'],
+            true
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
+        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
+        $productValue->shouldHaveOnlyOneReferenceData();
+        $productValue->shouldHaveReferenceData([$silk]);
     }
 
     public function getMatchers()
@@ -263,6 +295,9 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
                 }
 
                 return $hasFabrics;
+            },
+            'haveOnlyOneReferenceData' => function ($subject) {
+                return 1 === count($subject->getData());
             },
         ];
     }
