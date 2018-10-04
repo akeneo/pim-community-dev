@@ -20,8 +20,14 @@ class EditTextValueCommandFactorySpec extends ObjectBehavior
         ImageAttribute $image,
         TextAttribute $text
     ) {
-        $this->supports($image, [])->shouldReturn(false);
-        $this->supports($text, [])->shouldReturn(true);
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale'  => 'en_US',
+            'data'    => 'A description'
+        ];
+
+        $this->supports($image, $normalizedValue)->shouldReturn(false);
+        $this->supports($text, $normalizedValue)->shouldReturn(true);
     }
 
     function it_creates_text_value(TextAttribute $textAttribute)

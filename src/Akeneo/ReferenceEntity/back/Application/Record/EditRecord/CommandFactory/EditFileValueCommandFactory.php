@@ -23,7 +23,7 @@ class EditFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        return $attribute instanceof ImageAttribute;
+        return $attribute instanceof ImageAttribute && null !== $normalizedValue['data'];
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand

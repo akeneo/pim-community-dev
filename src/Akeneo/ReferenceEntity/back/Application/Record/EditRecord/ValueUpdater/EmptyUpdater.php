@@ -14,6 +14,7 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -27,11 +28,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class TextUpdater implements ValueUpdaterInterface
+class EmptyUpdater implements ValueUpdaterInterface
 {
     public function supports(AbstractEditValueCommand $command): bool
     {
-        return $command instanceof EditTextValueCommand;
+        return $command instanceof EmptyValueCommand;
     }
 
     public function __invoke(Record $record, AbstractEditValueCommand $command): void
@@ -47,7 +48,7 @@ class TextUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $text = TextData::createFromNormalize($command->text);
+        $text = EmptyData::create();
 
         $value = Value::create($attribute, $channelReference, $localeReference, $text);
         $record->setValue($value);

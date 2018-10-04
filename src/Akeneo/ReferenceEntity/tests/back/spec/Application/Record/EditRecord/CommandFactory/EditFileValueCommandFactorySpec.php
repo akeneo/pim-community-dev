@@ -18,8 +18,17 @@ class EditFileValueCommandFactorySpec extends ObjectBehavior
 
     function it_only_supports_create_value_of_image_attribute(ImageAttribute $image, TextAttribute $text)
     {
-        $this->supports($image, [])->shouldReturn(true);
-        $this->supports($text, [])->shouldReturn(false);
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale'  => 'fr_FR',
+            'data'    => [
+                'filePath'         => '/a/file/path/my_image.png',
+                'originalFilename' => 'my_image.png',
+            ],
+        ];
+
+        $this->supports($image, $normalizedValue)->shouldReturn(true);
+        $this->supports($text, $normalizedValue)->shouldReturn(false);
     }
 
     function it_creates_file_value(ImageAttribute $imageAttribute)

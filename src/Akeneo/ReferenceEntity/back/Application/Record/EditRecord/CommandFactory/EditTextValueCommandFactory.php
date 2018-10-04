@@ -23,7 +23,10 @@ class EditTextValueCommandFactory implements EditValueCommandFactoryInterface
 {
     public function supports(AbstractAttribute $abstractAttribute, array $normalizedValue): bool
     {
-        return $abstractAttribute instanceof TextAttribute && is_string($normalizedValue['data']);
+        return
+            $abstractAttribute instanceof TextAttribute &&
+            '' !== $normalizedValue['data'] &&
+            is_string($normalizedValue['data']);
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand

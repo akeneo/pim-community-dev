@@ -62,9 +62,7 @@ class FileUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $fileData = null !== $command->filePath && '' !== $command->filePath ?
-            $this->getFileData($record, $command, $attribute, $channelReference, $localeReference) :
-            EmptyData::create();
+        $fileData = $this->getFileData($record, $command, $attribute, $channelReference, $localeReference);
 
         $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
     }

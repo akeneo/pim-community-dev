@@ -491,20 +491,24 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheTextAttributeOfTheRecordToAnInvalidValue()
     {
-        $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
-            'code'                       => self::RECORD_CODE,
-            'labels'                     => [],
-            'values'                     => [
-                [
-                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => null,
-                    'locale'    => null,
-                    'data'      => 150,
+        try {
+            $editCommand = $this->editRecordCommandFactory->create([
+                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+                'code'                       => self::RECORD_CODE,
+                'labels'                     => [],
+                'values'                     => [
+                    [
+                        'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                        'channel'   => null,
+                        'locale'    => null,
+                        'data'      => 150,
+                    ],
                 ],
-            ],
-        ]);
-        $this->executeCommand($editCommand);
+            ]);
+            $this->executeCommand($editCommand);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
     }
 
     /**

@@ -105,7 +105,7 @@ Feature: Edit an record
     Given an reference entity with a text attribute
     And a record belonging to this reference entity with a value of "Philippe stark" for the text attribute
     When the user updates the text attribute of the record to an invalid value type
-    Then there should be a validation error on the property text attribute with message "This value should be of type string."
+    Then an exception is thrown with message "There was no factory found to create the edit record value command of the attribute "name_designer_fingerprint""
 
   @acceptance-back
   Scenario: Updating the text value with more characters than the attribute's max length
