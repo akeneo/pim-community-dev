@@ -17,7 +17,13 @@ class FileDataSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedThrough('createFromNormalize', [
-            ['filePath' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'originalFilename' => 'file.ext']
+            [
+                'filePath' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
+                'originalFilename' => 'file.ext',
+                'size' => 1024,
+                'mimeType' => 'image/ext',
+                'extension' => 'ext'
+            ]
         ]);
     }
 
@@ -29,7 +35,13 @@ class FileDataSpec extends ObjectBehavior
     public function it_can_be_constructed_through_normalized_data()
     {
         $this->beConstructedThrough('createFromNormalize', [
-            ['file_key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'original_filename' => 'file.ext']
+            [
+                'filePath' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
+                'originalFilename' => 'file.ext',
+                'size' => 1024,
+                'mimeType' => 'image/ext',
+                'extension' => 'ext'
+            ]
         ]);
         $this->shouldBeAnInstanceOf(FileData::class);
     }
@@ -66,7 +78,13 @@ class FileDataSpec extends ObjectBehavior
     public function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn(
-            ['filePath' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'originalFilename' => 'file.ext']
+            [
+                'filePath' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd',
+                'originalFilename' => 'file.ext',
+                'size' => 1024,
+                'mimeType' => 'image/ext',
+                'extension' => 'ext'
+            ]
         );
     }
 }

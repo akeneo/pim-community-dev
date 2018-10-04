@@ -22,6 +22,9 @@ class ValueCollectionSpec extends ObjectBehavior
         $file = new FileInfo();
         $file->setKey('/a/file/key');
         $file->setOriginalFilename('my_file.png');
+        $file->setSize(1024);
+        $file->setMimeType('image/png');
+        $file->setExtension('png');
 
         $this->beConstructedThrough('fromValues', [
             [
@@ -60,8 +63,11 @@ class ValueCollectionSpec extends ObjectBehavior
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
                 'data'      => [
-                    'filePath'              => '/a/file/key',
+                    'filePath' => '/a/file/key',
                     'originalFilename' => 'my_file.png',
+                    'size' => 1024,
+                    'mimeType' => 'image/png',
+                    'extension' => 'png',
                 ],
             ],
         ]);
@@ -91,6 +97,9 @@ class ValueCollectionSpec extends ObjectBehavior
                 'data'      => [
                     'filePath'              => '/a/file/key',
                     'originalFilename' => 'my_file.png',
+                    'size' => 1024,
+                    'mimeType' => 'image/png',
+                    'extension' => 'png'
                 ],
             ],
         ]);
@@ -120,6 +129,9 @@ class ValueCollectionSpec extends ObjectBehavior
                 'data'      => [
                     'filePath'              => '/a/file/key',
                     'originalFilename' => 'my_file.png',
+                    'size' => 1024,
+                    'mimeType' => 'image/png',
+                    'extension' => 'png'
                 ],
             ],
             'name_designer_fingerprint_mobile_fr_FR' => [

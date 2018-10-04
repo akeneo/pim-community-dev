@@ -154,7 +154,10 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $fileInfo = new FileInfo();
         $fileInfo
             ->setOriginalFilename('image_1.jpg')
-            ->setKey('test/image_1.jpg');
+            ->setKey('test/image_1.jpg')
+            ->setSize(1024)
+            ->setMimeType('image/jpeg')
+            ->setExtension('jpg');
 
         $imageInfo = new FileInfo();
         $imageInfo
