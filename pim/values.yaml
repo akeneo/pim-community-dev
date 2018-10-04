@@ -5,6 +5,8 @@ global:
     pfid: test-pim
   monitoring:
     enabled: false
+  backup:
+    enabled: true    
 common:
   extraLabels: []
   pimMasterDomain: nil
