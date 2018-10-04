@@ -3,7 +3,7 @@ config:
         # Controllers
         pim/controller-registry:
             controllers:
-                akeneo_suggest_data_connection_index:
+                akeneo_suggest_data_connection_edit:
                     module: pimee/settings/mapping/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:

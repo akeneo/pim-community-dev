@@ -1,82 +1,15 @@
-akeneo_suggest_data_subscribe:
-    path: /suggest-data/subscription/{productId}
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:subscribeAction }
-    methods: [POST]
+akeneo_suggest_data_subscription:
+    resource: '@AkeneoSuggestDataBundle/Resources/config/routing/subscription.yml'
+    prefix: '/suggest-data/subscription'
 
-akeneo_suggest_data_unsubscribe:
-    path: /suggest-data/subscription/{productId}
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:unsubscribeAction }
-    methods: [DELETE]
+akeneo_suggest_data_connection:
+    resource: '@AkeneoSuggestDataBundle/Resources/config/routing/connection.yml'
+    prefix: '/suggest-data/connection'
 
-akeneo_suggest_data_franklin_subscription_status:
-    path: /suggest-data/{productId}/subscription-status
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:getProductSubscriptionStatusAction }
-    methods: [GET]
+akeneo_suggest_data_identifiers_mapping:
+    resource: '@AkeneoSuggestDataBundle/Resources/config/routing/identifiers_mapping.yml'
+    prefix: '/suggest-data/mapping/identifiers'
 
-akeneo_suggest_data_connection_index:
-    path: /suggest-data/pim-ai/configuration
-    methods: [GET]
-
-akeneo_suggest_data_connection_get:
-    path: /suggest-data/connection
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:getAction }
-    requirements:
-        code: '[\w._-]+'
-    methods: [GET]
-
-akeneo_suggest_data_connection_post:
-    path: /suggest-data/connection
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:postAction }
-    requirements:
-        code: '[\w._-]+'
-    methods: [POST]
-
-akeneo_suggest_data_is_connection_activated:
-    path: /suggest-data/connection/is-activated
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
-    requirements:
-        code: '[\w._-]+'
-    methods: [GET]
-
-akeneo_suggest_data_identifiers_mapping_edit:
-    path: /suggest-data/mapping/identifiers/edit
-    methods: [GET]
-
-akeneo_suggest_data_identifiers_mapping_save:
-    path: /suggest-data/mapping/identifiers
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction }
-    methods: [POST]
-
-akeneo_suggest_data_identifiers_mapping_get:
-    path: /suggest-data/mapping/identifiers
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:getIdentifiersMappingAction }
-    methods: [GET]
-
-akeneo_suggest_data_attributes_mapping_index:
-    path: /suggest-data/mapping/attributes/index
-    methods: [GET]
-
-akeneo_sugggest_data_attributes_mapping_list:
-    path: /suggest-data/mapping/attributes/
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.attributes_mapping:listAction }
-    methods: [GET]
-
-akeneo_sugggest_data_attributes_mapping_get:
-    path: /suggest-data/mapping/attributes/{identifier}
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.attributes_mapping:getAction }
-    requirements:
-        identifier: '[\w._-]+'
-    methods: [GET]
-
-akeneo_suggest_data_attributes_mapping_edit:
-    path: /suggest-data/mapping/attributes/{familyCode}/edit
-    requirements:
-        familyCode: '[\w._-]+'
-    methods: [GET]
-
-akeneo_suggest_data_attributes_mapping_update:
-    path: /suggest-data/mapping/attributes/{identifier}
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.attributes_mapping:updateAction }
-    requirements:
-        identifier: '[\w._-]+'
-    methods: [POST]
+akeneo_suggest_data_attributes_mapping:
+    resource: '@AkeneoSuggestDataBundle/Resources/config/routing/attributes_mapping.yml'
+    prefix: '/suggest-data/mapping/attributes'
