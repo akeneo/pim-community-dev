@@ -51,6 +51,10 @@ class UnsubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInt
 
     /**
      * {@inheritdoc}
+     *
+     * As there is no endpoint for bulk unsubscription, the batch size MUST be 1 (meaning
+     * there should only be one product in the $items argument); in the opposite case,
+     * throwing an InvalidItemException would skip the remaining items in the batch
      */
     public function write(array $items): void
     {
