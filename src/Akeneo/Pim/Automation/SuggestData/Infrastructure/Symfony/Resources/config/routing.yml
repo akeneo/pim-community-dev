@@ -1,7 +1,7 @@
-akeneo_suggest_data_push_product:
-    path: /suggest-data/{productId}/push-product
+akeneo_suggest_data_subscribe:
+    path: /suggest-data/subscription/{productId}
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:subscribeAction }
-    methods: [GET]
+    methods: [POST]
 
 akeneo_suggest_data_unsubscribe:
     path: /suggest-data/subscription/{productId}

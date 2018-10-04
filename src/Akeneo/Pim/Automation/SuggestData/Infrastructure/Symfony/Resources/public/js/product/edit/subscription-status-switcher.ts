@@ -90,8 +90,8 @@ class SubscriptionStatusSwitcher extends BaseView {
    */
   private subscribeProduct(): void {
     $.ajax({
-      method: 'GET',
-      url: Routing.generate('akeneo_suggest_data_push_product', {productId: this.getFormData().meta.id}),
+      method: 'POST',
+      url: Routing.generate('akeneo_suggest_data_subscribe', {productId: this.getFormData().meta.id}),
     }).done(() => {
       messenger.notify(
         'success',
