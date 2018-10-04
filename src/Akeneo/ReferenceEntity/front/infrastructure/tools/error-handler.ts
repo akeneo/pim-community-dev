@@ -1,21 +1,21 @@
 const router = require('pim/router');
 
-export default (error: any) => {
-  if (500 === error.status) {
-    throw new Error('Internal Server error');
+export class BackendError extends Error {
+  constructor(public request: any) {
+    super(request.statusText);
   }
-  if (0 === error.status) {
-    throw new Error('Client is offline');
+}
+
+export default (request: any) => {
+  if (400 === request.status) {
+    return request.responseJSON;
   }
-  if (400 === error.status) {
-    return error.responseJSON;
-  }
-  if (401 === error.status) {
+  if (401 === request.status) {
     router.redirectToRoute('pim_user_security_login');
     location.reload();
 
-    throw new Error('User not logged in');
+    throw new BackendError(request);
   }
 
-  throw new Error(error.responseJSON);
+  throw new BackendError(request);
 };
