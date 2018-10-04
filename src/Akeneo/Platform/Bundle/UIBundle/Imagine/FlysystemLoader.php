@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Imagine\Loader;
+namespace Akeneo\Platform\Bundle\UIBundle\Imagine;
 
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;

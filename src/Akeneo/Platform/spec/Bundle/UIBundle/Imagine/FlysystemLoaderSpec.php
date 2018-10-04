@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Imagine\Loader;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Imagine;
 
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\FileStorage;
 
 class FlysystemLoaderSpec extends ObjectBehavior
 {

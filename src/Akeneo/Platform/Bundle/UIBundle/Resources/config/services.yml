@@ -1,0 +1,8 @@
+services:
+    pim_enrich.imagine.loader.flysystem:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader'
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['catalogStorage']
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
