@@ -163,11 +163,6 @@ suites:
         psr4_prefix: Pim\Component\Enrich
         spec_path: src/Pim/Component/Enrich
         src_path: src/Pim/Component/Enrich
-    User:
-        namespace: Akeneo\UserManagement\Component
-        psr4_prefix: Akeneo\UserManagement\Component
-        spec_path: src/Akeneo/UserManagement/Component
-        src_path: src/Akeneo/UserManagement/Component
     ApiBundle:
         namespace: Akeneo\Tool\Bundle\ApiBundle
         psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
@@ -188,11 +183,12 @@ suites:
         psr4_prefix: Pim\Bundle\LocalizationBundle
         spec_path: src/Pim/Bundle/LocalizationBundle
         src_path: src/Pim/Bundle/LocalizationBundle
-    UserBundle:
-        namespace: Akeneo\UserManagement\Bundle
-        psr4_prefix: Akeneo\UserManagement\Bundle
-        spec_path: src/Akeneo/UserManagement/Bundle
-        src_path: src/Akeneo/UserManagement/Bundle
+    User:
+        namespace: Akeneo\UserManagement
+        psr4_prefix: Akeneo\UserManagement
+        spec_path: tests/back/UserManagement
+        src_path: src/Akeneo/UserManagement
+        spec_prefix: Specification
     ## Oro bundles
     OroFilterBundle:
         namespace: Oro\Bundle\FilterBundle
