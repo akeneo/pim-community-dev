@@ -25,6 +25,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 
 /**
+ * Empty the value of record
+ *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
@@ -48,9 +50,9 @@ class EmptyUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $text = EmptyData::create();
+        $emptyData = EmptyData::create();
 
-        $value = Value::create($attribute, $channelReference, $localeReference, $text);
+        $value = Value::create($attribute, $channelReference, $localeReference, $emptyData);
         $record->setValue($value);
     }
 }

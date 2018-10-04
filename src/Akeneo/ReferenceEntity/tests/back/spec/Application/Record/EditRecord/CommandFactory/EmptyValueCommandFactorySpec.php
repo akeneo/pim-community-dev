@@ -26,7 +26,7 @@ class EmptyValueCommandFactorySpec extends ObjectBehavior
         $this->supports($attribute, $normalizedValue)->shouldReturn(true);
     }
 
-    function it_creates_file_value(AbstractAttribute $attribute)
+    function it_creates_empty_value(AbstractAttribute $attribute)
     {
         $normalizedValue = [
             'channel' => 'ecommerce',
