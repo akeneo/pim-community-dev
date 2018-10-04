@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityChecker;
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VisibilityCheckerInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VoterVisibilityChecker;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 
@@ -45,8 +45,8 @@ class VoterVisibilityCheckerSpec extends ObjectBehavior
         $securityFacade->isGranted(self::OWN, $object)->willReturn(true);
         $securityFacade->isGranted(self::VIEW, $object)->willReturn(false);
 
-        $this->isVisible(['attribute' => 'spec\Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::OWN', 'object' => $object])->shouldReturn(true);
-        $this->isVisible(['attribute' => 'spec\Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::VIEW', 'object' => $object])->shouldReturn(false);
+        $this->isVisible(['attribute' => 'spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::OWN', 'object' => $object])->shouldReturn(true);
+        $this->isVisible(['attribute' => 'spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::VIEW', 'object' => $object])->shouldReturn(false);
     }
 
     function it_can_extract_the_object_from_the_context($securityFacade)
@@ -55,6 +55,6 @@ class VoterVisibilityCheckerSpec extends ObjectBehavior
 
         $securityFacade->isGranted(self::OWN, $object)->shouldBeCalled();
 
-        $this->isVisible(['attribute' => 'spec\Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::OWN', 'object' => '[foo][bar]'], ['foo' => ['bar' => $object]]);
+        $this->isVisible(['attribute' => 'spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VoterVisibilityCheckerSpec::OWN', 'object' => '[foo][bar]'], ['foo' => ['bar' => $object]]);
     }
 }

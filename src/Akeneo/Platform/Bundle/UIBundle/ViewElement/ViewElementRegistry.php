@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ViewElement;
+namespace Akeneo\Platform\Bundle\UIBundle\ViewElement;
 
 /**
  * Registry of view elements

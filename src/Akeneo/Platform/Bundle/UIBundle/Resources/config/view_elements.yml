@@ -1,10 +1,10 @@
 parameters:
-    pim_enrich.view_element.registry.class:                     Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry
-    pim_enrich.view_element.base.class:                         Pim\Bundle\EnrichBundle\ViewElement\BaseViewElement
-    pim_enrich.view_element.visibility_checker.acl.class:       Pim\Bundle\EnrichBundle\ViewElement\Checker\AclVisibilityChecker
-    pim_enrich.view_element.visibility_checker.voter.class:     Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityChecker
-    pim_enrich.view_element.visibility_checker.edit_form.class: Pim\Bundle\EnrichBundle\ViewElement\Checker\EditFormVisibilityChecker
-    pim_enrich.view_element.visibility_checker.non_empty_property.class: Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker
+    pim_enrich.view_element.registry.class:                     Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry
+    pim_enrich.view_element.base.class:                         Akeneo\Platform\Bundle\UIBundle\ViewElement\BaseViewElement
+    pim_enrich.view_element.visibility_checker.acl.class:       Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\AclVisibilityChecker
+    pim_enrich.view_element.visibility_checker.voter.class:     Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VoterVisibilityChecker
+    pim_enrich.view_element.visibility_checker.edit_form.class: Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\EditFormVisibilityChecker
+    pim_enrich.view_element.visibility_checker.non_empty_property.class: Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker
 
 services:
     pim_enrich.view_element.registry:

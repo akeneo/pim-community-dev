@@ -1,10 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ViewElement;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\ViewElement;
 
-use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 
 class ViewElementRegistrySpec extends ObjectBehavior
 {

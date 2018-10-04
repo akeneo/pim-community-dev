@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ViewElement;
+namespace Akeneo\Platform\Bundle\UIBundle\ViewElement;
 
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VisibilityCheckerInterface;
 
 /**
  * Basic view element

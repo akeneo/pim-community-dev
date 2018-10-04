@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker;
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use PhpSpec\ObjectBehavior;
 
 class NonEmptyPropertyVisibilityCheckerSpec extends ObjectBehavior

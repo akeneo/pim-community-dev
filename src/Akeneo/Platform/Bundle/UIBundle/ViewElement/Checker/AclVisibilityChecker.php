@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 

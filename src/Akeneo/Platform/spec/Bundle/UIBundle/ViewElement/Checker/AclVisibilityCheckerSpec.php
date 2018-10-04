@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\AclVisibilityChecker;
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\AclVisibilityChecker;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 

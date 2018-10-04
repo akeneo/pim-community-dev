@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
 /**
  * Interface to determine if a view element is visible or not.

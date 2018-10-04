@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
 /**
  * Displays a view element only in an edit form context

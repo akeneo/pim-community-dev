@@ -3,9 +3,9 @@
 namespace spec\Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
-use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 

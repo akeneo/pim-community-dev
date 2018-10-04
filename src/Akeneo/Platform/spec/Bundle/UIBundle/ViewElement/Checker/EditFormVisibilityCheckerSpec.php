@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker;
 
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\EditFormVisibilityChecker;
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\EditFormVisibilityChecker;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\FormInterface;

@@ -56,7 +56,6 @@ class PimEnrichExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('steps.yml');
         $loader->load('structure_version.yml');
-        $loader->load('view_elements.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('view_elements/category.yml');
         $loader->load('view_elements/group_type.yml');
