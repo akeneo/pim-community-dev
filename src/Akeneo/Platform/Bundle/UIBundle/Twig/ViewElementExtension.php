@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
-use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**

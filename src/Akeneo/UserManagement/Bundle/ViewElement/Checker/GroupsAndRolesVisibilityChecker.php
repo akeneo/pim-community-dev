@@ -2,7 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\ViewElement\Checker;
 
-use Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker;
 
 /**
  * Displays the groups and roles tab in the user form if groups or roles are defined

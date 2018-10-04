@@ -1001,3 +1001,9 @@
 - Move `Pim\Bundle\EnrichBundle\Factory\MassEditNotificationFactory` to `Akeneo\Platform\Bundle\ImportExportBundle\Factory\MassEditNotificationFactory`
 - Move `Pim\Bundle\EnrichBundle\Mailer\MailRecorder` to `Akeneo\Platform\Bundle\ImportExportBundle\Test\MailRecorder`
 - Move `Pim\Bundle\EnrichBundle\Flash\Message` to `Akeneo\Platform\Bundle\UIBundle\Flash\Message`
+- Move `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ProductEditDataFilter`
+- Move `Pim\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ProductValuesEditDataFilter`
+- Move `Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader` to `Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader`
+- Move `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` to `Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver`
+- Move `Pim\Bundle\EnrichBundle\VersionStrategy\CacheBusterVersionStrategy` to `Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy`
+- Move namespace `Pim\Bundle\EnrichBundle\ViewElement` to `Akeneo\Platform\Bundle\UIBundle\ViewElement`

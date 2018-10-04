@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;
 use Symfony\Component\Form\FormInterface;
