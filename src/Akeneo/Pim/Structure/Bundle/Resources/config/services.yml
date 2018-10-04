@@ -98,3 +98,10 @@ services:
                 xlsx_group_type_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.twig.attribute_extension:
+        class: 'Akeneo\Pim\Structure\Bundle\Twig\AttributeExtension'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: twig.extension }

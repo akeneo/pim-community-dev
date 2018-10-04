@@ -982,3 +982,12 @@
 - Remove `Pim\Bundle\EnrichBundle\Controller\GroupController`
 - Remove `Pim\Bundle\EnrichBundle\Controller\JobExecutionController`
 - Remove `Pim\Bundle\EnrichBundle\Controller\ProductController`
+- Move `Pim\Bundle\EnrichBundle\Twig\LocaleExtension` to `Akeneo\Channel\Bundle\Twig\LocaleExtension`
+- Move `Pim\Bundle\EnrichBundle\Twig\CategoryExtension` to `Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension`
+- Move `Pim\Bundle\EnrichBundle\Twig\CategoryExtension` to `Akeneo\Pim\Structure\Bundle\Twig\CategoryExtension`
+- Move `Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\ObjectClassExtension`
+- Move `Pim\Bundle\EnrichBundle\Twig\TranslationsExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\TranslationsExtension`
+- Move `Pim\Bundle\EnrichBundle\Twig\VersionExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\VersionExtension`
+- Move `Pim\Bundle\EnrichBundle\Twig\ViewElementExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension`
+- Move `Pim\Bundle\EnrichBundle\Exception\MissingOptionException` to `Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException`
+- Remove `Pim\Bundle\EnrichBundle\Exception\DeleteException`

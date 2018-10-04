@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Exception;
+namespace Akeneo\Platform\Bundle\UIBundle\Exception;
 
 /**
  * Exception thrown when missing an option

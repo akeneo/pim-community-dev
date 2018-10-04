@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\EnrichBundle\Twig\CategoryExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

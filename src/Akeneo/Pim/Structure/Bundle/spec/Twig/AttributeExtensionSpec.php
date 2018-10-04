@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Twig;
+namespace spec\Akeneo\Pim\Structure\Bundle\Twig;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class AttributeExtensionSpec extends ObjectBehavior
 {

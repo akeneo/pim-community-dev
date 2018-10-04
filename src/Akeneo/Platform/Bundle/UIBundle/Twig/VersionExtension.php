@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Akeneo\Platform\CommunityVersion;
 use Akeneo\Platform\VersionProviderInterface;
 
 /**

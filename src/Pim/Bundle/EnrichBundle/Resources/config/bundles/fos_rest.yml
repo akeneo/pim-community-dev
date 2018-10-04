@@ -20,9 +20,6 @@ fos_rest:
     routing_loader:
         default_format: json
     exception:
-        codes:
-            Pim\Bundle\EnrichBundle\Exception\DeleteException: HTTP_CONFLICT
         messages:
-            Pim\Bundle\EnrichBundle\Exception\DeleteException: true
             Symfony\Component\HttpKernel\Exception\ConflictHttpException: true
             Symfony\Component\HttpKernel\Exception\HttpException: true

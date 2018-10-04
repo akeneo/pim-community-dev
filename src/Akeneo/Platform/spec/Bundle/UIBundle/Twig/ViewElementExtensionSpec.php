@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Twig;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Twig;
 
-use Pim\Bundle\EnrichBundle\Twig\ViewElementExtension;
+use Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;

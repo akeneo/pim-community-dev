@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Twig;
+namespace spec\Akeneo\Channel\Bundle\Twig;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use PhpSpec\ObjectBehavior;
 
 class LocaleExtensionSpec extends ObjectBehavior
 {

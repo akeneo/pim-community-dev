@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Subscriber;
 
+use Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException;
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Inflector\Inflector;
-use Pim\Bundle\EnrichBundle\Exception\MissingOptionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;

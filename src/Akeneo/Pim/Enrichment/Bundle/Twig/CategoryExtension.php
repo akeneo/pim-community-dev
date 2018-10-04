@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Pim\Enrichment\Bundle\Twig;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Doctrine\Common\Collections\Collection;
 use Twig_SimpleFunction;
 
 /**

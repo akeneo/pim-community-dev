@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Channel\Bundle\Twig;
 
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Intl;
