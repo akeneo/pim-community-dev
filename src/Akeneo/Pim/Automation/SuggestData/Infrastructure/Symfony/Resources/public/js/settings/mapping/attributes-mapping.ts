@@ -281,13 +281,14 @@ class AttributeMapping extends BaseForm {
 
   private updateAttributeOptionsMapping(event: any) {
     const $line = $(event.currentTarget).closest('.line');
+    const pimAiAttributeLabel = $line.data('pim_ai_attribute');
     const pimAiAttributeCode = $line.find('.attribute-selector').data('pim-ai-attribute-code');
     const catalogAttributeCode = $line.find('input[name="mapping.' + pimAiAttributeCode + '.attribute"]').val() as string;
 
-    this.manageAttributeOptionsMapping(catalogAttributeCode);
+    this.manageAttributeOptionsMapping(catalogAttributeCode, pimAiAttributeLabel);
   }
 
-  private manageAttributeOptionsMapping(catalogAttributeCode: string) {
+  private manageAttributeOptionsMapping(catalogAttributeCode: string, pimAiAttributeLabel: string) {
     const familyCode = Router.match(window.location.hash).params.familyCode;
     $.when(
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
@@ -310,8 +311,7 @@ class AttributeMapping extends BaseForm {
 
       form
         .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
-        // TODO Put real data
-        .setPimAiAttributeLabel('Pim Ai Attribute')
+        .setPimAiAttributeLabel(pimAiAttributeLabel)
         .setPimAttributeCode(catalogAttributeCode)
         .setFamilyCode(familyCode)
         .setElement(modal.$('.modal-body'))
