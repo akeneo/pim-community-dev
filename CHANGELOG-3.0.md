@@ -925,3 +925,4 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController`, add `AttributeFilterInterface` argument
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer`, add `AttributeRepositoryInterface` and `UserContext` arguments
 - Change constructor of `Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder`, add `ProductAndProductModelSearchAggregator` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController`, add `NormalizerInterface` argument

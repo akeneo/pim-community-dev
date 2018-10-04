@@ -44,7 +44,7 @@ class JobExecutionController
         JobExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        NormalizerInterface $normalizer = null
+        NormalizerInterface $normalizer
     ) {
         $this->translator = $translator;
         $this->archivist = $archivist;
