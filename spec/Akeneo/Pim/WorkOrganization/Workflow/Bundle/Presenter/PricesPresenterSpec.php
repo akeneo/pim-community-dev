@@ -2,14 +2,13 @@
 
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Doctrine\Common\Collections\Collection;
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Akeneo\Pim\Enrichment\Component\Product\Model;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 
 class PricesPresenterSpec extends ObjectBehavior
 {
