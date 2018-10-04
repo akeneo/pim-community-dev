@@ -6,4 +6,4 @@ extensions:
         position: 130
         config:
             title: akeneo_suggest_data.connection.page_title
-            to: akeneo_suggest_data_connection_index
+            to: akeneo_suggest_data_connection_edit

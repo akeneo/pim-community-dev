@@ -1,0 +1,24 @@
+akeneo_suggest_data_connection_edit:
+    path: /edit
+    methods: [GET]
+
+akeneo_suggest_data_connection_get:
+    path: /
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:getAction }
+    requirements:
+        code: '[\w._-]+'
+    methods: [GET]
+
+akeneo_suggest_data_connection_post:
+    path: /
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:postAction }
+    requirements:
+        code: '[\w._-]+'
+    methods: [POST]
+
+akeneo_suggest_data_is_connection_activated:
+    path: /is-activated
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
+    requirements:
+        code: '[\w._-]+'
+    methods: [GET]
