@@ -991,3 +991,13 @@
 - Move `Pim\Bundle\EnrichBundle\Twig\ViewElementExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension`
 - Move `Pim\Bundle\EnrichBundle\Exception\MissingOptionException` to `Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException`
 - Remove `Pim\Bundle\EnrichBundle\Exception\DeleteException`
+- Remove `Pim\Bundle\EnrichBundle\Event\CategoryEvents`
+- Move `Pim\Bundle\EnrichBundle\File\DefaultImageProvider` to `Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProvider`
+- Move `Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface` to `Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\File\FileTypeGuesser` to `Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesser`
+- Move `Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface` to `Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface`
+- Move `Pim\Bundle\EnrichBundle\File\FileTypes` to `Akeneo\Pim\Enrichment\Bundle\File\FileTypes`
+- Move `Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents` to `Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents`
+- Move `Pim\Bundle\EnrichBundle\Factory\MassEditNotificationFactory` to `Akeneo\Platform\Bundle\ImportExportBundle\Factory\MassEditNotificationFactory`
+- Move `Pim\Bundle\EnrichBundle\Mailer\MailRecorder` to `Akeneo\Platform\Bundle\ImportExportBundle\Test\MailRecorder`
+- Move `Pim\Bundle\EnrichBundle\Flash\Message` to `Akeneo\Platform\Bundle\UIBundle\Flash\Message`
