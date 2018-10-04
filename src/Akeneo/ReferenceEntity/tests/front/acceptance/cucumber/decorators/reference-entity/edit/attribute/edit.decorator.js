@@ -15,32 +15,29 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const setIsRequired = async value => {
-    const required = await nodeElement.$('.AknFieldContainer[data-code="isRequired"] input');
-    const requiredLabel = await nodeElement.$('.AknFieldContainer[data-code="isRequired"] label');
-    const currentValue = await required.getProperty('checked');
+    const required = await nodeElement.$('.AknFieldContainer[data-code="isRequired"] .AknCheckbox');
+    const currentValue = await required.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
-      await requiredLabel.click();
+      await required.click();
     }
   };
 
   const setIsTextarea = async value => {
-    const isTextarea = await nodeElement.$('.AknFieldContainer[data-code="isTextarea"] input');
-    const isTextareaLabel = await nodeElement.$('.AknFieldContainer[data-code="isTextarea"] label');
-    const currentValue = await isTextarea.getProperty('checked');
+    const required = await nodeElement.$('.AknFieldContainer[data-code="isTextarea"] .AknCheckbox');
+    const currentValue = await required.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
-      await isTextareaLabel.click();
+      await required.click();
     }
   };
 
   const setIsRichTextEditor = async value => {
-    const isRichTextEditor = await nodeElement.$('.AknFieldContainer[data-code="isRichTextEditor"] input');
-    const isRichTextEditorLabel = await nodeElement.$('.AknFieldContainer[data-code="isRichTextEditor"] label');
-    const currentValue = await isRichTextEditor.getProperty('checked');
+    const required = await nodeElement.$('.AknFieldContainer[data-code="isRichTextEditor"] .AknCheckbox');
+    const currentValue = await required.getProperty('data-checked');
 
     if (value != currentValue._remoteObject.value) {
-      await isRichTextEditorLabel.click();
+      await required.click();
     }
   };
 

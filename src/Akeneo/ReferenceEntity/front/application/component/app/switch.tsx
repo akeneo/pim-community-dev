@@ -20,7 +20,7 @@ const Switch = ({
   return (
     <label
       className={`AknSwitch ${readOnly ? 'AknSwitch--disabled' : ''}`}
-      tabIndex={0}
+      tabIndex={readOnly ? -1 : 0}
       role="checkbox"
       aria-checked={value ? 'true' : 'false'}
       onKeyPress={event => {

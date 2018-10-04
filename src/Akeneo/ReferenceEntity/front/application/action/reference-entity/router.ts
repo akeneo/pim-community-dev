@@ -8,6 +8,6 @@ export const redirectToReferenceEntity = (referenceEntity: ReferenceEntity, tab:
   });
 };
 
-export const redirectToReferenceEntityIndex = () => {
+export const redirectToReferenceEntityList = () => {
   return redirectToRoute('akeneo_reference_entities_reference_entity_index');
 };

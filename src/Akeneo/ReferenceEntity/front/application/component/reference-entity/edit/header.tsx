@@ -9,7 +9,9 @@ import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {catalogLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
+import Channel from 'akeneoreferenceentity/domain/model/channel';
+import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
 
 interface OwnProps {
   label: string;
@@ -25,15 +27,18 @@ interface OwnProps {
 interface StateProps extends OwnProps {
   context: {
     locale: string;
+    channel: string;
   };
   structure: {
     locales: Locale[];
+    channels: Channel[];
   };
 }
 
 interface DispatchProps {
   events: {
     onLocaleChanged: (locale: Locale) => void;
+    onChannelChanged: (channel: Channel) => void;
   };
 }
 
@@ -42,8 +47,10 @@ interface EditProps extends StateProps, DispatchProps {}
 const Header = ({
   label,
   image,
-  secondaryActions,
   primaryAction,
+  secondaryActions,
+  withChannelSwitcher,
+  withLocaleSwitcher,
   isDirty,
   breadcrumbConfiguration,
   context,
@@ -81,11 +88,23 @@ const Header = ({
           <div>
             <div className="AknTitleContainer-line">
               <div className="AknTitleContainer-context AknButtonList">
-                <LocaleSwitcher
-                  localeCode={context.locale}
-                  locales={structure.locales}
-                  onLocaleChange={events.onLocaleChanged}
-                />
+                {withChannelSwitcher ? (
+                  <ChannelSwitcher
+                    channelCode={context.channel}
+                    channels={structure.channels}
+                    locale={context.locale}
+                    onChannelChange={events.onChannelChanged}
+                    className="AknDropdown--right"
+                  />
+                ) : null}
+                {withLocaleSwitcher ? (
+                  <LocaleSwitcher
+                    localeCode={context.locale}
+                    locales={structure.locales}
+                    onLocaleChange={events.onLocaleChanged}
+                    className="AknDropdown--right"
+                  />
+                ) : null}
               </div>
             </div>
           </div>
@@ -98,14 +117,18 @@ const Header = ({
 export default connect(
   (state: State, ownProps: OwnProps): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channel =
+      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
 
     return {
       ...ownProps,
       context: {
         locale,
+        channel,
       },
       structure: {
         locales: state.structure.locales,
+        channels: state.structure.channels,
       },
     };
   },
@@ -114,6 +137,9 @@ export default connect(
       events: {
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
+        },
+        onChannelChanged: (channel: Channel) => {
+          dispatch(catalogChannelChanged(channel.code));
         },
       },
     };

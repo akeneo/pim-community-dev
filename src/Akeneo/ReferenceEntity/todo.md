@@ -2,21 +2,16 @@
 - Application/ReferenceEntity/Show/ShowReferenceEntityHandler should handle only one command it should maybe return only a ReadModel
 - Discuss about Domain/Model/ReferenceEntity/ReferenceEntity getters: they break the tell don't ask principle.
 - rename Domain/Model/ReferenceEntity/ReferenceEntityIdentifier:fromString to create: we cannot create them another way
-- create a read model for the read cases
 - Move the InMemory repository in the business code
 - Create builders for entities in the backend
 - Create LabelCollection from outside the domain object ReferenceEntity
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
 - add normalizer for reference entity
-- fix the form to take into account what the backend answered
 - test integration controller edit
 - add pqb filter, grid filter and peb filter for the reference entity value
 - Add remaining ACLs
-- Extract the buttons of the edit reference entity view so it comes from each of the tabs
-- switch to view models
 - Change read models to enforce properties are coherent (front)
-- remove index in error throw by the model constructor (front)
 - switch the rest of entities to models for the views (like attribute edit) (front)
 - switch from image to files (rework on the attribute model)
 - split create and edit model in files
@@ -47,3 +42,8 @@ DONE:
 - add keyboard shortcuts [DONE]
 - rework acceptance tests when the locale switcher will work [DONE]
 - add session storage for tab situation [FIXED BY URL]
+- remove index in error throw by the model constructor (front) [DONE]
+- switch to view models [DONE]
+- Extract the buttons of the edit reference entity view so it comes from each of the tabs [DONE]
+- fix the form to take into account what the backend answered [DONE]
+- create a read model for the read cases [DONE]

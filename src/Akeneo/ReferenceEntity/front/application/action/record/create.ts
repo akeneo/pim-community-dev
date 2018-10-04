@@ -2,7 +2,6 @@ import {
   notifyRecordCreateFailed,
   notifyRecordWellCreated,
 } from 'akeneoreferenceentity/application/action/record/notify';
-import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {recordCreationErrorOccured, recordCreationSucceeded} from 'akeneoreferenceentity/domain/event/record/create';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
@@ -14,6 +13,7 @@ import ValidationError, {createValidationError} from 'akeneoreferenceentity/doma
 import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
+import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
 
 export const createRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntity = getState().form.data;
@@ -33,7 +33,6 @@ export const createRecord = () => async (dispatch: any, getState: () => EditStat
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
       dispatch(recordCreationErrorOccured(validationErrors));
-      dispatch(notifyRecordCreateFailed());
 
       return;
     }
@@ -45,7 +44,7 @@ export const createRecord = () => async (dispatch: any, getState: () => EditStat
 
   dispatch(recordCreationSucceeded());
   dispatch(notifyRecordWellCreated());
-  dispatch(updateRecordResults());
+  dispatch(redirectToRecord(record));
 
   return;
 };

@@ -22,7 +22,7 @@ import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {redirectToReferenceEntityIndex} from 'akeneoreferenceentity/application/action/reference-entity/router';
+import {redirectToReferenceEntityList} from 'akeneoreferenceentity/application/action/reference-entity/router';
 
 export const saveReferenceEntity = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntity = denormalizeReferenceEntity(getState().form.data);
@@ -63,7 +63,7 @@ export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async
     }
 
     dispatch(notifyReferenceEntityWellDeleted());
-    dispatch(redirectToReferenceEntityIndex());
+    dispatch(redirectToReferenceEntityList());
   } catch (error) {
     dispatch(notifyReferenceEntityDeleteFailed());
 

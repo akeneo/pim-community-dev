@@ -28,7 +28,6 @@ export const createReferenceEntity = () => async (dispatch: any, getState: () =>
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
       dispatch(referenceEntityCreationErrorOccured(validationErrors));
-      dispatch(notifyReferenceEntityCreateFailed());
 
       return;
     }

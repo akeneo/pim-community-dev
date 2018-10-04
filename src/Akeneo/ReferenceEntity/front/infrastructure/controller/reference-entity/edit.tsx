@@ -17,6 +17,7 @@ import {updateAttributeList} from 'akeneoreferenceentity/application/action/attr
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -42,6 +43,7 @@ class ReferenceEntityEditController extends BaseController {
       this.store.dispatch(updateRecordResults());
       this.store.dispatch(updateAttributeList() as any);
       this.store.dispatch(updateActivatedLocales() as any);
+      this.store.dispatch(updateChannels() as any);
       document.addEventListener('keydown', shortcutDispatcher(this.store));
 
       mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});

@@ -6,6 +6,7 @@ import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
 import CreateRecordModal from 'akeneoreferenceentity/application/component/record/create';
 import __ from 'akeneoreferenceentity/tools/translator';
+import {redirectToReferenceEntityList} from 'akeneoreferenceentity/application/action/reference-entity/router';
 
 interface StateProps {
   sidebar: {
@@ -17,7 +18,11 @@ interface StateProps {
   };
 }
 
-interface DispatchProps {}
+interface DispatchProps {
+  events: {
+    backToReferenceEntityList: () => void;
+  };
+}
 
 export const SecondaryAction = ({onDelete}: {onDelete: () => void}) => {
   return (
@@ -27,6 +32,7 @@ export const SecondaryAction = ({onDelete}: {onDelete: () => void}) => {
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
           <button
+            tabIndex={-1}
             className="AknDropdown-menuLink"
             onClick={() => {
               if (confirm(__('pim_reference_entity.reference_entity.module.delete.confirm'))) {
@@ -56,6 +62,21 @@ interface EditProps extends StateProps, DispatchProps {}
 
 class ReferenceEntityEditView extends React.Component<EditProps> {
   public props: EditProps;
+  private backToReferenceEntityList = () => (
+    <span
+      role="button"
+      tabIndex={0}
+      className="AknColumn-navigationLink"
+      onClick={this.props.events.backToReferenceEntityList}
+      onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (' ' === event.key) {
+          this.props.events.backToReferenceEntityList();
+        }
+      }}
+    >
+      {__('pim_reference_entity.record.button.back')}
+    </span>
+  );
 
   render(): JSX.Element | JSX.Element[] {
     const TabView = sidebarProvider.getView(
@@ -73,7 +94,7 @@ class ReferenceEntityEditView extends React.Component<EditProps> {
             <TabView code={this.props.sidebar.currentTab} />
           </div>
         </div>
-        <Sidebar />
+        <Sidebar backButton={this.backToReferenceEntityList} />
         {this.props.createRecord.active ? <CreateRecordModal /> : null}
       </div>
     );
@@ -92,6 +113,15 @@ export default connect(
       },
       createRecord: {
         active: state.createRecord.active,
+      },
+    };
+  },
+  (dispatch: any): DispatchProps => {
+    return {
+      events: {
+        backToReferenceEntityList: () => {
+          dispatch(redirectToReferenceEntityList());
+        },
       },
     };
   }

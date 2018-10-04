@@ -20,7 +20,7 @@ const Sidebar = async (nodeElement, createElementDecorator, page) => {
 
   const getTabsCode = async () => {
     return await page.evaluate(sidebar => {
-      const tabs = sidebar.querySelectorAll('.AknColumn-navigationLink');
+      const tabs = sidebar.querySelectorAll('.AknColumn-navigationLink[data-tab]');
 
       return Object.values(tabs).map(tab => tab.dataset.tab);
     }, nodeElement);
@@ -32,15 +32,19 @@ const Sidebar = async (nodeElement, createElementDecorator, page) => {
     }, nodeElement);
   };
 
-  const clickOnTab = async (tabName) => {
+  const clickOnTab = async tabName => {
     page.waitForSelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
     // As the button doesn't have any size, we need to make it clickable by giving him a size
-    await page.evaluate((sidebar, tabName) => {
-      const button = sidebar.querySelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
+    await page.evaluate(
+      (sidebar, tabName) => {
+        const button = sidebar.querySelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
 
-      button.style.width = '100px';
-      button.style.height = '100px';
-    }, nodeElement, tabName);
+        button.style.width = '100px';
+        button.style.height = '100px';
+      },
+      nodeElement,
+      tabName
+    );
 
     const button = await nodeElement.$(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
     await button.click();
