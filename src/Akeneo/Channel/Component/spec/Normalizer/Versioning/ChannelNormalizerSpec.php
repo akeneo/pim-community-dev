@@ -4,7 +4,7 @@ namespace spec\Akeneo\Channel\Component\Normalizer\Versioning;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
-use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;

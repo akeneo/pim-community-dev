@@ -26,7 +26,7 @@ services:
             - '@pim_catalog.localization.localizer.number'
 
     pim_versioning.serializer.normalizer.flat.attribute:
-        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer'
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.attribute'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
@@ -50,7 +50,7 @@ services:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.option:
-        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer'
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeOptionNormalizer'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
@@ -88,7 +88,7 @@ services:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.family:
-        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer'
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versioning\FamilyNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.family'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
@@ -145,7 +145,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_versioning.serializer.normalizer.flat.attribute_group:
-        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer'
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeGroupNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.attribute_group'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
@@ -193,7 +193,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_versioning.serializer.normalizer.flat.association_type:
-        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer'
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versioning\AssociationTypeNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.association_type'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
