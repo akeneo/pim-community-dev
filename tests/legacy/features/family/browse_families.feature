@@ -24,6 +24,7 @@ Feature: Browse families
 
     Examples:
       | filter           | operator | value | result                                      | count |
+      | code             | contains | a     | Sandals and Sneakers                        | 2     |
       | attributeAsLabel |          | Name  | Boots, Heels, LED TVs, Sandals and Sneakers | 5     |
 
   Scenario: Successfully search on label
