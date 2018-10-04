@@ -1,16 +1,19 @@
-import BaseForm = require('pimenrich/js/view/base');
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 import BaseForm = require('pimenrich/js/view/base');
 import * as $ from 'jquery';
 import * as _ from 'underscore';
 import {EventsHash} from "backbone";
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
+import AttributeOptionsMapping = require("./attribute-options-mapping");
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
+const Router = require('pim/router');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
 const noDataTemplate = require('pim/template/common/no-data');
+const i18n = require('pim/i18n');
+const UserContext = require('pim/user-context');
 
 interface NormalizedAttributeMappingInterface {
   mapping: {
@@ -285,7 +288,11 @@ class AttributeMapping extends BaseForm {
   }
 
   private manageAttributeOptionsMapping(catalogAttributeCode: string) {
-    FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit').then((form: any) => {
+    const familyCode = Router.match(window.location.hash).params.familyCode;
+    $.when(
+      FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
+      FetcherRegistry.getFetcher('family').fetch(familyCode)
+    ).then((form: AttributeOptionsMapping, normalizedFamily: any) => {
       let modal = new BootstrapModal({
         className: 'modal modal--fullPage modal--topButton',
         modalOptions: {
@@ -302,11 +309,11 @@ class AttributeMapping extends BaseForm {
       modal.open();
 
       form
+        .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
         // TODO Put real data
-        .setFamilyLabel('family')
         .setPimAiAttributeLabel('Pim Ai Attribute')
         .setPimAttributeCode(catalogAttributeCode)
-        .setFamilyCode('router')
+        .setFamilyCode(familyCode)
         .setElement(modal.$('.modal-body'))
         .render();
 

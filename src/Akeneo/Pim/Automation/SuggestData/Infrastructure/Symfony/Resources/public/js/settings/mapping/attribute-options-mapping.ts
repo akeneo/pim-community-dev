@@ -17,7 +17,6 @@ interface NormalizedAttributeOptionsMapping {
       status: number,
     }
   }
-
 }
 
 interface Config {
