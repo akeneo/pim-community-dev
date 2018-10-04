@@ -70,7 +70,6 @@ config:
         pimee/pim-ai-connection/edit: akeneosuggestdata/js/pim-ai/form/edit.ts
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
         pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute.ts
-        pimee/settings/mapping/simple-select-attribute-option: akeneosuggestdata/js/settings/mapping/simple-select-attribute-option.ts
         pimee/settings/mapping/save: akeneosuggestdata/js/settings/mapping/save.ts
         pimee/settings/mapping/tabs: akeneosuggestdata/js/settings/mapping/tabs.ts
         pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector.ts

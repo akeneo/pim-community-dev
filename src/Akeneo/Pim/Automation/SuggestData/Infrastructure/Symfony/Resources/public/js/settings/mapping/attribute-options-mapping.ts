@@ -1,8 +1,8 @@
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from "underscore";
-import SimpleSelectAttributeOption = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute-option');
 
 const __ = require('oro/translator');
+const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Routing = require('routing');
 const template = require('pimee/template/settings/mapping/attribute-options-mapping');
@@ -55,7 +55,6 @@ class AttributeOptionsMapping extends BaseForm {
       suggest_data: '', // TODO Rename to attribute_option_code_mapping
     }
   };
-  private attributeOptionsMapping: NormalizedAttributeOptionsMapping | undefined = undefined;
 
   /**
    * {@inheritdoc}
@@ -70,9 +69,9 @@ class AttributeOptionsMapping extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    if (this.attributeOptionsMapping === undefined) {
+    if (Object.keys(this.getFormData()).length === 0) {
       this.fetchMapping().then((attributeOptionsMapping: NormalizedAttributeOptionsMapping) => {
-        this.attributeOptionsMapping = attributeOptionsMapping;
+        this.setData(attributeOptionsMapping);
         this.innerRender();
       });
     } else {
@@ -129,7 +128,7 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   private innerRender() {
-    const mapping = (<NormalizedAttributeOptionsMapping> this.attributeOptionsMapping).mapping;
+    const mapping = (<NormalizedAttributeOptionsMapping> this.getFormData()).mapping;
     this.$el.html(this.template({
       title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
         familyLabel: this.familyLabel,
@@ -156,7 +155,7 @@ class AttributeOptionsMapping extends BaseForm {
     const $dom = this.$el.find(
       '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeOptionCode + '"]'
     );
-    const attributeSelector = new SimpleSelectAttributeOption({
+    const attributeSelector = new SimpleSelectAsync({
       config: {
         fieldName: 'mapping.' + pimAiAttributeOptionCode + '.attribute_option',
         label: '',

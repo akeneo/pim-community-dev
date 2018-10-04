@@ -302,6 +302,7 @@ class AttributeMapping extends BaseForm {
       modal.open();
 
       form
+        // TODO Put real data
         .setFamilyLabel('family')
         .setPimAiAttributeLabel('Pim Ai Attribute')
         .setPimAttributeCode(catalogAttributeCode)
