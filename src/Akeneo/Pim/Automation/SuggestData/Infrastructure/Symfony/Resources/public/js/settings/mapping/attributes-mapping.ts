@@ -5,13 +5,13 @@ import * as _ from 'underscore';
 import {EventsHash} from "backbone";
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import AttributeOptionsMapping = require("./attribute-options-mapping");
+import Filterable = require('akeneosuggestdata/js/common/filterable');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
-const noDataTemplate = require('pim/template/common/no-data');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
@@ -28,7 +28,7 @@ interface NormalizedAttributeMappingInterface {
   };
 }
 
-interface AttributeMappingConfig {
+interface Config {
   labels: {
     pending: string,
     mapped: string,
@@ -61,8 +61,7 @@ class AttributeMapping extends BaseForm {
   };
 
   private readonly template = _.template(template);
-  private readonly noDataTemplate = _.template(noDataTemplate);
-  private readonly config: AttributeMappingConfig = {
+  private readonly config: Config = {
     labels: {
       pending: '',
       mapped: '',
@@ -76,7 +75,7 @@ class AttributeMapping extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: AttributeMappingConfig}) {
+  constructor(options: {config: Config}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -86,9 +85,9 @@ class AttributeMapping extends BaseForm {
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
-    return $.when(
-      this.onExtensions('pim_datagrid:filter-front', this.filter.bind(this)),
-    );
+    Filterable.set(this);
+
+    return BaseForm.prototype.configure.apply(this, arguments);
   }
 
   /**
@@ -98,23 +97,13 @@ class AttributeMapping extends BaseForm {
     this.$el.html('');
     const familyMapping: NormalizedAttributeMappingInterface = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
-    const gridHtml = this.template({
+    this.$el.html(this.template({
       mapping,
       statuses: this.getMappingStatuses(),
       pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
       catalog_attribute: __(this.config.labels.catalog_attribute),
       suggest_data: __(this.config.labels.suggest_data),
-    });
-    const noDataHtml = this.noDataTemplate({
-      __,
-      imageClass: '',
-      hint: __('pim_datagrid.no_results', {
-        entityHint: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'),
-      }),
-      subHint: 'pim_datagrid.no_results_subtitle',
-    });
-
-    this.$el.html(gridHtml + noDataHtml);
+    }));
 
     Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
       this.appendAttributeSelector(mapping, pimAiAttributeCode);
@@ -126,8 +115,8 @@ class AttributeMapping extends BaseForm {
       return acc;
     }, <{ [key: string]: string }> {}));
 
+    Filterable.afterRender(this, __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'));
 
-    this.toggleNoDataMessage();
     this.renderExtensions();
     this.delegateEvents();
 
@@ -141,78 +130,6 @@ class AttributeMapping extends BaseForm {
     return {
       'click .option-mapping': this.openAttributeOptionsMappingModal,
     }
-  }
-
-  /**
-   * Filters the rows with a filter.
-   * Each row contains a 'data' element called 'active-filters'. This element contains a list of filters. A filter is
-   * contained in this row if it is hidden by this filter. The row is displayed if there is no active filters in it,
-   * i.e. the active filters are empty.
-   *
-   * @param {{value: string, type: "equals" | "search", field: string}} filter
-   */
-  private filter(filter: { value: string, type: 'equals'|'search', field: string }): void {
-    this.$el.find('.searchable-row').each((_i: number, row: any) => {
-      const value = $(row).data(filter.field);
-      let filteredByThisFilter = false;
-      switch (filter.type) {
-        case 'equals': filteredByThisFilter = !this.filterEquals(filter.value, value); break;
-        case 'search': filteredByThisFilter = !this.filterSearch(filter.value, value); break;
-      }
-
-      let filters = $(row).data('active-filters');
-      if (undefined === filters) {
-        filters = [];
-      }
-      if ((filters.indexOf(filter.field) < 0) && filteredByThisFilter) {
-        filters.push(filter.field);
-      } else if ((filters.indexOf(filter.field) >= 0) && !filteredByThisFilter) {
-        filters.splice(filters.indexOf(filter.field), 1);
-      }
-      $(row).data('active-filters', filters);
-
-      filters.length > 0 ? $(row).hide() : $(row).show();
-
-      this.toggleNoDataMessage();
-    });
-  }
-
-  /**
-   * Toggle the "there is no data" message regarding the number of visible rows.
-   */
-  private toggleNoDataMessage(): void {
-    this.$el.find('.searchable-row:visible').length ?
-      this.$el.find('.no-data-inner').hide() :
-      this.$el.find('.no-data-inner').show();
-  }
-
-  /**
-   * Returns true if the values are the same.
-   *
-   * @param {string} filterValue
-   * @param {string} rowValue
-   *
-   * @returns {boolean}
-   */
-  private filterEquals(filterValue: string, rowValue: string): boolean {
-    return filterValue === '' || filterValue === rowValue;
-  }
-
-  /**
-   * Return if the row matches the search filter by words. If the user types 'foo bar', it will look for every row
-   * containing the strings 'foo' and 'bar', no matter the order of the words.
-   *
-   * @param {string} filterValue
-   * @param {string} rowValue
-   *
-   * @returns {boolean}
-   */
-  private filterSearch(filterValue: string, rowValue: string): boolean {
-    const words: string[] = filterValue.split(' ');
-
-    return words.reduce((acc, word) => {
-      return acc && rowValue.indexOf(word) >= 0;
-    }, true);
   }
 
   /**

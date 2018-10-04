@@ -6,20 +6,31 @@ const template = require('pim/template/datagrid/filter/search-filter');
 
 const TIMEOUT_DELAY = 250;
 
+interface Config {
+  fieldName: string;
+}
+
 /**
  * This module is a search filter but not related to a datagrid.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class FrontSearchFilter extends BaseForm {
-  public readonly template = _.template(template);
-  private timer: number|null = null;
+  private readonly template = _.template(template);
+  private timer: number | null = null;
+  private config: Config;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: object }) {
+  constructor(options: { config: Config }) {
     super({...options, ...{ className: 'AknFilterBox-searchContainer' }});
+
+    this.config = options.config;
+
+    if (!this.config.hasOwnProperty('fieldName')) {
+      throw new Error('fieldName should be declared as config in this module');
+    }
   }
 
   /**
@@ -71,7 +82,7 @@ class FrontSearchFilter extends BaseForm {
     this.trigger('pim_datagrid:filter-front', {
       value,
       type: 'search',
-      field: 'pim_ai_attribute',
+      field: this.config.fieldName,
     });
   }
 }

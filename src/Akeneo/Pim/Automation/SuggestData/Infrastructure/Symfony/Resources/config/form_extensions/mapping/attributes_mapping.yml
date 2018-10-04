@@ -108,6 +108,8 @@ extensions:
         parent: pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping
         position: 10
         targetZone: filters
+        config:
+            fieldName: 'pim_ai_attribute'
 
     pim-suggest-data-settings-attributes-mapping-index-status-filter:
         module: pimee/settings/mapping/status-filter

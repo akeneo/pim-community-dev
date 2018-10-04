@@ -20,3 +20,17 @@ extensions:
                 title: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.sub_title
                 illustration: Robot.svg
                 description: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.description
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-front-search-filter:
+        module: pimee/settings/front-search-filter
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit
+        position: 10
+        targetZone: filters
+        config:
+            fieldName: 'pim_ai_attribute_option'
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-status-filter:
+        module: pimee/settings/mapping/status-filter
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit
+        position: 20
+        targetZone: filters

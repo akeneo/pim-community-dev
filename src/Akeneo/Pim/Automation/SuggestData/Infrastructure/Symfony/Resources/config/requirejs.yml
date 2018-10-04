@@ -50,6 +50,9 @@ config:
                             get: akeneo_suggest_data_attribute_options_mapping_get
 
     paths:
+        # Common
+        pimee/common/filterable: akeneosuggestdata/js/common/filterable.ts
+
         # Fetchers
         pimee/fetcher/pim-ai-connection: akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher.ts
 

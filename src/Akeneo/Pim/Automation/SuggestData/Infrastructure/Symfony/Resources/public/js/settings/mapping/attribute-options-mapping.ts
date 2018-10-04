@@ -1,5 +1,6 @@
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from "underscore";
+import Filterable = require('akeneosuggestdata/js/common/filterable');
 
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
@@ -10,7 +11,7 @@ const template = require('pimee/template/settings/mapping/attribute-options-mapp
 interface NormalizedAttributeOptionsMapping {
   mapping: {
     [pim_ai_attribute_option_code: string] : {
-      pim_ai_attribute_code: {
+      pim_ai_attribute_option_code: {
         label: string
       },
       attribute_option: string,
@@ -62,6 +63,15 @@ class AttributeOptionsMapping extends BaseForm {
     super(options);
 
     this.config = {...this.config, ...options.config};
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public configure(): JQueryPromise<any> {
+    Filterable.set(this);
+
+    return BaseForm.prototype.configure.apply(this, arguments);
   }
 
   /**
@@ -175,6 +185,10 @@ class AttributeOptionsMapping extends BaseForm {
     Object.keys(mapping).forEach((pimAiAttributeOptionCode: string) => {
       this.appendAttributeOptionSelector(pimAiAttributeOptionCode);
     });
+
+    Filterable.afterRender(this, __(
+      'akeneo_suggest_data.entity.attribute_options_mapping.fields.pim_ai_attribute_option'
+    ));
 
     this.renderExtensions();
   }

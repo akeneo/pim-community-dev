@@ -28,7 +28,7 @@ class AttributeOptionsMappingController
         return new JsonResponse([
             'mapping' => [
                 'color_1' => [
-                    'pim_ai_attribute_code' => [
+                    'pim_ai_attribute_option_code' => [
                         'label' => 'Color 1',
                     ],
                     'attribute_option' => null,
