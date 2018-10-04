@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Storage\Sql;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Doctrine\DBAL\Connection;
-use PimEnterprise\Component\Workflow\Query\CountProductModelProposals as CountProductModelProposalsQuery;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductModelProposals as CountProductModelProposalsQuery;
 
 class CountProductModelProposals implements CountProductModelProposalsQuery
 {

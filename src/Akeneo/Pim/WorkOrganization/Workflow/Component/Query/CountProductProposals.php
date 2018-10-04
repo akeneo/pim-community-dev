@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Workflow\Query;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Query;
 
 /**
- * Query to count the total number of product model proposals.
+ * Query to count the total number of product proposals.
  */
-interface CountProductModelProposals
+interface CountProductProposals
 {
     /**
      * @return int

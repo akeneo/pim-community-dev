@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Storage\Sql;
+namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Workflow\Query\CountProductModelProposals;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductProposals;
 use Prophecy\Argument;
 
-class CountProductModelProposalsSpec extends ObjectBehavior
+class CountProductProposalsSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
@@ -17,10 +17,10 @@ class CountProductModelProposalsSpec extends ObjectBehavior
 
     function it_is_a_count_product_proposals_query()
     {
-        $this->shouldImplement(CountProductModelProposals::class);
+        $this->shouldImplement(CountProductProposals::class);
     }
 
-    function it_counts_the_total_number_of_product_model_proposals($connection, Statement $statement)
+    function it_counts_the_total_number_of_product_proposals($connection, Statement $statement)
     {
         $connection->query(Argument::type('string'))->willReturn($statement);
         $statement->fetchColumn(0)->willReturn('42');
