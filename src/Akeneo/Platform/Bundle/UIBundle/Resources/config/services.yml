@@ -12,3 +12,8 @@ services:
         arguments:
             - '@request_stack'
             - '%locale%'
+
+    pim_enrich.version_strategy:
+        class: 'Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy'
+        arguments:
+            - '@pim_catalog.version_provider'

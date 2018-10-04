@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\VersionStrategy;
+namespace Akeneo\Platform\Bundle\UIBundle\VersionStrategy;
 
 use Akeneo\Platform\VersionProviderInterface;
 use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
