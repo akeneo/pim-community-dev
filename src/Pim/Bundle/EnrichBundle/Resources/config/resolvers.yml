@@ -1,9 +1,0 @@
-parameters:
-    pim_enrich.resolver.locale.class:          Pim\Bundle\EnrichBundle\Resolver\LocaleResolver
-
-services:
-    pim_enrich.resolver.locale:
-        class: '%pim_enrich.resolver.locale.class%'
-        arguments:
-            - '@request_stack'
-            - '%locale%'

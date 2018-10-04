@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Twig extension to present localized data
@@ -20,13 +20,13 @@ class AttributeExtension extends \Twig_Extension
     /** @var PresenterInterface */
     protected $datetimePresenter;
 
-    /** @var LocaleResolver */
+    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param PresenterInterface $datePresenter
-     * @param PresenterInterface $datetimePresenter
-     * @param LocaleResolver     $localeResolver
+     * @param PresenterInterface                                       $datePresenter
+     * @param PresenterInterface                                       $datetimePresenter
+     * @param \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver $localeResolver
      */
     public function __construct(
         PresenterInterface $datePresenter,

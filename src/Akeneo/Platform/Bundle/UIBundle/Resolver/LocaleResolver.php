@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Resolver;
+namespace Akeneo\Platform\Bundle\UIBundle\Resolver;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 

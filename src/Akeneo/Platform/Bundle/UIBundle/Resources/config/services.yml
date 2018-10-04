@@ -6,3 +6,9 @@ services:
             - ['catalogStorage']
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
+
+    pim_enrich.resolver.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'
+        arguments:
+            - '@request_stack'
+            - '%locale%'
