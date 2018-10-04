@@ -13,7 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

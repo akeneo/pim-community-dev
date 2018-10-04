@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Present changes on date data
@@ -25,12 +25,12 @@ class DatePresenter extends AbstractProductValuePresenter
     /** @var BasePresenterInterface */
     protected $datePresenter;
 
-    /** @var LocaleResolver */
+    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param BasePresenterInterface $datePresenter
-     * @param LocaleResolver         $localeResolver
+     * @param BasePresenterInterface                                   $datePresenter
+     * @param \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver $localeResolver
      */
     public function __construct(BasePresenterInterface $datePresenter, LocaleResolver $localeResolver)
     {

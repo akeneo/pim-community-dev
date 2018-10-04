@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Present change on metric data
@@ -27,7 +27,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     /** @var BasePresenterInterface */
     protected $metricPresenter;
 
-    /** @var LocaleResolver */
+    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
     protected $localeResolver;
 
     /**
