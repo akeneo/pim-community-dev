@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model\Read;
+
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
+use PhpSpec\ObjectBehavior;
+
+/**
+ * @author Damien Carcel <damien.carcel@akeneo.com>
+ */
+class ConnectionStatusSpec extends ObjectBehavior
+{
+    public function let(): void
+    {
+        $this->beConstructedWith(true);
+    }
+
+    public function it_is_a_suggest_data_connection_status(): void
+    {
+        $this->shouldBeAnInstanceOf(ConnectionStatus::class);
+    }
+
+    public function it_returns_if_the_connection_status_is_active(): void
+    {
+        $this->isActive()->shouldReturn(true);
+    }
+}

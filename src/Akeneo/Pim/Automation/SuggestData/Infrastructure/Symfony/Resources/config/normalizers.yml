@@ -18,3 +18,6 @@ services:
 
     akeneo.pim.automation.suggest_data.normalizers.families:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\FamiliesNormalizer'
+
+    akeneo.pim.automation.suggest_data.normalizer.connection_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer'

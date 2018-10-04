@@ -39,7 +39,8 @@ class ConnectionValidator implements ValidatorInterface
     public function validate($value): void
     {
         // TODO: ideally this should use a query/handler pattern
-        if (true !== $this->connectionStatus->isActive()) {
+        $connectionStatus = $this->connectionStatus->getStatus();
+        if (true !== $connectionStatus->isActive()) {
             throw new ValidationException('Token is invalid or expired');
         }
     }

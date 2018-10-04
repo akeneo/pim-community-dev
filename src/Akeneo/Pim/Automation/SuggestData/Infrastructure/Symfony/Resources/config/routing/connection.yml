@@ -16,8 +16,8 @@ akeneo_suggest_data_connection_post:
         code: '[\w._-]+'
     methods: [POST]
 
-akeneo_suggest_data_is_connection_activated:
-    path: /is-activated
+akeneo_suggest_data_connection_status_get:
+    path: /status
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
     requirements:
         code: '[\w._-]+'

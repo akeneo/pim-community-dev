@@ -1,4 +1,5 @@
-import {isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
+import {ConnectionStatus, getConnectionStatus} from '../../pim-ai/fetcher/connection-fetcher';
+
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
 
@@ -20,11 +21,11 @@ class MappingController extends BaseController {
    * {@inheritdoc}
    */
   public renderForm(): object {
-    return isConnectionActivated()
-      .then((connectionIsActivated) => {
+    return getConnectionStatus()
+      .then((connectionStatus: ConnectionStatus) => {
         const entity = this.options.config.entity;
         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';
-        if (connectionIsActivated) {
+        if (connectionStatus.is_active) {
           formToBuild = 'pimee-' + entity + '-index';
         }
 

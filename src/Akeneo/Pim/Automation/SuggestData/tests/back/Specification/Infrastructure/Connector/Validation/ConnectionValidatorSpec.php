@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation\ConnectionValidator;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
@@ -42,14 +43,14 @@ class ConnectionValidatorSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_connection_is_not_active($connectionStatus): void
     {
-        $connectionStatus->isActive()->willReturn(false);
+        $connectionStatus->getStatus()->willReturn(new ConnectionStatus(false));
         $this->shouldThrow(new ValidationException('Token is invalid or expired'))
              ->during('validate', [Argument::any()]);
     }
 
     public function it_does_nothing_if_connection_is_active($connectionStatus): void
     {
-        $connectionStatus->isActive()->willReturn(true);
+        $connectionStatus->getStatus()->willReturn(new ConnectionStatus(true));
         $this->validate(Argument::any())->shouldReturn(null);
     }
 }
