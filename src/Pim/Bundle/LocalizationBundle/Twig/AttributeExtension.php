@@ -20,13 +20,13 @@ class AttributeExtension extends \Twig_Extension
     /** @var PresenterInterface */
     protected $datetimePresenter;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
+    /** @var LocaleResolver */
     protected $localeResolver;
 
     /**
-     * @param PresenterInterface                                       $datePresenter
-     * @param PresenterInterface                                       $datetimePresenter
-     * @param \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver $localeResolver
+     * @param PresenterInterface $datePresenter
+     * @param PresenterInterface $datetimePresenter
+     * @param LocaleResolver     $localeResolver
      */
     public function __construct(
         PresenterInterface $datePresenter,

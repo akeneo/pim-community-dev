@@ -23,7 +23,7 @@ class FormatController
     /** @var DateFactory */
     protected $datetimeFactory;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver */
+    /** @var LocaleResolver */
     protected $localeResolver;
 
     /** @var UserContext */

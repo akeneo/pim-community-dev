@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Platform\Bundle\UIBundle\VersionStrategy;
 
+use Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy;
 use Akeneo\Platform\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +14,7 @@ class CacheBusterVersionStrategySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy::class);
+        $this->shouldHaveType(CacheBusterVersionStrategy::class);
     }
 
     public function it_returns_the_pim_patch_version($versionProvider)
