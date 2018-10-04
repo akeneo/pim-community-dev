@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 

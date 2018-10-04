@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Filter;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ProductEditDataFilterSpec extends ObjectBehavior
