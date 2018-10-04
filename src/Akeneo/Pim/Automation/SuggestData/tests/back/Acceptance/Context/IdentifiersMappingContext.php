@@ -75,7 +75,7 @@ class IdentifiersMappingContext implements Context
      */
     public function aPredefinedMapping(TableNode $table): void
     {
-        $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
+        $mapped = $this->extractIdentifiersMappingFromTable($table);
         $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
 
         $tmp = array_fill_keys($identifiers, null);
@@ -95,7 +95,7 @@ class IdentifiersMappingContext implements Context
     {
         try {
             $this->manageIdentifiersMapping->updateIdentifierMapping(
-                $this->getTableNodeAsArrayWithoutHeaders($table)
+                $this->extractIdentifiersMappingFromTable($table)
             );
 
             return true;
@@ -163,25 +163,12 @@ class IdentifiersMappingContext implements Context
      */
     public function theRetrievedMappingIsTheFollowing(TableNode $table): void
     {
-        $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
+        $identifiers = $this->extractIdentifiersMappingFromTable($table);
 
         Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
         Assert::assertEquals(
-            $this->convertToApiNormalizedFormat($identifiers),
+            $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
             $this->identifiersMappingApiFake->get()
-        );
-    }
-
-    /**
-     * @Then the identifiers mapping should be valid
-     */
-    public function theIdentifiersMappingShouldBeValid(): void
-    {
-        $identifiers = $this->identifiersMappingRepository->find();
-        Assert::assertFalse($identifiers->isEmpty());
-        Assert::assertArraySubset(
-            $this->identifiersMappingApiFake->get(),
-            $this->convertToApiNormalizedFormat($identifiers->normalize())
         );
     }
 
@@ -209,40 +196,98 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * This method converts a simple array.
+     * Transforms from gherkin table:.
+     *
+     *                                | Not mandatory  | as much locales as you want ...
+     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | brand       | brand          | Brand | Marque |
+     * | mpn         | mpn            | MPN   | MPN    |
+     * | upc         | ean            | EAN   | EAN    |
+     * | asin        | asin           | ASIN  | ASIN   |
+     *
+     * to php array Franklin format:
      *
      * [
-     *     'pim_ai_identifier_code' => 'akeneo_pim_attribute_code',
+     *     [
+     *         'from' => ['id' => 'brand'], (pim_ai_code)
+     *         'to' => [
+     *             'id' => 'brand', (attribute_code)
+     *             'label' => [
+     *                 'en_US' => 'Brand',
+     *                 'fr_FR' => 'Marque',
+     *                 etc.
+     *             ],
+     *         ]
+     *     ], etc.
      * ]
      *
-     * into the normalized format used by our client
-     *
-     * [
-     *     'pim_ai_identifier_code' => [
-     *         'code' => '',
-     *         'label' => [
-     *             'en_US' => 'Attribute label',
-     *         ],
-     *     ],
-     * ]
-     *
-     * @param array $mappedIdentifiers
+     * @param TableNode $tableNode
      *
      * @return array
      */
-    private function convertToApiNormalizedFormat(array $mappedIdentifiers): array
+    private function extractIdentifiersMappingToFranklinFormatFromTable(TableNode $tableNode): array
     {
-        $normalizedMapping = [];
+        $extractedData = $tableNode->getRows();
+        $indexes = array_shift($extractedData);
+        $locales = array_filter($indexes, function ($value) {
+            return 'pim_ai_code' !== $value && 'attribute_code' !== $value;
+        });
 
-        foreach ($mappedIdentifiers as $pimAiIdentifierCode => $akeneoIdentifierCode) {
-            $normalizedMapping[$pimAiIdentifierCode] = [
-                'code' => $akeneoIdentifierCode,
-                'label' => [
-                    'en_US' => sprintf('[%s]', $akeneoIdentifierCode),
+        $mappings = [];
+        foreach ($extractedData as $data) {
+            $rawMapping = array_combine($indexes, $data);
+            $labels = [];
+            foreach ($locales as $locale) {
+                if ('' !== $rawMapping[$locale]) {
+                    $labels[$locale] = $rawMapping[$locale];
+                }
+            }
+
+            $mappings[] = [
+                'from' => ['id' => $rawMapping['pim_ai_code']],
+                'to' => [
+                    'id' => $rawMapping['attribute_code'],
+                    'label' => $labels,
                 ],
             ];
         }
 
-        return $normalizedMapping;
+        return $mappings;
+    }
+
+    /**
+     * Transforms from gherkin table:.
+     *
+     *                                | Not mandatory and will not be part of extraction |
+     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | brand       | brand          | Brand | Marque |
+     * | mpn         | mpn            | MPN   | MPN    |
+     * | upc         | ean            | EAN   | EAN    |
+     * | asin        | asin           | ASIN  | ASIN   |
+     *
+     * to php array with simple identifier mapping:
+     *
+     * pim_ai_code => attribute_code
+     * [
+     *     'brand' => 'brand',
+     *     'mpn' => 'mpn',
+     *     'upc' => 'ean',
+     *     'asin' => 'asin',
+     * ]
+     *
+     * @param TableNode $tableNode
+     *
+     * @return array
+     */
+    private function extractIdentifiersMappingFromTable(TableNode $tableNode): array
+    {
+        $mapping = [];
+        foreach ($tableNode->getColumnsHash() as $column) {
+            $mapping[$column['pim_ai_code']] = $column['attribute_code'];
+        }
+
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+
+        return array_merge($identifiersMapping, $mapping);
     }
 }

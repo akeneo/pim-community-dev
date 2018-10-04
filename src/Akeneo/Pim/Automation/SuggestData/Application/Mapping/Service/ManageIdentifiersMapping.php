@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
+ * TODO: Change this class name.
  * Service to manage identifiers mapping.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
