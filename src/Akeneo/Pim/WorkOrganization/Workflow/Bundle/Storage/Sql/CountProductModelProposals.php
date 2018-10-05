@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Doctrine\DBAL\Connection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\CountProductModelProposals as CountProductModelProposalsQuery;
+use Doctrine\DBAL\Connection;
 
 class CountProductModelProposals implements CountProductModelProposalsQuery
 {
