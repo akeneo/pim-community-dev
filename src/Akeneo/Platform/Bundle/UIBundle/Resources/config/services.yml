@@ -1,3 +1,6 @@
+parameters:
+    security.exception_listener.class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\ExceptionListener'
+
 services:
     pim_enrich.imagine.loader.flysystem:
         class: 'Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader'

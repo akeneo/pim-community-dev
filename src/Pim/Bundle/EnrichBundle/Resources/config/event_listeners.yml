@@ -5,8 +5,6 @@ parameters:
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
     pim_enrich.event_listener.add_locale.class:                 Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener
 
-    security.exception_listener.class: Pim\Bundle\EnrichBundle\Security\Firewall\ExceptionListener
-
 services:
     pim_enrich.event_listener.close_session:
         class: %pim_enrich.event_listener.close_session.class%
