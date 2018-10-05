@@ -33,7 +33,7 @@ interface FilterState {
   [name: string]: FilterValue | number;
 }
 
-class FiltersColumn extends BaseView {
+class FiltersSelector extends BaseView {
   public modules: {[name: string]: FilterModule};
   public datagridCollection: any;
   public silent: boolean;
@@ -195,4 +195,4 @@ class FiltersColumn extends BaseView {
   }
 }
 
-export = FiltersColumn;
+export = FiltersSelector;
