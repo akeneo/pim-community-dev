@@ -22,11 +22,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_enrich.event_listener.request:
-        class: '%pim_enrich.event_listener.request.class%'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_enrich.event_subscriber.translate_flash_messages:
         class: '%pim_enrich.event_subscriber.translate_flash_messages.class%'
         arguments:
