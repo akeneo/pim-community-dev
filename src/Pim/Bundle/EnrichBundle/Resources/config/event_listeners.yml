@@ -3,7 +3,6 @@ parameters:
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
-    pim_enrich.event_listener.add_locale.class:                 Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener
 
 services:
     pim_enrich.event_listener.close_session:
@@ -28,9 +27,3 @@ services:
             - '@translator'
         tags:
             - { name: kernel.event_subscriber }
-
-    # inject current locale into translatable entities
-    pim_enrich.event_listener.add_locale:
-        class: '%pim_enrich.event_listener.add_locale.class%'
-        tags:
-            - { name: doctrine.event_subscriber }

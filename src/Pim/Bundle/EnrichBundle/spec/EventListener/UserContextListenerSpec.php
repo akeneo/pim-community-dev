@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\EventListener;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
-use Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener;
+use Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;

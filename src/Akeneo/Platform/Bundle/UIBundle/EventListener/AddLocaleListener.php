@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\EventListener;
+namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\EventSubscriber;
