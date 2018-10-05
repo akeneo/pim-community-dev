@@ -5,15 +5,11 @@ extensions:
 suites:
     ## Channel context
     Channel:
-        namespace: Akeneo\Channel\Component
-        psr4_prefix: Akeneo\Channel\Component
-        spec_path: src/Akeneo/Channel/Component
-        src_path: src/Akeneo/Channel/Component
-    ChannelBundle:
-        namespace: Akeneo\Channel\Bundle
-        psr4_prefix: Akeneo\Channel\Bundle
-        spec_path: src/Akeneo/Channel/Bundle
-        src_path: src/Akeneo/Channel/Bundle
+        namespace: Akeneo\Channel
+        psr4_prefix: Akeneo\Channel
+        spec_path: tests/back/Channel
+        src_path: src/Akeneo/Channel
+        spec_prefix: Specification
 
     ## Structure context
     Structure:
