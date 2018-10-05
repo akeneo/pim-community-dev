@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
+use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -42,6 +43,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
@@ -49,6 +51,9 @@ use PHPUnit\Framework\Assert;
 
 class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 {
+    /** @var EventDispatcherMock */
+    private $eventDispatcherMock;
+
     /** @var RecordRepositoryInterface */
     private $repository;
 
@@ -57,6 +62,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $this->eventDispatcherMock = $this->get('event_dispatcher');
+        $this->eventDispatcherMock->reset();
+
         $this->resetDB();
         $this->loadReferenceEntityWithAttributes();
     }
@@ -80,6 +88,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->create($record);
 
+        $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
         $recordFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($record->normalize(), $recordFound->normalize());
     }
@@ -102,6 +111,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         );
 
         $this->repository->create($record);
+        $this->eventDispatcherMock->reset();
 
         $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
@@ -117,6 +127,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->expectException(DBALException::class);
         $this->repository->create($record);
+        $this->eventDispatcherMock->assertNoEventDispatched();
     }
 
     /**
@@ -182,7 +193,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     FileData::createFromFileinfo($fileInfo)
-                )
+                ),
             ])
         );
 
@@ -253,6 +264,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ])
         );
         $this->repository->create($record);
+        $this->eventDispatcherMock->reset();
+
         $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
         $valueToUpdate = Value::create(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
@@ -278,8 +291,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $record->updateImage(Image::fromFileInfo($imageInfo));
 
         $this->repository->update($record);
-        $recordFound = $this->repository->getByIdentifier($identifier);
 
+        $this->eventDispatcherMock->assertEventDispatched(RecordUpdatedEvent::class);
+        $recordFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 

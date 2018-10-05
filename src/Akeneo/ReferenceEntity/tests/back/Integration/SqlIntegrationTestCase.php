@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
+use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -40,6 +41,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     {
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
+        $this->overrideContainer();
     }
 
     /*
@@ -48,5 +50,10 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
     protected function get(string $service)
     {
         return $this->testKernel->getContainer()->get($service);
+    }
+
+    protected function overrideContainer(): void
+    {
+        $this->testKernel->getContainer()->set('event_dispatcher', new EventDispatcherMock());
     }
 }

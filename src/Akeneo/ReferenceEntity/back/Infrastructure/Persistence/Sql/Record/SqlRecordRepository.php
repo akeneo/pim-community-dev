@@ -21,10 +21,12 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -44,16 +46,21 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         Connection $sqlConnection,
         RecordHydratorInterface $recordHydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->recordHydrator = $recordHydrator;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function count(): int
@@ -92,6 +99,8 @@ SQL;
                 sprintf('Expected to create one record, but %d rows were affected', $affectedRows)
             );
         }
+
+        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
     }
 
     public function update(Record $record): void
@@ -120,6 +129,8 @@ SQL;
                 sprintf('Expected to update one record, but %d rows were affected', $affectedRows)
             );
         }
+
+        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
     }
 
     public function getByReferenceEntityAndCode(
