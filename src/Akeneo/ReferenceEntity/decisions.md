@@ -217,3 +217,35 @@ For instance, we will have :
  -  FileUpdater to update a record value from the EditFileValueCommand
  -  TextUpdater to update a record value from the EditTextValueCommand
 
+## 05/10/2018
+
+### Indexing records with events
+
+#### Problem:
+
+When a record is updated:
+ - From where do we send the event ?
+ - what does it contain ?
+ - What does the listener do (normalization or fetch a record or both) ?
+
+#### Proposed solution:
+
+For sure, we didn't wanted to directly index the record from the repository so the SQL repository stays focus on interacting with the database and so it's easier to test.
+
+4 steps process:
+- An event is dispatched from the repository indicating the record needs to be reindexed, from our point of view, it's a technical event: `RecordUpdatedEvent`
+- This event contains only the identifier of the record to be reindexed
+- The listener (`IndexRecordListener`) uses this Id, to fetch the record from the repository and passes it to an indexer `RecordIdexer` as an array
+- The `RecordIndexer` gathers normalizes the Records, and calls the ES client for indexing
+
+##### Indexing completeness
+
+Later on, we can imagine that when calculating the completeness of products, we might be able to reindex only this property in the record's document using a `CompletenessIndexer`.
+
+##### Challenges
+
+When the reindexation of a lot of records is needed (like 1 million), how do we handle such a task ? The use of background jobs seems appropriate yet it raises questions like:
+- How long does it take to reindex such a volume of record ?
+- It it going to block the job queue ?
+
+This case can happen when an attribute text is removed from the enriched entity and this property is used for the search in ES, so it needs to be totally recalculated.
