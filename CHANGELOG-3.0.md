@@ -16,6 +16,16 @@
 
 ## BC breaks
 
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\TranslationNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\GroupNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\GroupNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\DateTimeNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\FileNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\MetricNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\PriceNormalizer`
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
@@ -43,7 +53,7 @@
 - Move `Pim\Component\ReferenceData\ConfigurationRegistryInterface` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface`
 - Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer`
 - Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer`
-- Move `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer` to `Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\ReferenceDataNormalizer`
+- Move `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ReferenceDataNormalizer`
 - Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier`
 - Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier`
 - Move `Pim\Component\ReferenceData\Model\ReferenceDataInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface`
@@ -562,7 +572,7 @@
 - Move namespace `Pim\Component\Buffer` to `Akeneo\Tool\Component\Buffer`
 - Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
 - Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
-- Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
+- Move namespace `Pim\Component\Versioning` except Normalizers to `Akeneo\Tool\Component\Versioning`
 - Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
 - Move namespace `Pim\Component\FileStorage` to `Akeneo\Tool\Component\FileStorage`
 - Move namespace `Pim\Bundle\FileStorageBundle` to `Akeneo\Tool\Bundle\FileStorageBundle`
@@ -656,10 +666,10 @@
 - Move `Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Storage\AttributeOptionNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeGroupNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeOptionNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\FamilyNormalizer`
 - Move `Pim\Bundle\ApiBundle\Controller\AttributeController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController`
 - Move `Pim\Bundle\ApiBundle\Controller\AttributeGroupController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController`
 - Move `Pim\Bundle\ApiBundle\Controller\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeOptionController`
