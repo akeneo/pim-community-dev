@@ -5,6 +5,7 @@ const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
@@ -40,7 +41,7 @@ if (isProd) {
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
-module.exports = {
+const webpackConfig = {
   stats: {
     hash: false,
     maxModules: 5,
@@ -207,7 +208,7 @@ module.exports = {
     new webpack.WatchIgnorePlugin([
       path.resolve(rootDir, './node_modules'),
       path.resolve(rootDir, './app'),
-      path.resolve(rootDir, './app/cache'),
+      path.resolve(rootDir, './var'),
       path.resolve(rootDir, './vendor'),
     ]),
 
@@ -229,3 +230,19 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
   ],
 };
+
+if (isProd) {
+  webpackConfig.plugins.push(
+    new UglifyJsPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        ecma: 8,
+        compress: {
+          warnings: false,
+        },
+      },
+    })
+  );
+}
+
+module.exports = webpackConfig;

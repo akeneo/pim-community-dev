@@ -5,26 +5,23 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const prodConfig = require('./webpack.config.js');
 
 const config = Object.assign({}, prodConfig, {
-    entry: [
-        'babel-polyfill',
-        path.resolve(__dirname, './tests/front/common/templates/index.js')
-    ],
-    output: {
-        path: path.resolve('./web/test_dist/'),
-        publicPath: '/dist/',
-        filename: '[name].min.js',
-        chunkFilename: '[name].bundle.js'
-    }
+  entry: ['babel-polyfill', path.resolve(__dirname, './tests/front/common/templates/index.js')],
+  output: {
+    path: path.resolve('./web/test_dist/'),
+    publicPath: '/dist/',
+    filename: '[name].min.js',
+    chunkFilename: '[name].bundle.js',
+  },
 });
 
 config.plugins.push(new HtmlWebpackInlineSourcePlugin());
 config.plugins.push(
-    new HtmlWebpackPlugin({
-        inject: 'head',
-        template: path.resolve(__dirname, './tests/front/common/templates/index.html'),
-        minify: {},
-        inlineSource: '.(js)$'
-    })
+  new HtmlWebpackPlugin({
+    inject: 'head',
+    template: path.resolve(__dirname, './tests/front/common/templates/index.html'),
+    minify: {},
+    inlineSource: '.(js)$',
+  })
 );
 
 module.exports = config;
