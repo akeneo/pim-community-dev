@@ -55,7 +55,8 @@ class SqlFindRecordItemsForReferenceEntity implements FindRecordItemsForReferenc
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
         ) AS fi ON fi.file_key = ee.image
-        WHERE reference_entity_identifier = :reference_entity_identifier;
+        WHERE reference_entity_identifier = :reference_entity_identifier
+        LIMIT 100;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'reference_entity_identifier' => (string) $identifier,

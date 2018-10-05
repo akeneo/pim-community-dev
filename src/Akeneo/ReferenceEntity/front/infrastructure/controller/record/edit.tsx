@@ -32,6 +32,8 @@ class RecordEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
+    const promise = $.Deferred();
+
     recordFetcher
       .fetch(
         createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
@@ -58,9 +60,16 @@ class RecordEditController extends BaseController {
           </Provider>,
           this.el
         );
+
+        promise.resolve();
+      })
+      .catch(function(error: any) {
+        if (error.request) {
+          promise.reject(error.request);
+        }
       });
 
-    return $.Deferred().resolve();
+    return promise.promise();
   }
 
   beforeUnload = () => {

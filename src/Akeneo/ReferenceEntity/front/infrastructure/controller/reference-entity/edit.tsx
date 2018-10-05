@@ -32,32 +32,43 @@ class ReferenceEntityEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
-    referenceEntityFetcher.fetch(createIdentifier(route.params.identifier)).then((referenceEntity: ReferenceEntity) => {
-      this.store = createStore(true)(referenceEntityReducer);
-      this.store.dispatch(referenceEntityEditionReceived(referenceEntity.normalize()));
-      this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
-      this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
-      this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-      this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
-      this.store.dispatch(updateCurrentTab(route.params.tab));
-      this.store.dispatch(updateRecordResults());
-      this.store.dispatch(updateAttributeList() as any);
-      this.store.dispatch(updateActivatedLocales() as any);
-      this.store.dispatch(updateChannels() as any);
-      document.addEventListener('keydown', shortcutDispatcher(this.store));
+    const promise = $.Deferred();
 
-      mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
-      $(window).on('beforeunload', this.beforeUnload);
+    referenceEntityFetcher
+      .fetch(createIdentifier(route.params.identifier))
+      .then((referenceEntity: ReferenceEntity) => {
+        this.store = createStore(true)(referenceEntityReducer);
+        this.store.dispatch(referenceEntityEditionReceived(referenceEntity.normalize()));
+        this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
+        this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
+        this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
+        this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
+        this.store.dispatch(updateCurrentTab(route.params.tab));
+        this.store.dispatch(updateRecordResults());
+        this.store.dispatch(updateAttributeList() as any);
+        this.store.dispatch(updateActivatedLocales() as any);
+        this.store.dispatch(updateChannels() as any);
+        document.addEventListener('keydown', shortcutDispatcher(this.store));
 
-      ReactDOM.render(
-        <Provider store={this.store}>
-          <ReferenceEntityView />
-        </Provider>,
-        this.el
-      );
-    });
+        mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
+        $(window).on('beforeunload', this.beforeUnload);
 
-    return $.Deferred().resolve();
+        ReactDOM.render(
+          <Provider store={this.store}>
+            <ReferenceEntityView />
+          </Provider>,
+          this.el
+        );
+
+        promise.resolve();
+      })
+      .catch((error: any) => {
+        if (error.request) {
+          promise.reject(error.request);
+        }
+      });
+
+    return promise.promise();
   }
 
   beforeUnload = () => {
