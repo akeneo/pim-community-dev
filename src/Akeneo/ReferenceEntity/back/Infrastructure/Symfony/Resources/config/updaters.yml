@@ -64,6 +64,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.record_value_updater }
 
+    akeneo_referenceentity.application.edit_record.record_value_updater.stored_file_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\StoredFileUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
     akeneo_referenceentity.application.edit_record.record_value_updater.empty_updater:
             class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater
             tags:
