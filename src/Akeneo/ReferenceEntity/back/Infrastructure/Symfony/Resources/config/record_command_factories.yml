@@ -25,6 +25,6 @@ services:
             - { name: akeneo_referenceentity.edit_record_value_command_factory }
 
     akeneo_referenceentity.application.factory.record.empty_value_command_factory:
-            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommandFactory
-            tags:
-                - { name: akeneo_referenceentity.edit_record_value_command_factory }
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.edit_record_value_command_factory }

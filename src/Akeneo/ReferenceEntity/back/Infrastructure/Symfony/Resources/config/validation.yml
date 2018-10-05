@@ -57,7 +57,7 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCo
         image:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Image: ~
     constraints:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
     constraints:
