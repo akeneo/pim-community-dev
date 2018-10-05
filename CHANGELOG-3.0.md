@@ -1007,3 +1007,21 @@
 - Move `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` to `Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver`
 - Move `Pim\Bundle\EnrichBundle\VersionStrategy\CacheBusterVersionStrategy` to `Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy`
 - Move namespace `Pim\Bundle\EnrichBundle\ViewElement` to `Akeneo\Platform\Bundle\UIBundle\ViewElement`
+- Move `Pim\Bundle\EnrichBundle\Extension\Action\Actions\DeleteProductAction` to `Akeneo\Pim\Enrichment\Bundle\Extension\Action\DeleteProductAction`
+- Move `Pim\Bundle\EnrichBundle\Extension\Action\Actions\EditInModalAction` to `Akeneo\Pim\Enrichment\Bundle\Extension\Action\EditInModalAction`
+- Move `Pim\Bundle\EnrichBundle\Extension\Action\Actions\NavigateProductAndProductModelAction` to `Akeneo\Pim\Enrichment\Bundle\Extension\Action\NavigateProductAndProductModelAction`
+- Move `Pim\Bundle\EnrichBundle\Extension\Action\Actions\ToggleProductAction` to `Akeneo\Pim\Enrichment\Bundle\Extension\Action\ToggleProductAction`
+- Move `Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface` to `Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\BatchableOperationInterface`
+- Move `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperation` to `Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\MassEditOperation`
+- Move `Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher` to `Akeneo\Pim\Enrichment\Bundle\MassEditAction\OperationJobLauncher`
+- Move `Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter\DummyFilter` to `Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter\DummyFilter`
+- Move `Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder` to `Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder`
+- Move `Pim\Bundle\EnrichBundle\StructureVersion\EventListener\StructureVersionUpdater` to `Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener\StructureVersionUpdater`
+- Move `Pim\Bundle\EnrichBundle\StructureVersion\EventListener\TableCreator` to `Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener\TableCreator`
+- Move `Pim\Bundle\EnrichBundle\StructureVersion\Provider\StructureVersion` to `Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider\StructureVersion`
+- Move `Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener` to `Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener`
+- Move `Pim\Bundle\EnrichBundle\EventListener\CloseSessionListener` to `Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener`
+- Move `Pim\Bundle\EnrichBundle\EventListener\ExceptionListener` to `Akeneo\Platform\Bundle\UIBundle\EventListener\ExceptionListener`
+- Move `Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber` to `Akeneo\Platform\Bundle\UIBundle\EventListener\TranslateFlashMessagesSubscriber`
+- Move `Pim\Bundle\EnrichBundle\EventListener\UserContextListener` to `Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener`
+- Remove `Pim\Bundle\EnrichBundle\EventListener\RequestListener`
