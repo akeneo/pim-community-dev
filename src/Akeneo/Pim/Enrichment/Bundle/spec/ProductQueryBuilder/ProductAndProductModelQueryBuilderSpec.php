@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ProductQueryBuilder;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder;
 
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior

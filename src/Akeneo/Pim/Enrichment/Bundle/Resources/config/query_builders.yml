@@ -50,6 +50,9 @@ parameters:
     pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute\MetricSorter
     pim_catalog.query.elasticsearch.sorter.attribute.text_area.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute\TextAreaSorter
 
+    pim_enrich.query.product_and_product_model_query_builder.class: Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
+    pim_enrich.datagrid.product_batch_size: 25
+
 services:
     pim_catalog.query.product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -627,3 +630,33 @@ services:
             - '@pim_catalog.repository.group'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    # Filters
+    pim_enrich.product_query_builder.filter.dummy:
+        class: 'Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter\DummyFilter'
+        arguments:
+            - []
+            - ['enabled', 'completeness']
+            - ['ALL']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    # Services used by the products and product models' grid
+    # here, products and product models should be gathered by the most top level product model
+    pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
+
+    pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
+        public: false
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'

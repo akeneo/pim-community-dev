@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder;
+namespace Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;

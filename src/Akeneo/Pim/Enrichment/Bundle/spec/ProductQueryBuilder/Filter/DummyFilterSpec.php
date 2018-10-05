@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use PhpSpec\ObjectBehavior;
 
 class DummyFilterSpec extends ObjectBehavior
 {
