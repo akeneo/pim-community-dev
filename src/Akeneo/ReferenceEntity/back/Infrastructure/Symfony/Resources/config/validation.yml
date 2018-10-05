@@ -64,10 +64,10 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValu
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
 
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand:
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditFileValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditUploadedFileValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
     constraints:
