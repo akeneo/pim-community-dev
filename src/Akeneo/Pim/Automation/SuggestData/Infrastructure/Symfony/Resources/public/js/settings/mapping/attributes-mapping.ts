@@ -71,6 +71,7 @@ class AttributeMapping extends BaseForm {
       suggest_data: '',
     },
   };
+  private attributeOptionsMappingModal: any = null;
 
   /**
    * {@inheritdoc}
@@ -215,7 +216,7 @@ class AttributeMapping extends BaseForm {
       form: BaseForm,
       normalizedFamily: any
     ) => {
-      let modal = new BootstrapModal({
+      this.attributeOptionsMappingModal = new BootstrapModal({
         className: 'modal modal--fullPage modal--topButton',
         modalOptions: {
           backdrop: 'static',
@@ -228,26 +229,31 @@ class AttributeMapping extends BaseForm {
         cancelText: ' ',
         okText: __('pim_common.save')
       });
-      modal.open();
+      this.attributeOptionsMappingModal.open();
 
-      const formContent = form
-        .getExtension('content') as AttributeOptionsMapping;
+      const formContent = form.getExtension('content') as AttributeOptionsMapping;
       formContent
         .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
         .setPimAiAttributeLabel(pimAiAttributeLabel)
         .setPimAttributeCode(catalogAttributeCode)
         .setFamilyCode(familyCode);
 
-      form
-        .setElement(modal.$('.modal-body'))
-        .render();
+      this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
+
+      form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
 
       $('.modal .ok').replaceWith(form.$el.find('*[data-drop-zone="buttons"]'));
 
-      modal.on('ok', () => {
-        modal.close();
-      });
+      this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal);
     });
+  }
+
+  private closeAttributeOptionsMappingModal(): void {
+    if (null !== this.attributeOptionsMappingModal) {
+      this.attributeOptionsMappingModal.close();
+
+      this.attributeOptionsMappingModal = null;
+    }
   }
 }
 

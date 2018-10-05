@@ -21,11 +21,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AttributeOptionsMappingController
 {
     /**
+     * TODO Unmock data
+     *
      * @return JsonResponse
      */
     public function getAction(): JsonResponse
     {
         return new JsonResponse([
+            'family' => 'router',
+            'pim_ai_attribute' => 'color',
             'mapping' => [
                 'color_1' => [
                     'pim_ai_attribute_option_code' => [
@@ -52,8 +56,15 @@ class AttributeOptionsMappingController
         ]);
     }
 
+    /**
+     * TODO Unmock data
+     *
+     * @return JsonResponse
+     */
     public function updateAction()
     {
-
+        sleep(1);
+        
+        return new JsonResponse(['response' => 'It\'s a temporary OK!']);
     }
 }

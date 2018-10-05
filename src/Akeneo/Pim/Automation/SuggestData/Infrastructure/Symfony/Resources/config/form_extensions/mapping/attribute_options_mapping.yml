@@ -11,12 +11,12 @@ extensions:
         position: 120
 
     pimee-suggest-data-settings-attribute-options-mapping-index-save-form:
-        module: pim/form/common/save-form
+        module: pimee/saver/attribute-options-mapping-form
         parent: pimee-suggest-data-settings-attribute-options-mapping-edit
         targetZone: buttons
         position: 0
         config:
-            url: akeneo_suggest_data_attributes_mapping_update
+            url: akeneo_suggest_data_attribute_options_mapping_update
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-content:
         module: pimee/settings/mapping/attribute-options-mapping

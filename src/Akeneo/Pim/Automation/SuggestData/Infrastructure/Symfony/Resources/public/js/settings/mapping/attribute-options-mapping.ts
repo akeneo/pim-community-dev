@@ -9,25 +9,27 @@ const Routing = require('routing');
 const template = require('pimee/template/settings/mapping/attribute-options-mapping');
 
 interface NormalizedAttributeOptionsMapping {
+  family: string;
+  pim_ai_attribute: string;
   mapping: {
     [pim_ai_attribute_option_code: string] : {
       pim_ai_attribute_option_code: {
-        label: string
+        label: string;
       },
-      attribute_option: string,
-      status: number,
+      attribute_option: string;
+      status: number;
     }
   }
 }
 
 interface Config {
   labels: {
-    pending: string,
-    mapped: string,
-    unmapped: string,
-    pim_ai_attribute_option: string,
-    catalog_attribute_option: string,
-    suggest_data: string
+    pending: string;
+    mapped: string;
+    unmapped: string;
+    pim_ai_attribute_option: string;
+    catalog_attribute_option: string;
+    suggest_data: string;
   }
 }
 

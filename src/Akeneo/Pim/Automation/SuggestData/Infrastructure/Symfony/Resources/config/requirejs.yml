@@ -62,6 +62,8 @@ config:
         # Savers
         pimee/saver/pim-ai-connection: akeneosuggestdata/js/pim-ai/saver/connection-saver
         pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
+        pimee/saver/attribute-options-mapping: akeneosuggestdata/js/saver/attribute-options-mapping-saver.ts
+        pimee/saver/attribute-options-mapping-form: akeneosuggestdata/js/saver/attribute-options-mapping-saver-form.ts
 
         # Controllers
         pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index.ts
