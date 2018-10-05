@@ -45,7 +45,6 @@ define(
                 this.selectMenuTab();
 
                 const { gridName, gridExtension } = this.config;
-                fetcherRegistry.getFetcher('locale').clear();
                 fetcherRegistry.getFetcher('datagrid-view').clear();
                 sequentialEditProvider.clear();
 
