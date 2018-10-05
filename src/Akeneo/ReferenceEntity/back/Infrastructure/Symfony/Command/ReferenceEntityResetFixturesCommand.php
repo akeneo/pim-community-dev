@@ -312,7 +312,7 @@ SQL;
 
         $fakeCities = [];
         for ($i = 1; $i < self::NUMBER_OF_FAKE_RECORD_TO_CREATE; $i++) {
-            if (0 === ($i % 10000)) {
+            if (0 === ($i % 5000)) {
                 $this->dbal->executeUpdate(sprintf($baseSql, implode($fakeCities, ',')));
                 $fakeCities = [];
             }
@@ -328,7 +328,22 @@ SQL;
         $fakeCity = <<<SQL
 ('city_%s_%s','%s%s','city','{"en_US": "%s"}', NULL,'{"region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168": {"data": "%s", "locale": null, "channel": null, "attribute": "region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168"}, "country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "France", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}, "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed": {"data": "%s°C, Wind E at %s km/h, 19 Humidity", "locale": null, "channel": null, "attribute": "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed"}, "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d": {"data": "Western European Summer Time", "locale": null, "channel": null, "attribute": "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d"}, "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc_en_US": {"data": "<p><strong>Want to live a charming getaway?</strong></p><p>Forget Venice and discover %s! You will fall for THE trendy and romantic city trip ... %s will charm you with its history, architecture, culture and people. Be enchanted by the soul of %s, strolling through the steep streets with colorful facades of Alfama or Bairro Alto. Admire the sublime views of the Tagus and the Atlantic Ocean from the viewpoints accessible by yellow tram ... There is so much to discover in %s and so little to do to escape the time of a weekend full of poetry . Do not wait any longer !</p>", "locale": "en_US", "channel": null, "attribute": "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc"}}')
 SQL;
-        $cityCodes = ['nantes', 'vertou', 'niort', 'limoge', 'bordeaux', 'toulouse', 'dijon', 'digouin', 'puy_en_velay', 'marseille', 'olonne_sur_mer', 'montaigu', 'lanion', 'rennes'];
+        $cityCodes = [
+            'z_nantes',
+            'z_vertou',
+            'z_niort',
+            'z_limoge',
+            'z_bordeaux',
+            'z_toulouse',
+            'z_dijon',
+            'z_digouin',
+            'z_puy_en_velay',
+            'z_marseille',
+            'z_olonne_sur_mer',
+            'z_montaigu',
+            'z_lanion',
+            'z_rennes',
+        ];
         $code = $cityCodes[array_rand($cityCodes)];
         $label = str_replace('_', ' ', ucfirst($code));
         $temp = rand(5, 30);
