@@ -22,3 +22,13 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductModelDraft\UpdateDraftAuthor
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.count_product_proposals:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\CountProductProposals
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.count_product_model_proposals:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\CountProductModelProposals
+        arguments:
+            - '@database_connection'

@@ -4,6 +4,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -69,16 +70,21 @@ class Version_2_3_20180615152443_product_model_draft_and_reindex extends Abstrac
     }
 
     /**
-     * Returns next ProductDraft changes or null if it does not remain.
+     * Returns next proposed ProductDraft changes or null if it does not remain.
      *
      * @return array|null
      */
     private function getNextProductDrafts()
     {
         $selectDraftPattern =
-            'SELECT draft.id as id FROM pimee_workflow_product_draft as draft LIMIT %s,%s';
+            'SELECT draft.id as id FROM pimee_workflow_product_draft as draft WHERE status = %d LIMIT %s,%s';
 
-        $draftsStmt = $this->connection->query(sprintf($selectDraftPattern, $this->fromLimit, $this->fromLimit + self::BATCH_SIZE));
+        $draftsStmt = $this->connection->query(sprintf(
+            $selectDraftPattern,
+            EntityWithValuesDraftInterface::READY,
+            $this->fromLimit,
+            $this->fromLimit + self::BATCH_SIZE
+        ));
         $this->fromLimit += self::BATCH_SIZE;
 
         $draftsStmt->execute();
