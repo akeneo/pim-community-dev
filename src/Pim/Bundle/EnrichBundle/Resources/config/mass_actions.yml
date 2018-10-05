@@ -4,9 +4,17 @@ parameters:
 services:
     # Mass edit action operation registry
 
+    # @todo merge : unused service to remove
     pim_enrich.mass_edit_action.operation_job_launcher:
         class: '%pim_enrich.mass_edit_action.operation_job_launcher.class%'
         arguments:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'
+
+    pim_enrich.mass_edit_action.operation_authenticated_job_launcher:
+        class: '%pim_enrich.mass_edit_action.operation_job_launcher.class%'
+        arguments:
+            - '@pim_connector.launcher.authenticated_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
