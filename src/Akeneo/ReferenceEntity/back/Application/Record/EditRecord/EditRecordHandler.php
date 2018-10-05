@@ -20,6 +20,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 
 /**
@@ -49,6 +51,12 @@ class EditRecordHandler
         $this->storer = $storer;
     }
 
+    /**
+     * @param EditRecordCommand $editRecordCommand
+     *
+     * @throws FileRemovalException
+     * @throws FileTransferException
+     */
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
         $record = $this->getRecord($editRecordCommand);
