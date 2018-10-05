@@ -13,15 +13,11 @@ suites:
 
     ## Structure context
     Structure:
-        namespace: Akeneo\Pim\Structure\Component
-        psr4_prefix: Akeneo\Pim\Structure\Component
-        spec_path: src/Akeneo/Pim/Structure/Component
-        src_path: src/Akeneo/Pim/Structure/Component
-    StructureBundle:
-        namespace: Akeneo\Pim\Structure\Bundle
-        psr4_prefix: Akeneo\Pim\Structure\Bundle
-        spec_path: src/Akeneo/Pim/Structure/Bundle
-        src_path: src/Akeneo/Pim/Structure/Bundle
+        namespace: Akeneo\Pim\Structure
+        psr4_prefix: Akeneo\Pim\Structure
+        spec_path: tests/back/Pim/Structure
+        src_path: src/Akeneo/Pim/Structure
+        spec_prefix: Specification
 
     ## Enrichment context
     Enrichment:
