@@ -5,8 +5,16 @@ global:
     pfid: test-pim
   monitoring:
     enabled: false
-  backup:
-    enabled: true    
+
+backup:
+  enabled: true
+  projectId: nil
+  zone: nil
+  snapshot:
+    schedule: "0 0 */1 * * *"
+  export:
+    snapshotAge: 24h
+
 common:
   extraLabels: []
   pimMasterDomain: nil
