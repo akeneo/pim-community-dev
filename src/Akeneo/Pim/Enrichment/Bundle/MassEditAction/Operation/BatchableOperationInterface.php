@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
+namespace Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation;
 
 /**
  * A "batchable" operation to make it works through the BatchBundle

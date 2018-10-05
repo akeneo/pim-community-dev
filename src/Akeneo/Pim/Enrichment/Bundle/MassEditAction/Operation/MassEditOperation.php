@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
+namespace Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation;
 
 /**
  * A basic implementation of the MassEditOperation.

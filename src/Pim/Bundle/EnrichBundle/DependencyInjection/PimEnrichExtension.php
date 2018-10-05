@@ -48,7 +48,6 @@ class PimEnrichExtension extends Extension
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
-        $loader->load('mass_actions.yml');
         $loader->load('providers.yml');
         $loader->load('queries.yml');
         $loader->load('query_builder.yml');
