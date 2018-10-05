@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Extension\Action\Actions;
+namespace Akeneo\Pim\Enrichment\Bundle\Extension\Action;
 
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction;
 

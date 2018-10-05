@@ -1,8 +1,8 @@
 parameters:
-    pim_enrich.extension.action.type.navigate_product_and_product_model.class: 'Pim\Bundle\EnrichBundle\Extension\Action\Actions\NavigateProductAndProductModelAction'
-    pim_enrich.extension.action.type.edit_in_modal.class: 'Pim\Bundle\EnrichBundle\Extension\Action\Actions\EditInModalAction'
-    pim_enrich.extension.action.type.delete_product.class: 'Pim\Bundle\EnrichBundle\Extension\Action\Actions\DeleteProductAction'
-    pim_enrich.extension.action.type.toggle_product.class: 'Pim\Bundle\EnrichBundle\Extension\Action\Actions\ToggleProductAction'
+    pim_enrich.extension.action.type.navigate_product_and_product_model.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\NavigateProductAndProductModelAction'
+    pim_enrich.extension.action.type.edit_in_modal.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\EditInModalAction'
+    pim_enrich.extension.action.type.delete_product.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\DeleteProductAction'
+    pim_enrich.extension.action.type.toggle_product.class: 'Akeneo\Pim\Enrichment\Bundle\Extension\Action\ToggleProductAction'
 
 services:
     pim_enrich.extension.action.type.navigate_product_and_product_model:
