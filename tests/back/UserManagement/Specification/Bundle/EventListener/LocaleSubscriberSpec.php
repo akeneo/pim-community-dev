@@ -2,12 +2,15 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\EventListener;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,14 +49,17 @@ class LocaleSubscriberSpec extends ObjectBehavior
         GetResponseEvent $event,
         Request $request,
         SessionInterface $session,
-        ConfigValueRepository $configValueRepository
+        Connection $connection,
+        Statement $statement
     ) {
         $event->getRequest()->willReturn($request);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
 
-        $em->getRepository('OroConfigBundle:ConfigValue')->willReturn($configValueRepository);
-        $configValueRepository->getSectionForEntityAndScope('pim_localization', 'app', 0)->willReturn(null);
+        $em->getConnection()->willReturn($connection);
+        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
+
+        $statement->fetchColumn(Argument::any())->willReturn(false);
 
         $request->setLocale()->shouldNotBeCalled();
 
@@ -65,17 +71,17 @@ class LocaleSubscriberSpec extends ObjectBehavior
         GetResponseEvent $event,
         Request $request,
         SessionInterface $session,
-        ConfigValueRepository $configValueRepository,
-        ConfigValue $configValue
+        Connection $connection,
+        Statement $statement
     ) {
         $event->getRequest()->willReturn($request);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn(null);
 
-        $em->getRepository('OroConfigBundle:ConfigValue')->willReturn($configValueRepository);
-        $configValueRepository->getSectionForEntityAndScope('pim_localization', 'app', 0)->willReturn($configValue);
+        $em->getConnection()->willReturn($connection);
+        $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
 
-        $configValue->getValue()->willReturn('fr_FR');
+        $statement->fetchColumn(Argument::any())->willReturn('fr_FR');
 
         $request->setLocale('fr_FR')->shouldBeCalled();
 

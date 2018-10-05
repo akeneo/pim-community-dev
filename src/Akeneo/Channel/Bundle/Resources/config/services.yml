@@ -109,7 +109,10 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.attribute'
-            - '@pim_localization.updater.translatable'
+            - '@channel.updater.translatable'
+
+    channel.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
 
     pim_catalog.remover.channel:
         class: 'Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover'

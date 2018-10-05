@@ -1,8 +1,3 @@
-pim_localization_locale_index:
-    path: /system/locale/ui
-    defaults: { _controller: pim_localization.controller.locale:indexAction }
-    methods: [GET]
-
 pim_localization_format_index:
     path: /localization/format
     defaults: { _controller: pim_localization.controller.format:indexAction }

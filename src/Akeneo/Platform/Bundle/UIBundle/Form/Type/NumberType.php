@@ -2,12 +2,12 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\NumberLocalizerTransformer;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormatValidator;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

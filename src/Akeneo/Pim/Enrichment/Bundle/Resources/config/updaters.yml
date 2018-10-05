@@ -100,7 +100,7 @@ services:
         class: '%pim_catalog.updater.category_translatable.class%'
         arguments:
             - '@pim_catalog.updater.category.base'
-            - '@pim_localization.updater.translatable'
+            - '@pim_enrichment.updater.translatable'
 
     pim_catalog.updater.group:
         class: '%pim_catalog.updater.group.class%'
@@ -108,6 +108,9 @@ services:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.product_query_builder_factory'
+
+    pim_enrichment.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
 
     pim_catalog.command.cleaner.wrong_value_on_variant_product:
         class: '%pim_catalog.command.cleaner.wrong_value_on_variant_product.class%'

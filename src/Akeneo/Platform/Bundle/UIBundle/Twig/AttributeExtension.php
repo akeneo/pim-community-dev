@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Twig;
+namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;

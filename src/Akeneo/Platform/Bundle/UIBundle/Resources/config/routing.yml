@@ -1,3 +1,8 @@
 pim_ui_ajaxentity_list:
     path: /list.json
     defaults: { _controller: pim_ui.controller.ajax_option:listAction }
+
+pim_localization_locale_index:
+    path: /system/locale/ui
+    defaults: { _controller: pim_localization.controller.locale:indexAction }
+    methods: [GET]

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Controller;
+namespace Akeneo\Platform\Bundle\UIBundle\Controller;
 
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +18,7 @@ class LocaleController
     /** @var LocaleProviderInterface */
     protected $localeProvider;
 
-    /** @var NormalizeInterface */
+    /** @var NormalizerInterface */
     protected $normalizer;
 
     /**

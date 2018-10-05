@@ -79,3 +79,10 @@ services:
             - '@doctrine'
             - '@pim_reference_data.label_renderer'
             - '%pim_ui.form.transformer.ajax_reference_data.class%'
+
+    pim_localization.form.type.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType'
+        arguments:
+            - '@pim_localization.provider.ui_locale'
+        tags:
+            - { name: form.type, alias: "pim_locale" }

@@ -16,6 +16,17 @@ services:
             - '@pim_comment.remover.comment'
             - '%pim_comment.entity.comment.class%'
 
+    pim_localization.controller.format:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\FormatController'
+        arguments:
+            - '@pim_catalog.localization.factory.date'
+            - '@pim_catalog.localization.factory.datetime'
+            - '@pim_enrich.resolver.locale'
+            - '@pim_user.context.user'
+            -
+                decimal_separators: '%pim_catalog.localization.decimal_separators%'
+                date_formats: '%pim_catalog.localization.date_formats%'
+
     ### External API
     pim_api.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'

@@ -16,6 +16,11 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\LocalizationBundle\Controller\FormatController` to `Oro\Bundle\ConfigBundle\Controller\Rest\FormatController`
+- Move `Pim\Bundle\LocalizationBundle\Controller\LocaleController` to `Akeneo\Platform\Bundle\UIBundle\Controller\LocaleController`
+- Move `Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider` to `Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider`
+- Move `Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\NumberLocalizerTransformer`
+- Move `Pim\Bundle\LocalizationBundle\Form\Type\LocaleType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\TranslationNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer`
@@ -27,6 +32,8 @@
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\MetricNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\PriceNormalizer`
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+- Move `Pim\Bundle\LocalizationBundle\Twig\AttributeExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\AttributeExtension`
+- Move `Pim\Bundle\LocalizationBundle\Twig\LocaleExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\LocaleExtension`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`

@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\LocalizationBundle\Provider;
+namespace spec\Akeneo\Platform\Bundle\UIBundle;
 
-use Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider;
+use Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\MessageCatalogueInterface;
