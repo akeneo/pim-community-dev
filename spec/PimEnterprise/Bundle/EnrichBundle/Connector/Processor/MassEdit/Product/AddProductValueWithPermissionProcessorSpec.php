@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         PropertyAdderInterface $productFieldUpdater,
         ValidatorInterface $validator,
@@ -51,12 +52,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
     function it_processes(
         $authorizationChecker,
-        $tokenStorage,
-        $userManager,
         $validator,
         $stepExecution,
-        JobExecution $jobExecution,
-        UserInterface $userJulia,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -67,13 +64,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
-
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
@@ -82,14 +72,9 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
     function it_processes_without_permissions(
         $authorizationChecker,
-        $tokenStorage,
-        $userManager,
         $stepExecution,
-        JobExecution $jobExecution,
-        UserInterface $userJulia,
         ProductInterface $product,
-        JobParameters $jobParameters,
-        InvalidItemInterface $invalidItem
+        JobParameters $jobParameters
     ) {
         $configuration  = [
             'filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]
@@ -99,19 +84,12 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
         $this->setStepExecution($stepExecution);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
             Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
-
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
-
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
 

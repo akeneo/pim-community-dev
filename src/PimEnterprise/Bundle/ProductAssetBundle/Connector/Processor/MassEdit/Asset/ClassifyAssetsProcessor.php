@@ -11,9 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -31,21 +34,44 @@ class ClassifyAssetsProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var AuthorizationCheckerInterface */
+    private $authorizationChecker;
+
     /**
-     * @param ObjectUpdaterInterface $updater
-     * @param ValidatorInterface     $validator
+     * @param ObjectUpdaterInterface             $updater
+     * @param ValidatorInterface                 $validator
+     * @param AuthorizationCheckerInterface|null $authorizationChecker
+     *
+     * @todo merge : remove nullable on $authorizationChecker in master branch
      */
-    public function __construct(ObjectUpdaterInterface $updater, ValidatorInterface $validator)
-    {
+    public function __construct(
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        AuthorizationCheckerInterface $authorizationChecker = null
+    ) {
         $this->updater = $updater;
         $this->validator = $validator;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @todo merge : remove null check on authorizationChecker in master branch
      */
     public function process($asset)
     {
+        if (null !== $this->authorizationChecker && !$this->authorizationChecker->isGranted(Attributes::EDIT, $asset)) {
+            $this->stepExecution->addWarning(
+                'pimee_product_asset.not_editable',
+                ['%code%' => $asset->getCode()],
+                new DataInvalidItem($asset)
+            );
+            $this->stepExecution->incrementSummaryInfo('skipped_assets');
+
+            return null;
+        }
+
         $actions = $this->getConfiguredActions();
 
         $this->updateAsset($asset, $actions);

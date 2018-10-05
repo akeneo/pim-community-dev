@@ -70,6 +70,18 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var ProductDraftChangesPermissionHelper */
     protected $permissionHelper;
 
+    /**
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftManager             $productDraftManager
+     * @param EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
+     * @param EntityWithValuesDraftManager             $productModelDraftManager
+     * @param UserProviderInterface                    $userProvider
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param ProductDraftChangesPermissionHelper      $permissionHelper
+     *
+     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
+     */
     public function __construct(
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         EntityWithValuesDraftManager $productDraftManager,
@@ -100,6 +112,11 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         return $this;
     }
 
+    /**
+     * @deprecated will be removed in 3.0
+     *
+     * @todo merge : remove this method in master branch. It's no longer used
+     */
     protected function initSecurityContext(StepExecution $stepExecution): void
     {
         $username = $stepExecution->getJobExecution()->getUser();

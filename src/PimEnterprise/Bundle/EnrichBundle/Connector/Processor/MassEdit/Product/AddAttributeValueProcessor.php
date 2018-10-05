@@ -50,6 +50,8 @@ class AddAttributeValueProcessor extends BaseProcessor
      * @param UserManager                           $userManager
      * @param TokenStorageInterface                 $tokenStorage
      * @param AuthorizationCheckerInterface         $authorizationChecker
+     *
+     *  @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         ValidatorInterface $productValidator,
@@ -77,21 +79,13 @@ class AddAttributeValueProcessor extends BaseProcessor
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * We override parent to initialize the security context
-     */
-    public function process($product)
-    {
-        $this->initSecurityContext($this->stepExecution);
-
-        return BaseProcessor::process($product);
-    }
-
-    /**
      * Initialize the SecurityContext from the given $stepExecution
      *
      * @param StepExecution $stepExecution
+     *
+     * @deprecated will be removed in 3.0
+     *
+     * @todo merge : remove this method in master branch. It's no longer used
      */
     protected function initSecurityContext(StepExecution $stepExecution)
     {

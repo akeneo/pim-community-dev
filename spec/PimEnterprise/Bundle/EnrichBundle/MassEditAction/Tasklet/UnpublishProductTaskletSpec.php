@@ -2,7 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
@@ -15,12 +16,13 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UnpublishProductHandlerSpec extends ObjectBehavior
+class UnpublishProductTaskletSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
@@ -30,18 +32,12 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         CursorInterface $cursor,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        UserInterface $userJulia,
-        UserInterface $userMary
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $pqb->execute()->willReturn($cursor);
-        $pqb->addFilter(Argument::any(), Argument::any(), Argument::any(), Argument::any())->willReturn($pqb);
-        $pqbFactory->create()->willReturn($pqb);
-
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $userMary->getRoles()->willReturn(['NotProductOwner']);
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userManager->findUserByUsername('mary')->willReturn($userMary);
+        $pqb->addFilter(Argument::cetera())->willReturn($pqb);
+        $pqbFactory->create(Argument::any())->willReturn($pqb);
 
         $this->beConstructedWith(
             $manager,
@@ -49,6 +45,7 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
             $validator,
             $objectDetacher,
             $userManager,
+            $tokenStorage,
             $authorizationChecker,
             $pqbFactory
         );
@@ -66,9 +63,9 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $cursor,
         $authorizationChecker,
         StepExecution $stepExecution,
-        JobExecution $jobExecution,
         PublishedProductInterface $pubProduct1,
-        PublishedProductInterface $pubProduct2
+        PublishedProductInterface $pubProduct2,
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -87,14 +84,14 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
             ]
         ];
 
-        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
-        $authorizationChecker->setToken(Argument::any())->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
 
@@ -110,9 +107,9 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $cursor,
         $authorizationChecker,
         StepExecution $stepExecution,
-        JobExecution $jobExecution,
         PublishedProductInterface $pubProduct1,
-        PublishedProductInterface $pubProduct2
+        PublishedProductInterface $pubProduct2,
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -130,19 +127,24 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
                 $pubProduct2
             ]
         ];
-        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('mary');
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);
-        $authorizationChecker->setToken(Argument::any())->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
-        $stepExecution->addWarning('unpublish_product_tasklet', Argument::any(), [], $pubProduct2)->shouldBeCalled();
+        $stepExecution->addWarning(
+            'pim_enrich.mass_edit_action.unpublish.message.error',
+            [],
+            Argument::type(DataInvalidItem::class)
+        )->shouldBeCalledTimes(1);
 
         $manager->unpublishAll([$pubProduct1])->shouldBeCalled();
 

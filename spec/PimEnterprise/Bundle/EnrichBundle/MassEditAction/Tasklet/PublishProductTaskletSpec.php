@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PublishProductTaskletSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
@@ -39,17 +40,10 @@ class PublishProductTaskletSpec extends ObjectBehavior
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        UserInterface $userJulia,
-        UserInterface $userMary,
         StepExecution $stepExecution
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqbFactory->create(Argument::any())->willReturn($pqb);
-
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $userMary->getRoles()->willReturn(['NotProductOwner']);
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userManager->findUserByUsername('mary')->willReturn($userMary);
 
         $this->beConstructedWith(
             $manager,
@@ -75,10 +69,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $tokenStorage,
         $authorizationChecker,
         $stepExecution,
-        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
@@ -106,12 +98,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
@@ -130,10 +118,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $tokenStorage,
         $authorizationChecker,
         $stepExecution,
-        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ObjectDetacherInterface $objectDetacher,
@@ -161,12 +147,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $violation1 = new ConstraintViolation('error1', 'spec', [], '', '', $product1);
         $violation2 = new ConstraintViolation('error2', 'spec', [], '', '', $product2);
@@ -198,10 +180,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $tokenStorage,
         $authorizationChecker,
         $stepExecution,
-        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
@@ -229,12 +209,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('mary');
-
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(false);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
