@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Structure\Integration\Bundle\Attribute;
+namespace AkeneoTest\Pim\Structure\Integration\Remover;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
