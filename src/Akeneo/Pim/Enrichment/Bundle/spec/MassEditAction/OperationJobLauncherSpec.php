@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\MassEditAction;
 
 use Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\BatchableOperationInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
