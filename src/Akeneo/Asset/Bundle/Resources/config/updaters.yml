@@ -50,7 +50,10 @@ services:
         class: '%pim_catalog.updater.category_translatable.class%'
         arguments:
             - '@pimee_product_asset.updater.category.base'
-            - '@pim_localization.updater.translatable'
+            - '@asset.updater.translatable'
+
+    asset.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
 
     pimee_product_asset.updater.external_api.asset:
         class: '%pimee_product_asset.updater.external_api.asset.class%'
