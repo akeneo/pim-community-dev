@@ -46,12 +46,13 @@ class ValueFactory
      * @param string             $channelCode
      * @param string             $localeCode
      * @param mixed              $data
+     * @param bool               $ignoreUnknownData
      *
      * @throws \LogicException
      *
      * @return ValueInterface
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, $ignoreUnknownData = false)
     {
         try {
             $this->attributeValidatorHelper->validateScope($attribute, $channelCode);
@@ -61,7 +62,7 @@ class ValueFactory
         }
 
         $factory = $this->getFactory($attribute->getType());
-        $value = $factory->create($attribute, $channelCode, $localeCode, $data);
+        $value = $factory->create($attribute, $channelCode, $localeCode, $data, $ignoreUnknownData);
 
         return $value;
     }
