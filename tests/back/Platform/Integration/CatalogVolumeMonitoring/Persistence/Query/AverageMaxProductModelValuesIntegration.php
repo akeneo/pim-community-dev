@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Query;
 
-use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 
 class AverageMaxProductModelValuesIntegration extends QueryTestCase
 {

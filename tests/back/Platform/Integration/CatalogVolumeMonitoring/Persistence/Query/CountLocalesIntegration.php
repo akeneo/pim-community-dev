@@ -7,7 +7,7 @@ namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Qu
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 
 class CountLocalesIntegration extends QueryTestCase
 {

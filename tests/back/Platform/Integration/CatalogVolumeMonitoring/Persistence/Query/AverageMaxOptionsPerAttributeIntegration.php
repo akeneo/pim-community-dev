@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Query;
 
 use PHPUnit\Framework\Assert;
-use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class AverageMaxOptionsPerAttributeIntegration extends QueryTestCase

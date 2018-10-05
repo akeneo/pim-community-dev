@@ -6,7 +6,7 @@ namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Qu
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
-use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 
 class CountUsersIntegration extends QueryTestCase
 {

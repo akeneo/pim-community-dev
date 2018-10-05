@@ -6,7 +6,7 @@ namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Qu
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use PHPUnit\Framework\Assert;
-use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 
 class AverageMaxCategoriesInOneCategoryIntegration extends QueryTestCase
 {

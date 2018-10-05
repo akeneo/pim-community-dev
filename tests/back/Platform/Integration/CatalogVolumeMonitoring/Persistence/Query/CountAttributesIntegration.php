@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Query;
 
+use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 use PHPUnit\Framework\Assert;
-use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
 
 class CountAttributesIntegration extends QueryTestCase
 {
