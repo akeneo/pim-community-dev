@@ -45,6 +45,10 @@ class FileTransformer implements FileTransformerInterface
         }
 
         foreach ($rawTransformations as $name => $options) {
+            if (!$this->registry->has($name, $mimeType)) {
+                continue;
+            }
+
             $transformation = $this->registry->get($name, $mimeType);
             $transformation->transform($outputFile, $options);
         }
