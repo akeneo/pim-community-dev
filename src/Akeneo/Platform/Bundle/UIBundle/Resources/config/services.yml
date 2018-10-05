@@ -26,3 +26,8 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_enrich.event_listener.close_session:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\CloseSessionListener'
+        tags:
+            - { name: kernel.event_subscriber }
