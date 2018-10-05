@@ -249,3 +249,33 @@ When the reindexation of a lot of records is needed (like 1 million), how do we 
 - It it going to block the job queue ?
 
 This case can happen when an attribute text is removed from the enriched entity and this property is used for the search in ES, so it needs to be totally recalculated.
+
+
+## 06/10/2018
+
+### API port and hexagon
+
+#### Problem:
+
+Given we will need to expose the data about the reference entities and records through the API, as well as be able update those data,
+
+how will we handle those usecases regarding:
+- The transformation of json array into commands ?
+- Are those commands the same than the one we already have ?
+- Are they validated differently ? or do they reuse the validators we have ?
+- Are the messages and property path inside those violations the same between the UI (internal api) and the external Api ?
+
+#### Proposed solution:
+
+##### Edit usecases:
+
+- We will have a different controller for each endpoint of the external API.
+- We think the format the UI (internal API) and the external API will be similar, hence **we can reuse the command factories already present in src/Application**.
+- The intention of the user is the same when using the UI and the API, hence **we will reuse those commands to call the handlers**.
+- The constraints on those commands are the same, as well as the messages of the violations and the property paths, hence **we will reuse the validators** (the violations will be normalized differently in the external API, but that's not a problem since it will be done in a different controller).
+- The API will check the format of request bodies to give a nice feedback to the user using jsonSchema, this check will be performed in the controllers. (in the UI port, 500 error occurs when the request body does not permit to create a command with it).
+
+##### Read usecases:
+
+- We will use a different read model for each read usecases like `Read a record details` as those models may differ a lot between the UI and the external API.
+- There will be different query functions used to generate those read models.
