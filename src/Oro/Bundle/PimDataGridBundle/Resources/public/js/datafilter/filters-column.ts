@@ -140,7 +140,7 @@ class FiltersColumn extends BaseView {
 
   fetchNextFilters(event: JQueryMouseEventObject): void {
     const list: any = event.currentTarget;
-    const scrollPosition = Math.max(0, list.scrollTop - 15);
+    const scrollPosition = Math.max(0, list.scrollTop);
     const bottomPosition = list.scrollHeight - list.offsetHeight;
     const isBottom = bottomPosition === scrollPosition;
 
@@ -153,7 +153,9 @@ class FiltersColumn extends BaseView {
         }
 
         this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, loadedFilters);
-        return this.renderFilters();
+
+        this.renderFilters();
+        this.hideLoading()
       });
     }
   }
@@ -296,7 +298,7 @@ class FiltersColumn extends BaseView {
     this.$el.html(_.template(this.template));
     this.filterList = $('.filter-list').appendTo($('body'));
 
-    $(this.searchSelector, this.filterList).on('keyup', this.searchFilters.bind(this));
+    $(this.searchSelector, this.filterList).on('keyup search', this.searchFilters.bind(this));
     $('.filter-list', this.filterList).on('scroll', this.searchFilters.bind(this));
     $('.close', this.filterList).on('click', this.togglePanel.bind(this));
 
