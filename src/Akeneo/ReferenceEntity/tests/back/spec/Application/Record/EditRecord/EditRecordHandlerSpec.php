@@ -26,6 +26,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -44,9 +45,9 @@ class EditRecordHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(EditRecordHandler::class);
     }
 
-    function it_edits_a_record(
-        $valueUpdaterRegistry,
-        $recordRepository,
+    function it_edits_a_record_without_image(
+        ValueUpdaterRegistryInterface $valueUpdaterRegistry,
+        RecordRepositoryInterface $recordRepository,
         Record $record,
         ValueUpdaterInterface $textUpdater,
         AbstractAttribute $textAttribute
@@ -55,7 +56,7 @@ class EditRecordHandlerSpec extends ObjectBehavior
         $editDescriptionCommand->attribute = $textAttribute;
         $editDescriptionCommand->channel = null;
         $editDescriptionCommand->locale = 'fr_FR';
-        $editDescriptionCommand->data = 'Sony is a famous electronic company';
+        $editDescriptionCommand->text = 'Sony is a famous electronic company';
 
         $editRecordCommand = new EditRecordCommand();
         $editRecordCommand->code = 'sony';
@@ -81,6 +82,44 @@ class EditRecordHandlerSpec extends ObjectBehavior
         $this->__invoke($editRecordCommand);
     }
 
+    function it_edits_a_record_with_image(
+        ValueUpdaterRegistryInterface $valueUpdaterRegistry,
+        RecordRepositoryInterface $recordRepository,
+        FileStorerInterface $storer,
+        Record $record,
+        ValueUpdaterInterface $textUpdater,
+        AbstractAttribute $textAttribute,
+        FileInfoInterface $fileInfo
+    ) {
+        $editRecordCommand = new EditRecordCommand();
+        $editRecordCommand->code = 'sony';
+        $editRecordCommand->referenceEntityIdentifier = 'brand';
+        $editRecordCommand->image = [
+            'filePath' => '/tmp/jambon.png',
+            'originalFilename' => 'jambon.png',
+        ];
+        $editRecordCommand->labels = [
+            'fr_FR' => 'Sony',
+            'en_US' => 'Sony',
+        ];
+        $editRecordCommand->editRecordValueCommands = [];
+
+        $currentEmptyImage = Image::createEmpty();
+        $record->getImage()->willReturn($currentEmptyImage);
+        $storer->store(Argument::type(\SplFileInfo::class), 'catalogStorage')->willReturn($fileInfo);
+
+        $recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('sony')
+        )->willReturn($record);
+
+        $record->setLabels(Argument::type(LabelCollection::class))->shouldBeCalled();
+        $record->updateImage(Argument::type(Image::class))->shouldBeCalled();
+        $recordRepository->update($record)->shouldBeCalled();
+
+        $this->__invoke($editRecordCommand);
+    }
+
     function it_updates_a_record_with_same_image(
         RecordRepositoryInterface $recordRepository,
         FileStorerInterface $storer,
@@ -88,7 +127,6 @@ class EditRecordHandlerSpec extends ObjectBehavior
         Record $record,
         Image $existingImage
     ) {
-        $editRecordCommand->identifier = 'brand_sony_a1677570-a278-444b-ab46-baa1db199392';
         $editRecordCommand->code = 'sony';
         $editRecordCommand->referenceEntityIdentifier = 'brand';
         $editRecordCommand->labels = [
@@ -97,7 +135,6 @@ class EditRecordHandlerSpec extends ObjectBehavior
         ];
         $editRecordCommand->image = [
             'filePath' => '/my/image/path',
-
         ];
 
         $existingImage->isEmpty()->willReturn(false);
