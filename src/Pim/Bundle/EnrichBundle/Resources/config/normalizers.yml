@@ -113,6 +113,7 @@ services:
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_catalog.localization.presenter.registry'
             - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -196,6 +197,14 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.factory.attribute_option_value'
             - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer}
+
+    pim_enrich.normalizer.job_execution:
+        class: 'Pim\Bundle\EnrichBundle\Normalizer\JobExecutionNormalizer'
+        arguments:
+            - '@pim_import_export.normalizer.job_execution'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer}
 

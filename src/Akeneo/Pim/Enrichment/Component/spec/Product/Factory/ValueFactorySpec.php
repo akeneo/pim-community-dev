@@ -40,7 +40,7 @@ class ValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper->validateLocale($attribute, null)->shouldBeCalled();
         $attributeValidatorHelper->validateScope($attribute, null)->shouldBeCalled();
 
-        $productValueFactory->create($attribute, null, null, 'foobar')->willReturn($productValue);
+        $productValueFactory->create($attribute, null, null, 'foobar', false)->willReturn($productValue);
 
         $this->create($attribute, null, null, 'foobar')->shouldReturn($productValue);
     }
@@ -66,7 +66,7 @@ class ValueFactorySpec extends ObjectBehavior
         $attributeValidatorHelper->validateScope($attribute, 'ecommerce')->shouldBeCalled();
         $attributeValidatorHelper->validateLocale($attribute, 'en_US')->shouldBeCalled();
 
-        $productValueFactory->create($attribute, 'ecommerce', 'en_US', 'foobar')->willReturn($productValue);
+        $productValueFactory->create($attribute, 'ecommerce', 'en_US', 'foobar', false)->willReturn($productValue);
 
         $this->create($attribute, 'ecommerce', 'en_US', 'foobar')->shouldReturn($productValue);
     }

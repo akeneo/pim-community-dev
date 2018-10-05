@@ -14,7 +14,7 @@
         message: item.notification.message|trans(item.notification.messageParams),
         viewed: item.viewed,
         url: generatedUrl,
-        createdAt: item.notification.created|date("Y-m-d H:i:s"),
+        createdAt: item.notification.created|date("Y-m-d H:i:s", userTimezone),
         actionType: item.notification.context.actionType ? item.notification.context.actionType : null,
         buttonLabel: item.notification.context.buttonLabel is defined ? item.notification.context.buttonLabel|trans : 'pim_notification.report'|trans,
         showReportButton: item.notification.context.showReportButton is defined ? item.notification.context.showReportButton : true,

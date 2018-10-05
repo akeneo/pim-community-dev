@@ -63,15 +63,15 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
         $attributeRepository->findOneByIdentifier('description')->willReturn($description);
 
-        $valueFactory->create($sku, null, null, 'foo')->willReturn($value1);
+        $valueFactory->create($sku, null, null, 'foo', true)->willReturn($value1);
         $valueFactory
-            ->create($description, 'ecommerce', 'en_US', 'a text area for ecommerce in English')
+            ->create($description, 'ecommerce', 'en_US', 'a text area for ecommerce in English', true)
             ->willReturn($value2);
         $valueFactory
-            ->create($description, 'tablet', 'en_US', 'a text area for tablets in English')
+            ->create($description, 'tablet', 'en_US', 'a text area for tablets in English', true)
             ->willReturn($value3);
         $valueFactory
-            ->create($description, 'tablet', 'fr_FR', 'une zone de texte pour les tablettes en français')
+            ->create($description, 'tablet', 'fr_FR', 'une zone de texte pour les tablettes en français', true)
             ->willReturn($value4);
 
         $actualValues = $this->createFromStorageFormat([
@@ -131,7 +131,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $color
     ) {
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-        $valueFactory->create($color, null, null, 'red')->willThrow(
+        $valueFactory->create($color, null, null, 'red', true)->willThrow(
             InvalidOptionException::validEntityCodeExpected(
                 'color',
                 'code',
@@ -165,7 +165,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $color->getCode()->willReturn('code');
         $color->isUnique()->willReturn(false);
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-        $valueFactory->create($color, null, null, ['red', 'purple', 'yellow'])->willThrow(
+        $valueFactory->create($color, null, null, ['red', 'purple', 'yellow'], true)->willThrow(
             InvalidOptionsException::validEntityListCodesExpected(
                 'color',
                 'codes',
@@ -201,7 +201,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $color
     ) {
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-        $valueFactory->create($color, null, null, 'red')->willThrow(
+        $valueFactory->create($color, null, null, 'red', true)->willThrow(
             new InvalidAttributeException('attribute', 'color', static::class)
         );
 
@@ -226,7 +226,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $referenceData
     ) {
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
-        $valueFactory->create($referenceData, null, null, 'my_image')->willThrow(
+        $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
             new InvalidPropertyException('attribute', 'image', static::class)
         );
 
@@ -261,10 +261,10 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $value1->getAttribute()->willReturn($image);
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
-        $valueFactory->create($referenceData, null, null, 'my_image')->willThrow(
+        $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(
             new InvalidPropertyTypeException('attribute', 'image', static::class)
         );
-        $valueFactory->create($referenceData, null, null, 'empty_image')->willReturn($value1);
+        $valueFactory->create($referenceData, null, null, 'empty_image', true)->willReturn($value1);
 
         $logger->warning(
             Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')

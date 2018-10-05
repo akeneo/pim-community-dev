@@ -7,7 +7,7 @@ use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -23,34 +23,34 @@ class JobExecutionController
     /** @var JobExecutionArchivist */
     protected $archivist;
 
-    /** @var SerializerInterface */
-    protected $serializer;
-
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
 
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /**
      * @param TranslatorInterface    $translator
      * @param JobExecutionArchivist  $archivist
-     * @param SerializerInterface    $serializer
      * @param JobExecutionManager    $jobExecutionManager
      * @param JobExecutionRepository $jobExecutionRepo
+     * @param NormalizerInterface    $normalizer
      */
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
-        SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
-        JobExecutionRepository $jobExecutionRepo
+        JobExecutionRepository $jobExecutionRepo,
+        NormalizerInterface $normalizer
     ) {
         $this->translator = $translator;
         $this->archivist = $archivist;
-        $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -83,7 +83,8 @@ class JobExecutionController
 
         $context = ['limit_warnings' => 100];
 
-        $jobResponse = $this->serializer->normalize($jobExecution, 'standard', $context);
+        $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
+
         $jobResponse['meta'] = [
             'logExists'           => file_exists($jobExecution->getLogFile()),
             'archives'      => $archives,

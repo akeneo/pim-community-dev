@@ -24,7 +24,8 @@ define(
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
-                'change .field-input:first textarea:first': 'updateModel'
+                'change .field-input:first textarea:first': 'updateModel',
+                'click .note-insert': 'moveModalBackdrop'
             },
 
             /**
@@ -84,6 +85,15 @@ define(
              */
             setFocus: function () {
                 this.$('.field-input:first .note-editable').trigger('focus');
+            },
+
+            /**
+             * Places the modal backdrop in the page itself, and not outside of the body.
+             * This allows the z-index to work properly in the mass-edit form, as it is
+             * itself in a modal with its own z-index.
+             */
+            moveModalBackdrop: function () {
+                $('.modal-backdrop').prependTo('.AknFullPage');
             }
         });
     }
