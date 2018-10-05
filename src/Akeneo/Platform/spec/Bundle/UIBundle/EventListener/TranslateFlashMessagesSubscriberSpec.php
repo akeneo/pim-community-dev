@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\EventListener;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use PhpSpec\ObjectBehavior;

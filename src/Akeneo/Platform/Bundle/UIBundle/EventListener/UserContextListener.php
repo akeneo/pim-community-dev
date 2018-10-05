@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\EventListener;
+namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
-use Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;

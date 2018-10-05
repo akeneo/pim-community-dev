@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\EventListener;
+namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
