@@ -211,7 +211,10 @@ class AttributeMapping extends BaseForm {
     $.when(
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
       FetcherRegistry.getFetcher('family').fetch(familyCode)
-    ).then((form: AttributeOptionsMapping, normalizedFamily: any) => {
+    ).then((
+      form: BaseForm,
+      normalizedFamily: any
+    ) => {
       let modal = new BootstrapModal({
         className: 'modal modal--fullPage modal--topButton',
         modalOptions: {
@@ -227,13 +230,19 @@ class AttributeMapping extends BaseForm {
       });
       modal.open();
 
-      form
+      const formContent = form
+        .getExtension('content') as AttributeOptionsMapping;
+      formContent
         .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
         .setPimAiAttributeLabel(pimAiAttributeLabel)
         .setPimAttributeCode(catalogAttributeCode)
-        .setFamilyCode(familyCode)
+        .setFamilyCode(familyCode);
+
+      form
         .setElement(modal.$('.modal-body'))
         .render();
+
+      $('.modal .ok').replaceWith(form.$el.find('*[data-drop-zone="buttons"]'));
 
       modal.on('ok', () => {
         modal.close();

@@ -33,8 +33,27 @@ class AttributeOptionsMappingController
                     ],
                     'attribute_option' => null,
                     'status' => 0
-                ]
+                ],
+                'color_2' => [
+                    'pim_ai_attribute_option_code' => [
+                        'label' => 'Color 2',
+                    ],
+                    'attribute_option' => 'color2',
+                    'status' => 1
+                ],
+                'color_3' => [
+                    'pim_ai_attribute_option_code' => [
+                        'label' => 'Color 3',
+                    ],
+                    'attribute_option' => null,
+                    'status' => 2
+                ],
             ]
         ]);
+    }
+
+    public function updateAction()
+    {
+
     }
 }

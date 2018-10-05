@@ -38,7 +38,7 @@ extensions:
         targetZone: buttons
         position: 0
         config:
-            url: akeneo_suggest_data_attributes_mapping_update
+            url: akeneo_suggest_data_attribute_options_mapping_update
 
     pimee-suggest-data-settings-attributes-mapping-index-state:
         module: pim/form/common/state

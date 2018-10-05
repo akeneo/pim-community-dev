@@ -96,3 +96,4 @@ config:
         pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html
         pimee/template/settings/mapping/family-line: akeneosuggestdata/templates/settings/mapping/family-line.html
         pimee/template/settings/mapping/status-filter: akeneosuggestdata/templates/settings/mapping/status-filter.html
+        pimee/template/settings/mapping/attribute-options-mapping-modal: akeneosuggestdata/templates/settings/mapping/attribute-options-mapping-modal.html
