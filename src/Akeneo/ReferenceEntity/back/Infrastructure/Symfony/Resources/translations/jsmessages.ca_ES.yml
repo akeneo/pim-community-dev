@@ -13,8 +13,9 @@ pim_reference_entity:
       properties: Propietats
     properties:
       title: Propietats de l'entitat
-      identifier: Identificador
+      identifier: Codi
       label: Etiqueta
+      image: Imatge
     module:
       delete:
         button: Suprimir
@@ -30,16 +31,12 @@ pim_reference_entity:
       input:
         label: Etiqueta
         code: Codi (requerit)
-      confirm: confirmar
-    notification:
-      save:
-        fail: S'ha produït un error durant el guardat de l'entitat enriquida
-      create:
-        success: Entitat enriquida creada correctament.
+      confirm: Desar
   record:
     button:
       save: Desar
       create: Afegir nou
+      delete: Suprimir
     enrich:
       code: Codi
       label: Etiqueta
@@ -52,7 +49,12 @@ pim_reference_entity:
       input:
         label: Etiqueta
         code: Codi (requerit)
-      confirm: confirmar
+      confirm: Desar
+    grid:
+      column:
+        code: Codi
+        image: Imatge
+        label: Etiqueta
     tab:
       enrich: Enriquir
     notification:
@@ -81,7 +83,7 @@ pim_reference_entity:
         type: Tipus d'atribut
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
-      confirm: confirmar
+      confirm: Desar
     edit:
       delete: Eliminar l'atribut
       input:
@@ -116,10 +118,5 @@ pim_enrich:
   entity:
     attribute:
       property:
-        type:
-          akeneo_reference_entity_collection: Enriquir entitat
         section:
           type_specific: Escriu els paràmetres específics
-        reference_entity:
-          identifier: Enriquir entitat
-          default_label: Si us plau, selecciona una entitat enriquida

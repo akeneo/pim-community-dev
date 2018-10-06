@@ -7,8 +7,9 @@ pim_reference_entity:
       attribute: Attributi
       properties: Proprietà
     properties:
-      identifier: Identificatore
+      identifier: Codice
       label: Etichetta
+      image: Immagine
     module:
       delete:
         button: Eliminare
@@ -17,11 +18,12 @@ pim_reference_entity:
         title: Crea
       input:
         label: Etichetta
-      confirm: conferma
+      confirm: Salva
   record:
     button:
       save: Salva
       create: Aggiungi nuovo
+      delete: Eliminare
     enrich:
       code: Codice
       label: Etichetta
@@ -30,7 +32,12 @@ pim_reference_entity:
         title: Crea
       input:
         label: Etichetta
-      confirm: conferma
+      confirm: Salva
+    grid:
+      column:
+        code: Codice
+        image: Immagine
+        label: Etichetta
     tab:
       enrich: Catalogo
   attribute:
@@ -49,7 +56,7 @@ pim_reference_entity:
         type: Tipo di attributo
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
-      confirm: conferma
+      confirm: Salva
     edit:
       input:
         label: Etichetta

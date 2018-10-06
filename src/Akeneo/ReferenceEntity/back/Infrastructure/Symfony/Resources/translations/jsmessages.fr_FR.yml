@@ -12,8 +12,9 @@ pim_reference_entity:
       properties: Propriétés
     properties:
       title: Propriétés de l'entité
-      identifier: Identifiant
+      identifier: Code
       label: Libellé
+      image: Image
     module:
       delete:
         button: Supprimer
@@ -26,7 +27,7 @@ pim_reference_entity:
       subtitle: Entités
       input:
         label: Libellé
-      confirm: Confirmer
+      confirm: Enregistrer
   record:
     validation:
       code:
@@ -34,6 +35,7 @@ pim_reference_entity:
     button:
       save: Enregistrer
       create: Créer
+      delete: Supprimer
     enrich:
       code: Code
       label: Libellé
@@ -43,7 +45,12 @@ pim_reference_entity:
       subtitle: Entités
       input:
         label: Libellé
-      confirm: Confirmer
+      confirm: Enregistrer
+    grid:
+      column:
+        code: Code
+        image: Image
+        label: Libellé
     tab:
       enrich: Enrichir
   attribute:
@@ -66,7 +73,7 @@ pim_reference_entity:
         type: Type d'attribut
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
-      confirm: Confirmer
+      confirm: Enregistrer
     edit:
       input:
         label: Libellé
