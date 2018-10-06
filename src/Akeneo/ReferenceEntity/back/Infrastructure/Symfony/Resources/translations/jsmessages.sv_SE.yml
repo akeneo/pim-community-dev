@@ -7,8 +7,9 @@ pim_reference_entity:
       attribute: Attribut
       properties: Egenskaper
     properties:
-      identifier: Identifierare
+      identifier: Kod
       label: Etikett
+      image: Bild
     module:
       delete:
         button: Ta bort
@@ -17,10 +18,11 @@ pim_reference_entity:
         title: Skapa
       input:
         label: Etikett
-      confirm: bekräfta
+      confirm: Spara
   record:
     button:
       save: Spara
+      delete: Ta bort
     enrich:
       code: Kod
       label: Etikett
@@ -29,7 +31,12 @@ pim_reference_entity:
         title: Skapa
       input:
         label: Etikett
-      confirm: bekräfta
+      confirm: Spara
+    grid:
+      column:
+        code: Kod
+        image: Bild
+        label: Etikett
     tab:
       enrich: Berika
   attribute:
@@ -46,7 +53,7 @@ pim_reference_entity:
       input:
         label: Etikett
         type: Attribut typ
-      confirm: bekräfta
+      confirm: Spara
     edit:
       input:
         label: Etikett

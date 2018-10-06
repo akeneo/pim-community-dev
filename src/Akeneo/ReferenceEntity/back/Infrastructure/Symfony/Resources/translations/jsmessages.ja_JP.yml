@@ -7,8 +7,9 @@ pim_reference_entity:
       attribute: 属性
       properties: プロパティ
     properties:
-      identifier: 識別子
+      identifier: コード
       label: ラベル
+      image: イメージ
     module:
       delete:
         button: 削除
@@ -17,11 +18,12 @@ pim_reference_entity:
         title: 作成
       input:
         label: ラベル
-      confirm: 確認
+      confirm: 保存
   record:
     button:
       save: 保存
       create: 新しく追加
+      delete: 削除
     enrich:
       code: コード
       label: ラベル
@@ -30,7 +32,12 @@ pim_reference_entity:
         title: 作成
       input:
         label: ラベル
-      confirm: 確認
+      confirm: 保存
+    grid:
+      column:
+        code: コード
+        image: イメージ
+        label: ラベル
     tab:
       enrich: マスタ
   attribute:
@@ -49,7 +56,7 @@ pim_reference_entity:
         type: 属性タイプ
         value_per_locale: ロケールごとの値
         value_per_channel: チャンネルごとの値
-      confirm: 確認
+      confirm: 保存
     edit:
       input:
         label: ラベル

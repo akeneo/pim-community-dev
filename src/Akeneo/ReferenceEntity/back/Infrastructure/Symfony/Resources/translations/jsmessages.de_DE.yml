@@ -7,8 +7,9 @@ pim_reference_entity:
       attribute: Attribute
       properties: Eigenschaften
     properties:
-      identifier: Kennung
+      identifier: Code
       label: Bezeichnung
+      image: Abbildung
     module:
       delete:
         button: Löschen
@@ -17,10 +18,11 @@ pim_reference_entity:
         title: Anlegen
       input:
         label: Bezeichnung
-      confirm: Bestätigen
+      confirm: Speichern
   record:
     button:
       save: Speichern
+      delete: Löschen
     enrich:
       code: Code
       label: Bezeichnung
@@ -29,7 +31,12 @@ pim_reference_entity:
         title: Anlegen
       input:
         label: Bezeichnung
-      confirm: Bestätigen
+      confirm: Speichern
+    grid:
+      column:
+        code: Code
+        image: Abbildung
+        label: Bezeichnung
     tab:
       enrich: Anreichern
   attribute:
@@ -48,7 +55,7 @@ pim_reference_entity:
         type: Attributtyp
         value_per_locale: Wert je Gebietsschema
         value_per_channel: Wert je Ausgabekanal
-      confirm: Bestätigen
+      confirm: Speichern
     edit:
       input:
         label: Bezeichnung

@@ -7,8 +7,9 @@ pim_reference_entity:
       attribute: Attribuutit
       properties: Ominaisuudet
     properties:
-      identifier: Tunniste
+      identifier: Koodi
       label: Nimike
+      image: Kuva
     module:
       delete:
         button: Poista
@@ -17,11 +18,12 @@ pim_reference_entity:
         title: Luo
       input:
         label: Nimike
-      confirm: vahvista
+      confirm: Tallenna
   record:
     button:
       save: Tallenna
       create: Luo uusi
+      delete: Poista
     enrich:
       code: Koodi
       label: Nimike
@@ -30,7 +32,12 @@ pim_reference_entity:
         title: Luo
       input:
         label: Nimike
-      confirm: vahvista
+      confirm: Tallenna
+    grid:
+      column:
+        code: Koodi
+        image: Kuva
+        label: Nimike
     tab:
       enrich: Rikastuta
   attribute:
@@ -49,7 +56,7 @@ pim_reference_entity:
         type: Attribuuttityyppi
         value_per_locale: Kielikohtainen arvo
         value_per_channel: Kanavakohtainen arvo
-      confirm: vahvista
+      confirm: Tallenna
     edit:
       input:
         label: Nimike

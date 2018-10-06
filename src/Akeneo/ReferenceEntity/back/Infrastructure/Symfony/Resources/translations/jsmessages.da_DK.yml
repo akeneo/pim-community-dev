@@ -7,8 +7,9 @@ pim_reference_entity:
       attribute: Egenskaber
       properties: Egenskaber
     properties:
-      identifier: Id
+      identifier: Kode
       label: Etiket
+      image: Billede
     module:
       delete:
         button: Slet
@@ -17,11 +18,12 @@ pim_reference_entity:
         title: Opret
       input:
         label: Etiket
-      confirm: bekræft
+      confirm: Gem
   record:
     button:
       save: Gem
       create: Tilføj ny
+      delete: Slet
     enrich:
       code: Kode
       label: Etiket
@@ -30,7 +32,12 @@ pim_reference_entity:
         title: Opret
       input:
         label: Etiket
-      confirm: bekræft
+      confirm: Gem
+    grid:
+      column:
+        code: Kode
+        image: Billede
+        label: Etiket
     tab:
       enrich: Berige
   attribute:
@@ -49,7 +56,7 @@ pim_reference_entity:
         type: Attributtype
         value_per_locale: Værdi pr. landestandard
         value_per_channel: Værdi pr. kanal
-      confirm: bekræft
+      confirm: Gem
     edit:
       input:
         label: Etiket

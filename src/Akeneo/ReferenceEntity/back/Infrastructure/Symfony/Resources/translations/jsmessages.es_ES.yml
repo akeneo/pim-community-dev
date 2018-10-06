@@ -12,8 +12,9 @@ pim_reference_entity:
       properties: Propiedades
     properties:
       title: Propiedades de la entidad
-      identifier: Identificador
+      identifier: Código
       label: Etiqueta
+      image: Imagen
     module:
       delete:
         button: Eliminar
@@ -28,17 +29,12 @@ pim_reference_entity:
       input:
         label: Etiqueta
         code: Código (requerido)
-      confirm: confirmar
-    notification:
-      save:
-        fail: Un error ha ocurrido durante el guardado de la entidad enriquecida
-      create:
-        success: Entidad enriquecida creada correctamente.
-        fail: Un error ha ocurrido durante la creación de la entidad enriquecida
+      confirm: Guardar
   record:
     button:
       save: Guardar
       create: Añadir nuevo
+      delete: Eliminar
     enrich:
       code: Código
       label: Etiqueta
@@ -50,7 +46,12 @@ pim_reference_entity:
       input:
         label: Etiqueta
         code: Código (requerido)
-      confirm: confirmar
+      confirm: Guardar
+    grid:
+      column:
+        code: Código
+        image: Imagen
+        label: Etiqueta
     tab:
       enrich: Enriquecer
     notification:
@@ -78,7 +79,7 @@ pim_reference_entity:
         type: Tipo de atributo
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
-      confirm: confirmar
+      confirm: Guardar
     edit:
       input:
         code: Código (requerido)
@@ -111,10 +112,5 @@ pim_enrich:
   entity:
     attribute:
       property:
-        type:
-          akeneo_reference_entity_collection: Entidad enriquecida
         section:
           type_specific: Escriba los parámetros específicos
-        reference_entity:
-          identifier: Entidad enriquecida
-          default_label: Por favor, selecciona una entidad enriquecida
