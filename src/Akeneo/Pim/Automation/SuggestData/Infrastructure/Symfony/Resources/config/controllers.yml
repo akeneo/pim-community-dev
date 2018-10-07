@@ -9,7 +9,7 @@ services:
     akeneo.pim.automation.suggest_data.controller.pim_ai:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\PimAiConnectionController'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.connection.activate'
+            - '@akeneo.pim.automation.suggest_data.application.configuration.command.activate_connection_handler'
             - '@akeneo.pim.automation.suggest_data.connection.get_normalized_configuration'
             - '@akeneo.pim.automation.suggest_data.connection.get_status'
             - '@akeneo.pim.automation.suggest_data.normalizer.connection_status'

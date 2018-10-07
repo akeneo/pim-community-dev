@@ -27,7 +27,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfigurationHandler
+class ActivateConnectionHandler
 {
     /** @var DataProviderFactory */
     private $dataProviderFactory;
@@ -48,11 +48,11 @@ class SaveConfigurationHandler
     }
 
     /**
-     * @param SaveConfigurationCommand $saveConfiguration
+     * @param ActivateConnectionCommand $saveConfiguration
      *
      * @throws InvalidConnectionConfigurationException
      */
-    public function handle(SaveConfigurationCommand $saveConfiguration): void
+    public function handle(ActivateConnectionCommand $saveConfiguration): void
     {
         $dataProvider = $this->dataProviderFactory->create();
         $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);

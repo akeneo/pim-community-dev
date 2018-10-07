@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
@@ -31,8 +32,8 @@ class PimAiConfigurationContext implements Context
 
     private const PIM_AI_INVALID_TOKEN = 'invalid-token';
 
-    /** @var ActivateSuggestDataConnection */
-    private $pimAiConnection;
+    /** @var ActivateConnectionHandler */
+    private $activateConnectionHandler;
 
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
@@ -51,18 +52,18 @@ class PimAiConfigurationContext implements Context
     private $retrievedConfiguration;
 
     /**
-     * @param ActivateSuggestDataConnection $pimAiConnection
+     * @param ActivateConnectionHandler $activateConnectionHandler
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param GetNormalizedConfiguration $getNormalizedConfiguration
      * @param GetSuggestDataConnectionStatus $getConnectionStatus
      */
     public function __construct(
-        ActivateSuggestDataConnection $pimAiConnection,
+        ActivateConnectionHandler $activateConnectionHandler,
         ConfigurationRepositoryInterface $configurationRepository,
         GetNormalizedConfiguration $getNormalizedConfiguration,
         GetSuggestDataConnectionStatus $getConnectionStatus
     ) {
-        $this->pimAiConnection = $pimAiConnection;
+        $this->activateConnectionHandler = $activateConnectionHandler;
         $this->configurationRepository = $configurationRepository;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->getConnectionStatus = $getConnectionStatus;
@@ -178,7 +179,8 @@ class PimAiConfigurationContext implements Context
     private function activatePimAiConnection(string $token): bool
     {
         try {
-            $this->pimAiConnection->activate(['token' => $token]);
+            $command = new ActivateConnectionCommand(['token' => $token]);
+            $this->activateConnectionHandler->handle($command);
         } catch (InvalidConnectionConfigurationException $exception) {
             return false;
         }

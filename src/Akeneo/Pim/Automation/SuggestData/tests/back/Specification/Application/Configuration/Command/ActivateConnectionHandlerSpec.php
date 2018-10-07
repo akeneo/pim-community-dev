@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
@@ -25,7 +25,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfigurationHandlerSpec extends ObjectBehavior
+class ActivateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         DataProviderFactory $dataProviderFactory,
@@ -36,7 +36,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
 
     public function it_is_a_save_connector_configuration_command_handler(): void
     {
-        $this->shouldHaveType(SaveConfigurationHandler::class);
+        $this->shouldHaveType(ActivateConnectionHandler::class);
     }
 
     public function it_updates_an_existing_configuration(
@@ -44,7 +44,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $dataProviderFactory,
         $repository
     ): void {
-        $command = new SaveConfigurationCommand(['token' => 'bar']);
+        $command = new ActivateConnectionCommand(['token' => 'bar']);
         $configuration = new Configuration(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
@@ -61,7 +61,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $dataProviderFactory,
         $repository
     ): void {
-        $command = new SaveConfigurationCommand(['token' => 'bar']);
+        $command = new ActivateConnectionCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
@@ -76,7 +76,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         DataProviderInterface $dataProvider,
         $dataProviderFactory
     ): void {
-        $command = new SaveConfigurationCommand(['token' => 'bar']);
+        $command = new ActivateConnectionCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);

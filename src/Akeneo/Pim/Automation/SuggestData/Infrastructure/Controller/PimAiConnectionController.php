@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
@@ -28,8 +30,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PimAiConnectionController
 {
-    /** @var ActivateSuggestDataConnection */
-    private $activateSuggestDataConnection;
+    /** @var ActivateConnectionHandler */
+    private $activateConnectionHandler;
 
     /** @var GetNormalizedConfiguration */
     private $getNormalizedConfiguration;
@@ -44,20 +46,20 @@ class PimAiConnectionController
     private $translator;
 
     /**
-     * @param ActivateSuggestDataConnection $activateSuggestDataConnection
+     * @param ActivateConnectionHandler $activateConnectionHandler
      * @param GetNormalizedConfiguration $getNormalizedConfiguration
      * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
      * @param ConnectionStatusNormalizer $connectionStatusNormalizer
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        ActivateSuggestDataConnection $activateSuggestDataConnection,
+        ActivateConnectionHandler $activateConnectionHandler,
         GetNormalizedConfiguration $getNormalizedConfiguration,
         GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus,
         ConnectionStatusNormalizer $connectionStatusNormalizer,
         TranslatorInterface $translator
     ) {
-        $this->activateSuggestDataConnection = $activateSuggestDataConnection;
+        $this->activateConnectionHandler = $activateConnectionHandler;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->getSuggestDataConnectionStatus = $getSuggestDataConnectionStatus;
         $this->connectionStatusNormalizer = $connectionStatusNormalizer;
@@ -94,7 +96,10 @@ class PimAiConnectionController
         $configurationFields = json_decode($request->getContent(), true);
 
         try {
-            $this->activateSuggestDataConnection->activate($configurationFields);
+            $command = new ActivateConnectionCommand($configurationFields);
+            $this->saveConfigurationHandler->handle($command);
+
+            //$this->activateSuggestDataConnection->activate($configurationFields);
         } catch (InvalidConnectionConfigurationException $invalidConnection) {
             return new JsonResponse([
                 'message' => 'akeneo_suggest_data.connection.flash.invalid',

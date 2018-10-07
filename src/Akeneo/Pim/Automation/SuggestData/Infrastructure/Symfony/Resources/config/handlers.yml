@@ -1,8 +1,8 @@
 services:
 
     # Command Handlers
-    akeneo.pim.automation.suggest_data.handler.save_configuration:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationHandler'
+    akeneo.pim.automation.suggest_data.application.configuration.command.activate_connection_handler:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'

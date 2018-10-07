@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfigurationCommandSpec extends ObjectBehavior
+class ActivateConnectionCommandSpec extends ObjectBehavior
 {
     public function it_is_a_save_configuration_command(): void
     {
         $this->beConstructedWith(['foo' => 'bar']);
 
-        $this->shouldHaveType(SaveConfigurationCommand::class);
+        $this->shouldHaveType(ActivateConnectionCommand::class);
     }
 
     public function it_returns_a_values(): void

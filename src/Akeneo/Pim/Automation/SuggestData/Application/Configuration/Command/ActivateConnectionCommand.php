@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfigurationCommand
+class ActivateConnectionCommand
 {
     /** @var array */
     private $values;
