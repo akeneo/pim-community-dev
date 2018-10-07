@@ -4,6 +4,8 @@
 String[] legacyCeFeatures = ["tests/legacy/features"]
 String[] legacyEeFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
+String eeBranch = "master"
+String eeOwner = "akeneo"
 String launchCeFrontAcceptanceTests = "yes"
 String launchEeFrontAcceptanceTests = "yes"
 String launchCeBackAcceptanceTests = "yes"
@@ -24,6 +26,8 @@ stage("Build") {
     if (env.BRANCH_NAME =~ /^PR-/) {
         timeout(time:5, unit:'DAYS') {
             userInput = input(message: 'Launch tests?', parameters: [
+                string(defaultValue: '2.3', description: 'Enterprise Edition branch used for the build', name: 'eeBranch'),
+                string(defaultValue: 'akeneo', description: 'Owner of the repository on GitHub', name: 'eeOwner'),
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run front acceptance tests', name: 'launchCeFrontAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run EE front acceptance tests', name: 'launchEeFrontAcceptanceTests'),
@@ -44,6 +48,8 @@ stage("Build") {
             legacyCeFeatures = userInput['legacyCeFeatures'].tokenize(',')
             legacyEeFeatures = userInput['legacyEeFeatures'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
+            eeBranch = userInput['eeBranch']
+            eeOwner = userInput['eeOwner']
             launchCeFrontAcceptanceTests = userInput['launchCeFrontAcceptanceTests']
             launchEeFrontAcceptanceTests = userInput['launchEeFrontAcceptanceTests']
             launchCeBackAcceptanceTests = userInput['launchCeBackAcceptanceTests']
@@ -78,8 +84,8 @@ stage("Build") {
                     pod {
                         container('docker') {
                             checkout([$class: 'GitSCM',
-                                branches: [[name: 'master']],
-                                userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+                                branches: [[name: eeBranch]],
+                                userRemoteConfigs: [[credentialsId: 'github-credentials', url: "https://github.com/${eeOwner}/pim-enterprise-dev.git"]]
                             ])
 
                             dir('packages/pim-community-dev') {
