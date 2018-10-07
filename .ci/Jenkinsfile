@@ -1,12 +1,19 @@
 #!groovy
 @Library("k8s-utils@2.x")
 
-String[] editions = ["ce"]
-String[] legacyFeatures = ["tests/legacy/features"]
+String[] legacyCeFeatures = ["tests/legacy/features"]
+String[] legacyEeFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
-String launchAcceptanceTests = "yes"
-String launchIntegrationTests = "yes"
-String launchEndToEndTests = "yes"
+String launchCeFrontAcceptanceTests = "yes"
+String launchEeFrontAcceptanceTests = "yes"
+String launchCeBackAcceptanceTests = "yes"
+String launchEeBackAcceptanceTests = "yes"
+String launchCeFrontIntegrationTests = "yes"
+String launchEeFrontIntegrationTests = "yes"
+String launchCeBackIntegrationTests = "yes"
+String launchEeBackIntegrationTests = "yes"
+String launchCeEndToEndTests = "yes"
+String launchEeEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
@@ -18,21 +25,35 @@ stage("Build") {
         timeout(time:5, unit:'DAYS') {
             userInput = input(message: 'Launch tests?', parameters: [
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
-                choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
-                choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-                choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
-                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
+                choice(choices: 'yes\nno', description: 'Run front acceptance tests', name: 'launchCeFrontAcceptanceTests'),
+                choice(choices: 'yes\nno', description: 'Run EE front acceptance tests', name: 'launchEeFrontAcceptanceTests'),
+                choice(choices: 'yes\nno', description: 'Run back acceptance tests', name: 'launchCeBackAcceptanceTests'),
+                choice(choices: 'yes\nno', description: 'Run EE back acceptance tests', name: 'launchEeBackAcceptanceTests'),
+                choice(choices: 'yes\nno', description: 'Run front integration tests', name: 'launchCeFrontIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run EE front integration tests', name: 'launchEeFrontIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run back integration tests', name: 'launchCeBackIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run EE back integration tests', name: 'launchEeBackIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchCeEndToEndTests'),
+                choice(choices: 'yes\nno', description: 'Run EE end to end tests (whole Legacy Behat suite)', name: 'launchEeEndToEndTests'),
+                string(defaultValue: 'tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyCeFeatures'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy Ee end to end tests to run', name: 'legacyEeFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
             ])
 
-            editions = userInput['editions'].tokenize(',')
-            legacyFeatures = userInput['legacyFeatures'].tokenize(',')
+            legacyCeFeatures = userInput['legacyCeFeatures'].tokenize(',')
+            legacyEeFeatures = userInput['legacyEeFeatures'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
-            launchAcceptanceTests = userInput['launchAcceptanceTests']
-            launchIntegrationTests = userInput['launchIntegrationTests']
-            launchEndToEndTests = userInput['launchEndToEndTests']
+            launchCeFrontAcceptanceTests = userInput['launchCeFrontAcceptanceTests']
+            launchEeFrontAcceptanceTests = userInput['launchEeFrontAcceptanceTests']
+            launchCeBackAcceptanceTests = userInput['launchCeBackAcceptanceTests']
+            launchEeBackAcceptanceTests = userInput['launchEeBackAcceptanceTests']
+            launchCeFrontIntegrationTests = userInput['launchCeFrontIntegrationTests']
+            launchEeFrontIntegrationTests = userInput['launchEeFrontIntegrationTests']
+            launchCeBackIntegrationTests = userInput['launchCeBackIntegrationTests']
+            launchEeBackIntegrationTests = userInput['launchEeBackIntegrationTests']
+            launchCeEndToEndTests = userInput['launchEndToEndTests']
+            launchEeEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
             composer_command = "install"
@@ -53,7 +74,7 @@ stage("Build") {
                 }
             },
             "pim-ee": {
-                if (editions.contains("ee")) {
+                if (launchEeFrontAcceptanceTests.equals("yes") || launchEeBackAcceptanceTests.equals("yes") || launchEeFrontIntegrationTests.equals("yes") || launchEeBackIntegrationTests.equals("yes") || launchEeEndToEndTests.equals("yes")) {
                     pod {
                         container('docker') {
                             checkout([$class: 'GitSCM',
@@ -122,39 +143,39 @@ stage("Test") {
 
             // ACCEPTANCE TESTS
             "front-acceptance-ce": {testif(
-                condition: launchAcceptanceTests.equals("yes"),
+                condition: launchCeFrontAcceptanceTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
             )},
             "front-acceptance-ee": {testif(
-                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
+                condition: launchEeFrontAcceptanceTests.equals("yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
             "back-acceptance-ce": {testif(
-                condition: launchAcceptanceTests.equals("yes"),
+                condition: launchCeBackAcceptanceTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
             "back-acceptance-ee": {testif(
-                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
+                condition: launchEeBackAcceptanceTests.equals("yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
 
             // INTEGRATION TESTS
             "front-integration-ce": {testif(
-                condition: launchIntegrationTests.equals("yes"),
+                condition: launchCeFrontIntegrationTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "front-integration-ee": {testif(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
+                condition: launchEeFrontIntegrationTests.equals("yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "back-legacy-phpunit-integration-ce": {queue(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
+                condition: launchCeBackIntegrationTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
@@ -162,7 +183,7 @@ stage("Test") {
                 parallelism: 50
             )},
             "back-legacy-phpunit-integration-ee": {queue(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
+                condition: launchEeBackIntegrationTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee", selenium: false),
@@ -172,18 +193,18 @@ stage("Test") {
 
             // END TO END TESTS
             "legacy-end-to-end-behat-ce": {queue(
-                condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
+                condition: launchCeEndToEndTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyCeFeatures)}
             )},
             "legacy-end-to-end-behat-ee": {queue(
-                condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
+                condition: launchEeEndToEndTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee"),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyEeFeatures)}
             )}
         )
     } finally {
