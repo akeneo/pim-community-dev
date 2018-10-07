@@ -11,6 +11,9 @@ services:
       PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       PHP_XDEBUG_ENABLED: 0
       XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      BEHAT_SELENIUM_URL: 'http://selenium:4444/wd/hub'
+      BEHAT_URL: 'http://httpd-behat/'
+      BEHAT_TIMEOUT: 50000
     volumes:
       - '~/.composer:/home/docker/.composer'
       - '/tmp/behat/screenshots:/tmp/behat/screenshots'

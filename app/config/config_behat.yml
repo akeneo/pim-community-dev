@@ -1,7 +1,3 @@
-parameters:
-    env(BEHAT_URL): 'http://127.0.0.1/'
-    behat_url: '%env(BEHAT_URL)%'
-
 imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
@@ -48,3 +44,9 @@ parameters:
     catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
     tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
     upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
+    env(BEHAT_URL): 'http://127.0.0.1/'
+    behat_url: '%env(BEHAT_URL)%'
+    env(BEHAT_TIMEOUT): 50000
+    behat_timeout: '%env(BEHAT_TIMEOUT)%'
+    env(BEHAT_SELENIUM_URL): 'http://127.0.0.1:4444/wd/hub'
+    behat_selenium_url: '%env(BEHAT_SELENIUM_URL)%'

@@ -9,7 +9,7 @@ legacy:
                 - Context\FeatureContext:
                     -
                         base_url: '%%behat_url%%'
-                        timeout: 50000
+                        timeout: '%%behat_timeout%%'
                         window_width: 1280
                         window_height: 1024
                 - Context\FixturesContext:
@@ -24,7 +24,7 @@ legacy:
                     - 'Context\FeatureContext'
                 - Context\NavigationContext:
                     - 'Context\FeatureContext'
-                    - 'http://127.0.0.1/'
+                    - '%%behat_url%%'
                 - Context\TransformationContext:
                     - 'Context\FeatureContext'
                 - Context\AssertionContext:
@@ -120,8 +120,8 @@ legacy:
                     symfony2: ~
                 selenium2:
                     selenium2:
-                        wd_host: 'http://127.0.0.1:4444/wd/hub'
-            base_url: 'http://127.0.0.1/'
+                        wd_host: '%%behat_selenium_url%%'
+            base_url: '%%behat_url%%'
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
@@ -132,7 +132,7 @@ legacy:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: 'http://127.0.0.1/'
+                    base_url: '%%behat_url%%'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 

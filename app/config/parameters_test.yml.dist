@@ -13,3 +13,5 @@ parameters:
     product_and_product_model_index_name:  akeneo_pim_product_and_product_model
     index_hosts:                          'localhost: 9200'
     behat_url:                            'http://127.0.0.1/'
+    behat_selenium_url:                   'http://127.0.0.1:4444/wd/hub'
+    behat_timeout:                        '50000'
