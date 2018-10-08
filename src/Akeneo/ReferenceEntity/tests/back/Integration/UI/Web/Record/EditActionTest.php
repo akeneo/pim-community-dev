@@ -34,6 +34,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
@@ -139,21 +140,21 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_text_value.json');
     }
 
-//    /**
-//     * @test
-//     */
-//    public function it_edits_a_file_value()
-//    {
-//        // TODO
-//    }
-//
-//    /**
-//     * @test
-//     */
-//    public function it_returns_an_error_if_we_send_an_invalid_file_value()
-//    {
-//        // TODO
-//    }
+    /**
+     * @test
+     */
+    public function it_edits_a_file_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'image_value_ok.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_if_we_send_an_invalid_file_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_image_value.json');
+    }
 
     private function getRecordRepository(): RecordRepositoryInterface
     {
@@ -217,6 +218,43 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
             ->create($fileAttribute);
+
+        // image attribute
+        $portrait = ImageAttribute::create(
+            AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('portrait'),
+            LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('200.10'),
+            AttributeAllowedExtensions::fromList(['png'])
+        );
+        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->create($portrait);
+
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'),
+            [],
+            Image::createEmpty()
+        ));
+
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $recordCode = RecordCode::fromString('starck');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+
+        $recordRepository->create($record);
 
         $user = new User();
         $user->setUsername('julia');

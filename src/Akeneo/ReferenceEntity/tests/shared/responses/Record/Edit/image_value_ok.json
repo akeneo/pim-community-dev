@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_record_edit_rest",
+    "query": {
+      "recordCode": "starck",
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "code": "starck",
+      "reference_entity_identifier": "designer",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values": [
+        {
+          "attribute": "portrait_designer_fingerprint",
+          "channel": null,
+          "locale": null,
+          "data": {
+            "filePath": "/a/b/c/philou.png",
+            "originalFilename": "philou.png",
+            "size": 24,
+            "mimeType": "image/png",
+            "extension": "png"
+          }
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 204
+  }
+}

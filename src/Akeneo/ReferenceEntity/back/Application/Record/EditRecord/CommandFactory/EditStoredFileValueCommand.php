@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -15,10 +16,10 @@ namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditFileValueCommand extends AbstractEditValueCommand
+class EditStoredFileValueCommand extends AbstractEditValueCommand
 {
     /** @var ImageAttribute */
     public $attribute;
@@ -28,4 +29,13 @@ class EditFileValueCommand extends AbstractEditValueCommand
 
     /** @var string */
     public $originalFilename;
+
+    /** @var int */
+    public $size;
+
+    /** @var string */
+    public $mimeType;
+
+    /** @var string */
+    public $extension;
 }

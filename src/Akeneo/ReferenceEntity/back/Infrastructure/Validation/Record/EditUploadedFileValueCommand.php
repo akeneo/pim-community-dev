@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditFileValueCommand extends Constraint
+class EditUploadedFileValueCommand extends Constraint
 {
     public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_reference_entity.record.validation.file.extension_not_allowed';
     public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_reference_entity.record.validation.file.file_size_exceeded';

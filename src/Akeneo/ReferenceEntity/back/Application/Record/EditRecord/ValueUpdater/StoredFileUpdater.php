@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -13,40 +14,28 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFileValueCommand;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueDataInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class FileUpdater implements ValueUpdaterInterface
+class StoredFileUpdater implements ValueUpdaterInterface
 {
-    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
-
-    /** @var FileStorerInterface  */
-    private $storer;
-
-    public function __construct(FileStorerInterface $storer)
-    {
-        $this->storer = $storer;
-    }
-
     public function supports(AbstractEditValueCommand $command): bool
     {
-        return $command instanceof EditFileValueCommand;
+        return $command instanceof EditStoredFileValueCommand;
     }
 
     public function __invoke(Record $record, AbstractEditValueCommand $command): void
@@ -62,6 +51,7 @@ class FileUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
+
         $fileData = $this->getFileData($record, $command, $attribute, $channelReference, $localeReference);
 
         $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
@@ -69,34 +59,27 @@ class FileUpdater implements ValueUpdaterInterface
 
     private function getFileData(
         Record $record,
-        EditFileValueCommand $command,
+        EditStoredFileValueCommand $command,
         AbstractAttribute $attribute,
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): ValueDataInterface {
-        $fileData = EmptyData::create();
         $valueKey = ValueKey::create($attribute->getIdentifier(), $channelReference, $localeReference);
         $existingValue = $record->findValue($valueKey);
 
-        // If we want to update the file and it's not already in file storage, we store it
         if (null === $existingValue || $existingValue->getData()->getKey() !== $command->filePath) {
-            $storedFile = $this->storeFile($command->filePath);
-            $fileData = FileData::createFromFileinfo($storedFile);
+            $fileInfo = new FileInfo();
+            $fileInfo->setKey($command->filePath);
+            $fileInfo->setOriginalFilename($command->originalFilename);
+            $fileInfo->setSize($command->size);
+            $fileInfo->setMimeType($command->mimeType);
+            $fileInfo->setExtension($command->extension);
+
+            $fileData = FileData::createFromFileinfo($fileInfo);
+        } else {
+            $fileData = $existingValue->getData();
         }
 
         return $fileData;
-    }
-
-    private function storeFile(string $fileKey): FileInfoInterface
-    {
-        // Todo: rework about this service.
-        $rawFile = new \SplFileInfo($fileKey);
-//        try {
-        $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-//        } catch (FileTransferException | FileRemovalException $exception) {
-//            throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
-//        }
-
-        return $file;
     }
 }

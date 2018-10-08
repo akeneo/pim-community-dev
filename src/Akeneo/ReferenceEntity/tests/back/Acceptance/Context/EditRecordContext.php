@@ -72,6 +72,9 @@ final class EditRecordContext implements Context
 
     private const DUMMY_IMAGE_FILEPATH = '/a/b/dummy_filename.png';
     private const DUMMY_IMAGE_FILENAME = 'dummy_filename.png';
+    private const DUMMY_IMAGE_SIZE = 10;
+    private const DUMMY_IMAGE_MIMETYPE = 'image/png';
+    private const DUMMY_IMAGE_EXTENSION = 'png';
     private const UPDATED_IMAGE_FILEPATH = '/a/b/updated_filename.png';
     private const UPDATED_IMAGE_FILENAME = 'updated_filename.png';
 
@@ -83,14 +86,21 @@ final class EditRecordContext implements Context
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
 
     private const DUMMY_FILEPATH_PREFIX = '/a/dummy/key';
-    private const INVALID_FILEPATH_VALUE = false;
     private const UPDATED_DUMMY_FILENAME = 'dummy_filename.png';
+
     private const INVALID_FILENAME = 144;
+    private const INVALID_FILEPATH_VALUE = false;
+    private const INVALID_IMAGE_MIMETYPE = 144;
+    private const INVALID_IMAGE_SIZE = '1000 Ko';
+    private const INVALID_IMAGE_EXTENSION = ['gif'];
+
     private const FILE_TOO_BIG = 'too_big.jpeg';
     private const FILE_TOO_BIG_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
     private const UPDATED_DUMMY_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::UPDATED_DUMMY_FILENAME;
+    private const WRONG_IMAGE_SIZE = 20;
+    private const WRONG_EXTENSION = 'gif';
     private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
     private const WRONG_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::WRONG_EXTENSION_FILENAME;
@@ -340,7 +350,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a valid file$/
+     * @When /^the user updates the image attribute of the record with a valid uploaded file$/
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordTo()
     {
@@ -937,9 +947,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid file path$/
+     * @When /^the user updates the image attribute of the record to an invalid uploaded file path$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidFilepath()
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidUploadedFilepath()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -953,6 +963,114 @@ final class EditRecordContext implements Context
                     'data'      => [
                         'originalFilename' => self::UPDATED_DUMMY_FILENAME,
                         'filePath'         => self::INVALID_FILEPATH_VALUE
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid stored file path$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredFilepath()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::INVALID_FILEPATH_VALUE,
+                        'size' => self::DUMMY_IMAGE_SIZE,
+                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+                        'extension' => self::DUMMY_IMAGE_EXTENSION,
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid stored file size$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredSize()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'size' => self::INVALID_IMAGE_SIZE,
+                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+                        'extension' => self::DUMMY_IMAGE_EXTENSION,
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid stored file extension$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredExtension()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'size' => self::DUMMY_IMAGE_SIZE,
+                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+                        'extension' => self::INVALID_IMAGE_EXTENSION,
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid stored file mime type$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredMimeType()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'size' => self::DUMMY_IMAGE_SIZE,
+                        'mimeType' => self::INVALID_IMAGE_MIMETYPE,
+                        'extension' => self::DUMMY_IMAGE_EXTENSION,
                     ],
                 ],
             ],
@@ -981,9 +1099,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to an invalid file name$/
+     * @When /^the user updates the image attribute of the record to an invalid uploaded file name$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidFileName()
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidUploadedFileName()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -1005,9 +1123,36 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a bigger file than the limit$/
+     * @When /^the user updates the image attribute of the record to an invalid stored file name$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerFileThanTheLimit()
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidStoredFileName()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::INVALID_FILENAME,
+                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'size' => self::DUMMY_IMAGE_SIZE,
+                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+                        'extension' => self::DUMMY_IMAGE_EXTENSION,
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record with a bigger uploaded file than the limit$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerUploadedFileThanTheLimit()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -1021,6 +1166,33 @@ final class EditRecordContext implements Context
                     'data'      => [
                         'originalFilename' => self::FILE_TOO_BIG,
                         'filePath'         => self::FILE_TOO_BIG_FILEPATH
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record with a bigger stored file than the limit$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerStoredFileThanTheLimit()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'size' => self::WRONG_IMAGE_SIZE,
+                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+                        'extension' => self::DUMMY_IMAGE_EXTENSION,
                     ],
                 ],
             ],
@@ -1078,9 +1250,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a gif file which is a denied extension$/
+     * @When /^the user updates the image attribute of the record with an uploaded gif file which is a denied extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithAFileHavingADeniedExtension()
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithAnUploadedFileHavingADeniedExtension()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -1102,9 +1274,36 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record with a png file$/
+     * @When /^the user updates the image attribute of the record with a stored gif file which is a denied extension$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordWithAFileHavingAValidExtension()
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithAnStoredFileHavingADeniedExtension()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_IMAGE_FILENAME,
+                        'filePath' => self::DUMMY_IMAGE_FILEPATH,
+                        'size' => self::DUMMY_IMAGE_SIZE,
+                        'mimeType' => self::DUMMY_IMAGE_MIMETYPE,
+                        'extension' => self::WRONG_EXTENSION,
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record with an uploaded png file$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithAnUploadedFileHavingAValidExtension()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,

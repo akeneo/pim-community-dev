@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -16,26 +17,39 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 
 /**
- * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditFileValueCommandFactory implements EditValueCommandFactoryInterface
+class EditStoredFileValueCommandFactory implements EditValueCommandFactoryInterface
 {
     public function supports(AbstractAttribute $attribute, array $normalizedValue): bool
     {
-        return $attribute instanceof ImageAttribute && null !== $normalizedValue['data'];
+        if (!key_exists('data', $normalizedValue) || !is_array($normalizedValue['data'])) {
+            return false;
+        }
+
+        $hasExpectedFields = (5 === count($normalizedValue['data'])) &&
+            key_exists('filePath', $normalizedValue['data']) &&
+            key_exists('originalFilename', $normalizedValue['data']) &&
+            key_exists('size', $normalizedValue['data']) &&
+            key_exists('mimeType', $normalizedValue['data']) &&
+            key_exists('extension', $normalizedValue['data']);
+
+        return $attribute instanceof ImageAttribute && $hasExpectedFields;
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new EditFileValueCommand();
+        $command = new EditStoredFileValueCommand();
         $command->attribute = $attribute;
         $command->channel = $normalizedValue['channel'];
         $command->locale = $normalizedValue['locale'];
-        $command->data = $normalizedValue['data'];
 
         $command->filePath = $normalizedValue['data']['filePath'];
         $command->originalFilename = $normalizedValue['data']['originalFilename'];
+        $command->size = $normalizedValue['data']['size'];
+        $command->mimeType = $normalizedValue['data']['mimeType'];
+        $command->extension = $normalizedValue['data']['extension'];
 
         return $command;
     }

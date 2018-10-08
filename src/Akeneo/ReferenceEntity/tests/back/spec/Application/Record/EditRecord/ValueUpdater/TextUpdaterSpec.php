@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditUploadedFileValueCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\TextUpdater;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -16,14 +16,13 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -39,7 +38,7 @@ class TextUpdaterSpec extends ObjectBehavior
 
     function it_only_supports_edit_text_value_command()
     {
-        $this->supports(new EditFileValueCommand())->shouldReturn(false);
+        $this->supports(new EditUploadedFileValueCommand())->shouldReturn(false);
         $this->supports(new EditTextValueCommand())->shouldReturn(true);
     }
 
@@ -64,7 +63,7 @@ class TextUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_it_does_not_support_the_command(Record $record)
     {
-        $wrongCommand = new EditFileValueCommand();
+        $wrongCommand = new EditUploadedFileValueCommand();
         $this->supports($wrongCommand)->shouldReturn(false);
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
     }
