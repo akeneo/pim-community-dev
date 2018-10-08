@@ -4,11 +4,14 @@ import * as Backbone from 'backbone';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
+const Routing = require('routing');
+const DatagridState = require('pim/datagrid/state');
 
 class ColumnSelector extends BaseView {
   public config: any;
   public datagridCollection: Backbone.Collection<any>;
   public loadedAttributeGroups: any[];
+  public loadedColumns: any[];
   public modal: any;
 
   public buttonTemplate = `<div class="AknGridToolbar-right"><div class="AknGridToolbar-actionButton">
@@ -23,7 +26,19 @@ class ColumnSelector extends BaseView {
   <div id="column-configurator"><div class="AknColumnConfigurator">
     <div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
       <div class="AknColumnConfigurator-columnHeader">Attribute groups</div>
-      <div class="AknColumnConfigurator-listContainer" data-attributes></div>
+      <div class="AknColumnConfigurator-listContainer" data-attributes>
+        <ul class="AknVerticalList nav-list">
+          <li class="AknVerticalList-item AknVerticalList-item--selectable tab active" data-group data-value="">
+              All Groups
+          </li>
+          <% _.each(groups, (group) => { %>
+            <li class="AknVerticalList-item AknVerticalList-item--selectable tab" data-group data-value="<%- group.code %>">
+                <%- group.label %>
+                <span class="AknBadge"><%- group.children %></span>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
     </div>
     <div class="AknColumnConfigurator-column">
       <div class="AknColumnConfigurator-columnHeader"> <input class="AknTextField AknColumnConfigurator-searchInput" type="search" placeholder="<%- _.__('pim_datagrid.column_configurator.search') %>"/> </div>
@@ -39,15 +54,6 @@ class ColumnSelector extends BaseView {
   </div>
 `;
 
-  public attributeTemplate = `<ul class="AknVerticalList nav-list">
-      <% _.each(groups, (group) => { %>
-        <li class="AknVerticalList-item AknVerticalList-item--selectable tab" data-value="<%- group.code %>">
-            <%- group.label %>
-            <span class="AknBadge"><%- group.children %></span>
-        </li>
-      <% }) %>
-    </ul>`;
-
   public columnsTemplate = `
     <ul id="column-list" class="AknVerticalList connected-sortable">
         <% _.each(columns, function(column) { %>
@@ -56,23 +62,25 @@ class ColumnSelector extends BaseView {
           </li>
         <% }); %>
     </ul>
-  `
+  `;
 
   public selectedTemplate = `
     <ul id="column-selection" class="AknVerticalList connected-sortable ui-sortable">
         <% _.each(columns, (column) => { %>
-          <li class="AknVerticalList-item AknVerticalList-item--movable ui-sortable-handle" data-value="<%- column.code %>" data-group="<%- column.group  %>">
-              <div><%- column.label %></div>
-              <div class="AknVerticalList-delete action" title="Remove"></div>
+          <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
+            <div><%- column.label %></div>
+            <% if (column.removable) { %>
+              <div class="AknVerticalList-delete action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>"></div>
+            <% } %>
           </li>
         <% }) %>
-        <div class="AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error ui-sortable-handle" style="">You must select at least one datagrid column to display</div>
+        <div class="AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error"><%- _.__('pim_datagrid.column_configurator.min_message') %></div>
     </ul>
   `;
 
   public events(): Backbone.EventsHash {
     return {
-      'click [data-open]': 'openModal'
+      'click [data-open]': 'openModal',
     };
   }
 
@@ -97,19 +105,28 @@ class ColumnSelector extends BaseView {
     if (0 === this.loadedAttributeGroups.length) {
       return new Promise(resolve => {
         resolve({
-          system: {
-            label: 'System',
-            children: 10,
-          },
-          marketing: {
-            label: 'Marketing',
-            children: 12,
-          },
+          system: {code: 'system', label: 'System', children: 10},
+          marketing: {code: 'marketing', label: 'Marketing', children: 12},
         });
       });
     }
 
     return new Promise(resolve => resolve(this.loadedAttributeGroups));
+  }
+
+  fetchByAttributeGroup(event: JQuery.Event) {
+    this.modal.$el.find('[data-attributes] [data-group]').removeClass('active');
+    $(event.currentTarget).addClass('active');
+    this.fetchColumns();
+  }
+
+  // @TODO - Add caching
+  fetchColumns() {
+    const search = this.modal.$el.find('input[type="search"]').val().trim();
+    const group = this.modal.$el.find('.active[data-group]').data('value');
+    const url = Routing.generate('pim_datagrid_productgrid_available_columns');
+    const params = $.param(_.omit({search, group}, _.isEmpty));
+    return $.get(`${url}?${params}`);
   }
 
   render() {
@@ -118,58 +135,98 @@ class ColumnSelector extends BaseView {
     return this;
   }
 
-  renderAttributeGroups() {
-    this.loadAttributeGroups().then(attributeGroups => {
-      this.modal.$el.find('[data-attributes]').empty()
-        .append( _.template(this.attributeTemplate)({ groups: attributeGroups, }) );
-    });
+  getDefaultSelectedColumns() {
+    const selectedColumns = DatagridState.get('product-grid', 'columns');
+
+    return selectedColumns.split(',')
   }
 
-  renderSelectedColumns() {
-    const columns = [{code: 'image', label: 'Model picture', group: 'Media', groupOrder: 9}];
-    const template = _.template(this.selectedTemplate)({ columns })
-    this.modal.$el.find('[data-columns-selected]').empty().append(template);
+  renderColumns(columns: any[]) {
+    const datagridColumns = this.getDefaultSelectedColumns();
+
+    columns = _.map(columns, (column: any) => {
+      column.selected = datagridColumns.includes(column.code);
+      return column;
+    })
+
+    const loadedColumns = _.where(columns, {selected: false});
+    const selectedColumns = _.where(columns, {selected: true});
+
+    this.modal.$el
+      .find('[data-columns]')
+      .empty()
+      .append(_.template(this.columnsTemplate)({columns: loadedColumns}));
+
+    this.modal.$el
+      .find('[data-columns-selected]')
+      .empty()
+      .append(_.template(this.selectedTemplate)({columns: selectedColumns}));
+
+    parent.on('click', '#column-selection .action', this.unselectColumn.bind(this));
   }
 
-  renderColumns() {
-    const columns = [{code: 'image', label: 'Model picture', group: 'Media', groupOrder: 9}];
-    const template = _.template(this.columnsTemplate)({ columns })
-    this.modal.$el.find('[data-columns]').empty().append(template);
+  unselectColumn(event: JQuery.Event) {
+    const column = $(event.currentTarget)
+      .parents('[data-value]')
+      .data('value');
+    console.log('unselectColumn', column);
+    // set selected as false in the saved list
   }
 
   openModal() {
-    console.log('openModal')
-    const modal = new Backbone.BootstrapModal({
-      className: 'modal modal--fullPage modal--topButton column-configurator-modal',
-      modalOptions: {
-        backdrop: 'static',
-        keyboard: false,
-      },
-      allowCancel: true,
-      okCloses: false,
-      cancelText: __('pim_common.cancel'),
-      title: __('pim_datagrid.column_configurator.title'),
-      content: _.template(this.modalTemplate)(),
-      okText: __('pim_common.apply'),
+    this.loadAttributeGroups().then(groups => {
+      const modal = new Backbone.BootstrapModal({
+        className: 'modal modal--fullPage modal--topButton column-configurator-modal',
+        modalOptions: {backdrop: 'static', keyboard: false},
+        allowCancel: true,
+        okCloses: false,
+        cancelText: __('pim_common.cancel'),
+        title: __('pim_datagrid.column_configurator.title'),
+        content: _.template(this.modalTemplate)({groups}),
+        okText: __('pim_common.apply'),
+      });
+
+      modal.open();
+
+      this.modal = modal;
+      this.modal.$el.on('keyup', 'input[type="search"]', this.searchColumns.bind(this));
+      this.modal.$el.on('click', '[data-attributes] [data-group]', this.fetchByAttributeGroup.bind(this));
+
+      this.fetchColumns().then(columns => {
+        this.renderColumns(columns);
+        this.setSortable();
+      });
     });
+  }
 
-    modal.open();
+  setSortable() {
+    this.modal.$el
+      .find('#column-list, #column-selection')
+      .sortable({
+        connectWith: '.connected-sortable',
+        containment: this.modal.$el,
+        tolerance: 'pointer',
+        cursor: 'move',
+        cancel: 'div.alert',
+        receive: (event: any, ui: any) => {
+          console.log(event, ui);
+          // var model = _.first(this.collection.where({code: ui.item.data('value')}));
+          // model.set('displayed', ui.sender.is('#column-list') && model.get('removable'));
 
-    this.modal = modal;
-    this.modal.$el.on('keyup', 'input[type="search"]', this.searchColumns.bind(this))
-
-    this.renderAttributeGroups();
-    this.renderSelectedColumns();
-    this.renderColumns()
+          // if (!model.get('removable')) {
+          //     $(ui.sender).sortable('cancel');
+          // } else {
+          //     this.validateSubmission();
+          // }
+        },
+      }).disableSelection();
   }
 
   searchColumns(event: JQuery.Event) {
-    console.log('searchColumns', event)
+    console.log('searchColumns', event);
   }
 
-  applyColumns() {
-
-  }
+  applyColumns() {}
 }
 
 export = ColumnSelector;
