@@ -16,7 +16,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
     akeneo.pim.automation.suggest_data.connection.get_status:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'

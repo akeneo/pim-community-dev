@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Handler;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
@@ -23,7 +23,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
+class GetConnectionStatusHandlerSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepository,

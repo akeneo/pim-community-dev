@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation\ConnectionValidator;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
@@ -26,9 +27,9 @@ use Prophecy\Argument;
  */
 class ConnectionValidatorSpec extends ObjectBehavior
 {
-    public function let(GetSuggestDataConnectionStatus $connectionStatus): void
+    public function let(GetConnectionStatusHandler $getConnectionStatusHandler): void
     {
-        $this->beConstructedWith($connectionStatus);
+        $this->beConstructedWith($getConnectionStatusHandler);
     }
 
     public function it_is_a_validator(): void
@@ -41,16 +42,16 @@ class ConnectionValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(ConnectionValidator::class);
     }
 
-    public function it_throws_an_exception_if_connection_is_not_active($connectionStatus): void
+    public function it_throws_an_exception_if_connection_is_not_active($getConnectionStatusHandler): void
     {
-        $connectionStatus->getStatus()->willReturn(new ConnectionStatus(false));
+        $getConnectionStatusHandler->handle(new GetConnectionStatusQuery())->willReturn(new ConnectionStatus(false));
         $this->shouldThrow(new ValidationException('Token is invalid or expired'))
              ->during('validate', [Argument::any()]);
     }
 
-    public function it_does_nothing_if_connection_is_active($connectionStatus): void
+    public function it_does_nothing_if_connection_is_active($getConnectionStatusHandler): void
     {
-        $connectionStatus->getStatus()->willReturn(new ConnectionStatus(true));
+        $getConnectionStatusHandler->handle(new GetConnectionStatusQuery())->willReturn(new ConnectionStatus(true));
         $this->validate(Argument::any())->shouldReturn(null);
     }
 }

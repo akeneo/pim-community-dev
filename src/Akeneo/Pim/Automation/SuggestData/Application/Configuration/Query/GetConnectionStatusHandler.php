@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
@@ -22,7 +22,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetSuggestDataConnectionStatus
+class GetConnectionStatusHandler
 {
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
@@ -45,7 +45,7 @@ class GetSuggestDataConnectionStatus
     /**
      * @return ConnectionStatus
      */
-    public function getStatus(): ConnectionStatus
+    public function handle(GetConnectionStatusQuery $query): ConnectionStatus
     {
         $configuration = $this->configurationRepository->find();
         if (null === $configuration) {
@@ -53,7 +53,6 @@ class GetSuggestDataConnectionStatus
         }
 
         $dataProvider = $this->dataProviderFactory->create();
-
         $isActive = $dataProvider->authenticate($configuration->getToken());
 
         return new ConnectionStatus($isActive);

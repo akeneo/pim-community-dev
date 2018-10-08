@@ -15,8 +15,9 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
@@ -41,8 +42,8 @@ class PimAiConfigurationContext implements Context
     /** @var GetNormalizedConfiguration */
     private $getNormalizedConfiguration;
 
-    /** @var GetSuggestDataConnectionStatus */
-    private $getConnectionStatus;
+    /** @var GetConnectionStatusHandler */
+    private $getConnectionStatusHandler;
 
     /**
      * Make this context statefull. Useful for testing configuration retrieval.
@@ -55,18 +56,18 @@ class PimAiConfigurationContext implements Context
      * @param ActivateConnectionHandler $activateConnectionHandler
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param GetNormalizedConfiguration $getNormalizedConfiguration
-     * @param GetSuggestDataConnectionStatus $getConnectionStatus
+     * @param GetConnectionStatusHandler $getConnectionStatusHandler
      */
     public function __construct(
         ActivateConnectionHandler $activateConnectionHandler,
         ConfigurationRepositoryInterface $configurationRepository,
         GetNormalizedConfiguration $getNormalizedConfiguration,
-        GetSuggestDataConnectionStatus $getConnectionStatus
+        GetConnectionStatusHandler $getConnectionStatusHandler
     ) {
         $this->activateConnectionHandler = $activateConnectionHandler;
         $this->configurationRepository = $configurationRepository;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
-        $this->getConnectionStatus = $getConnectionStatus;
+        $this->getConnectionStatusHandler = $getConnectionStatusHandler;
         $this->retrievedConfiguration = null;
     }
 
@@ -128,7 +129,7 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsActivated(): void
     {
-        $connectionStatus = $this->getConnectionStatus->getStatus();
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertTrue($connectionStatus->isActive());
     }
 
@@ -137,7 +138,7 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsNotActivated(): void
     {
-        $connectionStatus = $this->getConnectionStatus->getStatus();
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertFalse($connectionStatus->isActive());
     }
 

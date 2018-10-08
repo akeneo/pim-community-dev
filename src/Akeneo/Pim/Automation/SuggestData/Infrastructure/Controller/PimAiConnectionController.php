@@ -16,8 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,7 +36,7 @@ class PimAiConnectionController
     /** @var GetNormalizedConfiguration */
     private $getNormalizedConfiguration;
 
-    /** @var GetSuggestDataConnectionStatus */
+    /** @var GetConnectionStatusHandler */
     private $getSuggestDataConnectionStatus;
 
     /** @var ConnectionStatusNormalizer */
@@ -48,14 +48,14 @@ class PimAiConnectionController
     /**
      * @param ActivateConnectionHandler $activateConnectionHandler
      * @param GetNormalizedConfiguration $getNormalizedConfiguration
-     * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
+     * @param GetConnectionStatusHandler $getSuggestDataConnectionStatus
      * @param ConnectionStatusNormalizer $connectionStatusNormalizer
      * @param TranslatorInterface $translator
      */
     public function __construct(
         ActivateConnectionHandler $activateConnectionHandler,
         GetNormalizedConfiguration $getNormalizedConfiguration,
-        GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus,
+        GetConnectionStatusHandler $getSuggestDataConnectionStatus,
         ConnectionStatusNormalizer $connectionStatusNormalizer,
         TranslatorInterface $translator
     ) {
