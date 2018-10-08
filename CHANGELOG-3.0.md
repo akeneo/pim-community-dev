@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Step\MassEditStep`
 - Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport`
 - Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit`
 - Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport`
