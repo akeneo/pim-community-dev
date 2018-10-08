@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.11 (2018-10-08)
+
 ## Bug fixes
 
 - PIM-7676: Add code filter on attribute and family grid
