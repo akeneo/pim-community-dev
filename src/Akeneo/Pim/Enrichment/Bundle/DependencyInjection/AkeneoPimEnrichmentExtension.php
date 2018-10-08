@@ -29,6 +29,8 @@ class AkeneoPimEnrichmentExtension extends Extension
         $this->loadLocalizationConfiguration($container, $config);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('connector/cleaners.yml');
+        $loader->load('connector/processors.yml');
         $loader->load('api_filters.yml');
         $loader->load('associations.yml');
         $loader->load('builders.yml');

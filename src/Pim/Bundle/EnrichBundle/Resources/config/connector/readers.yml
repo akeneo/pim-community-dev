@@ -1,8 +1,0 @@
-parameters:
-    pim_enrich.connector.reader.mass_edit.family.class: Akeneo\Pim\Structure\Component\Reader\Database\MassEdit\FilteredFamilyReader
-
-services:
-    pim_enrich.connector.reader.mass_edit.family:
-        class: '%pim_enrich.connector.reader.mass_edit.family.class%'
-        arguments:
-            - '@pim_catalog.repository.family'
