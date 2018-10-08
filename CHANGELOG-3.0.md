@@ -13,6 +13,8 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport\ProductAndProductModelProcessor`
+- Move `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport\ProductAndProductModelProcessor`
 - Move `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddAttributeValueProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddAttributeValueProcessor`
 - Move `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddProductValueProcessor`
 - Move `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddToExistingProductModelProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddToExistingProductModelProcessor`

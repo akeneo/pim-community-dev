@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;

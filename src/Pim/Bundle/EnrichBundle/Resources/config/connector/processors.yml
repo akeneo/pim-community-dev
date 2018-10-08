@@ -7,7 +7,7 @@ parameters:
     pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class:      Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddToExistingProductModelProcessor
     pim_enrich.connector.processor.mass_edit.product.edit_attributes.class:        Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\EditAttributesProcessor
     pim_enrich.connector.processor.mass_edit.family.set_requirements.class:                    Akeneo\Pim\Structure\Component\Processor\MassEdit\SetAttributeRequirements
-    pim_enrich.connector.processor.quick_export.product_and_product_model.class:               Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor
+    pim_enrich.connector.processor.quick_export.product_and_product_model.class:               Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport\ProductAndProductModelProcessor
 
 services:
     pim_enrich.connector.processor.mass_edit.product.update_value:

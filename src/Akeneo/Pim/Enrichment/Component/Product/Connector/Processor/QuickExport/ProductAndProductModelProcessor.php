@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
