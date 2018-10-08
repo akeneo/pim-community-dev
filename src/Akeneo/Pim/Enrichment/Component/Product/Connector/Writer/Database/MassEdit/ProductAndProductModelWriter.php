@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit;
+ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

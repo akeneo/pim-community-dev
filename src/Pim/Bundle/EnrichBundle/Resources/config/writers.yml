@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.writer.database.product_and_product_model_writer.class: Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter
+    pim_enrich.writer.database.product_and_product_model_writer.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter
 
 services:
     pim_enrich.writer.database.product_and_product_model_writer:
