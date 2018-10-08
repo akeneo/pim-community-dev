@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements` to `Akeneo\Pim\Structure\Component\Processor\MassEdit\SetAttributeRequirements`
 - Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader`
 - Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductModelReader`
 - Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader`

@@ -5,6 +5,8 @@
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
+
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Family\\SetAttributeRequirements/Akeneo\\Pim\\Structure\\Component\\Processor\\MassEdit\\SetAttributeRequirements/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductAndProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductAndProductModelReader/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductModelReader/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductReader/g'
