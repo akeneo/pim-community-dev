@@ -7,7 +7,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -44,7 +43,7 @@ class RecordIndexer implements RecordIndexerInterface
             return;
         }
 
-        $normalizedRecords = array_map(function(Record $record) {
+        $normalizedRecords = array_map(function (Record $record) {
             return $this->normalizer->normalize($record);
         }, $records);
 

@@ -147,3 +147,9 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
+
+    # Search
+    akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SqlFindActivatedLocalesPerChannels
+        arguments:
+            - '@database_connection'

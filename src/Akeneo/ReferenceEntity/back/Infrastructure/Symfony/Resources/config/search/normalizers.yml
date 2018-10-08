@@ -1,0 +1,10 @@
+services:
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordNormalizer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.search_matrix_normalizer'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.search_matrix_normalizer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SearchMatrixNormalizer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels'

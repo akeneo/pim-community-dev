@@ -273,16 +273,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('A completely new and updated description')
         );
-        $valueToAdd = Value::create(
-            AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
-            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
-            TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
-        );
-        $updatedValueCollection = ValueCollection::fromValues([$valueToUpdate, $valueToAdd]);
-        foreach ($updatedValueCollection as $value) {
-            $record->setValue($value);
-        }
+        $record->setValue($valueToUpdate);
 
         $imageInfo = new FileInfo();
         $imageInfo

@@ -51,7 +51,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function addListener($eventName, $listener, $priority = 0)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 
     /**
@@ -59,7 +59,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function addSubscriber(EventSubscriberInterface $subscriber)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 
     /**
@@ -67,7 +67,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function removeListener($eventName, $listener)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 
     /**
@@ -75,7 +75,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function removeSubscriber(EventSubscriberInterface $subscriber)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 
     /**
@@ -83,7 +83,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function getListeners($eventName = null)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 
     /**
@@ -91,7 +91,7 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function getListenerPriority($eventName, $listener)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 
     /**
@@ -99,6 +99,6 @@ class EventDispatcherMock implements EventDispatcherInterface
      */
     public function hasListeners($eventName = null)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('Method not implemented');
     }
 }

@@ -172,4 +172,13 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->findValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference))
             ->shouldBeNull();
     }
+
+    function it_filters_the_values()
+    {
+        $this->filter(function(Value $value){ return false;})->normalize()->shouldReturn([]);
+        $this->filter(function(Value $value){
+            return !$value->getChannelReference()->hasReference();
+        })->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
+            ->shouldNotBeNull();
+    }
 }

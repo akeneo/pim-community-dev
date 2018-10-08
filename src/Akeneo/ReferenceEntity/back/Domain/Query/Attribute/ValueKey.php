@@ -44,8 +44,8 @@ class ValueKey
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): self {
-        $channelPart = $channelReference->isEmpty() ? '' : sprintf('_%s', $channelReference->normalize());
-        $localePart = $localeReference->isEmpty() ? '' : sprintf('_%s', $localeReference->normalize());
+        $channelPart = $channelReference->hasReference() ? '' : sprintf('_%s', $channelReference->normalize());
+        $localePart = $localeReference->hasReference() ? '' : sprintf('_%s', $localeReference->normalize());
         $key = sprintf('%s%s%s', $attributeIdentifier->normalize(), $channelPart, $localePart);
 
         return new self($key);
