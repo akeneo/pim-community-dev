@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.39 (2018-10-08)
+
 ## Bug fixes
 
 - PIM-7669: Variant product dropdown in the PEF doesn't work when variants are categorized in categories with different user permissions
