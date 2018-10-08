@@ -29,3 +29,4 @@ parameters:
     pim_catalog.model.association_type_translation.interface: Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface
     pim_catalog.entity.attribute_option_value.class: Akeneo\Pim\Structure\Component\Model\AttributeOptionValue
     pim_catalog.model.attribute_option_value.interface: Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface
+    pim_enrich.entity.available_attributes.class: Akeneo\Pim\Structure\Component\Model\AvailableAttributes
