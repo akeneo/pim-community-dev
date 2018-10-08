@@ -7,14 +7,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * {description}
- *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RecordIndexer implements RecordIndexerInterface
 {
@@ -24,11 +20,10 @@ class RecordIndexer implements RecordIndexerInterface
     /** @var Client */
     private $recordClient;
 
-    /** @var NormalizerInterface */
+    /** @var RecordNormalizerInterface */
     private $normalizer;
 
-
-    public function __construct(Client $recordClient, NormalizerInterface $normalizer)
+    public function __construct(Client $recordClient, RecordNormalizerInterface $normalizer)
     {
         $this->recordClient = $recordClient;
         $this->normalizer = $normalizer;

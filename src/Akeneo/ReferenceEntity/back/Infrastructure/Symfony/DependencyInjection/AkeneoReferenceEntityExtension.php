@@ -43,5 +43,6 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('services.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
+        $loader->load('search/services.yml');
     }
 }
