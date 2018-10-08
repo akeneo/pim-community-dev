@@ -262,3 +262,13 @@ services:
             - '@pim_connector.processor.normalization.category'
             - '@pim_connector.writer.file.xlsx_category'
             - 10
+
+    pim_enrich.tasklet.delete_products_and_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.remover.product'
+            - '@pim_catalog.remover.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.filter.chained'
+            - 100
