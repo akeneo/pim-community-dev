@@ -162,7 +162,7 @@ class ColumnSelector extends BaseView {
       .empty()
       .append(_.template(this.selectedTemplate)({columns: selectedColumns}));
 
-    parent.on('click', '#column-selection .action', this.unselectColumn.bind(this));
+    this.modal.$el.on('click', '#column-selection .action', this.unselectColumn.bind(this));
   }
 
   unselectColumn(event: JQuery.Event) {
