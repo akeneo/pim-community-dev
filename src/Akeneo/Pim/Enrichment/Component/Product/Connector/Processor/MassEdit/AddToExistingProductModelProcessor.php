@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

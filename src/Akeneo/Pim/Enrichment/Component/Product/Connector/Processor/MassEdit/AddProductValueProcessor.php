@@ -1,38 +1,33 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Processor to update product value in a mass edit
+ * Processor to add product value in a mass edit
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateProductValueProcessor extends AbstractProcessor
+class AddProductValueProcessor extends AbstractProcessor
 {
-    /** @var PropertySetterInterface */
-    protected $propertySetter;
+    /** @var PropertyAdderInterface */
+    protected $propertyAdder;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param PropertySetterInterface             $propertySetter
+     * @param PropertyAdderInterface              $propertyAdder
      * @param ValidatorInterface                  $validator
      */
-    public function __construct(
-        PropertySetterInterface $propertySetter,
-        ValidatorInterface $validator
-    ) {
-        $this->propertySetter = $propertySetter;
+    public function __construct(PropertyAdderInterface $propertyAdder, ValidatorInterface $validator)
+    {
+        $this->propertyAdder = $propertyAdder;
         $this->validator = $validator;
     }
 
@@ -42,7 +37,7 @@ class UpdateProductValueProcessor extends AbstractProcessor
     public function process($product)
     {
         $actions = $this->getConfiguredActions();
-        $this->setData($product, $actions);
+        $this->addData($product, $actions);
 
         if (!$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -69,15 +64,15 @@ class UpdateProductValueProcessor extends AbstractProcessor
     }
 
     /**
-     * Set data from $actions to the given $product
+     * Add data from $actions to the given $product
      *
      * @param ProductInterface|ProductModelInterface $product
      * @param array                                  $actions
      */
-    protected function setData($product, array $actions)
+    protected function addData($product, array $actions)
     {
         foreach ($actions as $action) {
-            $this->propertySetter->setData($product, $action['field'], $action['value']);
+            $this->propertyAdder->addData($product, $action['field'], $action['value']);
         }
     }
 }

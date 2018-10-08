@@ -1,11 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
@@ -14,24 +15,23 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UpdateProductValueProcessorSpec extends ObjectBehavior
+class RemoveProductValueProcessorSpec extends ObjectBehavior
 {
-    function let(
-        PropertySetterInterface $propertySetter,
-        ValidatorInterface $validator
-    ) {
-        $this->beConstructedWith(
-            $propertySetter,
-            $validator
-        );
+    function let(PropertyRemoverInterface $propertyRemover, ValidatorInterface $validator)
+    {
+        $this->beConstructedWith($propertyRemover, $validator);
     }
 
-    function it_sets_values_to_product(
-        $propertySetter,
+    function it_is_a_remover()
+    {
+        $this->shouldHaveType(AbstractProcessor::class);
+    }
+
+    function it_should_remove_value_from_product(
+        $propertyRemover,
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobExecution $jobExecution,
         JobParameters $jobParameters
     ) {
         $configuration = [
@@ -43,20 +43,16 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
-
-        $this->setStepExecution($stepExecution);
+        $propertyRemover->removeData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
 
         $this->process($product);
     }
 
-    function it_sets_invalid_values_to_product(
-        $propertySetter,
+    function it_should_not_remove_invalid_value_from_product(
+        $propertyRemover,
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
@@ -79,7 +75,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
+        $propertyRemover->removeData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
         $this->setStepExecution($stepExecution);
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
@@ -91,4 +87,5 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
     }
+
 }

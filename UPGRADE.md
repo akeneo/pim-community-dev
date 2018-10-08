@@ -6,6 +6,14 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\AddAttributeValueProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\AddAttributeValueProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\AddProductValueProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\AddProductValueProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\AddToExistingProductModelProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\AddToExistingProductModelProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\ChangeParentProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\ChangeParentProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\EditAttributesProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\EditAttributesProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\EditCommonAttributesProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\EditCommonAttributesProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\RemoveProductValueProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\RemoveProductValueProcessor/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\UpdateProductValueProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\UpdateProductValueProcessor/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Family\\SetAttributeRequirements/Akeneo\\Pim\\Structure\\Component\\Processor\\MassEdit\\SetAttributeRequirements/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductAndProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductAndProductModelReader/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductModelReader/g'
