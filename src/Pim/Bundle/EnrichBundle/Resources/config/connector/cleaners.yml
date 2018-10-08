@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class: Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner
+    pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner
 
 services:
     pim_enrich.connector.item.mass_edit.temporary_file_cleaner:

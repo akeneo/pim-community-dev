@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
