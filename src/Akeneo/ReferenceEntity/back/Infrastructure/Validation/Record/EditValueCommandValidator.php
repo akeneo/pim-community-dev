@@ -22,6 +22,22 @@ class EditValueCommandValidator extends ConstraintValidator
 {
     public function validate($command, Constraint $constraint)
     {
+        if (null === $command->channel && $command->attribute->hasValuePerChannel()) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'A channel is expected for attribute "%s" because it has a value per channel', $command->attribute->getCode()
+                )
+            );
+        }
+
+        if (null === $command->locale && $command->attribute->hasValuePerLocale()) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                'A locale is expected for attribute "%s" because it has a value per locale', $command->attribute->getCode()
+                )
+            );
+        }
+
         $this->checkCommandType($command);
         $this->checkConstraintType($constraint);
         $violations = $this->checkChannel($command);

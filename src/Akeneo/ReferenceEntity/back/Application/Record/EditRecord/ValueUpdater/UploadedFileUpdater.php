@@ -67,7 +67,7 @@ class UploadedFileUpdater implements ValueUpdaterInterface
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
 
-        $fileData = $this->getFileData($command);
+        $fileData = $this->storeFile($command);
 
         $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
     }
@@ -76,7 +76,7 @@ class UploadedFileUpdater implements ValueUpdaterInterface
      * @throws FileRemovalException
      * @throws FileTransferException
      */
-    private function getFileData(EditUploadedFileValueCommand $command): ValueDataInterface
+    private function storeFile(EditUploadedFileValueCommand $command): ValueDataInterface
     {
         $rawFile = new \SplFileInfo($command->filePath);
         $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
