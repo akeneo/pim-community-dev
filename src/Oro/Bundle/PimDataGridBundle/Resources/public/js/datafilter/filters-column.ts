@@ -43,7 +43,7 @@ class FiltersColumn extends BaseView {
   `;
 
   readonly filterGroupTemplate: string = `
-    <ul class="ui-multiselect-checkboxes ui-helper-reset">
+    <ul class="ui-multiselect-checkboxes ui-helper-reset full">
         <li class="ui-multiselect-optgroup-label">
             <a><%- groupName %></a>
         </li>
