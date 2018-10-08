@@ -143,27 +143,27 @@ class ColumnSelector extends BaseView {
     return this;
   }
 
-  getDefaultSelectedColumns() {
+  getInitialColumns(columns: any[]) {
     const selectedColumns = DatagridState.get('product-grid', 'columns');
+    const datagridColumns = selectedColumns.split(',')
 
-    return selectedColumns.split(',')
-  }
-
-  renderColumns(columns: any[]) {
-    const datagridColumns = this.getDefaultSelectedColumns();
-
-    columns = _.map(columns, (column: any) => {
+    return _.map(columns, (column: any) => {
       column.selected = datagridColumns.includes(column.code);
+      column.removable = undefined !== column.group
+
       return column;
     })
+  }
 
-    const loadedColumns = _.where(columns, {selected: false});
+  renderColumns() {
+    const columns = this.loadedColumns;
+    const unSelectedColumns = _.where(columns, {selected: false});
     const selectedColumns = _.where(columns, {selected: true});
 
     this.modal.$el
       .find('[data-columns]')
       .empty()
-      .append(_.template(this.columnsTemplate)({columns: loadedColumns}));
+      .append(_.template(this.columnsTemplate)({columns: unSelectedColumns}));
 
     this.modal.$el
       .find('[data-columns-selected]')
@@ -174,11 +174,18 @@ class ColumnSelector extends BaseView {
   }
 
   unselectColumn(event: JQuery.Event) {
-    const column = $(event.currentTarget)
-      .parents('[data-value]')
-      .data('value');
-    console.log('unselectColumn', column);
-    // set selected as false in the saved list
+    const code = $(event.currentTarget) .parents('[data-value]') .data('value');
+
+    this.loadedColumns = _.map(this.loadedColumns, column => {
+      if (column.code === code) {
+        column.selected = false;
+      }
+
+      return column;
+    });
+
+    this.renderColumns();
+    this.setSortable();
   }
 
   openModal() {
@@ -202,7 +209,8 @@ class ColumnSelector extends BaseView {
       this.modal.$el.on('click', '[data-attributes] [data-group]', this.fetchByAttributeGroup.bind(this));
 
       this.fetchColumns().then(columns => {
-        this.renderColumns(columns);
+        this.loadedColumns = this.getInitialColumns(columns);
+        this.renderColumns()
         this.setSortable();
       });
     });
