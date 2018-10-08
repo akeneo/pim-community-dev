@@ -101,17 +101,25 @@ class ColumnSelector extends BaseView {
     this.datagridCollection = datagridCollection;
   }
 
-  loadAttributeGroups() {
+  // @TODO - Change to correct endpoint after it's implemented
+  fetchAttributeGroups(): any {
     if (0 === this.loadedAttributeGroups.length) {
-      return new Promise(resolve => {
-        resolve({
-          system: {code: 'system', label: 'System', children: 10},
-          marketing: {code: 'marketing', label: 'Marketing', children: 12},
-        });
-      });
+      return $.get('/rest/attribute-group').then((groups: any) => {
+        groups = _.map(groups, (group: any, key) => {
+          group.label = group.labels.en_US
+          group.code = key
+          group.children = group.attributes.length
+
+          return group;
+        })
+
+        this.loadedAttributeGroups = groups;
+
+        return groups;
+      })
     }
 
-    return new Promise(resolve => resolve(this.loadedAttributeGroups));
+    return new Promise(resolve => resolve(this.loadedAttributeGroups))
   }
 
   fetchByAttributeGroup(event: JQuery.Event) {
@@ -174,7 +182,8 @@ class ColumnSelector extends BaseView {
   }
 
   openModal() {
-    this.loadAttributeGroups().then(groups => {
+    this.fetchAttributeGroups().then(groups => {
+      console.log('fetchAttributeGroups', groups)
       const modal = new Backbone.BootstrapModal({
         className: 'modal modal--fullPage modal--topButton column-configurator-modal',
         modalOptions: {backdrop: 'static', keyboard: false},
