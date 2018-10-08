@@ -40,6 +40,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
         )
       ) : (
         <input
+          id={value.attribute.identifier.stringValue()}
           className={`AknTextField AknTextField--narrow AknTextField--light ${
             value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''
           }`}

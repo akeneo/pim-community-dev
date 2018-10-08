@@ -6,6 +6,9 @@ import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/ch
 import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 
 export const getErrorsView = (errors: ValidationError[], value: Value) => {
+  if (0 !== errors.length) {
+    debugger;
+  }
   const errorMessages = errors
     .filter(
       (error: ValidationError) =>

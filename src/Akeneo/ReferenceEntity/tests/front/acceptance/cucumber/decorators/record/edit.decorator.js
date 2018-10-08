@@ -65,8 +65,25 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     await saveButton.click();
   };
 
+  const getValidationMessageForCode = async () => {
+    try {
+      await page.waitForSelector('.error-message', {timeout: 2000});
+    } catch (error) {
+      return '';
+    }
+
+    const validationError = await nodeElement.$('.error-message');
+    const property = await validationError.getProperty('textContent');
+
+    return await property.jsonValue();
+  };
+
   const hasSuccessNotification = async () => {
-    await page.waitForSelector('.AknFlash--success');
+    try {
+      await page.waitForSelector('.AknFlash--success', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
 
     return true;
   };
@@ -91,6 +108,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     isUpdated,
     isSaved,
     save,
+    getValidationMessageForCode,
     hasSuccessNotification,
     hasErrorNotification,
     hasNoNotification,

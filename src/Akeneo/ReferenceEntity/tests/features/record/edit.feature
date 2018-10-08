@@ -293,9 +293,27 @@ Feature: Edit an record
     And the record should have the valid image for this attribute
 
   @acceptance-front
-  Scenario: Updating a record labels
+  Scenario: Display a record labels in the edit form
     Given a valid record
     When the user ask for the record
     Then the record should be:
       | labels                                    |
       | {"en_US": "", "fr_FR": "Philippe Starck"} |
+
+  @acceptance-front
+  Scenario: Updating a record details
+    Given a valid record
+    When the user saves the valid record
+    Then the user should see a success message after the update record
+
+  @acceptance-front
+  Scenario: Updating a record with a simple text value
+    Given a valid record
+    When the user saves the valid record with a simple text value
+    Then the user should see a success message after the update record
+
+  @acceptance-front
+  Scenario: Updating a record with an invalid simple text value
+    Given a valid record
+    When the user saves the valid record with an invalid simple text value
+    Then the user should see the validation error after the update record : "This value is not a valid URL."

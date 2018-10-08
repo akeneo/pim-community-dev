@@ -82,9 +82,9 @@ class GetActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $textareaAttributeIdentifier = AttributeIdentifier::create('designer', 'name', 'fingerprint');
+        $textAttributeIdentifier = AttributeIdentifier::create('designer', 'name', 'fingerprint');
         $textAttribute = TextAttribute::createText(
-            $textareaAttributeIdentifier,
+            $textAttributeIdentifier,
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom']),
@@ -113,6 +113,22 @@ class GetActionTest extends ControllerIntegrationTestCase
         );
         $this->attributeRepository->create($textareaAttribute);
 
+        $websiteAttributeIdentifier = AttributeIdentifier::create('designer', 'website', 'fingerprint');
+        $websiteAttribute = TextAttribute::createText(
+            $websiteAttributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('website'),
+            LabelCollection::fromArray(['fr_FR' => 'Website']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(25),
+            AttributeValidationRule::fromString(AttributeValidationRule::URL),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($websiteAttribute);
+
         $values = [
             [
                 'attribute' => $textAttribute->normalize(),
@@ -130,6 +146,12 @@ class GetActionTest extends ControllerIntegrationTestCase
                 'attribute' => $textareaAttribute->normalize(),
                 'channel' => null,
                 'locale' => 'fr_FR',
+                'data' => null,
+            ],
+            [
+                'attribute' => $websiteAttribute->normalize(),
+                'channel' => null,
+                'locale' => 'en_US',
                 'data' => null,
             ],
         ];

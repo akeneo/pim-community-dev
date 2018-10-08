@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -165,8 +166,8 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $repository = $this->getRecordRepository();
 
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('singer');
-        $recordCode = RecordCode::fromString('celine_dion');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -174,12 +175,12 @@ class EditActionTest extends ControllerIntegrationTestCase
             ->setKey('test/image_1.jpg');
 
         $entityItem = Record::create(
-            RecordIdentifier::fromString('singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392'),
+            RecordIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392'),
             $referenceEntityIdentifier,
             $recordCode,
             [
-                'en_US' => 'Celine Dion',
-                'fr_FR' => 'Celine Dion',
+                'en_US' => 'Philippe Starck',
+                'fr_FR' => 'Philippe Starck',
             ],
             Image::fromFileInfo($imageInfo),
             ValueCollection::fromValues([])
@@ -187,37 +188,57 @@ class EditActionTest extends ControllerIntegrationTestCase
         $repository->create($entityItem);
 
         // text attribute
+        $textAttributeIdentifier = AttributeIdentifier::create('designer', 'name', 'fingerprint');
         $textAttribute = TextAttribute::createText(
-            AttributeIdentifier::create('singer', 'website', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('singer'),
-            AttributeCode::fromString('website'),
-            LabelCollection::fromArray(['en_US' => 'Website']),
+            $textAttributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(255),
-            AttributeValidationRule::fromString(AttributeValidationRule::URL),
+            AttributeMaxLength::fromInteger(25),
+            AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
             ->create($textAttribute);
 
-        // file attribute
-        $fileAttribute = ImageAttribute::create(
-            AttributeIdentifier::create('singer', 'live_picture', 'fingerprint'),
-            ReferenceEntityIdentifier::fromString('singer'),
-            AttributeCode::fromString('live_picture'),
-            LabelCollection::fromArray(['en_US' => 'Live picture']),
+        // textarea attribute
+        $textareaAttributeIdentifier = AttributeIdentifier::create('designer', 'description', 'fingerprint');
+        $textareaAttribute = TextAttribute::createTextarea(
+            $textareaAttributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('description'),
+            LabelCollection::fromArray(['fr_FR' => 'Description']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('1000'),
-            AttributeAllowedExtensions::fromList(['png'])
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(25),
+            AttributeIsRichTextEditor::fromBoolean(true)
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->create($fileAttribute);
+            ->create($textareaAttribute);
+
+        //website attribute
+        $websiteAttributeIdentifier = AttributeIdentifier::create('designer', 'website', 'fingerprint');
+        $websiteAttribute = TextAttribute::createText(
+            $websiteAttributeIdentifier,
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('website'),
+            LabelCollection::fromArray(['fr_FR' => 'Website']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(25),
+            AttributeValidationRule::fromString(AttributeValidationRule::URL),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->create($websiteAttribute);
 
         // image attribute
         $portrait = ImageAttribute::create(
@@ -225,7 +246,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(1),
+            AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
@@ -234,27 +255,6 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
             ->create($portrait);
-
-        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntityRepository->create(ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'),
-            [],
-            Image::createEmpty()
-        ));
-
-        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $recordCode = RecordCode::fromString('starck');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $referenceEntityIdentifier,
-            $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
-        );
-
-        $recordRepository->create($record);
 
         $user = new User();
         $user->setUsername('julia');

@@ -93,4 +93,70 @@ module.exports = async function(cucumber) {
       assert.strictEqual(labelValue, label);
     }
   });
+
+  When('the user saves the valid record', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/details_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillField('pim_reference_entity.record.enrich.label', 'Michel Starck');
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with a simple text value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/text_value_ok.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillField('name_designer_fingerprint', 'Starck');
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with an invalid simple text value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/invalid_text_value.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillField('website_designer_fingerprint', 'hello world');
+    await editPage.save();
+  });
+
+  Then('the user should see a success message after the update record', async function() {
+    const edit = await await getElement(this.page, 'Edit');
+    const hasSuccessNotification = await edit.hasSuccessNotification();
+
+    assert.strictEqual(hasSuccessNotification, true);
+  });
+
+  Then('the user should see the validation error after the update record : {string}', async function(expectedError) {
+    debugger;
+    const edit = await await getElement(this.page, 'Edit');
+    debugger;
+    const error = await edit.getValidationMessageForCode();
+
+    assert.strictEqual(error, expectedError);
+  });
 };

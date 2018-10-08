@@ -23,7 +23,11 @@ const listenRequest = async function(page, requestContract) {
   );
 
   const answerRequest = request => {
-    if (url === request.url() && requestContract.request.method === request.method()) {
+    if (
+      url === request.url() &&
+      requestContract.request.method === request.method() &&
+      JSON.stringify(requestContract.request.body) === request.postData()
+    ) {
       answerJson(request, requestContract.response.body, requestContract.response.status);
       page.removeListener('request', answerRequest);
     }

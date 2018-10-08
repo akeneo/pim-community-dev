@@ -32,6 +32,7 @@ class RecordEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
+    debugger;
     const promise = $.Deferred();
 
     recordFetcher
@@ -40,6 +41,7 @@ class RecordEditController extends BaseController {
         createCode(route.params.recordCode)
       )
       .then((record: Record) => {
+        debugger;
         this.store = createStore(true)(recordReducer);
         this.store.dispatch(recordEditionReceived(record));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
