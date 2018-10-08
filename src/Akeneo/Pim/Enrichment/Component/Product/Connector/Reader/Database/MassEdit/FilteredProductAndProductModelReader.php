@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
@@ -10,7 +10,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -20,11 +22,11 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 /**
  * Product reader that only returns product entities and skips product models.
  *
- * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredProductReader implements
+class FilteredProductAndProductModelReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface
@@ -44,6 +46,9 @@ class FilteredProductReader implements
     /** @var bool */
     private $generateCompleteness;
 
+    /** @var bool */
+    private $readChildren;
+
     /** @var StepExecution */
     private $stepExecution;
 
@@ -59,19 +64,22 @@ class FilteredProductReader implements
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param bool                                $generateCompleteness
+     * @param bool                                $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        bool $generateCompleteness
+        bool $generateCompleteness,
+        bool $readChildren
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
         $this->generateCompleteness = $generateCompleteness;
+        $this->readChildren = $readChildren;
     }
 
     /**
@@ -154,24 +162,29 @@ class FilteredProductReader implements
             $filters = $filters['data'];
         }
 
+        if ($this->readChildren) {
+            $filters = array_map(function ($filter) {
+                if ('id' === $filter['field']) {
+                    $filter['field'] = 'self_and_ancestor.id';
+                }
+
+                return $filter;
+            }, $filters);
+        }
+
         return array_filter($filters, function ($filter) {
             return count($filter) > 0;
         });
     }
 
     /**
-     * @param array                 $filters
-     * @param ChannelInterface|null $channel
+     * @param array            $filters
+     * @param ChannelInterface $channel
      *
      * @return CursorInterface
      */
     private function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
     {
-        $filters[] = [
-            'field' => 'entity_type',
-            'operator' => '=',
-            'value' => ProductInterface::class,
-        ];
         $options = ['filters' => $filters];
 
         if (null !== $channel) {
@@ -192,18 +205,37 @@ class FilteredProductReader implements
     {
         $entity = null;
 
-        if ($this->productsAndProductModels->valid()) {
+        while ($this->productsAndProductModels->valid()) {
             if (!$this->firstRead) {
                 $this->productsAndProductModels->next();
             }
 
+            $this->firstRead = false;
             $entity = $this->productsAndProductModels->current();
             if (false === $entity) {
                 return null;
             }
+
+            if ($entity instanceof ProductModelInterface) {
+                if ($this->stepExecution) {
+                    if (!$this->readChildren) {
+                        $warning = 'This bulk action doesn\'t support Product models entities yet.';
+                        $this->stepExecution->addWarning(
+                            $warning,
+                            [],
+                            new DataInvalidItem(['code' => $entity->getCode()])
+                        );
+                    }
+                }
+
+                $entity = null;
+                continue;
+            }
+
             $this->stepExecution->incrementSummaryInfo('read');
+
+            break;
         }
-        $this->firstRead = false;
 
         return $entity;
     }

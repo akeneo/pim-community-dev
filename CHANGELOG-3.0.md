@@ -13,6 +13,10 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader`
+- Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductModelReader`
+- Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader`
+- Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\ProductAndProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader`
 - Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader` to `Akeneo\Pim\Structure\Component\Reader\Database\MassEdit\FilteredFamilyReader`
 - Move `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter`
 - Move `Pim\Component\Catalog\ProductEvents` to `Akeneo\Pim\Enrichment\Component\Product\ProductEvents`

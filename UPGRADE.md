@@ -5,6 +5,10 @@
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductAndProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductAndProductModelReader/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductModelReader/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredProductReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\FilteredProductReader/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\ProductAndProductModelReader/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Reader\\Database\\MassEdit\\ProductAndProductModelReader/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Reader\\MassEdit\\FilteredFamilyReader/Akeneo\\Pim\\Structure\\Component\\Reader\\Database\\MassEdit\\FilteredFamilyReader/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Writer\\MassEdit\\ProductAndProductModelWriter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Writer\\Database\\MassEdit\\ProductAndProductModelWriter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductEvents/Akeneo\\Pim\\Enrichment\\Component\\Product\\ProductEvents/g'

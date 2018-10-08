@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;

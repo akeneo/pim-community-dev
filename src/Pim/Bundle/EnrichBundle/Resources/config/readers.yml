@@ -1,8 +1,8 @@
 parameters:
-    pim_enrich.reader.database.filtered_product_and_product_model.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader
-    pim_enrich.reader.database.product_and_product_model.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\ProductAndProductModelReader
-    pim_enrich.reader.database.filtered_product_reader.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader
-    pim_enrich.reader.database.filtered_product_model_reader.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader
+    pim_enrich.reader.database.filtered_product_and_product_model.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader
+    pim_enrich.reader.database.product_and_product_model.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader
+    pim_enrich.reader.database.filtered_product_reader.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader
+    pim_enrich.reader.database.filtered_product_model_reader.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductModelReader
 
 services:
     pim_enrich.reader.database.filtered_product_and_product_model:
