@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     /** @var string */
     protected $attributeClass;
 
-    /** @var TranslatedLabelsProviderInterface */
+    /** @var \Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface */
     protected $attributeProvider;
 
     /** @var TranslatorInterface */

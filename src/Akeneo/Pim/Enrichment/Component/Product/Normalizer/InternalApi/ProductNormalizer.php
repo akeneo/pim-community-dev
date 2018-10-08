@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -13,16 +14,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConv
 use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
-use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
-use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -123,18 +121,18 @@ class ProductNormalizer implements NormalizerInterface
      * @param ObjectManager                             $productManager
      * @param CompletenessManager                       $completenessManager
      * @param ChannelRepositoryInterface                $channelRepository
-     * @param CollectionFilterInterface                 $collectionFilter
-     * @param NormalizerInterface                       $completenessCollectionNormalizer
-     * @param UserContext                               $userContext
-     * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
-     * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param MissingAssociationAdder                   $missingAssociationAdder
-     * @param NormalizerInterface                       $parentAssociationsNormalizer
-     * @param CatalogContext                            $catalogContext
+     * @param CollectionFilterInterface                                                         $collectionFilter
+     * @param NormalizerInterface                                                               $completenessCollectionNormalizer
+     * @param UserContext                                                                       $userContext
+     * @param CompletenessCalculatorInterface                                                   $completenessCalculator
+     * @param EntityWithFamilyValuesFillerInterface                                             $productValuesFiller
+     * @param EntityWithFamilyVariantAttributesProvider                                         $attributesProvider
+     * @param VariantNavigationNormalizer                                                       $navigationNormalizer
+     * @param \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface|null $ascendantCategoriesQuery
+     * @param NormalizerInterface                                                               $incompleteValuesNormalizer
+     * @param MissingAssociationAdder                                                           $missingAssociationAdder
+     * @param NormalizerInterface                                                               $parentAssociationsNormalizer
+     * @param CatalogContext                                                                    $catalogContext
      */
     public function __construct(
         NormalizerInterface $normalizer,

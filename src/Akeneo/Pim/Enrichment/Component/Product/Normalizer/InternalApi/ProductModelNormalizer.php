@@ -5,21 +5,19 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
-use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -71,7 +69,7 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
-    /** @var AscendantCategoriesInterface */
+    /** @var \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface */
     private $ascendantCategoriesQuery;
 
     /** @var NormalizerInterface */
@@ -87,24 +85,24 @@ class ProductModelNormalizer implements NormalizerInterface
     private $missingAssociationAdder;
 
     /**
-     * @param NormalizerInterface                       $normalizer
-     * @param NormalizerInterface                       $versionNormalizer
+     * @param NormalizerInterface                                                          $normalizer
+     * @param NormalizerInterface                                                          $versionNormalizer
      * @param VersionManager                            $versionManager
      * @param ImageNormalizer                           $imageNormalizer
      * @param AttributeConverterInterface               $localizedConverter
      * @param ConverterInterface                        $productValueConverter
-     * @param FormProviderInterface                     $formProvider
-     * @param LocaleRepositoryInterface                 $localeRepository
-     * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param VariantProductRatioInterface              $variantProductRatioQuery
-     * @param ImageAsLabel                              $imageAsLabel
-     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
-     * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param UserContext                               $userContext
-     * @param MissingAssociationAdder                   $missingAssociationAdder
-     * @param NormalizerInterface                       $parentAssociationsNormalizer
+     * @param FormProviderInterface                                                        $formProvider
+     * @param LocaleRepositoryInterface                                                    $localeRepository
+     * @param EntityWithFamilyValuesFillerInterface                                        $entityValuesFiller
+     * @param EntityWithFamilyVariantAttributesProvider                                    $attributesProvider
+     * @param VariantNavigationNormalizer                                                  $navigationNormalizer
+     * @param VariantProductRatioInterface                                                 $variantProductRatioQuery
+     * @param ImageAsLabel                                                                 $imageAsLabel
+     * @param \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface $ascendantCategoriesQuery
+     * @param NormalizerInterface                                                          $incompleteValuesNormalizer
+     * @param UserContext                                                                  $userContext
+     * @param MissingAssociationAdder                                                      $missingAssociationAdder
+     * @param NormalizerInterface                                                          $parentAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,

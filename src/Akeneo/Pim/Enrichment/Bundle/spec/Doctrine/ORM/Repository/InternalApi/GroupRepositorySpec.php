@@ -2,14 +2,13 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi;
 
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\GroupRepository;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 class GroupRepositorySpec extends ObjectBehavior
 {

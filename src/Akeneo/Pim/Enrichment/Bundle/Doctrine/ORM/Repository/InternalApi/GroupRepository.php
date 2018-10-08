@@ -2,12 +2,12 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

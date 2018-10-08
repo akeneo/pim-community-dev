@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Pim\Structure\Bundle\Form\Type;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Enrich\Model\AvailableAttributes;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

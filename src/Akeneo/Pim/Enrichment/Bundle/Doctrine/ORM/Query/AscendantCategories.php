@@ -7,7 +7,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 
 /**
  * Query data to get the ascendant categories of entities with family variant
@@ -16,7 +15,7 @@ use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AscendantCategories implements AscendantCategoriesInterface
+class AscendantCategories implements \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;

@@ -3,13 +3,13 @@
 namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 class AttributeGroupRepositorySpec extends ObjectBehavior
 {

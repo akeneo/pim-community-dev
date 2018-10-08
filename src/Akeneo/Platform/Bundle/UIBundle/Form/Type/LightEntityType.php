@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
