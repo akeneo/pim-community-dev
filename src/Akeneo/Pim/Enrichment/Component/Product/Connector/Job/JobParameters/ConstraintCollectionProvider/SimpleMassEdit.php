@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -9,13 +9,13 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for product mass edit
+ * Constraints for simple mass edit
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductMassEdit implements ConstraintCollectionProviderInterface
+class SimpleMassEdit implements ConstraintCollectionProviderInterface
 {
     /** @var array */
     protected $supportedJobNames;
@@ -36,11 +36,10 @@ class ProductMassEdit implements ConstraintCollectionProviderInterface
         return new Collection(
             [
                 'fields' => [
-                    'filters'            => new NotNull(),
-                    'actions'            => new NotNull(),
-                    'realTimeVersioning' => new Type('bool'),
-                    'user_to_notify'     => new Type('string'),
-                    'is_user_authenticated' => new Type('bool')
+                    'filters' => new NotNull(),
+                    'actions' => new NotNull(),
+                    'user_to_notify' => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ]
             ]
         );

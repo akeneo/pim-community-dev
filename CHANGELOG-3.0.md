@@ -13,6 +13,14 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductAndProductModelMassDelete` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductAndProductModelMassDelete`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductMassEdit` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductMassEdit`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductQuickExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductQuickExport`
+- Move `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\SimpleMassEdit` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\SimpleMassEdit`
 - Move `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor`
 - Move `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport\ProductAndProductModelProcessor`
 - Move `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\QuickExport\ProductAndProductModelProcessor`
@@ -757,10 +765,10 @@
 - Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport`
 - Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport`
 - Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductXlsxExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductXlsxExport`
-- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport`
-- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvExport`
-- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport`
-- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductXlsxExport`
 - Move `Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport`
 - Move `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductAssociationProcessor`
 - Move `Pim\Component\Connector\Processor\Denormalization\ProductModelAssociationProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelAssociationProcessor`
