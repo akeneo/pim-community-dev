@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
+namespace Akeneo\Pim\Structure\Component\Reader\Database\MassEdit;
 
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;

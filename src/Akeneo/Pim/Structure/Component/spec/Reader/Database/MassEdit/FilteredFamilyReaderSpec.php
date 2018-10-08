@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
+namespace spec\Akeneo\Pim\Structure\Component\Reader\Database\MaddEdit;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;

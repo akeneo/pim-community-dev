@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.connector.reader.mass_edit.family.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader
+    pim_enrich.connector.reader.mass_edit.family.class: Akeneo\Pim\Structure\Component\Reader\Database\MassEdit\FilteredFamilyReader
 
 services:
     pim_enrich.connector.reader.mass_edit.family:
