@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\StructureVersion\Provider\StructureVersion
+    pim_enrich.provider.structure_version.class:   Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider\StructureVersion
 
 services:
     # Structure version provider

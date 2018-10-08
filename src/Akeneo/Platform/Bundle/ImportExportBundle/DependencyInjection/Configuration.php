@@ -20,7 +20,13 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('pim_import_export');
+        $rootNode = $treeBuilder->root('pim_import_export');
+
+        $rootNode
+            ->children()
+                ->booleanNode('record_mails')->defaultFalse()->end()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }

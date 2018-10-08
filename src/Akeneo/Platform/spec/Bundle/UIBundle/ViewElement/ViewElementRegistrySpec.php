@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Platform\Bundle\UIBundle\ViewElement;
 
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
+use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use PhpSpec\ObjectBehavior;
 
 class ViewElementRegistrySpec extends ObjectBehavior
