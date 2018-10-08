@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Pim\Permission\Bundle\Form\Type;
 
+use Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductGridFilterChoiceTypeSpec extends ObjectBehavior

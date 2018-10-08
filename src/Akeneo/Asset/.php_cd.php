@@ -64,7 +64,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
         'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
         'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
-        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
+        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
         // TODO: we must not depend on Platefom
         'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
