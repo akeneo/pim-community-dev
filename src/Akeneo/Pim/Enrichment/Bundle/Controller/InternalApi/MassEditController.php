@@ -4,10 +4,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\MassEditAction\Operation\MassEditOperation;
 use Akeneo\Pim\Enrichment\Bundle\MassEditAction\OperationJobLauncher;
+use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
 use Oro\Bundle\PimDataGridBundle\Adapter\ItemsCounter;
-use Pim\Component\Enrich\Converter\ConverterInterface;
 use Pim\Component\Enrich\Query\SelectedForMassEditInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

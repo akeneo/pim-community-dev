@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Enrich\Converter\EnrichToStandard;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Converter\EnrichToStandard;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class ValueConverterSpec extends ObjectBehavior
 {

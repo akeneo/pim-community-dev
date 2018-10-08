@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Component\Enrich\Converter\StandardToEnrich;
+namespace Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToEnrich;
 
+use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Pim\Component\Enrich\Converter\ConverterInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

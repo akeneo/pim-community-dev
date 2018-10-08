@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Enrich\Converter\EnrichToStandard;
+namespace Akeneo\Pim\Enrichment\Component\Product\Converter\EnrichToStandard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Enrich\Converter\ConverterInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
