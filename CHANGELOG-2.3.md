@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.11 (2018-10-08)
+
 ## Bug fixes
 
 - PIM-7672: Fix missing permission check on assets during a mass edit.
