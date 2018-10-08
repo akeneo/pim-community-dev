@@ -128,12 +128,18 @@ class ColumnSelector extends BaseView {
     this.fetchColumns();
   }
 
+  // TODO - Add debounce and execute fetchColumns
+  searchColumns(event: JQuery.Event) {
+    console.log('searchColumns', event)
+  }
+
   // @TODO - Add caching
   fetchColumns() {
     const search = this.modal.$el.find('input[type="search"]').val().trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
     const params = $.param(_.omit({search, group}, _.isEmpty));
+
     return $.get(`${url}?${params}`);
   }
 
@@ -143,13 +149,14 @@ class ColumnSelector extends BaseView {
     return this;
   }
 
+  // sort by position
   getInitialColumns(columns: any[]) {
     const selectedColumns = DatagridState.get('product-grid', 'columns');
     const datagridColumns = selectedColumns.split(',')
 
     return _.map(columns, (column: any) => {
       column.selected = datagridColumns.includes(column.code);
-      column.removable = undefined !== column.group
+      column.removable = true;
 
       return column;
     })
@@ -174,7 +181,10 @@ class ColumnSelector extends BaseView {
   }
 
   unselectColumn(event: JQuery.Event) {
-    const code = $(event.currentTarget) .parents('[data-value]') .data('value');
+    const column = $(event.currentTarget).parent();
+    const code = column.parents('[data-value]') .data('value');
+
+    column.appendTo(this.modal.$el.find('#column-list'));
 
     this.loadedColumns = _.map(this.loadedColumns, column => {
       if (column.code === code) {
@@ -183,9 +193,16 @@ class ColumnSelector extends BaseView {
 
       return column;
     });
+  }
 
-    this.renderColumns();
-    this.setSortable();
+  selectColumn(code) {
+    this.loadedColumns = _.map(this.loadedColumns, column => {
+      if (column.code === code) {
+        column.selected = true
+      }
+
+      return column;
+    })
   }
 
   openModal() {
@@ -203,10 +220,13 @@ class ColumnSelector extends BaseView {
       });
 
       modal.open();
+      modal.on('ok', this.applyColumns.bind(this));
 
       this.modal = modal;
       this.modal.$el.on('keyup', 'input[type="search"]', this.searchColumns.bind(this));
       this.modal.$el.on('click', '[data-attributes] [data-group]', this.fetchByAttributeGroup.bind(this));
+
+
 
       this.fetchColumns().then(columns => {
         this.loadedColumns = this.getInitialColumns(columns);
@@ -226,24 +246,30 @@ class ColumnSelector extends BaseView {
         cursor: 'move',
         cancel: 'div.alert',
         receive: (event: any, ui: any) => {
-          console.log(event, ui);
-          // var model = _.first(this.collection.where({code: ui.item.data('value')}));
-          // model.set('displayed', ui.sender.is('#column-list') && model.get('removable'));
+          const code = ui.item.data('value')
+          const senderIsColumn = ui.sender.is('#column-list')
 
-          // if (!model.get('removable')) {
-          //     $(ui.sender).sortable('cancel');
-          // } else {
-          //     this.validateSubmission();
-          // }
+          if (senderIsColumn) {
+            this.selectColumn(code)
+          }
         },
       }).disableSelection();
   }
 
-  searchColumns(event: JQuery.Event) {
-    console.log('searchColumns', event);
-  }
+  applyColumns() {
+    const selected = _.map(_.where(this.loadedColumns, { selected: true }), 'code').join()
 
-  applyColumns() {}
+    if (!selected.length) {
+        return;
+    }
+
+    DatagridState.set('product-grid', 'columns', selected);
+    this.modal.close();
+
+    var url = window.location.hash;
+    Backbone.history.fragment = new Date().getTime();
+    Backbone.history.navigate(url, true);
+  }
 }
 
 export = ColumnSelector;
