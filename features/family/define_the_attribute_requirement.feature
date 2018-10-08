@@ -67,8 +67,7 @@ Feature: Define the attribute requirement
       | mobile  | en_US  | success |                                            | 100%  |
       | tablet  | en_US  | warning | Description, Weather conditions, Side view | 63%   |
 
-  @javascript
-  @jira https://akeneo.atlassian.net/browse/PIM-7718
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7718
   Scenario: Successfully add an attribute requirement for a newly created channel
     Given the following channel:
       | code      | label-en_US | currencies | locales | tree            |
