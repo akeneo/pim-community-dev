@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7672: Fix missing permission check on assets during a mass edit.
+- PIM-7709: Execute all transformations of a channel even if one of them does not support the file to transform
 
 # 2.3.10 (2018-10-01)
 

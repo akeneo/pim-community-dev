@@ -38,6 +38,8 @@ class FileTransformerSpec extends ObjectBehavior
 
         $file->getPathname()->willReturn(__FILE__);
 
+        $registry->has('thumbnail', 'text/x-php')->willReturn(true);
+        $registry->has('colorspace', 'text/x-php')->willReturn(true);
         $registry->get('thumbnail', 'text/x-php')->willReturn($thumbnailTransformation);
         $registry->get('colorspace', 'text/x-php')->willReturn($colorSpaceTransformation);
 
@@ -63,10 +65,40 @@ class FileTransformerSpec extends ObjectBehavior
         $file->getPathname()->willReturn(__FILE__);
         $file->getPath()->willReturn(sys_get_temp_dir());
 
+        $registry->has('thumbnail', 'text/x-php')->willReturn(true);
+        $registry->has('colorspace', 'text/x-php')->willReturn(true);
         $registry->get('thumbnail', 'text/x-php')->willReturn($thumbnailTransformation);
         $registry->get('colorspace', 'text/x-php')->willReturn($colorSpaceTransformation);
 
         $thumbnailTransformation->transform(Argument::any(), ['width' => 100, 'height' => 100])->shouldBeCalled();
+        $colorSpaceTransformation->transform(Argument::any(), ['colorspace' => 'gray'])->shouldBeCalled();
+
+        $outputFile = $this->transform($file, $rawTransformations, $outputFilename);
+        $outputFile->getFilename()->shouldBe($outputFilename);
+
+        unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $outputFilename);
+    }
+
+    function it_a_transformation_if_the_mime_type_is_not_supported(
+        $registry,
+        \SplFileInfo $file,
+        TransformationInterface $colorSpaceTransformation
+    ) {
+        $outputFilename = uniqid();
+
+        $rawTransformations = [
+            'thumbnail'  => ['width' => 100, 'height' => 100],
+            'colorspace' => ['colorspace' => 'gray']
+        ];
+
+        $file->getPathname()->willReturn(__FILE__);
+        $file->getPath()->willReturn(sys_get_temp_dir());
+
+        $registry->has('thumbnail', 'text/x-php')->willReturn(false);
+        $registry->has('colorspace', 'text/x-php')->willReturn(true);
+        $registry->get('thumbnail', 'text/x-php')->shouldNotBeCalled();
+        $registry->get('colorspace', 'text/x-php')->willReturn($colorSpaceTransformation);
+
         $colorSpaceTransformation->transform(Argument::any(), ['colorspace' => 'gray'])->shouldBeCalled();
 
         $outputFile = $this->transform($file, $rawTransformations, $outputFilename);
