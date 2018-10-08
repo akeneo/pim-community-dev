@@ -97,6 +97,12 @@ class ColumnSelector extends BaseView {
     return BaseView.prototype.configure.apply(this, arguments);
   }
 
+  render() {
+    this.$el.html(_.template(this.buttonTemplate));
+
+    return this;
+  }
+
   setDatagridCollection(datagridCollection: Backbone.Collection<any>) {
     this.datagridCollection = datagridCollection;
   }
@@ -143,13 +149,7 @@ class ColumnSelector extends BaseView {
     return $.get(`${url}?${params}`);
   }
 
-  render() {
-    this.$el.html(_.template(this.buttonTemplate));
-
-    return this;
-  }
-
-  // sort by position
+  // @TODO - Sort by position
   getInitialColumns(columns: any[]) {
     const selectedColumns = DatagridState.get('product-grid', 'columns');
     const datagridColumns = selectedColumns.split(',')
@@ -178,36 +178,54 @@ class ColumnSelector extends BaseView {
       .append(_.template(this.selectedTemplate)({columns: selectedColumns}));
 
     this.modal.$el.on('click', '#column-selection .action', this.unselectColumn.bind(this));
+    this.setValidation();
   }
 
   unselectColumn(event: JQuery.Event) {
     const column = $(event.currentTarget).parent();
-    const code = column.parents('[data-value]') .data('value');
-
+    const code = $(event.currentTarget).parents('[data-value]').data('value');
     column.appendTo(this.modal.$el.find('#column-list'));
-
-    this.loadedColumns = _.map(this.loadedColumns, column => {
-      if (column.code === code) {
-        column.selected = false;
-      }
-
-      return column;
-    });
+    this.setColumnStatus(code, false)
+    this.setValidation();
   }
 
-  selectColumn(code) {
+  setColumnStatus(code, selected = true) {
     this.loadedColumns = _.map(this.loadedColumns, column => {
       if (column.code === code) {
-        column.selected = true
+        column.selected = selected
       }
 
       return column;
     })
   }
 
+  setValidation() {
+    const selectedColumns = _.where(this.loadedColumns, { selected: true });
+    const showValidationError = selectedColumns.length === 0
+    console.log('setValidation', showValidationError, selectedColumns, _.where(this.loadedColumns, { selected: true }).length)
+    const error = this.modal.$el.find('#column-selection .alert-error')
+    showValidationError ? error.show() : error.hide();
+  }
+
+  clearAllColumns() {
+    this.loadedColumns = _.map(this.loadedColumns, column => {
+      column.selected = false;
+
+      return column
+    })
+
+    this.renderColumns();
+    this.setSortable();
+  }
+
   openModal() {
+    if (this.modal) {
+      this.modal.$el.off();
+      this.modal.close();
+      this.modal.remove();
+    }
+
     this.fetchAttributeGroups().then(groups => {
-      console.log('fetchAttributeGroups', groups)
       const modal = new Backbone.BootstrapModal({
         className: 'modal modal--fullPage modal--topButton column-configurator-modal',
         modalOptions: {backdrop: 'static', keyboard: false},
@@ -225,8 +243,7 @@ class ColumnSelector extends BaseView {
       this.modal = modal;
       this.modal.$el.on('keyup', 'input[type="search"]', this.searchColumns.bind(this));
       this.modal.$el.on('click', '[data-attributes] [data-group]', this.fetchByAttributeGroup.bind(this));
-
-
+      this.modal.$el.on('click', '.reset', this.clearAllColumns.bind(this))
 
       this.fetchColumns().then(columns => {
         this.loadedColumns = this.getInitialColumns(columns);
@@ -249,9 +266,8 @@ class ColumnSelector extends BaseView {
           const code = ui.item.data('value')
           const senderIsColumn = ui.sender.is('#column-list')
 
-          if (senderIsColumn) {
-            this.selectColumn(code)
-          }
+          this.setColumnStatus(code, senderIsColumn)
+          this.setValidation()
         },
       }).disableSelection();
   }
@@ -264,6 +280,7 @@ class ColumnSelector extends BaseView {
     }
 
     DatagridState.set('product-grid', 'columns', selected);
+
     this.modal.close();
 
     var url = window.location.hash;
