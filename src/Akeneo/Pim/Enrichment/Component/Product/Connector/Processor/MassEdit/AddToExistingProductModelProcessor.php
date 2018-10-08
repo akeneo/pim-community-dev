@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

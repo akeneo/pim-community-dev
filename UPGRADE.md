@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\AbstractProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\AbstractProcessor/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\QuickExport\\ProductAndProductModelProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\QuickExport\\ProductAndProductModelProcessor/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\QuickExport\\ProductAndProductModelProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\QuickExport\\ProductAndProductModelProcessor/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Processor\\MassEdit\\Product\\AddAttributeValueProcessor/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Processor\\MassEdit\\AddAttributeValueProcessor/g'

@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
-use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;

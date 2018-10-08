@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
