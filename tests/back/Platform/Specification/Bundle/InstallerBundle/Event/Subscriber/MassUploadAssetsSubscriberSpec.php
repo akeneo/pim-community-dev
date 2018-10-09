@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
+namespace Specification\Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
 use Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand;
 use Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand;
