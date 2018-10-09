@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.step.mass_edit.step.class: Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep
+    pim_enrich.step.mass_edit.step.class: Akeneo\Pim\Enrichment\Component\Product\Connector\Step\MassEditStep
     pim_enrich.delete_products_and_product_models.tasklet_name: 'delete_products_and_product_models'
     pim_enrich.tasklet.delete_products_and_product_models.class: Pim\Component\Enrich\Job\DeleteProductsAndProductModelsTasklet
 
