@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
+namespace Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

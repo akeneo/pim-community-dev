@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
+namespace Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Compiler;
 
-use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
+use Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
