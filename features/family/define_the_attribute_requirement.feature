@@ -59,7 +59,6 @@ Feature: Define the attribute requirement
     And I should not see the text "There are unsaved changes."
     Then I should not see the "rating" attribute
     When I launched the completeness calculator
-    And I wait for the "compute_completeness_of_products_family" job to finish
     When I am on the "BIGBOOTS" product page
     And I open the "Completeness" panel
     Then I should see the completeness:
