@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     /** @var string */
     protected $attributeClass;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface */
+    /** @var TranslatedLabelsProviderInterface */
     protected $attributeProvider;
 
     /** @var TranslatorInterface */

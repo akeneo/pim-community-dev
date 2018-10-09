@@ -1025,3 +1025,12 @@
 - Move `Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber` to `Akeneo\Platform\Bundle\UIBundle\EventListener\TranslateFlashMessagesSubscriber`
 - Move `Pim\Bundle\EnrichBundle\EventListener\UserContextListener` to `Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener`
 - Remove `Pim\Bundle\EnrichBundle\EventListener\RequestListener`
+- Remove `Pim\Component\Enrich\Model\ChosableInterface`
+- Move `Pim\Component\Enrich\Converter\ConverterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface`
+- Move `Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter` to `Akeneo\Pim\Enrichment\Component\Product\Converter\EnrichToStandard\ValueConverter`
+- Move `Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter` to `Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToEnrich\ValueConverter`
+- Move `Pim\Component\Enrich\Converter\MassOperationConverter` to `Akeneo\Pim\Enrichment\Component\Product\Converter\MassOperationConverter`
+- Move `Pim\Component\Enrich\Job\DeleteProductsAndProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet`
+- Move `Pim\Component\Enrich\Query\AscendantCategoriesInterface` to `Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface`
+- Move `Pim\Component\Enrich\Model\AvailableAttributes` to `Akeneo\Pim\Structure\Component\Model\AvailableAttributes`
+- Move `Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface`

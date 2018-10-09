@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -38,7 +39,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
     function it_is_a_tasklet()
     {
-        $this->shouldHaveType(\Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet::class);
+        $this->shouldHaveType(DeleteProductsAndProductModelsTasklet::class);
         $this->shouldImplement(TaskletInterface::class);
     }
 

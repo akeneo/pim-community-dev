@@ -121,18 +121,18 @@ class ProductNormalizer implements NormalizerInterface
      * @param ObjectManager                             $productManager
      * @param CompletenessManager                       $completenessManager
      * @param ChannelRepositoryInterface                $channelRepository
-     * @param CollectionFilterInterface                                                         $collectionFilter
-     * @param NormalizerInterface                                                               $completenessCollectionNormalizer
-     * @param UserContext                                                                       $userContext
-     * @param CompletenessCalculatorInterface                                                   $completenessCalculator
-     * @param EntityWithFamilyValuesFillerInterface                                             $productValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider                                         $attributesProvider
-     * @param VariantNavigationNormalizer                                                       $navigationNormalizer
-     * @param \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface|null $ascendantCategoriesQuery
-     * @param NormalizerInterface                                                               $incompleteValuesNormalizer
-     * @param MissingAssociationAdder                                                           $missingAssociationAdder
-     * @param NormalizerInterface                                                               $parentAssociationsNormalizer
-     * @param CatalogContext                                                                    $catalogContext
+     * @param CollectionFilterInterface                 $collectionFilter
+     * @param NormalizerInterface                       $completenessCollectionNormalizer
+     * @param UserContext                               $userContext
+     * @param CompletenessCalculatorInterface           $completenessCalculator
+     * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param VariantNavigationNormalizer               $navigationNormalizer
+     * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
+     * @param NormalizerInterface                       $incompleteValuesNormalizer
+     * @param MissingAssociationAdder                   $missingAssociationAdder
+     * @param NormalizerInterface                       $parentAssociationsNormalizer
+     * @param CatalogContext                            $catalogContext
      */
     public function __construct(
         NormalizerInterface $normalizer,

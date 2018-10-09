@@ -69,7 +69,7 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface */
+    /** @var AscendantCategoriesInterface */
     private $ascendantCategoriesQuery;
 
     /** @var NormalizerInterface */
@@ -85,24 +85,24 @@ class ProductModelNormalizer implements NormalizerInterface
     private $missingAssociationAdder;
 
     /**
-     * @param NormalizerInterface                                                          $normalizer
-     * @param NormalizerInterface                                                          $versionNormalizer
+     * @param NormalizerInterface                       $normalizer
+     * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager
      * @param ImageNormalizer                           $imageNormalizer
      * @param AttributeConverterInterface               $localizedConverter
      * @param ConverterInterface                        $productValueConverter
-     * @param FormProviderInterface                                                        $formProvider
-     * @param LocaleRepositoryInterface                                                    $localeRepository
-     * @param EntityWithFamilyValuesFillerInterface                                        $entityValuesFiller
-     * @param EntityWithFamilyVariantAttributesProvider                                    $attributesProvider
-     * @param VariantNavigationNormalizer                                                  $navigationNormalizer
-     * @param VariantProductRatioInterface                                                 $variantProductRatioQuery
-     * @param ImageAsLabel                                                                 $imageAsLabel
-     * @param \Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface $ascendantCategoriesQuery
-     * @param NormalizerInterface                                                          $incompleteValuesNormalizer
-     * @param UserContext                                                                  $userContext
-     * @param MissingAssociationAdder                                                      $missingAssociationAdder
-     * @param NormalizerInterface                                                          $parentAssociationsNormalizer
+     * @param FormProviderInterface                     $formProvider
+     * @param LocaleRepositoryInterface                 $localeRepository
+     * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param VariantNavigationNormalizer               $navigationNormalizer
+     * @param VariantProductRatioInterface              $variantProductRatioQuery
+     * @param ImageAsLabel                              $imageAsLabel
+     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
+     * @param NormalizerInterface                       $incompleteValuesNormalizer
+     * @param UserContext                               $userContext
+     * @param MissingAssociationAdder                   $missingAssociationAdder
+     * @param NormalizerInterface                       $parentAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
