@@ -9,12 +9,12 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
 use Oro\Bundle\PimDataGridBundle\Manager\DatagridViewManager;
 use Oro\Bundle\PimDataGridBundle\Query\ListAttributesQuery;
 use Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableInProductGrid;
-use Oro\Bundle\PimDataGridBundle\Query\Sql\ListAttributesUseableAsColumnInProductGrid;
+use Oro\Bundle\PimDataGridBundle\Query\Sql\ListProductGridAvailableColumnGroups;
+use Oro\Bundle\PimDataGridBundle\Query\Sql\ListProductGridAvailableColumns;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,14 +42,20 @@ class ProductGridController
     /** @var DatagridViewManager */
     private $datagridViewManager;
 
-    /** @var ListAttributesUseableAsColumnInProductGrid */
-    private $listAttributesUseableAsColumnQuery;
+    /** @var ListProductGridAvailableColumns */
+    private $listAvailableColumnsQuery;
+
+    /** @var ListProductGridAvailableColumnGroups */
+    private $listAvailableColumnGroupsQuery;
 
     /**
-     * @param ListAttributesUseableInProductGrid $listAttributesQuery
+     * @param ListAttributesUseableInProductGrid   $listAttributesQuery
      * @param ConfiguratorInterface                $filtersConfigurator
-     * @param FilterExtension                    $filterExtension
-     * @param UserContext                        $userContext
+     * @param FilterExtension                      $filterExtension
+     * @param UserContext                          $userContext
+     * @param DatagridViewManager                  $datagridViewManager
+     * @param ListProductGridAvailableColumns      $listAvailableColumnsQuery
+     * @param ListProductGridAvailableColumnGroups $listAvailableColumnGroupsQuery
      */
     public function __construct(
         ListAttributesUseableInProductGrid $listAttributesQuery,
@@ -57,14 +63,16 @@ class ProductGridController
         FilterExtension $filterExtension,
         UserContext $userContext,
         DatagridViewManager $datagridViewManager,
-        ListAttributesUseableAsColumnInProductGrid $listAttributesUseableAsColumnQuery
+        ListProductGridAvailableColumns $listAvailableColumnsQuery,
+        ListProductGridAvailableColumnGroups $listAvailableColumnGroupsQuery
     ) {
         $this->listAttributesQuery = $listAttributesQuery;
         $this->filtersConfigurator = $filtersConfigurator;
         $this->filterExtension = $filterExtension;
         $this->userContext = $userContext;
         $this->datagridViewManager = $datagridViewManager;
-        $this->listAttributesUseableAsColumnQuery = $listAttributesUseableAsColumnQuery;
+        $this->listAvailableColumnsQuery = $listAvailableColumnsQuery;
+        $this->listAvailableColumnGroupsQuery = $listAvailableColumnGroupsQuery;
     }
 
     /**
@@ -100,6 +108,30 @@ class ProductGridController
      */
     public function getAvailableColumnsAction(Request $request): JsonResponse
     {
+        $page = (int) $request->get('page', 1);
+        $locale = $request->get('locale', null);
+        $search = $request->get('search', '');
+        $group = $request->get('attribute_group', '');
+        $user = $this->userContext->getUser();
+
+        if (null == $locale) {
+            $locale = $user->getCatalogLocale()->getCode();
+        }
+
+        $availableColumns = $this->listAvailableColumnsQuery->fetch($locale, $page, $group, $search, $user->getId());
+
+        return new JsonResponse($availableColumns);
+    }
+
+    /**
+     * Get the list of the groups of available columns for the product grid.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getAvailableColumnsGroupsAction(Request $request): JsonResponse
+    {
         $locale = $request->get('locale', null);
         $user = $this->userContext->getUser();
 
@@ -107,10 +139,9 @@ class ProductGridController
             $locale = $user->getCatalogLocale()->getCode();
         }
 
-        $systemColumns = $this->datagridViewManager->getColumnChoices('product-grid');
-        $attributesAsColumn = $this->listAttributesUseableAsColumnQuery->fetch($locale, $user->getId());
+        $columnGroups = $this->listAvailableColumnGroupsQuery->fetch($locale, $user->getId());
 
-        return new JsonResponse(array_merge($systemColumns, $attributesAsColumn));
+        return new JsonResponse($columnGroups);
     }
 
     /**
