@@ -19,7 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SearchMatrixNormalizer;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordSearchMatrixNormalizer;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SqlFindActivatedLocalesPerChannels;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
@@ -28,7 +28,7 @@ use PhpSpec\ObjectBehavior;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchMatrixNormalizerSpec extends ObjectBehavior
+class RecordSearchMatrixNormalizerSpec extends ObjectBehavior
 {
     function let(SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels)
     {
@@ -37,7 +37,7 @@ class SearchMatrixNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SearchMatrixNormalizer::class);
+        $this->shouldHaveType(RecordSearchMatrixNormalizer::class);
     }
 
     function it_normalizes_the_code_in_the_matrix_field(

@@ -63,7 +63,7 @@ class ReferenceBuilder implements ReferenceBuilderInterface
         $locales = $this->localeRepository->getActivatedLocales();
 
         foreach ($locales as $locale) {
-            if (!$asset->hasReference($locale)) {
+            if (!$asset->isEmpty($locale)) {
                 $references[] = $this->buildOne($asset, $locale);
             }
         }

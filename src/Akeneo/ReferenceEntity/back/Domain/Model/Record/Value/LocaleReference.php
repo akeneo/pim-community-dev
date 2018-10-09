@@ -48,10 +48,10 @@ class LocaleReference
 
     public function equals(LocaleReference $localeReference): bool
     {
-        if ($localeReference->hasReference() && $this->hasReference()) {
+        if ($localeReference->isEmpty() && $this->isEmpty()) {
             return true;
         }
-        if ($localeReference->hasReference() || $this->hasReference()) {
+        if ($localeReference->isEmpty() !== $this->isEmpty()) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class LocaleReference
         return $this->identifier->normalize();
     }
 
-    public function hasReference(): bool
+    public function isEmpty(): bool
     {
         return null === $this->identifier;
     }

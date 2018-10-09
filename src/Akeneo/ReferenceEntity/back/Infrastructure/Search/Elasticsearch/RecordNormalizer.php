@@ -18,10 +18,10 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const REFERENCE_ENTITY_CODE = 'reference_entity_code';
     private const RECORD_LIST_SEARCH = 'record_list_search';
 
-    /** @var SearchMatrixNormalizer */
+    /** @var RecordSearchMatrixNormalizer */
     private $searchMatrixGenerator;
 
-    public function __construct(SearchMatrixNormalizer $searchMatrixGenerator)
+    public function __construct(RecordSearchMatrixNormalizer $searchMatrixGenerator)
     {
         $this->searchMatrixGenerator = $searchMatrixGenerator;
     }

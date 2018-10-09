@@ -11,7 +11,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordNormalizer;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SearchMatrixNormalizer;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordSearchMatrixNormalizer;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
  */
 class RecordNormalizerSpec extends ObjectBehavior
 {
-    function let(SearchMatrixNormalizer $searchMatrixNormalizer)
+    function let(RecordSearchMatrixNormalizer $searchMatrixNormalizer)
     {
         $this->beConstructedWith($searchMatrixNormalizer);
     }
@@ -30,7 +30,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(RecordNormalizer::class);
     }
 
-    function it_normalizes_the_code_in_the_search_field(SearchMatrixNormalizer $searchMatrixNormalizer)
+    function it_normalizes_the_code_in_the_search_field($searchMatrixNormalizer)
     {
         $record = Record::create(
             RecordIdentifier::create('designer', 'stark', 'fingerprint'),

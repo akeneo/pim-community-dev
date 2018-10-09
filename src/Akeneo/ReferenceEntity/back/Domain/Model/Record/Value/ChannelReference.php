@@ -48,10 +48,10 @@ class ChannelReference
 
     public function equals(ChannelReference $channelReference): bool
     {
-        if ($channelReference->hasReference() && $this->hasReference()) {
+        if ($channelReference->isEmpty() && $this->isEmpty()) {
             return true;
         }
-        if ($channelReference->hasReference() || $this->hasReference()) {
+        if ($channelReference->isEmpty() !== $this->isEmpty()) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class ChannelReference
         return $this->identifier->normalize();
     }
 
-    public function hasReference(): bool
+    public function isEmpty(): bool
     {
         return null === $this->identifier;
     }

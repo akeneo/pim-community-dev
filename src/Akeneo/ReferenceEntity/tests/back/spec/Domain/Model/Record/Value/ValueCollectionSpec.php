@@ -177,7 +177,7 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->filter(function(Value $value){ return false;})->normalize()->shouldReturn([]);
         $this->filter(function(Value $value){
-            return !$value->getChannelReference()->hasReference();
+            return !$value->getChannelReference()->isEmpty();
         })->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
             ->shouldNotBeNull();
     }

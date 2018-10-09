@@ -102,7 +102,7 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
      *
      * @return bool
      */
-    public function hasReference(LocaleInterface $locale = null);
+    public function isEmpty(LocaleInterface $locale = null);
 
     /**
      * @return VariationInterface[]

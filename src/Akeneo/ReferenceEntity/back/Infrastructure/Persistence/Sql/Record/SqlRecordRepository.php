@@ -76,7 +76,7 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_reference_entity_record 
+        INSERT INTO akeneo_reference_entity_record
             (identifier, code, reference_entity_identifier, labels, image, value_collection)
         VALUES (:identifier, :code, :reference_entity_identifier, :labels, :image, :value_collection);
 SQL;
@@ -192,7 +192,7 @@ SQL;
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): void {
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_record 
+        DELETE FROM akeneo_reference_entity_record
         WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
@@ -208,7 +208,7 @@ SQL;
         RecordCode $code
     ): void {
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_record 
+        DELETE FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -235,6 +235,9 @@ SQL;
         );
     }
 
+    /**
+     * TODO: remove, should use the search feature
+     */
     public function all()
     {
         $fetch = <<<SQL

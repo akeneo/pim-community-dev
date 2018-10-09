@@ -11,11 +11,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordIndexer;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordNormalizerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class RecordIndexerSpec extends ObjectBehavior
 {
-    function let(Client $recordEsCLient, NormalizerInterface $recordNormalizer)
+    function let(Client $recordEsCLient, RecordNormalizerInterface $recordNormalizer)
     {
         $this->beConstructedWith($recordEsCLient, $recordNormalizer);
     }
@@ -39,7 +39,7 @@ class RecordIndexerSpec extends ObjectBehavior
         $this->bulkIndex([]);
     }
 
-    function it_indexes_multiple_records(Client $esClient, NormalizerInterface $recordNormalizer)
+    function it_indexes_multiple_records(Client $esClient, RecordNormalizerInterface $recordNormalizer)
     {
         $stark = Record::create(
             RecordIdentifier::create('designer', 'stark', 'finger'),

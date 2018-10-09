@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchMatrixNormalizer
+class RecordSearchMatrixNormalizer
 {
     /** @var SqlFindActivatedLocalesPerChannels */
     private $findActivatedLocalesPerChannels;
@@ -36,8 +36,12 @@ class SearchMatrixNormalizer
         foreach ($localesPerChannels as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
                 $recordProperties = (string) $record->getCode();
-                $recordProperties .= $this->appendLabel($localeCode, $labels);
-                $recordProperties .= $this->appendValue($record, $channelCode, $localeCode);
+                $recordProperties .= $this->getLabel($localeCode, $labels);
+                $recordProperties .= $this->getValue(
+                    $record,
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($channelCode)),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($localeCode))
+                );
 
                 $matrix[$channelCode][$localeCode] = $recordProperties;
             }
@@ -46,7 +50,7 @@ class SearchMatrixNormalizer
         return $matrix;
     }
 
-    private function appendLabel($localeCode, $labels): string
+    private function getLabel($localeCode, $labels): string
     {
         if (array_key_exists($localeCode, $labels)) {
             return ' ' . $labels[$localeCode];
@@ -55,10 +59,10 @@ class SearchMatrixNormalizer
         return '';
     }
 
-    private function appendValue(Record $record, string $channelCode, string $localeCode): string
+    private function getValue(Record $record, ChannelReference $channel, LocaleReference $locale): string
     {
         $textValue = '';
-        $values = $this->getValuesToIndex($record, $channelCode, $localeCode);
+        $values = $this->getValuesToIndex($record, $channel, $locale);
         /** @var Value $value */
         foreach ($values as $value) {
             $textValue = ' ' . $value->getData()->normalize();
@@ -70,25 +74,15 @@ class SearchMatrixNormalizer
     /**
      * Retrieve all values for channel and locale
      */
-    private function getValuesToIndex(Record $record, string $channelCode, string $localeCode): ValueCollection
+    private function getValuesToIndex(Record $record, ChannelReference $channel, LocaleReference $locale): ValueCollection
     {
-        $values = $record->filterValues(function (Value $value) use ($channelCode, $localeCode) {
+        $values = $record->filterValues(function (Value $value) use ($channel, $locale) {
             $isText = $value->getData() instanceof TextData;
             $notEmpty = !$value->isEmpty();
+            $matchChannel = $value->getChannelReference()->isEmpty() || $value->getChannelReference()->equals($channel);
+            $matchLocale = $value->getLocaleReference()->isEmpty() || $value->getLocaleReference()->equals($locale);
 
-            $isNonScopableNonLocalizable = !$value->hasChannel() && !$value->hasLocale();
-            $hasChannel = $value->hasChannel() && $value->getChannelReference()->equals(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($channelCode)));
-            $hasLocale = $value->hasLocale() && $value->getLocaleReference()->equals(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($localeCode)));
-
-            $nonLocalizableAndHasChannel = !$value->hasLocale() && $hasChannel;
-            $nonScopableAndHasLocale = !$value->hasChannel() && $hasLocale;
-
-            return $isText && $notEmpty && (
-                    $isNonScopableNonLocalizable ||
-                    ($hasChannel && $hasLocale) ||
-                    $nonLocalizableAndHasChannel ||
-                    $nonScopableAndHasLocale
-                );
+            return $isText && $notEmpty && $matchChannel && $matchLocale;
         });
 
         return $values;

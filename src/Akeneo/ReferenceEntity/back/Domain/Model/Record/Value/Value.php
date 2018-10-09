@@ -53,12 +53,12 @@ class Value
 
     public function hasChannel(): bool
     {
-        return !$this->channelReference->hasReference();
+        return !$this->channelReference->isEmpty();
     }
 
     public function hasLocale(): bool
     {
-        return !$this->localeReference->hasReference();
+        return !$this->localeReference->isEmpty();
     }
 
     public function sameAttribute(Value $otherValue): bool
