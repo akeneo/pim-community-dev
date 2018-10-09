@@ -31,6 +31,7 @@ class ColumnSelector extends BaseView {
   public debounceSearchTimer: any;
   public searchInputSelector: string;
   public attributeGroupSelector: string;
+  public page: number = 1;
 
   public buttonTemplate: string = `<div class="AknGridToolbar-right"><div class="AknGridToolbar-actionButton">
   <a class="AknActionButton" title="Columns" data-open>Columns</a></div></div>`;
@@ -153,7 +154,8 @@ class ColumnSelector extends BaseView {
       .trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
-    const params = $.param(_.omit({search, group}, _.isEmpty));
+    const page = this.page || 1;
+    const params = $.param(_.omit({search, group, page}, (param: any) => !param));
 
     return $.get(`${url}?${params}`);
   }
@@ -236,6 +238,35 @@ class ColumnSelector extends BaseView {
     this.modal.$el.on('click', '#column-selection .action', this.unselectColumn.bind(this));
     this.setSortable();
     this.setValidation();
+    this.listenToListScroll();
+  }
+
+  listenToListScroll() {
+    this.modal.$el.find('[data-columns]').off('scroll').on('scroll', this.fetchNextColumns.bind(this))
+  }
+
+  stopListeningToListScroll() {
+    this.modal.$el.find('[data-columns]').off('scroll');
+  }
+
+  fetchNextColumns(event: JQueryMouseEventObject): void {
+    const list: any = event.currentTarget;
+    const scrollPosition = Math.max(0, list.scrollTop);
+    const bottomPosition = list.scrollHeight - list.offsetHeight;
+    const isBottom = bottomPosition === scrollPosition;
+
+    if (isBottom) {
+      this.page = this.page + 1;
+
+      this.fetchColumns().then((columns: {[name: string]: Column}) => {
+        if (_.isEmpty(columns)) {
+          return this.stopListeningToListScroll();
+        }
+
+        this.loadedColumns = this.setColumnsSelectedByDefault(columns);
+        this.renderColumns();
+      });
+    }
   }
 
   setColumnStatus(code: string, selected = true): void {
