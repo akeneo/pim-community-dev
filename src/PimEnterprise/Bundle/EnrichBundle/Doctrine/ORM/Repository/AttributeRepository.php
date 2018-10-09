@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 
 /**

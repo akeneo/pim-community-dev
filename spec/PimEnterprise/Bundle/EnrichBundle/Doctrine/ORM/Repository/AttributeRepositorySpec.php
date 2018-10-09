@@ -2,6 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
@@ -9,9 +12,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
 
 class AttributeRepositorySpec extends ObjectBehavior
 {
@@ -31,7 +31,7 @@ class AttributeRepositorySpec extends ObjectBehavior
 
     function it_is_translated_label_provider()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
+        $this->shouldImplement('Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface');
     }
 
     function it_is_doctrine_provider()
