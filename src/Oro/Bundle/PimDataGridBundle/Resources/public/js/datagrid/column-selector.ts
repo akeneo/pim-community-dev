@@ -29,6 +29,8 @@ class ColumnSelector extends BaseView {
   public loadedColumns: {[name: string]: Column};
   public modal: any;
   public debounceSearchTimer: any;
+  public searchInputSelector: string;
+  public attributeGroupSelector: string;
 
   public buttonTemplate: string = `<div class="AknGridToolbar-right"><div class="AknGridToolbar-actionButton">
   <a class="AknActionButton" title="Columns" data-open>Columns</a></div></div>`;
@@ -105,6 +107,8 @@ class ColumnSelector extends BaseView {
 
     this.loadedAttributeGroups = {};
     this.loadedColumns = {};
+    this.searchInputSelector = 'input[type="search"]'
+    this.attributeGroupSelector = '[data-attributes] [data-group]'
     this.config = {...this.config, ...options.config};
   }
 
@@ -144,7 +148,7 @@ class ColumnSelector extends BaseView {
 
   fetchColumns(): PromiseLike<{[name: string]: Column}> {
     const search = this.modal.$el
-      .find('input[type="search"]')
+      .find(this.searchInputSelector)
       .val()
       .trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
@@ -169,14 +173,14 @@ class ColumnSelector extends BaseView {
   }
 
   filterByAttributeGroup(event: JQuery.Event): void {
-    this.modal.$el.find('[data-attributes] [data-group]').removeClass('active');
+    this.modal.$el.find(this.attributeGroupSelector).removeClass('active');
     $(event.currentTarget).addClass('active');
     this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
   }
 
   clearSearch() {
     this.modal.$el
-      .find('input[type="search"]')
+      .find(this.searchInputSelector)
       .val('')
       .trigger('keyup');
   }
@@ -199,7 +203,6 @@ class ColumnSelector extends BaseView {
     }
   }
 
-  // @TODO - Sort by sortOrder
   setColumnsSelectedByDefault(columns: {[name: string]: Column}) {
     const selectedColumns = DatagridState.get('product-grid', 'columns');
     const datagridColumns = selectedColumns.split(',');
@@ -300,8 +303,8 @@ class ColumnSelector extends BaseView {
       modal.on('ok', this.saveColumnsToDatagridState.bind(this));
 
       this.modal = modal;
-      this.modal.$el.on('keyup', 'input[type="search"]', this.debounceSearch.bind(this));
-      this.modal.$el.on('click', '[data-attributes] [data-group]', this.filterByAttributeGroup.bind(this));
+      this.modal.$el.on('keyup', this.searchInputSelector, this.debounceSearch.bind(this));
+      this.modal.$el.on('click', this.attributeGroupSelector, this.filterByAttributeGroup.bind(this));
       this.modal.$el.on('click', '.reset', this.clearAllColumns.bind(this));
 
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
@@ -361,7 +364,6 @@ class ColumnSelector extends BaseView {
     DatagridState.set('product-grid', 'columns', selected);
     this.modal.close();
 
-    // Reload the page
     var url = window.location.hash;
     (<any>Backbone.history).fragment = new Date().getTime();
     Backbone.history.navigate(url, true);
