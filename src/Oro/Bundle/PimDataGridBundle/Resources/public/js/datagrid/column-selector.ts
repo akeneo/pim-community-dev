@@ -24,8 +24,8 @@ interface Column {
 class ColumnSelector extends BaseView {
   public config: any;
   public datagridCollection: Backbone.Collection<any>;
-  public loadedAttributeGroups: AttributeGroup[];
-  public loadedColumns: Column[];
+  public loadedAttributeGroups: {[name: string]: AttributeGroup};
+  public loadedColumns: {[name: string]: Column};
   public modal: any;
   public debounceSearchTimer: any;
 
@@ -102,8 +102,8 @@ class ColumnSelector extends BaseView {
   constructor(options: {config: any}) {
     super({...options});
 
-    this.loadedAttributeGroups = [];
-    this.loadedColumns = [];
+    this.loadedAttributeGroups = {};
+    this.loadedColumns = {};
     this.config = {...this.config, ...options.config};
   }
 
@@ -122,10 +122,10 @@ class ColumnSelector extends BaseView {
   }
 
   // @TODO - Change to correct endpoint after it's implemented
-  fetchAttributeGroups(): PromiseLike<AttributeGroup[]> {
-    if (0 === this.loadedAttributeGroups.length) {
-      return $.get('/rest/attribute-group').then((groups: AttributeGroup[]) => {
-        const loadedAttributeGroups = _.map(groups, (group: AttributeGroup) => {
+  fetchAttributeGroups(): PromiseLike<{[name: string]: AttributeGroup}> {
+    if (_.isEmpty(this.loadedAttributeGroups)) {
+      return $.get('/rest/attribute-group').then((groups: {[name: string]: AttributeGroup}) => {
+        const loadedAttributeGroups = _.mapObject(groups, (group: AttributeGroup) => {
           group.label = group.labels.en_US;
           group.children = group.attributes.length;
 
@@ -143,7 +143,7 @@ class ColumnSelector extends BaseView {
 
   fetchColumns(): PromiseLike<{[name: string]: Column}> {
     console.log('fetchColumns')
-    const search = this.modal.$el .find('input[type="search"]').val().trim();
+    const search = this.modal.$el.find('input[type="search"]').val().trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
     const params = $.param(_.omit({search, group}, _.isEmpty));
@@ -151,18 +151,25 @@ class ColumnSelector extends BaseView {
     return $.get(`${url}?${params}`);
   }
 
-  mergeFetchedColumns() {
+  mergeFetchedColumns(fetchedColumns: {[name: string]: Column}) {
+    console.log('mergeFetchedColumns', this.loadedColumns, fetchedColumns)
+    // fetchedColumns = _.map(fetchedColumns, (column: Column) => {
+    //   column.selected = _.find(this.loadedColumns, { code: column.code }).selected || false
+
+    //   return column
+    // })
+
+
     // Get the new columns
     // Set selected status from the ones already loaded
     // Merge the two arrays keeping the selected status
-    // Re-render both lists and set sortable again ?
+    // Re-render both lists and set sortable again
   }
 
-  filterByAttributeGroup(event: JQuery.Event): PromiseLike<{[name: string]: Column}> {
+  filterByAttributeGroup(event: JQuery.Event): void {
     this.modal.$el.find('[data-attributes] [data-group]').removeClass('active');
     $(event.currentTarget).addClass('active');
-
-    return this.fetchColumns();
+    this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
   }
 
   clearSearch() {
@@ -179,9 +186,11 @@ class ColumnSelector extends BaseView {
     }
 
     if (13 === event.keyCode) {
-      this.fetchColumns();
+      this.fetchColumns().then(this.mergeFetchedColumns.bind(this))
     } else {
-      this.debounceSearchTimer = setTimeout(this.fetchColumns.bind(this), 200);
+      this.debounceSearchTimer = setTimeout(() => {
+        this.fetchColumns().then(this.mergeFetchedColumns.bind(this))
+      }, 200);
     }
   }
 
@@ -190,18 +199,25 @@ class ColumnSelector extends BaseView {
     const selectedColumns = DatagridState.get('product-grid', 'columns');
     const datagridColumns = selectedColumns.split(',');
 
-    return _.map(columns, (column: Column) => {
+    console.log('columns before', columns)
+
+    const blah =_.mapObject(columns, (column: Column) => {
       column.selected = datagridColumns.includes(column.code);
       column.removable = true;
 
       return column;
     });
+
+    console.log('columns after', blah)
+    return blah;
   }
 
   renderColumns(): void {
-    const columns = this.loadedColumns;
-    const unSelectedColumns = _.where(columns, {selected: false});
-    const selectedColumns = _.where(columns, {selected: true});
+    const unSelectedColumns = this.getColumnsBySelectedStatus(false)
+    const selectedColumns = this.getColumnsBySelectedStatus()
+
+    console.log('unSelectedColumns', unSelectedColumns)
+    console.log('selectedColumns', selectedColumns)
 
     this.modal.$el
       .find('[data-columns]')
@@ -218,7 +234,7 @@ class ColumnSelector extends BaseView {
   }
 
   setColumnStatus(code: string, selected = true): void {
-    this.loadedColumns = _.map(this.loadedColumns, (column: Column) => {
+    this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       if (column.code === code) {
         column.selected = selected;
       }
@@ -238,7 +254,7 @@ class ColumnSelector extends BaseView {
   }
 
   setValidation(): void {
-    const selectedColumns = _.where(this.loadedColumns, {selected: true});
+    const selectedColumns = this.getColumnsBySelectedStatus()
     const showValidationError = selectedColumns.length === 0;
     const error = this.modal.$el.find('#column-selection .alert-error');
 
@@ -250,7 +266,7 @@ class ColumnSelector extends BaseView {
   }
 
   clearAllColumns(): void {
-    this.loadedColumns = _.map(this.loadedColumns, (column: Column) => {
+    this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       column.selected = false;
 
       return column;
@@ -289,6 +305,7 @@ class ColumnSelector extends BaseView {
 
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
         this.loadedColumns = this.setColumnsSelectedByDefault(columns);
+        console.log('set loaded columns first time', this.loadedColumns)
         this.renderColumns();
         this.setSortable();
       });
@@ -315,8 +332,13 @@ class ColumnSelector extends BaseView {
       .disableSelection();
   }
 
+  getColumnsBySelectedStatus(selected = true) {
+    return _.pick(this.loadedColumns, (column: Column) => column.selected === selected)
+  }
+
   saveColumnsToDatagridState(): void {
-    const selected: string = _.map(_.where(this.loadedColumns, {selected: true}), 'code').join();
+    const selectedColumns = this.getColumnsBySelectedStatus()
+    const selected: string = _.map(selectedColumns, 'code').join();
 
     if (!selected.length) {
       return;
