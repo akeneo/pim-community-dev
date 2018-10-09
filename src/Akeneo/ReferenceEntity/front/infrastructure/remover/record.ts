@@ -26,7 +26,7 @@ export class RecordRemoverImplementation implements RecordRemover<ReferenceEntit
 
   async removeAll(referenceEntityIdentifier: ReferenceEntityIdentifier): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate('akeneo_reference_entities_records_delete_all_rest', {
+      routing.generate('akeneo_reference_entities_record_delete_all_rest', {
         referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
       })
     ).catch(errorHandler);

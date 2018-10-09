@@ -38,7 +38,11 @@ class EventDispatcherMock implements EventDispatcherInterface
 
     public function assertNoEventDispatched(): void
     {
-        Assert::assertCount(0, $this->dispatchedEvents, 'Expected to have no dispatched event, but some were found.');
+        Assert::assertCount(
+            0,
+            $this->dispatchedEvents,
+            sprintf('Expected to have no dispatched event, but some were found: %s', implode(', ', array_keys($this->dispatchedEvents)))
+        );
     }
 
     public function reset(): void

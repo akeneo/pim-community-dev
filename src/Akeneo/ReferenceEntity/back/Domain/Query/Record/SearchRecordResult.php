@@ -27,11 +27,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class SearchRecordResult
 {
-    private const RECORDS = 'records';
+    private const ITEMS = 'items';
     private const TOTAL = 'total';
 
     /** @var RecordItem[] */
-    public $records;
+    public $items;
 
     /** @var int */
     public $total;
@@ -39,9 +39,9 @@ class SearchRecordResult
     public function normalize(): array
     {
         return [
-            self::RECORDS => array_map(function (RecordItem $recordItem) {
+            self::ITEMS => array_map(function (RecordItem $recordItem) {
                 return $recordItem->normalize();
-            }, $this->records),
+            }, $this->items),
             self::TOTAL   => $this->total,
         ];
     }

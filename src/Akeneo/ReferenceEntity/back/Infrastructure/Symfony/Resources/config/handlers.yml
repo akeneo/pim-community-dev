@@ -56,3 +56,9 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\DeleteAllRecords\DeleteAllReferenceEntityRecordsHandler
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.application.record.search_record:
+        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers'

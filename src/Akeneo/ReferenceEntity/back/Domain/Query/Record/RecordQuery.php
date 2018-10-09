@@ -48,7 +48,7 @@ class RecordQuery
     private function __construct(ChannelIdentifier $channel, LocaleIdentifier $locale, array $filters, int $page, int $size)
     {
         if (!is_array($filters)) {
-            throw new \InvalidArgument('RecordQuery expect an array as filters');
+            throw new \InvalidArgumentException('RecordQuery expect an array as filters');
         } else {
             foreach ($filters as $filter) {
                 if (!(
@@ -57,7 +57,7 @@ class RecordQuery
                     key_exists('value', $filter) &&
                     key_exists('context', $filter)
                 )) {
-                    throw new \InvalidArgument('RecordQuery expect an array of filters with a field, value, operator and context');
+                    throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
                 }
             }
         }
@@ -71,7 +71,16 @@ class RecordQuery
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
     {
-        var_dump($normalizedQuery);
+        if (!(
+            key_exists('channel', $normalizedQuery) &&
+            key_exists('locale', $normalizedQuery) &&
+            key_exists('filters', $normalizedQuery) &&
+            key_exists('page', $normalizedQuery) &&
+            key_exists('size', $normalizedQuery)
+        )) {
+            throw new \InvalidArgumentException('RecordQuery expect a channel, a locale, filters, a page and a size');
+        }
+
         return new RecordQuery(
             ChannelIdentifier::fromCode($normalizedQuery['channel']),
             LocaleIdentifier::fromCode($normalizedQuery['locale']),
@@ -88,7 +97,7 @@ class RecordQuery
         }));
 
         if (false === $filter) {
-            throw new \InvalidArgumentException(sprintf('The query need to contains a filter on the %s field', $field));
+            throw new \InvalidArgumentException(sprintf('The query needs to contains a filter on the "%s" field', $field));
         }
 
         return $filter;

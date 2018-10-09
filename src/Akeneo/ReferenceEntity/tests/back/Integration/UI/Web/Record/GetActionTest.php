@@ -42,7 +42,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const RECORD_DETAIL_ROUTE = 'akeneo_reference_entities_records_get_rest';
+    private const RECORD_DETAIL_ROUTE = 'akeneo_reference_entities_record_get_rest';
 
     /** @var Client */
     private $client;

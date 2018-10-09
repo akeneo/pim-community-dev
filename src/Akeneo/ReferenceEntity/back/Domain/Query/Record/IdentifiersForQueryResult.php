@@ -19,7 +19,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class FindIdentifiersForQueryResult
+class IdentifiersForQueryResult
 {
     private const IDENTIFIERS = 'identifiers';
     private const TOTAL = 'total';

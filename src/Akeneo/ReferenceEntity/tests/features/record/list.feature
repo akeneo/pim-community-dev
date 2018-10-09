@@ -3,6 +3,24 @@ Feature: Lists all records of an reference entity
   As a user
   I want to list all of its records
 
+  @acceptance-back
+  Scenario: Search records of an enriched entity
+    Given the records "starck,dyson,coco"
+    When the user search for "s"
+    Then the search result should be "starck,dyson"
+
+  @acceptance-back
+  Scenario: Search records of an enriched entity
+    Given the records "starck,dyson,coco"
+    When the user list the records
+    Then the search result should be "starck,dyson,coco"
+
+  @acceptance-back
+  Scenario: Search records of an enriched entity
+    Given the records "starck,dyson,coco"
+    When the user search for "search"
+    Then the search result should be ""
+
   @acceptance-front
   Scenario: List all records of an reference entity
     Given the following reference entity:

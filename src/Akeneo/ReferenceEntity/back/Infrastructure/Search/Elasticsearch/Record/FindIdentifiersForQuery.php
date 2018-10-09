@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryResult;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
- * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
@@ -40,7 +40,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(RecordQuery $recordQuery): FindIdentifiersForQueryResult
+    public function __invoke(RecordQuery $recordQuery): IdentifiersForQueryResult
     {
         $elasticSearchQuery = $this->getElasticSearchQuery($recordQuery);
         $matches = $this->recordClient->search(self::INDEX_TYPE, $elasticSearchQuery);
@@ -48,14 +48,15 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             return $hit['_id'];
         }, $matches['hits']['hits']);
 
-        $queryResult = new FindIdentifiersForQueryResult();
+        $queryResult = new IdentifiersForQueryResult();
         $queryResult->identifiers = $identifiers;
         $queryResult->total = $matches['hits']['total'];
 
         return $queryResult;
     }
 
-    private function getElasticSearchQuery(RecordQuery $recordQuery) {
+    private function getElasticSearchQuery(RecordQuery $recordQuery)
+    {
         $searchFilter = $recordQuery->getFilter('search');
         $referenceEntityCode = $recordQuery->getFilter('reference_entity');
 
@@ -86,7 +87,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                 $query['query']['constant_score']['filter']['bool']['filter'][] = [
                         'query_string' => [
                             'default_field' => sprintf('record_list_search.%s.%s', $recordQuery->getChannel(), $recordQuery->getLocale()),
-                            'query'         => sprintf('*%s*', $term),
+                            'query'         => sprintf('*%s*', strtolower($term)),
                         ],
                     ];
             }

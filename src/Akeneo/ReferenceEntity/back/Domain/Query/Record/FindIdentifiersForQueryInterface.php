@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 /**
- * Search on records for the given query. This query function returns only identifiers
+ * Search on records for the given search query. This query function returns only record identifiers.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 interface FindIdentifiersForQueryInterface
 {
-    public function __invoke(RecordQuery $query): FindIdentifiersForQueryResult;
+    public function __invoke(RecordQuery $query): IdentifiersForQueryResult;
 }

@@ -45,6 +45,15 @@ services:
         tags:
             - { name: fob.context_service }
 
+    akeneo_referenceentity.tests.back.acceptance.context.list_record_context:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\ListRecordContext
+        arguments:
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query'
+            - '@__symfony__.akeneo_referenceentity.application.record.search_record'
+        tags:
+            - { name: fob.context_service }
+
     akeneo_referenceentity.tests.back.acceptance.context.create_attribute_context:
         class: Akeneo\ReferenceEntity\Acceptance\Context\CreateAttributeContext
         arguments:

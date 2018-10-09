@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 /**
- * Search on records for the given query. This query function returns only identifiers
+ * Search on records for the given query. This query function returns RecordItems
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindRecordsForIdentifiersInterface
+interface FindRecordItemsForIdentifiersInterface
 {
     /**
      * @return RecordItem[]

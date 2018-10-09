@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "DELETE",
-    "route": "akeneo_reference_entities_records_delete_all_rest",
+    "route": "akeneo_reference_entities_record_delete_all_rest",
     "query": {
       "referenceEntityIdentifier": "not_found"
     }

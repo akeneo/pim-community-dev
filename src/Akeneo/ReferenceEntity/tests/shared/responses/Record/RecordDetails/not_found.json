@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_records_get_rest",
+    "route": "akeneo_reference_entities_record_get_rest",
     "query": {
       "referenceEntityIdentifier": "designer",
       "recordCode": "wrong_record_code"

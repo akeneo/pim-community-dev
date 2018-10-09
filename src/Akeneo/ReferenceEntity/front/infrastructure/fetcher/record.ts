@@ -17,7 +17,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
 
   async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<Record> {
     const backendRecord = await getJSON(
-      routing.generate('akeneo_reference_entities_records_get_rest', {
+      routing.generate('akeneo_reference_entities_record_get_rest', {
         referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
         recordCode: recordCode.stringValue(),
       })

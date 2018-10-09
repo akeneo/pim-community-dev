@@ -22,9 +22,6 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForReferenceEntity
-
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:
@@ -68,6 +65,14 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesIndexedByIdentifier
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiers
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersForQuery
 
     # Third party services
     oro_security.security_facade:

@@ -15,19 +15,19 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordsForIdentifiersInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordsForIdentifiers implements FindRecordsForIdentifiersInterface
+class SqlFindRecordItemsForIdentifiers implements FindRecordItemsForIdentifiersInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -92,25 +92,12 @@ SQL;
             ->convertToPHPValue($referenceEntityIdentifier, $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
 
-        $recordImage = Image::createEmpty();
-
-        if (null !== $image) {
-            $imageKey = Type::getType(Type::STRING)
-                ->convertToPHPValue($image['file_key'], $platform);
-            $imageFilename = Type::getType(Type::STRING)
-                ->convertToPHPValue($image['original_filename'], $platform);
-            $file = new FileInfo();
-            $file->setKey($imageKey);
-            $file->setOriginalFilename($imageFilename);
-            $recordImage = Image::fromFileInfo($file);
-        }
-
         $recordItem = new RecordItem();
         $recordItem->identifier = $identifier;
         $recordItem->referenceEntityIdentifier = $referenceEntityIdentifier;
         $recordItem->code = $code;
         $recordItem->labels = $labels;
-        $recordItem->image = $recordImage;
+        $recordItem->image = $image;
         $recordItem->values = $values;
 
         return $recordItem;

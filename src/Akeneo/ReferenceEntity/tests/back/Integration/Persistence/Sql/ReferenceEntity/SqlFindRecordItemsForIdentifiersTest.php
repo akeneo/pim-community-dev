@@ -21,14 +21,14 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
-class SqlFindReferenceEntityItemsTest extends SqlIntegrationTestCase
+class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindReferenceEntityItemsInterface */
-    private $findReferenceEntityItems;
+    /** @var FindRecordItemsForIdentifiersInterface */
+    private $findRecordItemsForIdentifiers;
 
     /** @var RecordIdentifier */
     private $starckIdentifier;
@@ -40,7 +40,7 @@ class SqlFindReferenceEntityItemsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findReferenceEntityItems = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity');
+        $this->findRecordItemsForIdentifiers = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers');
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
     }
@@ -48,29 +48,33 @@ class SqlFindReferenceEntityItemsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_when_there_is_no_records_corresponding_to_the_identifier()
+    public function it_returns_empty_collection_if_there_is_no_matching_identifiers()
     {
-        $this->assertEmpty(($this->findReferenceEntityItems)(ReferenceEntityIdentifier::fromString('unknown_reference_entity')));
+        $this->assertEmpty(($this->findRecordItemsForIdentifiers)(['michel_sardou', 'bob_ross']));
     }
 
     /**
      * @test
      */
-    public function it_returns_all_the_records_for_a_reference_entity()
+    public function it_returns_record_items_for_matching_identifiers()
     {
-        $recordItems = ($this->findReferenceEntityItems)(ReferenceEntityIdentifier::fromString('designer'));
+        $recordItems = ($this->findRecordItemsForIdentifiers)([(string) $this->starckIdentifier, (string) $this->cocoIdentifier]);
 
         $starck = new RecordItem();
-        $starck->identifier = $this->starckIdentifier;
-        $starck->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $starck->code = RecordCode::fromString('starck');
-        $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
+        $starck->identifier = (string) $this->starckIdentifier;
+        $starck->referenceEntityIdentifier = 'designer';
+        $starck->code = 'starck';
+        $starck->labels = ['fr_FR' => 'Philippe Starck'];
+        $starck->values = [];
+        $starck->image = null;
 
         $coco = new RecordItem();
-        $coco->identifier = $this->cocoIdentifier;
-        $coco->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $coco->code = RecordCode::fromString('coco');
-        $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
+        $coco->identifier = (string) $this->cocoIdentifier;
+        $coco->referenceEntityIdentifier = 'designer';
+        $coco->code = 'coco';
+        $coco->labels = ['fr_FR' => 'Coco Chanel'];
+        $coco->values = [];
+        $coco->image = null;
 
         sort($recordItems);
         $this->assertRecordItem($coco, $recordItems[0]);
@@ -125,20 +129,30 @@ class SqlFindReferenceEntityItemsTest extends SqlIntegrationTestCase
 
     private function assertRecordItem(RecordItem $expected, RecordItem $actual): void
     {
-        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Record identifiers are not equal');
+        $this->assertEquals($expected->identifier, $actual->identifier, 'Record identifiers are not equal');
         $this->assertEquals(
             $expected->referenceEntityIdentifier,
             $actual->referenceEntityIdentifier,
             'Reference entity identifier are not the same'
         );
-        $expectedLabels = $expected->labels->normalize();
-        $actualLabels = $actual->labels->normalize();
+        $expectedLabels = $expected->labels;
+        $actualLabels = $actual->labels;
         $this->assertEmpty(
             array_merge(
                 array_diff($expectedLabels, $actualLabels),
                 array_diff($actualLabels, $expectedLabels)
             ),
             'Labels for the record item are not the same'
+        );
+        $this->assertEquals(
+            $expected->values,
+            $actual->values,
+            'Values are not the same'
+        );
+        $this->assertEquals(
+            $expected->image,
+            $actual->image,
+            'Image are not the same'
         );
     }
 }

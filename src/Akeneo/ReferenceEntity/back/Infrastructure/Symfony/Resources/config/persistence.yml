@@ -36,8 +36,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_records_for_identifiers:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordsForIdentifiers
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiers
         arguments:
             - '@database_connection'
 
@@ -157,9 +157,3 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\ElasticSearch\Record\FindIdentifiersForQuery
         arguments:
             - '@akeneo_referenceentity.client.record'
-
-    akeneo_referenceentity.application.record.search_record:
-        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_records_for_identifiers'
