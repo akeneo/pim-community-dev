@@ -150,6 +150,6 @@ services:
 
     # Search
     akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SqlFindActivatedLocalesPerChannels
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindActivatedLocalesPerChannels
         arguments:
             - '@database_connection'

@@ -1,14 +1,14 @@
 services:
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordIndexer
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer
         arguments:
             - '@akeneo_referenceentity.client.record'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
 
     # Subscribers
     akeneo_referenceentity.infrastructure.search.elasticsearch.index_record_subscriber:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\IndexRecordSubscriber
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\IndexRecordSubscriber
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
@@ -17,11 +17,11 @@ services:
 
     # Normalizers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordNormalizer
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_search_matrix_normalizer'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_search_matrix_normalizer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordSearchMatrixNormalizer
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordSearchMatrixNormalizer
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels'
