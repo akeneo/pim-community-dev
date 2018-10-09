@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\DependencyInjection\Reference;
+namespace Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Reference;
 
 use Symfony\Component\DependencyInjection\Reference;
 
