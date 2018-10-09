@@ -24,6 +24,8 @@ interface Column {
   displayed: boolean;
 }
 
+// @TODO - Load columns with dataLocale
+// @TODO - Add system columns attribute group
 class ColumnSelector extends BaseView {
   public config: any;
   public datagridCollection: Backbone.Collection<any>;
@@ -37,13 +39,11 @@ class ColumnSelector extends BaseView {
   public page: number = 1;
 
   public buttonTemplate: string = `<div class="AknGridToolbar-right"><div class="AknGridToolbar-actionButton">
-  <a class="AknActionButton" title="Columns" data-open>Columns</a></div></div>`;
+  <a class="AknActionButton" title="Columns" data-open><%- label %></a></div></div>`;
 
   public modalTemplate: string = `<div class="AknFullPage-upperTitle">
-    <div class="AknFullPage-title"> Configure columns </div>
-    <div class="AknFullPage-description">
-        Select the information you want to display as column
-    </div>
+    <div class="AknFullPage-title"><%- title %></div>
+    <div class="AknFullPage-description"><%- description %></div>
   </div>
   <div id="column-configurator"><div class="AknColumnConfigurator">
     <div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
@@ -126,7 +126,7 @@ class ColumnSelector extends BaseView {
   }
 
   render(): BaseView {
-    this.$el.html(_.template(this.buttonTemplate));
+    this.$el.html(_.template(this.buttonTemplate)({ label: __('pim_datagrid.column_configurator.label')}));
 
     return this;
   }
@@ -354,7 +354,11 @@ class ColumnSelector extends BaseView {
         okCloses: false,
         cancelText: __('pim_common.cancel'),
         title: __('pim_datagrid.column_configurator.title'),
-        content: _.template(this.modalTemplate)({groups}),
+        content: _.template(this.modalTemplate)({
+          groups,
+          title: __('pim_datagrid.column_configurator.title'),
+          description: __('pim_datagrid.column_configurator.description')
+        }),
         okText: __('pim_common.apply'),
       });
 
