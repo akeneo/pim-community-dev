@@ -18,10 +18,6 @@ grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
 
-api_connection:
-    resource: '@PimEnrichBundle/Resources/config/routing/api_connection.yml'
-    prefix: /client
-
 measures:
     resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
     prefix: /configuration/measures

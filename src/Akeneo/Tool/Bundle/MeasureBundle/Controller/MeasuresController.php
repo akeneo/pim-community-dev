@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 

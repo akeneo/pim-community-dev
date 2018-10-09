@@ -21,3 +21,10 @@ services:
         class: '%pim_user.controller.user_group_rest.class%'
         arguments:
             - '@pim_user.repository.group'
+
+    pim_enrich.controller.rest.api_client:
+        class: 'Akeneo\UserManagement\Bundle\Controller\ApiClientController'
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+            - '@validator'
+            - '@pim_internal_api_serializer'

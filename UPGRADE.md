@@ -5,7 +5,8 @@
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
-
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\MeasuresController/Akeneo\\Tool\\Bundle\\MeasureBundle\\Controller\\MeasuresController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\ApiClientController/Akeneo\\UserManagement\\Bundle\\Controller\\ApiClientController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Item\\MassEdit\\TemporaryFileCleaner/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Item\\MassEdit\\TemporaryFileCleaner/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Step\\MassEditStep/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Step\\MassEditStep/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Connector\\Job\\JobParameters\\ConstraintCollectionProvider\\ProductAndProductModelQuickExport/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Job\\JobParameters\\ConstraintCollectionProvider\\ProductAndProductModelQuickExport/g'
