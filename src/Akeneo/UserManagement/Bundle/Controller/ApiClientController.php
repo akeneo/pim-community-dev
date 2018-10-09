@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\UserManagement\Bundle\Controller;
 
 use FOS\OAuthServerBundle\Entity\ClientManager;
 use OAuth2\OAuth2;

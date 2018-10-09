@@ -3,7 +3,6 @@ parameters:
     pim_enrich.controller.product_model.class:
     pim_enrich.controller.file.class:                         Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
-    pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
 
 services:
 
@@ -13,9 +12,3 @@ services:
         arguments:
             - '%akeneo_measure.measures_config%'
 
-    pim_enrich.controller.rest.api_client:
-        class: '%pim_enrich.controller.rest.api_client.class%'
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-            - '@validator'
-            - '@pim_internal_api_serializer'
