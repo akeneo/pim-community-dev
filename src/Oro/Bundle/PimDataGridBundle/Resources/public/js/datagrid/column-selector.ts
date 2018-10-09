@@ -166,7 +166,6 @@ class ColumnSelector extends BaseView {
 
     this.loadedColumns = Object.assign(this.loadedColumns, mergedColumns);
     this.renderColumns();
-    this.setSortable();
   }
 
   filterByAttributeGroup(event: JQuery.Event): void {
@@ -232,6 +231,7 @@ class ColumnSelector extends BaseView {
       .append(_.template(this.selectedTemplate)({columns: sortedColumns}));
 
     this.modal.$el.on('click', '#column-selection .action', this.unselectColumn.bind(this));
+    this.setSortable();
     this.setValidation();
   }
 
@@ -257,7 +257,7 @@ class ColumnSelector extends BaseView {
 
   setValidation(): void {
     const selectedColumns = this.getColumnsBySelected();
-    const showValidationError = selectedColumns.length === 0;
+    const showValidationError = _.isEmpty(selectedColumns);
     const error = this.modal.$el.find('#column-selection .alert-error');
 
     if (showValidationError) {
@@ -275,7 +275,6 @@ class ColumnSelector extends BaseView {
     });
 
     this.renderColumns();
-    this.setSortable();
   }
 
   openModal(): void {
@@ -308,7 +307,6 @@ class ColumnSelector extends BaseView {
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
         this.loadedColumns = this.setColumnsSelectedByDefault(columns);
         this.renderColumns();
-        this.setSortable();
       });
     });
   }
@@ -336,7 +334,7 @@ class ColumnSelector extends BaseView {
     this.storeColumnSortOrder();
   }
 
-  storeColumnSortOrder() {
+  storeColumnSortOrder(): void {
     this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       const sortOrder = this.modal.$el.find(`#column-selection [data-value="${column.code}"]`).index();
 
@@ -348,13 +346,13 @@ class ColumnSelector extends BaseView {
     });
   }
 
-  getColumnsBySelected(selected = true) {
+  getColumnsBySelected(selected = true): {[name: string]: Column} {
     return _.pick(this.loadedColumns, (column: Column) => column.selected === selected);
   }
 
   saveColumnsToDatagridState(): void {
     const selectedColumns = this.getColumnsBySelected();
-    const selected: string = _.map(selectedColumns, 'code').join();
+    const selected = Object.values(_.mapObject(selectedColumns, 'code')).join().trim();
 
     if (!selected.length) {
       return;
