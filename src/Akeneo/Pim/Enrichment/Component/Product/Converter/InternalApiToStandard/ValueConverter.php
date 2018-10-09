@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Converter\EnrichToStandard;
+namespace Akeneo\Pim\Enrichment\Component\Product\Converter\InternalApiToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;

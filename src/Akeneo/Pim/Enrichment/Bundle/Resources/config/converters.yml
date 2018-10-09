@@ -9,13 +9,13 @@ services:
             - '@pim_catalog.builder.entity_with_values'
 
     pim_enrich.converter.standard_to_enrich.product_value:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToEnrich\ValueConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToInternalApi\ValueConverter'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo_file_storage.repository.file_info'
 
     pim_enrich.converter.enrich_to_standard.product_value:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\EnrichToStandard\ValueConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\InternalApiToStandard\ValueConverter'
         arguments:
             - '@pim_catalog.repository.attribute'
 

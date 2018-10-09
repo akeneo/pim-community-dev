@@ -377,7 +377,7 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
                 new \InvalidArgumentException(
                     sprintf(
                         'In order to execute "%s" you need to set a step execution.',
-                        \Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet::class
+                        DeleteProductsAndProductModelsTasklet::class
                     )
                 )
             )
