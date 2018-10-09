@@ -65,7 +65,7 @@ class RecordSearchMatrixNormalizer
         $values = $this->getValuesToIndex($record, $channel, $locale);
         /** @var Value $value */
         foreach ($values as $value) {
-            $textValue = ' ' . $value->getData()->normalize();
+            $textValue .= ' ' . $value->getData()->normalize();
         }
 
         return $textValue;

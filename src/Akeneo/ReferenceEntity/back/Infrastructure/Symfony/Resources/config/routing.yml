@@ -35,7 +35,7 @@ akeneo_reference_entities_reference_entity_delete_rest:
 akeneo_reference_entities_record_index_rest:
     path: '/rest/reference_entity/{referenceEntityIdentifier}/record'
     defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.index }
-    methods: [GET]
+    methods: [PUT] # We need this to pass the filters in the body of the request
 
 akeneo_reference_entities_record_create_rest:
     path: '/rest/reference_entity/{referenceEntityIdentifier}/record'

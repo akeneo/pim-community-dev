@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntity
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Records index action
@@ -39,16 +40,15 @@ class IndexAction
     /**
      * Get all records belonging to an reference entity.
      */
-    public function __invoke(string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
+        $userQuery = json_decode($request->getContent(), true);
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $recordItems = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier);
-        $normalizedRecordItems = $this->normalizeReferenceEntityItems($recordItems);
+        $recodResult = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier, $userQuery);
 
-        return new JsonResponse([
-            'items' => $normalizedRecordItems,
-            'total' => count($normalizedRecordItems),
-        ]);
+        $normalizedRecordResult = $this->normalizeRecodResult($recodResult);
+
+        return new JsonResponse($normalizedRecordResult);
     }
 
     /**
@@ -68,10 +68,12 @@ class IndexAction
      *
      * @return array
      */
-    private function normalizeReferenceEntityItems(array $recordItems): array
+    private function normalizeRecodResult(array $recordResult): array
     {
-        return array_map(function (RecordItem $recordItem) {
+        $recordResult['items'] = array_map(function (RecordItem $recordItem) {
             return $recordItem->normalize();
-        }, $recordItems);
+        }, $recordResult['items']);
+
+        return $recordResult;
     }
 }
