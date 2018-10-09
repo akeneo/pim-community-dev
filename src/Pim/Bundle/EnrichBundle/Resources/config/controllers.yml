@@ -2,13 +2,3 @@ parameters:
     pim_enrich.controller.category_tree.class:                Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
     pim_enrich.controller.product_model.class:
     pim_enrich.controller.file.class:                         Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController
-    pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
-
-services:
-
-
-    pim_enrich.controller.rest.measures:
-        class: '%pim_enrich.controller.rest.measures.class%'
-        arguments:
-            - '%akeneo_measure.measures_config%'
-

@@ -1,4 +1,4 @@
 pim_enrich_measures_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.measures:indexAction }
+    defaults: { _controller: akeneo_measure.controller.rest.measures:indexAction }
     methods: [GET]
