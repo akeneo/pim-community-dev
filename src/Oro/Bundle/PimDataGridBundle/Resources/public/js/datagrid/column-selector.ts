@@ -16,15 +16,18 @@ interface AttributeGroup {
 }
 
 interface Column {
+  name: string;
   code: string;
   selected: boolean;
   removable: boolean;
   sortOrder: number;
+  displayed: boolean;
 }
 
 class ColumnSelector extends BaseView {
   public config: any;
   public datagridCollection: Backbone.Collection<any>;
+  public datagridElement: any;
   public loadedAttributeGroups: {[name: string]: AttributeGroup};
   public loadedColumns: {[name: string]: Column};
   public modal: any;
@@ -108,14 +111,15 @@ class ColumnSelector extends BaseView {
 
     this.loadedAttributeGroups = {};
     this.loadedColumns = {};
-    this.searchInputSelector = 'input[type="search"]'
-    this.attributeGroupSelector = '[data-attributes] [data-group]'
+    this.searchInputSelector = 'input[type="search"]';
+    this.attributeGroupSelector = '[data-attributes] [data-group]';
     this.config = {...this.config, ...options.config};
   }
 
   configure() {
-    mediator.once('grid_load:start', (datagridCollection: Backbone.Collection<any>) => {
+    mediator.once('datagrid_collection_set_after', (datagridCollection: any, datagridElement: any) => {
       this.datagridCollection = datagridCollection;
+      this.datagridElement = datagridElement;
     });
 
     return BaseView.prototype.configure.apply(this, arguments);
@@ -147,37 +151,51 @@ class ColumnSelector extends BaseView {
     return new Promise(resolve => resolve(this.loadedAttributeGroups));
   }
 
-  fetchColumns(): PromiseLike<{[name: string]: Column}> {
+  fetchColumns(reset?: boolean): PromiseLike<{[name: string]: Column}> {
     const search = this.modal.$el
       .find(this.searchInputSelector)
       .val()
       .trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
-    const page = this.page || 1;
-    const params = $.param(_.omit({search, group, page}, (param: any) => !param));
+
+    if (true === reset) {
+      this.page = 1;
+    }
+
+    const params = $.param(_.omit({search, attribute_group: group, page: this.page}, (param: any) => !param));
 
     return $.get(`${url}?${params}`);
   }
 
-  mergeFetchedColumns(fetchedColumns: {[name: string]: Column}) {
-    const mergedColumns = _.mapObject(fetchedColumns, (column: Column) => {
-      const storedColumn = this.loadedColumns[column.code];
-      column.selected = storedColumn.selected || false;
+  normalizeColumn(column: Column) {
+    const storedColumn = this.loadedColumns[column.code];
+    column.selected = false;
+
+    if (storedColumn) {
+      column.selected = storedColumn.selected;
       column.sortOrder = storedColumn.sortOrder;
-      column.removable = true;
+    }
 
-      return column;
+    column.removable = true;
+
+    return column;
+  }
+
+  fetchColumnsWithSelected() {
+    this.fetchColumns(true).then(columns => {
+      this.loadedColumns = Object.assign(
+        _.mapObject(columns, this.normalizeColumn.bind(this)),
+        this.getColumnsBySelected()
+      );
+      this.renderColumns();
     });
-
-    this.loadedColumns = Object.assign(this.loadedColumns, mergedColumns);
-    this.renderColumns();
   }
 
   filterByAttributeGroup(event: JQuery.Event): void {
     this.modal.$el.find(this.attributeGroupSelector).removeClass('active');
     $(event.currentTarget).addClass('active');
-    this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
+    this.fetchColumnsWithSelected();
   }
 
   clearSearch() {
@@ -188,6 +206,8 @@ class ColumnSelector extends BaseView {
   }
 
   debounceSearch(event: JQuery.Event): void {
+    this.stopListeningToListScroll();
+
     if (null !== this.debounceSearchTimer) {
       clearTimeout(this.debounceSearchTimer);
     }
@@ -197,24 +217,24 @@ class ColumnSelector extends BaseView {
     }
 
     if (13 === event.keyCode) {
-      this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
+      this.fetchColumnsWithSelected();
     } else {
-      this.debounceSearchTimer = setTimeout(() => {
-        this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
-      }, 200);
+      this.debounceSearchTimer = setTimeout(this.fetchColumnsWithSelected.bind(this), 300);
     }
   }
 
   setColumnsSelectedByDefault(columns: {[name: string]: Column}) {
-    const selectedColumns = DatagridState.get('product-grid', 'columns');
-    const datagridColumns = selectedColumns.split(',');
+    const metadataColumns = this.datagridElement.data('metadata').columns;
+    const datagridColumns: {[name: string]: Column} = {};
 
-    return _.mapObject(columns, (column: Column) => {
-      column.selected = datagridColumns.includes(column.code);
-      column.removable = true;
-
-      return column;
+    _.each(Object.assign(columns, metadataColumns), (column: Column) => {
+      const columnNames = metadataColumns.map((column: Column) => column.name);
+      const label = column.name || column.code;
+      const data = {selected: columnNames.includes(label), sortOrder: columnNames.indexOf(label), removable: true};
+      datagridColumns[label] = Object.assign(column, data);
     });
+
+    return datagridColumns;
   }
 
   renderColumns(): void {
@@ -242,11 +262,17 @@ class ColumnSelector extends BaseView {
   }
 
   listenToListScroll() {
-    this.modal.$el.find('[data-columns]').off('scroll').on('scroll', this.fetchNextColumns.bind(this))
+    this.modal.$el
+      .find('[data-columns]')
+      .off('scroll')
+      .on('scroll', this.fetchNextColumns.bind(this));
   }
 
   stopListeningToListScroll() {
-    this.modal.$el.find('[data-columns]').off('scroll');
+    this.modal.$el
+      .find('[data-columns]')
+      .off('scroll')
+      .unbind();
   }
 
   fetchNextColumns(event: JQueryMouseEventObject): void {
@@ -263,7 +289,8 @@ class ColumnSelector extends BaseView {
           return this.stopListeningToListScroll();
         }
 
-        this.loadedColumns = this.setColumnsSelectedByDefault(columns);
+        const mergedColumns = _.mapObject(columns, this.normalizeColumn.bind(this));
+        this.loadedColumns = Object.assign(this.loadedColumns, mergedColumns);
         this.renderColumns();
       });
     }
@@ -281,9 +308,7 @@ class ColumnSelector extends BaseView {
 
   unselectColumn(event: JQuery.Event): void {
     const column = $(event.currentTarget).parent();
-    const code = $(event.currentTarget)
-      .parents('[data-value]')
-      .data('value');
+    const code = $(event.currentTarget) .parents('[data-value]') .data('value');
     column.appendTo(this.modal.$el.find('#column-list'));
     this.setColumnStatus(code, false);
     this.setValidation();
@@ -311,7 +336,10 @@ class ColumnSelector extends BaseView {
     this.renderColumns();
   }
 
+  // @TODO - Restore the column position on render
   openModal(): void {
+    this.page = 1;
+
     if (this.modal) {
       this.modal.$el.off();
       this.modal.close();
@@ -334,7 +362,7 @@ class ColumnSelector extends BaseView {
       modal.on('ok', this.saveColumnsToDatagridState.bind(this));
 
       this.modal = modal;
-      this.modal.$el.on('keyup', this.searchInputSelector, this.debounceSearch.bind(this));
+      this.modal.$el.on('keyup search', this.searchInputSelector, this.debounceSearch.bind(this));
       this.modal.$el.on('click', this.attributeGroupSelector, this.filterByAttributeGroup.bind(this));
       this.modal.$el.on('click', '.reset', this.clearAllColumns.bind(this));
 
@@ -359,16 +387,16 @@ class ColumnSelector extends BaseView {
           const senderIsColumn = ui.sender.is('#column-list');
 
           this.setColumnStatus(code, senderIsColumn);
-          this.storeColumnSortOrder();
+          this.setColumnSortOrder();
           this.setValidation();
         },
       })
       .disableSelection();
 
-    this.storeColumnSortOrder();
+    this.setColumnSortOrder();
   }
 
-  storeColumnSortOrder(): void {
+  setColumnSortOrder(): void {
     this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       const sortOrder = this.modal.$el.find(`#column-selection [data-value="${column.code}"]`).index();
 
@@ -385,8 +413,15 @@ class ColumnSelector extends BaseView {
   }
 
   saveColumnsToDatagridState(): void {
-    const selectedColumns = this.getColumnsBySelected();
-    const selected = Object.values(_.mapObject(selectedColumns, 'code')).join().trim();
+    this.setColumnSortOrder();
+
+    const columns = this.getColumnsBySelected();
+    const selected = Object.values(_.mapObject(columns, 'code'))
+      .sort((a, b) => {
+        return columns[a].sortOrder - columns[b].sortOrder;
+      })
+      .join()
+      .trim();
 
     if (!selected.length) {
       return;
