@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
+use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntityInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 
 /**
  * Records index action
@@ -28,13 +30,13 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class IndexAction
 {
-    /** @var FindRecordItemsForReferenceEntityInterface */
-    private $findRecordItemsForReferenceEntityQuery;
+    /** @var SearchRecord */
+    private $searchRecord;
 
     public function __construct(
-        FindRecordItemsForReferenceEntityInterface $findRecordItemsForReferenceEntityQuery
+        SearchRecord $searchRecord
     ) {
-        $this->findRecordItemsForReferenceEntityQuery = $findRecordItemsForReferenceEntityQuery;
+        $this->searchRecord = $searchRecord;
     }
 
     /**
@@ -42,13 +44,13 @@ class IndexAction
      */
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
-        $userQuery = json_decode($request->getContent(), true);
+        $normalizedQuery = json_decode($request->getContent(), true);
+        $query = RecordQuery::createFromNormalized($normalizedQuery);
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $recodResult = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier, $userQuery);
 
-        $normalizedRecordResult = $this->normalizeRecodResult($recodResult);
+        $searchResult = ($this->searchRecord)($query);
 
-        return new JsonResponse($normalizedRecordResult);
+        return new JsonResponse($searchResult->normalize());
     }
 
     /**

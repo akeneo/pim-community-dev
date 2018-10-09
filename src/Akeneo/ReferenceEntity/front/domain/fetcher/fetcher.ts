@@ -7,7 +7,7 @@ interface QueryFilter {
 
 export interface Query {
   locale: string;
-  limit: number;
+  size: number;
   page: number;
   filters: QueryFilter[];
 }

@@ -21,49 +21,29 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordsForIdentifiersInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordItemsForReferenceEntity implements FindRecordsForQueryInterface
+class SqlFindRecordsForIdentifiers implements FindRecordsForIdentifiersInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var Client */
-    private $recordClient;
-
     /**
      * @param Connection $sqlConnection
-     * @param Connection $sqlConnection
      */
-    public function __construct(Connection $sqlConnection, Client $recordClient)
+    public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->recordClient = $recordClient;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(ReferenceEntityIdentifier $identifier, array $userQuery): array
-    {
-        $elasticSearchQuery = $this->getElasticSearchQuery($userQuery);
-        $matches = $this->recordClient->search(RecordIndexer::INDEX_TYPE, $elasticSearchQuery);
-        $identifiers = array_map(function (array $hit) {
-            return $hit['_id'];
-        }, $matches['hits']['hits']);
-
-        $recordItems = $this->fetchRecords($identifiers);
-
-        return ['items' => $recordItems, 'total' => $matches['hits']['total']];
     }
 
     /**
      * @return string[]
      */
-    private function fetchRecords(array $identifiers): array
+    public function __invoke(array $identifiers): array
     {
         $sqlQuery = <<<SQL
         SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, fi.image, ee.value_collection
@@ -94,59 +74,6 @@ SQL;
         }
 
         return $recordItems;
-    }
-
-    private function getElasticSearchQuery(array $userQuery) {
-        $searchFilter = current(array_filter($userQuery['filters'], function ($filter) {
-            return $filter['field'] === 'search';
-        }));
-
-        if (false === $searchFilter) {
-            throw new \InvalidArgumentException('The query need to contains a filter on the search field');
-        }
-
-        $referenceEntityCode = current(array_filter($userQuery['filters'], function ($filter) {
-            return $filter['field'] === 'reference_entity';
-        }));
-
-        if (false === $referenceEntityCode) {
-            throw new \InvalidArgumentException('The query need to contains a filter on the reference_entity field');
-        }
-
-        $query = [
-            '_source' => '_id',
-            'from' => $userQuery['limit'] * $userQuery['page'],
-            'size' => $userQuery['limit'],
-            'sort' => ['identifier' => 'asc'],
-            'query'   => [
-                'constant_score' => [
-                    'filter' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'reference_entity_code' => $referenceEntityCode['value'],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        if (!empty($searchFilter['value'])) {
-            foreach (explode(' ', $searchFilter['value']) as $term) {
-                $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                        'query_string' => [
-                            'default_field' => sprintf('record_list_search.%s.%s', $userQuery['channel'], $userQuery['locale']),
-                            'query'         => sprintf('*%s*', $term),
-                        ],
-                    ];
-            }
-        }
-
-        return $query;
     }
 
     private function hydrateRecordItem(

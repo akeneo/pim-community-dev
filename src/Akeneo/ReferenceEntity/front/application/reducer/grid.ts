@@ -28,25 +28,25 @@ export interface Query {
   readonly columns: Column[];
   readonly filters: NormalizedFilter[];
   readonly page: number;
-  readonly limit: number;
+  readonly size: number;
 }
 
 class ConcreteQuery implements Query {
   readonly columns: Column[];
   readonly filters: NormalizedFilter[];
   readonly page: number;
-  readonly limit: number;
+  readonly size: number;
 
-  public constructor(columns: Column[] = [], filters: NormalizedFilter[] = [], page: number = 0, limit: number = 25) {
+  public constructor(columns: Column[] = [], filters: NormalizedFilter[] = [], page: number = 0, size: number = 25) {
     this.columns = columns;
     this.filters = filters;
     this.page = page;
-    this.limit = limit;
+    this.size = size;
   }
 }
 
 export const createQuery = (rawState: any): Query => {
-  return new ConcreteQuery(rawState.columns, rawState.filters, rawState.page, rawState.limit);
+  return new ConcreteQuery(rawState.columns, rawState.filters, rawState.page, rawState.size);
 };
 
 export interface GridState<Element> {

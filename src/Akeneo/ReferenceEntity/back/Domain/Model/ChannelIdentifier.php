@@ -28,7 +28,7 @@ class ChannelIdentifier
         return $this->identifier === $channelIdentifier->identifier;
     }
 
-    public function normalize(): ?string
+    public function normalize(): string
     {
         return $this->identifier;
     }

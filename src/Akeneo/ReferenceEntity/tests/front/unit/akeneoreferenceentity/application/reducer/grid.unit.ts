@@ -11,7 +11,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 0,
         columns: [],
         filters: [],
-        limit: 25,
+        size: 25,
       },
       items: [],
       total: 0,
@@ -176,7 +176,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     expect(createQuery({})).toEqual({
       columns: [],
       filters: [],
-      limit: 25,
+      size: 25,
       page: 0,
     });
 
@@ -184,13 +184,13 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       createQuery({
         columns: ['my_column'],
         filters: ['my_filter'],
-        limit: 50,
+        size: 50,
         page: 2,
       })
     ).toEqual({
       columns: ['my_column'],
       filters: ['my_filter'],
-      limit: 50,
+      size: 50,
       page: 2,
     });
   });

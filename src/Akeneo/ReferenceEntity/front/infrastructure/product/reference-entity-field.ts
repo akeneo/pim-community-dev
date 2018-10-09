@@ -49,7 +49,7 @@ class ReferenceEntityField extends (Field as {new (config: any): any}) {
       recordFetcher
         .search({
           locale: templateContext.locale,
-          limit: 25,
+          size: 25,
           page: 0,
           filters: [
             {
