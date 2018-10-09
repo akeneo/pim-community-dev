@@ -18,6 +18,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@event_dispatcher'
 
     # Reference entities query functions
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
@@ -146,3 +147,9 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
+
+    # Search
+    akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SqlFindActivatedLocalesPerChannels
+        arguments:
+            - '@database_connection'

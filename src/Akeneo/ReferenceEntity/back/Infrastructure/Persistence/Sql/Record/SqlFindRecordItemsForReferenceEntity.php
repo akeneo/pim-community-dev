@@ -20,7 +20,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntityInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -35,8 +34,7 @@ class SqlFindRecordItemsForReferenceEntity implements FindRecordItemsForReferenc
     private $sqlConnection;
 
     /**
-     * @param Connection                $sqlConnection
-     * @param RecordRepositoryInterface $recordRepository
+     * @param Connection $sqlConnection
      */
     public function __construct(Connection $sqlConnection)
     {

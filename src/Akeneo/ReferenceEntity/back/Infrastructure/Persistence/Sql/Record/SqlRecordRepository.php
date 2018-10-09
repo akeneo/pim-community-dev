@@ -21,10 +21,12 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -44,16 +46,21 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         Connection $sqlConnection,
         RecordHydratorInterface $recordHydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->sqlConnection = $sqlConnection;
         $this->recordHydrator = $recordHydrator;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function count(): int
@@ -69,7 +76,7 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_reference_entity_record 
+        INSERT INTO akeneo_reference_entity_record
             (identifier, code, reference_entity_identifier, labels, image, value_collection)
         VALUES (:identifier, :code, :reference_entity_identifier, :labels, :image, :value_collection);
 SQL;
@@ -92,6 +99,8 @@ SQL;
                 sprintf('Expected to create one record, but %d rows were affected', $affectedRows)
             );
         }
+
+        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
     }
 
     public function update(Record $record): void
@@ -120,6 +129,8 @@ SQL;
                 sprintf('Expected to update one record, but %d rows were affected', $affectedRows)
             );
         }
+
+        $this->eventDispatcher->dispatch(RecordUpdatedEvent::class, new RecordUpdatedEvent($record->getIdentifier()));
     }
 
     public function getByReferenceEntityAndCode(
@@ -181,7 +192,7 @@ SQL;
         ReferenceEntityIdentifier $referenceEntityIdentifier
     ): void {
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_record 
+        DELETE FROM akeneo_reference_entity_record
         WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
@@ -197,7 +208,7 @@ SQL;
         RecordCode $code
     ): void {
         $sql = <<<SQL
-        DELETE FROM akeneo_reference_entity_record 
+        DELETE FROM akeneo_reference_entity_record
         WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -224,6 +235,29 @@ SQL;
         );
     }
 
+    /**
+     * TODO: remove, should use the search feature
+     */
+    public function all()
+    {
+        $fetch = <<<SQL
+        SELECT ee.identifier, ee.code, ee.reference_entity_identifier, ee.labels, ee.value_collection, fi.image
+        FROM akeneo_reference_entity_record AS ee
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image;
+SQL;
+        $statement = $this->sqlConnection->executeQuery($fetch, []);
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        $all = [];
+        foreach ($result as $normalizedRecord) {
+            $all[] = $this->hydrateRecord($normalizedRecord);
+        }
+
+        return $all;
+    }
     private function getSerializedLabels(Record $record): string
     {
         $labels = [];

@@ -51,7 +51,7 @@ class LocaleReference
         if ($localeReference->isEmpty() && $this->isEmpty()) {
             return true;
         }
-        if ($localeReference->isEmpty() || $this->isEmpty()) {
+        if ($localeReference->isEmpty() !== $this->isEmpty()) {
             return false;
         }
 

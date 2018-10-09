@@ -145,4 +145,9 @@ class Record
             'image' => $this->image->normalize(),
         ];
     }
+
+    public function filterValues(\Closure $closure): ValueCollection
+    {
+        return $this->valueCollection->filter($closure);
+    }
 }

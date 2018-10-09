@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -24,6 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use PhpSpec\ObjectBehavior;
 
@@ -38,7 +40,14 @@ class RecordSpec extends ObjectBehavior
             'en_US' => 'Stark',
             'fr_FR' => 'Stark'
         ];
-        $valueCollection = ValueCollection::fromValues([]);
+        $valueCollection = ValueCollection::fromValues([
+            Value::create(
+                AttributeIdentifier::create('designer', 'description', 'fingerprint'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('.one value per channel ecommerce / one value per locale fr_FR.')
+            ),
+        ]);
 
         $this->beConstructedThrough('create', [
             $identifier,
@@ -124,8 +133,23 @@ class RecordSpec extends ObjectBehavior
                  'en_US' => 'Stark',
                  'fr_FR' => 'Stark',
              ],
-             'values' => [],
+             'values' => [
+                 'description_designer_fingerprint_ecommerce_fr_FR' => [
+                     'attribute' => 'description_designer_fingerprint',
+                     'channel'   => 'ecommerce',
+                     'locale'    => 'fr_FR',
+                     'data'      => '.one value per channel ecommerce / one value per locale fr_FR.',
+                 ],
+             ],
              'image' => null,
          ]);
+     }
+
+     function it_filters_values()
+     {
+         $this->filterValues(function(Value $value){ return false;})->normalize()->shouldReturn([]);
+         $this->filterValues(function(Value $value){ return true;})
+             ->findValue(ValueKey::createFromNormalized('description_designer_fingerprint_ecommerce_fr_FR'))
+             ->shouldNotBeNull();
      }
 }

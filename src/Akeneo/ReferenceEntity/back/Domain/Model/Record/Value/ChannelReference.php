@@ -51,7 +51,7 @@ class ChannelReference
         if ($channelReference->isEmpty() && $this->isEmpty()) {
             return true;
         }
-        if ($channelReference->isEmpty() || $this->isEmpty()) {
+        if ($channelReference->isEmpty() !== $this->isEmpty()) {
             return false;
         }
 

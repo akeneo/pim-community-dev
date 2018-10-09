@@ -210,7 +210,7 @@ class Asset implements AssetInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function hasReference(LocaleInterface $locale = null)
+    public function isEmpty(LocaleInterface $locale = null)
     {
         return null !== $this->getReference($locale);
     }

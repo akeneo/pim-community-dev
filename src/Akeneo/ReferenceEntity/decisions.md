@@ -217,3 +217,65 @@ For instance, we will have :
  -  FileUpdater to update a record value from the EditFileValueCommand
  -  TextUpdater to update a record value from the EditTextValueCommand
 
+## 05/10/2018
+
+### Indexing records with events
+
+#### Problem:
+
+When a record is updated:
+ - From where do we send the event ?
+ - what does it contain ?
+ - What does the listener do (normalization or fetch a record or both) ?
+
+#### Proposed solution:
+
+For sure, we didn't wanted to directly index the record from the repository so the SQL repository stays focus on interacting with the database and so it's easier to test.
+
+4 steps process:
+- An event is dispatched from the repository indicating the record needs to be reindexed, from our point of view, it's a technical event: `RecordUpdatedEvent`
+- This event contains only the identifier of the record to be reindexed
+- The listener (`IndexRecordListener`) uses this Id, to fetch the record from the repository and passes it to an indexer `RecordIdexer` as an array
+- The `RecordIndexer` gathers normalizes the Records, and calls the ES client for indexing
+
+##### Indexing completeness
+
+Later on, we can imagine that when calculating the completeness of products, we might be able to reindex only this property in the record's document using a `CompletenessIndexer`.
+
+##### Challenges
+
+When the reindexation of a lot of records is needed (like 1 million), how do we handle such a task ? The use of background jobs seems appropriate yet it raises questions like:
+- How long does it take to reindex such a volume of record ?
+- It it going to block the job queue ?
+
+This case can happen when an attribute text is removed from the enriched entity and this property is used for the search in ES, so it needs to be totally recalculated.
+
+
+## 06/10/2018
+
+### API port and hexagon
+
+#### Problem:
+
+Given we will need to expose the data about the reference entities and records through the API, as well as be able update those data,
+
+how will we handle those usecases regarding:
+- The transformation of json array into commands ?
+- Are those commands the same than the one we already have ?
+- Are they validated differently ? or do they reuse the validators we have ?
+- Are the messages and property path inside those violations the same between the UI (internal api) and the external Api ?
+
+#### Proposed solution:
+
+##### Edit usecases:
+
+- We will have a different controller for each endpoint of the external API.
+- We think the format the UI (internal API) and the external API will be similar, hence **we can reuse the command factories already present in src/Application**.
+- The intention of the user is the same when using the UI and the API, hence **we will reuse those commands to call the handlers**.
+- The constraints on those commands are the same, as well as the messages of the violations and the property paths, hence **we will reuse the validators** (the violations will be normalized differently in the external API, but that's not a problem since it will be done in a different controller).
+- The API will check the format of request bodies to give a nice feedback to the user using jsonSchema, this check will be performed in the controllers. (in the UI port, 500 error occurs when the request body does not permit to create a command with it).
+
+##### Read usecases:
+
+- We will use a different read model for each read usecases like `Read a record details` as those models may differ a lot between the UI and the external API.
+- There will be different query functions used to generate those read models.

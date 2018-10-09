@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  */
-class ValueCollection
+class ValueCollection implements \IteratorAggregate
 {
     /** @var array */
     private $values;
@@ -64,5 +64,18 @@ class ValueCollection
         }
 
         return new self($indexedValues);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->values);
+    }
+
+    public function filter(\Closure $closure): self
+    {
+        return new self(array_filter($this->values, $closure));
     }
 }

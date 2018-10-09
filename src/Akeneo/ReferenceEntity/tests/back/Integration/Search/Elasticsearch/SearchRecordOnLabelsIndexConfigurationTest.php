@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch;
 
-use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchIndexHelper;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 

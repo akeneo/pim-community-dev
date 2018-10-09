@@ -22,6 +22,7 @@ $rules = [
         'Akeneo\ReferenceEntity\Application',
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
+        'Akeneo\Tool\Bundle\ElasticsearchBundle',
         'Akeneo\Pim\ReferenceEntity\Component',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
