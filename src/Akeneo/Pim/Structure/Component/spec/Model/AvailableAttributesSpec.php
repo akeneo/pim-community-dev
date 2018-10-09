@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Enrich\Model;
+namespace spec\Akeneo\Pim\Structure\Component\Model;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use PhpSpec\ObjectBehavior;
 
 class AvailableAttributesSpec extends ObjectBehavior
 {

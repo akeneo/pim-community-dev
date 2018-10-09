@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Enrich\Converter\StandardToEnrich;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToInternalApi;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 class ValueConverterSpec extends ObjectBehavior
 {

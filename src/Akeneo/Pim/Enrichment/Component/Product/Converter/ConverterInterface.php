@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Enrich\Converter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 /**
  * The standard format is not exactly formatted the same way as the format expected by the frontend.

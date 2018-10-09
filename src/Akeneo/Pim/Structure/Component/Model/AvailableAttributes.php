@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Enrich\Model;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 /**
  * Available attributes model

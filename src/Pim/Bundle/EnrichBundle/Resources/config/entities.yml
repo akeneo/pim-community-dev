@@ -1,2 +1,0 @@
-parameters:
-    pim_enrich.entity.available_attributes.class: Pim\Component\Enrich\Model\AvailableAttributes

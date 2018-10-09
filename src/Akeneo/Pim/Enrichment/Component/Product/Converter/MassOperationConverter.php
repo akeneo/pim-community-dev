@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Enrich\Converter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;

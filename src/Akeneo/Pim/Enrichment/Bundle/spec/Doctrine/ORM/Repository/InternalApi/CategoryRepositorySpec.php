@@ -2,15 +2,14 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi;
 
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Gedmo\Tree\Strategy\ORM\Nested;
 use Gedmo\Tree\TreeListener;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Prophecy\Argument;
 
 class CategoryRepositorySpec extends ObjectBehavior

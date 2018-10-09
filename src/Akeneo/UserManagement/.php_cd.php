@@ -38,7 +38,7 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // TODO: it should be moved somewhere we could centralize old symfony form
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // TODO: it should be moved somewhere we could centralize old symfony form
         'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // TODO: it should be moved somewhere we could centralize old symfony form
+        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // TODO: it should be moved somewhere we could centralize old symfony form
         'Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: it should be moved somewhere we could centralize old symfony form or remove it
         'Sensio\Bundle\FrameworkExtraBundle', // TODO:Some old Oro controllers use Template annotation
         'Symfony\Bundle\FrameworkBundle', // TODO:Some old Oro controllers extend the symfony controller

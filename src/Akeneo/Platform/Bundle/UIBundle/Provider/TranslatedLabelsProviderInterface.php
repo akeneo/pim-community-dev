@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Enrich\Provider;
+namespace Akeneo\Platform\Bundle\UIBundle\Provider;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
