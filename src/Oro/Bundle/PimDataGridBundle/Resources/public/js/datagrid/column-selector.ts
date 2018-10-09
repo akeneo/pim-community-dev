@@ -19,6 +19,7 @@ interface Column {
   code: string;
   selected: boolean;
   removable: boolean;
+  sortOrder: number;
 }
 
 class ColumnSelector extends BaseView {
@@ -142,8 +143,10 @@ class ColumnSelector extends BaseView {
   }
 
   fetchColumns(): PromiseLike<{[name: string]: Column}> {
-    console.log('fetchColumns')
-    const search = this.modal.$el.find('input[type="search"]').val().trim();
+    const search = this.modal.$el
+      .find('input[type="search"]')
+      .val()
+      .trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
     const params = $.param(_.omit({search, group}, _.isEmpty));
@@ -152,18 +155,18 @@ class ColumnSelector extends BaseView {
   }
 
   mergeFetchedColumns(fetchedColumns: {[name: string]: Column}) {
-    console.log('mergeFetchedColumns', this.loadedColumns, fetchedColumns)
-    // fetchedColumns = _.map(fetchedColumns, (column: Column) => {
-    //   column.selected = _.find(this.loadedColumns, { code: column.code }).selected || false
+    const mergedColumns = _.mapObject(fetchedColumns, (column: Column) => {
+      const storedColumn = this.loadedColumns[column.code];
+      column.selected = storedColumn.selected || false;
+      column.sortOrder = storedColumn.sortOrder;
+      column.removable = true;
 
-    //   return column
-    // })
+      return column;
+    });
 
-
-    // Get the new columns
-    // Set selected status from the ones already loaded
-    // Merge the two arrays keeping the selected status
-    // Re-render both lists and set sortable again
+    this.loadedColumns = Object.assign(this.loadedColumns, mergedColumns);
+    this.renderColumns();
+    this.setSortable();
   }
 
   filterByAttributeGroup(event: JQuery.Event): void {
@@ -173,7 +176,10 @@ class ColumnSelector extends BaseView {
   }
 
   clearSearch() {
-    this.modal.$el.find('input[type="search"]').val('').trigger('keyup')
+    this.modal.$el
+      .find('input[type="search"]')
+      .val('')
+      .trigger('keyup');
   }
 
   debounceSearch(event: JQuery.Event): void {
@@ -186,48 +192,44 @@ class ColumnSelector extends BaseView {
     }
 
     if (13 === event.keyCode) {
-      this.fetchColumns().then(this.mergeFetchedColumns.bind(this))
+      this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
     } else {
       this.debounceSearchTimer = setTimeout(() => {
-        this.fetchColumns().then(this.mergeFetchedColumns.bind(this))
+        this.fetchColumns().then(this.mergeFetchedColumns.bind(this));
       }, 200);
     }
   }
 
-  // @TODO - Sort by position
+  // @TODO - Sort by sortOrder
   setColumnsSelectedByDefault(columns: {[name: string]: Column}) {
     const selectedColumns = DatagridState.get('product-grid', 'columns');
     const datagridColumns = selectedColumns.split(',');
 
-    console.log('columns before', columns)
-
-    const blah =_.mapObject(columns, (column: Column) => {
+    return _.mapObject(columns, (column: Column) => {
       column.selected = datagridColumns.includes(column.code);
       column.removable = true;
 
       return column;
     });
-
-    console.log('columns after', blah)
-    return blah;
   }
 
   renderColumns(): void {
-    const unSelectedColumns = this.getColumnsBySelectedStatus(false)
-    const selectedColumns = this.getColumnsBySelectedStatus()
-
-    console.log('unSelectedColumns', unSelectedColumns)
-    console.log('selectedColumns', selectedColumns)
+    const unSelectedColumns = this.getColumnsBySelected(false);
+    const selectedColumns = this.getColumnsBySelected();
 
     this.modal.$el
       .find('[data-columns]')
       .empty()
       .append(_.template(this.columnsTemplate)({columns: unSelectedColumns}));
 
+    const sortedColumns = _.map(selectedColumns, (column: Column) => column).sort((a: Column, b: Column) => {
+      return a.sortOrder - b.sortOrder;
+    });
+
     this.modal.$el
       .find('[data-columns-selected]')
       .empty()
-      .append(_.template(this.selectedTemplate)({columns: selectedColumns}));
+      .append(_.template(this.selectedTemplate)({columns: sortedColumns}));
 
     this.modal.$el.on('click', '#column-selection .action', this.unselectColumn.bind(this));
     this.setValidation();
@@ -254,7 +256,7 @@ class ColumnSelector extends BaseView {
   }
 
   setValidation(): void {
-    const selectedColumns = this.getColumnsBySelectedStatus()
+    const selectedColumns = this.getColumnsBySelected();
     const showValidationError = selectedColumns.length === 0;
     const error = this.modal.$el.find('#column-selection .alert-error');
 
@@ -305,7 +307,6 @@ class ColumnSelector extends BaseView {
 
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
         this.loadedColumns = this.setColumnsSelectedByDefault(columns);
-        console.log('set loaded columns first time', this.loadedColumns)
         this.renderColumns();
         this.setSortable();
       });
@@ -326,18 +327,33 @@ class ColumnSelector extends BaseView {
           const senderIsColumn = ui.sender.is('#column-list');
 
           this.setColumnStatus(code, senderIsColumn);
+          this.storeColumnSortOrder();
           this.setValidation();
         },
       })
       .disableSelection();
+
+    this.storeColumnSortOrder();
   }
 
-  getColumnsBySelectedStatus(selected = true) {
-    return _.pick(this.loadedColumns, (column: Column) => column.selected === selected)
+  storeColumnSortOrder() {
+    this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
+      const sortOrder = this.modal.$el.find(`#column-selection [data-value="${column.code}"]`).index();
+
+      if (sortOrder > -1) {
+        column.sortOrder = sortOrder;
+      }
+
+      return column;
+    });
+  }
+
+  getColumnsBySelected(selected = true) {
+    return _.pick(this.loadedColumns, (column: Column) => column.selected === selected);
   }
 
   saveColumnsToDatagridState(): void {
-    const selectedColumns = this.getColumnsBySelectedStatus()
+    const selectedColumns = this.getColumnsBySelected();
     const selected: string = _.map(selectedColumns, 'code').join();
 
     if (!selected.length) {
