@@ -14,7 +14,6 @@ import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/applicati
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {
-  SecondaryAction,
   breadcrumbConfiguration,
 } from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
@@ -196,15 +195,7 @@ class AttributesView extends React.Component<CreateProps> {
               </button>
             ) : null;
           }}
-          secondaryActions={() => {
-            return this.props.acls.delete ? (
-              <SecondaryAction
-                onDelete={() => {
-                  this.props.events.onDelete(this.props.referenceEntity);
-                }}
-              />
-            ) : null;
-          }}
+          secondaryActions={() => null}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={false}

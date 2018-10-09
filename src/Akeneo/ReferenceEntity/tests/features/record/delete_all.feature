@@ -15,3 +15,47 @@ Feature: Delete all reference entity record
     Given two reference entities with two records each
     When the user deletes all the records from an unknown entity
     And there is still two records for each reference entity
+
+  @acceptance-front
+  Scenario: Delete all reference entity records
+    Given the following reference entity:
+      | identifier | labels                                       | image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    And the following records for the reference entity "designer":
+      | identifier        | code   | labels                        |
+      | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
+      | designer_coco_2   | coco   | {"en_US": "Coco"}             |
+    And the user has the following rights:
+      | akeneo_referenceentity_records_delete_all | true |
+    And the user asks for the reference entity "designer"
+    When the user deletes all the reference entity records
+    Then the user should see the successfull deletion notification
+
+  @acceptance-front
+  Scenario: Error while deleting all refenrence entity records
+    Given the following reference entity:
+      | identifier | labels                                       | image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    And the following records for the reference entity "designer":
+      | identifier        | code   | labels                        |
+      | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
+      | designer_coco_2   | coco   | {"en_US": "Coco"}             |
+    And the user has the following rights:
+      | akeneo_referenceentity_records_delete_all | true |
+    And the user asks for the reference entity "designer"
+    When the user cannot delete all the reference entity records
+    Then the user should see the failed deletion notification
+
+  @acceptance-front
+  Scenario: Cannot delete all reference entity records without rights
+    Given the following reference entity:
+      | identifier | labels                                       | image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    And the following records for the reference entity "designer":
+      | identifier        | code   | labels                        |
+      | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
+      | designer_coco_2   | coco   | {"en_US": "Coco"}             |
+    And the user has the following rights:
+      | akeneo_referenceentity_records_delete_all | false |
+    And the user asks for the reference entity "designer"
+    Then the user should not see the delete all button

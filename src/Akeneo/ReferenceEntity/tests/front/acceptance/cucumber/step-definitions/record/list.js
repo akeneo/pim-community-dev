@@ -1,5 +1,6 @@
 const path = require('path');
 const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
+const Header = require('../../decorators/reference-entity/app/header.decorator');
 const Records = require('../../decorators/reference-entity/edit/records.decorator');
 
 const {
@@ -15,6 +16,10 @@ module.exports = async function(cucumber) {
     Sidebar: {
       selector: '.AknColumn',
       decorator: Sidebar,
+    },
+    Header: {
+      selector: '.AknTitleContainer',
+      decorator: Header,
     },
     Records: {
       selector: '.AknDefault-mainContent',
@@ -66,5 +71,14 @@ module.exports = async function(cucumber) {
     const isEmpty = await records.isEmpty();
 
     assert.strictEqual(isEmpty, true);
+  });
+
+  Then('the list of records should not be empty', async function() {
+    await showRecordTab(this.page);
+
+    const records = await await getElement(this.page, 'Records');
+    const isEmpty = await records.isEmpty();
+
+    assert.strictEqual(isEmpty, false);
   });
 };

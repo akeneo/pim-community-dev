@@ -10,9 +10,8 @@ import ReferenceEntity, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
-import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
+import {deleteAllReferenceEntityRecords} from 'akeneoreferenceentity/application/action/record/delete';
 import {
-  SecondaryAction,
   breadcrumbConfiguration,
 } from 'akeneoreferenceentity/application/component/reference-entity/edit';
 const securityContext = require('pim/security-context');
@@ -29,6 +28,7 @@ interface StateProps {
   };
   acls: {
     createRecord: boolean;
+    deleteAllRecords: boolean;
     delete: boolean;
   };
 }
@@ -40,6 +40,30 @@ interface DispatchProps {
     onRecordCreationStart: () => void;
   };
 }
+
+const SecondaryAction = ({referenceEntityIdentifier, onDelete}: {referenceEntityIdentifier: string, onDelete: () => void}) => {
+  return (
+    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+      <div className="AknDropdown-menu AknDropdown-menu--right">
+        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div>
+          <button
+            tabIndex={-1}
+            className="AknDropdown-menuLink"
+            onClick={() => {
+              if (confirm(__('pim_reference_entity.record.delete_all.confirm', {entityIdentifier: referenceEntityIdentifier}))) {
+                onDelete();
+              }
+            }}
+          >
+            {__('pim_reference_entity.record.button.delete_all')}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const records = ({context, grid, events, referenceEntity, acls}: StateProps & DispatchProps) => {
   return (
@@ -55,11 +79,12 @@ const records = ({context, grid, events, referenceEntity, acls}: StateProps & Di
           ) : null;
         }}
         secondaryActions={() => {
-          return acls.delete ? (
+          return acls.deleteAllRecords ? (
             <SecondaryAction
               onDelete={() => {
                 events.onDelete(referenceEntity);
               }}
+              referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()}
             />
           ) : null;
         }}
@@ -109,6 +134,7 @@ export default connect(
       },
       acls: {
         createRecord: securityContext.isGranted('akeneo_referenceentity_record_create'),
+        deleteAllRecords: securityContext.isGranted('akeneo_referenceentity_records_delete_all'),
         delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
       },
     };
@@ -123,7 +149,7 @@ export default connect(
           dispatch(recordCreationStart());
         },
         onDelete: (referenceEntity: ReferenceEntity) => {
-          dispatch(deleteReferenceEntity(referenceEntity));
+          dispatch(deleteAllReferenceEntityRecords(referenceEntity));
         },
       },
     };

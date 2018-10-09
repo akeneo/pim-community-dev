@@ -10,14 +10,10 @@ import {
 } from 'akeneoreferenceentity/domain/event/record/edit';
 import {
   notifyRecordWellSaved,
-  notifyRecordSaveFailed,
-  notifyRecordWellDeleted,
-  notifyRecordDeleteFailed,
-  notifyRecordDeletionErrorOccured,
+  notifyRecordSaveFailed
 } from 'akeneoreferenceentity/application/action/record/notify';
 import Record from 'akeneoreferenceentity/domain/model/record/record';
 import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
-import recordRemover from 'akeneoreferenceentity/infrastructure/remover/record';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
@@ -51,26 +47,6 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
   const savedRecord: Record = await recordFetcher.fetch(record.getReferenceEntityIdentifier(), record.getCode());
 
   dispatch(recordEditionReceived(savedRecord));
-};
-
-export const deleteRecord = (record: Record) => async (dispatch: any): Promise<void> => {
-  try {
-    const errors = await recordRemover.remove(record.getReferenceEntityIdentifier(), record.getCode());
-
-    if (errors) {
-      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyRecordDeletionErrorOccured(validationErrors));
-
-      return;
-    }
-
-    dispatch(notifyRecordWellDeleted(record.getCode()));
-    dispatch(redirectToRecordIndex(record.getReferenceEntityIdentifier()));
-  } catch (error) {
-    dispatch(notifyRecordDeleteFailed());
-
-    throw error;
-  }
 };
 
 export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {

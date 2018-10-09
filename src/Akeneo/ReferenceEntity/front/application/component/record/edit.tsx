@@ -11,10 +11,10 @@ import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
 import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {
   saveRecord,
-  deleteRecord,
   recordImageUpdated,
   backToReferenceEntity,
 } from 'akeneoreferenceentity/application/action/record/edit';
+import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
 const securityContext = require('pim/security-context');
 import File from 'akeneoreferenceentity/domain/model/file';

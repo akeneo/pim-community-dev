@@ -12,8 +12,11 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   };
 
   const isEmpty = async () => {
-    await isLoaded();
-    await page.waitFor('.AknDefault-mainContent .AknGridContainer-noData');
+    try {
+      await page.waitForSelector('.AknDefault-mainContent .AknGridContainer-noData', {timeout: 2000});
+    } catch (e) {
+      return false;
+    }
 
     return true;
   };
@@ -25,7 +28,19 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return await labelProperty.jsonValue();
   };
 
-  return {hasRecord, isLoaded, isEmpty, getRecordLabel};
+  const hasSuccessNotification = async () => {
+    await page.waitForSelector('.AknFlash--success');
+
+    return true;
+  };
+
+  const hasErrorNotification = async () => {
+    await page.waitForSelector('.AknFlash--error');
+
+    return true;
+  };
+
+  return {hasRecord, isLoaded, isEmpty, getRecordLabel, hasSuccessNotification, hasErrorNotification};
 };
 
 module.exports = Records;

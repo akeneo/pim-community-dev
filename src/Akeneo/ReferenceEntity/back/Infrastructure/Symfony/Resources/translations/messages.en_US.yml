@@ -8,6 +8,7 @@ akeneo_referenceentity:
         record:
             create: Create a record
             delete: Delete a record
+            delete_all: Delete all entity records
         attribute:
             create: Add an attribute to an reference entity
             edit: Edit an attribute of an reference entity

@@ -1,3 +1,5 @@
+const {getRequestContract, listenRequest} = require('../../../../acceptance/cucumber/tools');
+
 const timeout = 5000;
 
 describe('Akeneoreferenceentity > infrastructure > remover > record', () => {
@@ -29,6 +31,21 @@ describe('Akeneoreferenceentity > infrastructure > remover > record', () => {
       const referenceEntityIdentifier = createReferenceEntityIdentifier('designer');
 
       return await remover.remove(referenceEntityIdentifier, recordCodeToDelete);
+    });
+  });
+
+  it('It deletes all reference entity records', async () => {
+    const requestContract = getRequestContract('Record/DeleteAll/ok.json');
+    await listenRequest(page, requestContract);
+
+    await page.evaluate(async () => {
+      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+        .createIdentifier;
+      const remover = require('akeneoreferenceentity/infrastructure/remover/record').default;
+
+      const referenceEntityIdentifier = createReferenceEntityIdentifier('designer');
+
+      return await remover.removeAll(referenceEntityIdentifier);
     });
   });
 });
