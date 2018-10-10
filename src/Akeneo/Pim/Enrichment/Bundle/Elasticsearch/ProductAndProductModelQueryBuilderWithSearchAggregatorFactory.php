@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
+class ProductAndProductModelQueryBuilderWithSearchAggregatorFactory implements ProductQueryBuilderFactoryInterface
 {
     /** @var string */
     private $pqbClass;

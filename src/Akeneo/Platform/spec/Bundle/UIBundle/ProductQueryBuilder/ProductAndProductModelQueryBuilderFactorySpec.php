@@ -6,13 +6,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBui
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelSearchAggregator;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
 
 class ProductAndProductModelQueryBuilderFactorySpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $factory,
-        ProductAndProductModelSearchAggregator $resultAggregator
+        \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator $resultAggregator
     )
     {
         $this->beConstructedWith(ProductAndProductModelQueryBuilder::class, $factory, $resultAggregator);

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 
