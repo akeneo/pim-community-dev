@@ -337,13 +337,13 @@ class ColumnSelector extends BaseView {
    * Handle the infinite scroll - if the user scrolls to the bottom of the page, trigger
    * loading the next page of results
    */
-  fetchNextColumns(event: JQueryMouseEventObject): void {
-    const list: any = event.currentTarget;
+  fetchNextColumns(loadNextPage: boolean = false): void {
+    const list: any = this.modal.$el.find('[data-columns]').get(0);
     const scrollPosition = Math.max(0, list.scrollTop);
     const bottomPosition = list.scrollHeight - list.offsetHeight;
     const isBottom = bottomPosition === scrollPosition;
 
-    if (isBottom) {
+    if (isBottom || true === loadNextPage) {
       this.page = this.page + 1;
 
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
@@ -453,6 +453,14 @@ class ColumnSelector extends BaseView {
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
         this.loadedColumns = this.setColumnsSelectedByDefault(columns);
         this.renderColumns();
+
+        const scrollColumn = this.modal.$el.find('[data-columns]')
+        const scrollHeight = scrollColumn.get(0).scrollHeight;
+        const columnHeight = scrollColumn.outerHeight();
+
+        if (scrollHeight === columnHeight) {
+          this.fetchNextColumns(true)
+        }
       });
     });
   }
