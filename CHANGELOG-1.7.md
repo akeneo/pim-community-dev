@@ -1,5 +1,7 @@
 # 1.7.x
 
+# 1.7.33 (2018-10-10)
+
 ## Bug fixes
 
 - PIM-7718: Fix attribute requirements update for a newly created channel
