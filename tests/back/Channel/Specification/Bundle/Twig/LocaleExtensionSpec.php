@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Channel\Bundle\Twig;
+namespace Specification\Akeneo\Channel\Bundle\Twig;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
