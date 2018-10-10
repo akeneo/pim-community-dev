@@ -46,6 +46,7 @@ class PimDataGridExtension extends Extension
         $loader->load('subscribers.yml');
         $loader->load('twig.yml');
         $loader->load('updaters.yml');
+        $loader->load('datagrid_listeners.yml');
         $loader->load('queries.yml');
     }
 }
