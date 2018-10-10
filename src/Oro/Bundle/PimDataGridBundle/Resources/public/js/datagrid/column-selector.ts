@@ -39,8 +39,7 @@ class ColumnSelector extends BaseView {
   public page: number = 1;
   public searchInputSelector: string;
 
-  public buttonTemplate: string = `<div class="AknGridToolbar-actionButton">
-  <a class="AknActionButton" title="<%- label %>" data-open><%- label %></a></div>`;
+  public buttonTemplate: string = `<div class="AknGridToolbar-actionButton"><a class="AknActionButton configure-columns" title="<%- label %>" data-open><%- label %></a></div>`;
 
   public modalTemplate: string = `<div class="AknFullPage-upperTitle">
     <div class="AknFullPage-title"><%- title %></div>
@@ -106,7 +105,7 @@ class ColumnSelector extends BaseView {
     };
   }
 
-  constructor(options: {config: any }) {
+  constructor(options: {config: any}) {
     super({...options, ...{className: 'AknGridToolbar-right'}});
 
     this.loadedAttributeGroups = [];
@@ -478,7 +477,8 @@ class ColumnSelector extends BaseView {
           this.setColumnSortOrder();
           this.setValidation();
         },
-      }).disableSelection();
+      })
+      .disableSelection();
 
     this.setColumnSortOrder();
   }
