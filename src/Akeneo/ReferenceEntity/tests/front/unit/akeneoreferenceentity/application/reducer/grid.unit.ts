@@ -3,7 +3,7 @@ import reducer, {createState, createQuery, NormalizedFilter} from 'akeneoreferen
 describe('akeneo > reference entity > application > reducer --- grid', () => {
   test('I can initialize an empty state', () => {
     const newState = reducer(undefined, {
-      type: 'GO_FIRST_PAGE',
+      type: 'GRID_GO_FIRST_PAGE',
     });
 
     expect(newState).toEqual({
@@ -38,7 +38,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
 
     const newState = reducer(state, {
-      type: 'DATA_RECEIVED',
+      type: 'GRID_DATA_RECEIVED',
       append: false,
       data: {items: ['first_item', 'second_item']},
       total: 10,
@@ -60,7 +60,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'DATA_RECEIVED',
+      type: 'GRID_DATA_RECEIVED',
       append: true,
       data: {items: ['third_item']},
       total: 10,
@@ -82,7 +82,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'START_LOADING_RESULTS',
+      type: 'GRID_START_LOADING_RESULTS',
     });
 
     expect(newState).toEqual({
@@ -101,7 +101,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: true,
     });
     const newState = reducer(state, {
-      type: 'STOP_LOADING_RESULTS',
+      type: 'GRID_STOP_LOADING_RESULTS',
     });
 
     expect(newState).toEqual({
@@ -122,7 +122,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'GO_NEXT_PAGE',
+      type: 'GRID_GO_NEXT_PAGE',
     });
 
     expect(newState).toEqual({
@@ -145,7 +145,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'GO_FIRST_PAGE',
+      type: 'GRID_GO_FIRST_PAGE',
     });
 
     expect(newState).toEqual({

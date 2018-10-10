@@ -94,6 +94,7 @@ pim_reference_entity:
                 code: Code
                 image: Image
                 label: Label
+                action: Actions
         tab:
             enrich: Enrich
         notification:

@@ -1,15 +1,19 @@
 export const startLoading = () => {
-  return {type: 'START_LOADING_RESULTS'};
+  return {type: 'GRID_START_LOADING_RESULTS'};
 };
 
 export const stopLoading = () => {
-  return {type: 'STOP_LOADING_RESULTS'};
+  return {type: 'GRID_STOP_LOADING_RESULTS'};
 };
 
 export const goNextPage = () => {
-  return {type: 'GO_NEXT_PAGE'};
+  return {type: 'GRID_GO_NEXT_PAGE'};
 };
 
 export const goFirstPage = () => {
-  return {type: 'GO_FIRST_PAGE'};
+  return {type: 'GRID_GO_FIRST_PAGE'};
+};
+
+export const updateFilter = (field: string, operator: string, value: string) => {
+  return {type: 'GRID_UPDATE_FILTER', field, operator, value};
 };

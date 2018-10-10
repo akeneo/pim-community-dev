@@ -1,4 +1,4 @@
-interface QueryFilter {
+interface Filter {
   field: string;
   operator: string;
   value: any;
@@ -8,8 +8,9 @@ interface QueryFilter {
 export interface Query {
   locale: string;
   size: number;
+  channel: string;
   page: number;
-  filters: QueryFilter[];
+  filters: Filter[];
 }
 
 export interface SearchFetcher<Entity> {

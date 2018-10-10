@@ -1,6 +1,9 @@
 import * as $ from 'jquery';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
+import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import hydrator from 'akeneoreferenceentity/application/hydrator/record';
+
 const Field = require('pim/field');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
@@ -49,6 +52,7 @@ class ReferenceEntityField extends (Field as {new (config: any): any}) {
       recordFetcher
         .search({
           locale: templateContext.locale,
+          channel: templateContext.channel,
           size: 25,
           page: 0,
           filters: [
@@ -60,8 +64,8 @@ class ReferenceEntityField extends (Field as {new (config: any): any}) {
             },
           ],
         })
-        .then(({items}: {items: Record[]}) => {
-          promise.resolve(extendTemplateContext(templateContext, items));
+        .then(({items}: {items: NormalizedRecord[]}) => {
+          promise.resolve(extendTemplateContext(templateContext, hydrateAll<Record>(hydrator)(items)));
         });
 
       return promise.promise();

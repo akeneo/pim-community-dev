@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import Table from 'akeneoreferenceentity/application/component/record/index/table';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
+import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -11,7 +11,10 @@ import ReferenceEntity, {
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords} from 'akeneoreferenceentity/application/action/record/delete';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {
+  breadcrumbConfiguration,
+} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {needMoreResults, searchUpdated} from 'akeneoreferenceentity/application/action/record/search';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
@@ -22,7 +25,7 @@ interface StateProps {
   };
   referenceEntity: ReferenceEntity;
   grid: {
-    records: Record[];
+    records: NormalizedRecord[];
     total: number;
     isLoading: boolean;
   };
@@ -39,6 +42,8 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onRedirectToRecord: (record: Record) => void;
+    onNeedMoreResults: () => void;
+    onSearchUpdated: (userSearch: string) => void;
     onDelete: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onCancelDelete: () => void;
@@ -92,7 +97,10 @@ const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: 
       {0 !== grid.records.length ? (
         <Table
           onRedirectToRecord={events.onRedirectToRecord}
+          onNeedMoreResults={events.onNeedMoreResults}
+          onSearchUpdated={events.onSearchUpdated}
           locale={context.locale}
+          referenceEntity={referenceEntity}
           records={grid.records}
           isLoading={grid.isLoading}
         />
@@ -154,6 +162,12 @@ export default connect(
       events: {
         onRedirectToRecord: (record: Record) => {
           dispatch(redirectToRecord(record));
+        },
+        onNeedMoreResults: () => {
+          dispatch(needMoreResults());
+        },
+        onSearchUpdated: (userSearch: string) => {
+          dispatch(searchUpdated(userSearch));
         },
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
