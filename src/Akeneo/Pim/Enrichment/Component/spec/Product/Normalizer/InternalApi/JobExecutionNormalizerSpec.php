@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\JobExecutionNormalizer;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Normalizer\JobExecutionNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Model;
+namespace Specification\Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;

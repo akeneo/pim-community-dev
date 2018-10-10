@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\UserManagement\Bundle\Context\UserContext;

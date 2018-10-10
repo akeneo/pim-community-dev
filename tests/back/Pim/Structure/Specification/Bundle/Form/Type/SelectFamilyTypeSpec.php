@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Bundle\Form\Type;
+namespace Specification\Akeneo\Pim\Structure\Bundle\Form\Type;
 
 use Akeneo\Pim\Structure\Bundle\Form\Type\SelectFamilyType;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

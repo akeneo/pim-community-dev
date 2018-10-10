@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Processor\MassEdit\Family;
+namespace Specification\Akeneo\Pim\Structure\Component\Processor\MassEdit;
 
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;

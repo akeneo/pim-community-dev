@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Provider\Field;
+namespace Akeneo\Platform\Bundle\UIBundle\Provider\Field;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;

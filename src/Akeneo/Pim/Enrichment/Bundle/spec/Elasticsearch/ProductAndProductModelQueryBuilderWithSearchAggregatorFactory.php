@@ -12,7 +12,7 @@ class ProductAndProductModelQueryBuilderWithSearchAggregatorFactorySpec extends 
 {
     function let(
         ProductQueryBuilderFactoryInterface $factory,
-        \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator $resultAggregator
+        ProductAndProductModelSearchAggregator $resultAggregator
     )
     {
         $this->beConstructedWith(ProductAndProductModelQueryBuilder::class, $factory, $resultAggregator);

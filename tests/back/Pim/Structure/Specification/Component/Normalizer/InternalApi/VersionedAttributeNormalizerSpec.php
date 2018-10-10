@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
+namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
