@@ -18,7 +18,7 @@ EOF
 
     command = <<EOF
 curl -s --user 'api:${var.MAILGUN_API_KEY}' -X DELETE \
-		https://api.mailgun.net/v3/domains/${var.MAILGUN_CLOUD_DOMAIN}/credentials/${data.template_file.mailgun_login.rendered}
+		https://api.mailgun.net/v3/domains/${var.MAILGUN_CLOUD_DOMAIN}/credentials/${var.mailgun_login}@${var.mailgun_domain}
 EOF
   }
 }
