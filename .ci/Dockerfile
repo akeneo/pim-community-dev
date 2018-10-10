@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
     && a2enmod proxy \
     && a2enmod proxy_fcgi
 
-COPY --from=gcr.io/akeneo-ci/github-akeneo-ci-dependencies-warmer:master /tmp /tmp
+COPY --from=eu.gcr.io/akeneo-ci/github-akeneo-ci-dependencies-warmer:master /tmp /tmp
 COPY . .
 COPY .ci/php.ini /usr/local/etc/php/
 COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
