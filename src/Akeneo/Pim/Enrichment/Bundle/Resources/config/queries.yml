@@ -56,3 +56,9 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AscendantCategories'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_enrich.doctrine.query.count_impacted_products:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory'
