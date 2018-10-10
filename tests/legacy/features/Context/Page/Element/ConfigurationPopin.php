@@ -25,16 +25,13 @@ class ConfigurationPopin extends Element
      */
     public function addColumns($labels)
     {
-        $searchInput = $this->spin(function () {
-            return $this->find('css', 'input[type="search"]');
-        }, 'Column search input not found');
-
         $dropZone = $this->spin(function () {
             return $this->find('css', '#column-selection');
         }, 'Cannot find the drop zone');
 
         foreach ($labels as $label) {
-            $item = $this->getItemForLabel($label);
+            $item = $this->getItemForLabel($label, true);
+
             $this->dragElementTo($item, $dropZone);
         }
     }
@@ -84,6 +81,7 @@ class ConfigurationPopin extends Element
 
     /**
      * @param string $label
+     * @param $searchInput
      *
      * @throws TimeoutException
      *
@@ -91,12 +89,18 @@ class ConfigurationPopin extends Element
      */
     protected function getItemForLabel($label)
     {
+        $searchInput = $this->spin(function () {
+            return $this->find('css', 'input[type="search"]');
+        }, 'Column search input not found');
+
+        $searchInput->setValue($label);
+
         return $this->spin(function () use ($label) {
             $items = $this->findAll('css', '.ui-sortable-handle');
 
             foreach ($items as $item) {
                 if (strtolower($label) === strtolower($item->getText())) {
-                    return $item;
+                   return $item;
                 }
             }
 
