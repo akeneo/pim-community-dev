@@ -39,6 +39,12 @@
           "channel":null,
           "locale":"en_US",
           "data":null
+        },
+        {
+          "attribute":"portrait_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":null
         }
       ]
     }
