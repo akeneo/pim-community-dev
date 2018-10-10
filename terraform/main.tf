@@ -17,7 +17,7 @@ EOF
     when = "destroy"
 
     command = <<EOF
-curl -s --user 'api:${var.MAILGUN_API_KEY}' -X DELETE \
+curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
 		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials/${var.mailgun_login}@${var.mailgun_domain}
 EOF
   }
