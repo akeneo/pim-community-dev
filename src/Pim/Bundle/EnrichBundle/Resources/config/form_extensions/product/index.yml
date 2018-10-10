@@ -140,14 +140,6 @@ extensions:
             gridName: product-grid
 
     pim-product-index-columns:
-        module: pim/datagrid/configure-columns-action
-        parent: pim-product-index-grid-container
-        targetZone: toolbar
-        position: 10
-        config:
-            route: pim_datagrid_productgrid_available_columns
-
-    pim-product-index-column-selector:
         module: pim/datagrid/column-selector
         parent: pim-product-index-grid-container
         targetZone: toolbar

@@ -39,8 +39,8 @@ class ColumnSelector extends BaseView {
   public page: number = 1;
   public searchInputSelector: string;
 
-  public buttonTemplate: string = `<div class="AknGridToolbar-right"><div class="AknGridToolbar-actionButton">
-  <a class="AknActionButton" title="Columns" data-open><%- label %></a></div></div>`;
+  public buttonTemplate: string = `<div class="AknGridToolbar-actionButton">
+  <a class="AknActionButton" title="<%- label %>" data-open><%- label %></a></div>`;
 
   public modalTemplate: string = `<div class="AknFullPage-upperTitle">
     <div class="AknFullPage-title"><%- title %></div>
@@ -48,7 +48,7 @@ class ColumnSelector extends BaseView {
   </div>
   <div id="column-configurator"><div class="AknColumnConfigurator">
     <div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
-      <div class="AknColumnConfigurator-columnHeader">Attribute groups</div>
+      <div class="AknColumnConfigurator-columnHeader"><%- attributeGroupsLabel %></div>
       <div class="AknColumnConfigurator-listContainer" data-attributes>
         <ul class="AknVerticalList nav-list">
           <li class="AknVerticalList-item AknVerticalList-item--selectable tab active" data-group data-value="">
@@ -106,8 +106,8 @@ class ColumnSelector extends BaseView {
     };
   }
 
-  constructor(options: {config: any}) {
-    super({...options});
+  constructor(options: {config: any }) {
+    super({...options, ...{className: 'AknGridToolbar-right'}});
 
     this.loadedAttributeGroups = [];
     this.loadedColumns = {};
@@ -436,6 +436,7 @@ class ColumnSelector extends BaseView {
         title: __('pim_datagrid.column_configurator.title'),
         content: _.template(this.modalTemplate)({
           groups,
+          attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),
           title: __('pim_datagrid.column_configurator.title'),
           description: __('pim_datagrid.column_configurator.description'),
         }),
