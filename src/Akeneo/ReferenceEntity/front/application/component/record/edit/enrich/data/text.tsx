@@ -29,6 +29,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} />
         ) : (
           <textarea
+            id={value.attribute.identifier.stringValue()}
             className={`AknTextareaField AknTextareaField--light AknTextareaField--narrow ${
               value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''
             }`}

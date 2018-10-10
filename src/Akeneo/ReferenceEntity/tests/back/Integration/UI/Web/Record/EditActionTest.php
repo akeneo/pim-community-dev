@@ -241,7 +241,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             ->create($websiteAttribute);
 
         // image attribute
-        $portrait = ImageAttribute::create(
+        $portraitAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
@@ -254,7 +254,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeAllowedExtensions::fromList(['png'])
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
-            ->create($portrait);
+            ->create($portraitAttribute);
 
         $user = new User();
         $user->setUsername('julia');

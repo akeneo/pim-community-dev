@@ -15,16 +15,19 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -129,6 +132,21 @@ class GetActionTest extends ControllerIntegrationTestCase
         );
         $this->attributeRepository->create($websiteAttribute);
 
+        // image attribute
+        $portraitAttribute = ImageAttribute::create(
+            AttributeIdentifier::create('designer', 'portrait', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('portrait'),
+            LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
+            AttributeOrder::fromInteger(3),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::fromString('200.10'),
+            AttributeAllowedExtensions::fromList(['png'])
+        );
+        $this->attributeRepository->create($portraitAttribute);
+
         $values = [
             [
                 'attribute' => $textAttribute->normalize(),
@@ -150,6 +168,12 @@ class GetActionTest extends ControllerIntegrationTestCase
             ],
             [
                 'attribute' => $websiteAttribute->normalize(),
+                'channel' => null,
+                'locale' => 'en_US',
+                'data' => null,
+            ],
+            [
+                'attribute' => $portraitAttribute->normalize(),
                 'channel' => null,
                 'locale' => 'en_US',
                 'data' => null,

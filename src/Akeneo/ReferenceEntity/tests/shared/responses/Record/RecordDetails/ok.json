@@ -109,6 +109,27 @@
           "channel": null,
           "locale": "en_US",
           "data": null
+        },
+        {
+          "attribute": {
+            "identifier": "portrait_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "portrait",
+            "labels": {
+              "fr_FR": "Image autobiographique",
+              "en_US": "Portrait"
+            },
+            "order": 3,
+            "is_required": true,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "image",
+            "max_file_size": "200.10",
+            "allowed_extensions": ["png"]
+          },
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         }
       ]
     }

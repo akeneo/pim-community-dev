@@ -40,6 +40,21 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
+  const answerMedia = async function() {
+    await this.page.on('request', request => {
+      if ('http://pim.com/rest/media/' === request.url() && 'POST' === request.method()) {
+        answerJson(
+          request,
+          {
+            "originalFilename":"philou.png",
+            "filePath":"/a/b/c/philou.png"
+          },
+          200
+        );
+      }
+    });
+  }
+
   const askForRecord = async function(recordCode, referenceEntityIdentifier) {
     await this.page.evaluate(
       async (referenceEntityIdentifier, recordCode) => {
@@ -127,6 +142,24 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
+  When('the user updates the valid record with an image value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/image_value_ok.json');
+
+    await answerMedia.apply(this);
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillUploadField('portrait_designer_fingerprint', './../../../../common/ressource/philippe_starck.png');
+    await editPage.save();
+  });
+
   When('the user saves the valid record with an invalid simple text value', async function() {
     await answerLocaleList.apply(this);
     await askForRecord.apply(this, [
@@ -144,17 +177,31 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
+  When('the user saves the valid record with an invalid image value', async function() {
+    await answerMedia.apply(this);
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/image_value_ok.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillUploadField('portrait_designer_fingerprint', './../../../../common/ressource/invalid_image.png');
+    await editPage.save();
+  });
+
   Then('the user should see a success message after the update record', async function() {
     const edit = await await getElement(this.page, 'Edit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
-
     assert.strictEqual(hasSuccessNotification, true);
   });
 
   Then('the user should see the validation error after the update record : {string}', async function(expectedError) {
-    debugger;
     const edit = await await getElement(this.page, 'Edit');
-    debugger;
     const error = await edit.getValidationMessageForCode();
 
     assert.strictEqual(error, expectedError);
