@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetNormalizedConfiguration
+class GetConfigurationHandler
 {
     /** @var ConfigurationRepositoryInterface */
     private $repository;
@@ -36,7 +36,7 @@ class GetNormalizedConfiguration
     /**
      * @return array
      */
-    public function retrieve(): array
+    public function handle(GetConfigurationQuery $query): array
     {
         $configuration = $this->repository->find();
 

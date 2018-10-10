@@ -15,11 +15,13 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -39,8 +41,8 @@ class PimAiConfigurationContext implements Context
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
-    /** @var GetNormalizedConfiguration */
-    private $getNormalizedConfiguration;
+    /** @var GetConfigurationHandler */
+    private $getConfigurationHandler;
 
     /** @var GetConnectionStatusHandler */
     private $getConnectionStatusHandler;
@@ -48,26 +50,26 @@ class PimAiConfigurationContext implements Context
     /**
      * Make this context statefull. Useful for testing configuration retrieval.
      *
-     * @var null|array
+     * @var ConnectionStatus
      */
     private $retrievedConfiguration;
 
     /**
      * @param ActivateConnectionHandler $activateConnectionHandler
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param GetNormalizedConfiguration $getNormalizedConfiguration
+     * @param GetConfigurationHandler $getConfigurationHandler
      * @param GetConnectionStatusHandler $getConnectionStatusHandler
+     * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         ActivateConnectionHandler $activateConnectionHandler,
-        ConfigurationRepositoryInterface $configurationRepository,
-        GetNormalizedConfiguration $getNormalizedConfiguration,
-        GetConnectionStatusHandler $getConnectionStatusHandler
+        GetConfigurationHandler $getConfigurationHandler,
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        ConfigurationRepositoryInterface $configurationRepository
     ) {
         $this->activateConnectionHandler = $activateConnectionHandler;
-        $this->configurationRepository = $configurationRepository;
-        $this->getNormalizedConfiguration = $getNormalizedConfiguration;
+        $this->getConfigurationHandler = $getConfigurationHandler;
         $this->getConnectionStatusHandler = $getConnectionStatusHandler;
+        $this->configurationRepository = $configurationRepository;
         $this->retrievedConfiguration = null;
     }
 
@@ -121,7 +123,7 @@ class PimAiConfigurationContext implements Context
      */
     public function retrievesTheConfiguration(): void
     {
-        $this->retrievedConfiguration = $this->getNormalizedConfiguration->retrieve();
+        $this->retrievedConfiguration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
     }
 
     /**

@@ -3,9 +3,9 @@ services:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\PimAiConfigurationContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.application.configuration.command.activate_connection_handler'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.application.configuration.query.get_configuration_handler'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.application.configuration.query.get_connection_status_handler'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.configuration'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.connection.get_normalized_configuration'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.connection.get_status'
         tags:
             - { name: 'fob.context_service' }
 

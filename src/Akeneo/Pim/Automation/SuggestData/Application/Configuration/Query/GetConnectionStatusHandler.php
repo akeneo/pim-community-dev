@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -27,8 +28,8 @@ class GetConnectionStatusHandler
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var DataProviderInterface */
+    private $dataProvider;
 
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
@@ -39,7 +40,7 @@ class GetConnectionStatusHandler
         DataProviderFactory $dataProviderFactory
     ) {
         $this->configurationRepository = $configurationRepository;
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->dataProvider = $dataProviderFactory->create();
     }
 
     /**
@@ -52,8 +53,7 @@ class GetConnectionStatusHandler
             return new ConnectionStatus(false);
         }
 
-        $dataProvider = $this->dataProviderFactory->create();
-        $isActive = $dataProvider->authenticate($configuration->getToken());
+        $isActive = $this->dataProvider->authenticate($configuration->getToken());
 
         return new ConnectionStatus($isActive);
     }
