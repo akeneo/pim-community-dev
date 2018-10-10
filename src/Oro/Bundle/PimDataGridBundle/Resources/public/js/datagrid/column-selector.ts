@@ -22,18 +22,22 @@ interface Column {
   displayed: boolean;
 }
 
-// @TODO - Load columns with dataLocale
+interface DatagridCollection extends Backbone.Collection<any> {
+  decodeStateData: (name: string) => any;
+}
+
 class ColumnSelector extends BaseView {
+  public attributeGroupSelector: string;
   public config: any;
-  public datagridCollection: Backbone.Collection<any>;
+  public datagridCollection: DatagridCollection;
   public datagridElement: any;
+  public debounceSearchTimer: any;
   public loadedAttributeGroups: AttributeGroup[];
   public loadedColumns: {[name: string]: Column};
+  public locale: string;
   public modal: any;
-  public debounceSearchTimer: any;
-  public searchInputSelector: string;
-  public attributeGroupSelector: string;
   public page: number = 1;
+  public searchInputSelector: string;
 
   public buttonTemplate: string = `<div class="AknGridToolbar-right"><div class="AknGridToolbar-actionButton">
   <a class="AknActionButton" title="Columns" data-open><%- label %></a></div></div>`;
@@ -112,23 +116,44 @@ class ColumnSelector extends BaseView {
     this.config = {...this.config, ...options.config};
   }
 
+  /**
+   * When the grid loads, store the datagrid collection and the locale
+   */
   configure() {
     mediator.once('datagrid_collection_set_after', (datagridCollection: any, datagridElement: any) => {
       this.datagridCollection = datagridCollection;
       this.datagridElement = datagridElement;
+      this.locale = this.getLocale();
     });
 
     return BaseView.prototype.configure.apply(this, arguments);
   }
 
+  /**
+   * Get the local from the datagrid
+   */
+  getLocale(): string {
+    const url = (<string>this.datagridCollection.url).split('?')[1];
+    const urlParams = this.datagridCollection.decodeStateData(url);
+    const datagridParams = urlParams['product-grid'] || {};
+
+    return urlParams['dataLocale'] || datagridParams['dataLocale'];
+  }
+
+  /**
+   * Render the 'columns' button
+   */
   render(): BaseView {
-    this.$el.html(_.template(this.buttonTemplate)({ label: __('pim_datagrid.column_configurator.label')}));
+    this.$el.html(_.template(this.buttonTemplate)({label: __('pim_datagrid.column_configurator.label')}));
 
     return this;
   }
 
+  /**
+   * Fetch the attribute groups for the columns and cache them
+   */
   fetchAttributeGroups(): PromiseLike<AttributeGroup[]> {
-    const url = Routing.generate('pim_datagrid_productgrid_available_columns_groups');
+    const url = Routing.generate('pim_datagrid_productgrid_available_columns_groups', {locale: this.locale});
 
     if (_.isEmpty(this.loadedAttributeGroups)) {
       return $.get(url).then((groups: AttributeGroup[]) => {
@@ -141,8 +166,20 @@ class ColumnSelector extends BaseView {
     return new Promise(resolve => resolve(this.loadedAttributeGroups));
   }
 
+  /**
+   * Fetch the columns with these possible parameters:
+   *
+   * search - The current search term
+   * attribute_group - The current selected attribute group
+   * locale - The datagrid locale
+   * page - The page number (can be reset)
+   *
+   */
   fetchColumns(reset?: boolean): PromiseLike<{[name: string]: Column}> {
-    const search = this.modal.$el .find(this.searchInputSelector) .val() .trim();
+    const search = this.modal.$el
+      .find(this.searchInputSelector)
+      .val()
+      .trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
 
@@ -150,11 +187,24 @@ class ColumnSelector extends BaseView {
       this.page = 1;
     }
 
-    const params = $.param(_.omit({search, attribute_group: group, page: this.page}, (param: any) => !param));
+    const params = $.param(
+      _.omit(
+        {
+          search,
+          attribute_group: group,
+          page: this.page,
+          locale: this.locale,
+        },
+        (param: any) => !param
+      )
+    );
 
     return $.get(`${url}?${params}`);
   }
 
+  /**
+   * Add the properties used by the front to the loaded columns
+   */
   normalizeColumn(column: Column) {
     const storedColumn = this.loadedColumns[column.code];
     column.selected = false;
@@ -169,6 +219,9 @@ class ColumnSelector extends BaseView {
     return column;
   }
 
+  /**
+   * Fetch the first page of columns and merge them with the selected ones
+   */
   fetchColumnsWithSelected() {
     this.fetchColumns(true).then(columns => {
       this.loadedColumns = Object.assign(
@@ -179,12 +232,18 @@ class ColumnSelector extends BaseView {
     });
   }
 
+  /**
+   * When an attribute group is clicked, set it as active and trigger a fetch
+   */
   filterByAttributeGroup(event: JQuery.Event): void {
     this.modal.$el.find(this.attributeGroupSelector).removeClass('active');
     $(event.currentTarget).addClass('active');
     this.fetchColumnsWithSelected();
   }
 
+  /**
+   * Clear the search input and trigger a fetch
+   */
   clearSearch() {
     this.modal.$el
       .find(this.searchInputSelector)
@@ -192,9 +251,10 @@ class ColumnSelector extends BaseView {
       .trigger('keyup');
   }
 
+  /**
+   * Executes the search after a timeout
+   */
   debounceSearch(event: JQuery.Event): void {
-    this.stopListeningToListScroll();
-
     if (null !== this.debounceSearchTimer) {
       clearTimeout(this.debounceSearchTimer);
     }
@@ -210,6 +270,9 @@ class ColumnSelector extends BaseView {
     }
   }
 
+  /**
+   * Get the selected columns from the datagrid metadata and merge them with the passed ones, keeping the selected state
+   */
   setColumnsSelectedByDefault(columns: {[name: string]: Column}) {
     const metadataColumns = this.datagridElement.data('metadata').columns;
     const datagridColumns: {[name: string]: Column} = {};
@@ -224,6 +287,9 @@ class ColumnSelector extends BaseView {
     return datagridColumns;
   }
 
+  /**
+   * Render the two sections for searchable columns and the selected ones
+   */
   renderColumns(): void {
     const unSelectedColumns = this.getColumnsBySelected(false);
     const selectedColumns = this.getColumnsBySelected();
@@ -248,6 +314,9 @@ class ColumnSelector extends BaseView {
     this.listenToListScroll();
   }
 
+  /**
+   * Listen to the scroll for the searchable columns
+   */
   listenToListScroll() {
     this.modal.$el
       .find('[data-columns]')
@@ -255,6 +324,9 @@ class ColumnSelector extends BaseView {
       .on('scroll', this.fetchNextColumns.bind(this));
   }
 
+  /**
+   * Stop listening to the scroll event
+   */
   stopListeningToListScroll() {
     this.modal.$el
       .find('[data-columns]')
@@ -262,6 +334,10 @@ class ColumnSelector extends BaseView {
       .unbind();
   }
 
+  /**
+   * Handle the infinite scroll - if the user scrolls to the bottom of the page, trigger
+   * loading the next page of results
+   */
   fetchNextColumns(event: JQueryMouseEventObject): void {
     const list: any = event.currentTarget;
     const scrollPosition = Math.max(0, list.scrollTop);
@@ -283,6 +359,9 @@ class ColumnSelector extends BaseView {
     }
   }
 
+  /**
+   * Set all columns selected to true or false given a matching code
+   */
   setColumnStatus(code: string, selected = true): void {
     this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       if (column.code === code) {
@@ -293,14 +372,23 @@ class ColumnSelector extends BaseView {
     });
   }
 
+  /**
+   * When the user clicks 'x' on a selected column, move it to the correct list and
+   * display the validation error if necessary
+   */
   unselectColumn(event: JQuery.Event): void {
     const column = $(event.currentTarget).parent();
-    const code = $(event.currentTarget).parents('[data-value]') .data('value');
+    const code = $(event.currentTarget)
+      .parents('[data-value]')
+      .data('value');
     column.appendTo(this.modal.$el.find('#column-list'));
     this.setColumnStatus(code, false);
     this.setValidation();
   }
 
+  /**
+   * When the selected column list is empty show the validation error
+   */
   setValidation(): void {
     const selectedColumns = this.getColumnsBySelected();
     const showValidationError = _.isEmpty(selectedColumns);
@@ -313,6 +401,9 @@ class ColumnSelector extends BaseView {
     return error.hide();
   }
 
+  /**
+   * Set all the columns selected to false when the user clicks on 'Clear'
+   */
   clearAllColumns(): void {
     this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       column.selected = false;
@@ -323,7 +414,9 @@ class ColumnSelector extends BaseView {
     this.renderColumns();
   }
 
-  // @TODO - Restore the column position on render
+  /**
+   * Fetch the attribute groups, open the modal and start listening to the search/click events
+   */
   openModal(): void {
     this.page = 1;
 
@@ -344,7 +437,7 @@ class ColumnSelector extends BaseView {
         content: _.template(this.modalTemplate)({
           groups,
           title: __('pim_datagrid.column_configurator.title'),
-          description: __('pim_datagrid.column_configurator.description')
+          description: __('pim_datagrid.column_configurator.description'),
         }),
         okText: __('pim_common.apply'),
       });
@@ -364,6 +457,9 @@ class ColumnSelector extends BaseView {
     });
   }
 
+  /**
+   * Set the selected columns list as sortable and save the sort order
+   */
   setSortable(): void {
     this.modal.$el
       .find('#column-list, #column-selection')
@@ -381,12 +477,14 @@ class ColumnSelector extends BaseView {
           this.setColumnSortOrder();
           this.setValidation();
         },
-      })
-      .disableSelection();
+      }).disableSelection();
 
     this.setColumnSortOrder();
   }
 
+  /**
+   * Get the column sort order from the DOM element and apply it to the loaded columns
+   */
   setColumnSortOrder(): void {
     this.loadedColumns = _.mapObject(this.loadedColumns, (column: Column) => {
       const sortOrder = this.modal.$el.find(`#column-selection [data-value="${column.code}"]`).index();
@@ -399,10 +497,16 @@ class ColumnSelector extends BaseView {
     });
   }
 
+  /**
+   * Get a list of the selected columns (from all the loaded ones)
+   */
   getColumnsBySelected(selected = true): {[name: string]: Column} {
     return _.pick(this.loadedColumns, (column: Column) => column.selected === selected);
   }
 
+  /**
+   * Save the list of selected columns (and their sort order) to the datagrid and reload the page
+   */
   saveColumnsToDatagridState(): void {
     this.setColumnSortOrder();
 
