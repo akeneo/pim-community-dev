@@ -100,6 +100,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('datagrid_actions.yml');
         $loader->load('files.yml');
         $loader->load('category_counters.yml');
+        $loader->load('handlers.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);
