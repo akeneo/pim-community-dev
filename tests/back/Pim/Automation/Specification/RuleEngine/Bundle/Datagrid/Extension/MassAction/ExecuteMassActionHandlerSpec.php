@@ -6,6 +6,8 @@ use Akeneo\Tool\Component\Console\CommandLauncher;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 use Prophecy\Argument;
@@ -21,7 +23,7 @@ class ExecuteMassActionHandlerSpec extends ObjectBehavior
 
     function it_is_a_mass_action_handler()
     {
-        $this->shouldHaveType('Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
+        $this->shouldHaveType(MassActionHandlerInterface::class);
     }
 
     function it_handles_datagrid_results(
@@ -45,9 +47,7 @@ class ExecuteMassActionHandlerSpec extends ObjectBehavior
 
         $launcher->executeBackground('akeneo:rule:run first_rule,second_rule --username=doe')->shouldBeCalled();
 
-        $this->handle($datagrid, $massAction)->shouldReturnAnInstanceOf(
-            'Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface'
-        );
+        $this->handle($datagrid, $massAction)->shouldReturnAnInstanceOf(MassActionResponseInterface::class);
     }
 
     function it_doesnt_handle_empty_results(
@@ -61,8 +61,6 @@ class ExecuteMassActionHandlerSpec extends ObjectBehavior
 
         $launcher->executeBackground(Argument::any())->shouldNotBeCalled();
 
-        $this->handle($datagrid, $massAction)->shouldReturnAnInstanceOf(
-            'Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface'
-        );
+        $this->handle($datagrid, $massAction)->shouldReturnAnInstanceOf(MassActionResponseInterface::class);
     }
 }

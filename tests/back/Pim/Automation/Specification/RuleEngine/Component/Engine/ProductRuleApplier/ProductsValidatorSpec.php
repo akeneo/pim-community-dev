@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -28,7 +29,7 @@ class ProductsValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator');
+        $this->shouldHaveType(ProductsValidator::class);
     }
 
     function it_validates_a_product(

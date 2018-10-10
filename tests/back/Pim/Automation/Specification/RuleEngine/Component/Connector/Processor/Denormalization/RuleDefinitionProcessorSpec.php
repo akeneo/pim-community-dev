@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -30,8 +32,8 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             $denormalizer,
             $validator,
             $detacher,
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition',
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule'
+            RuleDefinition::class,
+            Rule::class
         );
 
         $repository->getIdentifierProperties()->willReturn(['code']);
@@ -39,14 +41,12 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(
-            'Akeneo\Pim\Automation\RuleEngine\Component\Connector\Processor\Denormalization\RuleDefinitionProcessor'
-        );
+        $this->shouldHaveType(RuleDefinitionProcessor::class);
     }
 
     function it_is_an_import_processor()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor');
+        $this->shouldHaveType(AbstractProcessor::class);
     }
 
     function it_processes_a_new_valid_item(
@@ -87,7 +87,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
+           Rule::class,
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);
@@ -260,7 +260,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn($definition);
         $denormalizer->denormalize(
             $item,
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
+           Rule::class,
             null,
             ['definitionObject' => $definition]
         )->shouldBeCalled()->willReturn($rule);
@@ -309,7 +309,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
+           Rule::class,
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);
@@ -319,7 +319,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->willReturn(1);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
-        $this->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')->during('process', [$item]);
+        $this->shouldThrow(InvalidItemException::class)->during('process', [$item]);
     }
 
     function getMatchers()

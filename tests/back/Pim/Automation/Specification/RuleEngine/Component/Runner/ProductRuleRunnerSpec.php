@@ -2,12 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Runner;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Runner\ProductRuleRunner;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -19,18 +22,18 @@ class ProductRuleRunnerSpec extends ObjectBehavior
             $builder,
             $selector,
             $applier,
-            'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition'
+            ProductCondition::class
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Runner\ProductRuleRunner');
+        $this->shouldHaveType(ProductRuleRunner::class);
     }
 
     function it_is_a_runner()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface');
+        $this->shouldHaveType(RunnerInterface::class);
     }
 
     function it_supports_product_rule(RuleDefinitionInterface $definition1, RuleDefinitionInterface $definition2)

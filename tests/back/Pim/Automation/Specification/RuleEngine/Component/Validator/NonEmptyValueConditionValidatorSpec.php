@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -19,12 +21,12 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator');
+        $this->shouldHaveType(NonEmptyValueConditionValidator::class);
     }
 
     function it_is_a_constraint_validator()
     {
-        $this->shouldHaveType('Symfony\Component\Validator\ConstraintValidator');
+        $this->shouldHaveType(ConstraintValidator::class);
     }
 
     function it_adds_a_violation_if_the_operator_is_not_empty_and_the_value_is_empty(

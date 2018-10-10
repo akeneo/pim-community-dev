@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Manager\RuleRelationManager;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RuleRelationSubscriberSpec extends ObjectBehavior
@@ -38,7 +39,7 @@ class RuleRelationSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldHaveType(EventSubscriberInterface::class);
     }
 
     function it_deletes_a_rule_relation(

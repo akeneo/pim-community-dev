@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Filter\Orm\Attribute;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Filter\Orm\Attribute\IsSmartFilter;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -27,9 +28,7 @@ class IsSmartFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(
-            'Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Filter\Orm\Attribute\IsSmartFilter'
-        );
+        $this->shouldHaveType(IsSmartFilter::class);
     }
 
     function it_does_not_apply_the_filter_with_invalid_data($ds)

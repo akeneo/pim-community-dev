@@ -2,6 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Denormalizer\ProductRule;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Denormalizer\ProductRule\ContentDenormalizer;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyAction;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -11,11 +16,11 @@ class ContentDenormalizerSpec extends ObjectBehavior
     function let(DenormalizerInterface $chainedDenormalizer)
     {
         $this->beConstructedWith(
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
-            'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition',
+            Rule::class,
+           ProductCondition::class,
             [
-                'copy_value' => 'Akeneo\Pim\Automation\RuleEngine\Bundle\Model\ProductCopyValueAction',
-                'set_value' => 'Akeneo\Pim\Automation\RuleEngine\Bundle\Model\ProductSetValueAction',
+                'copy_value' => ProductCopyAction::class,
+                'set_value' => ProductSetAction::class,
             ]
         );
 
@@ -24,12 +29,12 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Denormalizer\ProductRule\ContentDenormalizer');
+        $this->shouldHaveType(ContentDenormalizer::class);
     }
 
     function it_is_a_denormalizer()
     {
-        $this->shouldHaveType('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
+        $this->shouldHaveType(DenormalizerInterface::class);
     }
 
     function it_denormalizes_a_product_rule_content($chainedDenormalizer)
@@ -47,13 +52,13 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $chainedDenormalizer->denormalize(
             ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-            'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition',
+           ProductCondition::class,
             Argument::cetera()
         )->shouldBeCalled();
 
         $chainedDenormalizer->denormalize(
             ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-            'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition',
+           ProductCondition::class,
             Argument::cetera()
         )->shouldBeCalled();
 
@@ -70,7 +75,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         // TODO: use a custom matcher to test it
-        $this->denormalize($content, 'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule');
+        $this->denormalize($content, Rule::class);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_action_type()
@@ -88,7 +93,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an action with no type.', json_encode($content)))
-        )->during('denormalize', [$content, 'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, Rule::class]);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_an_invalid_action_type($chainedDenormalizer)
@@ -110,6 +115,6 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an unknown type of action "unknown_action".', json_encode($content)))
-        )->during('denormalize', [$content, 'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, Rule::class]);
     }
 }

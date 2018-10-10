@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Executor;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Executor\RulesExecutor;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -23,12 +25,12 @@ class RulesExecutorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Connector\Executor\RulesExecutor');
+        $this->shouldHaveType(RulesExecutor::class);
     }
 
     function it_should_implement_item_writer_interface()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldHaveType(ItemWriterInterface::class);
     }
 
     function it_should_run_all_the_rules_for_products_and_product_models(

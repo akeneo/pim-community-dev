@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\IncludeChild
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\IncludeChildrenOptionValidator;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -26,7 +27,7 @@ class IncludeChildrenOptionValidatorSpec extends ObjectBehavior
 
     function it_is_a_constraint_validator()
     {
-        $this->shouldHaveType('Symfony\Component\Validator\ConstraintValidator');
+        $this->shouldHaveType(ConstraintValidator::class);
     }
 
     function it_throws_exception_if_it_is_not_an_include_children_constraint(Constraint $constraint)

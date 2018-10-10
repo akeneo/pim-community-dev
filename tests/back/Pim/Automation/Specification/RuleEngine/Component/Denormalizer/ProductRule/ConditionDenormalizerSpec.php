@@ -2,24 +2,27 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Denormalizer\ProductRule;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Denormalizer\ProductRule\ConditionDenormalizer;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ConditionDenormalizerSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition');
+        $this->beConstructedWith(ProductCondition::class);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Denormalizer\ProductRule\ConditionDenormalizer');
+        $this->shouldHaveType(ConditionDenormalizer::class);
     }
 
     function it_implements()
     {
-        $this->shouldHaveType('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
+        $this->shouldHaveType(DenormalizerInterface::class);
     }
 
     function it_denormalizes()
@@ -33,12 +36,12 @@ class ConditionDenormalizerSpec extends ObjectBehavior
         ];
 
         $this->denormalize($data, Argument::any())
-            ->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition');
+            ->shouldHaveType(ProductCondition::class);
     }
 
     function it_supports_denormalization()
     {
-        $type = 'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition';
+        $type = ProductCondition::class;
 
         $this->supportsDenormalization(Argument::any(), $type)->shouldReturn(true);
     }

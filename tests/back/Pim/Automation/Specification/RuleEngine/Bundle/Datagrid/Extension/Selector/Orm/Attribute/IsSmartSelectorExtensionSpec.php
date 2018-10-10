@@ -2,9 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Selector\Orm\Attribute;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Selector\Orm\Attribute\IsSmartSelectorExtension;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 
@@ -17,14 +19,12 @@ class IsSmartSelectorExtensionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(
-            'Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Selector\Orm\Attribute\IsSmartSelectorExtension'
-        );
+        $this->shouldHaveType(IsSmartSelectorExtension::class);
     }
 
     function it_is_a_datagrid_extension()
     {
-        $this->shouldImplement('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
+        $this->shouldImplement(ExtensionVisitorInterface::class);
     }
 
     function it_applies_only_to_the_attribute_grid(DatagridConfiguration $config)

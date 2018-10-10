@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extensi
 
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\MassActionEvents;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
@@ -29,11 +30,11 @@ class RuleImpactedProductCountActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_PRE_HANDLER,
-            Argument::type('Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_POST_HANDLER,
-            Argument::type('Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);

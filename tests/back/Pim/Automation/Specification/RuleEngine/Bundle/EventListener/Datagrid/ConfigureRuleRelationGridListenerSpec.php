@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\ConfigureRuleRelationGridListener;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -19,7 +21,7 @@ class ConfigureRuleRelationGridListenerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\ConfigureRuleRelationGridListener');
+        $this->shouldHaveType(ConfigureRuleRelationGridListener::class);
     }
 
     function it_doesnt_configure_if_no_params(
@@ -48,11 +50,11 @@ class ConfigureRuleRelationGridListenerSpec extends ObjectBehavior
         $datagrid->getDatasource()->willReturn($datasource);
         $datasource->getQueryBuilder()->willReturn($qb);
 
-        $requestParams->get('resourceName', null)->willReturn('Akeneo\Pim\Structure\Component\Model\Attribute');
-        $requestParams->get('resourceName')->willReturn('Akeneo\Pim\Structure\Component\Model\Attribute');
+        $requestParams->get('resourceName', null)->willReturn(Attribute::class);
+        $requestParams->get('resourceName')->willReturn(Attribute::class);
         $requestParams->get('resourceId')->willReturn(35);
 
-        $qb->joinResource('Akeneo\Pim\Structure\Component\Model\Attribute', 35)->shouldBeCalled();
+        $qb->joinResource(Attribute::class, 35)->shouldBeCalled();
 
         $this->configure($event);
     }

@@ -2,6 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Model;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ConditionInterface;
 use PhpSpec\ObjectBehavior;
 
 class ProductConditionSpec extends ObjectBehavior
@@ -15,17 +18,17 @@ class ProductConditionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition');
+        $this->shouldHaveType(ProductCondition::class);
     }
 
     function it_is_a_condidtion()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Model\ConditionInterface');
+        $this->shouldHaveType(ConditionInterface::class);
     }
 
     function it_is_a_product_condidtion()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface');
+        $this->shouldHaveType(ProductConditionInterface::class);
     }
 
     function it_constructs_a_product_condition()

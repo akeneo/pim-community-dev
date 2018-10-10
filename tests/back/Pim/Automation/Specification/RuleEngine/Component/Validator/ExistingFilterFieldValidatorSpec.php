@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -20,12 +22,12 @@ class ExistingFilterFieldValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator');
+        $this->shouldHaveType(ExistingFilterFieldValidator::class);
     }
 
     function it_is_a_constraint_validator()
     {
-        $this->shouldHaveType('Symfony\Component\Validator\ConstraintValidator');
+        $this->shouldHaveType(ConstraintValidator::class);
     }
 
     function it_adds_a_violation_if_no_filter_exists(

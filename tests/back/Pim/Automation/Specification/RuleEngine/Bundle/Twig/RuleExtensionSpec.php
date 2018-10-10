@@ -23,7 +23,7 @@ class RuleExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldHaveType('\Twig_Extension');
+        $this->shouldHaveType(\Twig_Extension::class);
     }
 
     function it_defines_filters()
@@ -32,13 +32,13 @@ class RuleExtensionSpec extends ObjectBehavior
 
         $filters->shouldHaveCount(3);
 
-        $filters[0]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
+        $filters[0]->shouldBeAnInstanceOf(\Twig_SimpleFilter::class);
         $filters[0]->getName()->shouldReturn('present_rule_action_value');
 
-        $filters[1]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
+        $filters[1]->shouldBeAnInstanceOf(\Twig_SimpleFilter::class);
         $filters[1]->getName()->shouldReturn('append_locale_and_scope_context');
 
-        $filters[2]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
+        $filters[2]->shouldBeAnInstanceOf(\Twig_SimpleFilter::class);
         $filters[2]->getName()->shouldReturn('append_include_children_context');
     }
 

@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Bundle\Manager;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelation;
@@ -24,8 +26,8 @@ class RuleRelationManagerSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         RuleRelationRepositoryInterface $ruleRelationRepo
     ) {
-        $this->beConstructedWith($ruleRelationRepo, $attributeRepository, $categoryRepository, 'Akeneo\Pim\Structure\Component\Model\Attribute',
-            'Akeneo\Pim\Enrichment\Component\Category\Model\Category'
+        $this->beConstructedWith($ruleRelationRepo, $attributeRepository, $categoryRepository, Attribute::class,
+            Category::class
         );
     }
 
@@ -75,11 +77,11 @@ class RuleRelationManagerSpec extends ObjectBehavior
 
     function it_tells_if_a_resource_is_impacted($ruleRelationRepo)
     {
-        $ruleRelationRepo->isResourceImpactedByRule(10, 'Akeneo\Pim\Structure\Component\Model\Attribute')->willReturn(true);
-        $ruleRelationRepo->isResourceImpactedByRule(20, 'Akeneo\Pim\Structure\Component\Model\Attribute')->willReturn(false);
+        $ruleRelationRepo->isResourceImpactedByRule(10, Attribute::class)->willReturn(true);
+        $ruleRelationRepo->isResourceImpactedByRule(20, Attribute::class)->willReturn(false);
 
         $this->isResourceImpacted(10, 'attribute')->shouldReturn(true);
-        $this->isResourceImpacted(20, 'Akeneo\Pim\Structure\Component\Model\Attribute')->shouldReturn(false);
+        $this->isResourceImpacted(20, Attribute::class)->shouldReturn(false);
     }
 
     function it_throws_an_exception_when_retrieving_rules_of_an_unknown_resource()
@@ -103,6 +105,6 @@ class RuleRelationManagerSpec extends ObjectBehavior
         $ruleRelationRepo->findBy(Argument::any())->willReturn($relations);
 
         $this->getRulesForResource(Argument::any(), 'attribute')->shouldReturn($definitions);
-        $this->getRulesForResource(Argument::any(), 'Akeneo\Pim\Structure\Component\Model\Attribute')->shouldReturn($definitions);
+        $this->getRulesForResource(Argument::any(), Attribute::class)->shouldReturn($definitions);
     }
 }
