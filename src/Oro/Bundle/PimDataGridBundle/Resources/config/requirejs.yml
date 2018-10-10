@@ -38,7 +38,11 @@ config:
 
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
+
+        # Deprecated (published products grid only)
         pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
+        pim/datagrid/column-selector:           pimdatagrid/js/datagrid/column-selector
+
         pim/datagrid/display-selector:          pimdatagrid/js/datagrid/display-selector
         oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget
         pim/datagrid/state:                     pimdatagrid/js/datagrid/state
