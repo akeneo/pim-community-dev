@@ -1,3 +1,6 @@
+parameters:
+    pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
+
 services:
     pim_pdf_generator.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController'
