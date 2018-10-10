@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {NormalizedAttributeOptionsMapping} from '../model/normalized-attribute-options-mapping';
 import AttributeOptionsMappingSaver = require('./attribute-options-mapping-saver');
 const BaseSaverForm = require('pim/form/common/save-form');
 
@@ -21,16 +22,16 @@ class SaverForm extends BaseSaverForm {
    * {@inheritdoc}
    */
   public save(): JQueryPromise<any> {
-    const entity = this.getFormData();
+    const entity = this.getFormData()  as NormalizedAttributeOptionsMapping;
 
     this.showLoadingMask();
     this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
     return AttributeOptionsMappingSaver
-      .setFamilyCode(this.getFormData().family)
-      .setFranklinAttributeCode(this.getFormData().pim_ai_attribute)
+      .setFamilyCode(entity.family)
+      .setFranklinAttributeCode(entity.franklin_attribute_code)
       .setUrl(this.config.url)
-      .save(entity.code, entity, this.config.method || 'POST')
+      .save(null, entity, this.config.method || 'POST')
       .then((data: any) => {
         this.postSave();
         this.setData(data);

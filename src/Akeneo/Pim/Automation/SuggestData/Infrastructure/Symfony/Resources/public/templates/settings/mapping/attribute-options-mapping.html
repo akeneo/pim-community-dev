@@ -8,33 +8,33 @@
     <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
     <table class="AknGrid AknGrid--unclickable">
         <tr class="AknGrid-header">
-            <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pim_ai_attribute_option %></th>
+            <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklin_attribute_option %></th>
             <th class="AknGrid-headerCell"><%- catalog_attribute_option %></th>
             <th class="AknGrid-headerCell"></th>
             <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- suggest_data %></th>
         </tr>
-        <% Object.keys(mapping).forEach((pim_ai_attribute_option_code) => { %>
+        <% Object.keys(mapping).forEach((franklin_attribute_option_code) => { %>
         <tr
                 class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row"
-                data-pim_ai_attribute_option="<%- mapping[pim_ai_attribute_option_code].pim_ai_attribute_option_code.label %>"
-                data-status="<%- mapping[pim_ai_attribute_option_code].status %>"
+                data-franklin_attribute_option="<%- mapping[franklin_attribute_option_code].franklin_attribute_option_code.label %>"
+                data-status="<%- mapping[franklin_attribute_option_code].status %>"
         >
             <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
-                <%- mapping[pim_ai_attribute_option_code].pim_ai_attribute_option_code.label %>
+                <%- mapping[franklin_attribute_option_code].franklin_attribute_option_code.label %>
             </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute-code="<%- pim_ai_attribute_option_code %>"></td>
+            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklin_attribute_option_code %>"></td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
                 <div class="AknButtonList AknButtonList--right">
                     <div
                             class="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item option-mapping"
-                            data-pim-ai-attribute-option-code="<%- pim_ai_attribute_option_code %>"
+                            data-franklin-attribute-option-code="<%- franklin_attribute_option_code %>"
                             title="Edit"
                             style="display: none;"
                     ></div>
                 </div>
             </td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
-                <%- statuses[mapping[pim_ai_attribute_option_code].status] %>
+                <%- statuses[mapping[franklin_attribute_option_code].status] %>
             </td>
         </tr>
         <% }) %>

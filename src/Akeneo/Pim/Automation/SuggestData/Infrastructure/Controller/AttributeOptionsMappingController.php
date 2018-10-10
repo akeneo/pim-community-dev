@@ -29,27 +29,27 @@ class AttributeOptionsMappingController
     {
         return new JsonResponse([
             'family' => 'router',
-            'pim_ai_attribute' => 'color',
+            'franklin_attribute_code' => 'color',
             'mapping' => [
                 'color_1' => [
-                    'pim_ai_attribute_option_code' => [
+                    'franklin_attribute_option_code' => [
                         'label' => 'Color 1',
                     ],
-                    'attribute_option' => null,
+                    'catalog_attribute_option_code' => null,
                     'status' => 0
                 ],
                 'color_2' => [
-                    'pim_ai_attribute_option_code' => [
+                    'franklin_attribute_option_code' => [
                         'label' => 'Color 2',
                     ],
-                    'attribute_option' => 'color2',
+                    'catalog_attribute_option_code' => 'color2',
                     'status' => 1
                 ],
                 'color_3' => [
-                    'pim_ai_attribute_option_code' => [
+                    'franklin_attribute_option_code' => [
                         'label' => 'Color 3',
                     ],
-                    'attribute_option' => null,
+                    'catalog_attribute_option_code' => null,
                     'status' => 2
                 ],
             ]
@@ -63,6 +63,29 @@ class AttributeOptionsMappingController
      */
     public function updateAction()
     {
+        /** Current return from the Front
+         * {
+         *     "family":"router",
+         *     "franklin_attribute_code":"color",
+         *     "mapping":{
+         *         "color_1":{
+         *             "franklin_attribute_option_code":{"label":"Color 1"},
+         *             "catalog_attribute_option_code":"color1",
+         *             "status":0
+         *         },
+         *         "color_2":{
+         *             "franklin_attribute_option_code":{"label":"Color 2"},
+         *             "catalog_attribute_option_code":"color2",
+         *             "status":1
+         *         },
+         *         "color_3":{
+         *             "franklin_attribute_option_code":{"label":"Color 3"},
+         *             "catalog_attribute_option_code":null,
+         *             "status":2
+         *         }
+         *     }
+         * }:
+         */
         sleep(1);
 
         return new JsonResponse(['response' => 'It\'s a temporary OK!']);

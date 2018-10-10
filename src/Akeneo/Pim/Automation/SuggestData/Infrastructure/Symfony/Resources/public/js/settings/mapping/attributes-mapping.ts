@@ -140,7 +140,7 @@ class AttributeMapping extends BaseForm {
    */
   private appendAttributeSelector(mapping: any, pimAiAttributeCode: string) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]',
+      '.attribute-selector[data-franklin-attribute-code="' + pimAiAttributeCode + '"]',
     );
     const attributeSelector = new SimpleSelectAttribute({
       config: {
@@ -186,12 +186,14 @@ class AttributeMapping extends BaseForm {
       .then((attributes: Array<{ code: string, type: string }>) => {
       Object.keys(mapping).forEach((pimAiAttribute) => {
         const $attributeOptionButton = this.$el.find(
-          '.option-mapping[data-pim-ai-attribute-code=' + pimAiAttribute + ']',
+          '.option-mapping[data-franklin-attribute-code=' + pimAiAttribute + ']',
         );
-        const attribute = attributes.find((attr: { code: string, type: string }) => {
-          return attribute.code === mapping[pimAiAttribute];
-        });
-        const type = undefined === attr ? '' : attr.type;
+        const attribute: { code: string, type: string } | undefined = attributes
+          .find((attr: { code: string, type: string }) => {
+            return attr.code === mapping[pimAiAttribute];
+          },
+        );
+        const type = undefined === attribute ? '' : attribute.type;
 
         ['pim_catalog_simpleselect', 'pim_catalog_multiselect'].indexOf(type) >= 0 ?
           $attributeOptionButton.show() :
@@ -203,16 +205,16 @@ class AttributeMapping extends BaseForm {
   /**
    * Open the modal for the attribute options mapping
    *
-   * @param { currentTarget: any } event
+   * @param { { currentTarget: any } } event
    */
   private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
     const $line = $(event.currentTarget).closest('.line');
-    const pimAiAttributeLabel = $line.data('pim_ai_attribute');
-    const pimAiAttributeCode = $line.find('.attribute-selector').data('pim-ai-attribute-code');
+    const franklinAttributeLabel = $line.data('pim_ai_attribute') as string;
+    const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
-        $line.find('input[name="mapping.' + pimAiAttributeCode + '.attribute"]').val() as string;
-
+        $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;
     const familyCode = Router.match(window.location.hash).params.familyCode;
+
     $.when(
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
       FetcherRegistry.getFetcher('family').fetch(familyCode),
@@ -239,9 +241,9 @@ class AttributeMapping extends BaseForm {
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
       formContent
         .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
-        .setPimAiAttributeLabel(pimAiAttributeLabel)
-        .setPimAttributeCode(catalogAttributeCode)
-        .setFamilyCode(familyCode);
+        .setFamilyCode(familyCode)
+        .setFranklinAttributeLabel(franklinAttributeLabel)
+        .setCatalogAttributeCode(catalogAttributeCode);
 
       this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
 
@@ -249,7 +251,7 @@ class AttributeMapping extends BaseForm {
 
       form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
 
-      this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal);
+      this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal.bind(this));
     });
   }
 
@@ -263,7 +265,8 @@ class AttributeMapping extends BaseForm {
     }
 
     if (null !== this.attributeOptionsMappingForm) {
-      this.attributeOptionsMappingForm.shutdown();
+      // TODO Does not work.
+      this.attributeOptionsMappingForm.setData({});
       this.attributeOptionsMappingForm = null;
     }
   }

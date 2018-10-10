@@ -26,7 +26,7 @@ extensions:
                 pending: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending
                 mapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped
                 unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
-                pim_ai_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.pim_ai_attribute_option
+                franklin_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.franklin_attribute_option
                 catalog_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.catalog_attribute_option
                 suggest_data: akeneo_suggest_data.entity.attribute_options_mapping.fields.status
 
@@ -47,7 +47,7 @@ extensions:
         position: 10
         targetZone: filters
         config:
-            fieldName: 'pim_ai_attribute_option'
+            fieldName: 'franklin_attribute_option'
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-status-filter:
         module: pimee/settings/mapping/status-filter

@@ -11,32 +11,19 @@ import Filterable = require('akeneosuggestdata/js/common/filterable');
 import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import {NormalizedAttributeOptionsMapping} from '../../model/normalized-attribute-options-mapping';
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Routing = require('routing');
 const template = require('pimee/template/settings/mapping/attribute-options-mapping');
 
-interface NormalizedAttributeOptionsMapping {
-  family: string;
-  pim_ai_attribute: string;
-  mapping: {
-    [pimAiAttributeOptionCode: string]: {
-      pim_ai_attribute_option_code: {
-        label: string;
-      },
-      attribute_option: string;
-      status: number;
-    },
-  };
-}
-
 interface Config {
   labels: {
     pending: string;
     mapped: string;
     unmapped: string;
-    pim_ai_attribute_option: string;
+    franklin_attribute_option: string;
     catalog_attribute_option: string;
     suggest_data: string;
   };
@@ -57,15 +44,15 @@ class AttributeOptionsMapping extends BaseForm {
       pending: '',
       mapped: '',
       unmapped: '',
-      pim_ai_attribute_option: '',
+      franklin_attribute_option: '',
       catalog_attribute_option: '',
       suggest_data: '', // TODO Rename to attribute_option_code_mapping
     },
   };
   private familyLabel: string;
   private familyCode: string;
-  private pimAttributeCode: string;
-  private pimAiAttributeLabel: string;
+  private catalogAttributeCode: string;
+  private franklinAttributeLabel: string;
 
   /**
    * {@inheritdoc}
@@ -113,13 +100,13 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   /**
-   * Sets the PIM.ai attribute label (for the header display)
+   * Sets the Franklin attribute label (for the header display)
    *
-   * @param {string} pimAiAttributeLabel
+   * @param {string} franklinAttributeLabel
    * @return AttributeOptionsMapping
    */
-  public setPimAiAttributeLabel(pimAiAttributeLabel: string): AttributeOptionsMapping {
-    this.pimAiAttributeLabel = pimAiAttributeLabel;
+  public setFranklinAttributeLabel(franklinAttributeLabel: string): AttributeOptionsMapping {
+    this.franklinAttributeLabel = franklinAttributeLabel;
 
     return this;
   }
@@ -137,13 +124,13 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   /**
-   * Sets the PIM.ai attribute code (for the current attribute options fetching)
+   * Sets the Catalog attribute code (for the current attribute options fetching)
    *
-   * @param {string} pimAttributeCode
+   * @param {string} catalogAttributeCode
    * @return AttributeOptionsMapping
    */
-  public setPimAttributeCode(pimAttributeCode: string): AttributeOptionsMapping {
-    this.pimAttributeCode = pimAttributeCode;
+  public setCatalogAttributeCode(catalogAttributeCode: string): AttributeOptionsMapping {
+    this.catalogAttributeCode = catalogAttributeCode;
 
     return this;
   }
@@ -163,13 +150,13 @@ class AttributeOptionsMapping extends BaseForm {
   /**
    * Fetch the mapping and return a
    *
-   * @return {JQueryPromise<NormalizedAttributeOptionsMapping>}
+   * @return { JQueryPromise<NormalizedAttributeOptionsMapping> }
    */
   private fetchMapping(): JQueryPromise<NormalizedAttributeOptionsMapping> {
     return $.when(
       FetcherRegistry
         .getFetcher('attribute-options-mapping')
-        .fetch(this.familyCode, {attributeCode: this.pimAttributeCode})
+        .fetch(this.familyCode, {attributeCode: this.catalogAttributeCode})
         .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
           return attributeOptionMapping;
         }),
@@ -184,21 +171,21 @@ class AttributeOptionsMapping extends BaseForm {
     this.$el.html(this.template({
       title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
         familyLabel: this.familyLabel,
-        pimAiAttributeLabel: this.pimAiAttributeLabel,
+        franklinAttributeLabel: this.franklinAttributeLabel,
       }),
       mapping,
-      pim_ai_attribute_option: __(this.config.labels.pim_ai_attribute_option),
+      franklin_attribute_option: __(this.config.labels.franklin_attribute_option),
       catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
       suggest_data: __(this.config.labels.suggest_data),
       statuses: this.getMappingStatuses(),
     }));
 
-    Object.keys(mapping).forEach((pimAiAttributeOptionCode: string) => {
-      this.appendAttributeOptionSelector(pimAiAttributeOptionCode);
+    Object.keys(mapping).forEach((franklinAttributeOptionCode: string) => {
+      this.appendAttributeOptionSelector(franklinAttributeOptionCode);
     });
 
     Filterable.afterRender(this, __(
-      'akeneo_suggest_data.entity.attribute_options_mapping.fields.pim_ai_attribute_option',
+      'akeneo_suggest_data.entity.attribute_options_mapping.fields.franklin_attribute_option',
     ));
 
     this.renderExtensions();
@@ -209,21 +196,21 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   /**
-   * @param {string} pimAiAttributeOptionCode
+   * @param {string} franklinAttributeOptionCode
    */
-  private appendAttributeOptionSelector(pimAiAttributeOptionCode: string) {
+  private appendAttributeOptionSelector(franklinAttributeOptionCode: string) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeOptionCode + '"]',
+      '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeOptionCode + '"]',
     );
     const attributeSelector = new SimpleSelectAsync({
       config: {
-        fieldName: 'mapping.' + pimAiAttributeOptionCode + '.attribute_option',
+        fieldName: 'mapping.' + franklinAttributeOptionCode + '.catalog_attribute_option_code',
         label: '',
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
     attributeSelector.setChoiceUrl(
-      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.pimAttributeCode}),
+      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.catalogAttributeCode}),
     );
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);

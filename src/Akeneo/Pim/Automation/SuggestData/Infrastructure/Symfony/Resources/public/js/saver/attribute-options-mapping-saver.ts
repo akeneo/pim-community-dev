@@ -19,7 +19,6 @@ const Routing = require('routing');
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class Saver extends BaseSaver {
-
   /**
    * Set the catalog Family code
    *
