@@ -18,6 +18,7 @@ define(
         'pim/fetcher-registry',
         'pim/field-manager',
         'pim/form-builder',
+        'require-context',
         'oro/messenger'
     ],
     function (
@@ -30,10 +31,23 @@ define(
         FetcherRegistry,
         FieldManager,
         formBuilder,
+        RequireContext,
         messenger
     ) {
         return BaseForm.extend({
-            template: _.template(template),
+            template: null,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (options) {
+                options = options || {};
+
+                this.template = _.template(template);
+                if (options.config && options.config.template) {
+                    this.template = _.template(RequireContext(options.config.template));
+                }
+            },
 
             /**
              * {@inheritdoc}
@@ -56,6 +70,7 @@ define(
                     }
                     saveButtonsExtension.trigger('save-buttons:add-button', button);
                 }.bind(this));
+
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

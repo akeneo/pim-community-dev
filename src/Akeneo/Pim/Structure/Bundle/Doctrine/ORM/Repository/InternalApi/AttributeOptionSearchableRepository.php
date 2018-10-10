@@ -28,8 +28,6 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     protected $attributeRepository;
 
     /**
-     * TODO Remove null default on last parameter on master branch
-     *
      * @param EntityManagerInterface       $entityManager
      * @param string                       $entityName
      * @param AttributeRepositoryInterface $attributeRepository
@@ -37,7 +35,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     public function __construct(
         EntityManagerInterface $entityManager,
         $entityName,
-        AttributeRepositoryInterface $attributeRepository = null
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->entityManager       = $entityManager;
         $this->entityName          = $entityName;
@@ -117,9 +115,6 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
      */
     protected function isAttributeAutoSorted($attributeIdentifier)
     {
-        if (null === $this->attributeRepository) {
-            return false;
-        }
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
 
         return $attribute->getProperty('auto_option_sorting');

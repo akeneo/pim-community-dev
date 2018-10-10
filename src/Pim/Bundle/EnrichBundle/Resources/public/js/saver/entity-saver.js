@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Module to save group type
+ * Generic module to save an entity
  *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
