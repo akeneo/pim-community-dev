@@ -148,7 +148,7 @@ class EditUploadedFileValueCommandValidator extends ConstraintValidator
 
     private function getMaxFileSizeInKb(ImageAttribute $attribute): string
     {
-        $kb = $attribute->getMaxFileSize()->floatValue() * 1024;
+        $kb = $attribute->getMaxFileSize()->floatValue() * 1000;
 
         return (int) $kb . 'k';
     }

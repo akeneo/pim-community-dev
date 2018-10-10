@@ -51,9 +51,9 @@
           "editRecordValueCommands": [
             {
               "attribute": {
-                "maxFileSizeLimit": true,
+                "maxFileSizeLimit": false,
                 "maxFileSize": {
-                  "limit": true
+                  "limit": false
                 },
                 "allowedExtensions": {
                   "allAllowed": false
@@ -82,9 +82,9 @@
         "propertyPath": "values.portrait",
         "invalidValue": {
           "attribute": {
-            "maxFileSizeLimit": true,
+            "maxFileSizeLimit": false,
             "maxFileSize": {
-              "limit": true
+              "limit": false
             },
             "allowedExtensions": {
               "allAllowed": false

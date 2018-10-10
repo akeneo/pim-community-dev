@@ -250,7 +250,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('200.10'),
+            AttributeMaxFileSize::noLimit(),
             AttributeAllowedExtensions::fromList(['png'])
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')

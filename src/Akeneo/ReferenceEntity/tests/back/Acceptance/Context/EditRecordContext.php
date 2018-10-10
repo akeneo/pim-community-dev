@@ -99,7 +99,7 @@ final class EditRecordContext implements Context
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
     private const UPDATED_DUMMY_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::UPDATED_DUMMY_FILENAME;
-    private const WRONG_IMAGE_SIZE = 20;
+    private const WRONG_IMAGE_SIZE = 20000;
     private const WRONG_EXTENSION = 'gif';
     private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
     private const WRONG_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'

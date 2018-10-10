@@ -133,7 +133,7 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
         }
 
         if ($attribute->hasMaxFileSizeLimit()) {
-            if ($command->size > $this->getMaxFileSizeInKb($attribute)) {
+            if ($command->size > $this->getMaxFileSizeInByte($attribute)) {
                 $this->context
                     ->buildViolation(EditStoredFileValueCommandConstraint::FILE_SIZE_EXCEEDED_MESSAGE)
                     ->atPath((string) $attribute->getCode())
@@ -144,8 +144,8 @@ class EditStoredFileValueCommandValidator extends ConstraintValidator
         return $violations;
     }
 
-    private function getMaxFileSizeInKb(ImageAttribute $attribute): float
+    private function getMaxFileSizeInByte(ImageAttribute $attribute): float
     {
-        return $attribute->getMaxFileSize()->floatValue() * 1000;
+        return $attribute->getMaxFileSize()->floatValue() * 1000000;
     }
 }
