@@ -1,3 +1,7 @@
+variable "google_project_name" {
+  type = "string"
+}
+
 variable "dns_external" {
   type = "string"
 }
@@ -8,7 +12,6 @@ variable "dns_internal" {
 
 variable "dns_zone" {
   type    = "string"
-  default = "cloud-akeneo-com"
 }
 
 variable "dns_project" {

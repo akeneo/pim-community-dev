@@ -1,10 +1,15 @@
+resource "random_string" "mailgun_password" {
+  length  = 12
+  special = false
+}
+
 resource "null_resource" "mailgun-credential" {
   provisioner "local-exec" {
     command = <<EOF
-curl -s --user 'api:${var.mailgun_api_key}' \
-		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials \
-		-F login='${var.mailgun_login}@${var.mailgun_domain}' \
-		-F password='${var.mailgun_password}' ; \
+curl -s --user 'api:${var.MAILGUN_API_KEY}' \
+		https://api.mailgun.net/v3/domains/${var.MAILGUN_CLOUD_DOMAIN}/credentials \
+		-F login='${mailgun_login}@${var.mailgun_domain}' \
+		-F password='${random_string.mailgun_password.result}' ; \
 EOF
   }
 
@@ -12,8 +17,8 @@ EOF
     when = "destroy"
 
     command = <<EOF
-curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
-		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials/${var.mailgun_login}@${var.mailgun_domain}
+curl -s --user 'api:${var.MAILGUN_API_KEY}' -X DELETE \
+		https://api.mailgun.net/v3/domains/${var.MAILGUN_CLOUD_DOMAIN}/credentials/${data.template_file.mailgun_login.rendered}
 EOF
   }
 }
