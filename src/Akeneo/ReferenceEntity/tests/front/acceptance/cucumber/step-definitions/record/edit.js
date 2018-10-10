@@ -46,8 +46,8 @@ module.exports = async function(cucumber) {
         answerJson(
           request,
           {
-            "originalFilename":"philou.png",
-            "filePath":"/a/b/c/philou.png"
+            'originalFilename':'philou.png',
+            'filePath':'/a/b/c/philou.png'
           },
           200
         );
