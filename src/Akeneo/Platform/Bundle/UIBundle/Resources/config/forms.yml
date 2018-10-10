@@ -138,3 +138,11 @@ services:
             - '@pim_localization.provider.ui_locale'
         tags:
             - { name: form.type, alias: "pim_locale" }
+
+    pim_enrich.form.type.async_select:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType
+        arguments:
+            - '@router'
+            - '@pim_enrich.factory.transformer.identifiable_model'
+        tags:
+            - { name: form.type, alias: pim_async_select }
