@@ -8,11 +8,9 @@ const Routing = require('routing');
 const DatagridState = require('pim/datagrid/state');
 
 interface AttributeGroup {
-  label: string;
-  labels: any;
   code: string;
-  attributes: string[];
-  children: number;
+  label: string;
+  count: number;
 }
 
 interface Column {
@@ -25,12 +23,11 @@ interface Column {
 }
 
 // @TODO - Load columns with dataLocale
-// @TODO - Add system columns attribute group
 class ColumnSelector extends BaseView {
   public config: any;
   public datagridCollection: Backbone.Collection<any>;
   public datagridElement: any;
-  public loadedAttributeGroups: {[name: string]: AttributeGroup};
+  public loadedAttributeGroups: AttributeGroup[];
   public loadedColumns: {[name: string]: Column};
   public modal: any;
   public debounceSearchTimer: any;
@@ -55,8 +52,7 @@ class ColumnSelector extends BaseView {
           </li>
           <% _.each(groups, (group) => { %>
             <li class="AknVerticalList-item AknVerticalList-item--selectable tab" data-group data-value="<%- group.code %>">
-                <%- group.label %>
-                <span class="AknBadge"><%- group.children %></span>
+                <%- group.label %><span class="AknBadge"><%- group.count %></span>
             </li>
           <% }) %>
         </ul>
@@ -67,8 +63,8 @@ class ColumnSelector extends BaseView {
       <div class="AknColumnConfigurator-listContainer" data-columns></div>
     </div>
     <div class="AknColumnConfigurator-column">
-        <div class="AknColumnConfigurator-columnHeader">Selected Columns
-          <button class="AknButton AknButton--grey reset"> Clear </button>
+        <div class="AknColumnConfigurator-columnHeader"><%- _.__("pim_datagrid.column_configurator.displayed_columns") %>
+          <button class="AknButton AknButton--grey reset"><%- _.__("pim_datagrid.column_configurator.clear") %></button>
          </div>
          <div class="AknColumnConfigurator-listContainer" data-columns-selected></div>
     </div>
@@ -109,7 +105,7 @@ class ColumnSelector extends BaseView {
   constructor(options: {config: any}) {
     super({...options});
 
-    this.loadedAttributeGroups = {};
+    this.loadedAttributeGroups = [];
     this.loadedColumns = {};
     this.searchInputSelector = 'input[type="search"]';
     this.attributeGroupSelector = '[data-attributes] [data-group]';
@@ -131,18 +127,12 @@ class ColumnSelector extends BaseView {
     return this;
   }
 
-  // @TODO - Change to correct endpoint after it's implemented
-  fetchAttributeGroups(): PromiseLike<{[name: string]: AttributeGroup}> {
+  fetchAttributeGroups(): PromiseLike<AttributeGroup[]> {
+    const url = Routing.generate('pim_datagrid_productgrid_available_columns_groups');
+
     if (_.isEmpty(this.loadedAttributeGroups)) {
-      return $.get('/rest/attribute-group').then((groups: {[name: string]: AttributeGroup}) => {
-        const loadedAttributeGroups = _.mapObject(groups, (group: AttributeGroup) => {
-          group.label = group.labels.en_US;
-          group.children = group.attributes.length;
-
-          return group;
-        });
-
-        this.loadedAttributeGroups = loadedAttributeGroups;
+      return $.get(url).then((groups: AttributeGroup[]) => {
+        this.loadedAttributeGroups = groups;
 
         return groups;
       });
@@ -152,10 +142,7 @@ class ColumnSelector extends BaseView {
   }
 
   fetchColumns(reset?: boolean): PromiseLike<{[name: string]: Column}> {
-    const search = this.modal.$el
-      .find(this.searchInputSelector)
-      .val()
-      .trim();
+    const search = this.modal.$el .find(this.searchInputSelector) .val() .trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
 
@@ -308,7 +295,7 @@ class ColumnSelector extends BaseView {
 
   unselectColumn(event: JQuery.Event): void {
     const column = $(event.currentTarget).parent();
-    const code = $(event.currentTarget) .parents('[data-value]') .data('value');
+    const code = $(event.currentTarget).parents('[data-value]') .data('value');
     column.appendTo(this.modal.$el.find('#column-list'));
     this.setColumnStatus(code, false);
     this.setValidation();
