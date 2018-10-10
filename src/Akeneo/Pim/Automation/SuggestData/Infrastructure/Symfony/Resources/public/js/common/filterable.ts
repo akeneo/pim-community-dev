@@ -1,8 +1,16 @@
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import * as $ from "jquery";
 import * as _ from 'underscore';
 const noDataTemplate = require('pim/template/common/no-data');
 const __ = require('oro/translator');
-// const BaseForm = require('pim/form');
 import BaseForm = require('pimenrich/js/view/base');
 
 enum FilterValue {
@@ -108,7 +116,6 @@ class Filterable {
    *
    * @param {string} filterValue
    * @param {string} rowValue
-   *
    * @returns {boolean}
    */
   private static filterEquals(filterValue: string, rowValue: string): boolean {
@@ -121,7 +128,6 @@ class Filterable {
    *
    * @param {string} filterValue
    * @param {string} rowValue
-   *
    * @returns {boolean}
    */
   private static filterSearch(filterValue: string, rowValue: string): boolean {

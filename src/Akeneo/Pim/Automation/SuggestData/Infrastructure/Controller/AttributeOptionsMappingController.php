@@ -64,7 +64,7 @@ class AttributeOptionsMappingController
     public function updateAction()
     {
         sleep(1);
-        
+
         return new JsonResponse(['response' => 'It\'s a temporary OK!']);
     }
 }

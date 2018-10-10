@@ -1,8 +1,18 @@
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import AttributeOptionsMappingSaver = require("./attribute-options-mapping-saver");
 const BaseSaverForm = require('pim/form/common/save-form');
 
 /**
- * TODO
+ * Attribute Options Mapping Saver Form
+ * It depends of the Attribute Options Mapping Saver, which need custom calls to generate its URL.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -18,7 +28,7 @@ class SaverForm extends BaseSaverForm {
 
     return AttributeOptionsMappingSaver
       .setFamilyCode(this.getFormData().family)
-      .setPimAiAttributeCode(this.getFormData().pim_ai_attribute)
+      .setFranklinAttributeCode(this.getFormData().pim_ai_attribute)
       .setUrl(this.config.url)
       .save(entity.code, entity, this.config.method || 'POST')
       .then((data: any) => {

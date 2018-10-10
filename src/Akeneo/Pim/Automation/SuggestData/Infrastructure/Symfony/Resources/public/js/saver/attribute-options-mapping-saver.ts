@@ -1,35 +1,54 @@
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const BaseSaver = require('pim/saver/entity-saver');
 const Routing = require('routing');
 
+/**
+ * Attribute Options Mapping Saver
+ *
+ * As the URL to save an Attribute Options Mapping needs both Family code and Franklin Attribute code, we need
+ * to do custom methods to generate this URL.
+ *
+ * @author Pierre Allard <pierre.allard@akeneo.com>
+ */
 class Saver extends BaseSaver {
-  private static family: string;
-  private static pimAiAttributeCode: string;
+  private static familyCode: string;
+  private static franklinAttributeCode: string;
 
   /**
    * {@inheritdoc}
    */
   protected static getUrl(): string {
-    return Routing.generate(this.url, { identifier: this.family, attributeCode: this.pimAiAttributeCode });
+    return Routing.generate(this.url, { identifier: this.familyCode, attributeCode: this.franklinAttributeCode });
   }
 
   /**
-   * TODO
+   * Set the catalog Family code
    *
-   * @param family
+   * @param { string } familyCode
+   * @return Saver
    */
-  static setFamilyCode(family: string): Saver {
-    this.family = family;
+  static setFamilyCode(familyCode: string): Saver {
+    this.familyCode = familyCode;
 
     return this;
   }
 
   /**
-   * TODO
+   * Set the Franklin Attribute code
    *
-   * @param pimAiAttributeCode
+   * @param { string } franklinAttributeCode
+   * @return Saver
    */
-  static setPimAiAttributeCode(pimAiAttributeCode: string): Saver {
-    this.pimAiAttributeCode = pimAiAttributeCode;
+  static setFranklinAttributeCode(franklinAttributeCode: string): Saver {
+    this.franklinAttributeCode = franklinAttributeCode;
 
     return this;
   }

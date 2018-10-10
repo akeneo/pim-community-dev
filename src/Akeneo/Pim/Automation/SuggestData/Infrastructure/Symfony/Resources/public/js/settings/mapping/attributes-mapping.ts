@@ -72,6 +72,7 @@ class AttributeMapping extends BaseForm {
     },
   };
   private attributeOptionsMappingModal: any = null;
+  private attributeOptionsMappingForm: BaseForm | null = null;
 
   /**
    * {@inheritdoc}
@@ -230,6 +231,7 @@ class AttributeMapping extends BaseForm {
         okText: __('pim_common.save')
       });
       this.attributeOptionsMappingModal.open();
+      this.attributeOptionsMappingForm = form;
 
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
       formContent
@@ -240,19 +242,26 @@ class AttributeMapping extends BaseForm {
 
       this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
 
-      form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
+      $('.modal .ok').replaceWith(this.getRoot().$el.find('*[data-drop-zone="buttons"]'));
 
-      $('.modal .ok').replaceWith(form.$el.find('*[data-drop-zone="buttons"]'));
+      form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
 
       this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal);
     });
   }
 
+  /**
+   * Closes the modal then destroy all its data inside.
+   */
   private closeAttributeOptionsMappingModal(): void {
     if (null !== this.attributeOptionsMappingModal) {
       this.attributeOptionsMappingModal.close();
-
       this.attributeOptionsMappingModal = null;
+    }
+
+    if (null !== this.attributeOptionsMappingForm) {
+      this.attributeOptionsMappingForm.shutdown();
+      this.attributeOptionsMappingForm = null;
     }
   }
 }

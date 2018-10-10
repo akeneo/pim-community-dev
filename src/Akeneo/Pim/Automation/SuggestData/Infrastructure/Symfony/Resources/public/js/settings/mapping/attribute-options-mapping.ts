@@ -1,7 +1,16 @@
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from "underscore";
 import Filterable = require('akeneosuggestdata/js/common/filterable');
-
+import * as $ from "jquery";
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -193,6 +202,10 @@ class AttributeOptionsMapping extends BaseForm {
     ));
 
     this.renderExtensions();
+
+    // Not optimal solution, but we didn't find a better one; this code will move the save button in the modal element.
+    $('.modal .modal-footer *[data-drop-zone="buttons"]').remove();
+    $('.modal .modal-footer').append(this.getRoot().$el.find('*[data-drop-zone="buttons"]'));
   }
 
   /**
