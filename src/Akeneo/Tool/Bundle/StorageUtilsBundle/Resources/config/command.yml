@@ -1,0 +1,6 @@
+services:
+    pim_enrich.product.paginator:
+        class: 'Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactory'
+        arguments:
+            - 'Akeneo\Tool\Component\StorageUtils\Cursor\Paginator'
+            - '1000'
