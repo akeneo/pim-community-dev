@@ -35,4 +35,5 @@ services:
             - '@pimee_catalog.security.factory.filtered_product_model'
             - '@pimee_catalog.security.factory.filtered_product'
             - '@pimee_security.deny_not_granted_categorized_entity'
+            - '@pimee_security.cached_authorization_checker'
             - '%pim_catalog.entity.product_model.class%'
