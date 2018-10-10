@@ -33,8 +33,6 @@ class PimEnrichExtension extends Extension
         $loader->load('colors.yml');
         $loader->load('forms.yml');
         $loader->load('providers.yml');
-        $loader->load('queries.yml');
-        $loader->load('query_builder.yml');
         $loader->load('steps.yml');
         $loader->load('structure_version.yml');
         $loader->load('view_elements/attribute.yml');
