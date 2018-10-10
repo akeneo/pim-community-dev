@@ -52,7 +52,18 @@ class AttributeContext implements Context
                 $attributeData['group'] = 'MANDATORY_ATTRIBUTE_GROUP_CODE';
             }
 
+            foreach ($attributeData as $index => $value) {
+                if ((false !== strpos($index, 'label-') || false !== strpos($index, 'labels-'))) {
+                    if ('' !== $value) {
+                        $locale = str_replace('label-', '', str_replace('labels-', '', $index));
+                        $attributeData['labels'][$locale] = $value;
+                    }
+                    unset($attributeData[$index]);
+                }
+            }
+
             $attribute = $this->attributeBuilder->build($attributeData);
+
             $this->attributeRepository->save($attribute);
         }
     }
