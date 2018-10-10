@@ -131,3 +131,10 @@ services:
         arguments: ["@doctrine"]
         tags:
             - { name: form.type, alias: pim_enrich_entity_identifier }
+
+    pim_localization.form.type.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType'
+        arguments:
+            - '@pim_localization.provider.ui_locale'
+        tags:
+            - { name: form.type, alias: "pim_locale" }

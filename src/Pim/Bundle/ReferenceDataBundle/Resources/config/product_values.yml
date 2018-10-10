@@ -1,3 +1,0 @@
-parameters:
-    pim_reference_data.value.reference_data.class: Pim\Component\ReferenceData\Value\ReferenceDataValue
-    pim_reference_data.value.reference_data_collection.class: Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue

@@ -343,7 +343,7 @@ define(
                 }
             });
 
-            return [__('system_filter_group')].concat(groups.sort((group1, group2) => {
+            return [__('pim_datagrid.filters.system')].concat(groups.sort((group1, group2) => {
                 return group1.order - group2.order
             }).map((group) => {
                 return group.label;
@@ -360,7 +360,7 @@ define(
                     this.filters[filterKey].group === null ||
                     this.filters[filterKey].group === undefined
                 ) {
-                    this.filters[filterKey].group = __('system_filter_group');
+                    this.filters[filterKey].group = __('pim_datagrid.filters.system');
                 }
             });
         },

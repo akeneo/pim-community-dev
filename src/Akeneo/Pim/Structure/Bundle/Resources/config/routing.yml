@@ -44,6 +44,10 @@ association:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/associationtype.yml'
     prefix: /configuration/association-type
 
+reference_data_configuration:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/reference_data_configuration.yml'
+    prefix: /rest/reference-data-configuration
+
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

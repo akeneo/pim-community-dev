@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

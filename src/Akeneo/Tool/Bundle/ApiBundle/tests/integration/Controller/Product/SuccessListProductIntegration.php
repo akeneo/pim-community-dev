@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
@@ -1152,6 +1153,37 @@ JSON;
         $currentDate = (new \DateTime('now'))->modify("+ 30 minutes")->format('Y-m-d H:i:s');
 
         $search = sprintf('{"updated":[{"operator":"<","value":"%s"}]}', $currentDate);
+        $client->request('GET', 'api/rest/v1/products?pagination_type=page&limit=10&search=' . $search);
+        $searchEncoded = rawurlencode($search);
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [            
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsUpdatedSinceLastNDays()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        $search = sprintf('{"updated":[{"operator":"%s","value":4}]}', Operators::SINCE_LAST_N_DAYS);
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&limit=10&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON

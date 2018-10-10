@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConv
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
@@ -84,6 +85,9 @@ class ProductModelController
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
 
+    /** @var AttributeFilterInterface */
+    private $productModelAttributeFilter;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -101,6 +105,7 @@ class ProductModelController
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
+     * @param AttributeFilterInterface          $productModelAttributeFilter
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -118,24 +123,26 @@ class ProductModelController
         EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
-        FamilyVariantRepositoryInterface $familyVariantRepository
+        FamilyVariantRepositoryInterface $familyVariantRepository,
+        AttributeFilterInterface $productModelAttributeFilter
     ) {
-        $this->productModelRepository        = $productModelRepository;
-        $this->normalizer                    = $normalizer;
-        $this->userContext                   = $userContext;
-        $this->objectFilter                  = $objectFilter;
-        $this->localizedConverter            = $localizedConverter;
-        $this->emptyValuesFilter             = $emptyValuesFilter;
-        $this->productValueConverter         = $productValueConverter;
-        $this->productModelUpdater           = $productModelUpdater;
-        $this->productModelRemover           = $productModelRemover;
-        $this->validator                     = $validator;
-        $this->productModelSaver             = $productModelSaver;
+        $this->productModelRepository = $productModelRepository;
+        $this->normalizer = $normalizer;
+        $this->userContext = $userContext;
+        $this->objectFilter = $objectFilter;
+        $this->localizedConverter = $localizedConverter;
+        $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->productValueConverter = $productValueConverter;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelRemover = $productModelRemover;
+        $this->validator = $validator;
+        $this->productModelSaver = $productModelSaver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
-        $this->productModelFactory           = $productModelFactory;
+        $this->productModelFactory = $productModelFactory;
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
+        $this->productModelAttributeFilter = $productModelAttributeFilter;
     }
 
     /**
@@ -454,6 +461,10 @@ class ProductModelController
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
+        }
+
+        if (!$productModel->isRoot()) {
+            $data = $this->productModelAttributeFilter->filter($data);
         }
 
         $this->productModelUpdater->update($productModel, $data);

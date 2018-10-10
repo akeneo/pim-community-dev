@@ -45,13 +45,6 @@
     border-radius: 0;
   }
 
-  &--withBottomBorder {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid @AknMediumGrey;
-  }
-
   &--withDashedBottomBorder {
     border-top: none;
     border-left: none;
@@ -91,9 +84,13 @@
     margin-top: -30px;
   }
 
-  &--disabled,
-  &[readonly],
-  &[disabled] {
+  &--narrow {
+    width: @AknMaxFormWidth;
+  }
+
+  &--disabled:not(.AknTextField--light),
+  &[readonly]:not(.AknTextField--light),
+  &[disabled]:not(.AknTextField--light) {
     background: @AknDisabledInputColor;
     background-image: url("../../../images/icon-lock.svg");
     background-repeat: no-repeat;
@@ -103,19 +100,39 @@
     cursor: not-allowed;
   }
 
+  &--light {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid @AknMediumGrey;
+    border-radius: 0;
+    padding: 0;
+    font-size: 15px;
+
+    &:focus {
+      outline: none;
+      border-color: @AknBlue;
+    }
+
+    &.AknTextField--disabled {
+      border-bottom: 1px dotted @AknMediumGrey;
+      background-image: url("../../../images/icon-lock2.svg");
+      background-repeat: no-repeat;
+      background-size: 16px;
+      background-position: ~"calc(100% - 12px)" center;
+      padding-right: @AknFormHeight - 4px;
+      color: @AknGrey;
+      cursor: not-allowed;
+    }
+  }
+
   &--localizable {
     width: ~"calc(100% - 4px)";
-    position: relative;
-  }
-}
 
-@-moz-document url-prefix() {
-  // CSS for Firefox
-  .AknTextField {
-    &--file {
-      padding-left: 0;
-      border: none;
-      height: @AknFormHeight + 2px;
+    &.AknTextField--narrow {
+      width: @AknMaxFormWidth - 4px;
     }
+
+    position: relative;
   }
 }

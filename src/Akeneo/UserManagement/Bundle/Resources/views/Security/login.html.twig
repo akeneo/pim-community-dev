@@ -19,7 +19,7 @@
         </div>
     {% endif %}
 
-    <form action="{{ path('pim_user_security_check') }}" method="post" class="form-signin form-inline">
+    <form action="{{ path(action_route) }}" method="post" class="form-signin form-inline">
         <div class="AknLogin-form">
             <div class="AknLogin-formCell">
                 <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" size="1"/>
@@ -43,6 +43,9 @@
         </div>
         <input type="hidden" name="_target_path" value="" />
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        {% for field in additional_hidden_fields %}
+            <input type="hidden" name="{{ field.field_name }}" value="{{ app.request.query.get(field.initialized_by) }}" />
+        {% endfor %}
     </form>
 </div>
 {% endblock content %}

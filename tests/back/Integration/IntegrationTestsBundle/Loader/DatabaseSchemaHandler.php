@@ -2,9 +2,8 @@
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Pim\Behat\Context\DBALPurger;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -31,54 +30,30 @@ class DatabaseSchemaHandler
     }
 
     /**
-     * Drop and recreate the database schema.
+     * Reset the schema by deleting all rows in the data.
+     * Do note that is faster than dropping and creating the schema.
      *
      * @throws \RuntimeException
      */
     public function reset()
     {
-        $this->drop();
-        $this->create();
-    }
+        $connection = $this->kernel->getContainer()->get('database_connection');
+        $schemaManager = $connection->getSchemaManager();
+        $tables = $schemaManager->listTableNames();
 
-    /**
-     * Drop the database schema.
-     *
-     * @throws \RuntimeException
-     */
-    private function drop()
-    {
-        $input = new ArrayInput([
-            'command' => 'doctrine:schema:drop',
-            '--env' => 'test',
-            '--force' => true,
-        ]);
-        $output = new BufferedOutput();
-
-        $exitCode = $this->cli->run($input, $output);
-
-        if (0 !== $exitCode) {
-            throw new \RuntimeException(sprintf('Impossible to drop the database schema! "%s"', $output->fetch()));
-        }
-    }
-
-    /**
-     * Create the database schema.
-     *
-     * @throws \RuntimeException
-     */
-    private function create()
-    {
-        $input = new ArrayInput([
-            'command' => 'doctrine:schema:create',
-            '--env' => 'test',
-        ]);
-        $output = new BufferedOutput();
-
-        $exitCode = $this->cli->run($input, $output);
-
-        if (0 !== $exitCode) {
-            throw new \RuntimeException(sprintf('Impossible to create the database schema! "%s"', $output->fetch()));
-        }
+        $purger = new DBALPurger(
+            $this->kernel->getContainer()->get('database_connection'),
+            $tables,
+            [
+                'pim_catalog_product',
+                'pim_catalog_product_model',
+                'pim_catalog_group',
+                'acl_security_identities',
+                'pimee_security_product_category_access',
+                'pimee_workflow_published_product',
+                'oro_access_group'
+            ]
+        );
+        $purger->purge();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
-use Pim\Component\ReferenceData\LabelRenderer;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

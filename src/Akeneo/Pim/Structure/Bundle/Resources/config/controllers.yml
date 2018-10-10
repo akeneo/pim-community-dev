@@ -205,6 +205,11 @@ services:
             - '@pim_catalog.factory.group_type'
             - '@pim_enrich.normalizer.violation'
 
+    pim_reference_data.controller.configuration_rest:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\ReferenceDataConfigurationRestController'
+        arguments:
+            - '@pim_reference_data.registry'
+            - '@pim_internal_api_serializer'
     ### UI
     pim_enrich.controller.association_type:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController'

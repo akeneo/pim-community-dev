@@ -28,9 +28,9 @@
     margin-left: 3px;
   }
 
-  &:hover,
-  &:active,
-  &:focus {
+  &:not(&--withoutBorder):hover,
+  &:not(&--withoutBorder):active,
+  &:not(&--withoutBorder):focus {
     background: @AknDefaultHoverBackground;
   }
 
@@ -71,6 +71,14 @@
 
   &-highlight {
     color: @AknLightPurple;
+  }
+
+  &--light {
+    padding: 1px 5px 0 5px;
+
+    &:focus {
+      background: @AknMediumGrey;
+    }
   }
 
   &--highlight {

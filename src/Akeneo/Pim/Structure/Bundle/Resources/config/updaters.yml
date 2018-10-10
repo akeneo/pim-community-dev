@@ -8,7 +8,7 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater'
         arguments:
             - '@pim_catalog.factory.variant_attribute_set'
-            - '@pim_localization.updater.translatable'
+            - '@pim_structure.updater.translatable'
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'
 
@@ -20,7 +20,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute_requirement'
-            - '@pim_localization.updater.translatable'
+            - '@pim_structure.updater.translatable'
 
     pim_catalog.updater.attribute:
         class: 'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater'
@@ -28,7 +28,7 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.registry.attribute_type'
-            - '@pim_localization.updater.translatable'
+            - '@pim_structure.updater.translatable'
             - ['auto_option_sorting', 'is_read_only']
 
     pim_catalog.updater.attribute_option:
@@ -42,11 +42,14 @@ services:
     pim_catalog.updater.association_type:
         class: 'Akeneo\Pim\Structure\Component\Updater\AssociationTypeUpdater'
         arguments:
-            - '@pim_localization.updater.translatable'
+            - '@pim_structure.updater.translatable'
 
     pim_catalog.updater.attribute_group:
         class: 'Akeneo\Pim\Structure\Component\Updater\AttributeGroupUpdater'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_group'
-            - '@pim_localization.updater.translatable'
+            - '@pim_structure.updater.translatable'
+
+    pim_structure.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'

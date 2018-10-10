@@ -53,6 +53,9 @@ parameters:
     pim_enrich.query.product_and_product_model_query_builder.class: Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
     pim_enrich.datagrid.product_batch_size: 25
 
+    pim_enrich.query.product_and_product_model_search_aggregator.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelSearchAggregator
+    pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilderFactory
+
 services:
     pim_catalog.query.product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -614,6 +617,27 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
+    pim.reference_data.query.filter.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_reference_data.repository_resolver'
+            - '@pim_reference_data.registry'
+            - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim.reference_data.query.sorter.attribute.reference_data:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
     pim_enrich.factory.product_and_product_model_from_size_cursor:
         public: false
         class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursorFactory'
@@ -645,10 +669,11 @@ services:
     # Services used by the products and product models' grid
     # here, products and product models should be gathered by the most top level product model
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
-        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
 
     pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
         public: false
@@ -660,3 +685,9 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_enrich.query.product_and_product_model_search_aggregator:
+        public: false
+        class: '%pim_enrich.query.product_and_product_model_search_aggregator.class%'
+        arguments:
+            - '@pim_catalog.repository.category'

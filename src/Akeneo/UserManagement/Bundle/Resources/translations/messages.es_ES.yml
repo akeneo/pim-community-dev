@@ -28,7 +28,6 @@ pim_user:
         none: Ninguno
       default_product_grid_view:
         label: Vista de cuadrícula de producto automática
-      ui_locale: Idioma de la interfaz
       last_logged_in: Última visita
       login_count: Contador de inicios de sesión
       user_salt: Sal de usuario

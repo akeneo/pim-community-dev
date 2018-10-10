@@ -110,10 +110,14 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocaleFromOroConfigValue()
     {
-        $locale = $this->em
-            ->getRepository('OroConfigBundle:ConfigValue')
-            ->getSectionForEntityAndScope('pim_localization', 'app', 0);
+        $sql = 'SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1';
+        $statement = $this->em->getConnection()->executeQuery($sql);
+        $locale = $statement->fetchColumn(0);
 
-        return null === $locale ? null : $locale->getValue();
+        if (!$locale) {
+            return null;
+        }
+
+        return $locale;
     }
 }

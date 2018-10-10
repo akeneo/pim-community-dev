@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB;
 
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -705,4 +705,32 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         ];
         $this->assert($result, $expectedResult);
     }
+
+    public function testSearchColorRedInASubCategoryAndHisChildren()
+    {
+        $result = $this->executeFilter(
+            [
+                ['color', Operators::IN_LIST, ['yellow']],
+                [
+                    'categories',
+                    Operators::IN_CHILDREN_LIST,
+                    [
+                        'master_men_blazers'
+                    ],
+                ],
+            ]
+        );
+
+        $expectedResult = [
+            // Are in category "deals" (wich is a child of "Men">"Blazers" categorie) and have Color = "yellow"
+            '1111111213',
+            '1111111214',
+            '1111111215',
+            '1111111216',
+            'apollon_yellow',
+            'ares_yellow'
+        ];
+        $this->assert($result, $expectedResult);
+    }
+
 }

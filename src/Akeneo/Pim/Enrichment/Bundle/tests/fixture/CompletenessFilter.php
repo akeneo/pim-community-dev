@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\fixture;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\fixture;
 
 /**
  * Load variant product tree. Those fixtures are used to check the FilterCompletess filter for product and product model.

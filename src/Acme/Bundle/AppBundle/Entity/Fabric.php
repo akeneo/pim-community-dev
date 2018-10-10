@@ -2,8 +2,8 @@
 
 namespace Acme\Bundle\AppBundle\Entity;
 
-use Pim\Component\ReferenceData\Model\AbstractReferenceData;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractReferenceData;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 /**
  * Acme Fabric entity (used as multi reference data)

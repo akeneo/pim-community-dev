@@ -38,6 +38,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
             promiseIdentifiers: null,
+            choiceUrl: null,
             events: {
                 'change .field-input:first input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
@@ -128,7 +129,12 @@ define(
                                 UserContext.get('catalogScope')
                             ).data;
 
-                            if (null === this.choicePromise || this.promiseIdentifiers !== identifiers) {
+                            if (
+                                null === this.choicePromise
+                                || this.promiseIdentifiers !== identifiers
+                                || this.choiceUrl !== choiceUrl
+                            ) {
+                                this.choiceUrl = choiceUrl;
                                 this.choicePromise = $.get(choiceUrl, {
                                     options: {
                                         identifiers: identifiers
@@ -150,6 +156,7 @@ define(
 
                                     return _.findWhere(results, {id: choice});
                                 }.bind(this));
+
                                 callback(_.compact(choices));
                             }.bind(this));
                         }.bind(this),

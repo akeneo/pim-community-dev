@@ -26,7 +26,7 @@ define([
          * {@inheritdoc}
          */
         configure: function () {
-            this.on('locales:update:after', this.updateState.bind(this));
+            this.listenTo(this.parentForm.getRoot(), 'locales:update:after', this.updateState.bind(this));
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {
                 _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100});
             }.bind(this));

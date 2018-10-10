@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -55,8 +56,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelInterface $productModel2,
         ProductModelInterface $productModel3,
         ProductModelInterface $productModel4,
-        ProductModelInterface $productModel5
+        ProductModelInterface $productModel5,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
@@ -76,9 +82,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalledTimes(3);
 
         $output->writeln('<info>5 product models to index</info>')->shouldBeCalled();
-        $output->writeln('Indexing product models 1 to 2')->shouldBeCalled();
-        $output->writeln('Indexing product models 3 to 4')->shouldBeCalled();
-        $output->writeln('Indexing product models 5 to 5')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>5 product models indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -116,8 +120,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         Application $application,
         HelperSet $helperSet,
         InputDefinition $definition,
-        ProductModelInterface $productModelToIndex
+        ProductModelInterface $productModelToIndex,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
@@ -130,6 +139,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>1 product models found for indexing</info>')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>1 product models indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -169,8 +179,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         HelperSet $helperSet,
         InputDefinition $definition,
         ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2
+        ProductModelInterface $productModel2,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
@@ -187,6 +202,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>2 product models found for indexing</info>')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>2 product models indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -226,8 +242,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         HelperSet $helperSet,
         InputDefinition $definition,
         ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2
+        ProductModelInterface $productModel2,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
@@ -245,6 +266,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
 
         $output->writeln('<error>Some product models were not found for the given codes: wrong_product_model</error>')->shouldBeCalled();
         $output->writeln('<info>2 product models found for indexing</info>')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>2 product models indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -282,8 +304,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         OutputInterface $output,
         Application $application,
         HelperSet $helperSet,
-        InputDefinition $definition
+        InputDefinition $definition,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
@@ -325,8 +352,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         InputInterface $input,
         OutputInterface $output,
         HelperSet $helperSet,
-        InputDefinition $definition
+        InputDefinition $definition,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $productClient->hasIndex()->willReturn(false);
         $container->getParameter('product_index_name')->willReturn('foo');
 
@@ -360,8 +392,13 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         InputInterface $input,
         OutputInterface $output,
         HelperSet $helperSet,
-        InputDefinition $definition
+        InputDefinition $definition,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $productAndProductModelClient->hasIndex()->willReturn(false);
         $container->getParameter('product_index_name')->willReturn('foo');
 

@@ -2,10 +2,13 @@
 
 ## Technical improvement
 
+- Set PHP 7.2 as minimal required version
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
 - GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
 - PIM-7371: Improve the performance to display the category tree in the product grid
 - PIM-7506: Cache default views and columns on the product grid
+- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
+- Centralizes technical requirements checks to reuse them on standard edition
 
 ## Enhancements
 
@@ -43,6 +46,63 @@
 - Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\ProductAndProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader`
 - Move `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader` to `Akeneo\Pim\Structure\Component\Reader\Database\MassEdit\FilteredFamilyReader`
 - Move `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter`
+- Move `Pim\Bundle\LocalizationBundle\Controller\FormatController` to `Oro\Bundle\ConfigBundle\Controller\Rest\FormatController`
+- Move `Pim\Bundle\LocalizationBundle\Controller\LocaleController` to `Akeneo\Platform\Bundle\UIBundle\Controller\LocaleController`
+- Move `Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider` to `Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider`
+- Move `Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\NumberLocalizerTransformer`
+- Move `Pim\Bundle\LocalizationBundle\Form\Type\LocaleType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\TranslationNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\GroupNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\GroupNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\DateTimeNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\FileNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\MetricNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\PriceNormalizer`
+- MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+- Move `Pim\Bundle\LocalizationBundle\Twig\AttributeExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\AttributeExtension`
+- Move `Pim\Bundle\LocalizationBundle\Twig\LocaleExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\LocaleExtension`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Filter\ReferenceDataFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter`
+- Move `Pim\Bundle\ReferenceDataBundle\DependencyInjection\Compiler\RegisterConfigurationsPass` to `Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterReferenceDataConfigurationsPass`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue\ReferenceDataEmptyValueProvider` to `Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field\ReferenceDataFieldProvider` to `Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter\ReferenceDataFilterProvider` to `Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver`
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\ReferenceDataUniqueCodeChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository`
+- Move `Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter`
+- Move `Pim\Bundle\ReferenceDataBundle\Controller\ConfigurationRestController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\ReferenceDataConfigurationRestController`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\AbstractReferenceDataUniqueCodeChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\CheckerInterface`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataInterfaceChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNameChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\Normalizer\ReferenceDataConfigurationNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\ReferenceDataConfigurationNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataSimpleSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataSimpleSelectType`
+- Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataMultiSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataMultiSelectType`
+- Move `Pim\Component\ReferenceData\LabelRenderer` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer`
+- Move `Pim\Component\ReferenceData\MethodNameGuesser` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser`
+- Move `Pim\Component\ReferenceData\ConfigurationRegistry` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry`
+- Move `Pim\Component\ReferenceData\ConfigurationRegistryInterface` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface`
+- Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer`
+- Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer`
+- Move `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ReferenceDataNormalizer`
+- Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier`
+- Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier`
+- Move `Pim\Component\ReferenceData\Model\ReferenceDataInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface`
+- Move `Pim\Component\ReferenceData\Model\AbstractReferenceData` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractReferenceData`
+- Move `Pim\Component\ReferenceData\Model\Configuration` to `Akeneo\Pim\Structure\Component\Model\ReferenceDataConfiguration`
+- Move `Pim\Component\ReferenceData\Model\ConfigurationInterface` to `Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface`
+- Move `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue`
+- Move `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface`
+- Move `Pim\Component\ReferenceData\Value\ReferenceDataValue` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue`
+- Move `Pim\Component\ReferenceData\Value\ReferenceDataValueInterface` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValueInterface`
+- Move `Pim\Component\ReferenceData\Factory\Value\ReferenceDataValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataValueFactory`
+- Move `Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory`
 - Move `Pim\Component\Catalog\ProductEvents` to `Akeneo\Pim\Enrichment\Component\Product\ProductEvents`
 - Move `Pim\Component\Catalog\FileStorage` to `Akeneo\Pim\Enrichment\Component\FileStorage`
 - Move `Pim\Component\Catalog\AttributeTypes` to `Akeneo\Pim\Structure\Component\AttributeTypes`
@@ -549,7 +609,7 @@
 - Move namespace `Pim\Component\Buffer` to `Akeneo\Tool\Component\Buffer`
 - Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
 - Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
-- Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
+- Move namespace `Pim\Component\Versioning` except Normalizers to `Akeneo\Tool\Component\Versioning`
 - Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
 - Move namespace `Pim\Component\FileStorage` to `Akeneo\Tool\Component\FileStorage`
 - Move namespace `Pim\Bundle\FileStorageBundle` to `Akeneo\Tool\Bundle\FileStorageBundle`
@@ -643,10 +703,10 @@
 - Move `Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Storage\AttributeOptionNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeGroupNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\AttributeOptionNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versioning\FamilyNormalizer`
 - Move `Pim\Bundle\ApiBundle\Controller\AttributeController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController`
 - Move `Pim\Bundle\ApiBundle\Controller\AttributeGroupController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController`
 - Move `Pim\Bundle\ApiBundle\Controller\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeOptionController`
@@ -894,6 +954,7 @@
 - Move `Pim\Bundle\InstallerBundle` to `Akeneo\Platform\Bundle\InstallerBundle`
 - Move `Pim\Bundle\AnalyticsBundle` to `Akeneo\Platform\Bundle\AnalyticsBundle`
 - Move `Pim\Bundle\CatalogVolumeMonitoringBundle` to `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle`
+- Move `Pim\Component\CatalogVolumeMonitoring` to `Akeneo\Platform\Component\CatalogVolumeMonitoring`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelDescendantsWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
@@ -902,6 +963,15 @@
 - Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductCompletenessFilter`
 - Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
 - Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer`, add `IdentifiableObjectRepositoryInterface` argument 
+- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector`, add `AverageMaxQuery` argument 3 times 
+- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector`, add `AverageMaxQuery` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter`, add `TokenStorageInterface`, `JobLauncherInterface`, `IdentifiableObjectRepositoryInterface` and `string` arguments
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`, add `AttributeFilterInterface` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController`, add `AttributeFilterInterface` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer`, add `AttributeRepositoryInterface` and `UserContext` arguments
+- Change constructor of `Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder`, add `ProductAndProductModelSearchAggregator` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController`, add `NormalizerInterface` argument
 - Move `Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi\CategoryNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\CompletenessCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer`

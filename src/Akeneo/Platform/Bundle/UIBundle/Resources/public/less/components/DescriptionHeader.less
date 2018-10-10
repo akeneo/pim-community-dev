@@ -3,22 +3,24 @@
 .AknDescriptionHeader {
   background: lighten(@AknBlue, 40%);
   display: flex;
-  padding: 5px;
+  padding: 5px 5px 5px 0;
   font-size: @AknFontSizeBig;
   color: @AknSlateGrey;
   min-height: 80px;
   align-items: center;
   margin-bottom: 20px;
+  line-height: 21px;
 
   &-icon {
-    min-width: 70px;
-    min-height: 60px;
+    min-width: 120px;
+    min-height: 120px;
     height: auto;
     position: relative;
     background-repeat: no-repeat;
-    background-size: 80%;
+    background-size: 80px;
     background-position: 50%;
-    width: 95px;
+    border-right: 1px solid @AknMediumGrey;
+    margin-right: 20px;
   }
 
   &-title {
@@ -35,6 +37,11 @@
   &-description {
     font-size: 13px;
     color: @AknSlateGrey;
-    margin-top: 10px;
+    margin-top: 3px;
+  }
+
+  &-link {
+    color: @AknPurple;
+    text-decoration: underline @AknPurple;
   }
 }

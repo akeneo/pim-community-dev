@@ -1,0 +1,133 @@
+@import '../base/variables';
+
+.AknImage {
+  @imageWidth: 140px;
+  @imageHeight: 140px;
+  @padding: 40px;
+
+  position: relative;
+  width: @imageWidth + 2px;
+  height: @imageHeight + 2px;
+  border: 1px solid @AknBorderColor;
+  margin-right: 20px;
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+  flex-basis: @imageWidth + 2px;
+  flex-shrink: 0;
+
+  &--editable {
+    &:after {
+      content: '';
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &--dropping {
+    &:after {
+      background: RGBa(255, 255, 255, 0.8) url("../../images/icon-upload.svg") no-repeat 50% 50%;
+      background-size: 50%;
+      opacity: 1;
+    }
+
+    & .AknImage-display {
+      filter: blur(4px);
+    }
+  }
+
+  &--removing {
+    &:after {
+      background: RGBa(255, 255, 255, 0.8) url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
+      background-size: 50%;
+      opacity: 1;
+    }
+
+    & .AknImage-display {
+      filter: blur(4px);
+    }
+  }
+
+  &--focusing {
+    border-color: @AknBlue;
+    outline: none;
+  }
+
+  &-loader {
+    opacity: 0;
+    position: absolute;
+    width: 0%;
+    height: @imageHeight;
+    display: block;
+    transition: opacity 0.5s;
+    z-index: 2;
+    overflow: hidden;
+
+    &--loading {
+      opacity: 1;
+      transition: width 0.5s;
+    }
+  }
+
+  &-display {
+    margin: auto;
+    width: auto;
+    height: @imageHeight;
+    transition: filter 0.3s;
+    z-index: 0;
+  }
+
+  &-updater {
+    opacity: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 11;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &-drop {
+    position: absolute;
+    width: @imageWidth;
+    height: @imageHeight;
+    transform: scale(1.05);
+    background-size: cover;
+    background-position: 50% 50%;
+    filter: blur(5px) brightness(50%);
+  }
+
+  &--wide {
+    @imageWidth: 460px;
+    @imageHeight: 288px;
+
+
+    & .AknImage-loader {
+      height: @imageHeight;
+    }
+
+    width: @imageWidth;
+    flex-basis: @imageWidth;
+    height: @imageHeight;
+
+    & .AknImage-display {
+      height: @imageHeight;
+      width: auto;
+    }
+
+    & .AknImage-drop {
+      width: @imageWidth;
+      height: @imageHeight;
+    }
+
+    &.AknImage--dropping:after, &.AknImage--removing:after {
+      background-size: 20%;
+    }
+  }
+}

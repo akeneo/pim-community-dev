@@ -42,12 +42,12 @@ class TableCreator implements EventSubscriberInterface
     public function onPostDBCreate()
     {
         $sql = <<<'SQL'
-DROP TABLE IF EXISTS `akeneo_structure_version_last_update`;
-CREATE TABLE `akeneo_structure_version_last_update` (
-    `resource_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-    `last_update` datetime NOT NULL COMMENT '(DC2Type:datetime)',
-    PRIMARY KEY(`resource_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+DROP TABLE IF EXISTS akeneo_structure_version_last_update;
+CREATE TABLE akeneo_structure_version_last_update (
+    resource_name varchar(255) NOT NULL,
+    last_update datetime NOT NULL COMMENT '(DC2Type:datetime)',
+    PRIMARY KEY(resource_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
         $this->doctrine->getConnection()->exec($sql);
     }

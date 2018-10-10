@@ -331,6 +331,8 @@ config:
                     module: pim/controller/redirect
                 pim_enrich_mass_edit_action:
                     module: pim/controller/mass-edit
+                    config:
+                        route: pim_enrich_mass_edit_rest_get_filter
                     aclResourceId: pim_enrich_mass_edit
                 pim_enrich_family_index:
                     module: pim/controller/common/index

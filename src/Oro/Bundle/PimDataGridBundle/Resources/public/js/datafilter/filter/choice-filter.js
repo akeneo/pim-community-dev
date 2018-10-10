@@ -115,6 +115,8 @@ define(
             this._setInputValue(this.criteriaValueSelectors.value, value.value);
             this._setInputValue(this.criteriaValueSelectors.type, value.type);
             this._highlightDropdown(value.type, '.operator');
+            this._toggleListSelection('in' === value.type);
+            this._toggleInput(_.contains(['empty', 'not empty'], value.type));
 
             return this;
         },

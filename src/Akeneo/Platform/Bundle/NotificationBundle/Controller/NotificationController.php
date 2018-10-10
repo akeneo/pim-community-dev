@@ -66,7 +66,8 @@ class NotificationController
         return $this->templating->renderResponse(
             'PimNotificationBundle:Notification:list.json.twig',
             [
-                'userNotifications' => $notifications
+                'userNotifications' => $notifications,
+                'userTimezone' => $this->userContext->getUserTimezone(),
             ],
             new JsonResponse()
         );

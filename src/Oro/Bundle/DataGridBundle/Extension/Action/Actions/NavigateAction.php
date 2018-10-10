@@ -20,11 +20,11 @@ class NavigateAction extends AbstractAction
     /**
      * {@inheritDoc}
      *
-     * @see Oro\Bundle\DataGridBundle\Common\Object
+     * @see \Oro\Bundle\DataGridBundle\Common\IterableObject
      *
-     * By default, Oro\Bundle\DataGridBundle\Common\Object does not do recursive merge on the params value (see merge
-     * method). To avoid changing this low-level method, we do a recursive merge in this method, to be able to merge
-     * the options and the additional parameters with the sub options.
+     * By default, \Oro\Bundle\DataGridBundle\Common\IterableObject does not do recursive merge on the params value (see
+     * merge method). To avoid changing this low-level method, we do a recursive merge in this method, to be able to
+     * merge the options and the additional parameters with the sub options.
      */
     public function getOptions()
     {

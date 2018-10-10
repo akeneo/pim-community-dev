@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Field\Product;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Filter\Field\Product;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
@@ -209,7 +209,17 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorGreaterOrEqualThanOnAtLeastOneLocale()
     {
-        $this->doTestOperatorSuperiorOrEqual(Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE);
+        $operator = Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE;
+        $this->doTestOperatorSuperiorOrEqual($operator);
+
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'ecommerce', 'locales' => ['en_US']]]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['completeness', $operator, 100, ['scope' => 'tablet', 'locales' => ['de_DE']]]]);
+        $this->assert($result, []);
+
+        $result = $this->executeFilter([['completeness', $operator, 80, ['scope' => 'tablet', 'locales' => ['en_US', 'de_DE']]]]);
+        $this->assert($result, ['product_two']);
     }
 
     private function doTestOperatorSuperiorOrEqual($operator)

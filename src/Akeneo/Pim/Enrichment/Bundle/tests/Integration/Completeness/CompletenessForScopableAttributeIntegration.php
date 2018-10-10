@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

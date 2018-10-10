@@ -64,6 +64,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('product_models.yml');
         $loader->load('product_values.yml');
         $loader->load('query_builders.yml');
+        $loader->load('reference_data.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('resolvers.yml');
@@ -77,6 +78,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_storage.yml');
+        $loader->load('serializers_versioning.yml');
         $loader->load('serializers.yml');
         $loader->load('builders.yml');
         $loader->load('controllers.yml');

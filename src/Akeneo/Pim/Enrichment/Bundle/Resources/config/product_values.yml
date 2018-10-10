@@ -6,3 +6,5 @@ parameters:
     pim_catalog.entity.value.options.class: Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue
     pim_catalog.entity.value.date.class: Akeneo\Pim\Enrichment\Component\Product\Value\DateValue
     pim_catalog.entity.value.price_collection.class: Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue
+    pim_reference_data.value.reference_data.class: Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue
+    pim_reference_data.value.reference_data_collection.class: Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue

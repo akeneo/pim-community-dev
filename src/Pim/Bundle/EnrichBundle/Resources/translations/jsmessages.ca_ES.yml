@@ -68,6 +68,7 @@ pim_datagrid:
       label: Exportació ràpida
   mass_action:
     delete:
+      confirm_content: Esteu segur que voleu suprimir els productes seleccionats?
       success: Els productes seleccionats s'han eliminat correctament.
       error: S'ha produït un error en intentar suprimir els productes seleccionats, intenteu-ho un altre cop.
     quick_export:
@@ -76,9 +77,11 @@ pim_datagrid:
       xlsx_all: Excel (tots els atributs)
       xlsx_grid_context: Excel (marc de quadrícula)
     mass_edit: Accions en bloc
+    sequential_edit: Editar seqüencialment
     mass_delete: Esborrat massiu
     selected:
       family: famílies seleccionades
+      product: resultats seleccionats
   view_selector:
     view: Vistes
   actions:
@@ -94,6 +97,7 @@ pim_datagrid:
       subHint: 'Feu clic al botó "Afegir associacions" per associar aquest producte'
   filters:
     label: Filtres
+    system: Sistema
 error:
   exception: Oh no! S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
@@ -105,6 +109,7 @@ alert:
     not_available: El navegador web no sembla compatible amb sessionStorage. Contacteu amb l'administrador
 pim_enrich.entity.fallback:
   flash:
+    generic_error: S'ha produït un error
     update:
       fail: Actualització fallida
       success: Actualització completada
@@ -142,7 +147,12 @@ pim_enrich.entity.product:
     index: "]-Inf, 1]{{ count }} resultat|]1, Inf[{{ count }} resultats"
   module:
     create:
+      subtitle: Crear producte
+      title: Selecciona l'acció
       choose_family: Trieu una família
+      choose_family_variant: Triar una variant familiar
+    variant_navigation:
+      common: Comú
     status:
       enabled: Habilitat
       disabled: Deshabilitat
@@ -159,6 +169,8 @@ pim_enrich.entity.product:
       logged_at: Connectat a
       from: Des de
       modified: Modificat
+      old_value: Valor antic
+      new_value: Nou valor
     meta:
       updated: Darrera actualització
       groups: Grups
@@ -182,11 +194,13 @@ pim_enrich.entity.product:
       missing_values: "{1}1 falta valor |] 1, Inf [{{ count }} falten valors"
     sequential_edit:
       item_limit: Només els primers 1000 articles mostrats en aquesta edició seqüencial ({{ count }} seleccionats)
+      empty: La selecció és buida, si us plau canviï els seus criteris de cerca
       save_and_next: Guardar i seguir
       save_and_finish: Desa i finalitza
     associations:
       title: Associacions
       none_exist: No existeix cap tipus d'associació.
+      show_products: Mostrar productes
       show_groups: Mostrar els grups
       number_of_associations: "{{ productCount }} producte(s), {{ productModelCount }} model(s) de producte(s) i {{ groupCount }} grup(s)"
       association_type_selector: Tipus d'associació
@@ -212,6 +226,7 @@ pim_enrich.entity.product:
       confirm: Esteu segur que voleu suprimir aquest producte?
 pim_enrich.entity.product_model:
   label: model de producte
+  uppercase_label: Model de producte
   plural_label: Models de producte
   flash:
     create:
@@ -241,15 +256,22 @@ pim_enrich.entity.product_model:
       required_label: '(eix variant)'
     completeness:
       variant_product: "[]-Inf, 1]{{ complete }} / {{ total }} variant de producte |] 1, Inf [{{ complete }} / {{ total }} variants de productes"
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest model de producte? Tots els seus fills, producte models i variants productes, també es suprimiran.
+      confirm_for_products_and_product_models: Esteu segur que voleu suprimir els productes seleccionats i models de producte? Tots els fills dels models de producte també seràn suprimits.
 pim_enrich.entity.channel:
   label: canal
   uppercase_label: Canal
   flash:
+    update:
+      success: Canal actualitzat correctament.
+      fail: El canal no s'ha pogut actualitzar.
+    create:
+      success: Canal creat correctament.
+      fail: El canal no s'ha pogut crear.
     delete:
       success: Canal suprimit correctament
       fail: No podeu eliminar aquest canal
-  page_title:
-    index: "]Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canals"
   property:
     category_tree: Arbre de categories
     do_not_convert: No convertir
@@ -267,6 +289,9 @@ pim_enrich.entity.family:
     update:
       success: Família actualitzada correctament.
       fail: S'ha produït un error durant l'actualització de la família.
+      cant_remove_attribute_as_label: No es pot eliminar un atribut utilitzat com etiqueta
+      cant_remove_attribute_as_image: No es pot eliminar l'atribut utilitzat com a imatge principal
+      cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
       fields_not_ready: "Ara no es pot guardar la família. Els següents camps no estan preparats: {{ fields }}"
     create:
       success: Família creada correctament
@@ -283,20 +308,35 @@ pim_enrich.entity.family:
     attributes:
       not_required_label: No és obligatori
       required_label: Obligatori
+    create:
+      button: Crear família
     delete:
       confirm: Esteu segur que voleu suprimir aquesta família?
 pim_enrich.entity.family_variant:
   label: variant de família
+  short_plural_label: Variants
   short_label: Variant
   flash:
     update:
       success: Variant de família actualitzat correctament. Els productes amb variants s'actualitzarà amb els canvis.
       fail: La variant de família no s'ha pogut actualitzar.
+    create:
+      success: Variant de família creada correctament
   module:
     edit:
+      common_attributes: Atributs comuns
+      no_common_attributes: No hi ha atributs comuns
+      variant_axis_label: Eix variant
       variant_attributes: Variants d'atributs
+      level_1: Atributs variants de nivell un
+      level_2: Atributs variants de nivell dos
       attribute_remove: Eliminar atribut
       attribute_group_remove: Suprimir grup d'atributs
+      confirm_attribute_removal_title: Confirmar eliminació d'atributs
+    create:
+      label: Afegir variant
+      title: Crear una nova variant familiar
+      variant_levels: Nivells de variants
     update_translations:
       title: Actualitzar traduccions
 pim_enrich.entity.attribute_option:
@@ -316,27 +356,35 @@ pim_enrich.entity.attribute_option:
 pim_enrich.entity.association_type:
   label: tipus d'associació
   flash:
+    update:
+      success: Tipus d'associació actualitzat correctament.
+      fail: No s'ha pogut actualitzar el tipus d'associació.
+      fields_not_ready: "El tipus d'associació no es pot desar ara mateix. No estan preparats els següents camps: {{ fields }}"
     create:
       success: Tipus d'associació creat correctament
     delete:
       success: Tipus d'associació suprimit correctament
       fail: No podeu eliminar aquest tipus d'associació
-  page_title:
-    index: "]Inf, 1]{{ count }} tipus d'associació|]1, Inf[{{ count }} tipus d'associacions"
   module:
+    create:
+      button: Crear tipus d'associació
     delete:
       confirm: Esteu segur que voleu suprimir aquest tipus d'associació?
 pim_enrich.entity.group_type:
   label: tipus de grup
   flash:
+    update:
+      success: Tipus de grup actualitzat correctament.
+      fail: El tipus de grup no s'ha pogut actualitzar.
+      fields_not_ready: "Ara no es pot guardar el tipus de grup. Els següents camps no estan preparats: {{ fields }}"
     create:
       success: Tipus de grup creat correctament
     delete:
       success: Tipus de grup suprimit correctament
       fail: No podeu eliminar aquest tipus de grup
-  page_title:
-    index: "]Inf, 1]{{ count }} tipu de grup|]1, Inf[{{ count }} tipus de grup"
   module:
+    create:
+      button: Crear tipus de grup
     delete:
       confirm: Esteu segur que voleu suprimir aquest tipus de grup?
 pim_enrich.entity.group:
@@ -345,13 +393,12 @@ pim_enrich.entity.group:
     update:
       success: Grup actualitzat correctament.
       fail: El grup no s'ha pogut actualitzar.
+      fields_not_ready: "Ara no es pot guardar el grup. Els següents camps no estan preparats: {{ fields }}"
     create:
       success: Grup creat correctament
     delete:
       success: Grup suprimit correctament
       fail: No podeu eliminar aquest grup
-  page_title:
-    index: "]Inf, 1]{{ count }} grup|]1, Inf[{{ count }} grups"
   module:
     create:
       button: Crear grup
@@ -361,16 +408,20 @@ pim_enrich.entity.attribute:
   label: atribut
   plural_label: Atributs
   flash:
+    update:
+      success: Atribut actualitzat correctament.
+      fail: No s'ha pogut actualitzar l'atribut.
+      fields_not_ready: "Ara no es pot guardar l'atribut. Els següents camps no estan preparats: {{ fields }}"
     delete:
       success: Atribut suprimit correctament
       fail: No podeu eliminar aquest atribut
-  page_title:
-    index: "]Inf, 1]{{ count }} atribut|]1, Inf[{{ count }} atributs"
   property:
     allowed_extensions: Extensions permeses
+    auto_option_sorting: Ordena opcions automàtiques per ordre alfabètic
     available_locales: Configuracions regionals disponibles
     date_max: Data màxima
     date_min: Data mínima
+    decimals_allowed: Valors decimals permesos
     default_metric_unit:
       label: Unitat mètrica per defecte
       choose: Trieu una unitat
@@ -378,16 +429,19 @@ pim_enrich.entity.attribute:
       label: Grup d'atributs
       choose: Trieu el grup de l'atribut
     is_locale_specific: Configuració regional específica
+    localizable: Valor per local
     max_characters: Màxim de caràcters
     max_file_size: Mida màxima de l'arxiu (MB)
     metric_family:
       label: Família mètrica
       choose: Trieu una família
+    minimum_input_length: Longitud mínima d'auto compleció
     name: Nom
     negative_allowed: Valors negatius permesos
     number_max: Nombre màxim
     number_min: Nombre mínim
     reference_data_name:
+      label: Tipus de dades de referència
       choose: Triar el tipus de dades de referència
     scopable: Valor per canal
     type:
@@ -414,6 +468,7 @@ pim_enrich.entity.attribute:
       email: Correu electrònic
       regexp: Expressió regular
       url: URL
+    wysiwyg_enabled: Editor de text enriquit habilitat
   module:
     add_attribute:
       no_available_attributes: No hi ha més atributs a afegir
@@ -422,10 +477,12 @@ pim_enrich.entity.attribute:
       button: Crear atribut
     edit:
       common: Paràmetres generals
+      type_specific: Escriu els paràmetres específics
       validation: Paràmetres de validació
     delete:
       confirm: Esteu segur que voleu suprimir aquest atribut?
       confirm_from_family: Esteu segur que voleu suprimir aquest atribut de la família?
+      confirm_from_group: Esteu segur que voleu suprimir l'atribut {{ attribute }} d'aquest grup d'atributs?
       confirm_from_product: Esteu segur que voleu suprimir aquest atribut del producte?
 pim_enrich.entity.attribute_group:
   label: grup d'atributs
@@ -434,6 +491,7 @@ pim_enrich.entity.attribute_group:
   flash:
     update:
       success: Grup d'atributs actualitzat correctament
+      fail: El grup d'atributs no s'ha pogut actualitzar
       fields_not_ready: "Ara no es pot guardar el grup d'atributs. Els següents camps no estan preparats: {{ fields }}"
     delete:
       success: Grup d'atributs suprimit correctament
@@ -443,31 +501,26 @@ pim_enrich.entity.attribute_group:
       label: Afegir per grups
       no_attribute_groups_available: Cap grup d'atributs disponible
       attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
+    delete:
+      confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
 pim_enrich.entity.api_connection:
   flash:
     create:
       success: Connexió API creada correctament
     delete:
+      success: Connexió d'API revocada amb èxit
       fail: No pot revocar aquesta connexió API
-  page_title:
-    index: "[] Inf, 1]{{ count }} connexió API|] 1, Inf [{{ count }} connexions API"
 pim_enrich.entity.locale:
   label: configuració regional
   uppercase_label: Configuració Regional
   plural_label: Configuracions regionals
-  page_title:
-    index: "[] Inf, 1]{{ count }} local|] 1, Inf [{{ count }} locals"
 pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
   plural_label: Categories
 pim_enrich.entity.currency:
   plural_label: Monedes
-  page_title:
-    index: "[] Inf, 1]{{ count }} moneda|] 1, Inf [{{ count }} monedes"
 pim_enrich.entity.job_execution:
-  page_title:
-    index: "]Inf, 1]{{ count }} operació|]1, Inf[{{ count }} operacions"
   module:
     create:
       upload: Deixeu anar el fitxer {{ type }} aquí, o clic per buscar en el disc
@@ -494,6 +547,7 @@ pim_enrich.export.product:
       modal:
         title: Selecció de l'atribut
     attributes_selector:
+      attributes: "Cercar a {{ itemsCount }} atributs"
       selected: "Atributs seleccionats"
       clear: Restablir
       all_group: Tots els grups
@@ -558,6 +612,10 @@ pim_enrich.mass_edit.product:
       label: Configurar
     confirm:
       label: Confirmar
+    launch_error:
+      label: S'ha produït un error durant el llançament de l'operació d'edició massa
+    launched:
+      label: L'acció en massa "{{ operation }}" ja s'ha engegat. Se li notificarà una cop acabi.
   operation:
     common:
       select_attributes: Seleccionar atributs
@@ -586,13 +644,17 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a categories|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a categories"
       description: Els productes es classificaran en les següents categories. Es manté la classificació existent.
     move_to_category:
+      label: Moure entre categories
       label_count: "{1}Moure <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories|]1, Inf[Moure <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
       description: Els productes es classificaran en les següents categories. Es perd la classificació existent.
     remove_from_category:
+      label: Eliminar de les categories
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de categories"
       description: Els productes s'eliminaran de les següents categories.
     add_to_existing_product_model:
+      label: Afegir a un model de producte existent
       label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un model de producte existent|]1, Inf[Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a model de producte existent"
+      description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
     associate_to_product_and_product_model:
       label: Associa
       label_count: "{1}Associar <span class=\"AknFullPage-title--highlight\">1 producte</span> a productes o models de producte|]1, Inf[Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a productes o models de productes"
@@ -601,6 +663,7 @@ pim_enrich.mass_edit.product:
       label: Canviar el model de producte del pare
       label_count: "{1}Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
 pim_enrich.mass_edit.family:
+  confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
   step:
     select:
       label: Triar famílies
@@ -610,10 +673,17 @@ pim_enrich.mass_edit.family:
       label: Configurar
     confirm:
       label: Confirmar
+    launched:
+      label: L'acció en massa "{{ operation }}" ja s'ha engegat. Se li notificarà una cop acabi.
+  operation:
+    set_requirements:
+      label: Establir els requeriments d'atributs
+      description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
 pim_title:
   oro_default: Panell de contol
   pim_enrich_attributegroup_index: Grups d'atribut
   pim_enrich_attributegroup_create: Grups d'atributs | Crear
+  pim_enrich_attributegroup_edit: Grup d'atributs {{ group.label }} | Editar
   pim_enrich_categorytree_index: Arbres de categories
   pim_enrich_categorytree_create: Arbres de categories | Crear
   pim_enrich_categorytree_edit: Arbre de categoria {{ category.label }} | Editar
@@ -634,9 +704,12 @@ pim_title:
   pim_enrich_group_index: Grups
   pim_enrich_group_edit: Grup {{ group.label }} | Editar
   pim_enrich_associationtype_index: Tipus d'associació
+  pim_enrich_associationtype_edit: Tipus d'Associació {{ association type.label }} | Editar
   pim_enrich_grouptype_index: Tipus de grup
+  pim_enrich_grouptype_edit: Tipus de grup {{ group type.label }} | Editar
   pim_enrich_mass_edit_action_choose: Editar en massa | Triar
   pim_enrich_mass_edit_action_configure: Editar en massa | Configurar
+  pim_enrich_mass_edit_action_perform: Editar en massa | Realitzar
   pim_enrich_job_tracker_index: Seguiment del procés
   pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
   pim_enrich_api_connection_index: Connexions d'API
@@ -678,6 +751,8 @@ pim_menu:
   navigation:
     activity: Activitat de navegació
     system: Sistema de navegació
+    product: Navegació de producte
+    product_infos: Informació del Producte
   user:
     logout: Tanca sessió
     user_account: El meu compte
@@ -688,6 +763,9 @@ pim_notification:
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
 batch_jobs:
+  add_association:
+    label: Associa
+    perform.label: Associa
   add_attribute_value:
     label: Afegir valor dels atributs
     perform.label: Afegir valor dels atributs
@@ -702,17 +780,26 @@ batch_jobs:
     perform.label: Afegir a un model de producte existent
   csv_product_grid_context_quick_export:
     quick_export.label: Exportació ràpida de marc de quadrícula de producte en CSV
+    quick_export_product_model.label: Exportació ràpida de marc de quadrícula del model de producte en CSV
     perform.label: Exportació ràpida de marc de quadrícula de producte en CSV
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
+    quick_export_product_model.label: Exportació ràpida del model de producte en CSV
     perform.label: Exportació ràpida de producte en CSV
   delete_products_and_product_models:
-    delete_products_and_product_models.label: Esborrat massiu de productes
+    label: Esborrat massiu de productes
+    perform.label: Esborrat massiu de productes
+  change_parent_product:
+    label: Canviar el model de producte del pare
+    perform.label: Canviar el model de producte del pare
   edit_common_attributes:
     label: Editar atributs
     perform.label: Editar atributs
     clean.label: Netejar arxius per atributs
     cleaner.label: Netejar arxius per atributs
+  compute_completeness_of_products_family:
+    label: Calcular completesa
+    perform.label: Calcular completesa
   move_to_category:
     label: Moure a la categoria
     perform.label: Moure a la categoria
@@ -725,3 +812,11 @@ batch_jobs:
   set_attribute_requirements:
     label: Establir els requeriments d'atribut
     perform.label: Establir els requeriments d'atribut
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportació ràpida de marc de quadrícula de producte en XSLX
+    quick_export_product_model.label: Exportació ràpida de marc de quadrícula del model de producte en XSLX
+    perform.label: Exportació ràpida de marc de quadrícula de producte en XSLX
+  xlsx_product_quick_export:
+    quick_export.label: Exportació ràpida de producte en XSLX
+    quick_export_product_model.label: Exportació ràpida del model de producte en XSLX
+    perform.label: Exportació ràpida de producte en XSLX

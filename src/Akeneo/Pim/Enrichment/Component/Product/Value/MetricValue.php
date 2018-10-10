@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -15,7 +16,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class MetricValue extends AbstractValue implements MetricValueInterface
 {
-    /** @var MetricInterface */
+    /** @var MetricInterface|null */
     protected $data;
 
     /**
@@ -75,5 +76,29 @@ class MetricValue extends AbstractValue implements MetricValueInterface
         }
 
         return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof MetricValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedMetric = $value->getData();
+        $thisMetric = $this->getData();
+
+        if (null === $thisMetric && null === $comparedMetric) {
+            return true;
+        }
+        if (null === $thisMetric || null === $comparedMetric) {
+            return false;
+        }
+
+        return $thisMetric->isEqual($comparedMetric);
     }
 }

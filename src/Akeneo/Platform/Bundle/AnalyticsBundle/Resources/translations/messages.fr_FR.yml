@@ -26,6 +26,10 @@ pim_analytics:
     nb_scopable_attributes: Nombre d’attributs déclinés par canal
     nb_localizable_attributes: Nombre d’attributs traduisibles
     nb_scopable_localizable_attributes: Nombre d’attributs traduisibles et déclinés par canal
+    nb_useable_as_grid_filter_attributes: Nombre d’attributs utilisables comme filtre de grille
+    avg_percentage_scopable_attributes_per_family: Pourcentage moyen d’attributs scopables par famille (%)
+    avg_percentage_localizable_attributes_per_family: Pourcentage moyen d’attributs localisables par famille (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Pourcentage moyen d’attributs scopables et localisables par famille (%)
     nb_locales: Nombre de locales
     nb_families: Nombre de familles
     nb_users: Nombre d’utilisateurs
@@ -35,6 +39,8 @@ pim_analytics:
     max_category_levels: Nb max de niveau de catégories
     nb_product_values: Nombre de valeurs produit
     avg_product_values_by_product: Nb moyen de valeurs produit par produit
+    avg_product_values_by_family: Nombre moyen de valeurs de produit potentielles par famille
+    max_product_values_by_family: Nombre maximum de valeurs de produit potentielles par famille
     pim_storage_version: Version de stockage
     os_version: Version du système d'exploitation
     php_version: Version de PHP

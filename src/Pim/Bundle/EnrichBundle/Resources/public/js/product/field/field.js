@@ -50,9 +50,9 @@ define(
              */
             initialize: function (attribute) {
                 this.attribute = attribute;
-                this.model     = new FieldModel({values: []});
-                this.elements  = {};
-                this.context   = {};
+                this.model = new FieldModel({values: []});
+                this.elements = {};
+                this.context = {};
 
                 return this;
             },
@@ -66,7 +66,7 @@ define(
                 this.setEditable(!this.locked);
                 this.setValid(true);
                 this.elements = {};
-                var promises  = [];
+                var promises = [];
                 mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)

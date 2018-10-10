@@ -76,7 +76,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                         }
 
                         try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
                         } catch (InvalidOptionException $e) {
                             $this->logger->warning(
                                 sprintf(

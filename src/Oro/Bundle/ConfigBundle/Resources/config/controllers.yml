@@ -10,7 +10,7 @@ services:
             - '%pim_ui.loading_messages_file%'
             -
                 -
-                    section: pim_localization
+                    section: pim_ui
                     name: language
                 -
                     section: pim_analytics

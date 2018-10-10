@@ -2,13 +2,18 @@
 
 .AknFormContainer {
   width: @AknMaxFormWidth;
+  z-index: 1;
 
   &--large {
     width: 710px;
   }
 
+  &--wide {
+    width: 100%;
+  }
+
   &--withPadding:not(:empty) {
-    padding: 20px 0 10px;
+    margin: 20px 0 10px;
   }
 
   &--centered {
