@@ -52,8 +52,8 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      * @param FilteredEntityFactory           $filteredProductModelFactory
      * @param FilteredEntityFactory           $filteredProductFactory
      * @param DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity
-     * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param string                          $entityName
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      *
      * @todo merge update the $authorizationChecker parameter to be mandatory instead of optional.
      */
@@ -63,8 +63,8 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         FilteredEntityFactory $filteredProductModelFactory,
         FilteredEntityFactory $filteredProductFactory,
         DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity,
-        AuthorizationCheckerInterface $authorizationChecker = null,
-        string $entityName
+        string $entityName,
+        AuthorizationCheckerInterface $authorizationChecker = null
     ) {
         parent::__construct($em, $em->getClassMetadata($entityName));
 
