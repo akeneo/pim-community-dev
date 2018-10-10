@@ -1,4 +1,3 @@
-
 comment:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/comment.yml'
 
@@ -53,10 +52,6 @@ categorytree_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/categorytree.yml'
     prefix: /enrich/product-category-tree
 
-media_internal_api:
-    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/media.yml'
-    prefix: /rest/media
-
 media_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/media.yml'
     prefix: /media
@@ -64,3 +59,15 @@ media_ui:
 product_model_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/product_model.yml'
     prefix: /enrich/product-model
+
+product_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/product.yml'
+    prefix: /enrich/product
+
+group_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/group.yml'
+    prefix: /enrich/group
+
+mass_edit_action_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/mass_edit_action.yml'
+    prefix: /enrich/mass-edit-action
