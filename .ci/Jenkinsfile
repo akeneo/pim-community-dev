@@ -7,6 +7,7 @@ String ceOwner = "akeneo"
 String launchUnitTests = "yes"
 String launchAcceptanceTests = "yes"
 String launchIntegrationTests = "yes"
+String launchPhpUnitEndToEndTests = "yes"
 String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
@@ -23,6 +24,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run end to end tests in PhpUnit', name: 'launchPhpUnitEndToEndTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
                 string(defaultValue: 'tests/legacy/features,src/Akeneo/Pim/Automation/SuggestData/tests/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end scenarios to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
@@ -39,6 +41,7 @@ stage("Build") {
             launchUnitTests = userInput['launchUnitTests']
             launchAcceptanceTests = userInput['launchAcceptanceTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
+            launchPhpUnitEndToEndTests = userInput['launchPhpUnitEndToEndTests']
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
@@ -157,6 +160,19 @@ stage("Test") {
             )},
 
             // END TO END TESTS
+            "end-to-end-phpunit": {queue(
+                condition: launchPhpUnitEndToEndTests.equals("yes"),
+                container: tag,
+                containers: pimContainers(image: tag, selenium: false),
+                verbose: (verboseOutputs == "yes"),
+                fetcher: {
+                    return pimPhpunitEndToEndFetcher(
+                        paths:[
+                            "var/www/pim/tests"
+                        ]
+                    )
+                }
+            )},
             "legacy-end-to-end-behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,

@@ -10,6 +10,13 @@ suites:
         src_path: src/Akeneo/Platform
         spec_prefix: Specification
 
+    Workflow:
+        namespace: Akeneo\Pim\WorkOrganization
+        psr4_prefix: Akeneo\Pim\WorkOrganization
+        spec_path: tests/back/Pim/WorkOrganization
+        src_path: src/Akeneo/Pim/WorkOrganization
+        spec_prefix: Specification
+
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle
