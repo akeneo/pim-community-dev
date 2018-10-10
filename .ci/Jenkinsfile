@@ -1,7 +1,6 @@
 #!groovy
 @Library("k8s-utils@2.x")
 
-String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
 String launchAcceptanceTests = "yes"
@@ -11,6 +10,7 @@ String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
 String composer_command = "update"
+String runInEnterpriseEdition = "yes"
 
 stage("Build") {
     milestone 1
@@ -24,10 +24,10 @@ stage("Build") {
                 string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
+                choice(choices: 'no\nyes', description: 'Run also the whole suite in Enterprise Edition (only useful if you didn\'t touch it, otherwise run the EE build from the EE itself)', name: 'runInEnterpriseEdition'),
             ])
 
-            editions = userInput['editions'].tokenize(',')
+            runInEnterpriseEdition = userInput['runInEnterpriseEdition']
             legacyFeatures = userInput['legacyFeatures'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
             launchAcceptanceTests = userInput['launchAcceptanceTests']
@@ -48,12 +48,12 @@ stage("Build") {
                         checkout scm
 
                         sh "cp .ci/Dockerfile Dockerfile"
-                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
+                        sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
                     }
                 }
             },
             "pim-ee": {
-                if (editions.contains("ee")) {
+                if (runInEnterpriseEdition.equals("yes")) {
                     pod {
                         container('docker') {
                             checkout([$class: 'GitSCM',
@@ -66,7 +66,7 @@ stage("Build") {
                             }
 
                             sh "cp .ci/Dockerfile Dockerfile"
-                            sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
+                            sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
                         }
                     }
                 } else {
@@ -127,7 +127,7 @@ stage("Test") {
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
             )},
             "front-acceptance-ee": {testif(
-                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
+                condition: launchAcceptanceTests.equals("yes") && runInEnterpriseEdition.equals("yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
@@ -137,7 +137,7 @@ stage("Test") {
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
             "back-acceptance-ee": {testif(
-                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
+                condition: launchAcceptanceTests.equals("yes") && runInEnterpriseEdition.equals("yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
@@ -149,7 +149,7 @@ stage("Test") {
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "front-integration-ee": {testif(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
+                condition: launchIntegrationTests.equals("yes") && runInEnterpriseEdition.equals("yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
@@ -162,7 +162,7 @@ stage("Test") {
                 parallelism: 50
             )},
             "back-legacy-phpunit-integration-ee": {queue(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
+                condition: launchIntegrationTests.equals("yes") && runInEnterpriseEdition.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee", selenium: false),
@@ -179,7 +179,7 @@ stage("Test") {
                 fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )},
             "legacy-end-to-end-behat-ee": {queue(
-                condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
+                condition: launchEndToEndTests.equals("yes") && runInEnterpriseEdition.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee"),
