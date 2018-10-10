@@ -358,3 +358,14 @@ services:
                 - '@pim_connector.step.xlsx_group_type_export.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_enrich.job.set_attribute_requirements:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.set_attribute_requirements%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.set_attribute_requirements.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
