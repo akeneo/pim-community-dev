@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import AttributeOptionsMappingSaver = require("./attribute-options-mapping-saver");
+import AttributeOptionsMappingSaver = require('./attribute-options-mapping-saver');
 const BaseSaverForm = require('pim/form/common/save-form');
 
 /**

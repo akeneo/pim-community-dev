@@ -1,11 +1,11 @@
-import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
-import BaseForm = require('pimenrich/js/view/base');
-import * as $ from 'jquery';
-import * as _ from 'underscore';
-import {EventsHash} from "backbone";
-import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
-import AttributeOptionsMapping = require("./attribute-options-mapping");
 import Filterable = require('akeneosuggestdata/js/common/filterable');
+import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+import {EventsHash} from 'backbone';
+import * as $ from 'jquery';
+import BaseForm = require('pimenrich/js/view/base');
+import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
+import * as _ from 'underscore';
+import AttributeOptionsMapping = require('./attribute-options-mapping');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -36,7 +36,7 @@ interface Config {
     pim_ai_attribute: string,
     catalog_attribute: string,
     suggest_data: string, // TODO Rename to attribute_mapping_status
-  }
+  };
 }
 
 /**
@@ -115,7 +115,7 @@ class AttributeMapping extends BaseForm {
       acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
 
       return acc;
-    }, <{ [key: string]: string }> {}));
+    }, {} as { [key: string]: string }));
 
     Filterable.afterRender(this, __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'));
 
@@ -131,7 +131,7 @@ class AttributeMapping extends BaseForm {
   public events(): EventsHash {
     return {
       'click .option-mapping': this.openAttributeOptionsMappingModal,
-    }
+    };
   }
 
   /**
@@ -140,7 +140,7 @@ class AttributeMapping extends BaseForm {
    */
   private appendAttributeSelector(mapping: any, pimAiAttributeCode: string) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]'
+      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]',
     );
     const attributeSelector = new SimpleSelectAttribute({
       config: {
@@ -149,7 +149,7 @@ class AttributeMapping extends BaseForm {
         choiceRoute: 'pim_enrich_attribute_rest_index',
         types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
       },
-      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
+      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
@@ -158,7 +158,7 @@ class AttributeMapping extends BaseForm {
   }
 
   /**
-   * @returns {{ [ key: number ]: string }}
+   * @returns { [ key: number ]: string }
    */
   private getMappingStatuses() {
     const statuses: { [key: number]: string } = {};
@@ -173,7 +173,7 @@ class AttributeMapping extends BaseForm {
    * This method will show or hide the Attribute Option buttons.
    * The first parameter is the current mapping, from pimAiAttributeCode to pimAttributeCode.
    *
-   * @param { [pimAiAttributeCode: string]: string | null} mapping
+   * @param { [pimAiAttributeCode: string]: string | null } mapping
    */
   private toggleAttributeOptionButtons(mapping: { [pimAiAttributeCode: string]: string | null }) {
     const pimAttributes = Object.values(mapping).filter((pimAttribute) => {
@@ -183,13 +183,15 @@ class AttributeMapping extends BaseForm {
     FetcherRegistry
       .getFetcher('attribute')
       .fetchByIdentifiers(pimAttributes)
-      .then((attributes: { code: string, type: string }[]) => {
+      .then((attributes: Array<{ code: string, type: string }>) => {
       Object.keys(mapping).forEach((pimAiAttribute) => {
-        const $attributeOptionButton = this.$el.find('.option-mapping[data-pim-ai-attribute-code=' + pimAiAttribute + ']');
-        const attribute = attributes.find((attribute: { code: string, type: string }) => {
+        const $attributeOptionButton = this.$el.find(
+          '.option-mapping[data-pim-ai-attribute-code=' + pimAiAttribute + ']',
+        );
+        const attribute = attributes.find((attr: { code: string, type: string }) => {
           return attribute.code === mapping[pimAiAttribute];
         });
-        const type = undefined === attribute ? '' : attribute.type;
+        const type = undefined === attr ? '' : attr.type;
 
         ['pim_catalog_simpleselect', 'pim_catalog_multiselect'].indexOf(type) >= 0 ?
           $attributeOptionButton.show() :
@@ -207,28 +209,29 @@ class AttributeMapping extends BaseForm {
     const $line = $(event.currentTarget).closest('.line');
     const pimAiAttributeLabel = $line.data('pim_ai_attribute');
     const pimAiAttributeCode = $line.find('.attribute-selector').data('pim-ai-attribute-code');
-    const catalogAttributeCode = $line.find('input[name="mapping.' + pimAiAttributeCode + '.attribute"]').val() as string;
+    const catalogAttributeCode =
+        $line.find('input[name="mapping.' + pimAiAttributeCode + '.attribute"]').val() as string;
 
     const familyCode = Router.match(window.location.hash).params.familyCode;
     $.when(
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
-      FetcherRegistry.getFetcher('family').fetch(familyCode)
+      FetcherRegistry.getFetcher('family').fetch(familyCode),
     ).then((
       form: BaseForm,
-      normalizedFamily: any
+      normalizedFamily: any,
     ) => {
       this.attributeOptionsMappingModal = new BootstrapModal({
         className: 'modal modal--fullPage modal--topButton',
         modalOptions: {
           backdrop: 'static',
-          keyboard: false
+          keyboard: false,
         },
         allowCancel: true,
         okCloses: false,
         title: '',
         content: '',
         cancelText: ' ',
-        okText: __('pim_common.save')
+        okText: __('pim_common.save'),
       });
       this.attributeOptionsMappingModal.open();
       this.attributeOptionsMappingForm = form;

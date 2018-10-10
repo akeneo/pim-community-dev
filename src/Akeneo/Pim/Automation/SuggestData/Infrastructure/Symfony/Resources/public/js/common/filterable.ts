@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import * as $ from "jquery";
+import * as $ from 'jquery';
 import * as _ from 'underscore';
 const noDataTemplate = require('pim/template/common/no-data');
 const __ = require('oro/translator');
@@ -19,7 +19,8 @@ enum FilterValue {
 }
 
 interface Filter {
-  value: string, type: FilterValue;
+  value: string;
+  type: FilterValue;
   field: string;
 }
 
@@ -55,7 +56,7 @@ class Filterable {
     const noDataHtml = template({
       __,
       imageClass: '',
-      hint: __('pim_datagrid.no_results', { entityHint: entityHint }),
+      hint: __('pim_datagrid.no_results', { entityHint }),
       subHint: 'pim_datagrid.no_results_subtitle',
     });
 
@@ -132,7 +133,7 @@ class Filterable {
    */
   private static filterSearch(filterValue: string, rowValue: string): boolean {
     const words: string[] = filterValue.split(' ').map((word: string) => {
-      return word.toLowerCase()
+      return word.toLowerCase();
     });
 
     return words.reduce((acc, word) => {

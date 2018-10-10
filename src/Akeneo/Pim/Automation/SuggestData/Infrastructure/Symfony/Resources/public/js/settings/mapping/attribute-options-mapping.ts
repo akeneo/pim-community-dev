@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import BaseForm = require('pimenrich/js/view/base');
-import * as _ from "underscore";
 import Filterable = require('akeneosuggestdata/js/common/filterable');
-import * as $ from "jquery";
+import * as $ from 'jquery';
+import BaseForm = require('pimenrich/js/view/base');
+import * as _ from 'underscore';
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -21,14 +21,14 @@ interface NormalizedAttributeOptionsMapping {
   family: string;
   pim_ai_attribute: string;
   mapping: {
-    [pim_ai_attribute_option_code: string] : {
+    [pimAiAttributeOptionCode: string]: {
       pim_ai_attribute_option_code: {
         label: string;
       },
       attribute_option: string;
       status: number;
-    }
-  }
+    },
+  };
 }
 
 interface Config {
@@ -39,7 +39,7 @@ interface Config {
     pim_ai_attribute_option: string;
     catalog_attribute_option: string;
     suggest_data: string;
-  }
+  };
 }
 
 /**
@@ -51,12 +51,8 @@ class AttributeOptionsMapping extends BaseForm {
   private static readonly ATTRIBUTE_OPTION_PENDING: number = 0;
   private static readonly ATTRIBUTE_OPTION_MAPPED: number = 1;
   private static readonly ATTRIBUTE_OPTION_UNMAPPED: number = 2;
-  readonly template: any = _.template(template);
-  private familyLabel: string;
-  private familyCode: string;
-  private pimAttributeCode: string;
-  private pimAiAttributeLabel: string;
-  readonly config: Config = {
+  public readonly template: any = _.template(template);
+  public readonly config: Config = {
     labels: {
       pending: '',
       mapped: '',
@@ -64,8 +60,12 @@ class AttributeOptionsMapping extends BaseForm {
       pim_ai_attribute_option: '',
       catalog_attribute_option: '',
       suggest_data: '', // TODO Rename to attribute_option_code_mapping
-    }
+    },
   };
+  private familyLabel: string;
+  private familyCode: string;
+  private pimAttributeCode: string;
+  private pimAiAttributeLabel: string;
 
   /**
    * {@inheritdoc}
@@ -172,7 +172,7 @@ class AttributeOptionsMapping extends BaseForm {
         .fetch(this.familyCode, {attributeCode: this.pimAttributeCode})
         .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
           return attributeOptionMapping;
-        })
+        }),
     );
   }
 
@@ -198,7 +198,7 @@ class AttributeOptionsMapping extends BaseForm {
     });
 
     Filterable.afterRender(this, __(
-      'akeneo_suggest_data.entity.attribute_options_mapping.fields.pim_ai_attribute_option'
+      'akeneo_suggest_data.entity.attribute_options_mapping.fields.pim_ai_attribute_option',
     ));
 
     this.renderExtensions();
@@ -213,17 +213,17 @@ class AttributeOptionsMapping extends BaseForm {
    */
   private appendAttributeOptionSelector(pimAiAttributeOptionCode: string) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeOptionCode + '"]'
+      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeOptionCode + '"]',
     );
     const attributeSelector = new SimpleSelectAsync({
       config: {
         fieldName: 'mapping.' + pimAiAttributeOptionCode + '.attribute_option',
         label: '',
       },
-      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
+      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
     attributeSelector.setChoiceUrl(
-      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.pimAttributeCode})
+      Routing.generate('pim_enrich_attributeoption_get', {identifier: this.pimAttributeCode}),
     );
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
@@ -232,4 +232,4 @@ class AttributeOptionsMapping extends BaseForm {
   }
 }
 
-export = AttributeOptionsMapping
+export = AttributeOptionsMapping;

@@ -19,15 +19,6 @@ const Routing = require('routing');
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class Saver extends BaseSaver {
-  private static familyCode: string;
-  private static franklinAttributeCode: string;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static getUrl(): string {
-    return Routing.generate(this.url, { identifier: this.familyCode, attributeCode: this.franklinAttributeCode });
-  }
 
   /**
    * Set the catalog Family code
@@ -35,7 +26,7 @@ class Saver extends BaseSaver {
    * @param { string } familyCode
    * @return Saver
    */
-  static setFamilyCode(familyCode: string): Saver {
+  public static setFamilyCode(familyCode: string): Saver {
     this.familyCode = familyCode;
 
     return this;
@@ -47,11 +38,20 @@ class Saver extends BaseSaver {
    * @param { string } franklinAttributeCode
    * @return Saver
    */
-  static setFranklinAttributeCode(franklinAttributeCode: string): Saver {
+  public static setFranklinAttributeCode(franklinAttributeCode: string): Saver {
     this.franklinAttributeCode = franklinAttributeCode;
 
     return this;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static getUrl(): string {
+    return Routing.generate(this.url, { identifier: this.familyCode, attributeCode: this.franklinAttributeCode });
+  }
+  private static familyCode: string;
+  private static franklinAttributeCode: string;
 }
 
-export = Saver
+export = Saver;
