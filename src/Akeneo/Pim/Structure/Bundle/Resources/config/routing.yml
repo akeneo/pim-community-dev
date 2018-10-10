@@ -48,6 +48,14 @@ reference_data_configuration:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/reference_data_configuration.yml'
     prefix: /rest/reference-data-configuration
 
+nternal_api_grouptype:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/grouptype.yml.yml'
+    prefix: /configuration/group-type
+
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'
+
+grouptype_ui:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/ui/grouptype.yml.yml'
+    prefix: /configuration/group-type
