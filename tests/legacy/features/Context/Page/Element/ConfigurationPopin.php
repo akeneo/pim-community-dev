@@ -95,12 +95,16 @@ class ConfigurationPopin extends Element
 
         $searchInput->setValue($label);
 
+        $this->spin(function () use ($label) {
+            return sprintf($this->find('css', '#column-list [data-value="%s"]'), $label);
+        }, 'Could not find column in search');
+
         return $this->spin(function () use ($label) {
             $items = $this->findAll('css', '.ui-sortable-handle');
 
             foreach ($items as $item) {
                 if (strtolower($label) === strtolower($item->getText())) {
-                   return $item;
+                    return $item;
                 }
             }
 
