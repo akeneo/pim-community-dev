@@ -1,7 +1,5 @@
 parameters:
-    pim_enrich.view_element.attribute.tab.parameter.template: 'PimEnrichBundle:Attribute:Tab/parameter.html.twig'
-    pim_enrich.view_element.attribute.tab.value.template:     'PimEnrichBundle:Attribute:Tab/value.html.twig'
-    pim_enrich.view_element.attribute.tab.history.template:   'PimEnrichBundle:Form:Tab/history.html.twig'
+    pim_enrich.view_element.attribute.tab.history.template:   'PimUIBundle:Form:Tab/history.html.twig'
 
     pim_enrich.attribute.general_parameters.allowed_form_types:
         - code
@@ -16,23 +14,6 @@ parameters:
         - useableAsGridFilter
 
 services:
-    ## Tabs
-    pim_enrich.view_element.attribute.tab.parameter:
-        parent: pim_enrich.view_element.base
-        arguments:
-            - 'pim_enrich.attribute.tab.parameter'
-            - '%pim_enrich.view_element.attribute.tab.parameter.template%'
-        tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 90 }
-
-    pim_enrich.view_element.attribute.tab.value:
-        parent: pim_enrich.view_element.base
-        arguments:
-            - 'pim_enrich.attribute.tab.value'
-            - '%pim_enrich.view_element.attribute.tab.value.template%'
-        tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_attribute_form.form_tab, position: 100 }
-
     pim_enrich.view_element.attribute.tab.history:
         parent: pim_enrich.view_element.base
         arguments:
