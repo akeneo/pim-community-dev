@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
+
 /**
  * This command is a DTO holding and validating the raw values of a suggest data configuration.
  *
@@ -20,59 +22,22 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
  */
 class ActivateConnectionCommand
 {
-    /** @var array */
-    private $values;
+    /** @var Token */
+    private $token;
 
     /**
-     * @param array $configurationValues
-     *
-     * @throws \InvalidArgumentException
+     * @param Token $token
      */
-    public function __construct(array $configurationValues)
+    public function __construct(Token $token)
     {
-        $this->addValues($configurationValues);
+        $this->token = $token;
     }
 
     /**
-     * @return array
+     * @return Token
      */
-    public function getValues(): array
+    public function token()
     {
-        return $this->values;
-    }
-
-    /**
-     * Validates and adds configuration values.
-     *
-     *
-     * @param array $configurationValues
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function addValues(array $configurationValues): void
-    {
-        if (empty($configurationValues)) {
-            throw new \InvalidArgumentException('Configuration values cannot be empty.');
-        }
-
-        foreach ($configurationValues as $key => $value) {
-            if (!is_string($key)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'The key of a configuration value must be a string, "%s" given.',
-                    gettype($key)
-                ));
-            }
-            if (!is_string($value)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'The value of a configuration value must be a string, "%s" given.',
-                    gettype($value)
-                ));
-            }
-            if (empty($value)) {
-                throw new \InvalidArgumentException('The value of a configuration value cannot be empty.');
-            }
-
-            $this->values[$key] = $value;
-        }
+        return $this->token;
     }
 }

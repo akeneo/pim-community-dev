@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;

@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigu
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -91,7 +92,12 @@ class PimAiConnectionController
         $configurationFields = json_decode($request->getContent(), true);
 
         try {
-            $command = new ActivateConnectionCommand($configurationFields);
+            if (!isset($configurationFields['token']) && !is_string($configurationFields['token'])) {
+                throw new \InvalidArgumentException();
+            }
+
+            $token = new Token($configurationFields['token']);
+            $command = new ActivateConnectionCommand($token);
             $this->activateConnectionHandler->handle($command);
         } catch (InvalidConnectionConfigurationException $invalidConnection) {
             return new JsonResponse([

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ConfigurationRepository;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -24,9 +25,10 @@ class ConfigurationRepositoryIntegration extends TestCase
 {
     public function test_it_saves_a_suggest_data_configuration(): void
     {
-        $configuration = new Configuration(['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
+        $token = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
+        $configuration = new Configuration(['token' => $token]);
 
-        $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
+        $this->getRepository()->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
@@ -37,14 +39,14 @@ class ConfigurationRepositoryIntegration extends TestCase
         $this->assertSame([[
             'entity' => 'pim-ai',
             'name' => 'token',
-            'value' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj',
+            'value' => $token,
         ]], $retrievedConfiguration);
     }
 
     public function test_it_updates_a_suggest_data_configuration(): void
     {
         $configuration = new Configuration(['token' => 'a_first_token']);
-        $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
+        $this->getRepository()->save($configuration);
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
@@ -66,7 +68,8 @@ class ConfigurationRepositoryIntegration extends TestCase
 
     public function test_it_finds_a_suggest_data_configuration(): void
     {
-        $configuration = new Configuration(['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
+        $token = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
+        $configuration = new Configuration(['token' => $token]);
 
         $repository = $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
         $repository->save($configuration);
@@ -76,7 +79,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
         $this->assertSame([
             'code' => Configuration::PIM_AI_CODE,
-            'values' => ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj'],
+            'values' => ['token' => $token],
         ], $retrievedConfiguration->normalize());
     }
 
@@ -86,5 +89,13 @@ class ConfigurationRepositoryIntegration extends TestCase
     protected function getConfiguration(): TestConfiguration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    /**
+     * @return ConfigurationRepository
+     */
+    private function getRepository()
+    {
+        return $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
     }
 }

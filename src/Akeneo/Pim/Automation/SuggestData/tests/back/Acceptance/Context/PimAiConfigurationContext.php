@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigu
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
@@ -149,7 +150,7 @@ class PimAiConfigurationContext implements Context
      */
     public function aValidTokenIsRetrieved(): void
     {
-        $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_VALID_TOKEN, $this->retrievedConfiguration);
+        Assert::assertEquals(static::PIM_AI_VALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 
     /**
@@ -157,21 +158,7 @@ class PimAiConfigurationContext implements Context
      */
     public function anExpiredTokenIsRetrieved(): void
     {
-        $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_INVALID_TOKEN, $this->retrievedConfiguration);
-    }
-
-    /**
-     * @param string $expectedToken
-     * @param array $expectedConfiguration
-     */
-    private function assertPimAiConfigurationEqualsTo(string $expectedToken, array $expectedConfiguration): void
-    {
-        Assert::assertSame([
-            'code' => Configuration::PIM_AI_CODE,
-            'values' => [
-                'token' => $expectedToken,
-            ],
-        ], $expectedConfiguration);
+        Assert::assertEquals(static::PIM_AI_INVALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 
     /**
@@ -182,7 +169,7 @@ class PimAiConfigurationContext implements Context
     private function activatePimAiConnection(string $token): bool
     {
         try {
-            $command = new ActivateConnectionCommand(['token' => $token]);
+            $command = new ActivateConnectionCommand(new Token($token));
             $this->activateConnectionHandler->handle($command);
         } catch (InvalidConnectionConfigurationException $exception) {
             return false;

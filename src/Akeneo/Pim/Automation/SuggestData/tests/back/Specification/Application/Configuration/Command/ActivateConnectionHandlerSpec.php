@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configurat
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
@@ -29,8 +30,11 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
         DataProviderFactory $dataProviderFactory,
+        DataProviderInterface $dataProvider,
         ConfigurationRepositoryInterface $repository
     ): void {
+        $dataProviderFactory->create()->willReturn($dataProvider);
+
         $this->beConstructedWith($dataProviderFactory, $repository);
     }
 
@@ -39,15 +43,11 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(ActivateConnectionHandler::class);
     }
 
-    public function it_updates_an_existing_configuration(
-        DataProviderInterface $dataProvider,
-        $dataProviderFactory,
-        $repository
-    ): void {
-        $command = new ActivateConnectionCommand(['token' => 'bar']);
+    public function it_updates_an_existing_configuration($dataProvider, $repository): void
+    {
+        $command = new ActivateConnectionCommand(new Token('bar'));
         $configuration = new Configuration(['token' => 'bar']);
 
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
         $repository->find()->willReturn($configuration);
 
@@ -56,14 +56,10 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_saves_a_new_connector_configuration(
-        DataProviderInterface $dataProvider,
-        $dataProviderFactory,
-        $repository
-    ): void {
-        $command = new ActivateConnectionCommand(['token' => 'bar']);
+    public function it_saves_a_new_connector_configuration($dataProvider, $repository): void
+    {
+        $command = new ActivateConnectionCommand(new Token('bar'));
 
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
         $repository->find()->willReturn(null);
 
@@ -72,13 +68,10 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_throws_an_exception_if_configuration_is_invalid(
-        DataProviderInterface $dataProvider,
-        $dataProviderFactory
-    ): void {
-        $command = new ActivateConnectionCommand(['token' => 'bar']);
+    public function it_throws_an_exception_if_configuration_is_invalid($dataProvider): void
+    {
+        $command = new ActivateConnectionCommand(new Token('bar'));
 
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);
 
         $this->shouldThrow(InvalidConnectionConfigurationException::class)->during('handle', [$command]);

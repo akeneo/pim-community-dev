@@ -70,7 +70,7 @@ final class Configuration
     {
         return [
             'code' => static::PIM_AI_CODE,
-            'values' => $this->values,
+            'values' => ['token' => $this->getToken()],
         ];
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
@@ -29,8 +30,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  */
 class ActivateConnectionHandler
 {
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var DataProviderInterface */
+    private $dataProvider;
 
     /** @var ConfigurationRepositoryInterface */
     private $repository;
@@ -43,7 +44,7 @@ class ActivateConnectionHandler
         DataProviderFactory $dataProviderFactory,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->dataProvider = $dataProviderFactory->create();
         $this->repository = $repository;
     }
 
@@ -52,10 +53,9 @@ class ActivateConnectionHandler
      *
      * @throws InvalidConnectionConfigurationException
      */
-    public function handle(ActivateConnectionCommand $saveConfiguration): void
+    public function handle(ActivateConnectionCommand $command): void
     {
-        $dataProvider = $this->dataProviderFactory->create();
-        $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
+        $isAuthenticated = $this->dataProvider->authenticate((string) $command->token());
         if (true !== $isAuthenticated) {
             throw new InvalidConnectionConfigurationException(
                 sprintf('Provided configuration is invalid.')
@@ -65,12 +65,9 @@ class ActivateConnectionHandler
         $configuration = $this->repository->find();
 
         if (null === $configuration) {
-            $configuration = new Configuration(
-                $saveConfiguration->getValues()
-            );
-        } else {
-            $configuration->setValues($saveConfiguration->getValues());
+            $configuration = new Configuration([]);
         }
+        $configuration->setValues(['token' => (string) $command->token()]);
 
         $this->repository->save($configuration);
     }
