@@ -8,7 +8,7 @@ resource "null_resource" "mailgun-credential" {
     command = <<EOF
 curl -s --user 'api:${var.MAILGUN_API_KEY}' \
 		https://api.mailgun.net/v3/domains/${var.MAILGUN_CLOUD_DOMAIN}/credentials \
-		-F login='${mailgun_login}@${var.mailgun_domain}' \
+		-F login='${var.mailgun_login}@${var.mailgun_domain}' \
 		-F password='${random_string.mailgun_password.result}' ; \
 EOF
   }

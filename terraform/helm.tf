@@ -5,8 +5,8 @@ data "template_file" "helm_pim_config" {
     pfid                    = "${var.pfid}"
     projectId               = "${var.google_project_name}"
     googleZone              = "${var.google_project_zone}"
-    mailgun_login      = "${data.template_file.akob_mailgun_login.rendered}"
-    mailgun_password   = "${random_string.akob_mailgun_password.result}"
+    mailgun_login           = "${var.mailgun_login}@${var.mailgun_domain}"
+    mailgun_password        = "${random_string.akob_mailgun_password.result}"
   }
 }
 
