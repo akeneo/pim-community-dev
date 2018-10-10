@@ -311,6 +311,14 @@ class ColumnSelector extends BaseView {
     this.setSortable();
     this.setValidation();
     this.listenToListScroll();
+
+    const scrollColumn = this.modal.$el.find('[data-columns]')
+    const scrollHeight = scrollColumn.get(0).scrollHeight;
+    const columnHeight = scrollColumn.outerHeight();
+
+    if (scrollHeight === columnHeight) {
+      this.fetchNextColumns(true)
+    }
   }
 
   /**
@@ -453,14 +461,6 @@ class ColumnSelector extends BaseView {
       this.fetchColumns().then((columns: {[name: string]: Column}) => {
         this.loadedColumns = this.setColumnsSelectedByDefault(columns);
         this.renderColumns();
-
-        const scrollColumn = this.modal.$el.find('[data-columns]')
-        const scrollHeight = scrollColumn.get(0).scrollHeight;
-        const columnHeight = scrollColumn.outerHeight();
-
-        if (scrollHeight === columnHeight) {
-          this.fetchNextColumns(true)
-        }
       });
     });
   }
