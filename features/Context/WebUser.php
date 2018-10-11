@@ -1117,6 +1117,17 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $attributeGroups
+     *
+     * @Then /^the order of attribute groups should be "([^"]*)"$/
+     */
+    public function orderOfAttributeGroupsShouldBe($attributeGroups)
+    {
+        $actualAttributeGroups = $this->getCurrentPage()->getAttributeGroups();
+        assertEquals($attributeGroups, implode($actualAttributeGroups, ', '));
+    }
+
+    /**
      * @param string $group
      *
      * @Then /^I should see available group "([^"]*)"$/
