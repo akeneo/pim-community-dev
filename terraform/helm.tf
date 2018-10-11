@@ -13,5 +13,5 @@ data "template_file" "helm_pim_config" {
 
 resource "local_file" "helm_pim_config" {
   content  = "${data.template_file.helm_pim_config.rendered}"
-  filename = "./pim-values.yaml"
+  filename = "./terraform-values.yaml"
 }
