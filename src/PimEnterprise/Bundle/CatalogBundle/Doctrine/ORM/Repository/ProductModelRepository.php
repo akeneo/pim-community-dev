@@ -20,7 +20,9 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Decorates CE product model repository to apply permissions.
@@ -41,6 +43,9 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /** @var DenyNotGrantedCategorizedEntity */
     private $denyNotGrantedCategorizedEntity;
 
+    /** @var AuthorizationCheckerInterface  */
+    private $authorizationChecker;
+
     /**
      * @param EntityManagerInterface          $em
      * @param ProductModelRepositoryInterface $productModelRepository
@@ -48,6 +53,9 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      * @param FilteredEntityFactory           $filteredProductFactory
      * @param DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity
      * @param string                          $entityName
+     * @param AuthorizationCheckerInterface   $authorizationChecker
+     *
+     * @todo merge update the $authorizationChecker parameter to be mandatory instead of optional.
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -55,7 +63,8 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         FilteredEntityFactory $filteredProductModelFactory,
         FilteredEntityFactory $filteredProductFactory,
         DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity,
-        string $entityName
+        string $entityName,
+        AuthorizationCheckerInterface $authorizationChecker = null
     ) {
         parent::__construct($em, $em->getClassMetadata($entityName));
 
@@ -63,6 +72,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         $this->filteredProductFactory = $filteredProductFactory;
         $this->filteredProductModelFactory = $filteredProductModelFactory;
         $this->denyNotGrantedCategorizedEntity = $denyNotGrantedCategorizedEntity;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -286,13 +296,19 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      * @param ProductInterface[] $products
      *
      * @return array
+     *
+     * @todo merge remove the check "null !== $this->authorizationChecker".
      */
     private function getFilteredProducts(array $products): array
     {
         $filteredProducts = [];
         foreach ($products as $product) {
-            $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($product);
-            $filteredProducts[] = $this->filteredProductFactory->create($product);
+            if (
+                null !== $this->authorizationChecker &&
+                $this->authorizationChecker->isGranted(Attributes::VIEW, $product)
+            ) {
+                $filteredProducts[] = $this->filteredProductFactory->create($product);
+            }
         }
 
         return $filteredProducts;
