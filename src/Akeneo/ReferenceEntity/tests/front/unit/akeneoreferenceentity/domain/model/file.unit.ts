@@ -16,7 +16,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
       filePath: 'file/path.png',
       size: 10,
       mimeType: 'image/png',
-      extension: 'png'
+      extension: 'png',
     });
     expect(createFile().normalize()).toBe(null);
     expect(createEmptyFile().normalize()).toBe(null);
@@ -53,7 +53,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).getFilePath()
     ).toBe('file/path.png');
     expect(
@@ -62,7 +62,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).getOriginalFilename()
     ).toBe('my_filename.png');
     expect(
@@ -71,7 +71,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).getSize()
     ).toBe(10);
     expect(
@@ -80,7 +80,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).getMimeType()
     ).toBe('image/png');
     expect(
@@ -89,7 +89,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).getExtension()
     ).toBe('png');
   });
@@ -103,13 +103,13 @@ describe('akeneo > reference entity > domain > model --- file', () => {
     }).toThrow('You cannot get the original filename on an empty file');
     expect(() => {
       createFile().getSize();
-    }).toThrow('You cannot get the size on an empty file');
+    }).toThrow('You cannot get the size on an uploaded or empty file');
     expect(() => {
       createFile().getMimeType();
-    }).toThrow('You cannot get the mime type on an empty file');
+    }).toThrow('You cannot get the mime type on an uploaded or empty file');
     expect(() => {
       createFile().getExtension();
-    }).toThrow('You cannot get the extension on an empty file');
+    }).toThrow('You cannot get the extension on an uploaded or empty file');
   });
 
   test('I can denormalize a file', () => {
@@ -129,14 +129,14 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).normalize()
     ).toEqual({
       originalFilename: 'my_filename.png',
       filePath: 'file/path.png',
       size: 10,
       mimeType: 'image/png',
-      extension: 'png'
+      extension: 'png',
     });
   });
 
@@ -147,14 +147,14 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).equals(
         denormalizeFile({
           originalFilename: 'my_filename.png',
           filePath: 'file/path.png',
           size: 10,
           mimeType: 'image/png',
-          extension: 'png'
+          extension: 'png',
         })
       )
     ).toBe(true);
@@ -164,14 +164,14 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).equals(
         denormalizeFile({
           originalFilename: 'my_filename.png',
           filePath: 'file/path.png',
           size: 10,
           mimeType: 'image/jpg',
-          extension: 'png'
+          extension: 'png',
         })
       )
     ).toBe(false);
@@ -181,7 +181,7 @@ describe('akeneo > reference entity > domain > model --- file', () => {
         filePath: 'file/path.png',
         size: 10,
         mimeType: 'image/png',
-        extension: 'png'
+        extension: 'png',
       }).equals(12)
     ).toBe(false);
   });

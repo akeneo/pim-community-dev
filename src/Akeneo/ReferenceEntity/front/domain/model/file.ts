@@ -49,7 +49,7 @@ export default class File {
 
   public getSize(): number {
     if (undefined === this.size) {
-      throw new InvalidCallError('You cannot get the size on an empty file');
+      throw new InvalidCallError('You cannot get the size on an uploaded or empty file');
     }
 
     return this.size;
@@ -57,7 +57,7 @@ export default class File {
 
   public getMimeType(): string {
     if (undefined === this.mimeType) {
-      throw new InvalidCallError('You cannot get the mime type on an empty file');
+      throw new InvalidCallError('You cannot get the mime type on an uploaded or empty file');
     }
 
     return this.mimeType;
@@ -65,13 +65,19 @@ export default class File {
 
   public getExtension(): string {
     if (undefined === this.extension) {
-      throw new InvalidCallError('You cannot get the extension on an empty file');
+      throw new InvalidCallError('You cannot get the extension on an uploaded or empty file');
     }
 
     return this.extension;
   }
 
-  public static create(filePath: string, originalFilename: string, size?: number, mimeType?: string, extension?: string): File {
+  public static create(
+    filePath: string,
+    originalFilename: string,
+    size?: number,
+    mimeType?: string,
+    extension?: string
+  ): File {
     return new File(filePath, originalFilename, size, mimeType, extension);
   }
 
@@ -84,12 +90,14 @@ export default class File {
   }
 
   public equals(file: File): boolean {
-    return file instanceof File &&
+    return (
+      file instanceof File &&
       file.filePath === this.filePath &&
       file.originalFilename === this.originalFilename &&
       file.size === this.size &&
       file.mimeType === this.mimeType &&
-      file.extension === this.extension;
+      file.extension === this.extension
+    );
   }
 
   public static createFromNormalized(normalizedFile: NormalizedFile): File {
@@ -104,7 +112,13 @@ export default class File {
       normalizedFile.mimeType &&
       normalizedFile.extension
     ) {
-      return File.create(normalizedFile.filePath, normalizedFile.originalFilename, normalizedFile.size, normalizedFile.mimeType, normalizedFile.extension);
+      return File.create(
+        normalizedFile.filePath,
+        normalizedFile.originalFilename,
+        normalizedFile.size,
+        normalizedFile.mimeType,
+        normalizedFile.extension
+      );
     }
 
     return File.create(normalizedFile.filePath, normalizedFile.originalFilename);
@@ -121,13 +135,13 @@ export default class File {
         originalFilename: this.originalFilename as string,
         size: this.size,
         mimeType: this.mimeType,
-        extension: this.extension
-      }
+        extension: this.extension,
+      };
     }
 
     return {
       filePath: this.filePath as string,
-      originalFilename: this.originalFilename as string
+      originalFilename: this.originalFilename as string,
     };
   }
 }

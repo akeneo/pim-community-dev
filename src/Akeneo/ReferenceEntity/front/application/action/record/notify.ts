@@ -24,7 +24,9 @@ export const notifyRecordWellDeleted = (recordCode: RecordCode) => {
 };
 
 export const notifyAllRecordsWellDeleted = (referenceEntityIdentifier: ReferenceEntityIdentifier) => {
-  return notify('success', 'pim_reference_entity.record.notification.delete_all.success', {entityIdentifier: referenceEntityIdentifier.stringValue()});
+  return notify('success', 'pim_reference_entity.record.notification.delete_all.success', {
+    entityIdentifier: referenceEntityIdentifier.stringValue(),
+  });
 };
 
 export const notifyAllRecordsDeletionFailed = () => {

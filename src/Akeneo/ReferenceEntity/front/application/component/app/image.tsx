@@ -6,7 +6,7 @@ import loadImage from 'akeneoreferenceentity/tools/image-loader';
 
 class Image extends React.Component<
   {
-    attributeId?: string;
+    id?: string;
     image: FileModel;
     alt: string;
     wide?: boolean;
@@ -142,7 +142,7 @@ class Image extends React.Component<
           <div className="AknImage-drop" style={{backgroundImage: `url("${imageUrl}")`}} />
         ) : null}
         <input
-          id={this.props.attributeId}
+          id={this.props.id}
           className="AknImage-updater"
           onDrag={this.stopEvent}
           onDragStart={this.stopEvent}

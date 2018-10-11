@@ -32,7 +32,9 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
   }
 };
 
-export const deleteAllReferenceEntityRecords = (referenceEntity: ReferenceEntity) => async (dispatch: any): Promise<void> => {
+export const deleteAllReferenceEntityRecords = (referenceEntity: ReferenceEntity) => async (
+  dispatch: any
+): Promise<void> => {
   try {
     const errors = await recordRemover.removeAll(referenceEntity.getIdentifier());
 

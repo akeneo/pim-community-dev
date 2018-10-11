@@ -8,10 +8,7 @@ import {
   recordEditionUpdated,
   recordEditionSubmission,
 } from 'akeneoreferenceentity/domain/event/record/edit';
-import {
-  notifyRecordWellSaved,
-  notifyRecordSaveFailed
-} from 'akeneoreferenceentity/application/action/record/notify';
+import {notifyRecordWellSaved, notifyRecordSaveFailed} from 'akeneoreferenceentity/application/action/record/notify';
 import Record from 'akeneoreferenceentity/domain/model/record/record';
 import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';

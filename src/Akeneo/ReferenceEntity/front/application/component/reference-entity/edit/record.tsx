@@ -11,9 +11,7 @@ import ReferenceEntity, {
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords} from 'akeneoreferenceentity/application/action/record/delete';
-import {
-  breadcrumbConfiguration,
-} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -41,7 +39,13 @@ interface DispatchProps {
   };
 }
 
-const SecondaryAction = ({referenceEntityIdentifier, onDelete}: {referenceEntityIdentifier: string, onDelete: () => void}) => {
+const SecondaryAction = ({
+  referenceEntityIdentifier,
+  onDelete,
+}: {
+  referenceEntityIdentifier: string;
+  onDelete: () => void;
+}) => {
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
@@ -52,7 +56,11 @@ const SecondaryAction = ({referenceEntityIdentifier, onDelete}: {referenceEntity
             tabIndex={-1}
             className="AknDropdown-menuLink"
             onClick={() => {
-              if (confirm(__('pim_reference_entity.record.delete_all.confirm', {entityIdentifier: referenceEntityIdentifier}))) {
+              if (
+                confirm(
+                  __('pim_reference_entity.record.delete_all.confirm', {entityIdentifier: referenceEntityIdentifier})
+                )
+              ) {
                 onDelete();
               }
             }}
