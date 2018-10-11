@@ -13,33 +13,31 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Akeneo\Tool',
-        'Akeneo\UserManagement\Component',
-        'Oro\Bundle\PimDataGridBundle\Entity\DatagridView', // TODO: The locale is linked by reference instead of id
-        'Akeneo\UserManagement\Bundle\Manager\UserManager', // TODO: We use it to encode the user's password
+        'Oro\Bundle\PimDataGridBundle\Entity\DatagridView', // TODO: Link by reference instead of id
+        'Akeneo\UserManagement\Bundle\Manager\UserManager', // TODO: We use it to encode the user's password, Introduce interface for the update password
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager', // TODO: This dependency should be removed
-        'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
-        'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
-        'Akeneo\Tool\Component\Connector\ArrayConverter', // TODO: Remove that ligne when connector bundle/component will be moved in Tool
+        'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: Link by reference instead of id
+        'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: Link by reference instead of id
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
         'Doctrine',
         'Symfony\Component',
         'Akeneo\Tool',
-        'Akeneo\UserManagement',
+        'Akeneo\UserManagement\Component',
         'Oro\Bundle\SecurityBundle',
+        'Symfony\Bundle\FrameworkBundle',
         'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
-        'Akeneo\Channel\Component\Model\Channel', // TODO: Use for entity form
-        'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
         'Akeneo\Channel\Component\Model\Locale', // TODO: Use for entity form
+        'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
+        'Akeneo\Channel\Component\Model\Channel', // TODO: Use for entity form
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: it should be moved somewhere we could centralize old symfony form or remove it
-        'Sensio\Bundle\FrameworkExtraBundle', // TODO:Some old Oro controllers use Template annotation
-        'Symfony\Bundle\FrameworkBundle', // TODO:Some old Oro controllers extend the symfony controller
+        'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // TODO: Duplicate this class where it is used and remove the original one
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // TODO: Duplicate this class where it is used and remove the original one (is birthday really useful?)
+        'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // TODO: Duplicate this class where it is used and remove the original one
+        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // TODO: Need real decoupling between UserManagement and Categories, maybe Enrichment should add the field "category default tree" in the form
+        'Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: Front issue
+        'Sensio\Bundle\FrameworkExtraBundle', // TODO: Remove the usage of @Template method (quick) Not priority one
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 
