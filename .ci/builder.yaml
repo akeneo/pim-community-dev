@@ -1,5 +1,6 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  - id: pull-cache
+    name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'eu.gcr.io/akeneo-ci/pim-community-dev:master']
     waitFor: ['-']   
   - name: 'gcr.io/cloud-builders/docker'
