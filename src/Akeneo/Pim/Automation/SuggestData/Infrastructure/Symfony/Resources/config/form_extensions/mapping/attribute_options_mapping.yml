@@ -28,7 +28,7 @@ extensions:
                 unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
                 franklin_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.franklin_attribute_option
                 catalog_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.catalog_attribute_option
-                suggest_data: akeneo_suggest_data.entity.attribute_options_mapping.fields.status
+                attribute_option_status: akeneo_suggest_data.entity.attribute_options_mapping.fields.attribute_option_status
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-description-header:
         module: pim/common/simple-view

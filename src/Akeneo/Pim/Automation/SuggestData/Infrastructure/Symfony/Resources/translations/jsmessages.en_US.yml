@@ -66,7 +66,7 @@ akeneo_suggest_data:
             fields:
                 franklin_attribute_option: Franklin attribute option
                 catalog_attribute_option: Catalog attribute option
-                status: Franklin option status
+                attribute_option_status: Franklin option status
             module:
                 edit:
                     title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'

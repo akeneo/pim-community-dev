@@ -11,7 +11,7 @@ import Filterable = require('akeneosuggestdata/js/common/filterable');
 import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
-import {NormalizedAttributeOptionsMapping} from '../../model/normalized-attribute-options-mapping';
+import {NormalizedAttributeOptionsMapping, ATTRIBUTE_OPTION_STATUS} from '../../model/normalized-attribute-options-mapping';
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -25,7 +25,7 @@ interface Config {
     unmapped: string;
     franklin_attribute_option: string;
     catalog_attribute_option: string;
-    suggest_data: string;
+    attribute_option_status: string;
   };
 }
 
@@ -35,9 +35,6 @@ interface Config {
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class AttributeOptionsMapping extends BaseForm {
-  private static readonly ATTRIBUTE_OPTION_PENDING: number = 0;
-  private static readonly ATTRIBUTE_OPTION_MAPPED: number = 1;
-  private static readonly ATTRIBUTE_OPTION_UNMAPPED: number = 2;
   public readonly template: any = _.template(template);
   public readonly config: Config = {
     labels: {
@@ -46,7 +43,7 @@ class AttributeOptionsMapping extends BaseForm {
       unmapped: '',
       franklin_attribute_option: '',
       catalog_attribute_option: '',
-      suggest_data: '', // TODO Rename to attribute_option_code_mapping
+      attribute_option_status: '',
     },
   };
   private familyLabel: string;
@@ -140,9 +137,9 @@ class AttributeOptionsMapping extends BaseForm {
    */
   private getMappingStatuses() {
     const statuses: { [key: number]: string } = {};
-    statuses[AttributeOptionsMapping.ATTRIBUTE_OPTION_PENDING] = __(this.config.labels.pending);
-    statuses[AttributeOptionsMapping.ATTRIBUTE_OPTION_MAPPED] = __(this.config.labels.mapped);
-    statuses[AttributeOptionsMapping.ATTRIBUTE_OPTION_UNMAPPED] = __(this.config.labels.unmapped);
+    statuses[ATTRIBUTE_OPTION_STATUS.PENDING] = __(this.config.labels.pending);
+    statuses[ATTRIBUTE_OPTION_STATUS.MAPPED] = __(this.config.labels.mapped);
+    statuses[ATTRIBUTE_OPTION_STATUS.UNMAPPED] = __(this.config.labels.unmapped);
 
     return statuses;
   }
@@ -176,7 +173,7 @@ class AttributeOptionsMapping extends BaseForm {
       mapping,
       franklin_attribute_option: __(this.config.labels.franklin_attribute_option),
       catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
-      suggest_data: __(this.config.labels.suggest_data),
+      suggest_data: __(this.config.labels.attribute_option_status),
       statuses: this.getMappingStatuses(),
     }));
 
