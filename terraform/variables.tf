@@ -40,3 +40,8 @@ variable "mailgun_domain" {
 variable "pfid" {
   type = "string"
 }
+
+variable "google_project_zone" {
+  type = "string"
+  description = "Google zone where the project is deployed (Used for backup)."
+}
