@@ -41,6 +41,11 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
+    pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to:
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
     pim_catalog.query.get_associated_product_codes_by_product:
         class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB
         arguments:

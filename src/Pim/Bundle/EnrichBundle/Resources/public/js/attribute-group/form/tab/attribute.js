@@ -90,8 +90,7 @@ define(
                             return Object.assign({}, attribute, { sort_order: sortOrder });
                         });
 
-                        attributes.sort((first, second) => first.code.localeCompare(second.code))
-                                  .sort((first, second) => first.sort_order - second.sort_order);
+                        attributes.sort((first, second) => first.sort_order - second.sort_order);
 
                         this.$el.empty().append(this.template({
                             attributes: attributes,

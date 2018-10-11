@@ -143,6 +143,23 @@ services:
             - '@validator'
             - '%pim_job_product_batch_size%'
 
+    pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'ensure_attribute_group_order'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order'
+
+    pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order:
+        class: 'Pim\Component\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_connector.reader.file.csv_attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to'
+            - '@validator'
+
     pim_connector.step.csv_family_variant.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -559,6 +576,23 @@ services:
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
             - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_attribute_group_import.ensure_attribute_group_order:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'ensure_attribute_group_order'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order'
+
+    pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order:
+        class: 'Pim\Component\Connector\Job\EnsureConsistentAttributeGroupOrderTasklet'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_connector.reader.file.xlsx_attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.doctrine.query.find_attribute_group_orders_equal_or_superior_to'
+            - '@validator'
 
     pim_connector.step.xlsx_family_variant.import:
         class: '%pim_connector.step.item_step.class%'
