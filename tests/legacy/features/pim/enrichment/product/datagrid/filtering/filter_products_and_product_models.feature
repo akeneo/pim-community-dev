@@ -9,7 +9,7 @@ Feature: Filter product and product models
     And I am logged in as "Mary"
 
   Scenario: Successfully filter and display both products and product models
-    Given I am on the products page
+    Given I am on the products grid
     When I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     Then I should see products tshirt-unique-size-crimson-red, running-shoes-xxs-crimson-red, running-shoes-m-crimson-red, running-shoes-xxxl-crimson-red
@@ -38,7 +38,7 @@ Feature: Filter product and product models
     And the following products:
       | sku                  | family   | name-en_US           | categories | size | description-en_US-ecommerce |
       | tshirt-kurt-cobain-s | clothing | Tshirt Kurt Cobain S | Tshirts    | S    | A Kurt Cobain t-shirt       |
-    When I am on the products page
+    When I am on the products grid
     Then I should see products tshirt-unique-color
     And I should see the product models tshirt-kurt-cobain-s
 

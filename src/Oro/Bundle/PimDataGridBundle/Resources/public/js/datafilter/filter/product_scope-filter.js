@@ -84,6 +84,7 @@ define(
                 var scope = DatagridState.get('product-grid', 'scope');
                 if (!scope) {
                     scope = this.catalogScope;
+                    this.setValue({value: scope});
                 }
 
                 UserContext.set('catalogScope', scope);
