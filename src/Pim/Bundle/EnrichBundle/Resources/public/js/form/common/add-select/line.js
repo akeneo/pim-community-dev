@@ -21,7 +21,7 @@ define(
         template
     ) {
         return Backbone.View.extend({
-            className: '.select2-results',
+            className: 'select2-results',
             template: _.template(template),
             checked: false,
             item: null,

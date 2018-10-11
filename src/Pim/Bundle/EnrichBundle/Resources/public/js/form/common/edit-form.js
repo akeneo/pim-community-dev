@@ -35,7 +35,7 @@ define(
         messenger
     ) {
         return BaseForm.extend({
-            template: null,
+            template: _.template(template),
 
             /**
              * {@inheritdoc}
@@ -43,7 +43,6 @@ define(
             initialize: function (options) {
                 options = options || {};
 
-                this.template = _.template(template);
                 if (options.config && options.config.template) {
                     this.template = _.template(RequireContext(options.config.template));
                 }
@@ -70,7 +69,6 @@ define(
                     }
                     saveButtonsExtension.trigger('save-buttons:add-button', button);
                 }.bind(this));
-
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
