@@ -7,11 +7,14 @@
  * file that was distributed with this source code.
  */
 
-import {Filterable} from "../../common/filterable";
 import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
-import {NormalizedAttributeOptionsMapping, AttributeOptionStatus} from '../../model/normalized-attribute-options-mapping';
+import {Filterable} from '../../common/filterable';
+import {
+  AttributeOptionStatus,
+  NormalizedAttributeOptionsMapping,
+} from '../../model/normalized-attribute-options-mapping';
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');

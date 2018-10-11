@@ -1,7 +1,7 @@
 import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
-import {Filter, FilterValue} from "../common/filterable";
+import {Filter, FilterValue} from '../common/filterable';
 const __ = require('oro/translator');
 const template = require('pim/template/datagrid/filter/search-filter');
 

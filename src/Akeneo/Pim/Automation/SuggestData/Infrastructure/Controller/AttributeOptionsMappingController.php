@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AttributeOptionsMappingController
 {
     /**
-     * TODO Unmock data
+     * TODO Unmock data.
      *
      * @return JsonResponse
      */
@@ -36,34 +36,34 @@ class AttributeOptionsMappingController
                         'label' => 'Color 1',
                     ],
                     'catalog_attribute_option_code' => null,
-                    'status' => 0
+                    'status' => 0,
                 ],
                 'color_2' => [
                     'franklin_attribute_option_code' => [
                         'label' => 'Color 2',
                     ],
                     'catalog_attribute_option_code' => 'color2',
-                    'status' => 1
+                    'status' => 1,
                 ],
                 'color_3' => [
                     'franklin_attribute_option_code' => [
                         'label' => 'Color 3',
                     ],
                     'catalog_attribute_option_code' => null,
-                    'status' => 2
+                    'status' => 2,
                 ],
-            ]
+            ],
         ]);
     }
 
     /**
-     * TODO Unmock data
+     * TODO Unmock data.
      *
      * @return JsonResponse
      */
     public function updateAction()
     {
-        /** Current return from the Front
+        /* Current return from the Front
          * {
          *     "family":"router",
          *     "franklin_attribute_code":"color",

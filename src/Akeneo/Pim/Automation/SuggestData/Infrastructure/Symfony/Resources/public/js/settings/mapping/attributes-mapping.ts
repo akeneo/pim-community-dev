@@ -4,8 +4,8 @@ import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
+import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('./attribute-options-mapping');
-import {Filterable} from "../../common/filterable";
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
