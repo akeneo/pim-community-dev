@@ -30,6 +30,12 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             gedmo:
                 timestampable:
                     on: create
+        updated:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update
         root:
             type: integer
             gedmo:
