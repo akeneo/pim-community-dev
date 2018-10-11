@@ -17,10 +17,12 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping as Dom
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributesMappingNormalizerSpec extends ObjectBehavior
 {
@@ -46,27 +48,69 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
     }
 
     public function it_normalizes_attributes_mapping_that_contains_attribute(
-        DomainAttributeMapping $attributeMapping,
-        AttributeInterface $attribute
+        DomainAttributeMapping $colorMapping,
+        DomainAttributeMapping $sizeMapping,
+        AttributeTranslationInterface $enTranslation,
+        AttributeTranslationInterface $frTranslation,
+        ArrayCollection $colorTranslations,
+        ArrayCollection $sizeTranslations,
+        AttributeInterface $attributeColor,
+        AttributeInterface $attributeSize,
+        \ArrayIterator $translationsIterator
     ): void {
-        $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
-        $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
-        $attributeMapping->getAttribute()->willReturn($attribute);
+        $colorMapping->getTargetAttributeCode()->willReturn('color_target');
+        $colorMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
+        $colorMapping->getAttribute()->willReturn($attributeColor);
 
-        $attribute->getCode()->willReturn('pim_attr');
-        $attribute->getLabel()->willReturn('Pim Attribute');
-        $attribute->setLocale('en_US')->willReturn();
+        $sizeMapping->getTargetAttributeCode()->willReturn('size_target');
+        $sizeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
+        $sizeMapping->getAttribute()->willReturn($attributeSize);
+
+        $attributeColor->getCode()->willReturn('color');
+        $attributeColor->getTranslations()->willReturn($colorTranslations);
+
+        $attributeSize->getCode()->willReturn('size');
+        $attributeSize->getTranslations()->willReturn($sizeTranslations);
+
+        $sizeTranslations->isEmpty()->willReturn(true);
+        $colorTranslations->isEmpty()->willReturn(false);
+
+        $colorTranslations->getIterator()->willReturn($translationsIterator);
+        $translationsIterator->valid()->willReturn(true, true, false);
+        $translationsIterator->current()->willReturn($frTranslation, $enTranslation);
+        $translationsIterator->next()->shouldBeCalled();
+        $translationsIterator->rewind()->shouldBeCalled();
+
+        $frTranslation->getLocale()->willReturn('fr_FR');
+        $frTranslation->getLabel()->willReturn('Couleur');
+
+        $enTranslation->getLocale()->willReturn('en_US');
+        $enTranslation->getLabel()->willReturn('Color');
 
         $expectedData = [
-            'from' => ['id' => 'target_attr'],
-            'to' => [
-                'id' => 'pim_attr',
-                'label' => ['en_US' => 'Pim Attribute'],
-                'type' => 'text',
+            [
+                'from' => ['id' => 'color_target'],
+                'to' => [
+                    'id' => 'color',
+                    'label' => [
+                        'fr_FR' => 'Couleur',
+                        'en_US' => 'Color',
+                    ],
+                    'type' => 'text',
+                ],
+                'status' => AttributeMapping::STATUS_ACTIVE,
             ],
-            'status' => AttributeMapping::STATUS_ACTIVE,
+            [
+                'from' => ['id' => 'size_target'],
+                'to' => [
+                    'id' => 'size',
+                    'label' => [],
+                    'type' => 'text',
+                ],
+                'status' => AttributeMapping::STATUS_ACTIVE,
+            ],
         ];
 
-        $this->normalize([$attributeMapping])->shouldReturn([$expectedData]);
+        $this->normalize([$colorMapping, $sizeMapping])->shouldReturn($expectedData);
     }
 }

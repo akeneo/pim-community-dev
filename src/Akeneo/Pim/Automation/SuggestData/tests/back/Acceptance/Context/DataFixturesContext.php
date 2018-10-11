@@ -121,6 +121,16 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @param string $attributes
+     *
+     * @Given /the predefined attributes? (.*)/
+     */
+    public function thePredefinedAttributes(string $attributes): void
+    {
+        $this->loadAttributes(array_map('strtolower', $this->toArray($attributes)));
+    }
+
+    /**
      * @param string $familyCode
      *
      * @Given the family ":familyCode"
@@ -369,12 +379,26 @@ class DataFixturesContext implements Context
      *
      * @return array
      */
-    private function loadJsonFileAsArray(string $filepath)
+    private function loadJsonFileAsArray(string $filepath): array
     {
         $filepath = realpath(sprintf(__DIR__ . '/../Resources/fixtures/%s', $filepath));
         Assert::true(file_exists($filepath));
         $jsonContent = file_get_contents($filepath);
 
         return json_decode($jsonContent, true);
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    private function toArray(string $list): array
+    {
+        if (empty($list)) {
+            return [];
+        }
+
+        return explode(', ', str_replace(' and ', ', ', $list));
     }
 }

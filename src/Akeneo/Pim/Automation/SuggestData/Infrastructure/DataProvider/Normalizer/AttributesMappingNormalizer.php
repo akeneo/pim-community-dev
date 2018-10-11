@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\At
 /**
  * Prepare AttributesMapping model from Domain layer in order to be used by PIM.ai client.
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributesMappingNormalizer
 {
@@ -31,7 +31,7 @@ class AttributesMappingNormalizer
     ];
 
     /**
-     * @param AttributeMapping[] $attributesMapping
+     * @param DomainAttributeMapping[] $attributesMapping
      *
      * @return array
      */
@@ -41,21 +41,26 @@ class AttributesMappingNormalizer
         foreach ($attributesMapping as $attributeMapping) {
             $attribute = $attributeMapping->getAttribute();
 
-            $normalizedAttribute = null;
+            $normalizedPimAttribute = null;
             if (null !== $attribute) {
-                $attribute->setLocale('en_US');
-                $normalizedAttribute = [
+                $labels = [];
+                $translations = $attribute->getTranslations();
+                if (!$translations->isEmpty()) {
+                    foreach ($translations as $translation) {
+                        $labels[$translation->getLocale()] = $translation->getLabel();
+                    }
+                }
+
+                $normalizedPimAttribute = [
                     'id' => $attribute->getCode(),
-                    'label' => [
-                        'en_US' => $attribute->getLabel(),
-                    ],
+                    'label' => $labels,
                     'type' => 'text', // TODO: Should be managed in APAI-174
                 ];
             }
 
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
-                'to' => $normalizedAttribute,
+                'to' => $normalizedPimAttribute,
                 'status' => static::PIM_AI_MAPPING_STATUS[$attributeMapping->getStatus()],
             ];
         }

@@ -4,7 +4,6 @@ Feature: Map the PIM attributes with PIM.ai attributes
   As a system administrator
   I want to map PIM.ai attributes to Akeneo PIM attributes
 
-
   Scenario: Successfully save the attributes mapping
     Given the family "router"
     And the following attribute:

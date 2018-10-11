@@ -29,20 +29,27 @@ class IdentifiersMappingNormalizer
      */
     public function normalize(IdentifiersMapping $mapping): array
     {
-        $result = [];
-
+        $normalizedMapping = [];
         foreach ($mapping->getIdentifiers() as $identifier => $attribute) {
             if (null !== $attribute) {
-                $attribute->setLocale('en_US');
-                $result[$identifier] = [
-                    'code' => $attribute->getCode(),
-                    'label' => [
-                        'en_US' => $attribute->getLabel(),
+                $labels = [];
+                $translations = $attribute->getTranslations();
+                if (!$translations->isEmpty()) {
+                    foreach ($attribute->getTranslations() as $translation) {
+                        $labels[$translation->getLocale()] = $translation->getLabel();
+                    }
+                }
+
+                $normalizedMapping[] = [
+                    'from' => ['id' => $identifier],
+                    'to' => [
+                        'id' => $attribute->getCode(),
+                        'label' => $labels,
                     ],
                 ];
             }
         }
 
-        return $result;
+        return $normalizedMapping;
     }
 }

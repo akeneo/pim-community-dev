@@ -16,6 +16,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
 class IdentifiersMappingNormalizerSpec extends ObjectBehavior
@@ -25,10 +27,15 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(IdentifiersMappingNormalizer::class);
     }
 
-    public function it_should_normalize_identifiers_mapping(
+    public function it_normalizes_identifiers_mapping(
         IdentifiersMapping $mapping,
         AttributeInterface $attributeSku,
-        AttributeInterface $attributeBrand
+        AttributeInterface $attributeBrand,
+        AttributeTranslationInterface $brandEN,
+        AttributeTranslationInterface $brandFR,
+        ArrayCollection $brandTranslations,
+        \ArrayIterator $brandTransIterator,
+        ArrayCollection $skuTranslations
     ): void {
         $mapping->getIdentifiers()->willReturn(
             [
@@ -37,22 +44,45 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
                 'ean' => null,
             ]
         );
-        $attributeSku->setLocale('en_US')->shouldBeCalled();
-        $attributeBrand->setLocale('en_US')->shouldBeCalled();
         $attributeSku->getCode()->willReturn('sku');
+        $attributeSku->getTranslations()->willReturn($skuTranslations);
+
+        $skuTranslations->isEmpty()->willReturn(true);
+
         $attributeBrand->getCode()->willReturn('brand_code');
-        $attributeSku->getLabel()->willReturn('SKU');
-        $attributeBrand->getLabel()->willReturn('Brand');
+        $attributeBrand->getTranslations()->willReturn($brandTranslations);
+
+        $brandTranslations->isEmpty()->willReturn(false);
+        $brandTranslations->getIterator()->willReturn($brandTransIterator);
+        $brandTransIterator->valid()->willReturn(true, true, false);
+        $brandTransIterator->current()->willReturn($brandFR, $brandEN);
+        $brandTransIterator->next()->shouldBeCalled();
+        $brandTransIterator->rewind()->shouldBeCalled();
+
+        $brandFR->getLocale()->willReturn('fr_FR');
+        $brandFR->getLabel()->willReturn('Marque');
+
+        $brandEN->getLocale()->willReturn('en_US');
+        $brandEN->getLabel()->willReturn('Brand');
 
         $this->normalize($mapping)->shouldReturn(
             [
-                'mpn' => [
-                    'code' => 'sku',
-                    'label' => ['en_US' => 'SKU'],
+                [
+                    'from' => ['id' => 'mpn'],
+                    'to' => [
+                        'id' => 'sku',
+                        'label' => [],
+                    ],
                 ],
-                'brand' => [
-                    'code' => 'brand_code',
-                    'label' => ['en_US' => 'Brand'],
+                [
+                    'from' => ['id' => 'brand'],
+                    'to' => [
+                        'id' => 'brand_code',
+                        'label' => [
+                            'fr_FR' => 'Marque',
+                            'en_US' => 'Brand',
+                        ],
+                    ],
                 ],
             ]
         );
