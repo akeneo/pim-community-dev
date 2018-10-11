@@ -13,9 +13,7 @@ import ReferenceEntity, {
 import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {
-  breadcrumbConfiguration,
-} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
 const securityContext = require('pim/security-context');
 

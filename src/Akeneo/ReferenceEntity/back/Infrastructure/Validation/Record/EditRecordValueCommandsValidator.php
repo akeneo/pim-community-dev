@@ -52,7 +52,7 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
                     ->atPath(sprintf('values.%s', $violation->getPropertyPath()))
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
-                    ->setInvalidValue($violation->getInvalidValue())
+                    ->setInvalidValue($editValueCommand)
                     ->addViolation();
             }
         }

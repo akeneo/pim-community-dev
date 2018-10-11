@@ -3,27 +3,47 @@
     "method": "POST",
     "route": "akeneo_reference_entities_record_edit_rest",
     "query": {
-      "recordCode": "celine_dion",
-      "referenceEntityIdentifier": "singer"
+      "recordCode": "starck",
+      "referenceEntityIdentifier": "designer"
     },
     "body": {
-      "identifier": "singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392",
-      "code": "celine_dion",
-      "reference_entity_identifier": "singer",
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "reference_entity_identifier": "designer",
+      "code": "starck",
       "labels": {
-        "en_US": "Celine Dion",
-        "fr_FR": "Madame Celine Dion"
+        "fr_FR": "Philippe Starck"
       },
-      "image": {
-        "filePath": "test/image_1.jpg",
-        "originalFilename": "image_1.jpg"
-      },
-      "values": [
+      "image": null,
+      "values":[
         {
-          "attribute": "website_singer_fingerprint",
-          "channel": null,
-          "locale": null,
-          "data": "hello world"
+          "attribute":"name_designer_fingerprint",
+          "channel":null,
+          "locale":null,
+          "data":"Philippe Starck"
+        },
+        {
+          "attribute":"description_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":null
+        },
+        {
+          "attribute":"description_designer_fingerprint",
+          "channel":null,
+          "locale":"fr_FR",
+          "data":null
+        },
+        {
+          "attribute":"website_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":"hello world"
+        },
+        {
+          "attribute":"portrait_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":null
         }
       ]
     }
@@ -34,22 +54,91 @@
       {
         "messageTemplate": "This value is not a valid URL.",
         "parameters": {
-          "{{ value }}": "\u0022hello world\u0022"
+          "{{ value }}": "\"hello world\""
         },
         "plural": null,
         "message": "This value is not a valid URL.",
         "root": {
-          "referenceEntityIdentifier": "singer",
-          "code": "celine_dion",
+          "referenceEntityIdentifier": "designer",
+          "code": "starck",
           "labels": {
-            "en_US": "Celine Dion",
-            "fr_FR": "Madame Celine Dion"
+            "fr_FR": "Philippe Starck"
           },
-          "image": {
-            "filePath": "test\/image_1.jpg",
-            "originalFilename": "image_1.jpg"
-          },
+          "image": null,
           "editRecordValueCommands": [
+            {
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
+                },
+                "maxLength": [],
+                "textarea": false,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": false,
+                "validationRule": true,
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "fr_FR"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": false
+              },
+              "text": "Philippe Starck",
+              "channel": null,
+              "locale": null
+            },
+            {
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
+                },
+                "maxLength": [],
+                "textarea": true,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": false,
+                "validationRule": true,
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "fr_FR"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": true
+              },
+              "channel": null,
+              "locale": "en_US"
+            },
+            {
+              "attribute": {
+                "regularExpression": {
+                  "empty": true
+                },
+                "maxLength": [],
+                "textarea": true,
+                "validationRuleSetToRegularExpression": false,
+                "validationRuleSetToEmail": false,
+                "validationRuleSetToUrl": false,
+                "validationRule": true,
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "fr_FR"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": true
+              },
+              "channel": null,
+              "locale": "fr_FR"
+            },
             {
               "attribute": {
                 "regularExpression": {
@@ -65,7 +154,7 @@
                 "referenceEntityIdentifier": [],
                 "code": [],
                 "labelCodes": [
-                  "en_US"
+                  "fr_FR"
                 ],
                 "order": [],
                 "valuePerChannel": false,
@@ -73,12 +162,59 @@
               },
               "text": "hello world",
               "channel": null,
-              "locale": null
+              "locale": "en_US"
+            },
+            {
+              "attribute": {
+                "maxFileSizeLimit": false,
+                "maxFileSize": {
+                  "limit": false
+                },
+                "allowedExtensions": {
+                  "allAllowed": false
+                },
+                "identifier": [],
+                "referenceEntityIdentifier": [],
+                "code": [],
+                "labelCodes": [
+                  "fr_FR",
+                  "en_US"
+                ],
+                "order": [],
+                "valuePerChannel": false,
+                "valuePerLocale": false
+              },
+              "channel": null,
+              "locale": "en_US"
             }
           ]
         },
         "propertyPath": "values.website",
-        "invalidValue": "hello world",
+        "invalidValue": {
+          "attribute": {
+            "regularExpression": {
+              "empty": true
+            },
+            "maxLength": [],
+            "textarea": false,
+            "validationRuleSetToRegularExpression": false,
+            "validationRuleSetToEmail": false,
+            "validationRuleSetToUrl": true,
+            "validationRule": false,
+            "identifier": [],
+            "referenceEntityIdentifier": [],
+            "code": [],
+            "labelCodes": [
+              "fr_FR"
+            ],
+            "order": [],
+            "valuePerChannel": false,
+            "valuePerLocale": false
+          },
+          "text": "hello world",
+          "channel": null,
+          "locale": "en_US"
+        },
         "constraint": {
           "targets": "class",
           "defaultOption": null,

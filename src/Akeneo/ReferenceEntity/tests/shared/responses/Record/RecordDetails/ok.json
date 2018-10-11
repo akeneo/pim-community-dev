@@ -86,6 +86,50 @@
           "channel": null,
           "locale": "fr_FR",
           "data": null
+        },
+        {
+          "attribute": {
+            "identifier": "website_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "website",
+            "labels": {
+              "fr_FR": "Website"
+            },
+            "order": 2,
+            "is_required": false,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "text",
+            "max_length": 25,
+            "is_textarea": false,
+            "is_rich_text_editor": false,
+            "validation_rule": "url",
+            "regular_expression": null
+          },
+          "channel": null,
+          "locale": "en_US",
+          "data": null
+        },
+        {
+          "attribute": {
+            "identifier": "portrait_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "portrait",
+            "labels": {
+              "fr_FR": "Image autobiographique",
+              "en_US": "Portrait"
+            },
+            "order": 3,
+            "is_required": true,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "image",
+            "max_file_size": "200.10",
+            "allowed_extensions": ["png"]
+          },
+          "channel": null,
+          "locale": "en_US",
+          "data": null
         }
       ]
     }
