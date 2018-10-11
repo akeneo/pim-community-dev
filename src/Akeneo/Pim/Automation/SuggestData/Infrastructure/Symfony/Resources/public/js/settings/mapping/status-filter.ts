@@ -1,6 +1,7 @@
 import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import {FilterValue, Filter} from '../../common/filterable';
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/status-filter');
 
@@ -11,19 +12,18 @@ const template = require('pimee/template/settings/mapping/status-filter');
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 
-interface Filter {
+interface FilterLabel {
   value: number|string;
   label: string;
 }
 
 class StatusFilter extends BaseForm {
-
   /**
    * Returns the available filters
    *
    * @returns {{value: number|string, label: string}[]}
    */
-  private static getFilters(): Filter[] {
+  private static getFilters(): FilterLabel[] {
     return [
       { value: '', label: __('pim_common.all') },
       { value: 0, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending') },
@@ -68,16 +68,17 @@ class StatusFilter extends BaseForm {
    */
   private filter(event: { currentTarget: any }): void {
     const value = $(event.currentTarget).data('value') as string;
-    this.trigger('pim_datagrid:filter-front', {
+    const filter: Filter = {
       value,
-      type: 'equals',
+      type: FilterValue.Equals,
       field: 'status',
-    });
+    };
+    this.trigger('pim_datagrid:filter-front', filter);
 
     this.$el.find('.filter-criteria-hint').html(
-      (StatusFilter.getFilters().find((filter: Filter) => {
+      (StatusFilter.getFilters().find((filter: FilterLabel) => {
         return filter.value === value;
-      }) as Filter).label,
+      }) as FilterLabel).label,
     );
   }
 }

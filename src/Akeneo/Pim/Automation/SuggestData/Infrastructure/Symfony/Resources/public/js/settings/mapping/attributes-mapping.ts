@@ -1,4 +1,3 @@
-import Filterable = require('akeneosuggestdata/js/common/filterable');
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
@@ -6,6 +5,7 @@ import BaseForm = require('pimenrich/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
 import AttributeOptionsMapping = require('./attribute-options-mapping');
+import {Filterable} from "../../common/filterable";
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');

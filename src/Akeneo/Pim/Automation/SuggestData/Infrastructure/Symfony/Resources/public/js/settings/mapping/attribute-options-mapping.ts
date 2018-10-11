@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import Filterable = require('akeneosuggestdata/js/common/filterable');
+import {Filterable} from "../../common/filterable";
 import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';

@@ -1,6 +1,7 @@
 import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import {Filter, FilterValue} from "../common/filterable";
 const __ = require('oro/translator');
 const template = require('pim/template/datagrid/filter/search-filter');
 
@@ -79,11 +80,12 @@ class FrontSearchFilter extends BaseForm {
    */
   private doSearch() {
     const value = (this.$el.find('input').val() as string);
-    this.trigger('pim_datagrid:filter-front', {
+    const filter: Filter = {
       value,
-      type: 'search',
+      type: FilterValue.Search,
       field: this.config.fieldName,
-    });
+    };
+    this.trigger('pim_datagrid:filter-front', filter);
   }
 }
 

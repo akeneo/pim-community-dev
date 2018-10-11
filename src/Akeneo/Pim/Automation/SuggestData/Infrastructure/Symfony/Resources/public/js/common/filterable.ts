@@ -13,12 +13,12 @@ const noDataTemplate = require('pim/template/common/no-data');
 const __ = require('oro/translator');
 import BaseForm = require('pimenrich/js/view/base');
 
-enum FilterValue {
+export enum FilterValue {
   Equals = 'equals',
   Search = 'search',
 }
 
-interface Filter {
+export interface Filter {
   value: string;
   type: FilterValue;
   field: string;
@@ -31,7 +31,7 @@ interface Filter {
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class Filterable {
+export class Filterable {
   /**
    * Enable the filtering
    *
@@ -141,5 +141,3 @@ class Filterable {
     }, true);
   }
 }
-
-export = Filterable;
