@@ -11,7 +11,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 0,
         columns: [],
         filters: [],
-        size: 25,
+        size: 200,
       },
       items: [],
       total: 0,
@@ -158,25 +158,11 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
   });
 
-  test('I can normalize a filter', () => {
-    const normalizer = NormalizedFilter.create({field: 'name', operator: '=', value: 'michel'});
-
-    expect(normalizer.field).toEqual('name');
-    expect(normalizer.operator).toEqual('=');
-    expect(normalizer.value).toEqual('michel');
-  });
-
-  test('I cannot normalize a malformed filter', () => {
-    expect(() => NormalizedFilter.create({field: 'name', operator: '='})).toThrow();
-    expect(() => NormalizedFilter.create({field: 'name', value: 'michel'})).toThrow();
-    expect(() => NormalizedFilter.create({operator: '=', value: 'michel'})).toThrow();
-  });
-
   test('I can create a query', () => {
     expect(createQuery({})).toEqual({
       columns: [],
       filters: [],
-      size: 25,
+      size: 200,
       page: 0,
     });
 

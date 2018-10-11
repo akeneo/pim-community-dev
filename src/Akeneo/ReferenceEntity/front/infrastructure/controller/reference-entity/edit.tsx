@@ -37,8 +37,12 @@ class ReferenceEntityEditController extends BaseController {
 
     referenceEntityFetcher
       .fetch(createIdentifier(route.params.identifier))
-      .then((referenceEntity: ReferenceEntity) => {
+      .then(async (referenceEntity: ReferenceEntity) => {
         this.store = createStore(true)(referenceEntityReducer);
+
+        // Not idea, maybe we should discuss about it
+        await this.store.dispatch(updateChannels() as any);
+        this.store.dispatch(updateActivatedLocales() as any);
         this.store.dispatch(referenceEntityEditionReceived(referenceEntity.normalize()));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
@@ -48,8 +52,6 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateFilter('search', '=', ''));
         this.store.dispatch(updateRecordResults());
         this.store.dispatch(updateAttributeList() as any);
-        this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(updateChannels() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});

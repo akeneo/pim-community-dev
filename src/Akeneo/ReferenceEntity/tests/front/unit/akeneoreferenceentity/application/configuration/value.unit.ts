@@ -1,4 +1,4 @@
-import {getDenormalizer, getView} from 'akeneoreferenceentity/application/configuration/value';
+import {getDenormalizer, getFieldView} from 'akeneoreferenceentity/application/configuration/value';
 
 jest.mock('require-context', name => {});
 
@@ -57,7 +57,7 @@ Actual conf: ${JSON.stringify({text: {}})}`);
   });
 
   test('I can get a value view', () => {
-    const getValueView = getView({
+    const getValueView = getFieldView({
       text: {
         view: {
           view: value => {
@@ -74,7 +74,7 @@ Actual conf: ${JSON.stringify({text: {}})}`);
     expect.assertions(2);
   });
   test('I get an error if the configuration does not have an proper text view', () => {
-    const getValueView = getView({
+    const getValueView = getFieldView({
       text: {
         view: {},
       },
@@ -94,14 +94,14 @@ export const view = (value: TextValue, onChange: (value: Value) => void) => {
   });
 
   test('I get an error if the configuration does not have valid configurations', () => {
-    const getValueView = getView({
+    const getValueView = getFieldView({
       text: {},
     });
 
     const value = {data: 'data to render', attribute: {getType: () => 'text'}};
     expect(() => {
       getValueView(value);
-    }).toThrowError(`Cannot get the data view generator for type "text". The configuration should look like this:
+    }).toThrowError(`Cannot get the data field view generator for type "text". The configuration should look like this:
 config:
     config:
         akeneoreferenceentity/application/configuration/value:

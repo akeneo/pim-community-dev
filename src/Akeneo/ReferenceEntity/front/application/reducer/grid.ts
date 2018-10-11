@@ -7,16 +7,17 @@ export interface Filter {
   context: any;
 }
 
-enum Sort {
+export enum Sort {
   Ascending,
   Descending,
 }
 
 export interface Column {
-  sortable: boolean;
-  sort?: Sort;
-  action: boolean;
-  label: string;
+  key: string;
+  labels: {[locale: string]: string};
+  type: string;
+  channel: string;
+  locale: string;
 }
 
 export interface Query {
@@ -87,6 +88,7 @@ export default <Element>(
     field: string;
     operator: string;
     value: string;
+    columns: Column[];
     data: {
       items: Element[];
     };
@@ -116,6 +118,9 @@ export default <Element>(
       break;
     case 'GRID_GO_FIRST_PAGE':
       state = {...state, query: {...state.query, page: 0}};
+      break;
+    case 'GRID_UPDATE_COLUMNS':
+      state = {...state, query: {...state.query, columns: action.columns}};
       break;
     case 'GRID_UPDATE_FILTER':
       const filters = state.query.filters.filter((filter: Filter) => filter.field !== action.field);

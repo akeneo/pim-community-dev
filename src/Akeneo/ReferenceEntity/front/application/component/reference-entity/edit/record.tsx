@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import Table from 'akeneoreferenceentity/application/component/record/index/table';
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -11,10 +11,11 @@ import ReferenceEntity, {
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords} from 'akeneoreferenceentity/application/action/record/delete';
-import {
-  breadcrumbConfiguration,
-} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import {needMoreResults, searchUpdated} from 'akeneoreferenceentity/application/action/record/search';
+import {Column} from 'akeneoreferenceentity/application/reducer/grid';
+import {createIdentifier as createReferenceIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
@@ -22,10 +23,12 @@ import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/applica
 interface StateProps {
   context: {
     locale: string;
+    channel: string;
   };
   referenceEntity: ReferenceEntity;
   grid: {
     records: NormalizedRecord[];
+    columns: Column[];
     total: number;
     isLoading: boolean;
   };
@@ -41,7 +44,7 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onRedirectToRecord: (record: Record) => void;
+    onRedirectToRecord: (record: NormalizedRecord) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
     onDelete: (referenceEntity: ReferenceEntity) => void;
@@ -100,6 +103,8 @@ const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: 
           onNeedMoreResults={events.onNeedMoreResults}
           onSearchUpdated={events.onSearchUpdated}
           locale={context.locale}
+          channel={context.channel}
+          columns={grid.columns}
           referenceEntity={referenceEntity}
           records={grid.records}
           isLoading={grid.isLoading}
@@ -135,18 +140,26 @@ export default connect(
   (state: EditState): StateProps => {
     const referenceEntity = denormalizeReferenceEntity(state.form.data);
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channel =
+      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
     const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
+    const columns =
+      undefined === state.grid || undefined === state.grid.query || undefined === state.grid.query.columns
+        ? []
+        : state.grid.query.columns;
     const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
     const confirmDelete = state.confirmDelete;
 
     return {
       context: {
         locale,
+        channel,
       },
       referenceEntity,
       grid: {
         records,
         total,
+        columns,
         isLoading: state.grid.isFetching && state.grid.items.length === 0,
       },
       acls: {
@@ -160,8 +173,13 @@ export default connect(
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToRecord: (record: Record) => {
-          dispatch(redirectToRecord(record));
+        onRedirectToRecord: (record: NormalizedRecord) => {
+          dispatch(
+            redirectToRecord(
+              createReferenceIdentifier(record.reference_entity_identifier),
+              createRecordCode(record.code)
+            )
+          );
         },
         onNeedMoreResults: () => {
           dispatch(needMoreResults());

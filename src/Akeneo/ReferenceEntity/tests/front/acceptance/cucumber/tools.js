@@ -35,7 +35,36 @@ const listenRequest = async function(page, requestContract) {
   page.on('request', answerRequest);
 };
 
+const answerLocaleList = async function() {
+  const requestContract = getRequestContract('Locale/List/ok.json');
+
+  await listenRequest(this.page, requestContract);
+};
+
+const answerChannelList = async function() {
+  const requestContract = getRequestContract('Channel/List/ok.json');
+
+  await listenRequest(this.page, requestContract);
+};
+
+const askForReferenceEntity = async function(identifier) {
+  await answerLocaleList.apply(this);
+  await answerChannelList.apply(this);
+  await this.page.evaluate(async identifier => {
+    const Controller = require('pim/controller/reference-entity/edit');
+    const controller = new Controller();
+    controller.renderRoute({params: {identifier, tab: 'attribute'}});
+
+    await document.getElementById('app').appendChild(controller.el);
+  }, identifier);
+
+  await this.page.waitFor('.AknDefault-mainContent[data-tab="attribute"] .AknSubsection-container');
+};
+
 module.exports = {
   getRequestContract,
   listenRequest,
+  askForReferenceEntity,
+  answerLocaleList,
+  answerChannelList,
 };

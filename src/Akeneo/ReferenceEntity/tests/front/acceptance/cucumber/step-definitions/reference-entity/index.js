@@ -40,14 +40,16 @@ module.exports = async function(cucumber) {
     });
 
     referenceEntityResponse.forEach(referenceEntity => {
-      this.page.on('request', request => {
+      const answerReferenceEntityRequest = request => {
         if (
           `http://pim.com/rest/reference_entity/${referenceEntity.identifier}` === request.url() &&
           'GET' === request.method()
         ) {
+          this.page.removeListener('request', answerReferenceEntityRequest);
           answerJson(request, referenceEntity);
         }
-      });
+      };
+      this.page.on('request', answerReferenceEntityRequest);
     });
 
     this.page.on('request', request => {
@@ -59,7 +61,6 @@ module.exports = async function(cucumber) {
   Given('the following reference entities to list:', givenReferenceEntities);
   Given('the following reference entities to show:', givenReferenceEntities);
   Given('the following reference entity:', givenReferenceEntities);
-
   When('the user asks for the reference entity list', async function() {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/reference-entity/list');

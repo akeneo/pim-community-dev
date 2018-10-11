@@ -1,5 +1,5 @@
 const Edit = require('../../decorators/record/edit.decorator');
-const {getRequestContract, listenRequest} = require('../../tools');
+const {getRequestContract, listenRequest, answerLocaleList, answerChannelList} = require('../../tools');
 const Header = require('../../decorators/reference-entity/app/header.decorator');
 const Modal = require('../../decorators/delete/modal.decorator');
 const path = require('path');
@@ -27,7 +27,7 @@ module.exports = async function(cucumber) {
     Modal: {
       selector: '.AknFullPage--modal',
       decorator: Modal,
-    }
+    },
   };
 
   const getElement = createElementDecorator(config);
@@ -51,14 +51,14 @@ module.exports = async function(cucumber) {
         answerJson(
           request,
           {
-            'originalFilename':'philou.png',
-            'filePath':'/a/b/c/philou.png'
+            originalFilename: 'philou.png',
+            filePath: '/a/b/c/philou.png',
           },
           200
         );
       }
     });
-  }
+  };
 
   const askForRecord = async function(recordCode, referenceEntityIdentifier) {
     await this.page.evaluate(
@@ -78,24 +78,9 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isLoaded, true);
   };
 
-  const answerLocaleList = function() {
-    this.page.on('request', request => {
-      if ('http://pim.com/configuration/locale/rest?activated=true' === request.url() && 'GET' === request.method()) {
-        answerJson(
-          request,
-          [
-            {code: 'de_DE', label: 'German (Germany)', region: 'Germany', language: 'German'},
-            {code: 'en_US', label: 'English (United States)', region: 'United States', language: 'English'},
-            {code: 'fr_FR', label: 'French (France)', region: 'France', language: 'French'},
-          ],
-          200
-        );
-      }
-    });
-  };
-
   When('the user ask for the record', async function() {
     await answerLocaleList.apply(this);
+    await answerChannelList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
       currentRequestContract.request.query.referenceEntityIdentifier,

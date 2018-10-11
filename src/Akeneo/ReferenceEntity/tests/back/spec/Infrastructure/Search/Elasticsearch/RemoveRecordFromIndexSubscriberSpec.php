@@ -9,7 +9,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RemoveRecordFromIndexSubscriber;
 use PhpSpec\ObjectBehavior;
 

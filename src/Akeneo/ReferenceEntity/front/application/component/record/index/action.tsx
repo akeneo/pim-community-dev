@@ -1,6 +1,5 @@
 import * as React from 'react';
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
+import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 
 export default ({
   record,
@@ -12,19 +11,12 @@ export default ({
   isLoading?: boolean;
   position: number;
 } & {
-  onRedirectToRecord: (record: Record) => void;
+  onRedirectToRecord: (record: NormalizedRecord) => void;
 }) => {
   return (
     <tr
       className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
-      tabIndex={0}
-      onClick={event => {
-        event.preventDefault();
-
-        onRedirectToRecord(denormalizeRecord(record));
-
-        return false;
-      }}
+      data-identifier={record.identifier}
     >
       <td className="AknGrid-bodyCell AknGrid-bodyCell--action">
         <div className="AknButtonList AknButtonList--right">
@@ -34,11 +26,22 @@ export default ({
             onClick={event => {
               event.preventDefault();
 
-              onRedirectToRecord(denormalizeRecord(record));
+              onRedirectToRecord(record);
 
               return false;
             }}
-          ></a>
+          />
+          <a
+            className="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item"
+            data-identifier={record.identifier}
+            onClick={event => {
+              event.preventDefault();
+
+              onRedirectToRecord(record);
+
+              return false;
+            }}
+          />
         </div>
       </td>
     </tr>

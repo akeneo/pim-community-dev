@@ -1,61 +1,47 @@
 import * as React from 'react';
-import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
-import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
-const router = require('pim/router');
+import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 
 export default ({
   record,
-  locale,
   isLoading = false,
   onRedirectToRecord,
+  columns,
 }: {
   record: NormalizedRecord;
-  locale: string;
   isLoading?: boolean;
   position: number;
+  columns: Column[];
 } & {
-  onRedirectToRecord: (record: Record) => void;
+  onRedirectToRecord: (record: NormalizedRecord) => void;
 }) => {
-  const path =
-    '' !== record.identifier
-      ? `#${router.generate('akeneo_reference_entities_record_edit', {
-          referenceEntityIdentifier: record.reference_entity_identifier,
-          recordCode: record.code,
-          tab: 'enrich',
-        })}`
-      : '';
-
-  const label = createLabelCollection(record.labels).getLabel(locale);
-
   return (
     <tr
       className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
-      tabIndex={0}
+      data-identifier={record.identifier}
       onClick={event => {
         event.preventDefault();
 
-        onRedirectToRecord(denormalizeRecord(record));
+        onRedirectToRecord(record);
 
         return false;
       }}
     >
-      <td className="AknGrid-bodyCell">
-        <a
-          href={path}
-          title={label}
-          data-identifier={record.identifier}
-          onClick={event => {
-            event.preventDefault();
+      {columns.map((column: Column) => {
+        const value = record.values[column.key as any];
+        const text = undefined === value ? '' : value.data;
+        const textNode = document.createElement('span');
+        textNode.innerHTML = text;
+        const safeText = textNode.innerText;
 
-            onRedirectToRecord(denormalizeRecord(record));
-
-            return false;
-          }}
-        >
-          {label}
-        </a>
-      </td>
+        return (
+          <td key={column.key} className="AknGrid-bodyCell">
+            <div className="AknGrid-bodyCellContainer" title="safeText">
+              {safeText}
+            </div>
+          </td>
+        );
+      })}
     </tr>
   );
 };

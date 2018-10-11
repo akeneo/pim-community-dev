@@ -14,7 +14,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
  */
 class RecordIndexer implements RecordIndexerInterface
 {
-    public const INDEX_TYPE = 'pimee_reference_entity_record';
+    private const INDEX_TYPE = 'pimee_reference_entity_record';
     private const KEY_AS_ID = 'identifier';
 
     /** @var Client */

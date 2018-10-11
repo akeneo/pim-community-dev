@@ -1,3 +1,5 @@
+import {Column} from 'akeneoreferenceentity/application/reducer/grid';
+
 export const startLoading = () => {
   return {type: 'GRID_START_LOADING_RESULTS'};
 };
@@ -16,4 +18,8 @@ export const goFirstPage = () => {
 
 export const updateFilter = (field: string, operator: string, value: string) => {
   return {type: 'GRID_UPDATE_FILTER', field, operator, value};
+};
+
+export const updateColumns = (columns: Column[]) => {
+  return {type: 'GRID_UPDATE_COLUMNS', columns};
 };

@@ -90,7 +90,10 @@ class ReferenceEntityEditView extends React.Component<EditProps> {
           <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
-          <div className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding" data-tab={this.props.sidebar.currentTab}>
+          <div
+            className="AknDefault-mainContent AknDefault-mainContent--withoutBottomPadding"
+            data-tab={this.props.sidebar.currentTab}
+          >
             <TabView code={this.props.sidebar.currentTab} />
           </div>
         </div>
