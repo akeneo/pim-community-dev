@@ -1,3 +1,8 @@
+terraform {
+  backend "gcs" {
+    bucket = "akecld-terraform"
+  }
+}
 resource "random_string" "mailgun_password" {
   length  = 12
   special = false
