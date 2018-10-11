@@ -36,3 +36,7 @@ variable "mailgun_domain" {
   type    = "string"
   default = "mg.cloud.akeneo.com"
 }
+
+variable "pfid" {
+  type = "string"
+}
