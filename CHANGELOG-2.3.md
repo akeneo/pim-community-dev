@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7674: fix Avatar image broken on dashboard
+
 # 2.3.11 (2018-10-08)
 
 ## Bug fixes
@@ -8,7 +12,6 @@
 - PIM-7673: Fix permissions on locales applied on channel settings page
 - PIM-7664: ReferenceDataCollectionValueFactory can now ignore unknown reference data with an optionnal argument and not throw an exception.
 - PIM-7672: Fix the mass edit controller to launch jobs with authentication.
-- PIM-7674: fix Avatar image broken on dashboard
 
 # 2.3.10 (2018-10-01)
 
