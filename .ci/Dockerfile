@@ -67,7 +67,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
     libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
     ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 
-COPY --from=gcr.io/akeneo-ci/github-akeneo-ci-dependencies-warmer:master /tmp /tmp
+COPY --from=eu.gcr.io/akeneo-ci/github-akeneo-ci-dependencies-warmer:master /tmp /tmp
 COPY . .
 COPY .ci/php.ini /usr/local/etc/php/
 COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
