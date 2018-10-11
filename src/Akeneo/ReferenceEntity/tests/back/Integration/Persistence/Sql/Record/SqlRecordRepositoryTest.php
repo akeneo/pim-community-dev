@@ -43,6 +43,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -416,6 +417,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
 
+        $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         $this->expectException(RecordNotFoundException::class);
         $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
     }

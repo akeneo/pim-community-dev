@@ -13,4 +13,11 @@ interface RecordIndexerInterface
      * @param Record[] $records
      */
     public function bulkIndex(array $records);
+
+    /**
+     * Remove multiple records
+     *
+     * @param Record[] $records
+     */
+    public function bulkRemove(array $records);
 }

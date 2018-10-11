@@ -32,7 +32,7 @@ class EventDispatcherMock implements EventDispatcherInterface
         Assert::assertArrayHasKey(
             $expectedEventClass,
             $this->dispatchedEvents,
-            sprintf('Expected event of type "%s" to be thrown, but it was not found.', $expectedEventClass)
+            sprintf('Expected event of type "%s" to be dispatched, but it was not found.', $expectedEventClass)
         );
     }
 

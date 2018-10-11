@@ -21,6 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
@@ -222,6 +223,11 @@ SQL;
         if (0 === $affectedRows) {
             throw new RecordNotFoundException();
         }
+
+        $this->eventDispatcher->dispatch(
+            RecordDeletedEvent::class,
+            new RecordDeletedEvent($code, $referenceEntityIdentifier)
+        );
     }
 
     public function nextIdentifier(

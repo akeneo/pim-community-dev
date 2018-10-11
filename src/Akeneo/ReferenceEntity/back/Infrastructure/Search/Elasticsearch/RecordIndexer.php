@@ -44,4 +44,20 @@ class RecordIndexer implements RecordIndexerInterface
 
         $this->recordClient->bulkIndexes(self::INDEX_TYPE, $normalizedRecords, self::KEY_AS_ID, Refresh::disable());
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bulkRemove(array $records)
+    {
+        if (empty($records)) {
+            return;
+        }
+
+        $recordIdentifiers = array_map(function (Record $record) {
+            return (string) $record->getIdentifier();
+        }, $records);
+
+        $this->recordClient->bulkDelete(self::INDEX_TYPE, $recordIdentifiers);
+    }
 }
