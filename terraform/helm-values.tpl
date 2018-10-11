@@ -4,7 +4,6 @@ global:
 common:
   gcpProjectID: ${projectId}
   googleZone: ${googleZone}
-  akeneoCloudDomain: ${dns_suffix}
   pimMasterDomain: ${pimmaster_dns_name}
   mailgunLogin: ${mailgun_login}
   mailgunPassword: ${mailgun_password}
