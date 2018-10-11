@@ -31,18 +31,6 @@ suites:
         spec_path: src/Akeneo/Pim/Enrichment/Bundle
         src_path: src/Akeneo/Pim/Enrichment/Bundle
 
-    ## Enrichment context
-    Enrichment:
-        namespace: Akeneo\Pim\Enrichment\Component
-        psr4_prefix: Akeneo\Pim\Enrichment\Component
-        spec_path: src/Akeneo/Pim/Enrichment/Component
-        src_path: src/Akeneo/Pim/Enrichment/Component
-    EnrichmentBundle:
-        namespace: Akeneo\Pim\Enrichment\Bundle
-        psr4_prefix: Akeneo\Pim\Enrichment\Bundle
-        spec_path: src/Akeneo/Pim/Enrichment/Bundle
-        src_path: src/Akeneo/Pim/Enrichment/Bundle
-
     ## Platform context
     Platform:
         namespace: Akeneo\Platform
@@ -151,11 +139,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Component\Api
         spec_path: src/Akeneo/Tool/Component/Api
         src_path: src/Akeneo/Tool/Component/Api
-    Enrich:
-        namespace: Pim\Component\Enrich
-        psr4_prefix: Pim\Component\Enrich
-        spec_path: src/Pim/Component/Enrich
-        src_path: src/Pim/Component/Enrich
     ApiBundle:
         namespace: Akeneo\Tool\Bundle\ApiBundle
         psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
@@ -166,11 +149,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
         src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
-    EnrichBundle:
-        namespace: Pim\Bundle\EnrichBundle
-        psr4_prefix: Pim\Bundle\EnrichBundle
-        spec_path: src/Pim/Bundle/EnrichBundle
-        src_path: src/Pim/Bundle/EnrichBundle
     User:
         namespace: Akeneo\UserManagement
         psr4_prefix: Akeneo\UserManagement
