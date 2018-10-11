@@ -105,6 +105,7 @@ class AttributeMapping extends BaseForm {
       pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
       catalog_attribute: __(this.config.labels.catalog_attribute),
       suggest_data: __(this.config.labels.suggest_data),
+      edit: __('pim_common.edit'),
     }));
 
     Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
@@ -233,7 +234,6 @@ class AttributeMapping extends BaseForm {
         title: '',
         content: '',
         cancelText: ' ',
-        okText: __('pim_common.save'),
       });
       this.attributeOptionsMappingModal.open();
       this.attributeOptionsMappingForm = form;
@@ -247,8 +247,7 @@ class AttributeMapping extends BaseForm {
 
       this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
 
-      $('.modal .ok').replaceWith(this.getRoot().$el.find('*[data-drop-zone="buttons"]'));
-
+      $('.modal .ok').remove();
       form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
 
       this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal.bind(this));

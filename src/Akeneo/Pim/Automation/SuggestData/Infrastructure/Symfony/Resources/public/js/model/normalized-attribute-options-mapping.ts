@@ -14,10 +14,10 @@
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-export enum ATTRIBUTE_OPTION_STATUS {
-  PENDING = 0,
-  MAPPED = 1,
-  UNMAPPED = 2,
+export enum AttributeOptionStatus {
+  Pending = 0,
+  Mapped = 1,
+  Unmapped = 2,
 }
 
 export interface NormalizedAttributeOptionsMapping {

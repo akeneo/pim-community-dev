@@ -11,7 +11,7 @@ import {Filterable} from "../../common/filterable";
 import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
-import {NormalizedAttributeOptionsMapping, ATTRIBUTE_OPTION_STATUS} from '../../model/normalized-attribute-options-mapping';
+import {NormalizedAttributeOptionsMapping, AttributeOptionStatus} from '../../model/normalized-attribute-options-mapping';
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -137,9 +137,9 @@ class AttributeOptionsMapping extends BaseForm {
    */
   private getMappingStatuses() {
     const statuses: { [key: number]: string } = {};
-    statuses[ATTRIBUTE_OPTION_STATUS.PENDING] = __(this.config.labels.pending);
-    statuses[ATTRIBUTE_OPTION_STATUS.MAPPED] = __(this.config.labels.mapped);
-    statuses[ATTRIBUTE_OPTION_STATUS.UNMAPPED] = __(this.config.labels.unmapped);
+    statuses[AttributeOptionStatus.Pending] = __(this.config.labels.pending);
+    statuses[AttributeOptionStatus.Mapped] = __(this.config.labels.mapped);
+    statuses[AttributeOptionStatus.Unmapped] = __(this.config.labels.unmapped);
 
     return statuses;
   }
@@ -173,7 +173,7 @@ class AttributeOptionsMapping extends BaseForm {
       mapping,
       franklin_attribute_option: __(this.config.labels.franklin_attribute_option),
       catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
-      suggest_data: __(this.config.labels.attribute_option_status),
+      attribute_option_status: __(this.config.labels.attribute_option_status),
       statuses: this.getMappingStatuses(),
     }));
 
