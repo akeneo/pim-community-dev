@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,

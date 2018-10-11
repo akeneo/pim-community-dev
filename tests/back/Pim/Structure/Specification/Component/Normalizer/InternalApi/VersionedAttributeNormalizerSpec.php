@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VersionedAttributeNormalizerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         NormalizerInterface $normalizer,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,

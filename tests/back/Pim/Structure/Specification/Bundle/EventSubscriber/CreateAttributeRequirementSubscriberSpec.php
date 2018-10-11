@@ -16,7 +16,7 @@ use Prophecy\Argument;
 
 class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         AttributeRequirementFactory $requirementFactory,
         LifecycleEventArgs $eventArgs,
         ChannelInterface $channel,

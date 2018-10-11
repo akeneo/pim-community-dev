@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 class ContentTypeNegotiatorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         RequestMatcherInterface $requestMatcher1,
         RequestMatcherInterface $requestMatcher2,
         RequestMatcherInterface $requestMatcher3

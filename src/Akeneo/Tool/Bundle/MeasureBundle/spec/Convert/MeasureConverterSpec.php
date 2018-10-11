@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 class MeasureConverterSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $filename = realpath(dirname(__FILE__) .'/../Resources/config/measure-test.yml');
         if (!file_exists($filename)) {

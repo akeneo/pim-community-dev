@@ -8,7 +8,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class TranslatorProxySpec extends ObjectBehavior
 {
-    public function let(TranslatorInterface $translator)
+    function let(TranslatorInterface $translator)
     {
         $this->beConstructedWith($translator);
     }

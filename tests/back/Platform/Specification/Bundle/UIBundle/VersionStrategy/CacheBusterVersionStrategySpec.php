@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 
 class CacheBusterVersionStrategySpec extends ObjectBehavior
 {
-    public function let(VersionProviderInterface $versionProvider) {
+    function let(VersionProviderInterface $versionProvider) {
         $this->beConstructedWith($versionProvider);
     }
 

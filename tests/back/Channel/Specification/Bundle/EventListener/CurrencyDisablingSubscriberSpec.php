@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CurrencyDisablingSubscriberSpec extends ObjectBehavior
 {
-    public function let(ChannelRepositoryInterface $channelRepository)
+    function let(ChannelRepositoryInterface $channelRepository)
     {
         $this->beConstructedWith($channelRepository);
     }

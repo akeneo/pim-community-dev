@@ -17,7 +17,7 @@ use Prophecy\Argument;
  */
 class MissingAssociationAdderSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         AssociationTypeRepositoryInterface $associationTypeRepository,
         AssociationClassResolver $associationClassResolver
     ) {

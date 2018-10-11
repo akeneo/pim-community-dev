@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 
 class ProductAndProductModelQueryBuilderWithSearchAggregatorFactorySpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ProductQueryBuilderFactoryInterface $factory,
         ProductAndProductModelSearchAggregator $resultAggregator
     ) {
