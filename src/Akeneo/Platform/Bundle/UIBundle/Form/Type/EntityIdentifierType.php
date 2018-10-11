@@ -2,13 +2,13 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
+use Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FixArrayToStringListener;
+use Akeneo\Platform\Bundle\UIBundle\Form\Exception\FormException;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\ArrayToStringTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntitiesToIdsTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdTransformer;
-use Akeneo\Platform\Bundle\UIBundle\Form\Exception\FormException;
-use Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FixArrayToStringListener;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;

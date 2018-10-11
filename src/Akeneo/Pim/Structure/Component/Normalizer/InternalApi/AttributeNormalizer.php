@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

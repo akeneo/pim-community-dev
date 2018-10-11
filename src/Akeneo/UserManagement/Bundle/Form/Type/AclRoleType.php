@@ -2,11 +2,11 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
-use Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

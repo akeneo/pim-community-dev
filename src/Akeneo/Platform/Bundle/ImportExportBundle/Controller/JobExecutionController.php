@@ -3,11 +3,11 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
