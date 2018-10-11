@@ -20,7 +20,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
 
-    pim_datagrid.product_grid.query.list_attributes:
+    pimee_security.product_grid.query.list_attributes:
         class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListAttributesUseableInProductGrid
         arguments:
             - '@database_connection'

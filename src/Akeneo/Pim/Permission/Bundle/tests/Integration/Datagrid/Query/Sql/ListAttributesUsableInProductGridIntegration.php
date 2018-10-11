@@ -58,7 +58,7 @@ class ListAttributesUsableInProductGridIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
 
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier('mary');
-        $firstPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1, '', $user->getId());
+        $firstPageAttributes = $this->get('pimee_security.product_grid.query.list_attributes')->fetch('en_US', 1, '', $user->getId());
 
         $expectedAttributes = [[
             'code'         => 'sku',
@@ -85,7 +85,7 @@ class ListAttributesUsableInProductGridIntegration extends TestCase
 
         $this->assertSameAttributes($expectedAttributes , $firstPageAttributes);
 
-        $secondPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 2, '', $user->getId());
+        $secondPageAttributes = $this->get('pimee_security.product_grid.query.list_attributes')->fetch('en_US', 2, '', $user->getId());
 
         $this->assertSameAttributes([
             [
@@ -150,7 +150,7 @@ class ListAttributesUsableInProductGridIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
 
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier('mary');
-        $attributesUseableInProductGrid = $this->get('pim_datagrid.product_grid.query.list_attributes')
+        $attributesUseableInProductGrid = $this->get('pimee_security.product_grid.query.list_attributes')
             ->fetch('en_US', 1, 'match', $user->getId());
 
         $this->assertSameAttributes([
