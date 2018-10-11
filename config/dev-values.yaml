@@ -1,0 +1,6 @@
+backup:
+  enabled: true
+  
+nfs:
+  persistence:
+    storageClass: standard-retain
