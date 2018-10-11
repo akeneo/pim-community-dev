@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pim-installer
+  name: pim-upgrader-{{ .Release.Name }}-{{ randNumeric 12}}
   labels:
     app: {{ template "pim.fullName" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -20,7 +20,7 @@ metadata:
   annotations:
     # This is what defines this resource as a hook. Without this line, the
     # job is considered part of the release.
-    "helm.sh/hook": post-install
+    "helm.sh/hook": post-upgrade
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
@@ -28,7 +28,7 @@ spec:
     metadata:
       labels:
         component: {{ template "pim.fullName" . }}
-        role: pim-install
+        role: pim-upgrade
         {{- range $key, $value := .Values.global.extraLabels }}
         {{ $key }}: {{ $value | quote }}
         {{- end }}
@@ -41,10 +41,11 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-        - name: pim-install
+        - name: pim-upgrade
           image:  {{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console pim:install";']
+          # command: ['sh', '-c', 'export HOME=/var/www; su -m -l www-data -s /bin/bash -c "rm -rf var/cache; bin/console doctrine:migration:migrate -vvv"']
+          command: ['tail', '-f', '/dev/null']
           env:
             - name: PIM_INSTALLER_DATA
               value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
@@ -60,20 +61,6 @@ spec:
             - { name: GOOGLE_LOCATION, value: {{ .Values.google.location | quote }} }
             - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.google.project_id | quote }} }
             - { name: K8S_CLUSTER_NAME, value: {{ .Values.google.cluster_name | quote }} }
-            - { name: MAILER_HOST, value: {{ .Values.mailer.host | quote }} }
-            - { name: MAILER_PORT, value: {{ .Values.mailer.port | quote }} }
-            - { name: MAILER_FROM_ADDRESS, value: {{ .Values.mailer.from_address | quote }} }
-            - name: MAILER_USER
-              valueFrom:
-                secretKeyRef:
-                  name: pim-secrets
-                  key: mailerLogin
-            - name: MAILER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pim-secrets
-                  key: mailerPassword
-
             - name: PIM_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -94,10 +81,6 @@ spec:
             - name: fpm-data
               mountPath: /data
               readOnly: false
-            - name: user-csv
-              mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/users.csv
-              subPath: users.csv
-              readOnly: true
             - name: pim-parameter
               mountPath: /var/www/html/app/config/parameters.yml
               subPath: parameters.yml
@@ -109,12 +92,6 @@ spec:
             items:
               - key: parameters.yml
                 path: parameters.yml
-        - name: user-csv
-          configMap:
-            name: pim-config
-            items:
-              - key: minimal-users.csv
-                path: users.csv
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}

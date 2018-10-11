@@ -16,7 +16,7 @@ backup:
     snapshotAge: 24h
 
 common:
-  extraLabels: []
+  extraLabels: {}
   pimMasterDomain: nil
   retailerDomain: nil
   phpConfFPM:
@@ -83,8 +83,8 @@ image:
 pim:
   replicas: 1
   numDaemon: 1
-  extravarsPim:
-  extraLabels:
+  extravarsPim: {}
+  extraLabels: {}
   resources:
     requests:
       cpu: 200m
