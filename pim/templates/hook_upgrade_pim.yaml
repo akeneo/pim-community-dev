@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pim-upgrader-{{ .Release.Name }}-{{ randNumeric 12}}
+  name: pim-upgrader-{{ randNumeric 12}}
   labels:
     app: {{ template "pim.fullName" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -44,8 +44,7 @@ spec:
         - name: pim-upgrade
           image:  {{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          # command: ['sh', '-c', 'export HOME=/var/www; su -m -l www-data -s /bin/bash -c "rm -rf var/cache; bin/console doctrine:migration:migrate -vvv"']
-          command: ['tail', '-f', '/dev/null']
+          command: ['sh', '-c', 'export HOME=/var/www; su -m -l www-data -s /bin/bash -c "rm -rf var/cache; bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction"']
           env:
             - name: PIM_INSTALLER_DATA
               value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
