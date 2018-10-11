@@ -27,6 +27,9 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\UserManagement',
         'Oro\Bundle\SecurityBundle',
+        'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
+        'OAuth2\OAuth2', // used by API client controller
+        'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: we should not rely on the platform here
         'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
         'Akeneo\Channel\Component\Model\Channel', // TODO: Use for entity form
         'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
