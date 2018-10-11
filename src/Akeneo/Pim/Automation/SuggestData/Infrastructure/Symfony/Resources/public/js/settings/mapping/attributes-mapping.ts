@@ -265,8 +265,7 @@ class AttributeMapping extends BaseForm {
     }
 
     if (null !== this.attributeOptionsMappingForm) {
-      // TODO Does not work.
-      this.attributeOptionsMappingForm.setData({});
+      this.attributeOptionsMappingForm.getFormModel().clear();
       this.attributeOptionsMappingForm = null;
     }
   }

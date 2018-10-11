@@ -153,7 +153,7 @@ class AttributeOptionsMapping extends BaseForm {
     return $.when(
       FetcherRegistry
         .getFetcher('attribute-options-mapping')
-        .fetch(this.familyCode, {attributeCode: this.catalogAttributeCode})
+        .fetch(this.familyCode, {attributeCode: this.catalogAttributeCode, cached: false})
         .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
           return attributeOptionMapping;
         }),
