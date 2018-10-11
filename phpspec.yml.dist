@@ -42,15 +42,11 @@ suites:
 
     ## Asset
     AssetBundle:
-        namespace: Akeneo\Asset\Bundle
-        psr4_prefix: Akeneo\Asset\Bundle
-        spec_path: src/Akeneo/Asset/Bundle
-        src_path: src/Akeneo/Asset/Bundle
-    AssetComponent:
-        namespace: Akeneo\Asset\Component
-        psr4_prefix: Akeneo\Asset\Component
-        spec_path: src/Akeneo/Asset/Component
-        src_path: src/Akeneo/Asset/Component
+        namespace: Akeneo\Asset
+        psr4_prefix: Akeneo\Asset
+        spec_path: src/Akeneo/Asset
+        src_path: src/Akeneo/Asset
+        spec_prefix: Specification
 
     ## Tool
     FileMetadata:
