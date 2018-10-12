@@ -44,4 +44,26 @@ class RecordIndexer implements RecordIndexerInterface
 
         $this->recordClient->bulkIndexes(self::INDEX_TYPE, $normalizedRecords, self::KEY_AS_ID, Refresh::disable());
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeRecordByReferenceEntityIdentifierAndCode(
+        string $referenceEntityIdentifier,
+        string $recordCode
+    ) {
+        $queryBody = [
+            'query' => [
+                'bool' => [
+                    'must' =>
+                        [
+                            ['term' => ['reference_entity_code' => $referenceEntityIdentifier]],
+                            ['term' => ['code' => $recordCode]],
+                        ],
+                ],
+            ],
+        ];
+
+        $this->recordClient->deleteByQuery($queryBody);
+    }
 }

@@ -13,4 +13,12 @@ interface RecordIndexerInterface
      * @param Record[] $records
      */
     public function bulkIndex(array $records);
+
+    /**
+     * Remove a record from the index
+     */
+    public function removeRecordByReferenceEntityIdentifierAndCode(
+        string $referenceEntityIdentifier,
+        string $recordCode
+    );
 }

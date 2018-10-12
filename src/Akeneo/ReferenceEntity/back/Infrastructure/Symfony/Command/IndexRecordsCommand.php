@@ -16,15 +16,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * This commands reset the database fixtures for the reference entity.
- * It also is an event listener used during the PIM isntallation.
+ * This command indexes all the records loaded in the database
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class IndexRecordsCommand extends ContainerAwareCommand
 {
-    private const RESET_RECORD_COMMAND_NAME = 'akeneo:reference-entity:index-records';
+    private const INDEX_RECORDS_COMMAND_NAME = 'akeneo:reference-entity:index-records';
 
     /**
      * {@inheritdoc}
@@ -32,7 +31,7 @@ class IndexRecordsCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::RESET_RECORD_COMMAND_NAME)
+            ->setName(self::INDEX_RECORDS_COMMAND_NAME)
             ->setDescription('Index all the records');
     }
 

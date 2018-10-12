@@ -21,7 +21,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchIndexHelper
+class SearchRecordIndexHelper
 {
     /** @var Client */
     private $recordClient;
@@ -53,7 +53,43 @@ class SearchIndexHelper
 
     public function search(string $referenceEntityCode, string $channel, string $locale, array $terms): array
     {
+        $this->refreshIndex();
+
         $query = $this->getQuery($referenceEntityCode, $channel, $locale, $terms);
+        $matchingIdentifiers = $this->executeQuery($query);
+
+        return $matchingIdentifiers;
+    }
+
+    public function findRecordsByReferenceEntity(string $referenceEntityCode): array
+    {
+        $this->refreshIndex();
+
+        $query = [
+            '_source' => '_id',
+            'query' => [
+                'match' => ['reference_entity_code' => $referenceEntityCode,],
+            ],
+        ];
+        $matchingIdentifiers = $this->executeQuery($query);
+
+        return $matchingIdentifiers;
+    }
+
+    public function findRecord(string $referenceEntityCode, string $recordCode): array
+    {
+        $this->refreshIndex();
+
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        ['term' => ['reference_entity_code' => $referenceEntityCode]],
+                        ['term' => ['code' => $recordCode]],
+                    ],
+                ],
+            ],
+        ];
         $matchingIdentifiers = $this->executeQuery($query);
 
         return $matchingIdentifiers;
@@ -72,11 +108,16 @@ class SearchIndexHelper
         return $matchingIdentifiers;
     }
 
+    public function refreshIndex()
+    {
+        $this->recordClient->refreshIndex();
+    }
+
     private function getQuery(string $referenceEntityCode, $channel, $locale, array $terms): array
     {
         $query = [
             '_source' => '_id',
-            'query'   => [
+            'query' => [
                 'constant_score' => [
                     'filter' => [
                         'bool' => [
@@ -95,11 +136,11 @@ class SearchIndexHelper
 
         foreach ($terms as $term) {
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                    'query_string' => [
-                        'default_field' => sprintf('record_list_search.%s.%s', $channel, $locale),
-                        'query'         => sprintf('*%s*', $term),
-                    ],
-                ];
+                'query_string' => [
+                    'default_field' => sprintf('record_list_search.%s.%s', $channel, $locale),
+                    'query' => sprintf('*%s*', $term),
+                ],
+            ];
         }
 
         return $query;

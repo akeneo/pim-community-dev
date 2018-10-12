@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration;
 
-use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchIndexHelper;
+use Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchRecordIndexHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -30,7 +30,7 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     /** @var KernelInterface */
     protected $testKernel;
 
-    /** @var SearchIndexHelper */
+    /** @var SearchRecordIndexHelper */
     protected $searchIndexHelper;
 
     /**

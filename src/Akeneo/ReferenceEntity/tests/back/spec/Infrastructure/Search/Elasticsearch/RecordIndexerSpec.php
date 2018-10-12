@@ -33,13 +33,13 @@ class RecordIndexerSpec extends ObjectBehavior
         $this->shouldHaveType(RecordIndexer::class);
     }
 
-    function it_does_not_index_if_the_list_is_empty(Client $esClient)
+    function it_does_not_index_if_the_list_is_empty(Client $recordEsCLient)
     {
-        $esClient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
+        $recordEsCLient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
         $this->bulkIndex([]);
     }
 
-    function it_indexes_multiple_records(Client $esClient, RecordNormalizerInterface $recordNormalizer)
+    function it_indexes_multiple_records(Client $recordEsCLient, RecordNormalizerInterface $recordNormalizer)
     {
         $stark = Record::create(
             RecordIdentifier::create('designer', 'stark', 'finger'),
@@ -62,11 +62,31 @@ class RecordIndexerSpec extends ObjectBehavior
             ValueCollection::fromValues([])
         );
 
-        $recordNormalizer->normalize($stark)->willReturn(['stark']);
-        $recordNormalizer->normalize($coco)->willReturn(['coco']);
-        $esClient->bulkIndexes('pimee_reference_entity_record', ['stark', 'coco'], Refresh::disable());
+        $recordNormalizer->normalize($stark)->willReturn(['identitifer' => 'stark']);
+        $recordNormalizer->normalize($coco)->willReturn(['identitifer' => 'coco']);
+        $recordEsCLient->bulkIndexes('pimee_reference_entity_record',
+            [['identitifer' => 'stark'], ['identitifer' => 'coco']],
+            'identifier',
+            Argument::type(Refresh::class)
+        )->shouldBeCalled();
 
         $this->bulkIndex([$stark, $coco]);
     }
-}
 
+    function it_removes_multiple_records(Client $recordEsCLient)
+    {
+        $recordEsCLient->deleteByQuery(
+            [
+                "query" => [
+                    "bool" => [
+                        "must" => [
+                            ["term" => ["reference_entity_code" => "designer"]],
+                            ["term" => ["code" => "stark"]],
+                        ],
+                    ],
+                ],
+            ])->shouldBeCalled();
+
+        $this->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
+    }
+}
