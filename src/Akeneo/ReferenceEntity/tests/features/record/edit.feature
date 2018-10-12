@@ -304,19 +304,19 @@ Feature: Edit an record
   Scenario: Updating a record details
     Given a valid record
     When the user saves the valid record
-    Then the user should see a success message after the update record
+    Then the user should see a success message on the edit page
 
   @acceptance-front
   Scenario: Updating a record with a simple text value
     Given a valid record
     When the user saves the valid record with a simple text value
-    Then the user should see a success message after the update record
+    Then the user should see a success message on the edit page
 
   @acceptance-front
   Scenario: Updating a record with an invalid simple text value
     Given a valid record
     When the user saves the valid record with an invalid simple text value
-    Then the user should see the validation error after the update record : "This value is not a valid URL."
+    Then the user should see the validation error on the edit page : "This value is not a valid URL."
 
 #  Todo : Fix random call for the preview image
 #  @acceptance-front

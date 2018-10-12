@@ -15,3 +15,18 @@ Feature: Delete one record
   Scenario: Deleting a unknown record
     When the user tries to delete record that does not exist
     Then an exception is thrown
+
+  @acceptance-front
+  Scenario: Deleting a record
+    Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_delete | true |
+    When the user deletes the record
+    Then the user should see a success message on the edit page
+
+  @acceptance-front
+  Scenario: Cannot delete a record without the rights
+    Given a valid record
+    And the user has the following rights:
+      | akeneo_referenceentity_record_delete | false |
+    Then the user shouldn't see the delete button
