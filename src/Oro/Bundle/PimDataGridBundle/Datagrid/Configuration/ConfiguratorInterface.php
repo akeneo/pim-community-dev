@@ -23,6 +23,9 @@ interface ConfiguratorInterface
     const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
     /** @staticvar string */
+    const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
+
+    /** @staticvar string */
     const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
 
     /** @staticvar string */

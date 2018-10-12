@@ -37,22 +37,28 @@ class ConfigureProductGridListener
      */
     protected $sortersConfigurator;
 
+    /** @var ConfiguratorInterface */
+    protected $attributesConfigurator;
+
     /**
      * @param ContextConfigurator   $contextConfigurator
      * @param ColumnsConfigurator   $columnsConfigurator
      * @param ConfiguratorInterface $filtersConfigurator
      * @param SortersConfigurator   $sortersConfigurator
+     * @param ConfiguratorInterface $attributesConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,
         ColumnsConfigurator $columnsConfigurator,
         ConfiguratorInterface $filtersConfigurator,
-        SortersConfigurator $sortersConfigurator
+        SortersConfigurator $sortersConfigurator,
+        ConfiguratorInterface $attributesConfigurator
     ) {
         $this->contextConfigurator = $contextConfigurator;
         $this->columnsConfigurator = $columnsConfigurator;
         $this->filtersConfigurator = $filtersConfigurator;
         $this->sortersConfigurator = $sortersConfigurator;
+        $this->attributesConfigurator = $attributesConfigurator;
     }
 
     /**
@@ -67,6 +73,7 @@ class ConfigureProductGridListener
         $datagridConfig = $event->getConfig();
 
         $this->getContextConfigurator()->configure($datagridConfig);
+        $this->attributesConfigurator->configure($datagridConfig);
         $this->getColumnsConfigurator()->configure($datagridConfig);
         $this->getSortersConfigurator()->configure($datagridConfig);
         $this->getFiltersConfigurator()->configure($datagridConfig);

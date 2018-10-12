@@ -11,7 +11,6 @@ services:
         class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
         arguments:
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.attribute'
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_user.context.user'
             - '@pim_catalog.object_manager.product'
@@ -19,15 +18,30 @@ services:
             - '@request_stack'
 
     pim_datagrid.datagrid.configuration.product_model.context_configurator:
-            class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
-            arguments:
-                - '@pim_catalog.repository.product_model'
-                - '@pim_catalog.repository.attribute'
-                - '@oro_datagrid.datagrid.request_params'
-                - '@pim_user.context.user'
-                - '@pim_catalog.object_manager.product'
-                - '@pim_catalog.repository.group'
-                - '@request_stack'
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.configuration.product.selected_attributes_configurator:
+        class: Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\SelectedAttributesConfigurator
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
+
+    pim_datagrid.datagrid.configuration.product.all_attributes_useable_in_grid_configurator:
+        class: Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\AllAttributesUseableInGridConfigurator
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@request_stack'
 
     pim_datagrid.datagrid.configuration.product.columns_configurator:
         class: '%pim_datagrid.datagrid.configuration.product.columns_configurator.class%'
