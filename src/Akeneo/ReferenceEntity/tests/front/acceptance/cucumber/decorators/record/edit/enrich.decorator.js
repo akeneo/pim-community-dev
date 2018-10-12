@@ -53,7 +53,30 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     await label.type(value);
   };
 
-  return {isLoaded, getLabel, setLabel, getTabCode, fillField, fillUploadField};
+  const clickOnDeleteButton = async () => {
+    // As the button doesn't have any size, we need to make it clickable by giving him a size
+    await page.evaluate(edit => {
+      const button = edit.querySelectorAll('.AknDropdown-menuLink');
+
+      button[0].style.width = '100px';
+      button[0].style.height = '100px';
+    }, nodeElement);
+
+    const deleteButton = await nodeElement.$('.AknDropdown-menuLink:first-child');
+    await deleteButton.click();
+  }
+
+  const hasDeleteButton = async () => {
+    try {
+      await page.waitForSelector('.AknDropdown-menuLink:first-child', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
+  return {isLoaded, getLabel, setLabel, getTabCode, fillField, fillUploadField, clickOnDeleteButton, hasDeleteButton};
 };
 
 module.exports = Enrich;

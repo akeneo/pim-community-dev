@@ -24,6 +24,8 @@ import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/loca
 import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/channel-switcher';
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
+import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
+import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   sidebar: {
@@ -46,6 +48,9 @@ interface StateProps {
     locales: Locale[];
     channels: Channel[];
   };
+  confirmDelete: {
+    isActive: boolean;
+  };
 }
 
 interface DispatchProps {
@@ -55,6 +60,8 @@ interface DispatchProps {
     onChannelChanged: (channel: Channel) => void;
     onImageUpdated: (image: File) => void;
     onDelete: (record: Record) => void;
+    onCancelDelete: () => void;
+    onStartDeleteModal: () => void;
     backToReferenceEntity: () => void;
   };
 }
@@ -80,12 +87,8 @@ class RecordEditView extends React.Component<EditProps> {
   );
 
   private onClickDelete = () => {
-    const label = this.props.record.labels[this.props.context.locale];
-    if (confirm(__('pim_reference_entity.record.delete.confirm', {recordLabel: label}))) {
-      const record = denormalizeRecord(this.props.record);
-
-      this.props.events.onDelete(record);
-    }
+    const record = denormalizeRecord(this.props.record);
+    this.props.events.onDelete(record);
   };
 
   private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
@@ -96,7 +99,7 @@ class RecordEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={() => this.onClickDelete()}>
+              <button className="AknDropdown-menuLink" onClick={() => this.props.events.onStartDeleteModal()}>
                 {__('pim_reference_entity.record.button.delete')}
               </button>
             </div>
@@ -115,103 +118,113 @@ class RecordEditView extends React.Component<EditProps> {
     const TabView = sidebarProvider.getView('akeneo_reference_entities_record_edit', this.props.sidebar.currentTab);
 
     return (
-      <div className="AknDefault-contentWithColumn">
-        <div className="AknDefault-thirdColumnContainer">
-          <div className="AknDefault-thirdColumn" />
-        </div>
-        <div className="AknDefault-contentWithBottom">
-          <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
-            <header className="AknTitleContainer">
-              <div className="AknTitleContainer-line">
-                <Image
-                  alt={__('pim_reference_entity.record.img', {'{{ label }}': label})}
-                  image={record.getImage()}
-                  onImageChange={this.props.events.onImageUpdated}
-                />
-                <div className="AknTitleContainer-mainContainer">
-                  <div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-breadcrumbs">
-                        <Breadcrumb
-                          items={[
-                            {
-                              action: {
-                                type: 'redirect',
-                                route: 'akeneo_reference_entities_reference_entity_index',
-                              },
-                              label: __('pim_reference_entity.reference_entity.title'),
-                            },
-                            {
-                              action: {
-                                type: 'redirect',
-                                route: 'akeneo_reference_entities_reference_entity_edit',
-                                parameters: {
-                                  identifier: record.getReferenceEntityIdentifier().stringValue(),
-                                  tab: 'record',
+      <React.Fragment>
+        <div className="AknDefault-contentWithColumn">
+          <div className="AknDefault-thirdColumnContainer">
+            <div className="AknDefault-thirdColumn" />
+          </div>
+          <div className="AknDefault-contentWithBottom">
+            <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
+              <header className="AknTitleContainer">
+                <div className="AknTitleContainer-line">
+                  <Image
+                    alt={__('pim_reference_entity.record.img', {'{{ label }}': label})}
+                    image={record.getImage()}
+                    onImageChange={this.props.events.onImageUpdated}
+                  />
+                  <div className="AknTitleContainer-mainContainer">
+                    <div>
+                      <div className="AknTitleContainer-line">
+                        <div className="AknTitleContainer-breadcrumbs">
+                          <Breadcrumb
+                            items={[
+                              {
+                                action: {
+                                  type: 'redirect',
+                                  route: 'akeneo_reference_entities_reference_entity_index',
                                 },
+                                label: __('pim_reference_entity.reference_entity.title'),
                               },
-                              label: record.getReferenceEntityIdentifier().stringValue(),
-                            },
-                            {
-                              action: {
-                                type: 'display',
+                              {
+                                action: {
+                                  type: 'redirect',
+                                  route: 'akeneo_reference_entities_reference_entity_edit',
+                                  parameters: {
+                                    identifier: record.getReferenceEntityIdentifier().stringValue(),
+                                    tab: 'record',
+                                  },
+                                },
+                                label: record.getReferenceEntityIdentifier().stringValue(),
                               },
-                              label: record.getCode().stringValue(),
-                            },
-                          ]}
-                        />
-                      </div>
-                      <div className="AknTitleContainer-buttonsContainer">
-                        <div className="user-menu">
-                          <PimView
-                            className="AknTitleContainer-userMenu"
-                            viewName="pim-reference-entity-index-user-navigation"
+                              {
+                                action: {
+                                  type: 'display',
+                                },
+                                label: record.getCode().stringValue(),
+                              },
+                            ]}
                           />
                         </div>
-                        <div className="AknButtonList">
-                          {this.getSecondaryActions(this.props.acls.delete)}
-                          <div className="AknTitleContainer-rightButton">
-                            <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
-                              {__('pim_reference_entity.record.button.save')}
-                            </button>
+                        <div className="AknTitleContainer-buttonsContainer">
+                          <div className="user-menu">
+                            <PimView
+                              className="AknTitleContainer-userMenu"
+                              viewName="pim-reference-entity-index-user-navigation"
+                            />
+                          </div>
+                          <div className="AknButtonList">
+                            {this.getSecondaryActions(this.props.acls.delete)}
+                            <div className="AknTitleContainer-rightButton">
+                              <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
+                                {__('pim_reference_entity.record.button.save')}
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div className="AknTitleContainer-line">
+                        <div className="AknTitleContainer-title">{label}</div>
+                        {editState}
+                      </div>
                     </div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-title">{label}</div>
-                      {editState}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-context AknButtonList">
-                        <ChannelSwitcher
-                          channelCode={this.props.context.channel}
-                          channels={this.props.structure.channels}
-                          locale={this.props.context.locale}
-                          className="AknDropdown--right"
-                          onChannelChange={this.props.events.onChannelChanged}
-                        />
-                        <LocaleSwitcher
-                          localeCode={this.props.context.locale}
-                          locales={this.props.structure.locales}
-                          className="AknDropdown--right"
-                          onLocaleChange={this.props.events.onLocaleChanged}
-                        />
+                    <div>
+                      <div className="AknTitleContainer-line">
+                        <div className="AknTitleContainer-context AknButtonList">
+                          <ChannelSwitcher
+                            channelCode={this.props.context.channel}
+                            channels={this.props.structure.channels}
+                            locale={this.props.context.locale}
+                            className="AknDropdown--right"
+                            onChannelChange={this.props.events.onChannelChanged}
+                          />
+                          <LocaleSwitcher
+                            localeCode={this.props.context.locale}
+                            locales={this.props.structure.locales}
+                            className="AknDropdown--right"
+                            onLocaleChange={this.props.events.onLocaleChanged}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </header>
+              <div className="content">
+                <TabView code={this.props.sidebar.currentTab} />
               </div>
-            </header>
-            <div className="content">
-              <TabView code={this.props.sidebar.currentTab} />
             </div>
           </div>
+          <Sidebar backButton={this.backToReferenceEntity} />
         </div>
-        <Sidebar backButton={this.backToReferenceEntity} />
-      </div>
+        {this.props.confirmDelete.isActive && (
+          <DeleteModal
+            message={__('pim_reference_entity.record.delete.message', {recordLabel: label})}
+            title={__('pim_reference_entity.record.delete.title')}
+            onConfirm={this.onClickDelete}
+            onCancel={this.props.events.onCancelDelete}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }
@@ -223,6 +236,7 @@ export default connect(
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
     const channel =
       undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
+    const confirmDelete = state.confirmDelete;
 
     return {
       sidebar: {
@@ -245,6 +259,7 @@ export default connect(
         create: securityContext.isGranted('akeneo_referenceentity_record_create'),
         delete: securityContext.isGranted('akeneo_referenceentity_record_delete'),
       },
+      confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -264,6 +279,12 @@ export default connect(
         },
         onDelete: (record: Record) => {
           dispatch(deleteRecord(record));
+        },
+        onStartDeleteModal: () => {
+          dispatch(startDeleteModal());
+        },
+        onCancelDelete: () => {
+          dispatch(cancelDeleteModal());
         },
         backToReferenceEntity: () => {
           dispatch(backToReferenceEntity());

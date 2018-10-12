@@ -11,6 +11,7 @@ import ValidationError, {createValidationError} from 'akeneoreferenceentity/doma
 import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
 import {redirectToRecordIndex} from 'akeneoreferenceentity/application/action/record/router';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {confirmDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 export const deleteRecord = (record: Record) => async (dispatch: any): Promise<void> => {
   try {
@@ -25,6 +26,7 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
 
     dispatch(notifyRecordWellDeleted(record.getCode()));
     dispatch(redirectToRecordIndex(record.getReferenceEntityIdentifier()));
+    dispatch(confirmDeleteModal());
   } catch (error) {
     dispatch(notifyRecordDeleteFailed());
 

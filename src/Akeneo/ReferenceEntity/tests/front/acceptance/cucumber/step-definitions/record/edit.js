@@ -1,6 +1,7 @@
 const Edit = require('../../decorators/record/edit.decorator');
 const {getRequestContract, listenRequest} = require('../../tools');
 const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Modal = require('../../decorators/delete/modal.decorator');
 const path = require('path');
 
 const {
@@ -23,6 +24,10 @@ module.exports = async function(cucumber) {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
     },
+    Modal: {
+      selector: '.AknFullPage--modal',
+      decorator: Modal,
+    }
   };
 
   const getElement = createElementDecorator(config);
@@ -194,16 +199,47 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  Then('the user should see a success message after the update record', async function() {
+  When('the user deletes the record', async function() {
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Delete/ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.clickOnDeleteButton();
+
+    const modalPage = await await getElement(this.page, 'Modal');
+    await modalPage.confirmDeletion();
+  });
+
+  Then('the user should see a success message on the edit page', async function() {
     const edit = await await getElement(this.page, 'Edit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
     assert.strictEqual(hasSuccessNotification, true);
   });
 
-  Then('the user should see the validation error after the update record : {string}', async function(expectedError) {
+  Then('the user should see the validation error on the edit page : {string}', async function(expectedError) {
     const edit = await await getElement(this.page, 'Edit');
     const error = await edit.getValidationMessageForCode();
 
     assert.strictEqual(error, expectedError);
+  });
+
+  Then('the user shouldn\'t see the delete button', async function() {
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    const hasDeleteButton = await enrich.hasDeleteButton();
+
+    assert.strictEqual(hasDeleteButton, false);
   });
 };
