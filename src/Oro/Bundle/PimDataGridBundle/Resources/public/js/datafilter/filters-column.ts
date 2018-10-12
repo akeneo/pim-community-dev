@@ -115,9 +115,17 @@ class FiltersColumn extends BaseView {
     this.triggerFiltersUpdated();
   }
 
+  getLocale(): string {
+    const url = (<string>this.gridCollection.url).split('?')[1];
+    const urlParams = this.gridCollection.decodeStateData(url);
+    const datagridParams = urlParams['product-grid'] || {};
+    return urlParams['dataLocale'] || datagridParams['dataLocale'];
+  }
+
   fetchFilters(search?: string | null, page: number = this.page) {
-    const url = Routing.generate('pim_datagrid_productgrid_attributes_filters')
-    return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`);
+    const locale = this.getLocale();
+    const url = Routing.generate('pim_datagrid_productgrid_attributes_filters');
+    return $.get(search ? `${url}?search=${search}&locale=${locale}` : `${url}?page=${page}&locale=${locale}`);
   }
 
   mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]): GridFilter[] {
