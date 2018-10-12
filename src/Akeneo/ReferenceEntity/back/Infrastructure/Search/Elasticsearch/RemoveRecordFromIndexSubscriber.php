@@ -10,6 +10,8 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDel
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
+ * Listen to deleted records events
+ *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
@@ -39,11 +41,11 @@ class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
 
     public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
     {
-        $this->recordIndexer->bulkRemove([
-            $this->recordRepository->getByReferenceEntityAndCode(
-                $recordDeletedEvent->getReferenceEntityIdentifier(),
-                $recordDeletedEvent->getRecordCode()
-            ),
+        $this->recordIndexer->bulkRemoveByReferenceEntityIdentifiersAndCodes([
+            [
+                'reference_entity_identifier' => (string) $recordDeletedEvent->getReferenceEntityIdentifier(),
+                'record_code' => (string) $recordDeletedEvent->getRecordCode(),
+            ],
         ]);
     }
 }

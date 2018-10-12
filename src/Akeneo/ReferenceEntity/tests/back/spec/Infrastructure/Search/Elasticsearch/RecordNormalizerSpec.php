@@ -43,6 +43,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $searchMatrixNormalizer->generate($record)->willReturn(['search_matrix']);
         $this->normalize($record)->shouldReturn([
             'identifier'            => 'designer_stark_fingerprint',
+            'code'                  => 'stark',
             'reference_entity_code' => 'designer',
             'record_list_search'    => ['search_matrix'],
         ]);

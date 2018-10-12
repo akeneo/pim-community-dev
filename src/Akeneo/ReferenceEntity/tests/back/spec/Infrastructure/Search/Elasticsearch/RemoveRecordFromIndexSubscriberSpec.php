@@ -42,7 +42,9 @@ class RemoveRecordFromIndexSubscriberSpec extends ObjectBehavior
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('stark');
         $recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)->willReturn($record);
-        $recordIndexer->bulkRemove([$record])->shouldBeCalled();
+        $recordIndexer->bulkRemoveByReferenceEntityIdentifiersAndCodes([
+            ['reference_entity_identifier' => 'designer', 'record_code' => 'stark'],
+        ])->shouldBeCalled();
 
         $this->whenRecordDeleted(new RecordDeletedEvent($recordCode, $referenceEntityIdentifier));
     }

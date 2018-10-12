@@ -5,6 +5,8 @@ mappings:
                 type: 'keyword'
             reference_entity_code:
                 type: 'keyword'
+            code:
+                type: 'keyword'
         dynamic_templates:
             -
                 record_list_search:

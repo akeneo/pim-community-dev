@@ -48,16 +48,29 @@ class RecordIndexer implements RecordIndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function bulkRemove(array $records)
+    public function bulkRemoveByReferenceEntityIdentifiersAndCodes(array $records)
     {
         if (empty($records)) {
             return;
         }
 
-        $recordIdentifiers = array_map(function (Record $record) {
-            return (string) $record->getIdentifier();
+        $filteredRecords = array_map(function (array $recordKeys) {
+            return [
+                'bool' => [
+                    'must' => [
+                        ['term' => ['reference_entity_code' => $recordKeys['reference_entity_identifier']]],
+                        ['term' => ['code' => $recordKeys['record_code']]],
+                    ],
+                ],
+            ];
         }, $records);
 
-        $this->recordClient->bulkDelete(self::INDEX_TYPE, $recordIdentifiers);
+        $queryBody = [
+            'query' => [
+                'bool' => ['should' => $filteredRecords],
+            ],
+        ];
+
+        $this->recordClient->deleteByQuery($queryBody);
     }
 }

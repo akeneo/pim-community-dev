@@ -76,37 +76,40 @@ class RecordIndexerSpec extends ObjectBehavior
     function it_does_not_unindex_if_the_list_is_empty(Client $recordEsCLient)
     {
         $recordEsCLient->bulkDelete(Argument::cetera())->shouldNotBeCalled();
-        $this->bulkRemove([]);
+        $this->bulkRemoveByReferenceEntityIdentifiersAndCodes([]);
     }
 
     function it_removes_multiple_records(Client $recordEsCLient)
     {
-        $stark = Record::create(
-            RecordIdentifier::create('designer', 'stark', 'finger'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            RecordCode::fromString('stark'),
+        $recordEsCLient->deleteByQuery(
             [
-                'fr_FR' => 'Un designer français',
-            ],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
-        );
-        $coco = Record::create(
-            RecordIdentifier::create('designer', 'coco', 'finger'),
-            ReferenceEntityIdentifier::fromString('designer'),
-            RecordCode::fromString('stark'),
-            [
-                'fr_FR' => 'Styliste',
-            ],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
-        );
+                "query" => [
+                    "bool" => [
+                        "should" => [
+                            [
+                                "bool" => [
+                                    "must" => [
+                                        ["term" => ["reference_entity_code" => "designer"]],
+                                        ["term" => ["code" => "stark"]],
+                                    ],
+                                ],
+                            ],
+                            [
+                                "bool" => [
+                                    "must" => [
+                                        ["term" => ["reference_entity_code" => "designer"]],
+                                        ["term" => ["code" => "coco"]],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ])->shouldBeCalled();
 
-        $recordEsCLient->bulkDelete(
-            'pimee_reference_entity_record',
-            ['designer_stark_finger', 'designer_coco_finger']
-        )->shouldBeCalled();
-
-        $this->bulkRemove([$stark, $coco]);
+        $this->bulkRemoveByReferenceEntityIdentifiersAndCodes([
+            ['reference_entity_identifier' => 'designer', 'record_code' => 'stark'],
+            ['reference_entity_identifier' => 'designer', 'record_code' => 'coco'],
+        ]);
     }
 }

@@ -15,6 +15,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 class RecordNormalizer implements RecordNormalizerInterface
 {
     private const IDENTIFIER = 'identifier';
+    private const CODE = 'code';
     private const REFERENCE_ENTITY_CODE = 'reference_entity_code';
     private const RECORD_LIST_SEARCH = 'record_list_search';
 
@@ -30,6 +31,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     {
         return [
             self::IDENTIFIER            => (string) $record->getIdentifier(),
+            self::CODE                  => (string) $record->getCode(),
             self::REFERENCE_ENTITY_CODE => (string) $record->getReferenceEntityIdentifier(),
             self::RECORD_LIST_SEARCH    => $this->searchMatrixGenerator->generate($record)
         ];

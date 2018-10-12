@@ -9,6 +9,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Symfony\Component\EventDispatcher\Event;
 
 /**
+ * Event triggered when a record is deleted from DB
+ *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */

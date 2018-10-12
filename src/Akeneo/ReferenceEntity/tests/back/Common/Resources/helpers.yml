@@ -10,6 +10,6 @@ services:
             - '@database_connection'
 
     akeneoreference_entity.tests.helper.search_index_helper:
-        class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchIndexHelper
+        class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\SearchRecordIndexHelper
         arguments:
             - '@akeneo_referenceentity.client.record'
