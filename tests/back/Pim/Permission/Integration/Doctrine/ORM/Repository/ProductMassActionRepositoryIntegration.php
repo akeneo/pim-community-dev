@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Repository;
+namespace AkeneoTest\Pim\Permission\Integration\Doctrine\ORM\Repository;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -19,6 +19,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
+ *
+ * Test the override of the classic ProductMassActionRepository for Permission
  */
 class ProductMassActionRepositoryIntegration extends TestCase
 {
