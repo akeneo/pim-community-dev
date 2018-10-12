@@ -44,7 +44,7 @@ suites:
     AssetBundle:
         namespace: Akeneo\Asset
         psr4_prefix: Akeneo\Asset
-        spec_path: src/Akeneo/Asset
+        spec_path: tests/back/Asset
         src_path: src/Akeneo/Asset
         spec_prefix: Specification
 
