@@ -161,7 +161,12 @@ pim_reference_entity:
                         regular_expression: Regular expression
                         url: URL
         delete:
-            confirm: The attribute will be deleted. Confirm?
+            message: Are you sure you want to delete "{{ attributeLabel }}"?
+            title: Attribute
+            subtitle: Confirm deletion
+            button:
+                cancel: Cancel
+                confirm: Delete
         notification:
             save:
                 success: Attribute successfully updated.

@@ -23,8 +23,10 @@ import ImagePropertyView from 'akeneoreferenceentity/application/component/attri
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
-import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/list';
+import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
+import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   context: {
@@ -34,6 +36,9 @@ interface StateProps {
   isActive: boolean;
   attribute: Attribute;
   errors: ValidationError[];
+  confirmDelete: {
+    isActive: boolean;
+  }
 }
 
 interface DispatchProps {
@@ -42,6 +47,8 @@ interface DispatchProps {
     onIsRequiredUpdated: (isRequired: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
+    onCancelDelete: () => void;
+    onStartDeleteModal: () => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -126,14 +133,8 @@ class Edit extends React.Component<EditProps> {
     }
   };
 
-  private onAttributeDelete() {
-    const message = __('pim_reference_entity.attribute.delete.confirm');
-    if (confirm(message)) {
-      this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
-    }
-  }
-
   render(): JSX.Element | JSX.Element[] | null {
+    const label = this.props.attribute.getLabel(this.props.context.locale);
     return (
       <React.Fragment>
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
@@ -273,16 +274,24 @@ class Edit extends React.Component<EditProps> {
             tabIndex={0}
             onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
               if (' ' === event.key) {
-                this.onAttributeDelete();
+                this.props.events.onStartDeleteModal();
               }
             }}
-            onClick={() => {
-              this.onAttributeDelete();
-            }}
+            onClick={() => this.props.events.onStartDeleteModal()}
           >
             {__('pim_reference_entity.attribute.edit.delete')}
           </div>
         </div>
+        {this.props.confirmDelete.isActive && (
+          <DeleteModal
+            message={__('pim_reference_entity.attribute.delete.message', {attributeLabel: label})}
+            title={__('pim_reference_entity.attribute.delete.title')}
+            onConfirm={() => {
+              this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
+            }}
+            onCancel={this.props.events.onCancelDelete}
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -291,6 +300,7 @@ class Edit extends React.Component<EditProps> {
 export default connect(
   (state: EditState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const confirmDelete = state.confirmDelete;
 
     return {
       isActive: state.attribute.isActive,
@@ -300,6 +310,7 @@ export default connect(
       context: {
         locale: locale,
       },
+      confirmDelete
     } as StateProps;
   },
   (dispatch: any): DispatchProps => {
@@ -323,6 +334,12 @@ export default connect(
         onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(deleteAttribute(attributeIdentifier));
         },
+        onCancelDelete: () => {
+          dispatch(cancelDeleteModal());
+        },
+        onStartDeleteModal: () => {
+          dispatch(startDeleteModal());
+        }
       },
     } as DispatchProps;
   }

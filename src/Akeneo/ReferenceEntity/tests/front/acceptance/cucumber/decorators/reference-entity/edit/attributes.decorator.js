@@ -1,4 +1,15 @@
+const Modal = require('../../delete/modal.decorator');
+
+const config = {
+  Modal: {
+    selector: '.AknFullPage--modal',
+    decorator: Modal,
+  },
+};
+
 const Attributes = async (nodeElement, createElementDecorator, page) => {
+  const getElement = createElementDecorator(config);
+
   const isLoaded = async () => {
     await page.waitFor('.AknDefault-mainContent .AknSubsection .AknButton.AknButton--action');
 
@@ -28,12 +39,11 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
       button.style.height = '20px';
     }, nodeElement);
 
-    page.on('dialog', async dialog => {
-      if ('The attribute will be deleted. Confirm?' === dialog.message()) await dialog.accept();
-    });
-
     const deleteButton = await nodeElement.$('.AknQuickEdit .AknButton--delete');
     await deleteButton.click();
+
+    const modalPage = await await getElement(page, 'Modal');
+    await modalPage.confirmDeletion();
   };
 
   const edit = async attributeIdentifier => {
