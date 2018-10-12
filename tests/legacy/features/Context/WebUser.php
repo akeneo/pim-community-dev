@@ -1125,7 +1125,7 @@ class WebUser extends PimContext
     public function orderOfAttributeGroupsShouldBe($attributeGroups)
     {
         $actualAttributeGroups = $this->getCurrentPage()->getAttributeGroups();
-        assertEquals($attributeGroups, implode($actualAttributeGroups, ', '));
+        Assert::assertEquals($attributeGroups, implode($actualAttributeGroups, ', '));
     }
 
     /**

@@ -36,7 +36,6 @@ Feature: Import attribute groups
   @jira https://akeneo.atlassian.net/browse/PIM-7655
   Scenario: Ensure imported attribute groups have non conflicting sort order
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       code;label-en_US;attributes;sort_order
@@ -47,9 +46,7 @@ Feature: Import attribute groups
       """
     And the following job "csv_footwear_attribute_group_import" configuration:
       | filePath | %file to import% |
-    When I am on the "csv_footwear_attribute_group_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_attribute_group_import" job to finish
+    When the attribute groups are imported via the job csv_footwear_attribute_group_import
     Then there should be the following attribute groups:
       | code          | label-en_US   | attributes                                                                                                  | sort_order |
       | manufacturing | Manufacturing | lace_fabric,manufacturer,sole_fabric                                                                        | 7          |
