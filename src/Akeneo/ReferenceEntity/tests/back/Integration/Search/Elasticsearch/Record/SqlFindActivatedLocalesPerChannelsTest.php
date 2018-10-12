@@ -41,7 +41,7 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
     {
         Assert::assertSame(
             [
-                'ecommerce' => ['fr_FR', 'en_US'],
+                'ecommerce' => ['en_US', 'fr_FR'],
                 'mobile'    => ['de_DE'],
                 'print'     => ['en_US'],
             ],
