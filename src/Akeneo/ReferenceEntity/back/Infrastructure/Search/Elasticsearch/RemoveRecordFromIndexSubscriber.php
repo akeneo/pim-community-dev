@@ -10,7 +10,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDel
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Listen to deleted records events
+ * Listen to deleted records events in order to remove them from the search engine index.
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
