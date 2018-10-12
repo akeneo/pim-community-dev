@@ -10,6 +10,7 @@ import createAttribute, {
 import structure, {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
 import attributes, {ListState} from 'akeneoreferenceentity/application/reducer/attribute/list';
 import attribute, {EditState as EditAttributeState} from 'akeneoreferenceentity/application/reducer/attribute/edit';
+import confirmDelete, {ConfirmDeleteState} from 'akeneoreferenceentity/application/reducer/confirmDelete';
 
 export interface EditState {
   user: UserState;
@@ -21,6 +22,7 @@ export interface EditState {
   attribute: EditAttributeState;
   form: EditionFormState;
   structure: StructureState;
+  confirmDelete: ConfirmDeleteState;
 }
 
 export default {
@@ -33,4 +35,5 @@ export default {
   attribute,
   structure,
   form,
+  confirmDelete,
 };

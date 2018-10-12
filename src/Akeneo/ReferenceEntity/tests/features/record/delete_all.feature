@@ -32,7 +32,7 @@ Feature: Delete all reference entity record
     Then the user should see the successfull deletion notification
 
   @acceptance-front
-  Scenario: Error while deleting all refenrence entity records
+  Scenario: Error while deleting all reference entity records
     Given the following reference entity:
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |

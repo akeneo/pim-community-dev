@@ -13,6 +13,8 @@ import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/cre
 import {deleteAllReferenceEntityRecords} from 'akeneoreferenceentity/application/action/record/delete';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 const securityContext = require('pim/security-context');
+import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
+import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   context: {
@@ -29,6 +31,9 @@ interface StateProps {
     deleteAllRecords: boolean;
     delete: boolean;
   };
+  confirmDelete: {
+    isActive: boolean;
+  };
 }
 
 interface DispatchProps {
@@ -36,35 +41,19 @@ interface DispatchProps {
     onRedirectToRecord: (record: Record) => void;
     onDelete: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
+    onCancelDelete: () => void;
+    onStartDeleteModal: () => void;
   };
 }
 
-const SecondaryAction = ({
-  referenceEntityIdentifier,
-  onDelete,
-}: {
-  referenceEntityIdentifier: string;
-  onDelete: () => void;
-}) => {
+const SecondaryAction = ({onStartDeleteModal}: {onStartDeleteModal: () => void}) => {
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
-          <button
-            tabIndex={-1}
-            className="AknDropdown-menuLink"
-            onClick={() => {
-              if (
-                confirm(
-                  __('pim_reference_entity.record.delete_all.confirm', {entityIdentifier: referenceEntityIdentifier})
-                )
-              ) {
-                onDelete();
-              }
-            }}
-          >
+          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onStartDeleteModal()}>
             {__('pim_reference_entity.record.button.delete_all')}
           </button>
         </div>
@@ -73,7 +62,7 @@ const SecondaryAction = ({
   );
 };
 
-const records = ({context, grid, events, referenceEntity, acls}: StateProps & DispatchProps) => {
+const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: StateProps & DispatchProps) => {
   return (
     <React.Fragment>
       <Header
@@ -89,10 +78,9 @@ const records = ({context, grid, events, referenceEntity, acls}: StateProps & Di
         secondaryActions={() => {
           return acls.deleteAllRecords ? (
             <SecondaryAction
-              onDelete={() => {
-                events.onDelete(referenceEntity);
+              onStartDeleteModal={() => {
+                events.onStartDeleteModal();
               }}
-              referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()}
             />
           ) : null;
         }}
@@ -119,6 +107,18 @@ const records = ({context, grid, events, referenceEntity, acls}: StateProps & Di
           <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
         </div>
       )}
+      {confirmDelete.isActive && (
+        <DeleteModal
+          message={__('pim_reference_entity.record.delete_all.confirm', {
+            entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+          })}
+          title={__('pim_reference_entity.record.delete.title')}
+          onConfirm={() => {
+            events.onDelete(referenceEntity);
+          }}
+          onCancel={events.onCancelDelete}
+        />
+      )}
     </React.Fragment>
   );
 };
@@ -129,6 +129,7 @@ export default connect(
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
     const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
+    const confirmDelete = state.confirmDelete;
 
     return {
       context: {
@@ -145,6 +146,7 @@ export default connect(
         deleteAllRecords: securityContext.isGranted('akeneo_referenceentity_records_delete_all'),
         delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
       },
+      confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -158,6 +160,12 @@ export default connect(
         },
         onDelete: (referenceEntity: ReferenceEntity) => {
           dispatch(deleteAllReferenceEntityRecords(referenceEntity));
+        },
+        onCancelDelete: () => {
+          dispatch(cancelDeleteModal());
+        },
+        onStartDeleteModal: () => {
+          dispatch(startDeleteModal());
         },
       },
     };
