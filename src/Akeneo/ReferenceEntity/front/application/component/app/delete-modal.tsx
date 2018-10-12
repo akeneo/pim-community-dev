@@ -21,15 +21,15 @@ const DeleteModal = ({
           </div>
           <div className="AknFullPage-right">
             <div className="AknFullPage-subTitle">{title}</div>
-            <div className="AknFullPage-title">{__('pim_reference_entity.record.delete.subtitle')}</div>
+            <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
             <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
             <div className="AknButtonList">
               <button className="AknButtonList-item AknButton AknButton--grey cancel" onClick={onCancel}>
-                {__('pim_reference_entity.record.delete.button.cancel')}
+                {__('pim_reference_entity.modal.delete.button.cancel')}
               </button>
 
               <button className="AknButtonList-item AknButton AknButton--important ok" onClick={onConfirm}>
-                {__('pim_reference_entity.record.delete.button.confirm')}
+                {__('pim_reference_entity.modal.delete.button.confirm')}
               </button>
             </div>
           </div>

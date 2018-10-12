@@ -1,5 +1,6 @@
 const Edit = require('../../decorators/reference-entity/edit.decorator');
 const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Modal = require('../../decorators/delete/modal.decorator');
 const path = require('path');
 const {askForReferenceEntity} = require('../../tools');
 
@@ -20,6 +21,10 @@ module.exports = async function(cucumber) {
     Edit: {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
+    },
+    Modal: {
+      selector: '.AknFullPage--modal',
+      decorator: Modal,
     },
   };
 
@@ -151,13 +156,10 @@ module.exports = async function(cucumber) {
       }
     });
 
-    const acceptDelete = async dialog => {
-      this.page.removeListener('dialog', acceptDelete);
-      await dialog.accept();
-    };
-    this.page.on('dialog', acceptDelete);
-
     await header.clickOnDeleteButton();
+
+    const modalPage = await await getElement(this.page, 'Modal');
+    await modalPage.confirmDeletion();
   });
 
   When('the user fails to delete the reference entity {string}', async function(identifier) {
@@ -189,13 +191,10 @@ module.exports = async function(cucumber) {
       }
     });
 
-    const acceptDelete = async dialog => {
-      this.page.removeListener('dialog', acceptDelete);
-      await dialog.accept();
-    };
-    this.page.on('dialog', acceptDelete);
-
     await header.clickOnDeleteButton();
+
+    const modalPage = await await getElement(this.page, 'Modal');
+    await modalPage.confirmDeletion();
   });
 
   When('the user refuses to delete the current reference entity', async function() {
