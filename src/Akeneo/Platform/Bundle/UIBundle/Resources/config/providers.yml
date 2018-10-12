@@ -19,7 +19,7 @@ services:
             - { name: pim_enrich.provider.field, priority: 90 }
 
     pim_reference_data.enrich.provider.field.reference_data:
-        class: 'Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider'
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Field\ReferenceDataFieldProvider'
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
 
@@ -32,7 +32,7 @@ services:
             - { name: pim_enrich.provider.filter, priority: 100 }
 
     pim_reference_data.enrich.provider.filter.reference_data:
-        class: 'Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider'
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\ReferenceDataFilterProvider'
         tags:
             - { name: pim_enrich.provider.filter, priority: 100 }
 
@@ -46,7 +46,7 @@ services:
             - { name: pim_enrich.provider.empty_value, priority: 100 }
 
     pim_reference_data.enrich.provider.empty_value.reference_data:
-        class: 'Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider'
+        class: 'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider'
         tags:
             - { name: pim_enrich.provider.empty_value, priority: 90 }
 
