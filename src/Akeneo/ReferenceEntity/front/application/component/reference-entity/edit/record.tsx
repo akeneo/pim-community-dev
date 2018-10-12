@@ -33,7 +33,7 @@ interface StateProps {
   };
   confirmDelete: {
     isActive: boolean;
-  }
+  };
 }
 
 interface DispatchProps {
@@ -46,22 +46,14 @@ interface DispatchProps {
   };
 }
 
-const SecondaryAction = ({
-  onStartDeleteModal,
-}: {
-  onStartDeleteModal: () => void;
-}) => {
+const SecondaryAction = ({onStartDeleteModal}: {onStartDeleteModal: () => void}) => {
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
-          <button
-            tabIndex={-1}
-            className="AknDropdown-menuLink"
-            onClick={() => onStartDeleteModal()}
-          >
+          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onStartDeleteModal()}>
             {__('pim_reference_entity.record.button.delete_all')}
           </button>
         </div>
@@ -117,7 +109,9 @@ const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: 
       )}
       {confirmDelete.isActive && (
         <DeleteModal
-          message={__('pim_reference_entity.record.delete_all.confirm', {entityIdentifier: referenceEntity.getIdentifier().stringValue()})}
+          message={__('pim_reference_entity.record.delete_all.confirm', {
+            entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+          })}
           title={__('pim_reference_entity.record.delete.title')}
           onConfirm={() => {
             events.onDelete(referenceEntity);
@@ -172,7 +166,7 @@ export default connect(
         },
         onStartDeleteModal: () => {
           dispatch(startDeleteModal());
-        }
+        },
       },
     };
   }
