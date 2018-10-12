@@ -30,7 +30,7 @@ class AssetDatasourceSpec extends ObjectBehavior
     function it_returns_results_with_locale(
         $entityManager,
         $hydrator,
-        $configuration,
+        DatagridInterface $configuration,
         AssetRepositoryInterface $assetRepository,
         QueryBuilder $qb,
         AssetInterface $asset1,

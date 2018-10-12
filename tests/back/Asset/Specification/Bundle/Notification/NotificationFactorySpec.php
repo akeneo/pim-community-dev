@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Asset\Bundle\Notification;
 
-use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -12,7 +12,7 @@ class NotificationFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['mass_upload'], NotificationInterface::class);
+        $this->beConstructedWith(['mass_upload'], Notification::class);
     }
 
     function it_supports_type()
@@ -33,7 +33,7 @@ class NotificationFactorySpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('mass_upload');
         $jobInstance->getLabel()->willReturn('Mass upload');
 
-        $this->create($jobExecution)->shouldReturnAnInstanceOf(NotificationInterface::class);
+        $this->create($jobExecution)->shouldReturnAnInstanceOf(Notification::class);
     }
 
     function it_throws_an_exception_if_param_is_not_an_exception()
