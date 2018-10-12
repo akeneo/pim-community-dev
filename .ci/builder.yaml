@@ -1,8 +1,11 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
+  - id: pull-cache
+    name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'eu.gcr.io/akeneo-ci/pim-community-dev:master']
+    waitFor: ['-']   
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '--cache-from', 'eu.gcr.io/akeneo-ci/pim-community-dev:master', '--build-arg', 'COMPOSER_COMMAND=${_COMPOSER_COMMAND}', '-t', '${_IMAGE_TAG}', '.']
+    waitFor: ['pull-cache']
 images: [
   '${_IMAGE_TAG}'
 ]

@@ -35,7 +35,10 @@ RUN ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm \
         libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
         fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 
-COPY --from=eu.gcr.io/akeneo-ci/github-akeneo-ci-dependencies-warmer:master /tmp /tmp
+COPY composer.json composer.lock package.json ./
+
+RUN composer  $COMPOSER_COMMAND --no-ansi --no-autoloader --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
+
 COPY . .
 COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
 
