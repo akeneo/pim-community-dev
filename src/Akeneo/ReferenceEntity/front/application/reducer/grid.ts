@@ -1,52 +1,48 @@
 export class InvalidArgument extends Error {}
 
-export class NormalizedFilter {
-  private constructor(readonly field: string, readonly operator: string, readonly value: any) {}
-
-  public static create({field, operator, value}: {field: string; operator: string; value: any}) {
-    if (undefined === field || undefined === operator || undefined === value) {
-      throw new InvalidArgument(`The given normalized filter is not valid. Arguments: ${JSON.stringify(arguments)}`);
-    }
-
-    return new NormalizedFilter(field, operator, value);
-  }
+export interface Filter {
+  field: string;
+  operator: string;
+  value: any;
+  context: any;
 }
 
-enum Sort {
+export enum Sort {
   Ascending,
   Descending,
 }
 
 export interface Column {
-  sortable: boolean;
-  sort?: Sort;
-  action: boolean;
-  label: string;
+  key: string;
+  labels: {[locale: string]: string};
+  type: string;
+  channel: string;
+  locale: string;
 }
 
 export interface Query {
   readonly columns: Column[];
-  readonly filters: NormalizedFilter[];
+  readonly filters: Filter[];
   readonly page: number;
-  readonly limit: number;
+  readonly size: number;
 }
 
 class ConcreteQuery implements Query {
   readonly columns: Column[];
-  readonly filters: NormalizedFilter[];
+  readonly filters: Filter[];
   readonly page: number;
-  readonly limit: number;
+  readonly size: number;
 
-  public constructor(columns: Column[] = [], filters: NormalizedFilter[] = [], page: number = 0, limit: number = 25) {
+  public constructor(columns: Column[] = [], filters: Filter[] = [], page: number = 0, size: number = 200) {
     this.columns = columns;
     this.filters = filters;
     this.page = page;
-    this.limit = limit;
+    this.size = size;
   }
 }
 
 export const createQuery = (rawState: any): Query => {
-  return new ConcreteQuery(rawState.columns, rawState.filters, rawState.page, rawState.limit);
+  return new ConcreteQuery(rawState.columns, rawState.filters, rawState.page, rawState.size);
 };
 
 export interface GridState<Element> {
@@ -89,6 +85,10 @@ export default <Element>(
     type: string;
     append: boolean;
     total: number;
+    field: string;
+    operator: string;
+    value: string;
+    columns: Column[];
     data: {
       items: Element[];
     };
@@ -99,22 +99,34 @@ export default <Element>(
   }
 
   switch (action.type) {
-    case 'DATA_RECEIVED':
+    case 'GRID_DATA_RECEIVED':
       state = action.append
         ? {...state, items: [...state.items, ...action.data.items], total: action.total}
         : {...state, items: action.data.items, total: action.total};
       break;
-    case 'START_LOADING_RESULTS':
+    case 'GRID_START_LOADING_RESULTS':
       state = {...state, isFetching: true};
       break;
-    case 'STOP_LOADING_RESULTS':
+    case 'GRID_STOP_LOADING_RESULTS':
       state = {...state, isFetching: false};
       break;
-    case 'GO_NEXT_PAGE':
+    case 'GRID_STOP_LOADING_RESULTS':
+      state = {...state, isFetching: false};
+      break;
+    case 'GRID_GO_NEXT_PAGE':
       state = {...state, query: {...state.query, page: state.query.page + 1}};
       break;
-    case 'GO_FIRST_PAGE':
+    case 'GRID_GO_FIRST_PAGE':
       state = {...state, query: {...state.query, page: 0}};
+      break;
+    case 'GRID_UPDATE_COLUMNS':
+      state = {...state, query: {...state.query, columns: action.columns}};
+      break;
+    case 'GRID_UPDATE_FILTER':
+      const filters = state.query.filters.filter((filter: Filter) => filter.field !== action.field);
+      const filter = {field: action.field, operator: action.operator, value: action.value, context: {}};
+
+      state = {...state, query: {...state.query, filters: [...filters, filter]}};
       break;
     default:
       break;

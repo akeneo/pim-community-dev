@@ -6,8 +6,9 @@ import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/s
 
 const stateToQuery = async (state: IndexState): Promise<Query> => {
   return {
-    locale: undefined === state.user.uiLocale ? '' : state.user.uiLocale,
-    limit: state.grid.query.limit,
+    locale: undefined === state.user.catalogLocale ? '' : state.user.catalogLocale,
+    channel: undefined === state.user.catalogChannel ? '' : state.user.catalogChannel,
+    size: state.grid.query.size,
     page: state.grid.query.page,
     filters: [],
   };

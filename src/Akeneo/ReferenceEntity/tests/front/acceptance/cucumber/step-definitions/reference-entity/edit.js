@@ -1,6 +1,7 @@
 const Edit = require('../../decorators/reference-entity/edit.decorator');
 const Header = require('../../decorators/reference-entity/app/header.decorator');
 const path = require('path');
+const {askForReferenceEntity} = require('../../tools');
 
 const {
   decorators: {createElementDecorator},
@@ -24,33 +25,17 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const askForReferenceEntity = async function(identifier) {
-    await this.page.evaluate(async identifier => {
-      const Controller = require('pim/controller/reference-entity/edit');
-      const controller = new Controller();
-      controller.renderRoute({params: {identifier, tab: 'attribute'}});
-
-      await document.getElementById('app').appendChild(controller.el);
-    }, identifier);
-
-    await this.page.waitFor('.AknDefault-mainContent[data-tab="attribute"] .AknSubsection-container');
-    const editPage = await await getElement(this.page, 'Edit');
-    const properties = await editPage.getProperties();
-    const isLoaded = await properties.isLoaded();
-
-    assert.strictEqual(isLoaded, true);
-  };
-
   const changeReferenceEntity = async function(editPage, identifier, updates) {
     const properties = await editPage.getProperties();
 
     const labels = convertDataTable(updates).labels;
 
-    Object.keys(labels).forEach(async locale => {
+    for (const locale in labels) {
       const label = labels[locale];
-      await (await editPage.getLocaleSwitcher()).switchLocale(locale);
+      const localeSwitcher = await editPage.getLocaleSwitcher();
+      await localeSwitcher.switchLocale(locale);
       await properties.setLabel(label);
-    });
+    }
   };
 
   const savedReferenceEntityWillBe = function(page, identifier, updates) {
@@ -61,22 +46,6 @@ module.exports = async function(cucumber) {
 
       if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'GET' === request.method()) {
         answerJson(request, convertItemTable(updates)[0], 200);
-      }
-    });
-  };
-
-  const answerLocaleList = function() {
-    this.page.on('request', request => {
-      if ('http://pim.com/configuration/locale/rest?activated=true' === request.url() && 'GET' === request.method()) {
-        answerJson(
-          request,
-          [
-            {code: 'de_DE', label: 'German (Germany)', region: 'Germany', language: 'German'},
-            {code: 'en_US', label: 'English (United States)', region: 'United States', language: 'English'},
-            {code: 'fr_FR', label: 'French (France)', region: 'France', language: 'French'},
-          ],
-          200
-        );
       }
     });
   };
@@ -97,20 +66,21 @@ module.exports = async function(cucumber) {
   });
 
   When('the user updates the reference entity {string} with:', async function(identifier, updates) {
-    await answerLocaleList.apply(this);
     await askForReferenceEntity.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    await properties.isLoaded();
     await changeReferenceEntity(editPage, identifier, updates);
     await savedReferenceEntityWillBe(this.page, identifier, updates);
     await editPage.save();
   });
 
   When('the user changes the reference entity {string} with:', async function(identifier, updates) {
-    await answerLocaleList.apply(this);
     await askForReferenceEntity.apply(this, [identifier]);
-
     const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    await properties.isLoaded();
 
     await changeReferenceEntity.apply(this, [editPage, identifier, updates]);
   });
@@ -123,12 +93,12 @@ module.exports = async function(cucumber) {
     const identifierValue = await properties.getIdentifier();
     assert.strictEqual(identifierValue, referenceEntity.identifier);
 
-    await Object.keys(referenceEntity.labels).forEach(async locale => {
+    for (const locale in referenceEntity.labels) {
       const label = referenceEntity.labels[locale];
       await (await editPage.getLocaleSwitcher()).switchLocale(locale);
       const labelValue = await properties.getLabel();
       assert.strictEqual(labelValue, label);
-    });
+    }
   });
 
   Then('the saved reference entity {string} will be:', async function(identifier, updates) {
@@ -167,6 +137,8 @@ module.exports = async function(cucumber) {
   });
 
   When('the user deletes the reference entity {string}', async function(identifier) {
+    const editPage = await await getElement(this.page, 'Edit');
+    await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
 
     this.page.once('request', request => {
@@ -179,14 +151,18 @@ module.exports = async function(cucumber) {
       }
     });
 
-    this.page.once('dialog', async dialog => {
+    const acceptDelete = async dialog => {
+      this.page.removeListener('dialog', acceptDelete);
       await dialog.accept();
-    });
+    };
+    this.page.on('dialog', acceptDelete);
 
-    header.clickOnDeleteButton();
+    await header.clickOnDeleteButton();
   });
 
   When('the user fails to delete the reference entity {string}', async function(identifier) {
+    const editPage = await await getElement(this.page, 'Edit');
+    await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
     const response = JSON.stringify([
       {
@@ -213,21 +189,27 @@ module.exports = async function(cucumber) {
       }
     });
 
-    this.page.once('dialog', async dialog => {
+    const acceptDelete = async dialog => {
+      this.page.removeListener('dialog', acceptDelete);
       await dialog.accept();
-    });
+    };
+    this.page.on('dialog', acceptDelete);
 
-    header.clickOnDeleteButton();
+    await header.clickOnDeleteButton();
   });
 
   When('the user refuses to delete the current reference entity', async function() {
+    const editPage = await await getElement(this.page, 'Edit');
+    await editPage.getProperties();
     const header = await await getElement(this.page, 'Header');
 
-    this.page.once('dialog', async dialog => {
+    const dismissDelete = async dialog => {
+      this.page.removeListener('dialog', dismissDelete);
       await dialog.dismiss();
-    });
+    };
+    this.page.on('dialog', dismissDelete);
 
-    header.clickOnDeleteButton();
+    await header.clickOnDeleteButton();
   });
 
   Then('the user should see the deleted notification', async function() {

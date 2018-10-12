@@ -10,6 +10,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordIndexer;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -23,7 +24,7 @@ use PHPUnit\Framework\Assert;
  */
 class RecordIndexerTest extends SearchIntegrationTestCase
 {
-    /** @var RecordIndexer */
+    /** @var RecordIndexerInterface */
     protected $recordIndexer;
 
     public function setUp()

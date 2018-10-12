@@ -1,4 +1,4 @@
-import Code from 'akeneoreferenceentity/domain/model/code';
+import RecordCode from 'akeneoreferenceentity/domain/model/code';
 export * from 'akeneoreferenceentity/domain/model/code';
 
-export default Code;
+export default RecordCode;

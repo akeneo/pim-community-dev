@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-
 /**
  * Read model representing a record within the list.
  *
@@ -32,30 +26,35 @@ class RecordItem
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
+    private const VALUES = 'values';
 
-    /** @var RecordIdentifier */
+    /** @var string */
     public $identifier;
 
-    /** @var ReferenceEntityIdentifier */
+    /** @var string */
     public $referenceEntityIdentifier;
 
-    /** @var RecordCode */
+    /** @var string */
     public $code;
 
-    /** @var LabelCollection */
+    /** @var array */
     public $labels;
 
-    /** @var Image|null */
+    /** @var string|null */
     public $image;
+
+    /** @var []|null */
+    public $values;
 
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER                 => $this->identifier->normalize(),
-            self::REFERENCE_ENTITY_IDENTIFIER => (string) $this->referenceEntityIdentifier,
-            self::CODE                       => (string) $this->code,
-            self::LABELS                     => $this->labels->normalize(),
-            self::IMAGE                      => $this->image->normalize(),
+            self::IDENTIFIER                 => $this->identifier,
+            self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
+            self::CODE                       => $this->code,
+            self::LABELS                     => $this->labels,
+            self::IMAGE                      => $this->image,
+            self::VALUES                     => $this->values,
         ];
     }
 }

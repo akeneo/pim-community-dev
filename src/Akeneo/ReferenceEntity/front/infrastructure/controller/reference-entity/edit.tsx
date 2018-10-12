@@ -18,6 +18,7 @@ import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/l
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
+import {updateFilter} from 'akeneoreferenceentity/application/event/search';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -36,18 +37,21 @@ class ReferenceEntityEditController extends BaseController {
 
     referenceEntityFetcher
       .fetch(createIdentifier(route.params.identifier))
-      .then((referenceEntity: ReferenceEntity) => {
+      .then(async (referenceEntity: ReferenceEntity) => {
         this.store = createStore(true)(referenceEntityReducer);
+
+        // Not idea, maybe we should discuss about it
+        await this.store.dispatch(updateChannels() as any);
+        this.store.dispatch(updateActivatedLocales() as any);
         this.store.dispatch(referenceEntityEditionReceived(referenceEntity.normalize()));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
+        this.store.dispatch(updateFilter('search', '=', ''));
         this.store.dispatch(updateRecordResults());
         this.store.dispatch(updateAttributeList() as any);
-        this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(updateChannels() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});

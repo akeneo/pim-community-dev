@@ -13,9 +13,11 @@ config:
             image:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/file'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
             text:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
 
         akeneoreferenceentity/application/configuration/sidebar:
             akeneo_reference_entities_reference_entity_edit:

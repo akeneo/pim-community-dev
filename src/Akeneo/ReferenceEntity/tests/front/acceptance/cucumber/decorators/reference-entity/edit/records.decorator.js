@@ -3,10 +3,10 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const hasRecord = async (identifier) => {
+  const hasRecord = async identifier => {
     await isLoaded();
     await page.waitFor('.AknDefault-mainContent .AknGrid-bodyRow');
-    const record = await nodeElement.$(`.AknGrid-bodyCell > a[data-identifier="${identifier}"]`);
+    const record = await nodeElement.$(`[data-identifier="${identifier}"]`);
 
     return record !== null;
   };
@@ -34,13 +34,22 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
+  const search = async searchInput => {
+    const search = await page.waitFor('.AknFilterBox-search');
+    await page.evaluate(properties => {
+      return (properties.querySelector('.AknFilterBox-search').value = '');
+    }, nodeElement);
+
+    await search.type(searchInput);
+  };
+
   const hasErrorNotification = async () => {
     await page.waitForSelector('.AknFlash--error');
 
     return true;
   };
 
-  return {hasRecord, isLoaded, isEmpty, getRecordLabel, hasSuccessNotification, hasErrorNotification};
+  return {hasRecord, isLoaded, isEmpty, getRecordLabel, hasSuccessNotification, hasErrorNotification, search};
 };
 
 module.exports = Records;

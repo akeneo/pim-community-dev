@@ -44,7 +44,7 @@ export const createRecord = () => async (dispatch: any, getState: () => EditStat
 
   dispatch(recordCreationSucceeded());
   dispatch(notifyRecordWellCreated());
-  dispatch(redirectToRecord(record));
+  dispatch(redirectToRecord(record.getReferenceEntityIdentifier(), record.getCode()));
 
   return;
 };

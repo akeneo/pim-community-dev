@@ -1,11 +1,11 @@
 import {redirectToRoute} from 'akeneoreferenceentity/application/event/router';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identifier';
+import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 
-export const redirectToRecord = (record: Record) => {
+export const redirectToRecord = (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => {
   return redirectToRoute('akeneo_reference_entities_record_edit', {
-    recordCode: record.getCode().stringValue(),
-    referenceEntityIdentifier: record.getReferenceEntityIdentifier().stringValue(),
+    recordCode: recordCode.stringValue(),
+    referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
     tab: 'enrich',
   });
 };

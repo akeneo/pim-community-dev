@@ -3,7 +3,7 @@ import reducer, {createState, createQuery, NormalizedFilter} from 'akeneoreferen
 describe('akeneo > reference entity > application > reducer --- grid', () => {
   test('I can initialize an empty state', () => {
     const newState = reducer(undefined, {
-      type: 'GO_FIRST_PAGE',
+      type: 'GRID_GO_FIRST_PAGE',
     });
 
     expect(newState).toEqual({
@@ -11,7 +11,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
         page: 0,
         columns: [],
         filters: [],
-        limit: 25,
+        size: 200,
       },
       items: [],
       total: 0,
@@ -38,7 +38,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
 
     const newState = reducer(state, {
-      type: 'DATA_RECEIVED',
+      type: 'GRID_DATA_RECEIVED',
       append: false,
       data: {items: ['first_item', 'second_item']},
       total: 10,
@@ -60,7 +60,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'DATA_RECEIVED',
+      type: 'GRID_DATA_RECEIVED',
       append: true,
       data: {items: ['third_item']},
       total: 10,
@@ -82,7 +82,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'START_LOADING_RESULTS',
+      type: 'GRID_START_LOADING_RESULTS',
     });
 
     expect(newState).toEqual({
@@ -101,7 +101,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: true,
     });
     const newState = reducer(state, {
-      type: 'STOP_LOADING_RESULTS',
+      type: 'GRID_STOP_LOADING_RESULTS',
     });
 
     expect(newState).toEqual({
@@ -122,7 +122,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'GO_NEXT_PAGE',
+      type: 'GRID_GO_NEXT_PAGE',
     });
 
     expect(newState).toEqual({
@@ -145,7 +145,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       isFetching: false,
     });
     const newState = reducer(state, {
-      type: 'GO_FIRST_PAGE',
+      type: 'GRID_GO_FIRST_PAGE',
     });
 
     expect(newState).toEqual({
@@ -158,25 +158,11 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
   });
 
-  test('I can normalize a filter', () => {
-    const normalizer = NormalizedFilter.create({field: 'name', operator: '=', value: 'michel'});
-
-    expect(normalizer.field).toEqual('name');
-    expect(normalizer.operator).toEqual('=');
-    expect(normalizer.value).toEqual('michel');
-  });
-
-  test('I cannot normalize a malformed filter', () => {
-    expect(() => NormalizedFilter.create({field: 'name', operator: '='})).toThrow();
-    expect(() => NormalizedFilter.create({field: 'name', value: 'michel'})).toThrow();
-    expect(() => NormalizedFilter.create({operator: '=', value: 'michel'})).toThrow();
-  });
-
   test('I can create a query', () => {
     expect(createQuery({})).toEqual({
       columns: [],
       filters: [],
-      limit: 25,
+      size: 200,
       page: 0,
     });
 
@@ -184,13 +170,13 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       createQuery({
         columns: ['my_column'],
         filters: ['my_filter'],
-        limit: 50,
+        size: 50,
         page: 2,
       })
     ).toEqual({
       columns: ['my_column'],
       filters: ['my_filter'],
-      limit: 50,
+      size: 50,
       page: 2,
     });
   });

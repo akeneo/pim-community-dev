@@ -1,14 +1,17 @@
 import RecordFetcher from 'akeneoreferenceentity/domain/fetcher/record';
 import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
+import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import hydrator from 'akeneoreferenceentity/application/hydrator/record';
 import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
-import {getJSON} from 'akeneoreferenceentity/tools/fetch';
+import {getJSON, putJSON} from 'akeneoreferenceentity/tools/fetch';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
+import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 
 const routing = require('routing');
+
+class InvalidArgument extends Error {}
 
 export class RecordFetcherImplementation implements RecordFetcher {
   constructor(private hydrator: (backendRecord: any) => Record) {
@@ -17,7 +20,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
 
   async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<Record> {
     const backendRecord = await getJSON(
-      routing.generate('akeneo_reference_entities_records_get_rest', {
+      routing.generate('akeneo_reference_entities_record_get_rest', {
         referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
         recordCode: recordCode.stringValue(),
       })
@@ -39,24 +42,20 @@ export class RecordFetcherImplementation implements RecordFetcher {
     return hydrateAll<Record>(this.hydrator)(backendRecords.items);
   }
 
-  async search(query: Query): Promise<{items: Record[]; total: number}> {
-    const backendRecords = await getJSON(
-      routing.generate('akeneo_reference_entities_record_index_rest', {
-        // This is temporary, as soon as we will have a QB in backend it will be way simpler
-        referenceEntityIdentifier: query.filters[0].value,
-      })
-    ).catch(errorHandler);
-    const items = hydrateAll<Record>(this.hydrator)(
-      backendRecords.items.map((backendRecord: any) => {
-        // This is temporary: the backend should send the image and the values
-        return {...backendRecord, image: undefined === backendRecord.image ? null : backendRecord.image, values: []};
-      })
-    );
+  async search(query: Query): Promise<{items: NormalizedRecord[]; total: number}> {
+    const referenceEntityCode = query.filters.find((filter: Filter) => 'reference_entity' === filter.field);
+    if (undefined === referenceEntityCode) {
+      throw new InvalidArgument('The search repository expect a reference_entity filter');
+    }
 
-    return {
-      items,
-      total: backendRecords.total,
-    };
+    const backendRecords = await putJSON(
+      routing.generate('akeneo_reference_entities_record_index_rest', {
+        referenceEntityIdentifier: referenceEntityCode.value,
+      }),
+      query
+    ).catch(errorHandler);
+
+    return backendRecords;
   }
 }
 

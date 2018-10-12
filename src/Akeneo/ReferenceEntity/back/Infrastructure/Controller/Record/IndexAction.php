@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
+use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntityInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -27,28 +31,35 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    /** @var FindRecordItemsForReferenceEntityInterface */
-    private $findRecordItemsForReferenceEntityQuery;
+    /** @var SearchRecord */
+    private $searchRecord;
 
     public function __construct(
-        FindRecordItemsForReferenceEntityInterface $findRecordItemsForReferenceEntityQuery
+        SearchRecord $searchRecord
     ) {
-        $this->findRecordItemsForReferenceEntityQuery = $findRecordItemsForReferenceEntityQuery;
+        $this->searchRecord = $searchRecord;
     }
 
     /**
      * Get all records belonging to an reference entity.
      */
-    public function __invoke(string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
+        $normalizedQuery = json_decode($request->getContent(), true);
+        $query = RecordQuery::createFromNormalized($normalizedQuery);
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $recordItems = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier);
-        $normalizedRecordItems = $this->normalizeReferenceEntityItems($recordItems);
 
-        return new JsonResponse([
-            'items' => $normalizedRecordItems,
-            'total' => count($normalizedRecordItems),
-        ]);
+        if ($this->hasDesynchronizedIdentifiers($referenceEntityIdentifier, $query)) {
+            return new JsonResponse(
+                'The reference entity identifier provided in the route and the one given in the request body are different',
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+
+        $searchResult = ($this->searchRecord)($query);
+
+        return new JsonResponse($searchResult->normalize());
     }
 
     /**
@@ -64,14 +75,12 @@ class IndexAction
     }
 
     /**
-     * @param RecordItem[] $recordItems
-     *
-     * @return array
+     * Checks whether the identifier given in the url parameter and in the body are the same or not.
      */
-    private function normalizeReferenceEntityItems(array $recordItems): array
-    {
-        return array_map(function (RecordItem $recordItem) {
-            return $recordItem->normalize();
-        }, $recordItems);
+    private function hasDesynchronizedIdentifiers(
+        ReferenceEntityIdentifier $routeReferenceEntityIdentifier,
+        RecordQuery $query
+    ): bool {
+        return (string) $routeReferenceEntityIdentifier !== $query->getFilter('reference_entity')['value'];
     }
 }

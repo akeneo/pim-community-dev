@@ -97,9 +97,18 @@ class Edit extends React.Component<EditProps> {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: EditProps) {
     if (this.labelInput && this.state.currentAttribute !== this.state.previousAttribute) {
       this.labelInput.focus();
+    }
+
+    const quickEdit = this.refs.quickEdit as any;
+    if (null !== quickEdit && !this.props.isActive && prevProps.isActive) {
+      setTimeout(() => {
+        quickEdit.style.display = 'none';
+      }, 500);
+    } else {
+      quickEdit.style.display = 'block';
     }
   }
 

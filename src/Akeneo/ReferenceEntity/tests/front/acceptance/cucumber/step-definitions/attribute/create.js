@@ -1,7 +1,7 @@
 const Header = require('../../decorators/reference-entity/app/header.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
 const Grid = require('../../decorators/reference-entity/index/grid.decorator');
-const {getRequestContract, listenRequest} = require('../../tools');
+const {getRequestContract, listenRequest, answerChannelList} = require('../../tools');
 const path = require('path');
 
 const {
@@ -43,6 +43,7 @@ module.exports = async function(cucumber) {
   };
 
   When('the user creates a valid attribute', async function() {
+    await answerChannelList.apply(this);
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
@@ -52,6 +53,7 @@ module.exports = async function(cucumber) {
   });
 
   When('the user creates an attribute with an invalid code', async function() {
+    await answerChannelList.apply(this);
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');

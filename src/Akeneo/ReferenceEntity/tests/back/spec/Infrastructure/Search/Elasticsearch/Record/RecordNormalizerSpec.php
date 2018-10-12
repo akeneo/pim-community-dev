@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -10,8 +10,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordNormalizer;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordSearchMatrixNormalizer;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordSearchMatrixNormalizer;
 use PhpSpec\ObjectBehavior;
 
 /**

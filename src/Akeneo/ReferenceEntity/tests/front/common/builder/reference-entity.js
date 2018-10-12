@@ -11,6 +11,7 @@ class ReferenceEntityBuilder {
     this.referenceEntity = {
       identifier: '',
       labels: {},
+      image: null,
     };
   }
 

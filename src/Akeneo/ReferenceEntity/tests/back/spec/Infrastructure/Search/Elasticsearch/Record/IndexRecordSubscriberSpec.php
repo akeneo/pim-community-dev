@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\IndexRecordSubscriber;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\IndexRecordSubscriber;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

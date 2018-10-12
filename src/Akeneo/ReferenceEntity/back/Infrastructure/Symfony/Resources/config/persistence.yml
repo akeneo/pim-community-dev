@@ -36,11 +36,10 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForReferenceEntity
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiers
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityHasRecords
@@ -150,6 +149,11 @@ services:
 
     # Search
     akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\SqlFindActivatedLocalesPerChannels
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindActivatedLocalesPerChannels
         arguments:
             - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\ElasticSearch\Record\FindIdentifiersForQuery
+        arguments:
+            - '@akeneo_referenceentity.client.record'

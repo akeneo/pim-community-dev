@@ -4,7 +4,7 @@ import ChannelReference from 'akeneoreferenceentity/domain/model/channel-referen
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import Record from 'akeneoreferenceentity/domain/model/record/record';
-import {getDataView} from 'akeneoreferenceentity/application/configuration/value';
+import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/value';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
 
 export default (
@@ -21,7 +21,7 @@ export default (
     .sort((firstValue: Value, secondValue: Value) => firstValue.attribute.order - secondValue.attribute.order);
 
   return visibleValues.map((value: Value) => {
-    const DataView = getDataView(value);
+    const DataView = getDataFieldView(value);
 
     return (
       <div

@@ -3,7 +3,7 @@ import sidebar, {SidebarState} from 'akeneoreferenceentity/application/reducer/s
 import grid, {GridState} from 'akeneoreferenceentity/application/reducer/grid';
 import createRecord, {CreateState as CreateRecordState} from 'akeneoreferenceentity/application/reducer/record/create';
 import form, {EditionFormState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
-import Record from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import createAttribute, {
   CreateState as CreateAttributeState,
 } from 'akeneoreferenceentity/application/reducer/attribute/create';
@@ -15,7 +15,7 @@ import confirmDelete, {ConfirmDeleteState} from 'akeneoreferenceentity/applicati
 export interface EditState {
   user: UserState;
   sidebar: SidebarState;
-  grid: GridState<Record>;
+  grid: GridState<NormalizedRecord>;
   createRecord: CreateRecordState;
   createAttribute: CreateAttributeState;
   attributes: ListState;

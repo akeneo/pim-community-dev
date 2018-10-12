@@ -19,14 +19,22 @@ class RecordItemSpec extends ObjectBehavior
 
     function it_normalizes_a_read_model()
     {
-        $this->identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
-        $this->code = RecordCode::fromString('starck');
-        $this->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $this->labels = LabelCollection::fromArray([
+        $this->identifier = 'designer_starck_fingerprint';
+        $this->code = 'starck';
+        $this->referenceEntityIdentifier = 'designer';
+        $this->labels = [
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
-        ]);
-        $this->image = Image::createEmpty();
+        ];
+        $this->image = null;
+        $this->values = [
+            'designer_name_fingerprint_en_US' => [
+                'attribute' => 'designer_name_fingerprint',
+                'channel' => null,
+                'locale' => 'en_US',
+                'data' => 'A nice name'
+            ]
+        ];
 
         $this->normalize()->shouldReturn(
             [
@@ -38,6 +46,14 @@ class RecordItemSpec extends ObjectBehavior
                     'en_US' => 'Philip starck',
                 ],
                 'image' => null,
+                'values' => [
+                    'designer_name_fingerprint_en_US' => [
+                        'attribute' => 'designer_name_fingerprint',
+                        'channel' => null,
+                        'locale' => 'en_US',
+                        'data' => 'A nice name'
+                    ]
+                ]
             ]
         );
     }

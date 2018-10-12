@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteAllActionTest extends ControllerIntegrationTestCase
 {
-    private const DELETE_ALL_RECORDS_ROUTE = 'akeneo_reference_entities_records_delete_all_rest';
+    private const DELETE_ALL_RECORDS_ROUTE = 'akeneo_reference_entities_record_delete_all_rest';
     private const RESPONSES_DIR = 'Record/DeleteAll/';
 
     /* @var Client */

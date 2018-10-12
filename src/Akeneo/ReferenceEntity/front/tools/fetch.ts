@@ -7,8 +7,14 @@ export const getJSON = (...args: any[]) => {
   return promisify(promise);
 };
 
-export const postJSON = (url: any, data: {}) => {
+export const postJSON = (url: string, data: {}) => {
   const promise = $.post(url, JSON.stringify(data), null, 'json');
+
+  return promisify(promise);
+};
+
+export const putJSON = (url: string, data: {}) => {
+  const promise = $.ajax(url, {data: JSON.stringify(data), method: 'PUT'});
 
   return promisify(promise);
 };

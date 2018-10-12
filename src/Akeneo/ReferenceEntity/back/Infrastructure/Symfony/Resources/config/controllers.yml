@@ -78,7 +78,7 @@ services:
     akeneo_referenceentity.infrastructure.action.record.index:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\IndexAction
         arguments:
-          - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity'
+          - '@akeneo_referenceentity.application.record.search_record'
 
     akeneo_referenceentity.infrastructure.action.record.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\Record\GetAction

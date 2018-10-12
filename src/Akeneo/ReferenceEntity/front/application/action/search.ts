@@ -31,7 +31,7 @@ const updateResultsWithFetcher = <Object>(
         dispatch(goFirstPage());
       }
 
-      const query = await stateToQuery(state);
+      const query = await stateToQuery(getState());
       const {items, total} = await fetchResults<Object>(fetcher)(query);
 
       if (requestCount === currentRequestCount) {

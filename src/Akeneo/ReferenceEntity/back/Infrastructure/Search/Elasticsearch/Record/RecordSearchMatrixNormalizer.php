@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
@@ -65,7 +65,7 @@ class RecordSearchMatrixNormalizer
         $values = $this->getValuesToIndex($record, $channel, $locale);
         /** @var Value $value */
         foreach ($values as $value) {
-            $textValue = ' ' . $value->getData()->normalize();
+            $textValue .= ' ' . $value->getData()->normalize();
         }
 
         return $textValue;
