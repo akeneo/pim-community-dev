@@ -50,7 +50,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         );
         $this->recordIndexer->bulkIndex([$record]);
 
-        Assert::assertCount(1, $this->searchIndexHelper->findRecord('designer', 'dyson'));
+        $this->searchIndexHelper->assertRecordExists('designer', 'dyson');
         Assert::assertCount(3, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
     }
 
@@ -77,8 +77,8 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         );
         $this->recordIndexer->bulkIndex([$recordDyson, $recordArad]);
 
-        Assert::assertCount(1, $this->searchIndexHelper->findRecord('designer', 'dyson'));
-        Assert::assertCount(1, $this->searchIndexHelper->findRecord('designer', 'arad'));
+        $this->searchIndexHelper->assertRecordExists('designer', 'dyson');
+        $this->searchIndexHelper->assertRecordExists('designer', 'arad');
         Assert::assertCount(4, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
     }
 
@@ -99,9 +99,22 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     {
         $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
 
-        Assert::assertCount(0, $this->searchIndexHelper->findRecord('designer', 'stark'));
-        Assert::assertCount(1, $this->searchIndexHelper->findRecord('designer', 'coco'));
+        $this->searchIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchIndexHelper->assertRecordExists('designer', 'coco');
         Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
+        Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_all_reference_entity_records()
+    {
+        $this->recordIndexer->removeByReferenceEntityIdentifier('designer');
+
+        $this->searchIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchIndexHelper->assertRecordDoesNotExists('designer', 'coco');
+        Assert::assertCount(0, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
         Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
     }
 

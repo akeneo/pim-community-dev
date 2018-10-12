@@ -73,7 +73,7 @@ class RecordIndexerSpec extends ObjectBehavior
         $this->bulkIndex([$stark, $coco]);
     }
 
-    function it_removes_multiple_records(Client $recordEsCLient)
+    function it_removes_one_record(Client $recordEsCLient)
     {
         $recordEsCLient->deleteByQuery(
             [
@@ -88,5 +88,17 @@ class RecordIndexerSpec extends ObjectBehavior
             ])->shouldBeCalled();
 
         $this->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
+    }
+
+    function it_removes_all_refenrence_entity_records(Client $recordEsCLient)
+    {
+        $recordEsCLient->deleteByQuery(
+            [
+                "query" => [
+                    "match" => ["reference_entity_code" => "designer"],
+                ],
+            ])->shouldBeCalled();
+
+        $this->removeByReferenceEntityIdentifier('designer');
     }
 }

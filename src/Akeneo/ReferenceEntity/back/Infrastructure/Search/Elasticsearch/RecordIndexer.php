@@ -48,6 +48,20 @@ class RecordIndexer implements RecordIndexerInterface
     /**
      * {@inheritdoc}
      */
+    public function removeByReferenceEntityIdentifier(string $referenceEntityIdentifier)
+    {
+        $queryBody = [
+            'query' => [
+                'match' => ['reference_entity_code' => $referenceEntityIdentifier],
+            ],
+        ];
+
+        $this->recordClient->deleteByQuery($queryBody);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeRecordByReferenceEntityIdentifierAndCode(
         string $referenceEntityIdentifier,
         string $recordCode

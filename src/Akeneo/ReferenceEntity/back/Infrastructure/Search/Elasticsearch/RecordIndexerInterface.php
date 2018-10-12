@@ -15,6 +15,11 @@ interface RecordIndexerInterface
     public function bulkIndex(array $records);
 
     /**
+     * Remove all records belonging to a reference entity
+     */
+    public function removeByReferenceEntityIdentifier(string $referenceEntityIdentifier);
+
+    /**
      * Remove a record from the index
      */
     public function removeRecordByReferenceEntityIdentifierAndCode(

@@ -23,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -201,6 +202,11 @@ SQL;
             [
                 'reference_entity_identifier' => (string) $referenceEntityIdentifier,
             ]
+        );
+
+        $this->eventDispatcher->dispatch(
+            ReferenceEntityRecordsDeletedEvent::class,
+            new ReferenceEntityRecordsDeletedEvent($referenceEntityIdentifier)
         );
     }
 

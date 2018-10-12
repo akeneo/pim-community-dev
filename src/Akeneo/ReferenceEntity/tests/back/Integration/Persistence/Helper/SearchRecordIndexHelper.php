@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Helper;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use PHPUnit\Framework\Assert;
 
 /**
  * This class is responsible for helping in the elasticsearch index setup in tests.
@@ -93,6 +94,20 @@ class SearchRecordIndexHelper
         $matchingIdentifiers = $this->executeQuery($query);
 
         return $matchingIdentifiers;
+    }
+
+    public function assertRecordExists(string $referenceEntityCode, string $recordCode): void
+    {
+        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
+
+        Assert::assertCount(1, $matchingIdentifiers, sprintf('Record not found: %s_%s', $referenceEntityCode, $recordCode));
+    }
+
+    public function assertRecordDoesNotExists(string $referenceEntityCode, string $recordCode): void
+    {
+        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
+
+        Assert::assertCount(0, $matchingIdentifiers, sprintf('This record should not exist: %s_%s', $referenceEntityCode, $recordCode));
     }
 
     public function executeQuery(array $query): array
