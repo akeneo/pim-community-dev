@@ -3,7 +3,7 @@ export interface ConfirmDeleteState {
 }
 export default (
   state: ConfirmDeleteState = {isActive: false},
-  action: {type: string; isActive: boolean; }
+  action: {type: string; isActive: boolean}
 ): ConfirmDeleteState => {
   switch (action.type) {
     case 'START_DELETE_MODAL':
@@ -20,4 +20,4 @@ export default (
   }
 
   return state;
-}
+};

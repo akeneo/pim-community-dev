@@ -25,10 +25,7 @@ import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/cha
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {
-  startDeleteModal,
-  cancelDeleteModal
-} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   sidebar: {
@@ -53,7 +50,7 @@ interface StateProps {
   };
   confirmDelete: {
     isActive: boolean;
-  }
+  };
 }
 
 interface DispatchProps {
@@ -219,14 +216,14 @@ class RecordEditView extends React.Component<EditProps> {
           </div>
           <Sidebar backButton={this.backToReferenceEntity} />
         </div>
-        {this.props.confirmDelete.isActive &&
+        {this.props.confirmDelete.isActive && (
           <DeleteModal
             message={__('pim_reference_entity.record.delete.message', {recordLabel: label})}
             title={__('pim_reference_entity.record.delete.title')}
             onConfirm={this.onClickDelete}
             onCancel={this.props.events.onCancelDelete}
           />
-        }
+        )}
       </React.Fragment>
     );
   }
@@ -262,7 +259,7 @@ export default connect(
         create: securityContext.isGranted('akeneo_referenceentity_record_create'),
         delete: securityContext.isGranted('akeneo_referenceentity_record_delete'),
       },
-      confirmDelete
+      confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {

@@ -17,5 +17,5 @@ export default {
   sidebar,
   structure,
   form,
-  confirmDelete
+  confirmDelete,
 };
