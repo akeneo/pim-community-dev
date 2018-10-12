@@ -2,7 +2,9 @@
 
 namespace Context\Page\AttributeGroup;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Index as BaseIndex;
+use Context\Spin\TimeoutException;
 
 /**
  * Attribute group index page
@@ -14,4 +16,21 @@ use Context\Page\Base\Index as BaseIndex;
 class Index extends BaseIndex
 {
     protected $path = '#/configuration/attribute-group/';
+
+    /**
+     * @throws ElementNotFoundException
+     * @throws TimeoutException
+     *
+     * @return array
+     */
+    public function getAttributeGroups()
+    {
+        $this->spin(function () {
+            return $this->find('css', '.attribute-group-link');
+        }, 'Cannot find any attribute group label');
+
+        return array_map(function ($element) {
+            return $element->getHtml();
+        }, $this->findAll('css', '.attribute-group-link'));
+    }
 }
