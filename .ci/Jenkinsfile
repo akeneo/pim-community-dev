@@ -154,7 +154,7 @@ stage("Test") {
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "back-legacy-phpunit-integration-ce": {queue(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
+                condition: launchIntegrationTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
@@ -172,7 +172,7 @@ stage("Test") {
 
             // END TO END TESTS
             "legacy-end-to-end-behat-ce": {queue(
-                condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
+                condition: launchEndToEndTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag),
