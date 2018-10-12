@@ -49,6 +49,7 @@ export const deleteAllReferenceEntityRecords = (referenceEntity: ReferenceEntity
 
     dispatch(notifyAllRecordsWellDeleted(referenceEntity.getIdentifier()));
     dispatch(updateRecordResults());
+    dispatch(confirmDeleteModal());
   } catch (error) {
     dispatch(notifyAllRecordsDeletionFailed());
 
