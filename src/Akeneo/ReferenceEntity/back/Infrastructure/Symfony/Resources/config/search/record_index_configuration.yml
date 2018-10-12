@@ -9,7 +9,7 @@ mappings:
         properties:
             identifier:
                 type: 'keyword'
-            reference_entity_code:
+            reference_entity_identifier:
                 type: 'keyword'
             code:
                 type: 'keyword'

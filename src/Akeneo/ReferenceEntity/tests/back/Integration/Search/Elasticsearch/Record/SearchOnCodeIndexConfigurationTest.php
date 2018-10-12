@@ -56,17 +56,17 @@ class SearchOnCodeIndexConfigurationTest extends SearchIntegrationTestCase
 
         $rightCode = [
             'identifier'                  => 'designer_stark',
-            'reference_entity_code' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'record_list_search'          => ['ecommerce' => ['fr_FR' => 'stark']] // Lets say the labels are empty
         ];
         $wrongCode = [
             'identifier'                  => 'designer_coco',
-            'reference_entity_code' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'record_list_search'          => ['ecommerce' => ['fr_FR' => 'coco']],
         ];
         $wrongEnrichedEntity = [
             'identifier'                  => 'manufacturer_stark',
-            'reference_entity_code' => 'manufacturer',
+            'reference_entity_identifier' => 'manufacturer',
             'record_list_search'          => ['ecommerce' => ['fr_FR' => 'stark']],
         ];
         $this->searchIndexHelper->index([$rightCode, $wrongCode, $wrongEnrichedEntity]);

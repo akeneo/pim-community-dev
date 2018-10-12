@@ -72,7 +72,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_code' => $referenceEntityCode['value'],
+                                        'reference_entity_identifier' => $referenceEntityCode['value'],
                                     ],
                                 ],
                             ],

@@ -110,7 +110,7 @@ class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCa
     private function loadFixtures()
     {
         $shoe = [
-            'reference_entity_code' => 'brand',
+            'reference_entity_identifier' => 'brand',
             'identifier'                  => 'brand_shoes',
             'record_list_search'          => [
                 'ecommerce' => [
@@ -122,7 +122,7 @@ class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCa
             ],
         ];
         $tea = [
-            'reference_entity_code' => 'brand',
+            'reference_entity_identifier' => 'brand',
             'identifier'                  => 'brand_teas',
             'record_list_search'          => [
                 'ecommerce' => [
@@ -134,7 +134,7 @@ class SearchRecordOnLabelsIndexConfigurationTest extends SearchIntegrationTestCa
         ];
         $wrongEnrichedEntity = [
             'identifier' => 'manufacturer_coco',
-            'reference_entity_code' => 'manufacturer',
+            'reference_entity_identifier' => 'manufacturer',
             'record_list_search' => [
                 'ecommerce' => [
                     'fr_FR' => 'stark Designer supérieure',

@@ -22,7 +22,7 @@ use PHPUnit\Framework\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchRecordIndexHelper
+class SearchIndexHelperAssert
 {
     /** @var Client */
     private $recordClient;
@@ -123,12 +123,7 @@ class SearchRecordIndexHelper
         return $matchingIdentifiers;
     }
 
-    public function refreshIndex()
-    {
-        $this->recordClient->refreshIndex();
-    }
-
-    private function getQuery(string $referenceEntityCode, $channel, $locale, array $terms): array
+    private function getQuery(string $referenceEntityIdentifier, $channel, $locale, array $terms): array
     {
         $query = [
             '_source' => '_id',
@@ -139,7 +134,7 @@ class SearchRecordIndexHelper
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_code' => $referenceEntityCode,
+                                        'reference_entity_identifier' => $referenceEntityIdentifier,
                                     ],
                                 ],
                             ],
