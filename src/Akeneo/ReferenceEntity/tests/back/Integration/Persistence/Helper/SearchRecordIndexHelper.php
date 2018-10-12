@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Helper;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use PHPUnit\Framework\Assert;
 
 /**
  * This class is responsible for helping in the elasticsearch index setup in tests.
@@ -22,7 +21,7 @@ use PHPUnit\Framework\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SearchIndexHelperAssert
+class SearchRecordIndexHelper
 {
     /** @var Client */
     private $recordClient;
@@ -52,64 +51,6 @@ class SearchIndexHelperAssert
         $this->recordClient->refreshIndex();
     }
 
-    public function search(string $referenceEntityCode, string $channel, string $locale, array $terms): array
-    {
-        $this->refreshIndex();
-
-        $query = $this->getQuery($referenceEntityCode, $channel, $locale, $terms);
-        $matchingIdentifiers = $this->executeQuery($query);
-
-        return $matchingIdentifiers;
-    }
-
-    public function findRecordsByReferenceEntity(string $referenceEntityCode): array
-    {
-        $this->refreshIndex();
-
-        $query = [
-            '_source' => '_id',
-            'query' => [
-                'match' => ['reference_entity_code' => $referenceEntityCode,],
-            ],
-        ];
-        $matchingIdentifiers = $this->executeQuery($query);
-
-        return $matchingIdentifiers;
-    }
-
-    public function findRecord(string $referenceEntityCode, string $recordCode): array
-    {
-        $this->refreshIndex();
-
-        $query = [
-            'query' => [
-                'bool' => [
-                    'must' => [
-                        ['term' => ['reference_entity_code' => $referenceEntityCode]],
-                        ['term' => ['code' => $recordCode]],
-                    ],
-                ],
-            ],
-        ];
-        $matchingIdentifiers = $this->executeQuery($query);
-
-        return $matchingIdentifiers;
-    }
-
-    public function assertRecordExists(string $referenceEntityCode, string $recordCode): void
-    {
-        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
-
-        Assert::assertCount(1, $matchingIdentifiers, sprintf('Record not found: %s_%s', $referenceEntityCode, $recordCode));
-    }
-
-    public function assertRecordDoesNotExists(string $referenceEntityCode, string $recordCode): void
-    {
-        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
-
-        Assert::assertCount(0, $matchingIdentifiers, sprintf('This record should not exist: %s_%s', $referenceEntityCode, $recordCode));
-    }
-
     public function executeQuery(array $query): array
     {
         $matches = $this->recordClient->search(self::INDEX_TYPE, $query);
@@ -121,38 +62,5 @@ class SearchIndexHelperAssert
         }
 
         return $matchingIdentifiers;
-    }
-
-    private function getQuery(string $referenceEntityIdentifier, $channel, $locale, array $terms): array
-    {
-        $query = [
-            '_source' => '_id',
-            'query' => [
-                'constant_score' => [
-                    'filter' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'reference_entity_identifier' => $referenceEntityIdentifier,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        foreach ($terms as $term) {
-            $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                'query_string' => [
-                    'default_field' => sprintf('record_list_search.%s.%s', $channel, $locale),
-                    'query' => sprintf('*%s*', $term),
-                ],
-            ];
-        }
-
-        return $query;
     }
 }

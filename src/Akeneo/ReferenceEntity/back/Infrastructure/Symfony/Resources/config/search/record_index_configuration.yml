@@ -3,7 +3,6 @@ settings:
         normalizer:
             text_normalizer:
                 filter: ['lowercase']
-
 mappings:
     pimee_reference_entity_record:
         properties:
@@ -13,6 +12,8 @@ mappings:
                 type: 'keyword'
             code:
                 type: 'keyword'
+            updated_at:
+                type: 'date'
         dynamic_templates:
             -
                 record_list_search:
