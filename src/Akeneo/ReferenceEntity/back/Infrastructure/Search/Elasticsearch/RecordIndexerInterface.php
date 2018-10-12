@@ -15,15 +15,10 @@ interface RecordIndexerInterface
     public function bulkIndex(array $records);
 
     /**
-     * Remove multiple records
-     *
-     * The recordsKeys parameters is an arrays of records string composite keys:
-     * [
-     *     ['reference_entity_identifier' => 'designer', 'record_code' => 'stark',]
-     *     ['reference_entity_identifier' => 'designer', 'record_code' => 'coco',]
-     * ]
-     *
-     * @param array $recordsKeys
+     * Remove a record from the index
      */
-    public function bulkRemoveByReferenceEntityIdentifiersAndCodes(array $records);
+    public function removeRecordByReferenceEntityIdentifierAndCode(
+        string $referenceEntityIdentifier,
+        string $recordCode
+    );
 }

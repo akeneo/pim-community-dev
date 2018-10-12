@@ -41,11 +41,9 @@ class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
 
     public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
     {
-        $this->recordIndexer->bulkRemoveByReferenceEntityIdentifiersAndCodes([
-            [
-                'reference_entity_identifier' => (string) $recordDeletedEvent->getReferenceEntityIdentifier(),
-                'record_code' => (string) $recordDeletedEvent->getRecordCode(),
-            ],
-        ]);
+        $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode(
+            (string) $recordDeletedEvent->getReferenceEntityIdentifier(),
+            (string) $recordDeletedEvent->getRecordCode()
+        );
     }
 }

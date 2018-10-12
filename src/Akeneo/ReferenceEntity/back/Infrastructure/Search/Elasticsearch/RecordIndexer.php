@@ -48,26 +48,19 @@ class RecordIndexer implements RecordIndexerInterface
     /**
      * {@inheritdoc}
      */
-    public function bulkRemoveByReferenceEntityIdentifiersAndCodes(array $records)
-    {
-        if (empty($records)) {
-            return;
-        }
-
-        $filteredRecords = array_map(function (array $recordKeys) {
-            return [
-                'bool' => [
-                    'must' => [
-                        ['term' => ['reference_entity_code' => $recordKeys['reference_entity_identifier']]],
-                        ['term' => ['code' => $recordKeys['record_code']]],
-                    ],
-                ],
-            ];
-        }, $records);
-
+    public function removeRecordByReferenceEntityIdentifierAndCode(
+        string $referenceEntityIdentifier,
+        string $recordCode
+    ) {
         $queryBody = [
             'query' => [
-                'bool' => ['should' => $filteredRecords],
+                'bool' => [
+                    'must' =>
+                        [
+                            ['term' => ['reference_entity_code' => $referenceEntityIdentifier]],
+                            ['term' => ['code' => $recordCode]],
+                        ],
+                ],
             ],
         ];
 

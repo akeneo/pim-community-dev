@@ -97,38 +97,11 @@ class RecordIndexerTest extends SearchIntegrationTestCase
      */
     public function it_deletes_one_record()
     {
-        $this->recordIndexer->bulkRemoveByReferenceEntityIdentifiersAndCodes([
-            ['reference_entity_identifier' => 'designer', 'record_code' => 'stark'],
-        ]);
+        $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
 
         Assert::assertCount(0, $this->searchIndexHelper->findRecord('designer', 'stark'));
         Assert::assertCount(1, $this->searchIndexHelper->findRecord('designer', 'coco'));
         Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
-        Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_deletes_multiple_records()
-    {
-        $this->recordIndexer->bulkRemoveByReferenceEntityIdentifiersAndCodes([
-            ['reference_entity_identifier' => 'designer', 'record_code' => 'stark'],
-            ['reference_entity_identifier' => 'designer', 'record_code' => 'coco'],
-        ]);
-
-        Assert::assertCount(0, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
-        Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_nothing_when_removing_empty_array()
-    {
-        $this->recordIndexer->bulkRemoveByReferenceEntityIdentifiersAndCodes([]);
-
-        Assert::assertCount(2, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
         Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
     }
 

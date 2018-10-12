@@ -73,43 +73,20 @@ class RecordIndexerSpec extends ObjectBehavior
         $this->bulkIndex([$stark, $coco]);
     }
 
-    function it_does_not_unindex_if_the_list_is_empty(Client $recordEsCLient)
-    {
-        $recordEsCLient->bulkDelete(Argument::cetera())->shouldNotBeCalled();
-        $this->bulkRemoveByReferenceEntityIdentifiersAndCodes([]);
-    }
-
     function it_removes_multiple_records(Client $recordEsCLient)
     {
         $recordEsCLient->deleteByQuery(
             [
                 "query" => [
                     "bool" => [
-                        "should" => [
-                            [
-                                "bool" => [
-                                    "must" => [
-                                        ["term" => ["reference_entity_code" => "designer"]],
-                                        ["term" => ["code" => "stark"]],
-                                    ],
-                                ],
-                            ],
-                            [
-                                "bool" => [
-                                    "must" => [
-                                        ["term" => ["reference_entity_code" => "designer"]],
-                                        ["term" => ["code" => "coco"]],
-                                    ],
-                                ],
-                            ],
+                        "must" => [
+                            ["term" => ["reference_entity_code" => "designer"]],
+                            ["term" => ["code" => "stark"]],
                         ],
                     ],
                 ],
             ])->shouldBeCalled();
 
-        $this->bulkRemoveByReferenceEntityIdentifiersAndCodes([
-            ['reference_entity_identifier' => 'designer', 'record_code' => 'stark'],
-            ['reference_entity_identifier' => 'designer', 'record_code' => 'coco'],
-        ]);
+        $this->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
     }
 }
