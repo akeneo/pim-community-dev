@@ -9,7 +9,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
 use Oro\Bundle\PimDataGridBundle\Manager\DatagridViewManager;
 use Oro\Bundle\PimDataGridBundle\Query\ListAttributesQuery;
@@ -110,7 +109,7 @@ class ProductGridController
         $systemColumns = $this->datagridViewManager->getColumnChoices('product-grid');
         $attributesAsColumn = $this->listAttributesUseableAsColumnQuery->fetch($locale, $user->getId());
 
-        return new JsonResponse(array_merge($systemColumns, $attributesAsColumn));
+        return new JsonResponse(array_merge($attributesAsColumn, $systemColumns));
     }
 
     /**
