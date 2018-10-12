@@ -37,7 +37,7 @@ RUN ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm \
 
 COPY composer.json composer.lock package.json ./
 
-RUN composer install --no-ansi --no-autoloader --no-scripts --no-interaction --no-progress --prefer-dist --no-dev 
+RUN composer  $COMPOSER_COMMAND --no-ansi --no-autoloader --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
 
 COPY . .
 COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
