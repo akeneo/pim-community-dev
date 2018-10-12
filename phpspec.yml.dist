@@ -33,6 +33,13 @@ suites:
         src_path: src/Akeneo/Pim/WorkOrganization
         spec_prefix: Specification
 
+    Permission:
+        namespace: Akeneo\Pim\Permission
+        psr4_prefix: Akeneo\Pim\Permission
+        spec_path: tests/back/Pim/Permission
+        src_path: src/Akeneo/Pim/Permission
+        spec_prefix: Specification
+
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle
