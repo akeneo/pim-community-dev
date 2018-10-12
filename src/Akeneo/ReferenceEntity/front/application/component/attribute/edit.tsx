@@ -26,7 +26,7 @@ import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   context: {
@@ -38,7 +38,7 @@ interface StateProps {
   errors: ValidationError[];
   confirmDelete: {
     isActive: boolean;
-  }
+  };
 }
 
 interface DispatchProps {
@@ -47,8 +47,8 @@ interface DispatchProps {
     onIsRequiredUpdated: (isRequired: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
-    onCancelDelete: () => void;
-    onStartDeleteModal: () => void;
+    onOpenDeleteModal: () => void;
+    onCancelDeleteModal: () => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -274,10 +274,10 @@ class Edit extends React.Component<EditProps> {
             tabIndex={0}
             onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
               if (' ' === event.key) {
-                this.props.events.onStartDeleteModal();
+                this.props.events.onOpenDeleteModal();
               }
             }}
-            onClick={() => this.props.events.onStartDeleteModal()}
+            onClick={() => this.props.events.onOpenDeleteModal()}
           >
             {__('pim_reference_entity.attribute.edit.delete')}
           </div>
@@ -289,7 +289,7 @@ class Edit extends React.Component<EditProps> {
             onConfirm={() => {
               this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
             }}
-            onCancel={this.props.events.onCancelDelete}
+            onCancel={this.props.events.onCancelDeleteModal}
           />
         )}
       </React.Fragment>
@@ -310,7 +310,7 @@ export default connect(
       context: {
         locale: locale,
       },
-      confirmDelete
+      confirmDelete,
     } as StateProps;
   },
   (dispatch: any): DispatchProps => {
@@ -334,12 +334,12 @@ export default connect(
         onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(deleteAttribute(attributeIdentifier));
         },
-        onCancelDelete: () => {
+        onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        onStartDeleteModal: () => {
-          dispatch(startDeleteModal());
-        }
+        onOpenDeleteModal: () => {
+          dispatch(openDeleteModal());
+        },
       },
     } as DispatchProps;
   }

@@ -9,7 +9,7 @@ import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-ent
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {attributeEditionCancel} from 'akeneoreferenceentity/domain/event/attribute/edit';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
-import {confirmDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => async (
   dispatch: any,
@@ -27,7 +27,7 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
     }
 
     dispatch(notifyAttributeWellDeleted());
-    dispatch(confirmDeleteModal());
+    dispatch(closeDeleteModal());
   } catch (error) {
     dispatch(notifyAttributeDeletionFailed());
 

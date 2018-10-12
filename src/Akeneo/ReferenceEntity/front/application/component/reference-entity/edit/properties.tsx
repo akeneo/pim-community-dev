@@ -18,7 +18,7 @@ import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/compone
 import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   form: EditionFormState;
@@ -31,7 +31,7 @@ interface StateProps {
   };
   confirmDelete: {
     isActive: boolean;
-  }
+  };
 }
 
 interface DispatchProps {
@@ -42,8 +42,8 @@ interface DispatchProps {
       onImageUpdated: (image: File) => void;
     };
     onDelete: (referenceEntity: ReferenceEntity) => void;
-    onCancelDelete: () => void;
-    onStartDeleteModal: () => void;
+    onOpenDeleteModal: () => void;
+    onCancelDeleteModal: () => void;
     onSaveEditForm: () => void;
   };
 }
@@ -61,7 +61,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             <button
               tabIndex={-1}
               className="AknDropdown-menuLink"
-              onClick={() => this.props.events.onStartDeleteModal()}
+              onClick={() => this.props.events.onOpenDeleteModal()}
             >
               {__('pim_reference_entity.reference_entity.module.delete.button')}
             </button>
@@ -88,9 +88,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             ) : null;
           }}
           secondaryActions={() => {
-            return this.props.acls.delete ? (
-              this.getSecondaryActions()
-            ) : null;
+            return this.props.acls.delete ? this.getSecondaryActions() : null;
           }}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
@@ -119,7 +117,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             onConfirm={() => {
               this.props.events.onDelete(referenceEntity);
             }}
-            onCancel={this.props.events.onCancelDelete}
+            onCancel={this.props.events.onCancelDeleteModal}
           />
         )}
       </React.Fragment>
@@ -141,7 +139,7 @@ export default connect(
         edit: true,
         delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
       },
-      confirmDelete
+      confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -161,11 +159,11 @@ export default connect(
         onDelete: (referenceEntity: ReferenceEntity) => {
           dispatch(deleteReferenceEntity(referenceEntity));
         },
-        onCancelDelete: () => {
+        onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        onStartDeleteModal: () => {
-          dispatch(startDeleteModal());
+        onOpenDeleteModal: () => {
+          dispatch(openDeleteModal());
         },
         onSaveEditForm: () => {
           dispatch(saveReferenceEntity());

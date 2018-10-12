@@ -7,7 +7,7 @@ import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity
 import referenceEntityRemover from 'akeneoreferenceentity/infrastructure/remover/reference-entity';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {redirectToReferenceEntityList} from 'akeneoreferenceentity/application/action/reference-entity/router';
-import {confirmDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {closeDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async (dispatch: any): Promise<void> => {
   try {
@@ -22,7 +22,7 @@ export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async
 
     dispatch(notifyReferenceEntityWellDeleted());
     dispatch(redirectToReferenceEntityList());
-    dispatch(confirmDeleteModal());
+    dispatch(closeDeleteModal());
   } catch (error) {
     dispatch(notifyReferenceEntityDeleteFailed());
 

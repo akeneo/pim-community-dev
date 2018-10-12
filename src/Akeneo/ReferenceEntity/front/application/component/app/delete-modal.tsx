@@ -24,7 +24,15 @@ const DeleteModal = ({
             <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
             <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
             <div className="AknButtonList">
-              <button className="AknButtonList-item AknButton AknButton--grey cancel" onClick={onCancel}>
+              <button
+                className="AknButtonList-item AknButton AknButton--grey cancel"
+                onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+                  if (' ' === event.key) {
+                    onCancel();
+                  }
+                }}
+                onClick={onCancel}
+              >
                 {__('pim_reference_entity.modal.delete.button.cancel')}
               </button>
 

@@ -1,7 +1,6 @@
 const path = require('path');
 const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
 const Attributes = require('../../decorators/reference-entity/edit/attributes.decorator');
-const Modal = require('../../decorators/delete/modal.decorator');
 
 const {
   decorators: {createElementDecorator},

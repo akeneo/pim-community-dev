@@ -21,7 +21,7 @@ describe('akeneo > reference entity > application > reducer --- confirmDelete', 
   test('I can start the delete modal', () => {
     const state = {isActive: false};
     const modalState = reducer(state, {
-      type: 'START_DELETE_MODAL',
+      type: 'DELETE_MODAL_OPEN',
       isActive: true,
     });
 
@@ -33,7 +33,7 @@ describe('akeneo > reference entity > application > reducer --- confirmDelete', 
   test('I can confirm the deletion in the modal', () => {
     const state = {isActive: true};
     const modalState = reducer(state, {
-      type: 'CONFIRM_DELETE_MODAL',
+      type: 'DELETE_MODAL_CLOSE',
       isActive: false,
     });
 
@@ -45,7 +45,19 @@ describe('akeneo > reference entity > application > reducer --- confirmDelete', 
   test('I can cancel the deletion in the modal', () => {
     const state = {isActive: true};
     const modalState = reducer(state, {
-      type: 'CANCEL_DELETE_MODAL',
+      type: 'DELETE_MODAL_CANCEL',
+      isActive: false,
+    });
+
+    expect(modalState).toEqual({
+      isActive: false,
+    });
+  });
+
+  test('I can dismiss the deletion in the modal', () => {
+    const state = {isActive: true};
+    const modalState = reducer(state, {
+      type: 'DISMISS',
       isActive: false,
     });
 

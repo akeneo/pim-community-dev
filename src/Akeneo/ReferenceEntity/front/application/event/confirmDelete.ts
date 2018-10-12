@@ -1,11 +1,11 @@
-export const startDeleteModal = () => {
-  return {type: 'START_DELETE_MODAL', active: true};
+export const openDeleteModal = () => {
+  return {type: 'DELETE_MODAL_OPEN'};
 };
 
-export const confirmDeleteModal = () => {
-  return {type: 'CONFIRM_DELETE_MODAL', active: false};
+export const closeDeleteModal = () => {
+  return {type: 'DELETE_MODAL_CLOSE'};
 };
 
 export const cancelDeleteModal = () => {
-  return {type: 'CANCEL_DELETE_MODAL', active: false};
+  return {type: 'DELETE_MODAL_CANCEL'};
 };

@@ -1,18 +1,14 @@
 export interface ConfirmDeleteState {
   isActive: boolean;
 }
-export default (
-  state: ConfirmDeleteState = {isActive: false},
-  action: {type: string; isActive: boolean}
-): ConfirmDeleteState => {
+export default (state: ConfirmDeleteState = {isActive: false}, action: {type: string}): ConfirmDeleteState => {
   switch (action.type) {
-    case 'START_DELETE_MODAL':
+    case 'DELETE_MODAL_OPEN':
       state = {...state, isActive: true};
       break;
-    case 'CONFIRM_DELETE_MODAL':
-      state = {...state, isActive: false};
-      break;
-    case 'CANCEL_DELETE_MODAL':
+    case 'DELETE_MODAL_CLOSE':
+    case 'DISMISS':
+    case 'DELETE_MODAL_CANCEL':
       state = {...state, isActive: false};
       break;
     default:
