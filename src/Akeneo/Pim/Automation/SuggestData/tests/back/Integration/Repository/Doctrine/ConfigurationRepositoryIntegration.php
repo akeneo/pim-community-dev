@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ConfigurationRepository;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
@@ -25,8 +26,9 @@ class ConfigurationRepositoryIntegration extends TestCase
 {
     public function test_it_saves_a_suggest_data_configuration(): void
     {
-        $token = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
-        $configuration = new Configuration(['token' => $token]);
+        $tokenString = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
+        $configuration = new Configuration();
+        $configuration->setToken(new Token($tokenString));
 
         $this->getRepository()->save($configuration);
 
@@ -39,18 +41,19 @@ class ConfigurationRepositoryIntegration extends TestCase
         $this->assertSame([[
             'entity' => 'pim-ai',
             'name' => 'token',
-            'value' => $token,
+            'value' => $tokenString,
         ]], $retrievedConfiguration);
     }
 
     public function test_it_updates_a_suggest_data_configuration(): void
     {
-        $configuration = new Configuration(['token' => 'a_first_token']);
+        $configuration = new Configuration();
+        $configuration->setToken(new Token('a_first_token'));
         $this->getRepository()->save($configuration);
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
-        $configuration->setValues(['token' => 'a_new_token']);
+        $configuration->setToken(new Token('a_new_token'));
         $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -68,19 +71,19 @@ class ConfigurationRepositoryIntegration extends TestCase
 
     public function test_it_finds_a_suggest_data_configuration(): void
     {
-        $token = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
-        $configuration = new Configuration(['token' => $token]);
+        $tokenString = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
+        $configuration = new Configuration();
+        $configuration->setToken(new Token($tokenString));
 
         $repository = $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
         $repository->save($configuration);
 
         $this->get('doctrine.orm.entity_manager')->clear();
+
         $retrievedConfiguration = $repository->find();
         $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
-        $this->assertSame([
-            'code' => Configuration::PIM_AI_CODE,
-            'values' => ['token' => $token],
-        ], $retrievedConfiguration->normalize());
+        $this->assertInstanceOf(Token::class, $retrievedConfiguration->getToken());
+        $this->assertSame($tokenString, (string) $retrievedConfiguration->getToken());
     }
 
     /**

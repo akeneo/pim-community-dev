@@ -15,10 +15,9 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configurat
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -29,13 +28,10 @@ use PhpSpec\ObjectBehavior;
 class ActivateConnectionHandlerSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        ConnectionValidator $connectionValidator,
         ConfigurationRepositoryInterface $repository
     ): void {
-        $dataProviderFactory->create()->willReturn($dataProvider);
-
-        $this->beConstructedWith($dataProviderFactory, $repository);
+        $this->beConstructedWith($connectionValidator, $repository);
     }
 
     public function it_is_a_save_connector_configuration_command_handler(): void
@@ -43,12 +39,15 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(ActivateConnectionHandler::class);
     }
 
-    public function it_updates_an_existing_configuration($dataProvider, $repository): void
+    public function it_updates_an_existing_configuration_if_token_valid($connectionValidator, $repository): void
     {
-        $command = new ActivateConnectionCommand(new Token('bar'));
-        $configuration = new Configuration(['token' => 'bar']);
+        $token = new Token('bar');
+        $command = new ActivateConnectionCommand($token);
 
-        $dataProvider->authenticate('bar')->willReturn(true);
+        $configuration = new Configuration();
+        $configuration->setToken($token);
+
+        $connectionValidator->isTokenValid($token)->willReturn(true);
         $repository->find()->willReturn($configuration);
 
         $repository->save($configuration)->shouldBeCalled();
@@ -56,24 +55,29 @@ class ActivateConnectionHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_saves_a_new_connector_configuration($dataProvider, $repository): void
+    public function it_saves_a_new_configuration_if_token_valid($connectionValidator, $repository): void
     {
-        $command = new ActivateConnectionCommand(new Token('bar'));
+        $token = new Token('bar');
+        $command = new ActivateConnectionCommand($token);
 
-        $dataProvider->authenticate('bar')->willReturn(true);
-        $repository->find()->willReturn(null);
+        $configuration = new Configuration();
+        $configuration->setToken($token);
 
-        $repository->save(new Configuration(['token' => 'bar']))->shouldBeCalled();
+        $connectionValidator->isTokenValid($token)->willReturn(true);
+        $repository->find()->willReturn(new Configuration());
+
+        $repository->save($configuration)->shouldBeCalled();
 
         $this->handle($command);
     }
 
-    public function it_throws_an_exception_if_configuration_is_invalid($dataProvider): void
+    public function it_throws_an_exception_if_configuration_is_invalid($connectionValidator): void
     {
-        $command = new ActivateConnectionCommand(new Token('bar'));
+        $token = new Token('foo');
+        $command = new ActivateConnectionCommand($token);
 
-        $dataProvider->authenticate('bar')->willReturn(false);
+        $connectionValidator->isTokenValid($token)->willReturn(false);
 
-        $this->shouldThrow(InvalidConnectionConfigurationException::class)->during('handle', [$command]);
+        $this->shouldThrow(ConnectionConfigurationException::class)->during('handle', [$command]);
     }
 }

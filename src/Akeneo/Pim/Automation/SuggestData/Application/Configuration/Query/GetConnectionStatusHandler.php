@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -49,7 +50,7 @@ class GetConnectionStatusHandler
     public function handle(GetConnectionStatusQuery $query): ConnectionStatus
     {
         $configuration = $this->configurationRepository->find();
-        if (null === $configuration) {
+        if (!$configuration->getToken() instanceof Token) {
             return new ConnectionStatus(false);
         }
 

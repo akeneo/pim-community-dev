@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -30,44 +29,38 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  */
 class ActivateConnectionHandler
 {
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var ConnectionValidator */
+    private $connectionValidator;
 
     /** @var ConfigurationRepositoryInterface */
     private $repository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param ConnectionValidator $connectionValidator
      * @param ConfigurationRepositoryInterface $repository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        ConnectionValidator $connectionValidator,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->dataProvider = $dataProviderFactory->create();
+        $this->connectionValidator = $connectionValidator;
         $this->repository = $repository;
     }
 
     /**
      * @param ActivateConnectionCommand $saveConfiguration
      *
-     * @throws InvalidConnectionConfigurationException
+     * @throws ConnectionConfigurationException
      */
     public function handle(ActivateConnectionCommand $command): void
     {
-        $isAuthenticated = $this->dataProvider->authenticate((string) $command->token());
+        $isAuthenticated = $this->connectionValidator->isTokenValid($command->token());
         if (true !== $isAuthenticated) {
-            throw new InvalidConnectionConfigurationException(
-                sprintf('Provided configuration is invalid.')
-            );
+            throw ConnectionConfigurationException::invalidToken();
         }
 
         $configuration = $this->repository->find();
-
-        if (null === $configuration) {
-            $configuration = new Configuration([]);
-        }
-        $configuration->setValues(['token' => (string) $command->token()]);
+        $configuration->setToken($command->token());
 
         $this->repository->save($configuration);
     }

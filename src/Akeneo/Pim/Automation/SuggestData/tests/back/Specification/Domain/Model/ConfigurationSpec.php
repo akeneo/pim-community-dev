@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use PhpSpec\ObjectBehavior;
 
@@ -21,38 +22,18 @@ use PhpSpec\ObjectBehavior;
  */
 class ConfigurationSpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-        $this->beConstructedWith(['token' => 'value']);
-    }
-
     public function it_is_configuration(): void
     {
         $this->shouldHaveType(Configuration::class);
     }
 
-    public function it_gets_the_values(): void
+    public function it_sets_and_gets_a_token(): void
     {
-        $this->getValues()->shouldReturn(['token' => 'value']);
-    }
+        $token = new Token('foo');
+        $this->setToken($token);
 
-    public function it_gets_the_token(): void
-    {
-        $this->getToken()->shouldReturn('value');
-    }
-
-    public function it_sets_new_values(): void
-    {
-        $this->setValues(['new_field' => 'new_value']);
-
-        $this->getValues()->shouldReturn(['new_field' => 'new_value']);
-    }
-
-    public function it_is_normalizable(): void
-    {
-        $this->normalize()->shouldReturn([
-            'code' => Configuration::PIM_AI_CODE,
-            'values' => ['token' => 'value'],
-        ]);
+        $token = $this->getToken();
+        $token->shouldBeAnInstanceOf(Token::class);
+        $token->__toString()->shouldBeEqualTo('foo');
     }
 }

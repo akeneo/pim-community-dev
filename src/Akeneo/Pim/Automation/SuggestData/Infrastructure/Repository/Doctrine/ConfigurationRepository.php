@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\ConfigBundle\Entity\Config;
-use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 
 /**
  * Doctrine implementation of the configuration repository.
@@ -27,6 +26,8 @@ use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
  */
 final class ConfigurationRepository implements ConfigurationRepositoryInterface
 {
+    private const TOKEN_KEY = 'token';
+    private const PIM_AI_CODE = 'pim-ai';
     private const ORO_CONFIG_RECORD_ID = 1;
 
     /** @var EntityManagerInterface */
@@ -43,23 +44,17 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function find(): ?Configuration
+    public function find(): Configuration
     {
-        $oroConfig = $this->getOroConfigRepository()->findOneBy([
-            'scopedEntity' => Configuration::PIM_AI_CODE,
-            'recordId' => static::ORO_CONFIG_RECORD_ID,
-        ]);
+        $oroConfig = $this->findOroConfig();
 
-        if (null === $oroConfig) {
-            return null;
+        $configuration = new Configuration();
+        if (null !== $oroConfig) {
+            $tokenString = $oroConfig->getOrCreateValue(null, self::TOKEN_KEY)->getValue();
+            $configuration->setToken(new Token($tokenString));
         }
 
-        $configurationValues = [];
-        foreach ($oroConfig->getValues() as $oroConfigValue) {
-            $configurationValues[$oroConfigValue->getName()] = $oroConfigValue->getValue();
-        }
-
-        return new Configuration($configurationValues);
+        return $configuration;
     }
 
     /**
@@ -74,14 +69,6 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     }
 
     /**
-     * @return ObjectRepository
-     */
-    private function getOroConfigRepository(): ObjectRepository
-    {
-        return $this->entityManager->getRepository(Config::class);
-    }
-
-    /**
      * Retrieves an oro config entity from database or creates a new one, then
      * updates it.
      *
@@ -91,20 +78,26 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
      */
     private function findOrCreateOroConfig(Configuration $configuration): Config
     {
-        $oroConfig = $this->getOroConfigRepository()->findOneBy([
-            'scopedEntity' => Configuration::PIM_AI_CODE,
-            'recordId' => static::ORO_CONFIG_RECORD_ID,
-        ]);
-
+        $oroConfig = $this->findOroConfig();
         if (null === $oroConfig) {
             $oroConfig = new Config();
-            $oroConfig->setEntity(Configuration::PIM_AI_CODE);
+            $oroConfig->setEntity(self::PIM_AI_CODE);
             $oroConfig->setRecordId(static::ORO_CONFIG_RECORD_ID);
         }
-
         $this->updateOroConfigValues($oroConfig, $configuration);
 
         return $oroConfig;
+    }
+
+    /**
+     * @return null|Config
+     */
+    private function findOroConfig(): ?Config
+    {
+        return $this->entityManager->getRepository(Config::class)->findOneBy([
+            'scopedEntity' => self::PIM_AI_CODE,
+            'recordId' => self::ORO_CONFIG_RECORD_ID,
+        ]);
     }
 
     /**
@@ -117,28 +110,8 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
      */
     private function updateOroConfigValues(Config $oroConfig, Configuration $configuration): void
     {
-        $values = $configuration->getValues();
-
-        foreach ($values as $key => $value) {
-            $oroConfigValueAreadyExists = false;
-
-            foreach ($oroConfig->getValues() as $oroConfigValue) {
-                if ($key === $oroConfigValue->getName()) {
-                    $oroConfigValue->setValue($value);
-
-                    $oroConfigValueAreadyExists = true;
-                    break;
-                }
-            }
-
-            if (false === $oroConfigValueAreadyExists) {
-                $oroConfigValue = new ConfigValue();
-                $oroConfigValue->setConfig($oroConfig);
-                $oroConfigValue->setName($key);
-                $oroConfigValue->setValue($value);
-
-                $oroConfig->getValues()->add($oroConfigValue);
-            }
-        }
+        $oroConfigValue = $oroConfig->getOrCreateValue(null, self::TOKEN_KEY);
+        $oroConfigValue->setValue((string) $configuration->getToken());
+        $oroConfig->getValues()->add($oroConfigValue);
     }
 }

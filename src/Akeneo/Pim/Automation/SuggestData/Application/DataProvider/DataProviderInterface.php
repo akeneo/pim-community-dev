@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
@@ -33,11 +33,11 @@ interface DataProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
-     * @param string $token
+     * @param Token $token
      *
      * @return bool
      */
-    public function authenticate(string $token): bool;
+    public function authenticate(Token $token): bool;
 
     /**
      * @throws ProductSubscriptionException

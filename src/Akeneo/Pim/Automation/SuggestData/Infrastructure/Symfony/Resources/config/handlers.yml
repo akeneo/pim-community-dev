@@ -4,7 +4,7 @@ services:
     akeneo.pim.automation.suggest_data.application.configuration.command.activate_connection_handler:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.application.configuration.validator.connection'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
     akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping:

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 
 /**
  * This command is a DTO holding and validating the raw values of a suggest data configuration.

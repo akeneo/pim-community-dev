@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -22,8 +22,9 @@ use PhpSpec\ObjectBehavior;
  */
 class ActivateConnectionCommandSpec extends ObjectBehavior
 {
-    public function let(Token $token): void
+    public function let(): void
     {
+        $token = new Token('foo');
         $this->beConstructedWith($token);
     }
 
@@ -32,8 +33,11 @@ class ActivateConnectionCommandSpec extends ObjectBehavior
         $this->shouldHaveType(ActivateConnectionCommand::class);
     }
 
-    public function it_returns_a_token($token): void
+    public function it_returns_a_token(): void
     {
+        $token = new Token('bar');
+        $this->beConstructedWith($token);
+
         $this->token()->shouldReturn($token);
     }
 }

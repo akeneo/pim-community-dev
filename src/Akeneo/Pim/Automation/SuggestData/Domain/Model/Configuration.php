@@ -13,64 +13,31 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
+
 /**
- * Holds the configuration of data provider.
+ * Holds the configuration with the token.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 final class Configuration
 {
-    public const PIM_AI_CODE = 'pim-ai';
-
-    /** @var array */
-    private $values;
+    /** @var string */
+    private $token;
 
     /**
-     * @param array $values
+     * @return Token|null
      */
-    public function __construct(array $values)
+    public function getToken(): ?Token
     {
-        $this->values = $values;
+        return (null === $this->token) ? null : new Token($this->token);
     }
 
     /**
-     * @return array
+     * @param Token $token
      */
-    public function getValues(): array
+    public function setToken(Token $token): void
     {
-        return $this->values;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getToken(): ?string
-    {
-        if (array_key_exists('token', $this->values)) {
-            return $this->values['token'];
-        }
-
-        return null;
-    }
-
-    /**
-     * @param array $values
-     */
-    public function setValues(array $values): void
-    {
-        $this->values = $values;
-    }
-
-    /**
-     * Returns a normalized configuration.
-     *
-     * @return array
-     */
-    public function normalize(): array
-    {
-        return [
-            'code' => static::PIM_AI_CODE,
-            'values' => ['token' => $this->getToken()],
-        ];
+        $this->token = (string) $token;
     }
 }

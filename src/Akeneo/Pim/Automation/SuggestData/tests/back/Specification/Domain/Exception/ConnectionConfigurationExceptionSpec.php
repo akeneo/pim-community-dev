@@ -13,21 +13,28 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class InvalidConnectionConfigurationExceptionSpec extends ObjectBehavior
+class ConnectionConfigurationExceptionSpec extends ObjectBehavior
 {
     public function it_is_an_invalid_connection_configuration_exception(): void
     {
-        $this->shouldBeAnInstanceOf(InvalidConnectionConfigurationException::class);
+        $this->shouldBeAnInstanceOf(ConnectionConfigurationException::class);
     }
 
     public function it_is_an_exception(): void
     {
         $this->shouldBeAnInstanceOf(\Exception::class);
+    }
+
+    public function it_throws_an_invalid_token_message(): void
+    {
+        $this->beConstructedThrough('invalidToken');
+
+        $this->getMessage()->shouldReturn('akeneo_suggest_data.connection.flash.invalid');
     }
 }

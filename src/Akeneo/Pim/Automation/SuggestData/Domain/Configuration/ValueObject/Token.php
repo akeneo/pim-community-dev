@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class Token
+final class Token
 {
     /** @var string */
     private $token;
@@ -26,6 +26,9 @@ class Token
      */
     public function __construct(string $token)
     {
+        if (empty($token)) {
+            throw new \InvalidArgumentException('Token must be a string');
+        }
         $this->token = $token;
     }
 

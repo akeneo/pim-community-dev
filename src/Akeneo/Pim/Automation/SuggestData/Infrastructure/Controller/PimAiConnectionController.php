@@ -19,8 +19,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigu
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,9 +67,14 @@ class PimAiConnectionController
     public function getAction(): Response
     {
         $configuration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
-        $normalizedConfiguration = (null === $configuration) ? [] : $configuration->normalize();
+        $token = $configuration->getToken();
 
-        return new JsonResponse($normalizedConfiguration);
+        return new JsonResponse(
+            [
+                'code' => 'pim-ai',
+                'values' => ['token' => (null === $token) ? null : (string) $token],
+            ]
+        );
     }
 
     /**
@@ -89,21 +94,21 @@ class PimAiConnectionController
      */
     public function postAction(Request $request): Response
     {
+        // TODO: We should $request->get('token', '') instead decoding json and getting back value
+        // TODO: Should not we assert it is an XML HTTP Request
+        // TODO: Why do we put message here instead of handling response code?
+        // TODO: success = 200, invalid argument = 401, conf exception = 422
         $configurationFields = json_decode($request->getContent(), true);
 
         try {
-            if (!isset($configurationFields['token']) && !is_string($configurationFields['token'])) {
-                throw new \InvalidArgumentException();
-            }
+            $tokenString = $configurationFields['token'] ?? '';
 
-            $token = new Token($configurationFields['token']);
+            $token = new Token($tokenString);
             $command = new ActivateConnectionCommand($token);
             $this->activateConnectionHandler->handle($command);
-        } catch (InvalidConnectionConfigurationException $invalidConnection) {
-            return new JsonResponse([
-                'message' => 'akeneo_suggest_data.connection.flash.invalid',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (ConnectionConfigurationException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], $e->getCode());
+        } catch (\InvalidArgumentException $e) {
             return new JsonResponse([
                 'message' => 'akeneo_suggest_data.connection.flash.error',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);

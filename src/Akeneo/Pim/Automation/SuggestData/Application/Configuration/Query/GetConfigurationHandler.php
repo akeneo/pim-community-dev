@@ -37,7 +37,7 @@ class GetConfigurationHandler
     /**
      * @param GetConfigurationQuery $query
      *
-     * @return Configuration|null
+     * @return Configuration
      */
     public function handle(GetConfigurationQuery $query): ?Configuration
     {

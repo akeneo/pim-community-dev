@@ -19,6 +19,24 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class InvalidConnectionConfigurationException extends \Exception
+final class ConnectionConfigurationException extends \Exception
 {
+    /** @var int */
+    private const UNPROCESSABLE_ENTITY = 422;
+
+    /**
+     * @param string $message
+     */
+    public function __construct(string $message = '')
+    {
+        parent::__construct($message, self::UNPROCESSABLE_ENTITY);
+    }
+
+    /**
+     * @return ConnectionConfigurationException
+     */
+    public static function invalidToken(): self
+    {
+        return new self('akeneo_suggest_data.connection.flash.invalid');
+    }
 }
