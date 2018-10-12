@@ -14,8 +14,6 @@ namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -36,15 +34,11 @@ class ContextConfigurator extends BaseContextConfigurator
     /** @var AttributeGroupAccessRepository */
     protected $accessRepository;
 
-    /** @param int[] */
-    protected $grantedGroupIds;
-
     /** @var UserContext */
     protected $userContext;
 
     /**
      * @param ObjectRepository               $productRepository
-     * @param AttributeRepositoryInterface   $attributeRepository
      * @param RequestParameters              $requestParams
      * @param UserContext                    $userContext
      * @param ObjectManager                  $objectManager
@@ -54,7 +48,6 @@ class ContextConfigurator extends BaseContextConfigurator
      */
     public function __construct(
         ObjectRepository $productRepository,
-        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
@@ -64,7 +57,6 @@ class ContextConfigurator extends BaseContextConfigurator
     ) {
         parent::__construct(
             $productRepository,
-            $attributeRepository,
             $requestParams,
             $userContext,
             $objectManager,
@@ -83,42 +75,6 @@ class ContextConfigurator extends BaseContextConfigurator
         $this->configuration = $configuration;
         parent::configure($configuration);
         $this->addCurrentTreeId();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Override to apply rights on attributes
-     */
-    protected function getAttributeIdsUseableInGrid($attributeCodes = null)
-    {
-        $groupIds = $this->getGrantedGroupIds();
-
-        return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
-    }
-
-    /**
-     * Get allowed group ids
-     *
-     * @return int[]
-     */
-    protected function getGrantedGroupIds()
-    {
-        if (!$this->grantedGroupIds) {
-            $result = $this->accessRepository
-                ->getGrantedAttributeGroupQB($this->userContext->getUser(), Attributes::VIEW_ATTRIBUTES)
-                ->getQuery()
-                ->getArrayResult();
-
-            $this->grantedGroupIds = array_map(
-                function ($row) {
-                    return $row['id'];
-                },
-                $result
-            );
-        }
-
-        return $this->grantedGroupIds;
     }
 
     /**

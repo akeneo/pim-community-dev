@@ -35,6 +35,7 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
      * @param ColumnsConfigurator    $columnsConfigurator
      * @param ConfiguratorInterface  $filtersConfigurator
      * @param SortersConfigurator    $sortersConfigurator
+     * @param ConfiguratorInterface  $attributesConfigurator
      * @param RowActionsConfigurator $actionsConfigurator
      */
     public function __construct(
@@ -42,9 +43,10 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
         ColumnsConfigurator $columnsConfigurator,
         ConfiguratorInterface $filtersConfigurator,
         SortersConfigurator $sortersConfigurator,
+        ConfiguratorInterface $attributesConfigurator,
         RowActionsConfigurator $actionsConfigurator = null
     ) {
-        parent::__construct($contextConfigurator, $columnsConfigurator, $filtersConfigurator, $sortersConfigurator);
+        parent::__construct($contextConfigurator, $columnsConfigurator, $filtersConfigurator, $sortersConfigurator, $attributesConfigurator);
         $this->actionsConfigurator = $actionsConfigurator;
     }
 

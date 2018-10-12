@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -18,7 +17,6 @@ class ContextConfiguratorSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $productRepository,
-        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
@@ -28,7 +26,6 @@ class ContextConfiguratorSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $attributeRepository,
             $requestParams,
             $userContext,
             $objectManager,
