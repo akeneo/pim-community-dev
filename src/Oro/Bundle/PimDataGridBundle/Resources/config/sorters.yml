@@ -46,3 +46,10 @@ services:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_in_group }
+
+    pim_reference_data.extension.sorter.reference_data_sorter:
+        class: 'Oro\Bundle\PimDataGridBundle\Extension\Sorter\Product\ReferenceDataSorter'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_value_reference_data }

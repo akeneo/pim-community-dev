@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Sorter\Metric;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Sorter\Metric;
 
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**

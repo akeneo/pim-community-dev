@@ -45,6 +45,9 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_attribute_option }
 
+    pim_reference_data.registry:
+        class: 'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry'
+
     pim_enrich.form.type.association_type:
         class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AssociationTypeType'
         arguments:

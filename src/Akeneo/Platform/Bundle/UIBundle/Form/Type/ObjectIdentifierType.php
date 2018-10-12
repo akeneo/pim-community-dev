@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;

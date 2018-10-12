@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -46,5 +47,30 @@ class DateValue extends AbstractValue implements DateValueInterface
     public function __toString()
     {
         return null !== $this->data ? $this->data->format('Y-m-d') : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof DateValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $thisDate = $this->getData();
+        $comparedDate = $value->getData();
+
+        if (null === $thisDate && null === $comparedDate) {
+            return true;
+        }
+        if (null === $thisDate || null === $comparedDate) {
+            return false;
+        }
+
+        return $thisDate->getTimestamp() === $comparedDate->getTimestamp() &&
+            $thisDate->getTimezone()->getName() === $comparedDate->getTimezone()->getName();
     }
 }

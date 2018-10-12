@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         FormatNegotiator $formatNegotiator,
         ContentTypeNegotiator $contentTypeNegotiator,
         GetResponseEvent $event

@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -54,8 +55,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         ProductInterface $product4,
-        ProductInterface $product5
+        ProductInterface $product5,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
@@ -73,9 +79,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalledTimes(3);
 
         $output->writeln('<info>5 products to index</info>')->shouldBeCalled();
-        $output->writeln('Indexing products 0 of 5')->shouldBeCalled();
-        $output->writeln('Indexing products 2 of 5')->shouldBeCalled();
-        $output->writeln('Indexing products 4 of 5')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>5 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -111,8 +115,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         Application $application,
         HelperSet $helperSet,
         InputDefinition $definition,
-        ProductInterface $productToIndex
+        ProductInterface $productToIndex,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
@@ -123,6 +132,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>1 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -160,8 +170,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         HelperSet $helperSet,
         InputDefinition $definition,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
@@ -172,6 +187,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>2 products found for indexing</info>')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>2 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -208,8 +224,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         Application $application,
         HelperSet $helperSet,
         InputDefinition $definition,
-        ProductInterface $productToIndex
+        ProductInterface $productToIndex,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
@@ -223,6 +244,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $output->writeln('<error>Some products were not found for the given identifiers: wrong_product</error>')->shouldBeCalled();
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
+        $output->write(Argument::any())->shouldBeCalled();
         $output->writeln('<info>1 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
@@ -258,8 +280,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         OutputInterface $output,
         Application $application,
         HelperSet $helperSet,
-        InputDefinition $definition
+        InputDefinition $definition,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
@@ -299,8 +326,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         InputInterface $input,
         OutputInterface $output,
         HelperSet $helperSet,
-        InputDefinition $definition
+        InputDefinition $definition,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $productClient->hasIndex()->willReturn(false);
         $container->getParameter('product_index_name')->willReturn('foo');
 
@@ -334,8 +366,13 @@ class IndexProductCommandSpec extends ObjectBehavior
         InputInterface $input,
         OutputInterface $output,
         HelperSet $helperSet,
-        InputDefinition $definition
+        InputDefinition $definition,
+        OutputFormatter $formatter
     ) {
+        $output->isDecorated()->willReturn(true);
+        $output->getVerbosity()->willReturn(OutputInterface::VERBOSITY_NORMAL);
+        $output->getFormatter()->willReturn($formatter);
+
         $productAndProductModelClient->hasIndex()->willReturn(false);
         $container->getParameter('product_index_name')->willReturn('foo');
 

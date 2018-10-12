@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Classification;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Classification;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

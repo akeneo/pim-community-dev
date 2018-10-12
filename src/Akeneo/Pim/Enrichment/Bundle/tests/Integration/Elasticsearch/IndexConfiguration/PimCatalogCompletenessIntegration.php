@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration;
 
 class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
 {

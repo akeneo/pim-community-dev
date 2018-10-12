@@ -25,6 +25,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             choicePromise: null,
             promiseIdentifier: null,
+            choiceUrl: null,
             events: {
                 'change .field-input:first input[type="hidden"].select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
@@ -108,7 +109,12 @@ define(
                         initSelection: function (element, callback) {
                             var id = $(element).val();
                             if ('' !== id) {
-                                if (null === this.choicePromise || this.promiseIdentifier !== id) {
+                                if (
+                                    null === this.choicePromise
+                                    || this.promiseIdentifier !== id
+                                    || this.choiceUrl !== choiceUrl
+                                ) {
+                                    this.choiceUrl = choiceUrl;
                                     this.choicePromise = $.get(choiceUrl, {options: {identifiers: [id]}});
                                     this.promiseIdentifier = id;
                                 }

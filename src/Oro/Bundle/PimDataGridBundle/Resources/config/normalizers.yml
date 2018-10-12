@@ -89,6 +89,16 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
 
+    pim_reference_data.datagrid.normalizer.reference_data:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_reference_data.datagrid.normalizer.reference_data_collection:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
     pim_enrich.normalizer.datagrid_view:
         class: 'Oro\Bundle\PimDataGridBundle\Normalizer\InternalApi\DatagridViewNormalizer'
         tags:
@@ -102,5 +112,6 @@ services:
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_catalog.localization.presenter.registry'
             - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

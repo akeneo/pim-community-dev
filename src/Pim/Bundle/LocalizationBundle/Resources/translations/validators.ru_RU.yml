@@ -1,5 +1,0 @@
-"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Этот тип значения предполагает использование {{ decimal_separator }} для разделения десятичных знаков.
-"This type of value expects the use of dot (.) to separate decimals.": Этот тип значения предполагает использование точки (.) для разделения десятичных знаков.
-"This type of value expects the use of comma (,) to separate decimals.": Этот тип значения предполагает использование запятой (,) для разделения десятичных знаков.
-"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Этот тип значения предполагает использование арабского десятичного разделителя (٫) для разделения десятичных знаков.
-"This type of value expects the use of the format {{ date_format }} for dates.": Этот тип значения предполагает использование {{ date_format }} формата для дат.

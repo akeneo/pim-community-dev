@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS pim_aggregated_volume (
   volume json NOT NULL COMMENT '(DC2Type:native_json)',
   aggregated_at DATETIME NOT NULL COMMENT '(DC2Type:datetime)',
   PRIMARY KEY(volume_name)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB
 SQL;
 
         $this->connection->exec($sql);

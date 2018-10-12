@@ -100,10 +100,39 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->getIdentifier()->shouldReturn($identifier);
     }
 
-    private function createAttribute(string $code): AttributeInterface
+    function it_gets_attribute_types_by_codes()
+    {
+        $attribute1 = $this->createAttribute('attribute_1', 'attributetype_1');
+        $attribute2 = $this->createAttribute('attribute_2', 'attributetype_2');
+        $attribute3 = $this->createAttribute('attribute_3', 'attributetype_3');
+
+        $this->beConstructedWith(
+            [
+                $attribute1->getCode() => $attribute1,
+                $attribute2->getCode() => $attribute2,
+                $attribute3->getCode() => $attribute3,
+            ]
+        );
+
+        $this->getAttributeTypeByCodes(['attribute_1', 'attribute_3'])->shouldReturn([
+            'attribute_1' => 'attributetype_1',
+            'attribute_3' => 'attributetype_3',
+        ]);
+    }
+
+    /**
+     * @param string $code
+     * @param null|string $type
+     *
+     * @return AttributeInterface
+     */
+    private function createAttribute(string $code, string $type = null): AttributeInterface
     {
         $attribute = new Attribute();
         $attribute->setCode($code);
+        if (null !== $type) {
+            $attribute->setType($type);
+        }
 
         return $attribute;
     }

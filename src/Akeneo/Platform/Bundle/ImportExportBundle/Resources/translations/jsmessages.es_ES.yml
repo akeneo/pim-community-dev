@@ -28,8 +28,6 @@ pim_import_export:
       flash:
         create:
           success: Perfil de importación creado con éxito
-      page_title:
-        index: "]Inf, 1] {{ count }} perfil de importación|]1, Inf [{{ count }} perfiles de importación"
       module:
         create:
           button: Crear perfil de importación
@@ -38,8 +36,6 @@ pim_import_export:
       flash:
         create:
           success: Perfil de exportación creado con éxito
-      page_title:
-        index: "]Inf, 1] {{ count }} perfil de exportación|]1, Inf [{{ count }} perfiles de exportación"
       module:
         create:
           button: Crear perfil de exportación
@@ -136,7 +132,7 @@ confirmation:
     job_instance: '¿Está seguro que desea borrar esta instancia de trabajo?'
 pim_title:
   pim_importexport_export_profile_index: Gestión de perfiles de exportación
-  pim_importexport_export_profile_edit: Perfil de exportación {{ job.label }} | Editar
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
   pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Historial de ejecuciones de exportación
   pim_importexport_export_execution_show: Ejecuciones de importación | Detalles

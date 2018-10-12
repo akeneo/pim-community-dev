@@ -4,21 +4,43 @@
   margin-bottom: 20px;
   position: relative;
 
+  &--packed {
+    margin-bottom: 5px;
+
+    &:first-of-type() {
+      margin-top: 20px;
+    }
+  }
+
   &-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+
+    &--light {
+      margin-bottom: 1px;
+
+      & .AknFieldContainer-label {
+        font-size: 11px;
+        color: @AknGrey;
+      }
+    }
   }
 
   &-label {
     color: @AknSlateGrey;
     flex-grow: 1;
-    font-size: @AknFontSizeBig;
+    font-size: @AknDefaultFontSize;
+    display: flex;
 
     &--grey {
-      font-size: 10px;
       color: @AknGrey;
+      font-size: 10px;
+    }
+
+    &--inline {
+      color: @AknDarkBlue;
     }
 
     &--withImage {
@@ -56,7 +78,6 @@
   &-inputContainer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     position: relative;
   }
 
@@ -105,7 +126,7 @@
   }
 
   &--inline &-inputContainer {
-    width: @AknMaxFormWidth;
+    width: 350px;
     margin-right: 10px;
     flex-shrink: 0;
   }
@@ -115,5 +136,9 @@
     flex-direction: column;
     justify-content: center;
     padding-right: 10px;
+  }
+
+  &--big {
+    width: @AknMaxFormWidth * 2;
   }
 }

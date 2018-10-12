@@ -191,7 +191,15 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getAttributeTypeByCodes(array $codes)
     {
-        throw new NotImplementedException(__METHOD__);
+        $types = [];
+        foreach ($codes as $code) {
+            $attribute = $this->attributes->get($code);
+            if (null !== $attribute) {
+                $types[$code] = $attribute->getType();
+            }
+        }
+
+        return $types;
     }
 
     /**

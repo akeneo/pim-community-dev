@@ -26,9 +26,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Allows to configure the context to use in queries you can execute and to ensure that
- * the expected configuration is provided
- *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)

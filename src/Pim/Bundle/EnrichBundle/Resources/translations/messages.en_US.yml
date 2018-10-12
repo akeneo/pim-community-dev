@@ -236,15 +236,6 @@ pim_enrich:
             remove_completeness_for_channel_and_locale:
                 start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
                 done: Removal of a locale on a channel finished.
-
-category:
-  edit: Edit category
-  overview: Categories
-tree:
-  edit: Edit tree
-
-# Buttons
-pim_enrich:
     create:
         attribute:        create attribute
         attribute group:  create attribute group
@@ -259,6 +250,12 @@ pim_enrich:
         association type: create association type
         group type:       create group type
         drag_or_upload:   Drag and drop to upload or click here
+
+category:
+  edit: Edit category
+  overview: Categories
+tree:
+  edit: Edit tree
 
 # Confirmation messages
 confirmation:

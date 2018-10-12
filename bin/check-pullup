@@ -148,12 +148,17 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Bundle/NavigationBundle', new Moved('src/Akeneo/Platform/Bundle/UIBundle')),
         new ForbiddenDirectory('src/Pim/Bundle/DataGridBundle', new Moved('src/Oro/Bundle/PimDataGridBundle')),
         new ForbiddenDirectory('src/Pim/Bundle/FilterBundle', new Moved('src/Oro/Bundle/PimFilterBundle')),
+        new ForbiddenDirectory('src/Pim/Bundle/ReferenceDataBundle', new Moved('src/Akeneo/Pim')),
+        new ForbiddenDirectory('src/Pim/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/LocalizationBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Platform/Bundle/UIBundle'])),
 
         // Community Components
+        new ForbiddenDirectory('src/Pim/Component/Enrich', new Dispatched(['src/Akeneo/Pim/Structure', 'src/Akeneo/Pim/Enrichment'])),
         new ForbiddenDirectory('src/Pim/Component/Api', Dispatched::everywhereCommunity()),
         new ForbiddenDirectory('src/Pim/Component/Catalog', Dispatched::mainCommunityBusinessTopics()),
         new ForbiddenDirectory('src/Pim/Component/Connector', Dispatched::mainCommunityBusinessTopics()),
         new ForbiddenDirectory('src/Pim/Component/User', new Moved('src/Akeneo/UserManagement')),
+        new ForbiddenDirectory('src/Pim/Component/ReferenceData', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure'])),
 
         // Enterprise Bundles
         new ForbiddenDirectory('src/PimEnterprise/Bundle/ApiBundle', Dispatched::mainEnterpriseBusinessTopics()),
@@ -191,6 +196,8 @@ $pullUpOk = $check(
             new Dispatched(['src/Akeneo/Pim/WorkOrganization/ProductRevert'])
         ),
         new ForbiddenDirectory('src/PimEnterprise/Bundle/WorkflowBundle', new Moved('src/Akeneo/Pim/WorkOrganization')),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/DataGridBundle', Dispatched::mainEnterpriseBusinessTopics()),
 
         // Enterprise Components
         new ForbiddenDirectory('src/PimEnterprise/Component/Api', Dispatched::mainEnterpriseBusinessTopics()),

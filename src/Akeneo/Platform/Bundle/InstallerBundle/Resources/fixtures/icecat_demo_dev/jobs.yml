@@ -56,6 +56,8 @@ jobs:
                         field: completeness
                         operator: '>='
                         value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
                 structure:
                     scope: mobile
                     locales:
@@ -336,6 +338,8 @@ jobs:
                         field: completeness
                         operator: '>='
                         value: 100
+                        context:
+                            locales: ['fr_FR', 'en_US', 'de_DE']
                 structure:
                     scope: mobile
                     locales:

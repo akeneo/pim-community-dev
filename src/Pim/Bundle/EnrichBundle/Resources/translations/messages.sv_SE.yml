@@ -11,6 +11,183 @@ pim_common:
   permissions: Behörigheter
   properties: Egenskaper
 pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Parametrar
+      value.title: Värden
+      history.title: Historik
+  group_type:
+    tab:
+      property.title: Egenskaper
+  category:
+    tab:
+      property.title: Egenskaper
+      history.title: Historik
+    suggest_selection: Vänligen välj en kategori till vänster
+    or: eller
+    create_new: Skapa ny kategori
+  locale:
+    tab:
+      property.title: Egenskaper
+  mass_edit_action:
+    limit_exceeded: Välj mindre än %limit% poster att redigera
+    product:
+      page_title: Products
+      page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
+      confirm: Du håller på att uppdatera en produkt med följande information, bekräfta. | Du håller på att uppdatera %count% produkter med följande information, bekräfta.
+      steps:
+        first: Välj produkter
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    family:
+      page_title: Familjer
+      page_subtitle: Massredigera (1 familj) | Massredigera (%count% familjer)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda familjen | Välj den funktion som du vill utföra på de valda %count% familjerna
+      confirm: Du håller på att uppdatera en familj med följande information, bekräfta. | Du håller på att uppdatera %count% familjer med följande information, bekräfta.
+      steps:
+        first: Välj familjer
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    change-status:
+      label: Ändra status
+      description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
+      success_flash: Produkt(er) status har ändrats
+      launched_flash: Massåtgärd "ändra status" har inletts. Du meddelas när det är gjort.
+    edit-common-attributes:
+      label: Redigera Attribut
+      description: Valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
+      empty: Välj de attribut(er) som du vill redigera
+      success_flash: De jobb som uppdaterar produkt(er) status körs
+      message:
+        warning: Det finns inga attribut gemensamt för de valda produkterna. Vänligen ändra ditt val.
+        invalid_attribute: Attribut med koden "attribute_code" är inte vanligt för de utvalda produkter, attribut hoppas över.
+        no_valid_attribute: Ingen av valda attribut kan tillämpas på denna produkt.
+    classify-add:
+      description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
+      success_flash: Produkten har klassificerats i valda kategorier
+      launched_flash: Massåtgärd "Lägg till kategorier" har inletts. Du meddelas när det är gjort.
+    classify-move:
+      description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad.
+      success_flash: Produkterna har flyttats till valda kategorier
+      launched_flash: Massåtgärd "flytta till kategorier" har inletts. Du meddelas när det är klart.
+    classify-remove:
+      description: Produkterna kommer att tas bort från följande kategorier.
+      success_flash: Produkterna har tagits bort från de valda kategorierna
+      launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
+    change-family:
+      description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+      success_flash: Familjen av vald(a) produkt(er) har ändrats
+      launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.
+    add-to-groups:
+      label: Lägg till i grupp
+      description: Markera de grupper som du vill lägga till valda produkter
+      success_flash: Produkter har lagts till de valda grupperna
+      launched_flash: Massåtgärd "Lägg till grupper" har inletts. Du meddelas när det är gjort.
+      no_group: Ingen grupp just nu. Börja med att skapa en grupp.
+    set-attribute-requirements:
+      description: Följande attributkrav kommer att tillämpas på de valda familjerna
+      success_flash: Attributkrav tillämpades på de valda familjerna
+      launched_flash: Bulk åtgärder "ange attributet kraven" lanseras. Du kommer att meddelas när det är klart.
+    mass_action:
+      quick_export:
+        launched_flash: Kör jobbet exportera produkter
+  acl:
+    locale:
+      index: Lista språk
+    currency:
+      index: Lista valutor
+      toggle: Växla valutor
+    product:
+      index: Visa produkter
+      create: Skapa en produkt
+      edit_attributes: Redigera attribut för produkten
+      remove: Ta bort en produkt
+      add_attribute: Lägga till ett attribut till en produkt
+      remove_attribute: Ta bort ett attribut från en produkt
+      categories_view: Rådfråga kategorierna av en produkt
+      change_family: Ändra produktfamilj
+      change_state: Ändra status för produkten
+      add_to_groups: Lägga till produkten i grupper
+      mass_edit: Produkt mass redigera
+      comment: Kommentera produkter
+      download: Ladda ner produkten som PDF
+      history: Visa produkten historik
+    category:
+      list: Visa kategorier
+      create: Skapa en kategori
+      edit: Ändra kategori
+      remove: Ta bort en kategori
+      move: Flytta kategori
+      children: Se kategori barn
+      products: Se kategoris produkter
+      history: Visa kategori historia
+    channel:
+      index: Lista kanaler
+      create: Skapa en kanal
+      edit: Redigera en kanal
+      remove: Ta bort en kanal
+      history: Visa kanal historik
+    family:
+      index: Visa familjer
+      create: Skapa en familj
+      edit_properties: Redigera egenskaper för en familj
+      edit_attributes: Redigera attribut för en familj
+      remove: Ta bort en familj
+      history: Visa familjehistorik
+    attribute_group:
+      index: Visa attributgrupper
+      create: Skapa en attributgrupp
+      edit: Redigera en attributgrupp
+      remove: Ta bort en attributgrupp
+      sort: Sortera attributgrupper
+      add_attribute: Lägga till attribut i en grupp
+      remove_attribute: Ta bort attribut från en grupp
+      history: Visa attribut grupp historik
+    attribute:
+      index: Visa attribut
+      create: Skapa ett attribut
+      edit: Redigera ett attribut
+      remove: Ta bort ett attribut
+      sort: Sortera attribut inut i attributgrupper
+      history: Visa attributhistorik
+    group:
+      index: Visa grupper
+      create: Skapa en grupp
+      edit: Redigera en grupp
+      remove: Ta bort en grupp
+      history: Visa grupp historik
+    group_type:
+      index: Lista grupptyper
+      create: Skapa en grupptyp
+      edit: Redigera en grupptyp
+      remove: Ta bort en grupptyp
+    association_type:
+      index: Lista förbindelse typer
+      create: Skapa en associationstypen
+      edit: Redigera en associationstyp
+      remove: Ta bort en associationstyp
+      history: Visa associationstypen(s) historik
+    job_tracker:
+      index: Visa process spårare
+    api_connection:
+      manage: Hantera API-anslutningarna
+  acl_group:
+    association_type: Associationstyp
+    attribute: Attribut
+    attribute_group: Attributgrupper
+    category: Kategorier
+    channel: Kanaler
+    currency: Valutor
+    family: Familjer
+    group: Grupper
+    group_type: Grupptyper
+    locale: Språk
+    product: Products
   create:
     attribute: skapa attribut
     attribute group: skapa attributgrupp

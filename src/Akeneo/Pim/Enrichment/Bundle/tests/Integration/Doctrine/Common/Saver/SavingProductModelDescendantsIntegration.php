@@ -1,11 +1,11 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Bundle\tests\fixture\EntityBuilder;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**

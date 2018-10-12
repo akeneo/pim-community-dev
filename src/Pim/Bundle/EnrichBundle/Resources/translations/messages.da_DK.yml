@@ -11,6 +11,206 @@ pim_common:
   permissions: Rettigheder
   properties: Egenskaber
 pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Parametre
+      value.title: Værdier
+      history.title: Historik
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
+  group_type:
+    tab:
+      property.title: Egenskaber
+  category:
+    tab:
+      property.title: Egenskaber
+      history.title: Historik
+    suggest_selection: Vælg venligst en kategori til venstre
+    or: eller
+    create_new: Opret ny kategori
+  locale:
+    tab:
+      property.title: Egenskaber
+  mass_edit_action:
+    limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
+    product:
+      page_title: Produkter
+      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på det valgte produkt|Vælg den handling, du ønsker at udføre på de valgte %count% produkter
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg produkter
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
+    family:
+      page_title: Familier
+      page_subtitle: Masse redigere (1 familie) |Masse redigere (%count% familier)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på den valgte familie|Vælg den handling, du ønsker at udføre på de valgte %count% familier
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg familier
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
+    change-status:
+      label: Skift status
+      description: De valgte produkter vil blive aktiveret eller deaktiveret.
+      success_flash: Produkt(er) status er blevet ændret
+      launched_flash: Bulk-handlingen "Skift status" er blevet startet. Du får besked, når det er gjort.
+    edit-common-attributes:
+      label: Rediger attributter
+      description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
+      empty: Vælg venligst den eller de attribut(ter), du vil redigere
+      success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
+      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
+      message:
+        warning: Der er ingen fælles egenskaber  de valgte produkter. Venligst ændre dit valg.
+        invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
+        no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
+    classify-add:
+      label: Tilføje til kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+      success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet startet. Du får besked, når det er afsluttet.
+    classify-move:
+      label: Flyt mellem kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+      success_flash: Produkt(er), der er blevet flyttet til udvalgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+    classify-remove:
+      label: Fjern fra kategorier
+      description: Produkterne vil blive fjernet fra følgende kategorier.
+      success_flash: Produkt(er), der er blevet fjernet fra de valgte kategorier
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+    change-family:
+      label: Ændre familie
+      description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
+      success_flash: Familien af valgte produkt(er) er blevet ændret
+      launched_flash: Bulk-handlingen "Skift status" er blevet ignagsat. Du får besked, når den er afsluttet.
+    add-to-groups:
+      label: Tilføj til grupper
+      description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
+      success_flash: Produkter blev tilføjet til de valgte grupper
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
+      no_group: Ingen gruppe for nu. Start med at oprette en gruppe.
+    set-attribute-requirements:
+      label: Indstil attribut krav
+      description: Følgende attribut krav vil blive anvendt til de valgte familier
+      success_flash: Attribut krav blev anvendt til de valgte familier
+      launched_flash: Bulk handling "sæt attribut krav" er igangsat. Du får besked, når den afsluttet.
+    mass_action:
+      quick_export:
+        launched_flash: Jobbet, der eksporterer produkter kører i øjeblikket
+  acl:
+    locale:
+      index: Liste over landestandarder
+    currency:
+      index: Liste over valutaer
+      toggle: Skift valutaer
+    product:
+      index: Liste over produkter
+      create: Opret et produkt
+      edit_attributes: Rediger attributterne for et produkt
+      remove: Fjern et produkt
+      add_attribute: Tilføj en attribut til et produkt
+      remove_attribute: Fjerne en attribut fra et produkt
+      categories_view: Konsultere kategorierne af et produkt
+      change_family: Ændre produktfamilie
+      change_state: Ændre tilstand af produktet
+      add_to_groups: Tilføj produkt til grupper
+      mass_edit: Handlinger for masse redigering af produkter
+      comment: Kommenter produkter
+      download: Download produktet som PDF
+      history: Se produkt historik
+    product_model:
+      create: Oprette en produktmodel
+      edit_attributes: Rediger attributterne for en produktmodel
+      categories_view: Konsultere kategorierne af en produktmodel
+      history: Se produkt model historik
+      remove: Fjern en produktmodel
+    category:
+      list: Kategoriliste
+      create: Opret en kategori
+      edit: Redigere en kategori
+      remove: Fjern en kategori
+      move: Flyt kategori
+      children: Se underliggende kategorier
+      products: Se produkter i denne kategori
+      history: Se kategori historie
+    channel:
+      index: Liste over kanaler
+      create: Opret en kanal
+      edit: Redigere en kanal
+      remove: Fjern en kanal
+      history: Se kanal historik
+    family:
+      index: Liste over familier
+      create: Opret en familie
+      edit_properties: Rediger egenskaberne for en familie
+      edit_attributes: Rediger attributterne for en familie
+      remove: Fjern en familie
+      history: Se familie historik
+    family_variant:
+      remove: Vælg en familie variant
+    attribute_group:
+      index: List attributgrupper
+      create: Opret en attributgruppe
+      edit: Redigere en attributgruppe
+      remove: Fjern en attributgruppe
+      sort: Sorter attributgrupper
+      add_attribute: Tilføj attribut til en gruppe
+      remove_attribute: Fjerne attributten fra en gruppe
+      history: Se attribut gruppe historik
+    attribute:
+      index: Liste over attributter
+      create: Opret en attribut
+      edit: Rediger en attribut
+      remove: Fjern en attribut
+      sort: Sorter attributter i attributgrupper
+      history: Se attribut historik
+    group:
+      index: List grupper
+      create: Opret en gruppe
+      edit: Redigere en gruppe
+      remove: Fjern en gruppe
+      history: Se gruppe historik
+    group_type:
+      index: List gruppetyper
+      create: Opret en gruppetype
+      edit: Redigere en gruppetype
+      remove: Fjern en gruppetype
+    association_type:
+      index: List sammenhængstyper
+      create: Opret en sammenhængstype
+      edit: Redigere en sammenhængstype
+      remove: Fjern en sammenhængstype
+      history: Se sammenhængs type historik
+    job_tracker:
+      index: Se process overvågning
+    api_connection:
+      manage: Administrere API-forbindelser
+  acl_group:
+    association_type: Sammenhængstyper
+    attribute: Egenskaber
+    attribute_group: Attributgrupper
+    category: Kategorier
+    channel: Kanaler
+    currency: Valutaer
+    family: Familier
+    group: Grupper
+    group_type: Gruppetyper
+    locale: Landestandarder
+    product: Produkter
+    product_model: Produktmodeller
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Landestandard er blevet fjernet fra denne kannal. Relaterede fulstændighed ajourføres 
+        done: Fjernelse af landestandard fra denne kannal er afsluttet.
   create:
     attribute: opret attribut
     attribute group: opret attributgruppe

@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInt
 
 class AncestorFilterSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->beConstructedWith($productModelRepository, ['ancestor.id'], [Operators::IN_LIST, Operators::NOT_IN_LIST]);

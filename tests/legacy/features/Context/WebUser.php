@@ -2449,7 +2449,7 @@ class WebUser extends PimContext
     /**
      * @param int $y
      *
-     * @Given /^I scroll down$/
+     * @Given /^I scroll(?: down)?(?: to (?P<y>\d+)px)?$/
      */
     public function scrollContainerTo($y = 400)
     {
@@ -2771,11 +2771,17 @@ class WebUser extends PimContext
     /**
      * @param string $field
      *
+     * @throws TimeoutException
+     *
      * @When /^I open the (.*) select field$/
      */
     public function iOpenTheSelectField($field)
     {
-        $this->getCurrentPage()->findSelect2Field($field)->open();
+        $select2Field = $this->getCurrentPage()->findSelect2Field($field);
+        $this->spin(function () use ($select2Field) {
+            return !$select2Field->hasClass('select2-container-disabled');
+        }, sprintf('Select2 field %s is disabled', $field));
+        $select2Field->open();
     }
 
     /**

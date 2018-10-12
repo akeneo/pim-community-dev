@@ -3,8 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use Akeneo\Pim\Structure\Component\Model;
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;

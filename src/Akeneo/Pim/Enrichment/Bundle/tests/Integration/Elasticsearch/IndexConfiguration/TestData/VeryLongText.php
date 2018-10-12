@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\TestData;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration\TestData;
 
 /**
  * This class is just a wrapper providing a very, very, very long text for testing

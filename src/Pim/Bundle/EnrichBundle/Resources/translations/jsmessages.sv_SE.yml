@@ -84,6 +84,7 @@ pim_datagrid:
     other: Andra åtgärder
   filters:
     label: Filter
+    system: System
 error:
   exception: Oh snap! Ett {{ status_code }} fel uppstod...
 alert:

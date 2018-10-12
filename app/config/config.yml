@@ -56,13 +56,14 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-pim_reference_data:
-    fabrics:
-        class: Acme\Bundle\AppBundle\Entity\Fabric
-        type: multi
-    color:
-        class: Acme\Bundle\AppBundle\Entity\Color
-        type: simple
+akeneo_pim_structure:
+    reference_data:
+        fabrics:
+            class: Acme\Bundle\AppBundle\Entity\Fabric
+            type: multi
+        color:
+            class: Acme\Bundle\AppBundle\Entity\Color
+            type: simple
 
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%'

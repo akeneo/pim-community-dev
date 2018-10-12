@@ -90,6 +90,7 @@ pim_datagrid:
     other: その他の操作
   filters:
     label: フィルタ
+    system: システム
 error:
   exception: ああスナップ！ {{ status_code }} のエラーが発生しました。
   forbidden: このページにアクセスすることはできません

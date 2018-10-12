@@ -13,6 +13,17 @@ services:
             - '@pim_comment.remover.comment'
             - '%pim_comment.entity.comment.class%'
 
+    pim_localization.controller.format:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\FormatController'
+        arguments:
+            - '@pim_catalog.localization.factory.date'
+            - '@pim_catalog.localization.factory.datetime'
+            - '@pim_enrich.resolver.locale'
+            - '@pim_user.context.user'
+            -
+                decimal_separators: '%pim_catalog.localization.decimal_separators%'
+                date_formats: '%pim_catalog.localization.date_formats%'
+
     ### External API
     pim_api.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
@@ -115,7 +126,7 @@ services:
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.association.filter.parent_associations'
+            - '@pim_enrich.filter.product_attribute_filter'
 
     pim_enrich.controller.rest.product_comment:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCommentController'
@@ -158,6 +169,7 @@ services:
             - '@pim_catalog.factory.product_model'
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.repository.family_variant'
+            - '@pim_enrich.filter.product_model_attribute_filter'
 
     pim_enrich.controller.rest.group:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\GroupController'

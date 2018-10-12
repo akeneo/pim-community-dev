@@ -333,8 +333,8 @@ define(
             renderBasket: function (items) {
                 this.$('.basket').html(this.basketTemplate({
                     items: items,
-                    title: __('pim_enrich.entity.product.basket.title'),
-                    emptyLabel: __('pim_enrich.entity.product.basket.empty_basket'),
+                    title: __('pim_enrich.entity.product.module.basket.title'),
+                    emptyLabel: __('pim_enrich.entity.product.module.basket.empty_basket'),
                     imagePathMethod: this.imagePathMethod.bind(this),
                     columnName: this.config.columnName,
                     identifierName: this.config.columnName,

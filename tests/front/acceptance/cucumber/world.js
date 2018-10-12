@@ -33,7 +33,7 @@ module.exports = function(cucumber) {
     this.page.on('request', request => {
       if (request.url() === `${this.baseUrl}/`) {
         request.respond({
-          contentType: 'text/html',
+          contentType: 'text/html; charset=UTF-8',
           body: htmlTemplate,
         });
       }

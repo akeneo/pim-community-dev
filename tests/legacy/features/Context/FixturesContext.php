@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -46,7 +47,6 @@ use OAuth2\OAuth2;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
  * A context for creating entities
@@ -2539,7 +2539,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\ReferenceData\ConfigurationRegistryInterface
+     * @return \Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface
      */
     protected function getReferenceDataRegistry()
     {

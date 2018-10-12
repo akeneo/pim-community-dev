@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\Query;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Doctrine\Query;
 
 use Akeneo\Test\Integration\TestCase;
 

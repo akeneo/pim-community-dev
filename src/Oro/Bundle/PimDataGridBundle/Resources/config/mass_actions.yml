@@ -19,7 +19,7 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@oro_datagrid.mass_action.parameters_parser'
-            - ['product-grid']
+            - ['product-grid', 'proposal-grid', 'published-product-grid']
 
     # Handlers
     pim_datagrid.extension.mass_action.handler.edit:

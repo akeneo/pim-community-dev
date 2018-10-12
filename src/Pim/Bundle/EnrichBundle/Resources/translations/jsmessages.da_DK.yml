@@ -89,8 +89,13 @@ pim_datagrid:
     change_status: Skift status
     toggle_status: Skift status
     other: andre handlinger
+  empty_results:
+    associated_product:
+      hint: Der er ingen tilknyttede produkter
+      subHint: 'Klik på knappen "Tilføj tilknytning" for at tilknytte dette produkt'
   filters:
     label: Filtre
+    system: System
 error:
   exception: Oh snap! Der opstod en {{ status_code }}...
   forbidden: Du har ikke adgang til denne side
@@ -189,8 +194,12 @@ pim_enrich.entity.product:
       none_exist: Der findes ingen sammenhængstype.
       show_products: Display-produkter
       show_groups: Visningsgrupper
+      number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt model(er) og {{ groupCount }} gruppe(r)"
       association_type_selector: Sammenhængstyper
       target: Mål
+      manage: Tilføj {{ associationType }} foreninger
+      manage_description: Vælg de produkter, du vil knytte til det aktuelle produkt
+      add_associations: Tilføj tilknytning
     attribute_filter:
       display: Vis
       all: Alle attributter
@@ -228,6 +237,9 @@ pim_enrich.entity.product_model:
     create:
       title: Oprette en produktmodel
       content: En produktmodel samler variant produkter og letter berigelse af deres fælles egenskaber.
+    attribute:
+      read_only_parent_attribute_from_common: Denne attribut kan opdateres på de fælles attributter.
+      read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
     variant_axis:
       create: Tilføj ny
       create_label: "Tilføje en ny {{ axes }}"
@@ -584,7 +596,11 @@ pim_enrich.mass_edit.product:
       description: De valgte produkter vil blive aktiveret eller deaktiveret.
       field: At aktivere
     edit_common:
+      label: Redigere attributter værdier
       description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
+    add_attribute_value:
+      label: Redigere attributter værdier
+      description: Kun fler-værdi attributter, der tilhører produktgruppernes familier, vil blive redigeret med følgende data for {{ locale }} lokale og {{ scope }} -kanalen. Attributternes værdier tilføjes, og de tidligere værdier bibholdesholdes.
     change_family:
       label: Ændre familie
       description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
@@ -594,8 +610,10 @@ pim_enrich.mass_edit.product:
       field: Grupper
     add_to_category:
       label: Tilføje til kategorier
+      description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
     move_to_category:
       label: Flyt mellem kategorier
+      description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
     remove_from_category:
       label: Fjern fra kategorier
       description: Produkterne vil blive fjernet fra følgende kategorier.
@@ -604,6 +622,8 @@ pim_enrich.mass_edit.product:
       description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
     associate_to_product_and_product_model:
       label: Associeret
+      description: De valgte produkter i listen vil blive associeret til de udvalgte produkter og produkt modeller for den valgte associetingstype
+      validate: Vælg venligst associering før du fortsætter til næste trin
     change_parent_product_model:
       label: Ændre forældre produkt model
       description: Det overordnede tilknytning til variantprodukterne eller underproduktmodellerne, der er valgt i nettet, vil blive ændret til den valgte produktmodel.
@@ -712,9 +732,15 @@ pim_notification:
     quick_export: Hurtig eksport
     mass_edit: Masse Rediger
 batch_jobs:
+  add_association:
+    label: Associeret
+    perform.label: Associeret
   add_product_value:
     label: Tilføj produktværdi
     perform.label: Tilføj produktværdi
+  add_to_category:
+    label: Tilføje til kategorier
+    perform.label: Tilføje til kategorier
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform.label: Føj til en eksisterende produktmodel
@@ -727,15 +753,22 @@ batch_jobs:
     quick_export_product_model.label: CSV-produkt hurtig eksport
     perform.label: CSV-produkt hurtig eksport
   delete_products_and_product_models:
-    delete_products_and_product_models.label: Masse slet produkter
+    label: Masse slet produkter
+    perform.label: Masse slet produkter
   edit_common_attributes:
     label: Rediger attributter
     perform.label: Rediger attributter
     clean.label: Rens filer til fælles attributter
     cleaner.label: Rens filer til fælles attributter
+  move_to_category:
+    label: Flyt til kategori
+    perform.label: Flyt til kategori
   update_product_value:
     label: Opdatere produktets værdi
     perform.label: Opdatere produktets værdi
+  remove_from_category:
+    label: Fjern fra kategori
+    perform.label: Fjern fra kategori
   set_attribute_requirements:
     label: Indstil attribut krav
     perform.label: Indstil attribut krav

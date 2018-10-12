@@ -121,13 +121,16 @@
     display: flex;
     justify-content: space-between;
     color: @AknGrey;
-    line-height: 24px;
+    overflow: hidden;
   }
 
   &-mainSelectorLineTitle,
   &-secondarySelectorLineTitle {
-    color: @AknDarkBlue;
+    color: @AknDefaultFontColor;
     min-width: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   &-info {

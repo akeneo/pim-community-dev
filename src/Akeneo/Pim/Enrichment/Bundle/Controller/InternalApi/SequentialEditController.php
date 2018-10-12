@@ -49,6 +49,8 @@ class SequentialEditController
     /**
      * Get ids from datagrid request
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function getIdsAction(Request $request): JsonResponse
@@ -73,15 +75,16 @@ class SequentialEditController
     }
 
     /**
-     * @param array            $filters
+     * @param array $filters
+     * @param array $context
      *
      * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters, $context): CursorInterface
+    protected function getProductsCursor(array $filters, array $context): CursorInterface
     {
         $productQueryBuilder = $this->pqbFactory->create(['filters' => $filters]);
         if (null !== $context['sort']) {
-            $field = each($context['sort'])['key'];
+            $field = key($context['sort']);
             $productQueryBuilder->addSorter($field, $context['sort'][$field], $context);
         }
 

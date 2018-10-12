@@ -154,3 +154,12 @@ services:
             - { name: pim_indexing_serializer.normalizer, priority: 40 }
 
 
+    pim_reference_data.normalizer.indexing.product.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    pim_reference_data_collection.normalizer.indexing.product.reference_data:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }

@@ -1,0 +1,168 @@
+services:
+    pim_volume_monitoring.persistence.query.average_max_attributes_per_family:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_attributes_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_products:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_products'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_channels:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_channels'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_locales:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_locales'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_useable_as_grid_filter_attributes:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_useable_as_grid_filter_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_scopable_attributes:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_scopable_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_localizable_attributes:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_localizable_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_localizable_and_scopable_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_families:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_families'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_attributes:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.aggregated_average_max_options_per_attribute:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_options_per_attribute'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_categories:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_categories'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_category_trees:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_category_trees'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_variant_products:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_variant_products'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_product_models:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_product_models'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.average_max_product_values_per_family:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_product_values_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_localizable_attribute_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_scopable_attribute_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_localizable_and_scopable_attribute_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_product_and_product_model_values'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_product_and_product_model_values'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_users:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_users'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.average_max_categories_in_one_category:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_categories_in_one_category'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_category_levels:
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_category_levels'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }

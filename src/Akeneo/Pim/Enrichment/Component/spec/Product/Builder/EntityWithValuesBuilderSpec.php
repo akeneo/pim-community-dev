@@ -13,7 +13,7 @@ use Prophecy\Argument;
 
 class EntityWithValuesBuilderSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         AttributeValuesResolverInterface $valuesResolver,
         ValueFactory $productValueFactory
     ) {

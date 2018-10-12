@@ -428,6 +428,7 @@ define(
 
                 this.currentView = view;
                 this.trigger('grid:view-selector:view-selected', view);
+                FetcherRegistry.getFetcher('locale').clear();
                 this.reloadPage();
             },
 

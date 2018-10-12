@@ -5,8 +5,6 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
-$finder->notPath('spec');
-$finder->notPath('tests');
 
 $builder = new RuleBuilder();
 
@@ -17,8 +15,11 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Channel',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+        'Twig_Environment',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface', // TODO: we should remove this dependencies, related to permissions
         'Pim\Component\Catalog\Query\Filter\Operators', // TODO: It should be moved elsewhere
+        'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // TODO: fix it
+        'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: The current local should be given by $context (third parameter of normalize) instead of depending on UserContext
     ])->in('Akeneo\Channel\Bundle'),
     $builder->only([
         'Symfony\Component',

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\ProductModel;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\ProductModel;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
 
 /**
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

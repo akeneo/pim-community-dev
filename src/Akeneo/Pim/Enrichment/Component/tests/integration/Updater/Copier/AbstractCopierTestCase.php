@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\tests\integration\Updater\Copier;
+namespace Akeneo\Pim\Enrichment\Component\tests\integration\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;

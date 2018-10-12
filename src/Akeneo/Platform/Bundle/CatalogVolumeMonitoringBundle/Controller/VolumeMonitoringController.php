@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

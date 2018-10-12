@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
@@ -15,7 +16,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
  */
 class OptionValue extends AbstractValue implements OptionValueInterface
 {
-    /** @var AttributeOptionInterface */
+    /** @var AttributeOptionInterface|null */
     protected $data;
 
     /**
@@ -57,5 +58,30 @@ class OptionValue extends AbstractValue implements OptionValueInterface
         }
 
         return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof OptionValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedOption = $value->getData();
+        $thisOption = $this->getData();
+
+        if (null === $thisOption && null === $comparedOption) {
+            return true;
+        }
+        if (null === $thisOption || null === $comparedOption) {
+            return false;
+        }
+
+        return $comparedOption->getCode() === $thisOption->getCode() &&
+            $comparedOption->getLocale() === $thisOption->getLocale();
     }
 }

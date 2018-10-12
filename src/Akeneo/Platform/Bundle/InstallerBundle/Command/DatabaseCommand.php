@@ -125,18 +125,19 @@ class DatabaseCommand extends ContainerAwareCommand
         // TODO: Should be in an event subscriber
         $this->createNotMappedTables($output);
 
-        $this->getEventDispatcher()->dispatch(
-            InstallerEvents::PRE_LOAD_FIXTURES,
-            new InstallerEvent($this->commandExecutor)
-        );
-
         if (false === $input->getOption('withoutFixtures')) {
+            $this->getEventDispatcher()->dispatch(
+                InstallerEvents::PRE_LOAD_FIXTURES,
+                new InstallerEvent($this->commandExecutor)
+            );
+
             $this->loadFixturesStep($input, $output);
+
+            $this->getEventDispatcher()->dispatch(
+                InstallerEvents::POST_LOAD_FIXTURES,
+                new InstallerEvent($this->commandExecutor)
+            );
         }
-        $this->getEventDispatcher()->dispatch(
-            InstallerEvents::POST_LOAD_FIXTURES,
-            new InstallerEvent($this->commandExecutor)
-        );
 
         // TODO: Should be in an event subscriber
         $this->launchCommands();
@@ -178,7 +179,7 @@ class DatabaseCommand extends ContainerAwareCommand
                 `sess_data` BLOB NOT NULL,
                 `sess_time` INTEGER UNSIGNED NOT NULL,
                 `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
-            ) COLLATE utf8_bin, ENGINE = InnoDB";
+            ) COLLATE utf8mb4_bin, ENGINE = InnoDB";
 
         $db = $this->getContainer()->get('doctrine');
 

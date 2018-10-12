@@ -2,6 +2,9 @@
 comment:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/comment.yml'
 
+localization:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/localization.yml'
+
 external_api_product_model:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/external_api/product_model.yml'
     prefix: /api/rest/v1

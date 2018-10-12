@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Doctrine\ORM\Repository;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

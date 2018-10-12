@@ -27,9 +27,21 @@ class Configuration implements ConfigurationInterface
                     ->booleanNode('loading_message_enabled')
                         ->defaultTrue()
                     ->end()
+                    ->arrayNode('language')
+                        ->children()
+                            ->scalarNode('value')->defaultValue('en')->end()
+                            ->scalarNode('scope')->defaultValue('app')->end()
+                        ->end()
+                    ->end()
                 ->end();
 
-        SettingsBuilder::append($rootNode, ['loading_message_enabled' => ['value' => false]]);
+        SettingsBuilder::append(
+            $rootNode,
+            [
+                'loading_message_enabled' => ['value' => false],
+                'language' => ['value' => 'en']
+            ]
+        );
 
         return $treeBuilder;
     }

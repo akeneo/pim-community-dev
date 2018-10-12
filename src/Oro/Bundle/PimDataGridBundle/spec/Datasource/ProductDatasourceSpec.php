@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDatasourceSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ObjectManager $objectManager,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $productNormalizer,

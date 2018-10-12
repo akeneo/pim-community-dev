@@ -19,20 +19,23 @@ pim_import_export:
       label: perfil de treball
       flash:
         update:
+          success: El perfil de treball s'ha actualitzat correctament.
           fail: No s'ha pogut actualitzar el perfil de treball.
         delete:
           success: Instància de feina suprimida correctament
     import_profile:
       uppercase_label: Perfils d'importació
-      page_title:
-        index: "]Inf, 1] {{ count }} perfil d'importació|]1, Inf [{{ count }} perfils d'importació"
+      flash:
+        create:
+          success: Perfil d'importació creat correctament
+      module:
+        create:
+          button: Crear perfil d'importació
     export_profile:
       uppercase_label: Perfils d'exportació
       flash:
         create:
           success: Perfil d'exportació creat correctament
-      page_title:
-        index: "]Inf, 1] {{ count }} perfil d'exportació|]1, Inf [{{ count }} perfils d'exportació"
       module:
         create:
           button: Crear perfil d'exportació
@@ -49,6 +52,7 @@ pim_import_export:
         fetching: Recollida de dades sobre l'execució del job...
         warning: Avís
         header.step: Pas
+        header.warnings: Avisos
         header.summary: Sumari
         header.start: Començar
         header.end: Fi

@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegi
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -40,6 +41,9 @@ class VersionNormalizer implements NormalizerInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var UserContext */
+    protected $userContext;
+
     const ATTRIBUTE_HEADER_SEPARATOR = "-";
 
     /**
@@ -48,19 +52,22 @@ class VersionNormalizer implements NormalizerInterface
      * @param PresenterInterface           $datetimePresenter
      * @param PresenterRegistryInterface   $presenterRegistry
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param UserContext                  $userContext
      */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository = null // TODO on master: remove = null
+        AttributeRepositoryInterface $attributeRepository,
+        UserContext $userContext
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
         $this->attributeRepository = $attributeRepository;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -70,6 +77,13 @@ class VersionNormalizer implements NormalizerInterface
     {
         $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
 
+        try {
+            $timezone = $this->userContext->getUserTimezone();
+            $loggedAtContext = array_merge($context, ['timezone' => $timezone]);
+        } catch (\RuntimeException $exception) {
+            $loggedAtContext = $context;
+        }
+
         return [
             'id'           => $version->getId(),
             'author'       => $this->normalizeAuthor($version->getAuthor()),
@@ -78,7 +92,7 @@ class VersionNormalizer implements NormalizerInterface
             'changeset'    => $this->convertChangeset($version->getChangeset(), $context),
             'context'      => $version->getContext(),
             'version'      => $version->getVersion(),
-            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $context),
+            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $loggedAtContext),
             'pending'      => $version->isPending(),
         ];
     }
@@ -123,51 +137,30 @@ class VersionNormalizer implements NormalizerInterface
      */
     protected function convertChangeset(array $changeset, array $context)
     {
-        // TODO on master: remove this check and old behavior
-        if (null === $this->attributeRepository) {
-            // TODO on master: remove this behavior (previous behavior kept to avoid BC break)
-            foreach ($changeset as $attribute => $changes) {
-                $context['versioned_attribute'] = $attribute;
-                $attributeName = $attribute;
-                if (preg_match('/^(?<attribute>[a-zA-Z0-9_]+)-.+$/', $attribute, $matches)) {
-                    $attributeName = $matches['attribute'];
-                }
-                $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeName);
-                if (null !== $presenter) {
-                    foreach ($changes as $key => $value) {
-                        $changeset[$attribute][$key] = $presenter->present($value, $context);
-                    }
-                }
-            }
+        $attributeCodes = [];
+        foreach (array_keys($changeset) as $valueHeader) {
+            $attributeCode = $this->extractAttributeCode($valueHeader);
 
-            return $changeset;
-        } else {
-            // TODO on master: keep only this behavior
-            $attributeCodes = [];
-            foreach (array_keys($changeset) as $valueHeader) {
-                $attributeCode = $this->extractAttributeCode($valueHeader);
-
-                $attributeCodes[$attributeCode] = true;
-            }
-
-            $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
-
-            foreach ($changeset as $valueHeader => $valueChanges) {
-                $context['versioned_attribute'] = $valueHeader;
-                $attributeCode = $this->extractAttributeCode($valueHeader);
-
-                if (isset($attributeTypes[$attributeCode])) {
-                    $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
-                    if (null !== $presenter) {
-                        foreach ($valueChanges as $key => $value) {
-                            $changeset[$valueHeader][$key] = $presenter->present($value, $context);
-                        }
-                    }
-                }
-            }
-
-            return $changeset;
+            $attributeCodes[$attributeCode] = true;
         }
+
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
+
+        foreach ($changeset as $valueHeader => $valueChanges) {
+            $context['versioned_attribute'] = $valueHeader;
+            $attributeCode = $this->extractAttributeCode($valueHeader);
+
+            if (isset($attributeTypes[$attributeCode])) {
+                $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
+                if (null !== $presenter) {
+                    foreach ($valueChanges as $key => $value) {
+                        $changeset[$valueHeader][$key] = $presenter->present($value, $context);
+                    }
+                }
+            }
+        }
+
+        return $changeset;
     }
 
     /**

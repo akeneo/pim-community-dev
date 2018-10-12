@@ -5,39 +5,19 @@ extensions:
 suites:
     ## Channel context
     Channel:
-        namespace: Akeneo\Channel\Component
-        psr4_prefix: Akeneo\Channel\Component
-        spec_path: src/Akeneo/Channel/Component
-        src_path: src/Akeneo/Channel/Component
-    ChannelBundle:
-        namespace: Akeneo\Channel\Bundle
-        psr4_prefix: Akeneo\Channel\Bundle
-        spec_path: src/Akeneo/Channel/Bundle
-        src_path: src/Akeneo/Channel/Bundle
+        namespace: Akeneo\Channel
+        psr4_prefix: Akeneo\Channel
+        spec_path: tests/back/Channel
+        src_path: src/Akeneo/Channel
+        spec_prefix: Specification
 
     ## Structure context
     Structure:
-        namespace: Akeneo\Pim\Structure\Component
-        psr4_prefix: Akeneo\Pim\Structure\Component
-        spec_path: src/Akeneo/Pim/Structure/Component
-        src_path: src/Akeneo/Pim/Structure/Component
-    StructureBundle:
-        namespace: Akeneo\Pim\Structure\Bundle
-        psr4_prefix: Akeneo\Pim\Structure\Bundle
-        spec_path: src/Akeneo/Pim/Structure/Bundle
-        src_path: src/Akeneo/Pim/Structure/Bundle
-
-    ## Enrichment context
-    Enrichment:
-        namespace: Akeneo\Pim\Enrichment\Component
-        psr4_prefix: Akeneo\Pim\Enrichment\Component
-        spec_path: src/Akeneo/Pim/Enrichment/Component
-        src_path: src/Akeneo/Pim/Enrichment/Component
-    EnrichmentBundle:
-        namespace: Akeneo\Pim\Enrichment\Bundle
-        psr4_prefix: Akeneo\Pim\Enrichment\Bundle
-        spec_path: src/Akeneo/Pim/Enrichment/Bundle
-        src_path: src/Akeneo/Pim/Enrichment/Bundle
+        namespace: Akeneo\Pim\Structure
+        psr4_prefix: Akeneo\Pim\Structure
+        spec_path: tests/back/Pim/Structure
+        src_path: src/Akeneo/Pim/Structure
+        spec_prefix: Specification
 
     ## Enrichment context
     Enrichment:
@@ -55,8 +35,9 @@ suites:
     Platform:
         namespace: Akeneo\Platform
         psr4_prefix: Akeneo\Platform
-        spec_path: src/Akeneo/Platform
+        spec_path: tests/back/Platform
         src_path: src/Akeneo/Platform
+        spec_prefix: Specification
 
     ## Akeneo Components
     Connector:
@@ -158,26 +139,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Component\Api
         spec_path: src/Akeneo/Tool/Component/Api
         src_path: src/Akeneo/Tool/Component/Api
-    ReferenceData:
-        namespace: Pim\Component\ReferenceData
-        psr4_prefix: Pim\Component\ReferenceData
-        spec_path: src/Pim/Component/ReferenceData
-        src_path: src/Pim/Component/ReferenceData
-    Enrich:
-        namespace: Pim\Component\Enrich
-        psr4_prefix: Pim\Component\Enrich
-        spec_path: src/Pim/Component/Enrich
-        src_path: src/Pim/Component/Enrich
-    User:
-        namespace: Akeneo\UserManagement\Component
-        psr4_prefix: Akeneo\UserManagement\Component
-        spec_path: src/Akeneo/UserManagement/Component
-        src_path: src/Akeneo/UserManagement/Component
-    CatalogVolumeMonitoring:
-        namespace: Pim\Component\CatalogVolumeMonitoring
-        psr4_prefix: Pim\Component\CatalogVolumeMonitoring
-        spec_path: src/Pim/Component/CatalogVolumeMonitoring
-        src_path: src/Pim/Component/CatalogVolumeMonitoring
     ApiBundle:
         namespace: Akeneo\Tool\Bundle\ApiBundle
         psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
@@ -188,26 +149,12 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
         src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
-    EnrichBundle:
-        namespace: Pim\Bundle\EnrichBundle
-        psr4_prefix: Pim\Bundle\EnrichBundle
-        spec_path: src/Pim/Bundle/EnrichBundle
-        src_path: src/Pim/Bundle/EnrichBundle
-    LocalizationBundle:
-        namespace: Pim\Bundle\LocalizationBundle
-        psr4_prefix: Pim\Bundle\LocalizationBundle
-        spec_path: src/Pim/Bundle/LocalizationBundle
-        src_path: src/Pim/Bundle/LocalizationBundle
-    ReferenceDataBundle:
-        namespace: Pim\Bundle\ReferenceDataBundle
-        psr4_prefix: Pim\Bundle\ReferenceDataBundle
-        spec_path: src/Pim/Bundle/ReferenceDataBundle
-        src_path: src/Pim/Bundle/ReferenceDataBundle
-    UserBundle:
-        namespace: Akeneo\UserManagement\Bundle
-        psr4_prefix: Akeneo\UserManagement\Bundle
-        spec_path: src/Akeneo/UserManagement/Bundle
-        src_path: src/Akeneo/UserManagement/Bundle
+    User:
+        namespace: Akeneo\UserManagement
+        psr4_prefix: Akeneo\UserManagement
+        spec_path: tests/back/UserManagement
+        src_path: src/Akeneo/UserManagement
+        spec_prefix: Specification
     ## Oro bundles
     OroFilterBundle:
         namespace: Oro\Bundle\FilterBundle

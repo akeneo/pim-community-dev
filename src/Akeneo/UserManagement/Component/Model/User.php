@@ -205,6 +205,9 @@ class User implements UserInterface
         $this->plainPassword = null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getClass()
     {
         return UserInterface::class;
@@ -226,6 +229,9 @@ class User implements UserInterface
         return $this->username;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEmail()
     {
         return $this->email;

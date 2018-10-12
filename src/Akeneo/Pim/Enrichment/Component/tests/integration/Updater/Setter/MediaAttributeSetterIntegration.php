@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\tests\integration\Updater\Setter;
+namespace Akeneo\Pim\Enrichment\Component\tests\integration\Updater\Setter;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;

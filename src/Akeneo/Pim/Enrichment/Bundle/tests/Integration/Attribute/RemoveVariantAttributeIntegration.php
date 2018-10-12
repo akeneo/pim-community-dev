@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Attribute;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

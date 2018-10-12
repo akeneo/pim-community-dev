@@ -29,6 +29,11 @@ class FamilySearchableRepositoryIntegration extends TestCase
         static::assertCount(0, $this->searchFamily('unexisting'));
     }
 
+    public function test_it_searches_families_with_limit_option()
+    {
+        static::assertCount(3, $this->searchFamily('c', ['limit' => 3, 'page' => 1]));
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +58,16 @@ class FamilySearchableRepositoryIntegration extends TestCase
         $channel->addLocale($locale);
         $this->get('pim_catalog.saver.channel')->save($channel);
 
+        $this->createFamily(
+            [
+                'code' => 'accessories',
+                'labels' => [
+                    'en_US' => 'Accessories',
+                    'fr_FR' => 'Accessories',
+                    'fr_BE' => 'Accessories',
+                ],
+            ]
+        );
         $this->createFamily(
             [
                 'code' => 'clothing',
@@ -89,8 +104,8 @@ class FamilySearchableRepositoryIntegration extends TestCase
      *
      * @return FamilyInterface[]
      */
-    private function searchFamily(string $search): array
+    private function searchFamily(string $search, array $options = []): array
     {
-        return $this->get('pim_enrich.repository.family.search')->findBySearch($search);
+        return $this->get('pim_enrich.repository.family.search')->findBySearch($search,$options);
     }
 }
