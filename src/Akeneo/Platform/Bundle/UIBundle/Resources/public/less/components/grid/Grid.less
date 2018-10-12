@@ -48,6 +48,10 @@
       width: 1px;
     }
 
+    &--image {
+      width: 54px;
+    }
+
     &:first-child&--checkbox {
       background: white;
       text-align: center;
@@ -455,5 +459,55 @@
 
   &--light {
     font-size: @AknFontSizeBig;
+
+    & .AknGrid-bodyCell {
+      height: 74px;
+      min-width: 75px;
+      background: white;
+      white-space: nowrap;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &--identifier {
+        background: linear-gradient(to left,RGBa(255,255,255,0) 0px,RGBa(255,255,255,.9) 8px,RGBa(255,255,255,1) 100%);
+      }
+    }
+
+    & .AknGrid-headerCell {
+      min-width: 75px;
+      height: 44px;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: linear-gradient(to top, @AknSlateGrey 1px, white 0px);
+      border: none;
+    }
+  }
+
+  &--left {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+
+    & .AknGrid-bodyCell, & .AknGrid-headerCell {
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      z-index: 3;
+    }
+  }
+
+  &--right {
+    position: sticky;
+    right: 0;
+    width: 0;
+    background: linear-gradient(to left, RGBa(255,255,255,1) 0%, RGBa(255,255,255,.9) 45%, RGBa(255,255,255,0) 55%);
+
+    & .AknGrid-bodyCell--action {
+      min-width: 0;
+      background: none;
+    }
   }
 }
