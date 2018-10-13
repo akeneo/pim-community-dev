@@ -238,6 +238,10 @@ batch_jobs:
   publish_product:
     perform.label: Publicar productes
 pim_catalog_volume:
+  section:
+    assets:
+      title: Eixos dels recursos
+      hint: Pot seguir la relació del volum de recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categories de recursos

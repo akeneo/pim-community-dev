@@ -10,9 +10,6 @@ pim_reference_entity:
       identifier: Kod
       label: Etikett
       image: Bild
-    module:
-      delete:
-        button: Ta bort
     create:
       header:
         title: Skapa

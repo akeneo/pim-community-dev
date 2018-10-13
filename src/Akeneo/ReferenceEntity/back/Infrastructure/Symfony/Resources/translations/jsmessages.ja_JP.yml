@@ -10,9 +10,6 @@ pim_reference_entity:
       identifier: コード
       label: ラベル
       image: イメージ
-    module:
-      delete:
-        button: 削除
     create:
       header:
         title: 作成

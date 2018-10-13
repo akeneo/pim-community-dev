@@ -10,9 +10,6 @@ pim_reference_entity:
       identifier: Kode
       label: Etiket
       image: Billede
-    module:
-      delete:
-        button: Slet
     create:
       header:
         title: Opret
