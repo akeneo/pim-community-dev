@@ -1008,7 +1008,7 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
       create_btn: Ausgabekanal anlegen
     attribute:
-      title: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
+      title: "] -Inf, 1] {{ count }} Attribut|] 1, Inf [{{ count }} Attribute"
       create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
     attribute_group:

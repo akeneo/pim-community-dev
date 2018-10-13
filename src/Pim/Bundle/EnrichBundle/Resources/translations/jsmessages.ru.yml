@@ -22,6 +22,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Удалить
+      confirm_content: Вы действительно хотите удалить выбранные продукты?
       success: Выбранные продукты успешно удалены.
       error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
   view_selector:
@@ -58,6 +59,7 @@ flash:
   role:
     removed: Роль успешно удалена
 error:
+  common: Произошла ошибка
   removing:
     item: Не удается удалить этот элемент
     association_type: Не удается удалить этот тип ассоциации
@@ -105,7 +107,9 @@ pim:
         xlsx_all: Excel (все атрибуты)
         xlsx_grid_context: Excel (видимые столбцы)
       delete: Удалить
+      mass_edit: Массовые действия
       category_edit: Перемещение товаров в категориях
+      sequential_edit: Последовательное редактирование
 jstree.create: Создать
 jstree.done: Готово
 switch_on: "Да"
@@ -120,7 +124,8 @@ pim_enrich:
       confirm.title: Удалить {{ itemName }}
   navigation:
     link:
-      back_to_grid: Вернуться к списку
+      back_to_grid: Вернуться к представлению данных в таблице
+    other_actions: Другие действия
   entity:
     save:
       label: Сохранить
@@ -134,11 +139,16 @@ pim_enrich:
         save: Сохранить
         cancel: Отмена
     product:
+      navigation: Навигацию по продуктам
       title: продукт
       locale: Локаль
       category: Категория
       create: Создать
+      subTitle: Создать продукт
+      modalTitle: Выберите действие
       filters: Фильтры
+      selected: выбранные результаты
+      common: Общие
       btn:
         enabled: Включено
         disabled: Отключено
@@ -152,13 +162,16 @@ pim_enrich:
         logged_at: Дата входа
         from: С
         modified: Изменен
+        old_value: Старое значение
+        new_value: Новое значение
         actions: Действия
       info:
         deletion_successful: Продукт успешно удален.
         deletion_failed: Не удалось удалить продукт.
         update_successful: Продукт успешно обновлен.
         update_failed: Не удалось обновить продукт.
-        already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
+        field_not_ready: "Товар не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+        already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» в видимости «{{ scope }}»
       error:
         upload: Произошла ошибка при загрузке файла
       meta:
@@ -202,18 +215,39 @@ pim_enrich:
         title: Создать
         labels:
           family: Выберите семейство
+          family_variant: Выберите разновидность семейства
           save: Сохранить
           cancel: Отмена
       message:
         created: Продукт успешно создан
       completeness: Завершено
+      sequential_edit:
+        item_limit: Только первая 1000 элементов из {{ count }} выбранных показывается при последовательном редактировании
+        empty: Ничего не найдено, пожалуйста, измените условия поиска
     product_model:
+      create_popin:
+        type: Модель продукта
+        title: Создать модель продукта
+      info:
+        create_successful: Модель продукта успешно создана
+        update_successful: Модель продукта успешно обновлена. Коэффициент заполненности этой разновидности продуктов будет пересчитан.
+        deletion_successful: Модель продукта успешно удалена.
+        update_failed: Не удалось обновить модель продукта.
+        field_not_ready: "Товар не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+      read_only_parent_attribute_from_common: Данный атрибут может быть обновлен в общих атрибутах.
+      variant_axis: Вариант конфигурационного атрибута
+      title: модели продукта
       add_child:
+        create: Добавить новый
         cancel: Отмена
         confirm: Подтверждение
+        create_label: "Добавить новые {{ axes }}"
         fields:
+          required_label: (вариант конфигурационного атрибута)
           code: Код
     association_type:
+      info:
+        field_not_ready: "Тип ассоциации не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       meta:
         created: Создано
         created_by: Создана
@@ -227,6 +261,12 @@ pim_enrich:
       message:
         created: Тип ассоциации успешно создан
     group_type:
+      info:
+        deletion_successful: Тип группы успешно удалён.
+        deletion_failed: Не удалось удалить тип группы.
+        update_successful: Тип группы успешно обновлён.
+        update_failed: Не удалось обновить тип группы.
+        field_not_ready: "Тип группы не может быть сохранён в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       meta:
         created: Создано
         created_by: Создана
@@ -241,6 +281,14 @@ pim_enrich:
         created: Тип группы успешно создан
     channel:
       title: канал
+      info:
+        deletion_successful: Канал успешно удалён.
+        deletion_failed: Не удалось удалить канал.
+        update_successful: Канал успешно обновлён.
+        update_failed: Не удалось обновить канал.
+        create_successful: Канал успешно создан.
+        create_failed: Не удалось создать канал.
+        field_not_ready: "Канал не может быть сохранён в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       meta:
         created: Создано
         created_by: Создана
@@ -250,6 +298,12 @@ pim_enrich:
         save: Сохранить
     family:
       title: семейство
+      selected: выбранные семейства
+      info:
+        update_successful: Семейство успешно обновлено.
+        create_successful: Канал успешно создан.
+        update_failed: Произошла ошибка во время обновления семейства.
+        attribute_edit_permission_is_not_granted: У вас нет прав для редактирования семейства атрибутов
       meta:
         created: Создано
         created_by: Создана
@@ -262,16 +316,25 @@ pim_enrich:
       message:
         created: Семейство успешно создано
       variant:
+        common:
+          title: Общие атрибуты
+          empty: Нет общих атрибутов
+        axis.label: Вариант конфигурационного атрибута
+        create_description: Вы можете определить структуру продуктов и их вариантов в семействе. Выберите количество уровней, которые необходимо изменить, атрибуты, используемые в качестве конфигурационных атрибутов для каждого уровня, а затем определите как распределяются атрибуты.
+        update_description: Перетащите атрибуты на нужный уровень, чтобы управлять данными атрибутами с этого уровня.
         create: Создать
         cancel: Отмена
         code: Код
         label: Метка
+        axis_level: Уровень варианта конфигурационного атрибута
     attribute_option:
       code: Код
       label: Метка
       actions: Действия
     group:
       title: Группа
+      info:
+        field_not_ready: "Группа не может быть сохранена в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
       btn:
         save: Сохранить
       meta:
@@ -285,11 +348,13 @@ pim_enrich:
       message:
         created: Группа успешно создана
     attribute:
-      scopable: Область назначаема
+      info:
+        field_not_ready: "Атрибут не может быть сохранен в данный момент. Следующие обязательные поля не заполнены: {{ fields }}"
+      scopable: Видимый
       type:
         pim_catalog_identifier: Идентификатор
-        pim_catalog_text: Текст
-        pim_catalog_textarea: Текст
+        pim_catalog_text: Текст до 255 символов
+        pim_catalog_textarea: Текстовая область
         pim_catalog_number: Число
         pim_catalog_price_collection: Цена
         pim_catalog_multiselect: Множественный выбор
@@ -298,7 +363,7 @@ pim_enrich:
         pim_catalog_image: Изображение
         pim_catalog_boolean: "Да/Нет"
         pim_catalog_date: Дата
-        pim_catalog_metric: Метрическая
+        pim_catalog_metric: Метрический
         pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
         pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
       validation_rule:
@@ -327,6 +392,7 @@ pim_enrich:
   error:
     upload: Произошла ошибка во время загрузки файла
   alert:
+    not_allowed: Запрещено. У вас нет доступа к этой странице
     error_occured: Произошла ошибка во время загрузки страницы
   form:
     required: (требуется)
@@ -444,7 +510,7 @@ pim_enrich:
         option_created: Элемент в списке атрибута успешно создан
         error_creating_option: Произошла ошибка при попытке создания элемента списка для атрибута
       add_option_modal:
-        title: Добавить элемента списка для атрибута
+        title: Добавить опцию атрибута
         confirm: Добавить
         cancel: Отмена
     entity:
@@ -475,7 +541,7 @@ pim_enrich:
           table:
             name: Имя
             type: Тип
-            scopable: Область назначаема
+            scopable: Видимый
             localizable: Локализуемый
         history.title: Журнал
     common:
@@ -500,6 +566,7 @@ pim_enrich:
         warning: Предупреждение
         header.step: Этап
         header.status: Статус
+        header.warnings: Предупреждения
         header.summary: Сводка
         header.start: Начало
         header.end: Конец
@@ -509,9 +576,6 @@ pim_enrich:
         export.title: Экспортировать сейчас
         import.launch: Импортировать сейчас
         import.upload: Загрузить и импортировать сейчас
-      meta:
-        job: Работа
-        connector: Соединитель
       tab:
         content:
           title: Содержание
@@ -521,20 +585,13 @@ pim_enrich:
             title: Код
           label:
             title: Метка
-          decimal_separator:
-            title: Десятичный разделитель
-            help: Введите десятичный разделитель
           date_format:
             title: Формат даты
             help: Введите формат даты
           file_path:
             title: Путь к файлу
             help: Путь к сгенерированному файлу
-          delimiter:
-            title: Разделитель
-            help: Символ, используемый как разделитель полей
           enclosure:
-            title: Символ обрамления
             help: Символ, используемый для обрамления полей
           with_header:
             title: Включая заголовки
@@ -596,9 +653,10 @@ pim_enrich:
             metric_family: Семейство измерений
             number_max: Макс. число
             number_min: Мин. число
+            scopable: Значение для канала
             type: Тип
             unique: Уникальное значение
-            useable_as_grid_filter: Используется в сетке
+            useable_as_grid_filter: Используется в представлении данных в таблице
             validation_regexp: Регулярное выражение
             validation_rule: Правило проверки
           default_label:
@@ -633,7 +691,7 @@ pim_enrich:
       filter:
         channel:
           title: Канал
-          help: Канал определяет область для значений продуктов, локали, используемые для выбора данных, и классификацию, используемую для выбора продуктов.
+          help: Канал определяет область видимости продуктов, локали, используемые для выбранных данных, и дерево категорий для выбранных продуктов.
         locales:
           title: Локали
           help: "Локали определяют значения локализованных данных для экспорта. На пример, только информация по продукции на французском языке."
@@ -676,11 +734,8 @@ pim_enrich:
             enabled: Включено
             disabled: Отключено
         completeness:
-          title: Завершенность
-          help: Выберите продукты для экспорта по законченности.
           operators:
-            ALL: Нет условия
-            ">=": Закончен по хотя бы одной локали
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Закончен по хотя бы одной выбранной локали
             "GREATER OR EQUALS THAN ON ALL LOCALES": Закончен по всем выбранным локалям
             LOWER THAN ON ALL LOCALES: Незакончен ни по одной локали
           empty_selection: Выберите семейство
@@ -782,6 +837,7 @@ pim_enrich:
       create_btn: Создать
   mass_edit:
     next: Следующая
+    previous: Назад
     cancel: Отмена
     confirm: Подтверждение
     product:
@@ -797,7 +853,12 @@ pim_enrich:
           label: Изменить статус
           description: Выбранные продукты будут активированы или деактивированы.
           field: Включить
+        edit_common:
+          description: Только атрибуты, принадлежащие к семействам выбранных продуктов будут редактироваться для локали {{ locale }} и канала {{ scope }}.
+        add_attribute_value:
+          description: Только атрибуты, имеющие несколько значений, будут редактироваться для {{ locale }} и {{ scope }}. Новые значения атрибутов добавляются, предыдущие значения сохраняются.
         change_family:
+          label: Изменить семейство
           description: Семейство для выбранных продуктов будет изменено на выбранное семейство
           field: Семейство
         add_to_group:
@@ -817,7 +878,7 @@ pim_enrich:
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
   http:
-    403: Forbidden. You are not allowed to access this page
+    403: Запрещено. У вас нет доступа к этой странице
 page_title:
   oro_default: Панель управления
   pim_enrich_attributegroup_index: Группы атрибутов
@@ -834,6 +895,7 @@ page_title:
   pim_enrich_currency_index: Валюты
   pim_enrich_locale_index: Локали
   pim_enrich_group_index: Группы
+  pim_enrich_group_edit: Группа {{ group.label }} | Редактирование
   pim_enrich_associationtype_index: Типы ассоциаций
   pim_enrich_grouptype_index: Типы групп
   pim_enrich_mass_edit_action_choose: Массовое редактирование | Выбрать
@@ -909,16 +971,41 @@ batch_jobs:
     label: Импорт группы из CSV
     validation.label: Проверка файла
     import.label: Импорт группы
+  csv_channel_export:
+    label: Экспорт каналов в CSV
+    export.label: Экспорт каналов
+  csv_locale_export:
+    label: Экспорт локалей в CSV
+    export.label: Экспорт локалей
+  csv_attribute_group_export:
+    label: Экспорт групп атрибутов в CSV
+    export.label: Экспорт групп атрибутов
+  csv_currency_export:
+    label: Экспорт валют в CSV
+    export.label: Экспорт валют
+  csv_group_type_export:
+    label: Экспорт типов групп в CSV
+    export.label: Экспорт типов групп
   csv_channel_import:
+    label: Импорт каналов из CSV
     validation.label: Проверка файла
+    import.label: Импорт каналов
   csv_locale_import:
+    label: Импорт локалей из CSV
     validation.label: Проверка файла
+    import.label: Импорт локалей
   csv_attribute_group_import:
+    label: Импорт групп атрибутов из CSV
     validation.label: Проверка файла
+    import.label: Импорт групп атрибутов
   csv_currency_import:
+    label: Импорт валют из CSV
     validation.label: Проверка файла
+    import.label: Импорт валют
   csv_group_type_import:
+    label: Импорт типов групп из CSV
     validation.label: Проверка файла
+    import.label: Импорт типов групп
   xlsx_category_import:
     label: Импорт категорий из XLSX
     validation.label: Проверка файла
@@ -971,16 +1058,39 @@ batch_jobs:
   xlsx_association_type_export:
     label: Экспорт типов ассоциаций в XLSX
     export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_export:
+    label: Экспорт каналов в XLSX
+    export.label: Экспорт каналов
+  xlsx_locale_export:
+    export.label: Экспорт локалей
+  xlsx_attribute_group_export:
+    label: Экспорт групп атрибутов в XLSX
+    export.label: Экспорт групп атрибутов
+  xlsx_currency_export:
+    label: Экспорт валют в XLSX
+    export.label: Экспорт валют
+  xlsx_group_type_export:
+    label: Экспорт типов групп в XLSX
+    export.label: Экспорт типов групп
   xlsx_channel_import:
+    label: Импорт каналов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт каналов
   xlsx_locale_import:
     validation.label: Проверка файла
+    import.label: Импорт локалей
   xlsx_attribute_group_import:
+    label: Импорт групп атрибутов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт групп атрибутов
   xlsx_currency_import:
+    label: Импорт валют из XLSX
     validation.label: Проверка файла
+    import.label: Импорт валют
   xlsx_group_type_import:
+    label: Импорт типов групп из XLSX
     validation.label: Проверка файла
+    import.label: Импорт типов групп
 pim_menu:
   tab:
     products: Продукты
@@ -1018,9 +1128,12 @@ pim_notification:
   mark_all_as_read: Пометить все как прочитанное
   loading: Загрузка...
 catalog_volume:
+  product_values_description: 'Чем больше у вас есть значений продукта, тем более ценным является ваш PIM, тем выше ваш ROI! <a href="{{link}}" target="_blank">Подробнее</a>'
   axis:
     count_products: Продукты
     count_channels: Каналы
+    count_scopable_attributes: Видимые атрибуты
+    count_localizable_and_scopable_attributes: Локализуемые и видимые атрибуты
     count_families: Семейства
     count_attributes: Атрибуты
     count_categories: Категории

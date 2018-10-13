@@ -11,6 +11,8 @@ Selected Rows: Выбранные строки
 "Delete Confirmation": "Подтверждение удаления"
 "Edit": "Редактировать"
 "Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
+"Yes, revoke": "Да, отозвать"
+"Revoke Confirmation": "Отозвать подтверждение"
 Now: Сейчас
 Prev: Предыдущий
 Next: Следующая
@@ -110,3 +112,8 @@ oro_config:
         notification:
           title: Уведомления
           system_notification: Уведомления о новых версиях
+        loading_message:
+          title: Загрузка сообщений
+          label: Включить загрузку сообщений
+        loading_messages:
+          label: Доступна загрузка сообщений

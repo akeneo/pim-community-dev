@@ -247,6 +247,7 @@ pim_enrich:
       create_popin:
         type: Model de producte
         title: Crear un model de producte
+        content: Un model de producte reuneix variants de productes i facilita l'enriquiment de les seves propietats comunes.
       info:
         create_successful: Model de producte creat amb èxit
         update_successful: Model de producte actualitzat correctament. Es recalcula la integritat dels seus productes variants.
@@ -351,15 +352,19 @@ pim_enrich:
         level_2.label: Atributs variants de nivell dos
         add_variant: Afegir variant
         create_label: Crear una nova variant familiar
+        create_description: En una variant familiar, podeu definir una estructura per productes amb variants. Trieu el nombre de nivells variants a gestionar, els atributs utilitzats com eixos variants per a cada nivell i després definir com es distribueixen els atributs.
+        update_description: Arrossegar i deixar anar els atributs al nivell de variant seleccionat per gestionar-los des del nivell de variant.
         update_translation: Traduir etiqueta de variant de família
         create: Crear
         cancel: Cancelar
         code: Codi
         label: Etiqueta
         levels: Nivells de variants
+        axis_level: Nivell d'eix de variants
         required: requerit
         confirm_attribute_removal:
           title: Confirmar eliminació d'atributs
+          message: Al suprimir aquests atributs, tornaran en el atributs comuns de la variant familiar i es suprimiran els valors dels productes variants
     family_variant:
       info:
         update_successful: Variant de família actualitzat correctament. Els productes amb variants s'actualitzarà amb els canvis.
@@ -872,12 +877,15 @@ pim_enrich:
             "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completar almenys a una configuració regional seleccionada
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completar a totes les configuracions regionals seleccionades
             LOWER THAN ON ALL LOCALES: No completar a totes les configuracions regionals seleccionades
+            AT LEAST COMPLETE: Al menys un fill de producte complet en un local seleccionat
+            ALL COMPLETE: Tots els fills de producte complets en tots els locals seleccionats
           empty_selection: Seleccioneu una família
         category:
           title: Categoria
           help: Utilitzeu les categories de producte a l'arbre (definit al canal de dalt) per seleccionar els productes a exportar
         identifier:
           title: Identificador
+          help: Utilitzi els identificadors de producte per exportar separat per comes, espais o salts de línia
         metric:
           operators:
             "=": És igual a
@@ -946,6 +954,9 @@ pim_enrich:
         title: Propietats
       global_settings:
         title: Configuració global
+  mass_edit_action:
+    edit_common_attributes:
+      description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per <span class="highlight">{{ locale }}</span> local i de <span class="highlight">{{ channel }}</span> canal.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} tipus d'associació|] 1, Inf [{{ count }} tipus d'associacions"
@@ -1012,11 +1023,13 @@ pim_enrich:
     cancel: Cancelar
     confirm: Confirmar
     product:
+      title: Acció en massa dels productes
       confirm: "{1}Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, confirmeu-ho si us plau."
       step:
         select:
           label: Triar productes
         choose:
+          title: Accions en massa dels productes
           label_count: "] 0, Inf [Selecciona l'acció"
         configure:
           label: Configurar
@@ -1035,9 +1048,11 @@ pim_enrich:
         edit_common:
           label: Editar valor dels atributs
           label_count: "{1}Editar valor dels atributs de<span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Editar valor dels atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}productes</span>"
+          description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per {{ locale }} local i el {{ scope }} canal.
         add_attribute_value:
           label: Afegir valor dels atributs
           label_count: "{1}Afegir valors del atributs per <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Afegir valors dels atributs per <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes </span>"
+          description: Només els atributs multivalor pertanyents a les famílies dels productes s'editaran amb les següents dades per la localització {{ locale }} i el canal {{ scope }}. Els valors d'atributs s'afegeixen, mantenint els valors anteriors.
         change_family:
           label: Canviar família
           label_count: "{1}Canviar la família de <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Canviar la família de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
@@ -1067,16 +1082,20 @@ pim_enrich:
         associate_to_product_and_product_model:
           label: Associa
           label_count: "{1}Associar <span class=\"AknFullPage-title--highlight\">1 producte</span> a productes o models de producte|] 1, Inf [Associar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a productes o models de productes"
+          description: Els productes seleccionats a la quadrícula s'associaran als productes seleccionats i models de producte per el tipus d'associació escollit
           validate: Si us plau, afegiu una associació abans de seguir amb el següent pas
         change_parent_product_model:
           label: Canviar el model de producte del pare
           label_count: "{1}Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Canviar el model de producte pare de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+          description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
     family:
+      title: Acció en massa de família
       confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
       step:
         select:
           label: Triar famílies
         choose:
+          title: Accions en massa de famílies
           label_count: "] 0, Inf [Selecciona l'acció"
         configure:
           label: Configurar
@@ -1088,6 +1107,7 @@ pim_enrich:
         set_requirements:
           label: Establir els requeriments d'atributs
           description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
+          label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|] 1, Inf [Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
   http:
@@ -1097,6 +1117,7 @@ page_title:
   pim_enrich_attributegroup_index: Grups d'atribut
   pim_enrich_attributegroup_create: Grups d'atributs | Crear
   pim_enrich_attributegroup_edit: Grup d'atributs {{ group.label }} | Editar
+  pim_enrich_catalog_volume_index: Seguiment del volum del catàleg
   pim_enrich_categorytree_index: Arbres de categories
   pim_enrich_categorytree_create: Arbres de categories | Crear
   pim_enrich_categorytree_edit: Arbre de categoria {{ category.label }} | Editar
@@ -1247,6 +1268,8 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar família
     compute_data_related_to_family_variants.label: Calcular les dades del model de producte
+    compute_data_related_to_family_root_product_models.label: Calcular les dades dels models de producte de base
+    compute_data_related_to_family_sub_product_models.label: Calcular les dades del model de subproducte
     compute_data_related_to_family_products.label: Calcular les dades de productes
   csv_family_variant_import:
     label: Importar variant de família a CSV
@@ -1312,6 +1335,7 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar família
     compute_data_related_to_family_variants.label: Calcular les dades del model de producte
+    compute_data_related_to_family_root_product_models.label: Calcular les dades dels models de producte de base
     compute_data_related_to_family_sub_product_models.label: Calcular les dades del model de subproducte
     compute_data_related_to_family_products.label: Calcular les dades de productes
   xlsx_family_variant_import:
@@ -1429,6 +1453,7 @@ pim_menu:
     import_history: Històric d'importacions
     import_profile: Perfils d'importació
     configuration: Configuració
+    catalog_volume: Seguiment del volum del catàleg
     user_management: Gestió d'usuaris
     user: Usuaris
     user_group: Grups
@@ -1439,6 +1464,8 @@ pim_menu:
   navigation:
     activity: Activitat de navegació
     system: Sistema de navegació
+    user: Navegació de gestió d'usuaris
+    settings: Navegació de configuració
   user:
     logout: Tanca sessió
     user_account: El meu compte
@@ -1447,6 +1474,15 @@ pim_notification:
   no_notifications: Sense notificacions
   loading: Carregant...
 catalog_volume:
+  product_values: "Tens <span>{{values}}</span> valors de producte en el PIM! Amb una mitjana de <span>{{average}}</span> valors de productes per producte!&nbsp;💪"
+  product_values_description: 'El PIM es torna més valuós com més productes tens, i el ROI més poderós! Més detalls <a href="{{link}}" target="_blank">aquí</a>'
+  section:
+    product_values:
+      hint: 'Sap que el nombre total de valors de producte en el PIM està directament relacionat amb els següents eixos?<br/> Per més detalls, l''invitem a <a href="{{link}}" target="_blank">llegir aquest article</a>.'
+      title: Eixos que influeixen al número de valors de producte
+    catalog_structure:
+      hint: Vostè sap que l'estructura d'un bon catàleg és molt important i va condicionat a un enriquiment eficient. A continuació es presenten els diversos eixos per controlar l'estructura del catàleg.
+      title: Eixos relacionats amb l'estructura del catàleg
   axis:
     count_products: Productes
     average_max_attributes_per_family: Atributs per família
@@ -1460,3 +1496,4 @@ catalog_volume:
     count_category_trees: Arbres de categories
     count_variant_products: Variant de productes
     count_product_models: Models de producte
+    warning: Uau! Ha superat un record amb aquest eix! No dubtis a contactar-nos en cas de necessitar ajuda amb aquest tipus de volum.
