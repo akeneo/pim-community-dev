@@ -8,15 +8,91 @@ pim_connector:
       selector:
         modal:
           title: Выбор категориий
-          cancel: Отмена
-          confirm: Подтверждение
-        label: "{0} Все продукты |{1} Одна категория выбрана |] 1, Inf [ {{ count }} выбранные категории"
-        edit: Редактировать
         title: Выберите категории
     locales:
       validation:
         not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
-page_title:
+pim_import_export:
+  form:
+    job_execution:
+      refreshBtn.title: Обновить
+      button:
+        show_profile.title: Показать профиль
+        download_log.title: Журнал загрузки
+      summary:
+        fetching: Сбор данных о выполнении задания...
+        warning: Предупреждение
+        header.step: Этап
+        header.warnings: Предупреждения
+        header.summary: Сводка
+        header.start: Начало
+        header.end: Конец
+    job_instance:
+      button:
+        export.title: Экспортировать сейчас
+        import.launch: Импортировать сейчас
+        import.upload: Загрузить и импортировать сейчас
+      meta:
+        job: Работа
+        connector: Соединитель
+      tab:
+        content:
+          title: Содержание
+        properties:
+          decimal_separator:
+            title: Десятичный разделитель
+            help: Введите десятичный разделитель
+          date_format:
+            title: Формат даты
+            help: Введите формат даты
+          file_path:
+            title: Путь к файлу
+            help: Путь к сгенерированному файлу
+          delimiter:
+            title: Разделитель
+            help: Символ, используемый как разделитель полей
+          enclosure:
+            title: Символ обрамления
+            help: Символ, используемый для обрамления полей
+          with_header:
+            title: Включая заголовки
+            help: Добавить строку с заголовками
+          with_media:
+            title: Экспортировать файлы и изображения
+            help: Экспортировать файлы и изображения продуктов
+          lines_per_file:
+            title: Количество строк в файле
+            help: Определить предельное число строк в файле
+          upload_allowed:
+            title: Разрешить загрузку файлов
+            help: Разрешить загрузку файлов
+          categories_column:
+            title: Колонка категорий
+            help: Название колонки категорий
+          escape:
+            title: Экранирование
+            help: Символ, используемый для экранирования
+          family_column:
+            title: Колонка семейства
+            help: Название колонки семейства
+          groups_column:
+            title: Колонка групп
+            help: Название колонки групп
+          enabled:
+            title: Активировать продукт
+            help: Активировать импортируемые продукты
+          enabled_comparison:
+            title: Сравнивать значения
+            help: Включить сравнение исходных значений и импортированных значений. Может ускорить импорт, если импортированные значения очень похожи на исходные значения
+          real_time_versioning:
+            title: Обновление истории изменений в реальном времени
+            help: Означает, что история изменений продукта автоматически обновляется, можно выключить для улучшения производительности
+      file_path: Путь к файлу
+confirmation:
+  remove:
+    import_profile: Вы действительно хотите удалить этот профиль импорта?
+    export_profile: Вы действительно хотите удалить этот профиль экспорта?
+pim_title:
   pim_importexport_export_profile_index: Управление профилями экспорта
   pim_importexport_export_execution_index: История запусков экспорта
   pim_importexport_export_execution_show: Запуск экспорта | Детали

@@ -1,2 +1,3 @@
 pim_notification:
   report: Отчет
+  mark_all_as_read: Пометить все как прочитанное

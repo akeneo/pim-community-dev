@@ -1,0 +1,10 @@
+pim_catalog_volume:
+  axis:
+    count_products: Продукты
+    count_channels: Каналы
+    count_scopable_attributes: Видимые атрибуты
+    count_localizable_and_scopable_attributes: Локализуемые и видимые атрибуты
+    count_families: Семейства
+    count_attributes: Атрибуты
+    count_categories: Категории
+    count_category_trees: Деревья категории

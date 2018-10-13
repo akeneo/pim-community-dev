@@ -134,6 +134,7 @@ job_execution.summary:
     skipped: пропущено, расширение из белого списка
 Step: Этап
 Status: Статус
+Warnings: Предупреждения
 Summary: Сводка
 Start: Начало
 End: Конец
