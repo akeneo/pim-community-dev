@@ -157,3 +157,7 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Импорт предложений из XLSX
     import.label: Импорт предложений из XLSX
+pim_analytics:
+  info_type:
+    nb_published_products: Количество опубликованных продуктов
+    nb_product_drafts: Количество черновиков продуктов
