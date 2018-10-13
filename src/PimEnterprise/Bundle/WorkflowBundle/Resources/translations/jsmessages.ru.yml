@@ -18,6 +18,8 @@ pimee_workflow:
     proposal:
       modal.title: Оставить комментарий (255 символов макс.)
   proposal:
+    overview: "] -Inf, 1] {{ count }} предложение|] 1, Inf [{{ count }} предложений"
+    selected: предложения выбраны
     mass_action_group:
       review:
         label: Массовое действие
