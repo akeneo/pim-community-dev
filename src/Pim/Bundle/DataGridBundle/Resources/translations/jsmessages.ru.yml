@@ -52,6 +52,7 @@ pim:
       label_empty: пусто
       label_not_empty: не является пустым
       label_in_list: в списке
+      operator: Оператор
     price_filter:
       label: Валюта
     category_filter:

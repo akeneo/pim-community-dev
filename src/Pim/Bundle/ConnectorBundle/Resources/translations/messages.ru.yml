@@ -94,16 +94,41 @@ batch_jobs:
     label: Импорт группы из CSV
     validation.label: Проверка файла
     import.label: Импорт группы
+  csv_channel_export:
+    label: Экспорт каналов в CSV
+    export.label: Экспорт каналов
+  csv_locale_export:
+    label: Экспорт локалей в CSV
+    export.label: Экспорт локалей
+  csv_attribute_group_export:
+    label: Экспорт групп атрибутов в CSV
+    export.label: Экспорт групп атрибутов
+  csv_currency_export:
+    label: Экспорт валют в CSV
+    export.label: Экспорт валют
+  csv_group_type_export:
+    label: Экспорт типов групп в CSV
+    export.label: Экспорт типов групп
   csv_channel_import:
+    label: Импорт каналов из CSV
     validation.label: Проверка файла
+    import.label: Импорт каналов
   csv_locale_import:
+    label: Импорт локалей из CSV
     validation.label: Проверка файла
+    import.label: Импорт локалей
   csv_attribute_group_import:
+    label: Импорт групп атрибутов из CSV
     validation.label: Проверка файла
+    import.label: Импорт групп атрибутов
   csv_currency_import:
+    label: Импорт валют из CSV
     validation.label: Проверка файла
+    import.label: Импорт валют
   csv_group_type_import:
+    label: Импорт типов групп из CSV
     validation.label: Проверка файла
+    import.label: Импорт типов групп
   xlsx_category_import:
     label: Импорт категорий из XLSX
     validation.label: Проверка файла
@@ -158,13 +183,36 @@ batch_jobs:
   xlsx_association_type_export:
     label: Экспорт типов ассоциаций в XLSX
     export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_export:
+    label: Экспорт каналов в XLSX
+    export.label: Экспорт каналов
+  xlsx_locale_export:
+    export.label: Экспорт локалей
+  xlsx_attribute_group_export:
+    label: Экспорт групп атрибутов в XLSX
+    export.label: Экспорт групп атрибутов
+  xlsx_currency_export:
+    label: Экспорт валют в XLSX
+    export.label: Экспорт валют
+  xlsx_group_type_export:
+    label: Экспорт типов групп в XLSX
+    export.label: Экспорт типов групп
   xlsx_channel_import:
+    label: Импорт каналов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт каналов
   xlsx_locale_import:
     validation.label: Проверка файла
+    import.label: Импорт локалей
   xlsx_attribute_group_import:
+    label: Импорт групп атрибутов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт групп атрибутов
   xlsx_currency_import:
+    label: Импорт валют из XLSX
     validation.label: Проверка файла
+    import.label: Импорт валют
   xlsx_group_type_import:
+    label: Импорт типов групп из XLSX
     validation.label: Проверка файла
+    import.label: Импорт типов групп

@@ -198,6 +198,9 @@ batch_jobs:
   xlsx_family_export:
     label: Exportació de família en XLSX
     export.label: Exportar família
+  xlsx_family_variant_export:
+    label: Exportar variant de família en XLSX
+    export.label: Exportar variant de família
   xlsx_category_export:
     label: Exportació de categoria en XLSX
     export.label: Exportar categories

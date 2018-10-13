@@ -241,6 +241,7 @@ pim_enrich:
       create_popin:
         type: Model de producte
         title: Crear un model de producte
+        content: Un model de producte reuneix variants de productes i facilita l'enriquiment de les seves propietats comunes.
       info:
         create_successful: Model de producte creat amb èxit
         update_successful: Model de producte actualitzat correctament. Es recalcula la integritat dels seus productes variants.
@@ -345,14 +346,21 @@ pim_enrich:
         level_2.label: Atributs variants de nivell dos
         add_variant: Afegir variant
         create_label: Crear una nova variant familiar
+        create_description: En una variant familiar, podeu definir una estructura per productes amb variants. Trieu el nombre de nivells variants a gestionar, els atributs utilitzats com eixos variants per a cada nivell i després definir com es distribueixen els atributs.
+        update_description: Arrossegar i deixar anar els atributs al nivell de variant seleccionat per gestionar-los des del nivell de variant.
         create: Crear
         cancel: Cancelar
         code: Codi
         label: Etiqueta
         levels: Nivells de variants
+        axis_level: Nivell d'eix de variants
         required: requerit
         confirm_attribute_removal:
           title: Confirmar eliminació d'atributs
+          message: Al suprimir aquests atributs, tornaran en el atributs comuns de la variant familiar i es suprimiran els valors dels productes variants
+    family_variant:
+      info:
+        update_successful: Variant de família actualitzat correctament. Els productes amb variants s'actualitzarà amb els canvis.
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -750,6 +758,7 @@ pim_enrich:
             max_characters: Màxim de caràcters
             max_file_size: Mida màxima de l'arxiu (MB)
             metric_family: Família mètrica
+            minimum_input_length: Longitud mínima d'auto compleció
             negative_allowed: Valors negatius permesos
             number_max: Nombre màxim
             number_min: Nombre mínim
@@ -854,6 +863,7 @@ pim_enrich:
           help: Utilitzeu les categories de producte a l'arbre (definit al canal de dalt) per seleccionar els productes a exportar
         identifier:
           title: Identificador
+          help: Utilitzi els identificadors de producte per exportar separat per comes, espais o salts de línia
         metric:
           operators:
             "=": És igual a
@@ -922,6 +932,9 @@ pim_enrich:
         title: Propietats
       global_settings:
         title: Configuració global
+  mass_edit_action:
+    edit_common_attributes:
+      description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per <span class="highlight">{{ locale }}</span> local i de <span class="highlight">{{ channel }}</span> canal.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} tipus d'associació|] 1, Inf [{{ count }} tipus d'associacions"
@@ -988,11 +1001,13 @@ pim_enrich:
     cancel: Cancelar
     confirm: Confirmar
     product:
+      title: Acció en massa dels productes
       confirm: "{1}Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, confirmeu-ho si us plau."
       step:
         select:
           label: Triar productes
         choose:
+          title: Accions en massa dels productes
           label_count: "] 0, Inf [Selecciona l'acció"
         configure:
           label: Configurar
@@ -1010,37 +1025,49 @@ pim_enrich:
           field: Per activar
         edit_common:
           label: Editar atributs
+          label_count: "{1}Editar els atributs de <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Editar atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+          description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per {{ locale }} local i el {{ scope }} canal.
+          no_update: No hi ha cap atribut seleccionat per portar a terme l'edició en massa. Si us plau, seleccioneu un atribut.
         change_family:
           label: Canviar família
           label_count: "{1}Canviar la família de <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Canviar la família de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
           description: La família dels productes seleccionats es canviarà per la família escollida
           field: Família
+          no_update: No hi ha cap família seleccionada a la que afegir els productes.
         add_to_group:
           label: Afegir a grups
           label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a grups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a grups"
           description: Seleccioneu els grups on volgueu afegir els productes seleccionats
           field: Grups
+          no_update: No hi ha cap grup seleccionat a la que afegir els productes.
         add_to_category:
           label: Afegir a categories
           label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a categories"
           description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+          no_update: No hi ha cap categoria seleccionada a la que afegir els productes.
         move_to_category:
           label: Moure entre categories
           label_count: "{1}Moure <span class=\"AknFullPage-title--highlight\">1 producte</span> entre categories|] 1, Inf [Moure <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> entre categories"
           description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+          no_update: No hi ha cap producte seleccionat a la que moure els productes.
         remove_from_category:
           label: Eliminar de les categories
           label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producte</span> de categories|] 1, Inf [Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> de categories"
           description: Els productes s'eliminaran de les següents categories.
+          no_update: No hi ha cap categoria seleccionada de la que suprimir els productes.
         add_to_existing_product_model:
           label: Afegir a un model de producte existent
           label_count: "{1}Afegir <span class=\"AknFullPage-title--highlight\">1 producte</span> a un model de producte existent|] 1, Inf [Afegir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> a model de producte existent"
           description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
+          no_update: No hi ha cap model de producte seleccionat per realitzar l'edició en massa.
     family:
+      title: Acció en massa de família
+      confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
       step:
         select:
           label: Triar famílies
         choose:
+          title: Accions en massa de famílies
           label_count: "] 0, Inf [Selecciona l'acció"
         configure:
           label: Configurar
@@ -1051,6 +1078,8 @@ pim_enrich:
       operation:
         set_requirements:
           label: Establir els requeriments d'atributs
+          description: Els següents requeriments d'atributs s'aplicaran a les famílies seleccionades
+          label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|] 1, Inf [Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
   http:
@@ -1130,10 +1159,16 @@ batch_jobs:
     quick_export_product_model.label: Exportació ràpida del model de producte en XSLX
     perform:
       label: Exportació ràpida de producte en XSLX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportació ràpida de marc de quadrícula de producte en XSLX
+    quick_export_product_model.label: Exportació ràpida de marc de quadrícula del model de producte en XSLX
+    perform:
+      label: Exportació ràpida de marc de quadrícula de producte en XSLX
   csv_product_export:
     label: Exportar productes a CSV
     export.label: Exportar productes
   csv_product_model_export:
+    label: Exportar model de producte a CSV
     export.label: Exportar productes
   csv_category_export:
     label: Exportar categories en CSV
@@ -1153,11 +1188,16 @@ batch_jobs:
   csv_family_export:
     label: Exportar famílies en CSV
     export.label: Exportar família
+  csv_family_variant_export:
+    label: Exportar variant de família a CSV
+    export.label: Exportar variant de família
   csv_product_import:
     label: Importar producte en CSV
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
+  csv_product_model_import:
+    label: Importar model de producte a CSV
   csv_category_import:
     label: Importar categories en CSV
     validation.label: Validar arxius
@@ -1178,9 +1218,14 @@ batch_jobs:
     label: Importar famílies en CSV
     validation.label: Validar arxius
     import.label: Importar família
+    compute_data_related_to_family_variants.label: Calcular les dades del model de producte
+    compute_data_related_to_family_root_product_models.label: Calcular les dades dels models de producte de base
+    compute_data_related_to_family_sub_product_models.label: Calcular les dades del model de subproducte
     compute_data_related_to_family_products.label: Calcular les dades de productes
   csv_family_variant_import:
+    label: Importar variant de família a CSV
     validation.label: Validar arxius
+    import.label: Importar variant de família
   csv_group_import:
     label: Importar grups en CSV
     validation.label: Validar arxius
@@ -1240,17 +1285,27 @@ batch_jobs:
     label: Importació de família en XLSX
     validation.label: Validar arxius
     import.label: Importar família
+    compute_data_related_to_family_variants.label: Calcular les dades del model de producte
+    compute_data_related_to_family_root_product_models.label: Calcular les dades dels models de producte de base
+    compute_data_related_to_family_sub_product_models.label: Calcular les dades del model de subproducte
     compute_data_related_to_family_products.label: Calcular les dades de productes
   xlsx_family_variant_import:
+    label: Importar variant de família a XLSX
     validation.label: Validar arxius
+    import.label: Importar variant de família
   xlsx_product_export:
     label: Exportació de producte en XLSX
     export.label: Exportar productes
+  xlsx_product_model_export:
+    label: Exportar model de producte a XLSX
+    export.label: Exportar model de producte
   xlsx_product_import:
     label: Importació de producte en XLSX
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
+  xlsx_product_model_import:
+    label: Importar model de producte a XSLX
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups
@@ -1261,6 +1316,9 @@ batch_jobs:
   xlsx_family_export:
     label: Exportació de família en XLSX
     export.label: Exportar família
+  xlsx_family_variant_export:
+    label: Exportar variant de família en XLSX
+    export.label: Exportar variant de família
   xlsx_category_export:
     label: Exportació de categoria en XLSX
     export.label: Exportar categories
@@ -1310,6 +1368,9 @@ batch_jobs:
     import.label: Importació de tipus de grup
 job_tracker:
   download_archive:
+    archive: Descarregar arxiu generat
+    output: Descarregar arxiu generat
+    input: Descarregar arxius llegits
     invalid_xlsx: Descarregar dades no vàlides
     invalid_csv: Descarregar dades no vàlides
 pim_menu:
@@ -1353,6 +1414,8 @@ pim_menu:
   navigation:
     activity: Activitat de navegació
     system: Sistema de navegació
+    user: Navegació de gestió d'usuaris
+    settings: Navegació de configuració
   user:
     logout: Tanca sessió
     user_account: El meu compte

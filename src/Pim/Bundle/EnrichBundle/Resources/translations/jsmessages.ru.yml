@@ -21,6 +21,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Удалить
+      confirm_content: Вы действительно хотите удалить выбранные продукты?
       success: Выбранные продукты успешно удалены.
       error: Oшибка при попытке удаления выбранных продуктов, пожалуйста, попробуйте снова.
   view_selector:
@@ -57,6 +58,7 @@ flash:
   role:
     removed: Роль успешно удалена
 error:
+  common: Произошла ошибка
   removing:
     item: Не удается удалить этот элемент
     association_type: Не удается удалить этот тип ассоциации
@@ -120,6 +122,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: Вернуться к списку
+    other_actions: Другие действия
   entity:
     save:
       label: Сохранить
@@ -137,7 +140,10 @@ pim_enrich:
       locale: Локаль
       category: Категория
       create: Создать
+      subTitle: Создать продукт
+      modalTitle: Выберите действие
       filters: Фильтры
+      selected: выбранные результаты
       btn:
         enabled: Включено
         disabled: Отключено
@@ -151,6 +157,8 @@ pim_enrich:
         logged_at: Дата входа
         from: С
         modified: Изменен
+        old_value: Старое значение
+        new_value: Новое значение
         actions: Действия
       info:
         deletion_successful: Продукт успешно удален.
@@ -208,6 +216,7 @@ pim_enrich:
       completeness: Завершено
     product_model:
       add_child:
+        create: Добавить новый
         cancel: Отмена
         confirm: Подтверждение
         fields:
@@ -226,6 +235,11 @@ pim_enrich:
       message:
         created: Тип ассоциации успешно создан
     group_type:
+      info:
+        deletion_successful: Тип группы успешно удалён.
+        deletion_failed: Не удалось удалить тип группы.
+        update_successful: Тип группы успешно обновлён.
+        update_failed: Не удалось обновить тип группы.
       meta:
         created: Создано
         created_by: Создана
@@ -249,6 +263,9 @@ pim_enrich:
         save: Сохранить
     family:
       title: семейство
+      selected: выбранные семейства
+      info:
+        update_failed: Произошла ошибка во время обновления семейства.
       meta:
         created: Создано
         created_by: Создана
@@ -288,7 +305,7 @@ pim_enrich:
       type:
         pim_catalog_identifier: Идентификатор
         pim_catalog_text: Текст
-        pim_catalog_textarea: Текст
+        pim_catalog_textarea: Текстовая область
         pim_catalog_number: Число
         pim_catalog_price_collection: Цена
         pim_catalog_multiselect: Множественный выбор
@@ -326,6 +343,7 @@ pim_enrich:
   error:
     upload: Произошла ошибка во время загрузки файла
   alert:
+    not_allowed: Запрещено. У вас нет доступа к этой странице
     error_occured: Произошла ошибка во время загрузки страницы
   form:
     required: (требуется)
@@ -495,6 +513,7 @@ pim_enrich:
         warning: Предупреждение
         header.step: Этап
         header.status: Статус
+        header.warnings: Предупреждения
         header.summary: Сводка
         header.start: Начало
         header.end: Конец
@@ -774,6 +793,7 @@ pim_enrich:
       create_btn: Создать
   mass_edit:
     next: Следующая
+    previous: Назад
     cancel: Отмена
     confirm: Подтверждение
     product:
@@ -792,6 +812,7 @@ pim_enrich:
         edit_common:
           label: Редактировать атрибуты
         change_family:
+          label: Изменить семейство
           description: Семейство для выбранных продуктов будет изменено на выбранное семейство
           field: Семейство
         add_to_group:
@@ -815,7 +836,7 @@ pim_enrich:
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
   http:
-    403: Forbidden. You are not allowed to access this page
+    403: Запрещено. У вас нет доступа к этой странице
 page_title:
   oro_default: Панель управления
   pim_enrich_attributegroup_index: Группы атрибутов
@@ -832,6 +853,7 @@ page_title:
   pim_enrich_currency_index: Валюты
   pim_enrich_locale_index: Локали
   pim_enrich_group_index: Группы
+  pim_enrich_group_edit: Группа {{ group.label }} | Редактирование
   pim_enrich_associationtype_index: Типы ассоциаций
   pim_enrich_grouptype_index: Типы групп
   pim_enrich_mass_edit_action_choose: Массовое редактирование | Выбрать
@@ -907,16 +929,41 @@ batch_jobs:
     label: Импорт группы из CSV
     validation.label: Проверка файла
     import.label: Импорт группы
+  csv_channel_export:
+    label: Экспорт каналов в CSV
+    export.label: Экспорт каналов
+  csv_locale_export:
+    label: Экспорт локалей в CSV
+    export.label: Экспорт локалей
+  csv_attribute_group_export:
+    label: Экспорт групп атрибутов в CSV
+    export.label: Экспорт групп атрибутов
+  csv_currency_export:
+    label: Экспорт валют в CSV
+    export.label: Экспорт валют
+  csv_group_type_export:
+    label: Экспорт типов групп в CSV
+    export.label: Экспорт типов групп
   csv_channel_import:
+    label: Импорт каналов из CSV
     validation.label: Проверка файла
+    import.label: Импорт каналов
   csv_locale_import:
+    label: Импорт локалей из CSV
     validation.label: Проверка файла
+    import.label: Импорт локалей
   csv_attribute_group_import:
+    label: Импорт групп атрибутов из CSV
     validation.label: Проверка файла
+    import.label: Импорт групп атрибутов
   csv_currency_import:
+    label: Импорт валют из CSV
     validation.label: Проверка файла
+    import.label: Импорт валют
   csv_group_type_import:
+    label: Импорт типов групп из CSV
     validation.label: Проверка файла
+    import.label: Импорт типов групп
   xlsx_category_import:
     label: Импорт категорий из XLSX
     validation.label: Проверка файла
@@ -969,16 +1016,39 @@ batch_jobs:
   xlsx_association_type_export:
     label: Экспорт типов ассоциаций в XLSX
     export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_export:
+    label: Экспорт каналов в XLSX
+    export.label: Экспорт каналов
+  xlsx_locale_export:
+    export.label: Экспорт локалей
+  xlsx_attribute_group_export:
+    label: Экспорт групп атрибутов в XLSX
+    export.label: Экспорт групп атрибутов
+  xlsx_currency_export:
+    label: Экспорт валют в XLSX
+    export.label: Экспорт валют
+  xlsx_group_type_export:
+    label: Экспорт типов групп в XLSX
+    export.label: Экспорт типов групп
   xlsx_channel_import:
+    label: Импорт каналов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт каналов
   xlsx_locale_import:
     validation.label: Проверка файла
+    import.label: Импорт локалей
   xlsx_attribute_group_import:
+    label: Импорт групп атрибутов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт групп атрибутов
   xlsx_currency_import:
+    label: Импорт валют из XLSX
     validation.label: Проверка файла
+    import.label: Импорт валют
   xlsx_group_type_import:
+    label: Импорт типов групп из XLSX
     validation.label: Проверка файла
+    import.label: Импорт типов групп
 pim_menu:
   tab:
     products: Продукты
