@@ -1,5 +1,4 @@
-import {ConnectionStatus, getConnectionStatus} from '../../pim-ai/fetcher/connection-fetcher';
-
+import {ConnectionStatus, getConnectionStatus} from '../fetcher/franklin-connection';
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
 

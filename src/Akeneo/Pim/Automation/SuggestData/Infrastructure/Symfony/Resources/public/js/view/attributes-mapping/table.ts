@@ -1,17 +1,17 @@
-import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
 import {Filterable} from '../../common/filterable';
-import AttributeOptionsMapping = require('./attribute-options-mapping');
+import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
+import SimpleSelectAttribute = require('../common/simple-select-attribute');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
-const template = require('pimee/template/settings/mapping/attributes-mapping');
+const template = require('pimee/template/attributes-mapping/attributes-mapping');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 

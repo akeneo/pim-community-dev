@@ -33,13 +33,13 @@ extensions:
         position: 120
 
     pimee-suggest-data-settings-identifiers-mapping-index-save:
-        module: pimee/settings/mapping/save
+        module: pimee/saver/identifiers-mapping-form
         parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: buttons
         position: 0
 
     pimee-suggest-data-settings-identifiers-mapping-index-state:
-        module: pimee/settings/mapping/state
+        module: pimee/view/attributes-mapping/state
         parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: state
         position: 900
@@ -61,7 +61,7 @@ extensions:
                     - akeneo_suggest_data.settings.module.title.description.second_step
 
     pimee-suggest-data-settings-identifiers-mapping-index-tabs:
-        module: pimee/settings/mapping/tabs
+        module: pimee/view/common/tabs
         parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: content
         position: 90
@@ -72,6 +72,6 @@ extensions:
             selected: 0
 
     pimee-suggest-data-settings-identifiers-mapping-index-edit-mapping-identifier:
-        module: pimee/settings/mapping/identifiers
+        module: pimee/view/identifiers-mapping/table
         parent: pimee-suggest-data-settings-identifiers-mapping-index-tabs
         targetZone: content

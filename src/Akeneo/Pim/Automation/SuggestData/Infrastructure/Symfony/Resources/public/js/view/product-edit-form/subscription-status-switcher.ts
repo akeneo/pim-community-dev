@@ -1,13 +1,13 @@
 import {EventsHash} from 'backbone';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
-import {getSubscriptionStatus} from '../fetcher/subscription-fetcher';
-import SubscriptionStatusInterface from './subscription-status-interface';
+import {getSubscriptionStatus} from '../../fetcher/subscription';
+import SubscriptionStatusInterface from '../../model/subscription-status-interface';
 
 const __ = require('oro/translator');
 const messenger = require('oro/messenger');
 const Routing = require('routing');
-const template = require('pimee/template/form/product/subscription-status-switcher');
+const template = require('pimee/template/product-edit-form/subscription-status-switcher');
 
 interface Configuration {
   create_product_subscription_fail_message: string;

@@ -2,7 +2,7 @@ import * as _ from 'underscore';
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
-const lineTemplate = require('pimee/template/settings/mapping/family-line');
+const lineTemplate = require('pimee/template/attributes-mapping/family-line');
 
 /**
  * This module allow user to select a catalog family for suggest data updating.

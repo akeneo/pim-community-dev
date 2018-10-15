@@ -4,7 +4,7 @@ import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 const __ = require('oro/translator');
 const Router = require('pim/router');
-const template = require('pimee/template/settings/mapping/tabs');
+const template = require('pimee/template/common/tabs');
 
 /**
  * This module will display tabs. Contrary to the other 'tabs' module, this one does not load

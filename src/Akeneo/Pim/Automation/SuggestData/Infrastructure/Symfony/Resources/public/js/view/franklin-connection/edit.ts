@@ -1,12 +1,12 @@
 import {EventsHash} from 'backbone';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
-import {ConnectionStatus, getConfiguration, getConnectionStatus} from '../fetcher/connection-fetcher';
+import {ConnectionStatus, getConfiguration, getConnectionStatus} from '../../fetcher/franklin-connection';
 
 const __ = require('oro/translator');
-const ConnectionSaver = require('pimee/saver/pim-ai-connection');
+const ConnectionSaver = require('pimee/saver/franklin-connection');
 const Messenger = require('oro/messenger');
-const template = require('pimee/template/pim-ai-connection/edit');
+const template = require('pimee/template/franklin-connection/edit');
 
 interface EditConfig {
   token_label_content: string;

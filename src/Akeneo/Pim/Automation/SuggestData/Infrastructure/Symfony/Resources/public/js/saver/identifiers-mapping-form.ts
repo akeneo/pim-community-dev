@@ -1,7 +1,7 @@
 const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
-const MappingSaver = require('pimee/saver/identifier-mapping');
+const MappingSaver = require('pimee/saver/identifiers-mapping');
 
 interface MappingInterface {
   [key: string]: (string | null);
