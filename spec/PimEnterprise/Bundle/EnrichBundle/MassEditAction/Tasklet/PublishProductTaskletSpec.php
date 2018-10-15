@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
 use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -20,7 +20,6 @@ use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -40,7 +39,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqbFactory->create(Argument::any())->willReturn($pqb);
@@ -53,7 +53,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
             $userManager,
             $tokenStorage,
             $authorizationChecker,
-            $pqbFactory
+            $pqbFactory,
+            $cacheClearer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -122,7 +123,6 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2,
-        ObjectDetacherInterface $objectDetacher,
         JobParameters $jobParameters
     ) {
         $configuration = [
@@ -160,8 +160,6 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
-
-        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
 
         $stepExecution->addWarning(
             Argument::any(),
