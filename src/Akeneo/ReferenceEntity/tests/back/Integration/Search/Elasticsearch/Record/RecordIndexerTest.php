@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch;
+namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -11,7 +11,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RecordIndexer;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
