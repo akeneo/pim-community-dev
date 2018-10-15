@@ -20,7 +20,6 @@ Change file: Изменить файл
 Remove file: Удалить файл
 Delete: Удалить
 Save: Сохранить
-Cancel: Отмена
 Get help: Получить помощь
 My User: Мой аккаунт
 oro.form.choose_value: Выберите значение...
@@ -38,3 +37,4 @@ Most Viewed: Самое просматриваемое
 "Yes": "Да"
 "No": "Нет"
 required: (требуется)
+other_actions: Другие действия
