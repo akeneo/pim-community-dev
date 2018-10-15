@@ -45,3 +45,11 @@ variable "google_project_zone" {
   type = "string"
   description = "Google zone where the project is deployed (Used for backup)."
 }
+
+variable "mailgun_host" {
+  default = "smtp.mailgun.org"
+}
+
+variable "mailgun_port" {
+  default = "2525"
+}

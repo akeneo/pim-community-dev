@@ -13,3 +13,10 @@ nfs:
     storageClass: standard
   storageClass:
     name: nfs-srnt-${pfid}
+
+mailer:
+  login: ${mailgun_login}
+  password: ${mailgun_password}
+  host: ${mailgun_host}
+  port: ${mailgun_port}
+  from_address: no-reply@akeneo.com

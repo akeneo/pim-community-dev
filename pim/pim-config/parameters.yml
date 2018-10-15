@@ -38,3 +38,11 @@ parameters:
     asset_storage_dir:                    '%env(PIM_SHARED_STORAGE)%/file_storage/assets'
     tmp_storage_dir:                      '%env(PIM_SHARED_STORAGE)%/file_storage/tmp'
     upload_tmp_dir:                       '%env(PIM_SHARED_STORAGE)%/file_storage/upload_tmp_dir'
+
+    mailer_transport:     smtp
+    mailer_host:          '%env(MAILER_HOST)%'
+    mailer_port:          '%env(MAILER_PORT)%'
+    mailer_user:          '%env(MAILER_USER)%'
+    mailer_password:      '%env(MAILER_PASSWORD)%'
+    mailer_from_address:  '%env(MAILER_FROM_ADDRESS)%'
+    mailer_from_name:     Akeneo Admin

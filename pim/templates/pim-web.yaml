@@ -69,6 +69,19 @@ spec:
             - { name: GOOGLE_LOCATION, value: {{ .Values.google.location | quote }} }
             - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.google.project_id | quote }} }
             - { name: K8S_CLUSTER_NAME, value: {{ .Values.google.cluster_name | quote }} }
+            - { name: MAILER_HOST, value: {{ .Value.mailer.host | quote }} }
+            - { name: MAILER_PORT, value: {{ .Value.mailer.PORT | quote }} }
+            - { name: MAILER_FROM_ADDRESS, value: {{ .Value.mailer.from_address | quote }} }
+            - name: MAILER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pim-secrets
+                  key: mailgunLogin
+            - name: MAILER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pim-secrets
+                  key: mailgunPassword
             - name: PIM_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:

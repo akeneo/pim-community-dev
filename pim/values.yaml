@@ -19,7 +19,6 @@ common:
   extraLabels: []
   pimMasterDomain: nil
   retailerDomain: nil
-  mailgunPassword: generateme
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
@@ -51,6 +50,13 @@ common:
     value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
+
+mailer:
+  login: generateme
+  password: generateme
+  host: localhost
+  port: 25
+  from_address: no-reply@akeneo.com
 
 google:
   project_id: default

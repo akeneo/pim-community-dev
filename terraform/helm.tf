@@ -8,6 +8,8 @@ data "template_file" "helm_pim_config" {
     pimmaster_dns_name      = "${replace(google_dns_record_set.main.name, "/\\.$$/", "")}"
     mailgun_login           = "${var.mailgun_login}@${var.mailgun_domain}"
     mailgun_password        = "${random_string.mailgun_password.result}"
+    mailgun_host            = "${var.mailgun_host}"
+    mailgun_port            = "${var.mailgun_port}"
   }
 }
 
