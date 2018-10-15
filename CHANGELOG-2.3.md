@@ -4,6 +4,7 @@
 
 - PIM-7674: fix Avatar image broken on dashboard
 - PIM-7694: fix option null values crashing PDF
+- PIM-7731: check for attribute as label not null in normalizers 
 
 # 2.3.11 (2018-10-08)
 
