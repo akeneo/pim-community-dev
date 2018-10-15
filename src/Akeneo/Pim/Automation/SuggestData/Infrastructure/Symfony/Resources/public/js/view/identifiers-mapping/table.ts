@@ -1,10 +1,10 @@
-import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import SimpleSelectAttribute = require('../common/simple-select-attribute');
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
-const template = require('pimee/template/settings/mapping/identifiers');
+const template = require('pimee/template/identifiers-mapping/table');
 
 /**
  * Maps pim.ai identifiers with akeneo attributes.
@@ -15,7 +15,6 @@ const template = require('pimee/template/settings/mapping/identifiers');
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class EditIdentifiersMappingView extends BaseView {
-
   private static readonly VALID_MAPPING: string[] = [
     'pim_catalog_identifier',
     'pim_catalog_number',

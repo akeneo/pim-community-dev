@@ -8,7 +8,7 @@
  */
 
 import {NormalizedAttributeOptionsMapping} from '../model/normalized-attribute-options-mapping';
-import AttributeOptionsMappingSaver = require('./attribute-options-mapping-saver');
+import AttributeOptionsMappingSaver = require('../saver/attribute-options-mapping');
 const BaseSaverForm = require('pim/form/common/save-form');
 
 /**

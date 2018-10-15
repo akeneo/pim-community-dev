@@ -19,7 +19,7 @@ const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Routing = require('routing');
-const template = require('pimee/template/settings/mapping/attribute-options-mapping');
+const template = require('pimee/template/attribute-options-mapping/edit');
 
 interface Config {
   labels: {

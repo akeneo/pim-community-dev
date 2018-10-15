@@ -3,7 +3,7 @@ import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
 const __ = require('oro/translator');
-const template = require('pimee/template/settings/mapping/status-filter');
+const template = require('pimee/template/common/status-filter');
 
 /**
  * This module will display a filter for the attributes-mapping grid.

@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
-const template = require('pimee/template/product/mass-edit/suggest-data');
+const template = require('pimee/template/mass-edit/suggest-data-operation');
 
 interface SuggestDataOperationConfig {
   title: string;

@@ -50,9 +50,9 @@ extensions:
             item: pim-ee-suggest-data-connection
 
     pimee-pim-ai-connection-edit:
-        module: pimee/pim-ai-connection/edit
+        module: pimee/view/franklin-connection/edit
         parent: pim-pim-ai-connection-index
-        template: pimee/template/pim-ai-connection/edit
+        template: pimee/template/franklin-connection/edit
         targetZone: content
         position: 90
         config:
