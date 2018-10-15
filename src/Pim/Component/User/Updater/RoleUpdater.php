@@ -68,7 +68,10 @@ class RoleUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'role':
-                $role->setRole($data);
+                if(empty($role->getRole()))
+                {
+                    $role->setRole($data);
+                }
                 break;
             case 'label':
                 $role->setLabel($data);

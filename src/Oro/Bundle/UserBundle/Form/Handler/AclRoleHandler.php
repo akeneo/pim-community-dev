@@ -110,7 +110,12 @@ class AclRoleHandler
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
-                $role->setRole(strtoupper(trim(preg_replace('/[^\w\-]/i', '_', $role->getLabel()))));
+
+                if(empty($role->getRole()))
+                {
+                    $role->setRole(strtoupper(trim(preg_replace('/[^\w\-]/i', '_', $role->getLabel()))));
+                }
+
                 $this->onSuccess($role, $appendUsers, $removeUsers);
 
                 $this->processPrivileges($role);

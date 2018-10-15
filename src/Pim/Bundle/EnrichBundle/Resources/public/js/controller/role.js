@@ -35,14 +35,9 @@ define([
              * {@inheritdoc}
              */
             afterSubmit: function () {
-                securityContext.initialize();
-                configProvider.clear();
-
                 FormController.prototype.afterSubmit.apply(this, arguments);
 
-                if (!this.$('#entity-updated span').is(':visible')) {
-                    location.reload();
-                }
+                location.reload();
             }
         });
     }
