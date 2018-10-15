@@ -40,7 +40,6 @@ class SearchRecord
     public function __invoke(RecordQuery $query): SearchRecordResult
     {
         $result = ($this->findIdentifiersForQuery)($query);
-
         $records = ($this->findRecordItemsForIdentifiers)($result->identifiers);
 
         $queryResult = new SearchRecordResult();

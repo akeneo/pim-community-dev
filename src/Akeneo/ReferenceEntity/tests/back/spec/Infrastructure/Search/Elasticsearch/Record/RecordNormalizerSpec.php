@@ -41,12 +41,13 @@ class RecordNormalizerSpec extends ObjectBehavior
             ValueCollection::fromValues([])
         );
         $searchMatrixNormalizer->generate($record)->willReturn(['search_matrix']);
-        $this->normalize($record)->shouldReturn([
-            'identifier'            => 'designer_stark_fingerprint',
-            'code'                  => 'stark',
-            'reference_entity_code' => 'designer',
-            'record_list_search'    => ['search_matrix'],
-        ]);
+
+        $normalizedRecord = $this->normalize($record);
+        $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedRecord['code']->shouldBeEqualTo('stark');
+        $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
+        $normalizedRecord['record_list_search']->shouldBeEqualTo(['search_matrix']);
+        $normalizedRecord['updated_at']->shouldBeString();
     }
 }
 

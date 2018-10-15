@@ -18,6 +18,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const CODE = 'code';
     private const REFERENCE_ENTITY_CODE = 'reference_entity_code';
     private const RECORD_LIST_SEARCH = 'record_list_search';
+    const UPDATED_AT = 'updated_at';
 
     /** @var RecordSearchMatrixNormalizer */
     private $recordSearchMatrixGenerator;
@@ -33,7 +34,8 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::IDENTIFIER            => (string) $record->getIdentifier(),
             self::CODE                  => (string) $record->getCode(),
             self::REFERENCE_ENTITY_CODE => (string) $record->getReferenceEntityIdentifier(),
-            self::RECORD_LIST_SEARCH    => $this->recordSearchMatrixGenerator->generate($record)
+            self::RECORD_LIST_SEARCH    => $this->recordSearchMatrixGenerator->generate($record),
+            self::UPDATED_AT            => date_create('now')->format('Y-m-d'),
         ];
     }
 }

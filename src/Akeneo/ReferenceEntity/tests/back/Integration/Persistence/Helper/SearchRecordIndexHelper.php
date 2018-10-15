@@ -52,9 +52,19 @@ class SearchRecordIndexHelper
         $this->recordClient->refreshIndex();
     }
 
+    public function search(string $referenceEntityCode, string $channel, string $locale, array $terms): array
+    {
+        $this->refreshIndex();
+
+        $query = $this->getQuery($referenceEntityCode, $channel, $locale, $terms);
+        $matchingIdentifiers = $this->executeQuery($query);
+
+        return $matchingIdentifiers;
+    }
+
     public function findRecordsByReferenceEntity(string $referenceEntityCode): array
     {
-        $this->recordClient->refreshIndex();
+        $this->refreshIndex();
 
         $query = [
             '_source' => '_id',
@@ -69,7 +79,7 @@ class SearchRecordIndexHelper
 
     public function findRecord(string $referenceEntityCode, string $recordCode): array
     {
-        $this->recordClient->refreshIndex();
+        $this->refreshIndex();
 
         $query = [
             'query' => [
@@ -111,5 +121,44 @@ class SearchRecordIndexHelper
         }
 
         return $matchingIdentifiers;
+    }
+
+    public function refreshIndex()
+    {
+        $this->recordClient->refreshIndex();
+    }
+
+    private function getQuery(string $referenceEntityCode, $channel, $locale, array $terms): array
+    {
+        $query = [
+            '_source' => '_id',
+            'sort' => ['updated_at' => 'asc'],
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'term' => [
+                                        'reference_entity_code' => $referenceEntityCode,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        foreach ($terms as $term) {
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'query_string' => [
+                    'default_field' => sprintf('record_list_search.%s.%s', $channel, $locale),
+                    'query' => sprintf('*%s*', $term),
+                ],
+            ];
+        }
+
+        return $query;
     }
 }

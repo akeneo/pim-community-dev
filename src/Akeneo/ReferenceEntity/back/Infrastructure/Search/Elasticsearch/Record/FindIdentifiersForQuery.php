@@ -57,14 +57,13 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
     private function getElasticSearchQuery(RecordQuery $recordQuery)
     {
-        $searchFilter = $recordQuery->getFilter('search');
         $referenceEntityCode = $recordQuery->getFilter('reference_entity');
-
+        $searchFilter = $recordQuery->getFilter('search');
         $query = [
             '_source' => '_id',
             'from' => $recordQuery->getSize() * $recordQuery->getPage(),
             'size' => $recordQuery->getSize(),
-            'sort' => ['identifier' => 'asc'],
+            'sort' => ['updated_at' => 'asc'],
             'query'   => [
                 'constant_score' => [
                     'filter' => [
