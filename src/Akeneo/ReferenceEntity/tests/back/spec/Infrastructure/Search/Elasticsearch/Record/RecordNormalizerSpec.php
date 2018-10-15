@@ -44,7 +44,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $this->normalize($record)->shouldReturn([
             'identifier'            => 'designer_stark_fingerprint',
             'code'                  => 'stark',
-            'reference_entity_identifier' => 'designer',
+            'reference_entity_code' => 'designer',
             'record_list_search'    => ['search_matrix'],
         ]);
     }

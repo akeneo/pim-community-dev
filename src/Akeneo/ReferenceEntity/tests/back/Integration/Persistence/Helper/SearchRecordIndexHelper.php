@@ -52,16 +52,6 @@ class SearchRecordIndexHelper
         $this->recordClient->refreshIndex();
     }
 
-    public function search(string $referenceEntityCode, string $channel, string $locale, array $terms): array
-    {
-        $this->recordClient->refreshIndex();
-
-        $query = $this->getQuery($referenceEntityCode, $channel, $locale, $terms);
-        $matchingIdentifiers = $this->executeQuery($query);
-
-        return $matchingIdentifiers;
-    }
-
     public function findRecordsByReferenceEntity(string $referenceEntityCode): array
     {
         $this->recordClient->refreshIndex();

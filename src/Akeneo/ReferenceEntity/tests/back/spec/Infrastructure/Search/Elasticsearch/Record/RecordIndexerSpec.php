@@ -69,7 +69,6 @@ class RecordIndexerSpec extends ObjectBehavior
             'identifier',
             Argument::type(Refresh::class)
         )->shouldBeCalled();
-        $recordEsCLient->refreshIndex()->shouldBeCalled();
 
         $this->bulkIndex([$stark, $coco]);
     }
