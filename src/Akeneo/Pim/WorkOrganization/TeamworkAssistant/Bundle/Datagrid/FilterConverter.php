@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,16 +29,22 @@ class FilterConverter
     /** @var MassActionParametersParser */
     protected $parameterParser;
 
+    /** @var RequestParameters */
+    private $requestParams;
+
     /**
      * @param OroToPimGridFilterAdapter  $oroToPimGridFilterAdapter
      * @param MassActionParametersParser $parameterParser
+     * @param RequestParameters          $requestParams
      */
     public function __construct(
         OroToPimGridFilterAdapter $oroToPimGridFilterAdapter,
-        MassActionParametersParser $parameterParser
+        MassActionParametersParser $parameterParser,
+        RequestParameters $requestParams
     ) {
         $this->oroToPimGridFilterAdapter = $oroToPimGridFilterAdapter;
         $this->parameterParser           = $parameterParser;
+        $this->requestParams = $requestParams;
     }
 
     /**
@@ -58,6 +65,8 @@ class FilterConverter
             ]
         );
         $parameters = $this->parameterParser->parse($request);
+
+        $this->requestParams->set('_filter', $parameters['filter']);
 
         return $this->oroToPimGridFilterAdapter->adapt($parameters);
     }
