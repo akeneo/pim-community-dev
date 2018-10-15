@@ -1,0 +1,8 @@
+monolog:
+    handlers:
+        pimai:
+            level: info
+            type: stream
+            path: '%kernel.logs_dir%/pimai.log'
+            channels: ['pimai']
+    channels: ['pimai']
