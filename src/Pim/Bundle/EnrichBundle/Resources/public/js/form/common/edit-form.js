@@ -18,6 +18,7 @@ define(
         'pim/fetcher-registry',
         'pim/field-manager',
         'pim/form-builder',
+        'require-context',
         'oro/messenger'
     ],
     function (
@@ -30,10 +31,22 @@ define(
         FetcherRegistry,
         FieldManager,
         formBuilder,
+        RequireContext,
         messenger
     ) {
         return BaseForm.extend({
             template: _.template(template),
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (options) {
+                options = options || {};
+
+                if (options.config && options.config.template) {
+                    this.template = _.template(RequireContext(options.config.template));
+                }
+            },
 
             /**
              * {@inheritdoc}

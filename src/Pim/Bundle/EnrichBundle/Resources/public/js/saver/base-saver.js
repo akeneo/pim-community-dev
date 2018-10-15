@@ -15,6 +15,7 @@ define([
              *
              * @param {String} code
              * @param {Object} data
+             * @param {String} method
              *
              * @return {Promise}
              */

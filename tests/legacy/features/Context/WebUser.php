@@ -1064,6 +1064,8 @@ class WebUser extends PimContext
     /**
      * @param string $status 'enabled'|'disabled'
      *
+     * @throws TimeoutException
+     *
      * @Then /^The available attributes button should be (enabled|disabled)$/
      */
     public function theAvailableAttributeButtonShouldBeEnabled($status)

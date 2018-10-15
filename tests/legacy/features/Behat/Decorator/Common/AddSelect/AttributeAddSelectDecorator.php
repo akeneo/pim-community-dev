@@ -2,6 +2,9 @@
 
 namespace Pim\Behat\Decorator\Common\AddSelect;
 
+use Behat\Mink\Exception\ElementNotFoundException;
+use Context\Traits\ClosestTrait;
+
 /**
  * Decorate attribute add select element
  *
@@ -11,6 +14,8 @@ namespace Pim\Behat\Decorator\Common\AddSelect;
  */
 class AttributeAddSelectDecorator extends AbstractAddSelectDecorator
 {
+    use ClosestTrait;
+
     /** @var string */
     protected $baseClass = '.add-attribute';
 
@@ -18,7 +23,9 @@ class AttributeAddSelectDecorator extends AbstractAddSelectDecorator
      * Checks if the add attribute selector has an option.
      * If the optional parameter $groupLabel is set, it will check if the option belongs to this group.
      *
-     * @param string      $optionLabel
+     * @throws ElementNotFoundException
+     *
+     * @param string $optionLabel
      * @param string|null $groupLabel
      *
      * @return bool
@@ -35,7 +42,8 @@ class AttributeAddSelectDecorator extends AbstractAddSelectDecorator
             $result = true;
 
             if (null !== $groupLabel) {
-                $groupElement = $attribute->getParent()
+                $groupElement = $this
+                    ->getClosest($attribute, 'select2-result-label-attribute')
                     ->find('css', '.group-label');
 
                 $result = trim($groupElement->getText()) === $groupLabel;

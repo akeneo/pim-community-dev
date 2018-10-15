@@ -95,6 +95,8 @@
 .select2-results {
   padding: 0;
   margin: 0;
+  width: 100%;
+  min-height: 26px;
 
   .select2-highlighted {
     background: @AknDefaultHoverBackground;
@@ -275,11 +277,13 @@
 .select2--annotedLabels.select2-drop {
   .select2-result-label-attribute {
     display: flex;
-    justify-content: space-between;;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 2px;
 
     input[type="checkbox"] {
-      flex-basis: 25px;
-      margin-top: 9px;
+      margin-top: -4px;
+      margin-right: 10px;
     }
 
     .group-label {
