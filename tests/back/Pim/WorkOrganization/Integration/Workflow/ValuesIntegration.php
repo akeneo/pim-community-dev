@@ -1,8 +1,8 @@
 <?php
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\Workflow;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow;
 
-use AkeneoTest\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
+use AkeneoTestEnterprise\Pim\Permission\Integration\Security\AbstractSecurityTestCase;
 
 /**
  * +------------------------------------------+-----------------------+

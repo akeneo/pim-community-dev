@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\Permission\Integration\Doctrine\ORM\Repository;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Doctrine\ORM\Repository;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

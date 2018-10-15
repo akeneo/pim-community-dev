@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Normalizer\Flat;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Normalizer\Flat;
 
 class AssetCategoryIntegration extends AbstractFlatNormalizerTestCase
 {

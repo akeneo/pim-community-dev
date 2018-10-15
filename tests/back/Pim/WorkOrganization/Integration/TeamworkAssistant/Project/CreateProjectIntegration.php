@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
 
-use AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
+use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
 
 class CreateProjectIntegration extends TeamworkAssistantTestCase
 {

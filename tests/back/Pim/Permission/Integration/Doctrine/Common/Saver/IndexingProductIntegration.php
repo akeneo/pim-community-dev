@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Doctrine\Common\Saver;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Doctrine\Common\Saver;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;

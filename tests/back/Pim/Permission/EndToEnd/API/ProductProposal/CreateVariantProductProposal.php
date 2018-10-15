@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\ProductProposal;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\ProductProposal;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;

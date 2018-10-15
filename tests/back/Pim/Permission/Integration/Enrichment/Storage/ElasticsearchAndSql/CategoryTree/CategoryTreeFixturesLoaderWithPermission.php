@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
 
 use Akeneo\Pim\Permission\Component\Attributes;
 use PHPUnit\Framework\Assert;

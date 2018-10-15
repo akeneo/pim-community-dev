@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\ProductProposal;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\ProductProposal;
 
 use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\ProductProposal\AbstractProposal;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;

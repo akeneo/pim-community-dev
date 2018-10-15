@@ -1,9 +1,9 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\Media;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Media;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
-use AkeneoTest\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 
 abstract class AbstractMediaFileTestCase extends AbstractProductTestCase
 {

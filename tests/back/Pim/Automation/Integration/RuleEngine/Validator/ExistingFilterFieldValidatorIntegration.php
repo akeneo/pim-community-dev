@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Automation\Integration\RuleEngine\Validator;
+namespace AkeneoTestEnterprise\Pim\Automation\Integration\RuleEngine\Validator;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition;

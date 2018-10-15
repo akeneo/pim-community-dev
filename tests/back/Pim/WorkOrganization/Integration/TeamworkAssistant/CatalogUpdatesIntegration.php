@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant;
 
 use Akeneo\Test\Integration\Configuration;
 

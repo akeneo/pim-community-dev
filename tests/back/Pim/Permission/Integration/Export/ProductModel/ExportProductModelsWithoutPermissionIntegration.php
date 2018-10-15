@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Export\ProductModel;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Export\ProductModel;
 
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 

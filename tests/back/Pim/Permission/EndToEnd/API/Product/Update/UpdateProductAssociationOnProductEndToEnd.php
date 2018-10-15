@@ -1,9 +1,9 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\Product\Update;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\Update;
 
-use AkeneoTest\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
-use AkeneoTest\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateProductAssociationOnProductEndToEnd extends AbstractProductTestCase
