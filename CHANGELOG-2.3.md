@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7674: fix Avatar image broken on dashboard
+- PIM-7694: fix option null values crashing PDF
 
 # 2.3.11 (2018-10-08)
 
