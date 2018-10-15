@@ -164,6 +164,11 @@ services:
             - '@database_connection'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\ElasticSearch\Record\FindIdentifiersForQuery
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindIdentifiersForQuery
         arguments:
             - '@akeneo_referenceentity.client.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_values_to_index_for_channel_and_locale:
+       class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindValueKeysToIndexForChannelAndLocale
+       arguments:
+           - '@database_connection'
