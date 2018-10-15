@@ -75,7 +75,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
             ->during('save', [$object]);
     }
 
-    function it_get_identifier_by_identifier()
+    function it_gets_the_identifier_attribute()
     {
         $identifier = (new Attribute())->setType(AttributeTypes::IDENTIFIER);
 
@@ -83,6 +83,19 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->save((new Attribute())->setCode('name'));
 
         $this->getIdentifier()->shouldReturn($identifier);
+    }
+
+    function it_gets_the_identifier_attribute_code()
+    {
+        $identifier = (new Attribute())
+            ->setCode('identifier_code')
+            ->setType(AttributeTypes::IDENTIFIER)
+        ;
+
+        $this->save($identifier);
+        $this->save((new Attribute())->setCode('name'));
+
+        $this->getIdentifierCode()->shouldReturn('identifier_code');
     }
 
     private function createAttribute(string $code): AttributeInterface
