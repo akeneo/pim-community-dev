@@ -50,8 +50,8 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         );
         $this->recordIndexer->bulkIndex([$record]);
 
-        $this->searchIndexHelper->assertRecordExists('designer', 'dyson');
-        Assert::assertCount(3, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
+        $this->searchRecordIndexHelper->assertRecordExists('designer', 'dyson');
+        Assert::assertCount(3, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
     }
 
     /**
@@ -77,9 +77,9 @@ class RecordIndexerTest extends SearchIntegrationTestCase
         );
         $this->recordIndexer->bulkIndex([$recordDyson, $recordArad]);
 
-        $this->searchIndexHelper->assertRecordExists('designer', 'dyson');
-        $this->searchIndexHelper->assertRecordExists('designer', 'arad');
-        Assert::assertCount(4, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
+        $this->searchRecordIndexHelper->assertRecordExists('designer', 'dyson');
+        $this->searchRecordIndexHelper->assertRecordExists('designer', 'arad');
+        Assert::assertCount(4, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
     }
 
     /**
@@ -89,7 +89,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     {
         $this->recordIndexer->bulkIndex([]);
 
-        Assert::assertCount(2, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
+        Assert::assertCount(2, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
     }
 
     /**
@@ -99,10 +99,10 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     {
         $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode('designer', 'stark');
 
-        $this->searchIndexHelper->assertRecordDoesNotExists('designer', 'stark');
-        $this->searchIndexHelper->assertRecordExists('designer', 'coco');
-        Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
-        Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
+        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchRecordIndexHelper->assertRecordExists('designer', 'coco');
+        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
+        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('manufacturer'));
     }
 
     /**
@@ -112,21 +112,19 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     {
         $this->recordIndexer->removeByReferenceEntityIdentifier('designer');
 
-        $this->searchIndexHelper->assertRecordDoesNotExists('designer', 'stark');
-        $this->searchIndexHelper->assertRecordDoesNotExists('designer', 'coco');
-        Assert::assertCount(0, $this->searchIndexHelper->findRecordsByReferenceEntity('designer'));
-        Assert::assertCount(1, $this->searchIndexHelper->findRecordsByReferenceEntity('manufacturer'));
+        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
+        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'coco');
+        Assert::assertCount(0, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
+        Assert::assertCount(1, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('manufacturer'));
     }
 
     private function loadFixtures()
     {
-        $this->searchIndexHelper->resetIndex();
-
         $rightCode = [
             'identifier' => 'designer_stark_uuid1',
             'code' => 'stark',
             'reference_entity_code' => 'designer',
-            'record_list_search' => ['ecommerce' => ['fr_FR' => 'stark']] // Lets say the labels are empty
+            'record_list_search' => ['ecommerce' => ['fr_FR' => 'stark']]
         ];
         $wrongCode = [
             'identifier' => 'designer_coco_uuid2',
@@ -140,6 +138,6 @@ class RecordIndexerTest extends SearchIntegrationTestCase
             'reference_entity_code' => 'manufacturer',
             'record_list_search' => ['ecommerce' => ['fr_FR' => 'stark']],
         ];
-        $this->searchIndexHelper->index([$rightCode, $wrongCode, $wrongEnrichedEntity]);
+        $this->searchRecordIndexHelper->index([$rightCode, $wrongCode, $wrongEnrichedEntity]);
     }
 }

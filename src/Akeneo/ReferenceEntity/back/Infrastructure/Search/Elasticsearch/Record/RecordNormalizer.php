@@ -16,7 +16,7 @@ class RecordNormalizer implements RecordNormalizerInterface
 {
     private const IDENTIFIER = 'identifier';
     private const CODE = 'code';
-    private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    private const REFERENCE_ENTITY_CODE = 'reference_entity_code';
     private const RECORD_LIST_SEARCH = 'record_list_search';
 
     /** @var RecordSearchMatrixNormalizer */
@@ -32,7 +32,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         return [
             self::IDENTIFIER            => (string) $record->getIdentifier(),
             self::CODE                  => (string) $record->getCode(),
-            self::REFERENCE_ENTITY_IDENTIFIER => (string) $record->getReferenceEntityIdentifier(),
+            self::REFERENCE_ENTITY_CODE => (string) $record->getReferenceEntityIdentifier(),
             self::RECORD_LIST_SEARCH    => $this->recordSearchMatrixGenerator->generate($record)
         ];
     }

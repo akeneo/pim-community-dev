@@ -57,7 +57,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function default_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::UPDATED_AT => 'desc']
@@ -81,7 +81,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function simple_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -121,7 +121,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function insensitve_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -161,7 +161,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function partial_match_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -201,7 +201,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function exact_matching_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -241,7 +241,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function two_words_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -281,7 +281,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function another_two_words_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -321,7 +321,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function search_on_info_from_labels()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -361,7 +361,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function search_on_info_from_labels_inverted_order()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -401,7 +401,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function search_on_info_from_code()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -441,7 +441,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function composed_words()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->executeQuery(
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery(
             [
                 '_source' => '_id',
                 'sort'    => [self::IDENTIFIER => 'asc'],
@@ -478,7 +478,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
 
     private function loaddataset()
     {
-        $this->searchIndexHelper->resetindex();
+        $this->searchRecordIndexHelper->resetindex();
 
         $kartell = [
             self::REFERENCE_ENTITY_IDENTIFIER => 'brand',
@@ -538,6 +538,6 @@ text;
             self::DESIGNER                    => '',
             self::UPDATED_AT                  => date_create('2010-01-01')->format('Y-m-d'),
         ];
-        $this->searchIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongReferenceEntity]);
+        $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongReferenceEntity]);
     }
 }

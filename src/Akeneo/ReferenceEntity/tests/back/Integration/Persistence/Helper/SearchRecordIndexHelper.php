@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Helper;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use PHPUnit\Framework\Assert;
 
 /**
  * This class is responsible for helping in the elasticsearch index setup in tests.
@@ -49,6 +50,64 @@ class SearchRecordIndexHelper
         }
 
         $this->recordClient->refreshIndex();
+    }
+
+    public function search(string $referenceEntityCode, string $channel, string $locale, array $terms): array
+    {
+        $this->recordClient->refreshIndex();
+
+        $query = $this->getQuery($referenceEntityCode, $channel, $locale, $terms);
+        $matchingIdentifiers = $this->executeQuery($query);
+
+        return $matchingIdentifiers;
+    }
+
+    public function findRecordsByReferenceEntity(string $referenceEntityCode): array
+    {
+        $this->recordClient->refreshIndex();
+
+        $query = [
+            '_source' => '_id',
+            'query' => [
+                'match' => ['reference_entity_code' => $referenceEntityCode,],
+            ],
+        ];
+        $matchingIdentifiers = $this->executeQuery($query);
+
+        return $matchingIdentifiers;
+    }
+
+    public function findRecord(string $referenceEntityCode, string $recordCode): array
+    {
+        $this->recordClient->refreshIndex();
+
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        ['term' => ['reference_entity_code' => $referenceEntityCode]],
+                        ['term' => ['code' => $recordCode]],
+                    ],
+                ],
+            ],
+        ];
+        $matchingIdentifiers = $this->executeQuery($query);
+
+        return $matchingIdentifiers;
+    }
+
+    public function assertRecordExists(string $referenceEntityCode, string $recordCode): void
+    {
+        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
+
+        Assert::assertCount(1, $matchingIdentifiers, sprintf('Record not found: %s_%s', $referenceEntityCode, $recordCode));
+    }
+
+    public function assertRecordDoesNotExists(string $referenceEntityCode, string $recordCode): void
+    {
+        $matchingIdentifiers = $this->findRecord($referenceEntityCode, $recordCode);
+
+        Assert::assertCount(0, $matchingIdentifiers, sprintf('This record should not exist: %s_%s', $referenceEntityCode, $recordCode));
     }
 
     public function executeQuery(array $query): array

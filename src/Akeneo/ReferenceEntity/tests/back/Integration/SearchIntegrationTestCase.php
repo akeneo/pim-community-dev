@@ -31,7 +31,7 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     protected $testKernel;
 
     /** @var SearchRecordIndexHelper */
-    protected $searchIndexHelper;
+    protected $searchRecordIndexHelper;
 
     /**
      * {@inheritdoc}
@@ -39,8 +39,8 @@ abstract class SearchIntegrationTestCase extends KernelTestCase
     protected function setUp()
     {
         $this->bootTestKernel();
-        $this->searchIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
-        $this->searchIndexHelper->resetIndex();
+        $this->searchRecordIndexHelper = $this->get('akeneoreference_entity.tests.helper.search_index_helper');
+        $this->searchRecordIndexHelper->resetIndex();
     }
 
     protected function bootTestKernel(): void
