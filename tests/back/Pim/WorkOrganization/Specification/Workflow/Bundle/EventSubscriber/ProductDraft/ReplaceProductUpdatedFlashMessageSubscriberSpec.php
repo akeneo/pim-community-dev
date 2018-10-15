@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscri
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Flash\Message;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
