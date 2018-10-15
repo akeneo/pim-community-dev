@@ -111,8 +111,7 @@ class AclRoleHandler
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
 
-                if(empty($role->getRole()))
-                {
+                if (empty($role->getRole())) {
                     $role->setRole(strtoupper(trim(preg_replace('/[^\w\-]/i', '_', $role->getLabel()))));
                 }
 
