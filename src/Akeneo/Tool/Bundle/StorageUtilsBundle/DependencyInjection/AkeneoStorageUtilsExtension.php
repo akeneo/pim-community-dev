@@ -32,6 +32,5 @@ class AkeneoStorageUtilsExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
         $loader->load('validators.yml');
-        $loader->load('command.yml');
     }
 }
