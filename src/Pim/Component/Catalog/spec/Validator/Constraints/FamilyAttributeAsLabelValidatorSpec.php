@@ -57,6 +57,22 @@ class FamilyAttributeAsLabelValidatorSpec extends ObjectBehavior
         $this->validate($family, $minimumRequirements);
     }
 
+    function it_invalidates_family_when_attribute_as_label_is_null(
+        $minimumRequirements,
+        $context,
+        FamilyInterface $family,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $family->getAttributeAsLabel()->willReturn(null);
+        $family->getAttributeCodes()->willReturn(['anotherAttribute']);
+
+        $context->buildViolation(Argument::any())->willReturn($violation)->shouldBeCalled();
+        $violation->atPath(Argument::any())->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($family, $minimumRequirements);
+    }
+
     function it_invalidates_family_when_attribute_is_not_text_type(
         $minimumRequirements,
         $context,

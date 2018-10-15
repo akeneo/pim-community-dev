@@ -64,7 +64,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
         AttributeInterface $sku,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+    FamilyInterface $productModelFamily
     ) {
         $productModel->getId()->willReturn(67);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -73,7 +74,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn('67');
         $productModel->getCode()->willReturn('sku-001');
-        $productModel->getFamily()->willReturn(null);
+        $productModel->getFamily()->willReturn($productModelFamily);
         $productModel->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
@@ -103,6 +104,34 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getCategoryCodes()->willReturn(['category_A', 'category_B']);
 
         $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
+
+        $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)->shouldReturn(
+            [
+                'id'             => '67',
+                'identifier'     => 'sku-001',
+                'created'        => $now->format('c'),
+                'updated'        => $now->format('c'),
+                'family'         => 'family_A',
+                'family_variant' => 'family_variant_1',
+                'categories'     => ['category_A', 'category_B'],
+                'parent'         => null,
+                'values'         => [],
+                'all_complete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
+                'all_incomplete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
+                'ancestors'     => ['ids' => [], 'codes' => []],
+                'label'          => [],
+            ]
+        );
+
+        $family->getAttributeAsLabel()->willReturn(null);
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)->shouldReturn(
             [

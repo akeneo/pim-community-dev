@@ -72,18 +72,18 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
-                'id' => '67',
-                'identifier' => 'sku-001',
-                'created' => $now->format('c'),
-                'updated' => $now->format('c'),
-                'family' => null,
-                'enabled' => false,
-                'categories' => [],
-                'groups' => [],
-                'completeness' => [],
-                'values' => [],
-                'label' => [],
-                'ancestors' => ['ids' => [], 'codes' => []],
+                'id'            => '67',
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
+                'family'        => null,
+                'enabled'       => false,
+                'categories'    => [],
+                'groups'        => [],
+                'completeness'  => [],
+                'values'        => [],
+                'label'         => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -132,18 +132,18 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
-                'id' => '67',
-                'identifier' => 'sku-001',
-                'created' => $now->format('c'),
-                'updated' => $now->format('c'),
-                'family' => null,
-                'enabled' => false,
-                'categories' => [],
-                'groups' => [],
-                'completeness' => ['the completenesses'],
-                'values' => [],
-                'label' => [],
-                'ancestors' => ['ids' => [], 'codes' => []],
+                'id'            => '67',
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
+                'family'        => null,
+                'enabled'       => false,
+                'categories'    => [],
+                'groups'        => [],
+                'completeness'  => ['the completenesses'],
+                'values'        => [],
+                'label'         => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -180,7 +180,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer
             ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn([
-                'code' => 'family',
+                'code'   => 'family',
                 'labels' => [
                     'fr_FR' => 'Une famille',
                     'en_US' => 'A family',
@@ -201,9 +201,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'ecommerce' => [
                     'en_US' => [
-                        66,
-                    ],
-                ],
+                        66
+                    ]
+                ]
             ]
         );
 
@@ -292,40 +292,40 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
-                'id' => '67',
-                'identifier' => 'sku-001',
-                'created' => $now->format('c'),
-                'updated' => $now->format('c'),
+                'id'            => '67',
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
                 'family' => [
-                    'code' => 'family',
+                    'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled' => true,
-                'categories' => ['first_category', 'second_category'],
-                'groups' => ['first_group', 'second_group'],
+                'enabled'       => true,
+                'categories'    => ['first_category', 'second_category'],
+                'groups'        => ['first_group', 'second_group'],
                 'in_group' => [
-                    'first_group' => true,
-                    'second_group' => true,
+                    'first_group'     => true,
+                    'second_group'    => true,
                 ],
-                'completeness' => [
+                'completeness'  => [
                     'ecommerce' => [
                         'en_US' => [
                             66,
                         ],
                     ],
                 ],
-                'values' => [
+                'values'        => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
                         ],
                     ],
                 ],
-                'label' => [],
-                'ancestors' => ['ids' => [], 'codes' => []],
+                'label'         => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -382,7 +382,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer
             ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn([
-                'code' => 'family',
+                'code'   => 'family',
                 'labels' => [
                     'fr_FR' => 'Une famille',
                     'en_US' => 'A family',
@@ -400,24 +400,24 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
-                'id' => '67',
-                'identifier' => 'sku-001',
-                'created' => $now->format('c'),
-                'updated' => $now->format('c'),
-                'family' => [
-                    'code' => 'family',
+                'id'           => '67',
+                'identifier'   => 'sku-001',
+                'created'      => $now->format('c'),
+                'updated'      => $now->format('c'),
+                'family'       => [
+                    'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled' => true,
-                'categories' => [],
-                'groups' => [],
+                'enabled'      => true,
+                'categories'   => [],
+                'groups'       => [],
                 'completeness' => [],
-                'values' => [],
-                'label' => [],
-                'ancestors' => ['ids' => ['product_model_2', 'product_model_1'], 'codes' => ['sub_pm_2', 'root_pm_1']],
+                'values'       => [],
+                'label'        => [],
+                'ancestors'    => ['ids' => ['product_model_2', 'product_model_1'], 'codes' => ['sub_pm_2', 'root_pm_1']],
             ]
         );
     }
