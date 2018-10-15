@@ -76,12 +76,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
-                  key: mailgunLogin
+                  key: mailerLogin
             - name: MAILER_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
-                  key: mailgunPassword
+                  key: mailerPassword
             - name: PIM_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
