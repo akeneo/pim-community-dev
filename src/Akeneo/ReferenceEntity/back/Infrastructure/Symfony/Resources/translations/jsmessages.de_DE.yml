@@ -10,9 +10,6 @@ pim_reference_entity:
       identifier: Code
       label: Bezeichnung
       image: Abbildung
-    module:
-      delete:
-        button: Löschen
     create:
       header:
         title: Anlegen

@@ -15,9 +15,6 @@ pim_reference_entity:
       identifier: Code
       label: Libellé
       image: Image
-    module:
-      delete:
-        button: Supprimer
     index:
       grid:
         count: "{{ count }} résultats"

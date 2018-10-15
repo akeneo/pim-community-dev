@@ -2,6 +2,10 @@ akeneo_suggest_data:
   entity:
     identifier_mapping:
       plural_label: Identificadors
+      flash:
+        update:
+          success: 'El mapatge dels identificadors s''ha guardat correctament.'
+          fail: 'El mapatge dels identificadors no s''ha guardat a causa d''un error.'
       fields:
         identifier_label:
           values:
@@ -9,10 +13,18 @@ akeneo_suggest_data:
             asin: ASIN
             mpn: MPN
             upc: Preu per unitat
+        catalog_attribute: Atribut de catàleg
         status:
           active: Actiu
           inactive: Inactiu
+      constraint:
+        duplicate_attribute_code: "Un atribut no es pot utilitzar més d'una vegada. L'atribut \"{{ attributeCode }}\" ha estat utilitzat {{ frequency }} vegades."
+        missing_or_invalid_identifiers: "Alguns mapatges d'identificadors clau falten o són invàlids. Esperant: \"{{ expected }}\", que tingui \"{{ given }}\"."
+        attribute_not_found: "Atribut amb codi d'atribut \"{{ attributeCode }}\" pels mapatges d'identificadors no existeixen."
+        mandatory_attribute_mapping: "Aquest atribut és obligatori"
+        attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
     attributes_mapping:
+      label: Mapatge dels atributs
       fields:
         suggest_data:
           pending: Pendent
@@ -22,19 +34,52 @@ akeneo_suggest_data:
         subscribe:
           subscribe: 'Família subscrita a PIM.ai'
           subscribed: 'Subscrit a PIM.ai'
+        index:
+          error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
+      constraint:
+        missing_target_key: 'Falta l''objectiu clau pel mapatge'
+        missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{targetKey }}"'
+        invalid_attribute_type_mapping: 'El tipus d''atribut extern "{{ targetType }}" no es pot fer el mapatge al tipus d''atribut PIM "{{ pimType }}"'
+    product_subscription:
+      flash:
+        create:
+          success: 'Producte subscrit correctament a PIM.ai'
+          fail: 'Impossible subscriure el producte a PIM.ai'
+        delete:
+          success: 'S''ha cancel·lat correctament la subscripció del producte del PIM.ai'
+          fail: 'Impossible cancel·lar la subscripció del producte del PIM.ai'
+  product:
+    edit:
+      btn.push: Suggerència de dades
   connection:
+    flash:
+      invalid: El codi d'activació no és vàlid, ho sento. Intenteu-ho de nou amb un vàlid, si us plau.
+      error: Ho sentim, ha sorgit un error.
     module:
+      title:
+        sub_title: 'Benvingut a <span class="AknDescriptionHeader-title--highlight">L''assistent IA d''informació de producte</span>!'
+        description:
+          first_step: 'El primer pas en la connexió de l''assistent és configurar l''API token.'
+          second_step: 'El següent pas en el procés de connexió és aparellar els <a href="#" class="AknDescriptionHeader-link">identificadors del catàleg de producte</a> a els identificadors de l''assistent&#8217;.'
       activation:
         activation_code: 'Codi d''activació'
+        paste_activation_code: 'Enganxa el codi d''activació'
         activated: 'Activat'
         activate: 'Activat'
   settings:
     module:
       inactive_connection:
         title: Ho sentim, no hi ha res que mostrar ara mateix
+        sub_title: Si us plau, activa el compte en el Sistema > Connexió PIM.ai torna de nou.
   mass_edit:
     product:
       operation:
         suggest_data:
+          description: Si us plau, seleccioneu l'acció que voleu aplicar en els productes seleccionats a la quadrícula
           subscribe_label: Subscriure’s
           unsubscribe_label: Desubscriviu-vos
+batch_jobs:
+  suggest_data_subscribe_products:
+    subscribe_products.label: Subscriu-te a productes
+  suggest_data_unsubscribe_products:
+    unsubscribe_products.label: Anul·lar la subscripció de productes

@@ -10,9 +10,6 @@ pim_reference_entity:
       identifier: Koodi
       label: Nimike
       image: Kuva
-    module:
-      delete:
-        button: Poista
     create:
       header:
         title: Luo

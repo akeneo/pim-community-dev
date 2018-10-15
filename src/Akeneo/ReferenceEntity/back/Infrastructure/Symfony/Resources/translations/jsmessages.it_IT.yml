@@ -10,9 +10,6 @@ pim_reference_entity:
       identifier: Codice
       label: Etichetta
       image: Immagine
-    module:
-      delete:
-        button: Eliminare
     create:
       header:
         title: Crea
