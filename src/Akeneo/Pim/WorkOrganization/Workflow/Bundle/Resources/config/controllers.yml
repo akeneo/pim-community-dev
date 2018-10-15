@@ -127,7 +127,7 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pimee_workflow.controller.rest.mass_edit:
-        class: '%pim_enrich.controller.rest.mass_edit.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MassEditController'
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pimee_workflow.datagrid.oro_to_pim_grid_filter'

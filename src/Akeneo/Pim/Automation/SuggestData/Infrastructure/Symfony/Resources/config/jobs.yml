@@ -26,7 +26,7 @@ services:
 
     # constraint collection providers
     akeneo.pim.automation.suggest_data.connector.job_parameters.constraint_collection_provider.product_mass_edit:
-        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit'
         arguments:
             -
                 - 'suggest_data_subscribe_products'
@@ -36,7 +36,7 @@ services:
 
     # default values providers
     akeneo.pim.automation.suggest_data.connector.job_parameters.default_values_provider.product_mass_edit:
-        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductMassEdit'
         arguments:
             -
                 - 'suggest_data_subscribe_products'
