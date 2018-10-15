@@ -20,11 +20,11 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const RECORD_LIST_SEARCH = 'record_list_search';
 
     /** @var RecordSearchMatrixNormalizer */
-    private $searchMatrixGenerator;
+    private $recordSearchMatrixGenerator;
 
     public function __construct(RecordSearchMatrixNormalizer $searchMatrixGenerator)
     {
-        $this->searchMatrixGenerator = $searchMatrixGenerator;
+        $this->recordSearchMatrixGenerator = $searchMatrixGenerator;
     }
 
     public function normalize(Record $record): array
@@ -33,7 +33,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::IDENTIFIER            => (string) $record->getIdentifier(),
             self::CODE                  => (string) $record->getCode(),
             self::REFERENCE_ENTITY_CODE => (string) $record->getReferenceEntityIdentifier(),
-            self::RECORD_LIST_SEARCH    => $this->searchMatrixGenerator->generate($record)
+            self::RECORD_LIST_SEARCH    => $this->recordSearchMatrixGenerator->generate($record)
         ];
     }
 }

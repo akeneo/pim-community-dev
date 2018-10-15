@@ -6,7 +6,7 @@ const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-  tools: {convertItemTable},
+  tools: {convertItemTable, answerJson},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
 let currentRequestContract = {};

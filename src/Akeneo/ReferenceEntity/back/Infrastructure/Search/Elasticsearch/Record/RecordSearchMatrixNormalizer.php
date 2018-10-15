@@ -43,7 +43,7 @@ class RecordSearchMatrixNormalizer
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($localeCode))
                 );
 
-                $matrix[$channelCode][$localeCode] = $recordProperties;
+                $matrix[$channelCode][$localeCode] = $this->cleanDataToIndex($recordProperties);
             }
         }
 
@@ -86,5 +86,12 @@ class RecordSearchMatrixNormalizer
         });
 
         return $values;
+    }
+
+    private function cleanDataToIndex($recordProperties): string
+    {
+        $cleanedData = str_replace(["\r", "\n"], " ", $recordProperties);
+
+        return strip_tags(html_entity_decode($cleanedData));
     }
 }

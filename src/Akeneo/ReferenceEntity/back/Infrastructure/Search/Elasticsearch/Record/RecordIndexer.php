@@ -43,6 +43,7 @@ class RecordIndexer implements RecordIndexerInterface
         }, $records);
 
         $this->recordClient->bulkIndexes(self::INDEX_TYPE, $normalizedRecords, self::KEY_AS_ID, Refresh::disable());
+        $this->recordClient->refreshIndex();
     }
 
     /**

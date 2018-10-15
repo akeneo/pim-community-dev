@@ -25,7 +25,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
 /**
