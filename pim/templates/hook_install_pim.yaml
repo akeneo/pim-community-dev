@@ -61,7 +61,7 @@ spec:
             - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.google.project_id | quote }} }
             - { name: K8S_CLUSTER_NAME, value: {{ .Values.google.cluster_name | quote }} }
             - { name: MAILER_HOST, value: {{ .Values.mailer.host | quote }} }
-            - { name: MAILER_PORT, value: {{ .Values.mailer.PORT | quote }} }
+            - { name: MAILER_PORT, value: {{ .Values.mailer.port | quote }} }
             - { name: MAILER_FROM_ADDRESS, value: {{ .Values.mailer.from_address | quote }} }
             - name: MAILER_USER
               valueFrom:
