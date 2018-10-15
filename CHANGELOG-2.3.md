@@ -6,6 +6,7 @@
 - PIM-7731: check for attribute as label not null in normalizers 
 - PIM-7734: fix published product datagrid status filter 
 - PIM-7742: fix expired assets notification
+- PIM-7736: Fix memory leak during published products indexing
 
 # 2.3.11 (2018-10-08)
 
