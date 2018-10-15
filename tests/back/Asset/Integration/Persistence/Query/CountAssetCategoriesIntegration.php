@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Asset\Integration\Persistence\Query;
+namespace AkeneoTestEnterprise\Asset\Integration\Persistence\Query;
 
 use PHPUnit\Framework\Assert;
-use AkeneoTest\Asset\Integration\Persistence\PimEnterpriseQueryTestCase;
+use AkeneoTestEnterprise\Asset\Integration\Persistence\PimEnterpriseQueryTestCase;
 
 class CountAssetCategoriesIntegration extends PimEnterpriseQueryTestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Export\ProductModel;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Export\ProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

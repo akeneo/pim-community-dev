@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\Validation;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Validation;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.

@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Doctrine\ORM\Query;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Doctrine\ORM\Query;
 
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

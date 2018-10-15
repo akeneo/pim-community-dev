@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

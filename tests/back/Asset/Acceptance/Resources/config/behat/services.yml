@@ -1,6 +1,6 @@
 services:
     test.product_asset.asset_context:
-        class: 'AkeneoTest\Asset\Acceptance\Context\AssetContext'
+        class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@__symfony__.pimee_volume_monitoring.persistence.query.count_assets'
@@ -8,7 +8,7 @@ services:
             - { name: fob.context_service }
 
     test.product_asset.asset_category_context:
-        class: 'AkeneoTest\Asset\Acceptance\Context\AssetCategoryContext'
+        class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetCategoryContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@__symfony__.pimee_volume_monitoring.persistence.query.count_asset_categories'
@@ -16,7 +16,7 @@ services:
             - { name: fob.context_service }
 
     test.product_asset.asset_category_tree_context:
-        class: 'AkeneoTest\Asset\Acceptance\Context\AssetCategoryTreeContext'
+        class: 'AkeneoTestEnterprise\Asset\Acceptance\Context\AssetCategoryTreeContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@__symfony__.pimee_volume_monitoring.persistence.query.count_asset_category_trees'

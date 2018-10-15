@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\Connector;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Connector;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;

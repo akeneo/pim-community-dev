@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
 
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Test\Integration\Configuration;

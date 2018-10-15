@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\Workflow\Storage\Sql\ProductDraft;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Storage\Sql\ProductDraft;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Test\Integration\TestCase;

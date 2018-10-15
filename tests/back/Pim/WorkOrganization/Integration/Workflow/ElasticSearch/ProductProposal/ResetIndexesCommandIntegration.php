@@ -1,9 +1,9 @@
 <?php
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\Workflow\ElasticSearch\ProductProposal;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\ElasticSearch\ProductProposal;
 
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
-use AkeneoTest\Pim\WorkOrganization\Integration\Workflow\ElasticSearch\ProductProposal\IndexConfiguration\AbstractProductProposalTestCase;
+use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\ElasticSearch\ProductProposal\IndexConfiguration\AbstractProductProposalTestCase;
 
 /**
  * Checks that the reset index command reset proposal index.

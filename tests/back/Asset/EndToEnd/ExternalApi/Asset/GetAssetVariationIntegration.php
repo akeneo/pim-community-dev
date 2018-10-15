@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\Asset;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset;
 
 use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetVariationController;
 

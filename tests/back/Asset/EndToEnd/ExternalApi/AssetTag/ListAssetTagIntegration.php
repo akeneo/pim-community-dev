@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\AssetTag;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\AssetTag;
 
 use Symfony\Component\HttpFoundation\Response;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Import\Product;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;

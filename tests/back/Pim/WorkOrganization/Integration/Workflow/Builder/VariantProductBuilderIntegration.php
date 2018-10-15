@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\Workflow\Builder;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Builder;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

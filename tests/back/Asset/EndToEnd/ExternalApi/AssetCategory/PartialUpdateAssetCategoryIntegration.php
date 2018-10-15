@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\AssetCategory;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\AssetCategory;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

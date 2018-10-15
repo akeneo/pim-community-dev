@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\Family;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Family;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;

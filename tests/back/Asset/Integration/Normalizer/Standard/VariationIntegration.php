@@ -1,8 +1,8 @@
 <?php
 
-namespace AkeneoTest\Asset\Integration\Normalizer\Standard;
+namespace AkeneoTestEnterprise\Asset\Integration\Normalizer\Standard;
 
-use AkeneoTest\Asset\Integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+use AkeneoTestEnterprise\Asset\Integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
 class VariationIntegration extends AbstractStandardNormalizerTestCase
 {

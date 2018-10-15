@@ -1,9 +1,9 @@
 <?php
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\AssetCategory;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\AssetCategory;
 
 use Akeneo\Test\Integration\Configuration;
-use AkeneoTest\Asset\EndToEnd\ExternalApi\Asset\AbstractAssetTestCase;
+use AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset\AbstractAssetTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class SearchAfterListAssetIntegration extends AbstractAssetTestCase

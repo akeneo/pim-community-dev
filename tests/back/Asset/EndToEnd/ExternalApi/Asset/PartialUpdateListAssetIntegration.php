@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Asset\EndToEnd\ExternalApi\Asset;
+namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;

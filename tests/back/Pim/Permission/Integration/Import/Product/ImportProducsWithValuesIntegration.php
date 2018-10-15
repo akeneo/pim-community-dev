@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Permission\Integration\Import\Product;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Import\Product;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 

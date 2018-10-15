@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Asset\Integration\Persistence;
+namespace AkeneoTestEnterprise\Asset\Integration\Persistence;
 
 use Akeneo\Asset\Component\FileStorage;
 use Akeneo\Asset\Component\Model\AssetInterface;

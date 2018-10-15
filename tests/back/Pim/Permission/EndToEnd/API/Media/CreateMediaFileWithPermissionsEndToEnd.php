@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\Media;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Media;
 
 use League\Flysystem\FilesystemInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;

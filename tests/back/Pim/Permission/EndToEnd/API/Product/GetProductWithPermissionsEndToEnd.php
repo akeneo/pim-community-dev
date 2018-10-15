@@ -1,9 +1,9 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\Product;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
 
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
-use AkeneoTest\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

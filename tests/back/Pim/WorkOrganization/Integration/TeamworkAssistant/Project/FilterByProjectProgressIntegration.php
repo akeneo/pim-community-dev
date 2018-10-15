@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Project;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter;
-use AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
+use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
 
 class FilterByProjectProgressIntegration extends TeamworkAssistantTestCase
 {

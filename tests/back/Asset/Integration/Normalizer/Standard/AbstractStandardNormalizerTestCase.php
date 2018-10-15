@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Asset\Integration\Normalizer\Standard;
+namespace AkeneoTestEnterprise\Asset\Integration\Normalizer\Standard;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

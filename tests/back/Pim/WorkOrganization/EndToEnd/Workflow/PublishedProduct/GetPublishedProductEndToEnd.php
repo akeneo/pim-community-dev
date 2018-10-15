@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\PublishedProduct;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\PublishedProduct;
 
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;

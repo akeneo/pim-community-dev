@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant\PreProcessing;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\PreProcessing;
 
-use AkeneoTest\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
+use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Asset\Acceptance\Context;
+namespace AkeneoTestEnterprise\Asset\Acceptance\Context;
 
 use AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\ReportContext;
 use AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery;
