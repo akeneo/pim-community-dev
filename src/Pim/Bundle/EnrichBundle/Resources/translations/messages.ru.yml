@@ -653,7 +653,7 @@ pim_title.job_tracker:
 pim_title.dashboard: "Панель управления"
 pim_catalog_identifier: Идентификатор
 pim_catalog_text: Текст
-pim_catalog_textarea: Текст
+pim_catalog_textarea: Текстовая область
 pim_catalog_number: Число
 pim_catalog_price_collection: Цена
 pim_catalog_multiselect: Множественный выбор
@@ -841,6 +841,7 @@ job_execution.summary:
   skip: Пропущено
   skipped_products: Пропущенные продукты
   skipped_attributes: Пропущенные атрибуты
+  skipped_families: Пропущенные семейства
 pim_mass_edit_execution_show: Задачи массового редактирования | Детали
 edit_common_attributes.steps.edit_common_attributes_processor.title: Изменить общие атрибуты
 update_product_value.steps.update_product_value_processor.title: Обновить значение продукта
