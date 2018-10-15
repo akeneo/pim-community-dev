@@ -25,7 +25,7 @@ import ChannelSwitcher from 'akeneoreferenceentity/application/component/app/cha
 import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   sidebar: {
@@ -60,8 +60,8 @@ interface DispatchProps {
     onChannelChanged: (channel: Channel) => void;
     onImageUpdated: (image: File) => void;
     onDelete: (record: Record) => void;
-    onCancelDelete: () => void;
-    onStartDeleteModal: () => void;
+    onOpenDeleteModal: () => void;
+    onCancelDeleteModal: () => void;
     backToReferenceEntity: () => void;
   };
 }
@@ -86,7 +86,7 @@ class RecordEditView extends React.Component<EditProps> {
     </span>
   );
 
-  private onClickDelete = () => {
+  private onConfirmedDelete = () => {
     const record = denormalizeRecord(this.props.record);
     this.props.events.onDelete(record);
   };
@@ -99,7 +99,7 @@ class RecordEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={() => this.props.events.onStartDeleteModal()}>
+              <button className="AknDropdown-menuLink" onClick={() => this.props.events.onOpenDeleteModal()}>
                 {__('pim_reference_entity.record.button.delete')}
               </button>
             </div>
@@ -220,8 +220,8 @@ class RecordEditView extends React.Component<EditProps> {
           <DeleteModal
             message={__('pim_reference_entity.record.delete.message', {recordLabel: label})}
             title={__('pim_reference_entity.record.delete.title')}
-            onConfirm={this.onClickDelete}
-            onCancel={this.props.events.onCancelDelete}
+            onConfirm={this.onConfirmedDelete}
+            onCancel={this.props.events.onCancelDeleteModal}
           />
         )}
       </React.Fragment>
@@ -280,10 +280,10 @@ export default connect(
         onDelete: (record: Record) => {
           dispatch(deleteRecord(record));
         },
-        onStartDeleteModal: () => {
-          dispatch(startDeleteModal());
+        onOpenDeleteModal: () => {
+          dispatch(openDeleteModal());
         },
-        onCancelDelete: () => {
+        onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
         backToReferenceEntity: () => {

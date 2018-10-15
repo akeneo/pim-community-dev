@@ -18,7 +18,7 @@ import {createIdentifier as createReferenceIdentifier} from 'akeneoreferenceenti
 import {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {startDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   context: {
@@ -49,19 +49,19 @@ interface DispatchProps {
     onSearchUpdated: (userSearch: string) => void;
     onDelete: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
-    onCancelDelete: () => void;
-    onStartDeleteModal: () => void;
+    onOpenDeleteModal: () => void;
+    onCancelDeleteModal: () => void;
   };
 }
 
-const SecondaryAction = ({onStartDeleteModal}: {onStartDeleteModal: () => void}) => {
+const SecondaryAction = ({onOpenDeleteModal}: {onOpenDeleteModal: () => void}) => {
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onStartDeleteModal()}>
+          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteModal()}>
             {__('pim_reference_entity.record.button.delete_all')}
           </button>
         </div>
@@ -86,8 +86,8 @@ const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: 
         secondaryActions={() => {
           return acls.deleteAllRecords ? (
             <SecondaryAction
-              onStartDeleteModal={() => {
-                events.onStartDeleteModal();
+              onOpenDeleteModal={() => {
+                events.onOpenDeleteModal();
               }}
             />
           ) : null;
@@ -129,7 +129,7 @@ const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: 
           onConfirm={() => {
             events.onDelete(referenceEntity);
           }}
-          onCancel={events.onCancelDelete}
+          onCancel={events.onCancelDeleteModal}
         />
       )}
     </React.Fragment>
@@ -193,11 +193,11 @@ export default connect(
         onDelete: (referenceEntity: ReferenceEntity) => {
           dispatch(deleteAllReferenceEntityRecords(referenceEntity));
         },
-        onCancelDelete: () => {
+        onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        onStartDeleteModal: () => {
-          dispatch(startDeleteModal());
+        onOpenDeleteModal: () => {
+          dispatch(openDeleteModal());
         },
       },
     };

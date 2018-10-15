@@ -5,21 +5,20 @@ import Form from 'akeneoreferenceentity/application/component/reference-entity/e
 import {
   referenceEntityLabelUpdated,
   saveReferenceEntity,
-  deleteReferenceEntity,
   referenceEntityImageUpdated,
 } from 'akeneoreferenceentity/application/action/reference-entity/edit';
+import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/delete';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {EditionFormState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {
-  SecondaryAction,
-  breadcrumbConfiguration,
-} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
+import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
+import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 
 interface StateProps {
   form: EditionFormState;
@@ -29,6 +28,9 @@ interface StateProps {
   acls: {
     edit: boolean;
     delete: boolean;
+  };
+  confirmDelete: {
+    isActive: boolean;
   };
 }
 
@@ -40,6 +42,8 @@ interface DispatchProps {
       onImageUpdated: (image: File) => void;
     };
     onDelete: (referenceEntity: ReferenceEntity) => void;
+    onOpenDeleteModal: () => void;
+    onCancelDeleteModal: () => void;
     onSaveEditForm: () => void;
   };
 }
@@ -47,8 +51,29 @@ interface DispatchProps {
 class Properties extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
+  private getSecondaryActions = () => {
+    return (
+      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+        <div className="AknDropdown-menu AknDropdown-menu--right">
+          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+          <div>
+            <button
+              tabIndex={-1}
+              className="AknDropdown-menuLink"
+              onClick={() => this.props.events.onOpenDeleteModal()}
+            >
+              {__('pim_reference_entity.reference_entity.module.delete.button')}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   render() {
     const referenceEntity = denormalizeReferenceEntity(this.props.form.data);
+    const label = referenceEntity.getLabel(this.props.context.locale);
 
     return (
       <React.Fragment>
@@ -63,13 +88,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             ) : null;
           }}
           secondaryActions={() => {
-            return this.props.acls.delete ? (
-              <SecondaryAction
-                onDelete={() => {
-                  this.props.events.onDelete(referenceEntity);
-                }}
-              />
-            ) : null;
+            return this.props.acls.delete ? this.getSecondaryActions() : null;
           }}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
@@ -91,6 +110,16 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             />
           </div>
         </div>
+        {this.props.confirmDelete.isActive && (
+          <DeleteModal
+            message={__('pim_reference_entity.reference_entity.delete.message', {referenceEntityLabel: label})}
+            title={__('pim_reference_entity.reference_entity.delete.title')}
+            onConfirm={() => {
+              this.props.events.onDelete(referenceEntity);
+            }}
+            onCancel={this.props.events.onCancelDeleteModal}
+          />
+        )}
       </React.Fragment>
     );
   }
@@ -99,6 +128,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 export default connect(
   (state: EditState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const confirmDelete = state.confirmDelete;
 
     return {
       form: state.form,
@@ -109,6 +139,7 @@ export default connect(
         edit: true,
         delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
       },
+      confirmDelete,
     };
   },
   (dispatch: any): DispatchProps => {
@@ -127,6 +158,12 @@ export default connect(
         },
         onDelete: (referenceEntity: ReferenceEntity) => {
           dispatch(deleteReferenceEntity(referenceEntity));
+        },
+        onCancelDeleteModal: () => {
+          dispatch(cancelDeleteModal());
+        },
+        onOpenDeleteModal: () => {
+          dispatch(openDeleteModal());
         },
         onSaveEditForm: () => {
           dispatch(saveReferenceEntity());

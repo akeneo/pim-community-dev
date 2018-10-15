@@ -24,30 +24,6 @@ interface DispatchProps {
   };
 }
 
-export const SecondaryAction = ({onDelete}: {onDelete: () => void}) => {
-  return (
-    <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
-      <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-        <div>
-          <button
-            tabIndex={-1}
-            className="AknDropdown-menuLink"
-            onClick={() => {
-              if (confirm(__('pim_reference_entity.reference_entity.module.delete.confirm'))) {
-                onDelete();
-              }
-            }}
-          >
-            {__('pim_reference_entity.reference_entity.module.delete.button')}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export const breadcrumbConfiguration = [
   {
     action: {

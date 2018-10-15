@@ -14,7 +14,6 @@ import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/applicati
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -34,7 +33,6 @@ interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
     onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
-    onDelete: (referenceEntity: ReferenceEntity) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
@@ -293,9 +291,6 @@ export default connect(
         },
         onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(attributeEditionStartByIdentifier(attributeIdentifier));
-        },
-        onDelete: (referenceEntity: ReferenceEntity) => {
-          dispatch(deleteReferenceEntity(referenceEntity));
         },
       },
     };
