@@ -95,6 +95,8 @@ MINUTE: Минута
 HOUR: Час
 DAY: День
 WEEK: Неделя
+MONTH: месяцев
+YEAR: лет
 Speed: Скорость
 FOOT_PER_SECOND: Футов в секунду
 FOOT_PER_HOUR: Футoв в час
@@ -146,3 +148,4 @@ ATM: Атмосфера
 PSI: Фунт на квадратный дюйм
 TORR: Торр
 MMHG: Миллиметр ртутного столба
+Energy: Энергия
