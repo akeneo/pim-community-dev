@@ -55,7 +55,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         return $queryResult;
     }
 
-    private function getElasticSearchQuery(RecordQuery $recordQuery)
+    private function getElasticSearchQuery(RecordQuery $recordQuery): array
     {
         $referenceEntityCode = $recordQuery->getFilter('reference_entity');
         $searchFilter = $recordQuery->getFilter('search');
@@ -71,7 +71,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_identifier' => $referenceEntityCode['value'],
+                                        'reference_entity_code' => $referenceEntityCode['value'],
                                     ],
                                 ],
                             ],
@@ -82,15 +82,26 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         ];
 
         if (!empty($searchFilter['value'])) {
-            foreach (explode(' ', $searchFilter['value']) as $term) {
-                $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                        'query_string' => [
-                            'default_field' => sprintf('record_list_search.%s.%s', $recordQuery->getChannel(), $recordQuery->getLocale()),
-                            'query'         => sprintf('*%s*', strtolower($term)),
-                        ],
-                    ];
-            }
+            $terms = $this->getTerms($searchFilter);
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'query_string' => [
+                    'default_field' => sprintf('record_list_search.%s.%s', $recordQuery->getchannel(), $recordQuery->getlocale()),
+                    'query'         => $terms
+                ],
+            ];
         }
+
+        return $query;
+    }
+
+    private function getTerms($searchFilter): string
+    {
+        $loweredTerms = strtolower($searchFilter['value']);
+        $terms = explode(' ', $loweredTerms);
+        $wildcardTerms = array_map(function (string $term) {
+            return sprintf('*%s*', $term);
+        }, $terms);
+        $query = implode(' AND ', $wildcardTerms);
 
         return $query;
     }

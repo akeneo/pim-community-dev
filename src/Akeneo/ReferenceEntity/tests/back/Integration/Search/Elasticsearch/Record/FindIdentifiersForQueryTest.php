@@ -4,37 +4,27 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
- * **The idea of the search model is the following:**
- *
- * A user who wants to search records given:
- * - A reference entity identifier
- * - A channel
- * - A locale
- *
- * The search request generated will search on those fields:
- * - Code
- * - Label of the given locale
- * - All values who are not localizable / not scopable
- * - All values who are localizable on the given locale
- * - All values who are scopable on the given channel
- *
- * **Therefore, the indexing model is as follow:**
- *
- *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
+class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 {
+    /** @var FindIdentifiersForQueryInterface */
+    private $findIdentifiersForQuery;
+
     public function setUp()
     {
         parent::setUp();
 
+        $this->findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query');
         $this->loadDataset();
     }
 
@@ -43,9 +33,32 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function default_search()
     {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', []);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'search',
+                    'operator' => '=',
+                    'value' => '',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_bangolufsen', 'brand_alessi', 'brand_kartell'],
+            'total' => 3
+        ], $matchingidentifiers->normalize());
     }
 
     /**
@@ -53,39 +66,32 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function simple_search()
     {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['year']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
-    }
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'search',
+                    'operator' => '=',
+                    'value' => 'year',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
 
-    /**
-     * @test
-     */
-    public function insensitve_search()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['year']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
-    }
-
-    /**
-     * @test
-     */
-    public function partial_match_search()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['play']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
-    }
-
-    /**
-     * @test
-     */
-    public function exact_matching_search()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['display']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_kartell'], $matchingidentifiers);
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_bangolufsen', 'brand_alessi', 'brand_kartell'],
+            'total' => 3
+        ], $matchingidentifiers->normalize());
     }
 
     /**
@@ -93,61 +99,32 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function two_words_search()
     {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US',
-            ['experience', 'senses']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
-    }
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'search',
+                    'operator' => '=',
+                    'value' => 'experience senses',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
 
-    /**
-     * @test
-     */
-    public function another_two_words_search()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US',
-            ['experience', 'starck']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_kartell'], $matchingidentifiers);
-    }
-
-    /**
-     * @test
-     */
-    public function search_on_info_from_labels()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['bang', 'olufsen']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
-    }
-
-    /**
-     * @test
-     */
-    public function search_on_info_from_labels_inverted_order()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['olufsen', 'bang']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
-    }
-
-    /**
-     * @test
-     */
-    public function search_on_info_from_code()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['bangolufsen']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
-    }
-
-    /**
-     * @test
-     */
-    public function composed_words()
-    {
-        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['88', 'year']);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_bangolufsen'],
+            'total' => 1
+        ], $matchingidentifiers->normalize());
     }
 
     private function loadDataset()
