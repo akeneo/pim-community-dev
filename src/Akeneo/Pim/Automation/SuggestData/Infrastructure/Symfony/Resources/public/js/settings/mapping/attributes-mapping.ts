@@ -1,10 +1,19 @@
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+import {EventsHash} from 'backbone';
+import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
+import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
+import {Filterable} from '../../common/filterable';
+import AttributeOptionsMapping = require('./attribute-options-mapping');
 
 const __ = require('oro/translator');
+const FetcherRegistry = require('pim/fetcher-registry');
+const FormBuilder = require('pim/form-builder');
+const Router = require('pim/router');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
-const noDataTemplate = require('pim/template/common/no-data');
+const i18n = require('pim/i18n');
+const UserContext = require('pim/user-context');
 
 interface NormalizedAttributeMappingInterface {
   mapping: {
@@ -19,14 +28,14 @@ interface NormalizedAttributeMappingInterface {
   };
 }
 
-interface AttributeMappingConfig {
+interface Config {
   labels: {
     pending: string,
     mapped: string,
     unmapped: string,
     pim_ai_attribute: string,
     catalog_attribute: string,
-    suggest_data: string,
+    suggest_data: string, // TODO Rename to attribute_mapping_status
   };
 }
 
@@ -52,8 +61,7 @@ class AttributeMapping extends BaseForm {
   };
 
   private readonly template = _.template(template);
-  private readonly noDataTemplate = _.template(noDataTemplate);
-  private readonly config: AttributeMappingConfig = {
+  private readonly config: Config = {
     labels: {
       pending: '',
       mapped: '',
@@ -63,11 +71,13 @@ class AttributeMapping extends BaseForm {
       suggest_data: '',
     },
   };
+  private attributeOptionsMappingModal: any = null;
+  private attributeOptionsMappingForm: BaseForm | null = null;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: AttributeMappingConfig}) {
+  constructor(options: {config: Config}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -77,9 +87,9 @@ class AttributeMapping extends BaseForm {
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
-    return $.when(
-      this.onExtensions('pim_datagrid:filter-front', this.filter.bind(this)),
-    );
+    Filterable.set(this);
+
+    return BaseForm.prototype.configure.apply(this, arguments);
   }
 
   /**
@@ -89,129 +99,174 @@ class AttributeMapping extends BaseForm {
     this.$el.html('');
     const familyMapping: NormalizedAttributeMappingInterface = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
-    const statuses: { [key: number]: string } = {};
-    statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
-    statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
-    statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
-
     this.$el.html(this.template({
       mapping,
-      statuses,
+      statuses: this.getMappingStatuses(),
       pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
       catalog_attribute: __(this.config.labels.catalog_attribute),
       suggest_data: __(this.config.labels.suggest_data),
-    }) + this.noDataTemplate({
-      __,
-      imageClass: '',
-      hint: __('pim_datagrid.no_results', {
-        entityHint: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'),
-      }),
-      subHint: 'pim_datagrid.no_results_subtitle',
+      edit: __('pim_common.edit'),
     }));
 
-    Object.keys(mapping).forEach((pimAiAttributeCode) => {
-      const $dom = this.$el.find(
-        '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]',
-      );
-      const attributeSelector = new SimpleSelectAttribute({
-        config: {
-          /**
-           * The normalized managed object looks like:
-           * { mapping: {
-           *     pim_ai_attribute_code_1: { attribute: 'foo' ... },
-           *     pim_ai_attribute_code_2: { attribute: 'bar' ... }
-           * } }
-           */
-          fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
-          label: '',
-          choiceRoute: 'pim_enrich_attribute_rest_index',
-          types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
-        },
-        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
-      });
-      attributeSelector.configure().then(() => {
-        attributeSelector.setParent(this);
-        $dom.html(attributeSelector.render().$el);
-      });
+    Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
+      this.appendAttributeSelector(mapping, pimAiAttributeCode);
     });
 
-    this.toggleNoDataMessage();
+    this.toggleAttributeOptionButtons(Object.keys(mapping).reduce((acc, pimAiAttributeCode: string) => {
+      acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
+
+      return acc;
+    }, {} as { [key: string]: string }));
+
+    Filterable.afterRender(this, __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'));
 
     this.renderExtensions();
+    this.delegateEvents();
 
     return this;
   }
 
   /**
-   * Filters the rows with a filter.
-   * Each row contains a 'data' element called 'active-filters'. This element contains a list of filters. A filter is
-   * contained in this row if it is hidden by this filter. The row is displayed if there is no active filters in it,
-   * i.e. the active filters are empty.
-   *
-   * @param {{value: string, type: "equals" | "search", field: string}} filter
+   * {@inheritdoc}
    */
-  private filter(filter: { value: string, type: 'equals'|'search', field: string }): void {
-    this.$el.find('.searchable-row').each((_i: number, row: any) => {
-      const value = $(row).data(filter.field);
-      let filteredByThisFilter = false;
-      switch (filter.type) {
-        case 'equals': filteredByThisFilter = !this.filterEquals(filter.value, value); break;
-        case 'search': filteredByThisFilter = !this.filterSearch(filter.value, value); break;
-      }
+  public events(): EventsHash {
+    return {
+      'click .option-mapping': this.openAttributeOptionsMappingModal,
+    };
+  }
 
-      let filters = $(row).data('active-filters');
-      if (undefined === filters) {
-        filters = [];
-      }
-      if ((filters.indexOf(filter.field) < 0) && filteredByThisFilter) {
-        filters.push(filter.field);
-      } else if ((filters.indexOf(filter.field) >= 0) && !filteredByThisFilter) {
-        filters.splice(filters.indexOf(filter.field), 1);
-      }
-      $(row).data('active-filters', filters);
-
-      filters.length > 0 ? $(row).hide() : $(row).show();
-
-      this.toggleNoDataMessage();
+  /**
+   * @param mapping
+   * @param {string} pimAiAttributeCode
+   */
+  private appendAttributeSelector(mapping: any, pimAiAttributeCode: string) {
+    const $dom = this.$el.find(
+      '.attribute-selector[data-franklin-attribute-code="' + pimAiAttributeCode + '"]',
+    );
+    const attributeSelector = new SimpleSelectAttribute({
+      config: {
+        fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
+        label: '',
+        choiceRoute: 'pim_enrich_attribute_rest_index',
+        types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
+      },
+      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
+    });
+    attributeSelector.configure().then(() => {
+      attributeSelector.setParent(this);
+      $dom.html(attributeSelector.render().$el);
     });
   }
 
   /**
-   * Toggle the "there is no data" message regarding the number of visible rows.
+   * @returns { [ key: number ]: string }
    */
-  private toggleNoDataMessage(): void {
-    this.$el.find('.searchable-row:visible').length ?
-      this.$el.find('.no-data-inner').hide() :
-      this.$el.find('.no-data-inner').show();
+  private getMappingStatuses() {
+    const statuses: { [key: number]: string } = {};
+    statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
+    statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
+    statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
+
+    return statuses;
   }
 
   /**
-   * Returns true if the values are the same.
+   * This method will show or hide the Attribute Option buttons.
+   * The first parameter is the current mapping, from pimAiAttributeCode to pimAttributeCode.
    *
-   * @param {string} filterValue
-   * @param {string} rowValue
-   *
-   * @returns {boolean}
+   * @param { [pimAiAttributeCode: string]: string | null } mapping
    */
-  private filterEquals(filterValue: string, rowValue: string): boolean {
-    return filterValue === '' || filterValue === rowValue;
+  private toggleAttributeOptionButtons(mapping: { [pimAiAttributeCode: string]: string | null }) {
+    const pimAttributes = Object.values(mapping).filter((pimAttribute) => {
+      return '' !== pimAttribute && null !== pimAttribute;
+    });
+
+    FetcherRegistry
+      .getFetcher('attribute')
+      .fetchByIdentifiers(pimAttributes)
+      .then((attributes: Array<{ code: string, type: string }>) => {
+      Object.keys(mapping).forEach((pimAiAttribute) => {
+        const $attributeOptionButton = this.$el.find(
+          '.option-mapping[data-franklin-attribute-code=' + pimAiAttribute + ']',
+        );
+        const attribute: { code: string, type: string } | undefined = attributes
+          .find((attr: { code: string, type: string }) => {
+            return attr.code === mapping[pimAiAttribute];
+          },
+        );
+        const type = undefined === attribute ? '' : attribute.type;
+
+        ['pim_catalog_simpleselect', 'pim_catalog_multiselect'].indexOf(type) >= 0 ?
+          $attributeOptionButton.show() :
+          $attributeOptionButton.hide();
+      });
+    });
   }
 
   /**
-   * Return if the row matches the search filter by words. If the user types 'foo bar', it will look for every row
-   * containing the strings 'foo' and 'bar', no matter the order of the words.
+   * Open the modal for the attribute options mapping
    *
-   * @param {string} filterValue
-   * @param {string} rowValue
-   *
-   * @returns {boolean}
+   * @param { { currentTarget: any } } event
    */
-  private filterSearch(filterValue: string, rowValue: string): boolean {
-    const words: string[] = filterValue.split(' ');
+  private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
+    const $line = $(event.currentTarget).closest('.line');
+    const franklinAttributeLabel = $line.data('pim_ai_attribute') as string;
+    const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
+    const catalogAttributeCode =
+        $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;
+    const familyCode = Router.match(window.location.hash).params.familyCode;
 
-    return words.reduce((acc, word) => {
-      return acc && rowValue.indexOf(word) >= 0;
-    }, true);
+    $.when(
+      FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
+      FetcherRegistry.getFetcher('family').fetch(familyCode),
+    ).then((
+      form: BaseForm,
+      normalizedFamily: any,
+    ) => {
+      this.attributeOptionsMappingModal = new BootstrapModal({
+        className: 'modal modal--fullPage modal--topButton',
+        modalOptions: {
+          backdrop: 'static',
+          keyboard: false,
+        },
+        allowCancel: true,
+        okCloses: false,
+        title: '',
+        content: '',
+        cancelText: ' ',
+      });
+      this.attributeOptionsMappingModal.open();
+      this.attributeOptionsMappingForm = form;
+
+      const formContent = form.getExtension('content') as AttributeOptionsMapping;
+      formContent
+        .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
+        .setFamilyCode(familyCode)
+        .setFranklinAttributeLabel(franklinAttributeLabel)
+        .setCatalogAttributeCode(catalogAttributeCode);
+
+      this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
+
+      $('.modal .ok').remove();
+      form.setElement(this.attributeOptionsMappingModal.$('.modal-body')).render();
+
+      this.attributeOptionsMappingModal.on('cancel', this.closeAttributeOptionsMappingModal.bind(this));
+    });
+  }
+
+  /**
+   * Closes the modal then destroy all its data inside.
+   */
+  private closeAttributeOptionsMappingModal(): void {
+    if (null !== this.attributeOptionsMappingModal) {
+      this.attributeOptionsMappingModal.close();
+      this.attributeOptionsMappingModal = null;
+    }
+
+    if (null !== this.attributeOptionsMappingForm) {
+      this.attributeOptionsMappingForm.getFormModel().clear();
+      this.attributeOptionsMappingForm = null;
+    }
   }
 }
 

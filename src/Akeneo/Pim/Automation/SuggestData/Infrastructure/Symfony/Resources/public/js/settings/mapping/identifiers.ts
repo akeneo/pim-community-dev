@@ -61,6 +61,7 @@ class EditIdentifiersMappingView extends BaseView {
 
     this.config = {...this.config, ...options.config};
   }
+
   /**
    * {@inheritdoc}
    */
@@ -80,6 +81,7 @@ class EditIdentifiersMappingView extends BaseView {
         }),
     );
   }
+
   /**
    * {@inheritdoc}
    */

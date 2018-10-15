@@ -1,10 +1,15 @@
 import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import {Filter, FilterValue} from '../common/filterable';
 const __ = require('oro/translator');
 const template = require('pim/template/datagrid/filter/search-filter');
 
 const TIMEOUT_DELAY = 250;
+
+interface Config {
+  fieldName: string;
+}
 
 /**
  * This module is a search filter but not related to a datagrid.
@@ -12,14 +17,21 @@ const TIMEOUT_DELAY = 250;
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class FrontSearchFilter extends BaseForm {
-  public readonly template = _.template(template);
-  private timer: number|null = null;
+  private readonly template = _.template(template);
+  private timer: number | null = null;
+  private config: Config;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: object }) {
+  constructor(options: { config: Config }) {
     super({...options, ...{ className: 'AknFilterBox-searchContainer' }});
+
+    this.config = options.config;
+
+    if (!this.config.hasOwnProperty('fieldName')) {
+      throw new Error('fieldName should be declared as config in this module');
+    }
   }
 
   /**
@@ -68,11 +80,12 @@ class FrontSearchFilter extends BaseForm {
    */
   private doSearch() {
     const value = (this.$el.find('input').val() as string);
-    this.trigger('pim_datagrid:filter-front', {
+    const filter: Filter = {
       value,
-      type: 'search',
-      field: 'pim_ai_attribute',
-    });
+      type: FilterValue.Search,
+      field: this.config.fieldName,
+    };
+    this.trigger('pim_datagrid:filter-front', filter);
   }
 }
 
