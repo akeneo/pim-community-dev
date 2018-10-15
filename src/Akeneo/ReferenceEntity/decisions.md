@@ -250,7 +250,6 @@ When the reindexation of a lot of records is needed (like 1 million), how do we 
 
 This case can happen when an attribute text is removed from the enriched entity and this property is used for the search in ES, so it needs to be totally recalculated.
 
-
 ## 06/10/2018
 
 ### API port and hexagon
@@ -279,3 +278,169 @@ how will we handle those usecases regarding:
 
 - We will use a different read model for each read usecases like `Read a record details` as those models may differ a lot between the UI and the external API.
 - There will be different query functions used to generate those read models.
+
+## 12/10/2018
+
+### Flat indexing of records in search engine
+
+#### Problem:
+
+##### Today:
+
+The search is possible thanks to the following indexing format:
+
+    [
+        "identifier": "starck_designer_23525246353513532523525252"
+        "reference_entity_identifier": "designer",
+        "code": "starck",
+        "labels": [
+            "fr_FR": "Philippe Starck"
+        ],
+        "record_list_search": [
+            "ecommerce": [
+                "fr_FR": "designer Philippe Starck Né à Paris, Philippe Starck ...",
+                "en_US": "designer Philippe Starck Born in Paris, Philippe Starck ...",
+            ],
+            "mobile": [
+                "fr_FR": "designer Philippe Starck Célèbre designer.",
+                "en_US": "designer Philippe Starck Famous designer.",
+            ]
+        ]
+    ]
+
+In the matrix: record_list_search (which is indexed by channel, locale) the value have the following pattern: "{record_code} {label_for_locale} {all values separated by a space for this locale and channel}".
+
+The search would be performed using the following query:
+
+    // Search for "Bordeaux Nantes" in ecommerce/fr_FR.
+    [
+        "_source": "_id",
+        "from": 0,
+        "size": 100,
+        "sort": ["identifier": "asc"],
+        "query"  : [
+            "constant_score": [
+                "filter": [
+                    "bool": [
+                        "filter": [
+                            [
+                                "term": [
+                                    "reference_entity_code": "designer",
+                                ],
+                            ],
+                            [
+                                'query_string': [
+                                    "default_field": "record_list_search.ecommerce.fr_FR"
+                                    "query": "*Bordeaux* AND *Nantes*"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+##### The issue:
+The issue with this indexing format is that whenever the structure of a reference entity changes (ie, an attribute is removed), every records belonging to this reference entity *needs to be reindexed* to remove the values linked to the removed attribute.
+
+This task can take some time and requires us to launch a background job responsible for the reindexing of the records.
+
+#### Proposed solution:
+
+##### The "flat keys" indexing format
+
+The search would be possible thanks to the following indexing format:
+
+    [
+        "identifier": "starck_designer_23525246353513532523525252"
+        "reference_entity_identifier": "designer",
+        "code": "starck",
+        "labels": [
+            "fr_FR": "Philippe Starck"
+        ],
+        "description_ecommerce_fr_FR_88b980b0-d05e-11e8-a8d5-f2801f1b9fd1": "Né à Paris, Philippe Starck ...",
+        "description_ecommerce_en_US_88b980b0-d05e-11e8-a8d5-f2801f1b9fd1": "Born in Paris, Philippe Starck ...",
+        "description_mobile_en_US_88b980b0-d05e-11e8-a8d5-f2801f1b9fd1": "Famous designer.",
+        "description_mobile_fr_FR_88b980b0-d05e-11e8-a8d5-f2801f1b9fd1": "Célèbre designer.",
+    ]
+
+The keys of the flat format, corresponds the the "Value keys" (see Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey).
+
+The search becomes:
+
+    // Search for "Bordeaux Nantes" in ecommerce/fr_FR.
+    [
+        "_source": "_id",
+        "from": 0,
+        "size": 100,
+        "sort": ["identifier": "asc"],
+        "query"  : [
+            "constant_score": [
+                "filter": [
+                    "bool": [
+                        "filter": [
+                            [
+                                "term": [
+                                    "reference_entity_code": "designer",
+                                ],
+                            ],
+                            [
+                                'query_string': [
+                                    "fields": ["description_ecommerce_fr_FR", "description_ecommerce_en_US", "description_mobile_en_US", "description_mobile_en_US"] // List generated after the reference entity structure
+                                    "query": "*Bordeaux* AND *Nantes*"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+
+Whenever the "description" attribute is removed, we do not need to reindex the document as there  will be no way that a user will filter on it since it does not belong in the system anymore (even if this attribute is recreated with the same code thanks to the uuid).
+
+The next time this record is saved, the description value keys will be removed and the ES document will be clean.
+
+The issue with this search model is that the size of the request is now dependent of the structure size, the more the attributes of the reference entity, the bigger the request and the more fields ES has to search on.
+
+#### Benchmarking
+
+We've run some benchmark trying to see how munch longer would it take for ES to perform the search comparing to the first search model. Here are the resuts:
+
+##### Protocol
+
+- Index 10 000 records in the target format
+- Each record has 100 attributes (non scopable non localizable which is the worst case scenario) (PO said it would never go higher than this 100 limit).
+- Perform the search by changing some axis as shown below:
+    - Number of words
+    - Is the search full text "*Borde*" or is it just a start with ("Bordea*")
+    - The number of attributes we search on
+
+##### Mappings
+
+In the first search model (with the "record_list_search" field), all the fields are indexed using the ES "keyword" type.
+
+In the second model ("flat keys"), the fields are tokenized using the ES standard tokenizer.
+What this means is that whenever we send a value which should be tokenized, ES will break the words into smaller words and index them internally so that when we search for the beginning of a word ES is faster at giving results (see https://www.elastic.co/guide/en/elasticsearch/reference/5.6/analysis-tokenizers.html).
+
+##### Results
+
+|                                              | Search Model 1 "Keyword" | Search Model 2 "Flat keys" | Ratio |
+|----------------------------------------------|--------------------------|----------------------------|-------|
+| 10 words full text ("*bor*")                 | 45 ms                    | 3200 ms                    | x71   |
+| 3 words full text ("*bor*")                  | 15 ms                    | 650 ms                     | x43   |
+| 3 words start with ("bor*")                  | 6 ms                     | 150 ms                     | x37   |
+| 3 words equals ("bordeaux")                  | 3 ms                     | 130 ms                     |       |
+| 3 words full text (search on 20 attributes)  |                          | 120 ms                     |       |
+| 3 words start with (search on 20 attributes) |                          | 40 ms                      |       |
+
+The search model 1 performs better than the search model 2 (x71 times better).
+
+When degrading the functionnal need (search on start with instead of full text), the search model 2 is still x37 times slower.
+
+To reach a satifying response time with the search model 2, we need to significantly degrate the functionnal need (search on 3 words and 20 attributes max).
+
+#### Status: Rejected
+
+*Decision*: *We will implement the search model 1 "keyword" and try to improve the indexing time as munch as we can so it does not become a bottleneck on the PIM*.
