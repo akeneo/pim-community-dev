@@ -47,6 +47,7 @@ Additional: Дополнительно
 Groups and Roles: Группы и роли
 Username: Имя пользователя
 Password: Пароль
+Password (again): Повторите пароль
 Re-enter password: Подтвердите пароль
 Name prefix: Префикс имени
 First name: Имя
@@ -154,4 +155,5 @@ Username or Email: Имя пользователя или Email
 Forgot Password: Восстановить пароль
 Request: Запрос
 Check Email: Проверить электронную почту
+password_reset_email_sent: Пользователю выслан email со ссылкой на сброс пароля.
 Go to homepage: Перейти на главную страницу
