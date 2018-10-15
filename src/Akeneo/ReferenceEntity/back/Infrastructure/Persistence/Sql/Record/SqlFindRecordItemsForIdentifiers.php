@@ -65,7 +65,7 @@ SQL;
                 $result['code'],
                 $image,
                 $result['labels'],
-                json_decode($result['value_collection'], true)
+                $this->cleanValues($result['value_collection'])
             );
         }
 
@@ -97,5 +97,12 @@ SQL;
         $recordItem->values = $values;
 
         return $recordItem;
+    }
+
+    private function cleanValues(string $values): array
+    {
+        $cleanValues = strip_tags(html_entity_decode($values));
+
+        return json_decode($cleanValues, true);
     }
 }
