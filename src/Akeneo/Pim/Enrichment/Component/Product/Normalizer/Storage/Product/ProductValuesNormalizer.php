@@ -14,26 +14,30 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductValuesNormalizer implements NormalizerInterface
 {
-    use SerializerAwareTrait;
+    /** @var NormalizerInterface */
+    private $valueNormalizer;
+
+    /**
+     * @param NormalizerInterface $valueNormalizer
+     */
+    public function __construct(NormalizerInterface $valueNormalizer)
+    {
+        $this->valueNormalizer = $valueNormalizer;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function normalize($values, $format = null, array $context = [])
     {
-        $result = [];
+        $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->serializer->normalize($value, $format, $context);
-            $attributeCode = $value->getAttribute()->getCode();
-
-            if (!isset($result[$attributeCode])) {
-                $result[$attributeCode] = [];
-            }
-
-            $result[$attributeCode] = array_merge_recursive($result[$attributeCode], $normalizedValue[$attributeCode]);
+            $normalizedValues[] = $this->valueNormalizer->normalize($value, $format, $context);
         }
+
+        $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
 
         return $result;
     }

@@ -17,10 +17,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(NormalizerInterface $normalizer)
     {
-        $serializer->implement(NormalizerInterface::class);
-        $this->setSerializer($serializer);
+        $this->beConstructedWith($normalizer);
     }
 
     function it_is_initializable()
@@ -31,7 +30,6 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     function it_is_a_normalizer()
     {
         $this->shouldImplement(NormalizerInterface::class);
-        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
     }
 
     function it_supports_storage_format_and_collection_values()
@@ -57,8 +55,12 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'other_format')->shouldReturn(false);
     }
 
+    function it_normalizes_an_empty_collection_of_product_values() {
+        $this->normalize(new ValueCollection(), 'storage')->shouldReturn([]);
+    }
+
     function it_normalizes_collection_of_product_values_in_storage_format(
-        $serializer,
+        $normalizer,
         ValueInterface $textValue,
         AttributeInterface $textAttribute,
         ValueInterface $descriptionEcommerceFrValue,
@@ -90,7 +92,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $rawTextValue = [];
         $rawTextValue['text']['<all_channels>']['<all_locales>'] = 'foo';
 
-        $serializer
+        $normalizer
             ->normalize($textValue, 'storage', [])
             ->shouldBeCalled()
             ->willReturn($rawTextValue);
@@ -98,7 +100,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $rawDescriptionEcommerceFr = [];
         $rawDescriptionEcommerceFr['description']['ecommerce']['fr'] = 'desc eco fr';
 
-        $serializer
+        $normalizer
             ->normalize($descriptionEcommerceFrValue, 'storage', [])
             ->shouldBeCalled()
             ->willReturn($rawDescriptionEcommerceFr);
@@ -106,7 +108,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $rawDescriptionEcommerceEn = [];
         $rawDescriptionEcommerceEn['description']['ecommerce']['en'] = 'desc eco en';
 
-        $serializer
+        $normalizer
             ->normalize($descriptionEcommerceEnValue, 'storage', [])
             ->shouldBeCalled()
             ->willReturn($rawDescriptionEcommerceEn);
@@ -114,7 +116,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $rawDescriptionPrintFr = [];
         $rawDescriptionPrintFr['description']['print']['fr'] = 'desc print fr';
 
-        $serializer
+        $normalizer
             ->normalize($descriptionPrintFrValue, 'storage', [])
             ->shouldBeCalled()
             ->willReturn($rawDescriptionPrintFr);
@@ -135,6 +137,41 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
                         ],
                         'print' => [
                             'fr' => 'desc print fr',
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    function it_normalizes_collection_of_product_values_with_numeric_attribute_code($normalizer) {
+        $textAttribute = new Attribute();
+        $textAttribute->setCode('123');
+        $textAttribute->setLocalizable(true);
+        $textAttribute->setScopable(true);
+        $textAttribute->setUnique(false);
+
+        $textValueEn = new ScalarValue($textAttribute, 'ecommerce', 'en_US', 'foo');
+        $textValueFr = new ScalarValue($textAttribute, 'ecommerce', 'fr_FR', 'foo');
+        $values = new ValueCollection([$textValueEn, $textValueFr]);
+
+        $normalizer
+            ->normalize($textValueEn, 'storage', [])
+            ->shouldBeCalled()
+            ->willReturn(['123' => ['ecommerce' => ['en_US' => 'foo']]]);
+
+        $normalizer
+            ->normalize($textValueFr, 'storage', [])
+            ->shouldBeCalled()
+            ->willReturn(['123' => ['ecommerce' => ['fr_FR' => 'baz']]]);
+
+        $this
+            ->normalize($values, 'storage')
+            ->shouldReturn(
+                [
+                    '123'   => [
+                        'ecommerce' => [
+                            'en_US' => 'foo',
+                            'fr_FR' => 'baz',
                         ],
                     ],
                 ]
