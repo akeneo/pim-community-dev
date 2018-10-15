@@ -3,6 +3,7 @@ imports:
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
     - { resource: '@AkeneoAssetBundle/Resources/config/external_api/config.yml' }
     - { resource: 'bundles/monolog.yml' }
+    - { resource: '@AkeneoReferenceEntityBundle/Resources/config/search/elasticsearch.yml' }
 
 parameters:
     pimee_mass_edit_asset_batch_size: 100
