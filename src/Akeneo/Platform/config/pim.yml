@@ -1,5 +1,6 @@
 imports:
     - { resource: 'bundles/akeneo_batch.yml' }
+    - { resource: 'bundles/akeneo_api.yml' }
     - { resource: 'bundles/assetic.yml' }
     - { resource: 'bundles/doctrine.yml' }
     - { resource: 'bundles/escape_wsse_authentication.yml' }
@@ -13,7 +14,6 @@ imports:
     - { resource: 'bundles/oro_translation.yml' }
     - { resource: 'bundles/pim_user.yml' }
     - { resource: 'bundles/twig.yml' }
-    - { resource: '@PimApiBundle/Resources/config/api.yml' }
 
 parameters:
     pim_job_product_batch_size: 10
