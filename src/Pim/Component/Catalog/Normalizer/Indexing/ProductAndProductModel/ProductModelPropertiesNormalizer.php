@@ -121,7 +121,12 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
             return [];
         }
 
-        $valuePath = sprintf('%s-text', $productModel->getFamily()->getAttributeAsLabel()->getCode());
+        $attributeAsLabel = $productModel->getFamily()->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return [];
+        }
+
+        $valuePath = sprintf('%s-text', $attributeAsLabel->getCode());
         if (!isset($values[$valuePath])) {
             return [];
         }
