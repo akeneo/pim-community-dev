@@ -1,6 +1,7 @@
-import * as _ from 'underscore';
+import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import BaseView = require('pimenrich/js/view/base');
+import * as _ from 'underscore';
 const __ = require('oro/translator');
 const Router = require('pim/router');
 const template = require('pimee/template/settings/mapping/tabs');
@@ -12,32 +13,17 @@ const template = require('pimee/template/settings/mapping/tabs');
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 interface Config {
-  tabs: { label: string, route: string, checkAllowed: boolean }[];
+  tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;
   selected: number|null;
 }
 
 class Tabs extends BaseView {
-  readonly template = _.template(template);
-  readonly config: Config = {
+  private readonly template = _.template(template);
+  private readonly config: Config = {
     tabs: [],
-    selected: null
+    selected: null,
   };
-  stateFullAllowed: boolean[];
-
-  /**
-   * {@inheritdoc}
-   */
-  public events() {
-    return {
-      'click .tab-link': (event: { currentTarget: any }) => {
-        const index = parseInt($(event.currentTarget).data('index') + '');
-        if (this.checkAllowed(index)) {
-          const tabConfig = this.config.tabs[index];
-          Router.redirectToRoute(tabConfig.route);
-        }
-      }
-    }
-  }
+  private stateFullAllowed: boolean[];
 
   /**
    * {@inheritdoc}
@@ -52,9 +38,24 @@ class Tabs extends BaseView {
   /**
    * {@inheritdoc}
    */
-  configure(): JQueryPromise<any> {
+  public events(): EventsHash {
+    return {
+      'click .tab-link': (event: { currentTarget: any }) => {
+        const index = parseInt($(event.currentTarget).data('index') + '');
+        if (this.checkAllowed(index)) {
+          const tabConfig = this.config.tabs[index];
+          Router.redirectToRoute(tabConfig.route);
+        }
+      },
+    };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public configure(): JQueryPromise<any> {
     return $.when(
-      BaseView.prototype.configure.apply(this, arguments)
+      BaseView.prototype.configure.apply(this, arguments),
     ).then(() => {
       this.listenTo(
         this.getRoot(),
@@ -62,9 +63,9 @@ class Tabs extends BaseView {
         () => {
           this.stateFullAllowed = [];
           this.render();
-        }
+        },
       );
-    })
+    });
   }
 
   /**
@@ -82,6 +83,21 @@ class Tabs extends BaseView {
     }
 
     return this.stateFullAllowed[index];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public render(): BaseView {
+    this.$el.html(this.template({
+      tabs: this.config.tabs,
+      selected: this.config.selected,
+      checkAllowed: this.checkAllowed.bind(this),
+      __,
+    }));
+    this.delegateEvents();
+
+    return BaseView.prototype.render.apply(this, arguments);
   }
 
   /**
@@ -103,21 +119,6 @@ class Tabs extends BaseView {
 
     return false;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  render() {
-    this.$el.html(this.template({
-      tabs: this.config.tabs,
-      selected: this.config.selected,
-      checkAllowed: this.checkAllowed.bind(this),
-      __
-    }));
-    this.delegateEvents();
-
-    return BaseView.prototype.render.apply(this, arguments);
-  }
 }
 
-export = Tabs
+export = Tabs;

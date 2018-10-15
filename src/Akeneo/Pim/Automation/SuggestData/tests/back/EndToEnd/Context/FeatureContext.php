@@ -30,7 +30,7 @@ class FeatureContext extends EnterpriseFeatureContext
      *
      * @BeforeScenario
      */
-    public function gatherContexts(BeforeScenarioScope $scope)
+    public function gatherContexts(BeforeScenarioScope $scope): void
     {
         $env = $scope->getEnvironment();
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
 /**
- * Registry for data providers
+ * Registry for data providers.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -36,9 +36,9 @@ class DataProviderRegistry
     /**
      * @param string $alias
      *
-     * @return DataProviderInterface
-     *
      * @throws \Exception
+     *
+     * @return DataProviderInterface
      */
     public function getDataProvider(string $alias): DataProviderInterface
     {

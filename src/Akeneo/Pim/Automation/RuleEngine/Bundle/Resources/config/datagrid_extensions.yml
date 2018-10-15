@@ -10,3 +10,13 @@ services:
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: oro_datagrid.extension }
+
+    pim_datagrid.datasource.rule:
+        class: '%pim_datagrid.datasource.default.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        calls:
+            - [ setMassActionRepository, ['@pimee_catalog_rule.repository.rule_definition_mass_action' ]]
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_rule }

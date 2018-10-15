@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,12 +12,12 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionExceptionSpec extends ObjectBehavior
 {
-    public function it_is_a_product_subscription_exception()
+    public function it_is_a_product_subscription_exception(): void
     {
         $this->shouldBeAnInstanceOf(ProductSubscriptionException::class);
     }
 
-    public function it_is_an_exception()
+    public function it_is_an_exception(): void
     {
         $this->shouldBeAnInstanceOf(\Exception::class);
     }

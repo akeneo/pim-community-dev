@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
- * Identifier Mapping doctrine entity
+ * Identifier Mapping doctrine entity.
  */
 class IdentifierMapping
 {
@@ -30,7 +30,7 @@ class IdentifierMapping
     private $attribute;
 
     /**
-     * @param string                  $pimAiCode
+     * @param string $pimAiCode
      * @param AttributeInterface|null $attribute
      */
     public function __construct(string $pimAiCode, ?AttributeInterface $attribute)

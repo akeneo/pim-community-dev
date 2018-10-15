@@ -27,9 +27,6 @@ pim_enrich:
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
 
-pim_localization:
-    resource: "@PimLocalizationBundle/Resources/config/routing.yml"
-
 pim_user:
     resource: "@PimUserBundle/Resources/config/routing.yml"
 
@@ -45,17 +42,14 @@ pim_versioning:
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
 
-pim_reference_data:
-    resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
-
 pim_catalog_rule:
     resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
 
 pimee_product_asset:
     resource: "@AkeneoAssetBundle/Resources/config/routing.yml"
 
-pimee_enriched_entity:
-    resource: "@AkeneoEnrichedEntityBundle/Resources/config/routing.yml"
+pimee_reference_entity:
+    resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
 
 pim_security:
     resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"

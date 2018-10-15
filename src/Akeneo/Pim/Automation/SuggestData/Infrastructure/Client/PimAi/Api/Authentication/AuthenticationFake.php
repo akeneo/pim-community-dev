@@ -14,19 +14,20 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication;
 
 /**
- * Fake authentication
+ * Fake authentication.
+ *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AuthenticationFake implements AuthenticationApiInterface
 {
     /** @var string */
-    const VALID_TOKEN = 'valid-token';
+    public const VALID_TOKEN = 'valid-token';
 
     /**
      * {@inheritdoc}
      */
     public function authenticate(?string $token): bool
     {
-        return $token === self::VALID_TOKEN;
+        return self::VALID_TOKEN === $token;
     }
 }

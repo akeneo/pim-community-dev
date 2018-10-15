@@ -1,17 +1,27 @@
 # 3.0
 
-## Manage enriched entities
+## Manage reference entities
 
-- PIM-7380: List enriched entities
+- PIM-7380: List reference entities
 
 ## Technical improvement
 
+- Set PHP 7.2 as minimal required version
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
 - PAV3-4: Regroup PAM Classes
 - Composer use Packagist to retrieve pim-community-dev
+- Uses centralized community edition technical requirements
+- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
 
 ## BC breaks
 
+- MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts applies the conversion.
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension` to `Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents`
+- Move `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\OroToPimGridFilterAdapter`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler` to `Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction\RuleImpactedProductCountActionHandler`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper` to `Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Configuration\Product\FiltersConfigurator`
 - Move `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
 - Move `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface` to `Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface`
 - Move `PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker` to `Akeneo\Pim\Asset\Component\Completeness\Checker\AssetCollectionCompleteChecker`
@@ -121,6 +131,8 @@
 - Move namespace `PimEnterprise\Component\ProductAsset` to `Akeneo\Asset\Component`
 - Change constructor of `Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor`. Replace argument `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface` with `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`.
 - Change `Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber::massUploadAssets()` signature to replace `Symfony\Component\EventDispatcher\GenericEvent` by `Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent`
+- Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter`. Replace argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
+    with  `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, and `string`.
 
 ## Security
 

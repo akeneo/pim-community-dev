@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: Es gibt keinen Vorschlag zu prüfen.
   no_results:
     proposal: Es gibt keinen Vorschlag zu prüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Aufklappen
+      collapse_text: Zuklappen
 pimee_workflow:
   entity:
     published_product:
@@ -67,3 +72,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Vorschlag genehmigt
     pimee_workflow_product_draft_notification_refuse: Vorschlag abgelehnt
     pimee_workflow_product_draft_notification_remove: Vorschlag gelöscht
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Autor
+      product: Produkt
+      review: Überprüfung
+      empty: Keine zu überprüfende Vorschläge

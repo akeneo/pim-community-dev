@@ -25,6 +25,8 @@ pimee_catalog_rule:
       "set_value": Llavors %value% es col·loca a %field%
       "add": Llavors %value% s'afegeix a %field%
       "remove": Llavors %value% s'elimina de %field%
+    options:
+      include_children: i fills
   condition:
     label: Si %field% %operator% %value%
     operators:

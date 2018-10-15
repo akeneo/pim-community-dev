@@ -16,14 +16,16 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool',
         'Akeneo\Asset',
-        'Pim\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
+        'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface', // Asset are reference data
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface', // Asset are reference data
         'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
         'Akeneo\Tool\Component\Connector',
         'Akeneo\Platform\Bundle\NotificationBundle', // TODO: you should find a way to push notifications to the platform instead of coupling asset to the platform
-        'Pim\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
         'Gedmo\Exception\UnexpectedValueException', // TODO Remove it
         // TODO: We should use id instead of reference
@@ -86,6 +88,8 @@ $rules = [
         // Asset are reference data
         'Pim\Component\ReferenceData\Model\ReferenceDataInterface',
         'Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
         // Todo: Remove pim dependencies
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security

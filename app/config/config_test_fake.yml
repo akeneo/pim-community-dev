@@ -3,12 +3,12 @@ imports:
     - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/file_storage.yml }
     - { resource: ../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
-    - { resource: ../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/pim/queries.yml }
+    - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/pim/queries.yml }
-    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }
-    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Common/Resources/fake_services.yml }
-    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Common/Resources/helpers.yml }
+    - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/fake_services.yml }
+    - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
 
 framework:
     test: ~

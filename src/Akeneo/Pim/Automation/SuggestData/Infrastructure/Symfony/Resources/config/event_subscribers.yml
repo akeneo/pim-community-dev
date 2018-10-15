@@ -1,5 +1,5 @@
 services:
     akeneo.pim.automation.suggest_data.event_subscriber.init_pimai_user:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\EventSubscriber\InitPimAiUserSubscriber'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber\InitPimAiUserSubscriber'
         tags:
             - { name: 'kernel.event_subscriber' }

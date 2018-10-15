@@ -12,6 +12,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.connection.activate'
             - '@akeneo.pim.automation.suggest_data.connection.get_normalized_configuration'
             - '@akeneo.pim.automation.suggest_data.connection.get_status'
+            - '@akeneo.pim.automation.suggest_data.normalizer.connection_status'
             - '@translator'
 
     akeneo.pim.automation.suggest_data.controller.identifiers_mapping:
@@ -23,4 +24,11 @@ services:
     akeneo.pim.automation.suggest_data.controller.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeMappingController'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.suggest_data.handler.get_families'
+            - '@akeneo.pim.automation.suggest_data.normalizers.families'
+            - '@akeneo.pim.automation.suggest_data.normalizers.attributes_mapping'
+
+    akeneo.pim.automation.suggest_data.controller.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeOptionsMappingController'

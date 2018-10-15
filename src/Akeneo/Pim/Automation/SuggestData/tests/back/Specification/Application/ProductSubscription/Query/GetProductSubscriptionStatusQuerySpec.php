@@ -23,19 +23,19 @@ class GetProductSubscriptionStatusQuerySpec extends ObjectBehavior
 {
     private $productId;
 
-    public function let()
+    public function let(): void
     {
         $this->productId = 42;
 
         $this->beConstructedWith($this->productId);
     }
 
-    public function it_is_a_product_subscription_status_query()
+    public function it_is_a_product_subscription_status_query(): void
     {
         $this->shouldBeAnInstanceOf(GetProductSubscriptionStatusQuery::class);
     }
 
-    public function it_returns_the_product_id()
+    public function it_returns_the_product_id(): void
     {
         $this->getProductId()->shouldReturn(42);
     }

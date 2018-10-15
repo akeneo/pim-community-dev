@@ -26,7 +26,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         AttributeInterface $model,
         AttributeInterface $ean,
         AttributeInterface $sku
-    ) {
+    ): void {
         $this->beConstructedWith([
             'brand' => $manufacturer,
             'mpn' => $model,
@@ -35,7 +35,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_gets_identifiers($manufacturer, $model, $ean, $sku)
+    public function it_gets_identifiers($manufacturer, $model, $ean, $sku): void
     {
         $this->getIdentifiers()->shouldReturn([
             'brand' => $manufacturer,
@@ -45,17 +45,17 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_gets_an_identifier($manufacturer)
+    public function it_gets_an_identifier($manufacturer): void
     {
         $this->getIdentifier('brand')->shouldReturn($manufacturer);
     }
 
-    public function it_fails_to_get_an_unknown_identifier()
+    public function it_fails_to_get_an_unknown_identifier(): void
     {
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
-    public function it_normalizes_identifiers_mapping($manufacturer, $model, $ean, $sku)
+    public function it_normalizes_identifiers_mapping($manufacturer, $model, $ean, $sku): void
     {
         $manufacturer->getCode()->willReturn('brand');
         $model->getCode()->willReturn('mpn');
@@ -70,14 +70,14 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_normalizes_empty_identifiers_mapping()
+    public function it_normalizes_empty_identifiers_mapping(): void
     {
         $this->beConstructedWith([]);
 
         $this->normalize()->shouldReturn([]);
     }
 
-    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean)
+    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean): void
     {
         $manufacturer->getCode()->willReturn('brand');
         $ean->getCode()->willReturn('ean');
@@ -90,14 +90,14 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_is_traversable()
+    public function it_is_traversable(): void
     {
         $this->shouldHaveType(\Traversable::class);
 
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
     }
 
-    public function it_can_checks_if_mapping_is_defined()
+    public function it_can_checks_if_mapping_is_defined(): void
     {
         $this->beConstructedWith([
             'brand' => null,

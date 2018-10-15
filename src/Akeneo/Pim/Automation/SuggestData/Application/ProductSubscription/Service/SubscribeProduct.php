@@ -35,7 +35,7 @@ class SubscribeProduct
     /**
      * @param int $productId
      */
-    public function subscribe(int $productId)
+    public function subscribe(int $productId): void
     {
         $command = new SubscribeProductCommand($productId);
         $this->subscribeProductHandler->handle($command);

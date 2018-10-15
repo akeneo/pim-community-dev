@@ -225,7 +225,7 @@ batch_jobs:
     execute_rules.label: Regler udførelse
   publish_product:
     perform.label: Udgiv produkter
-pim_catalog_volumne:
+pim_catalog_volume:
   axis:
     count_assets: Aktiver
     count_asset_categories: Aktiver kategorier

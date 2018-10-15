@@ -1,91 +1,75 @@
 @acceptance-back
-Feature: map the pim identifiers with PIM.ai identifiers
+Feature: Map the PIM identifiers with PIM.ai identifiers
   In order to automatically enrich my products
   As a system administrator
-  I want to map my Pim identifiers to the PIM.ai identifiers
+  I want to map my PIM identifiers to the PIM.ai identifiers
 
   Background:
-    #Will be useful only when a call to notify PIM.ai about the new mapping will be implemented
     Given PIM.ai is configured with a valid token
 
   Scenario: Successfully retrieve the mapping for the display
-    Given the following attribute:
-      | code  | type             |
-      | brand | pim_catalog_text |
-      | mpn   | pim_catalog_text |
-      | ean   | pim_catalog_text |
-      | asin  | pim_catalog_text |
+    Given the predefined attributes pim_brand, MPN, EAN and ASIN
     When the identifiers are mapped with valid values as follows:
       | pim_ai_code | attribute_code |
-      | brand       | brand          |
+      | brand       | pim_brand      |
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
     Then the retrieved mapping should be the following:
-      | pim_ai_code | attribute_code |
-      | brand       | brand          |
-      | mpn         | mpn            |
-      | upc         | ean            |
-      | asin        | asin           |
+      | pim_ai_code | attribute_code | en_US | fr_FR  |
+      | brand       | pim_brand      | Brand | Marque |
+      | mpn         | mpn            | MPN   | MPN    |
+      | upc         | ean            |       |        |
+      | asin        | asin           | ASIN  | ASIN   |
 
-  Scenario: successfully map PIM.ai attributes to pim attributes for the first time
-    Given the following attribute:
-      | code  | type                      |
-      | brand | pim_catalog_text          |
-      | mpn   | pim_catalog_simpleselect  |
-      | ean   | pim_catalog_identifier    |
-      | asin  | pim_catalog_text          |
+  Scenario: Successfully map PIM.ai attributes to PIM attributes for the first time
+    Given the predefined attributes pim_brand, MPN, EAN and ASIN
     And an empty identifiers mapping
     When the identifiers are mapped with valid values as follows:
       | pim_ai_code | attribute_code |
-      | brand       | brand          |
+      | brand       | pim_brand      |
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
-    Then the identifiers mapping should be defined as follows:
-      | pim_ai_code | attribute_code |
-      | brand       | brand          |
-      | mpn         | mpn            |
-      | upc         | ean            |
-      | asin        | asin           |
+    Then the retrieved mapping should be the following:
+      | pim_ai_code | attribute_code | en_US | fr_FR  |
+      | brand       | pim_brand      | Brand | Marque |
+      | mpn         | mpn            | MPN   | MPN    |
+      | upc         | ean            |       |        |
+      | asin        | asin           | ASIN  | ASIN   |
 
-  Scenario: successfully update an already existing mapping
-    Given the following attribute:
-      | code  | type                   |
-      | brand | pim_catalog_text       |
-      | mpn   | pim_catalog_text       |
-      | ean   | pim_catalog_text       |
-      | asin  | pim_catalog_text       |
-      | sku   | pim_catalog_identifier |
-      | id    | pim_catalog_identifier |
+  Scenario: Successfully update an already existing mapping
+    Given the predefined attributes pim_brand, MPN, EAN, ASIN, SKU and identifier
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
-      | brand       | brand          |
+      | brand       | pim_brand      |
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
     When the identifiers are mapped with valid values as follows:
       | pim_ai_code | attribute_code |
-      | brand       | brand          |
+      | brand       | pim_brand      |
       | mpn         | mpn            |
       | upc         | sku            |
-      | asin        | id           |
-    Then the identifiers mapping should be defined as follows:
-      | pim_ai_code | attribute_code |
-      | brand       | brand          |
-      | mpn         | mpn            |
-      | upc         | sku            |
-      | asin        | id             |
+      | asin        | identifier     |
+    Then the retrieved mapping should be the following:
+      | pim_ai_code | attribute_code | en_US | fr_FR  |
+      | brand       | pim_brand      | Brand | Marque |
+      | mpn         | mpn            | MPN   | MPN    |
+      | upc         | sku            | SKU   | UGS    |
+      | asin        | identifier     |       |        |
 
-  Scenario Outline: successfully map PIM.ai attributes with valid pim attribute types
+  Scenario Outline: Successfully map PIM.ai attributes with valid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code  | type             |
       | brand | <attribute_type> |
     When the identifiers are mapped with valid values as follows:
       | pim_ai_code | attribute_code |
-      | upc       | brand          |
-    Then the identifiers mapping should be valid
+      | upc         | brand          |
+    Then the retrieved mapping should be the following:
+      | pim_ai_code | attribute_code |
+      | upc         | brand          |
 
     Examples:
       | attribute_type           |
@@ -94,14 +78,14 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | pim_catalog_identifier   |
       | pim_catalog_number       |
 
-  Scenario Outline: fails to map PIM.ai attributes with invalid pim attribute types
+  Scenario Outline: Fails to map PIM.ai attributes with invalid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code  | type             |
       | brand | <attribute_type> |
     When the identifiers are mapped with valid values as follows:
       | pim_ai_code | attribute_code |
-      | upc       | brand          |
+      | upc         | brand          |
     Then the identifiers mapping should not be saved
 
     Examples:
@@ -117,9 +101,9 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | pim_catalog_boolean               |
       | pim_catalog_metric                |
       | pim_catalog_date                  |
-      | akeneo_enriched_entity_collection |
+      | akeneo_reference_entity_collection |
 
-  Scenario: fails to map PIM.ai attribute with unexisting pim attribute
+  Scenario: Fails to map PIM.ai attribute with unexisting PIM attribute
     Given an empty identifiers mapping
     When the identifiers are mapped with invalid values as follows:
       | pim_ai_code | attribute_code |
@@ -127,28 +111,20 @@ Feature: map the pim identifiers with PIM.ai identifiers
     Then the identifiers mapping should not be saved
 
   Scenario: Fails to save a mapping with the brand without the MPN
-    Given the following attribute:
-      | code  | type                      |
-      | brand | pim_catalog_text          |
-      | mpn   | pim_catalog_simpleselect  |
-      | ean   | pim_catalog_identifier    |
+    Given the predefined attributes pim_brand and EAN
     And an empty identifiers mapping
     When the identifiers are mapped with invalid values as follows:
       | pim_ai_code | attribute_code |
-      | brand       | brand          |
+      | brand       | pim_brand      |
       | upc         | ean            |
     Then the identifiers mapping should not be saved
 
   Scenario: Fails to save a mapping with the MPN without the brand
-    Given the following attribute:
-      | code  | type                      |
-      | brand | pim_catalog_text          |
-      | mpn   | pim_catalog_simpleselect  |
-      | ean   | pim_catalog_identifier    |
+    Given the predefined attributes MPN and EAN
     And an empty identifiers mapping
     When the identifiers are mapped with invalid values as follows:
       | pim_ai_code | attribute_code |
-      | mpn         | mpn          |
+      | mpn         | mpn            |
       | upc         | ean            |
     Then the identifiers mapping should not be saved
 

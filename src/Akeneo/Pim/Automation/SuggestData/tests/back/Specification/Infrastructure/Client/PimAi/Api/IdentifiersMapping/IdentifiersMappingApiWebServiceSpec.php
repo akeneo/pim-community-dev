@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiWebService;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use PhpSpec\ObjectBehavior;
@@ -24,28 +23,27 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
     public function let(
         UriGenerator $uriGenerator,
         Client $httpClient
-    ) {
+    ): void {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
-    public function it_is_subscription_collection()
+    public function it_is_subscription_collection(): void
     {
-        $this->shouldHaveType(IdentifiersMappingApiWebService::class);
+        $this->shouldHaveType(IdentifiersMapping\IdentifiersMappingApiWebService::class);
     }
 
-    public function it_should_update_mapping(
+    public function it_updates_mapping(
         UriGenerator $uriGenerator,
-        Client $httpClient,
-        IdentifiersMapping $mapping
-    ) {
+        Client $httpClient
+    ): void {
         $normalizedMapping = ['foo' => 'bar'];
         $generatedRoute = '/api/mapping/identifiers';
 
-        $uriGenerator->generate('/mapping/identifiers')
+        $uriGenerator->generate('/api/mapping/identifiers')
             ->shouldBeCalled()
             ->willReturn($generatedRoute);
         $httpClient->request('PUT', $generatedRoute, [
-            'form_params' => $normalizedMapping
+            'form_params' => $normalizedMapping,
         ])->shouldBeCalled();
 
         $this->update($normalizedMapping);

@@ -201,7 +201,7 @@ batch_jobs:
     execute_rules.label: Regler utförande
   publish_product:
     perform.label: Publicera produkt
-pim_catalog_volumne:
+pim_catalog_volume:
   axis:
     count_assets: Tillgångar
     count_asset_categories: Tillgångskategorier

@@ -3,7 +3,7 @@ parameters:
     pimee_product_asset.updater.tag.class:                                   Akeneo\Asset\Component\Updater\TagUpdater
     pimee_product_asset.updater.asset.class:                                 Akeneo\Asset\Component\Updater\AssetUpdater
     pimee_product_asset.updater.setter.product_asset_collection_value.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter
-    pimee_product_asset.updater.copier.product_asset_collection_value.class: Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier
+    pimee_product_asset.updater.copier.product_asset_collection_value.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier
     pimee_product_asset.updater.external_api.asset.class: Akeneo\Asset\Component\Updater\ExternalApi\AssetUpdater
 
 services:
@@ -50,7 +50,10 @@ services:
         class: '%pim_catalog.updater.category_translatable.class%'
         arguments:
             - '@pimee_product_asset.updater.category.base'
-            - '@pim_localization.updater.translatable'
+            - '@asset.updater.translatable'
+
+    asset.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
 
     pimee_product_asset.updater.external_api.asset:
         class: '%pimee_product_asset.updater.external_api.asset.class%'

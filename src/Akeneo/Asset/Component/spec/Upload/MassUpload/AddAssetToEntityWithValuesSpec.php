@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Asset\Component\Upload\MassUpload\AddAssetToEntityWithValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;

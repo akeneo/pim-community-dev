@@ -7,6 +7,7 @@ String ceOwner = "akeneo"
 String launchUnitTests = "yes"
 String launchAcceptanceTests = "yes"
 String launchIntegrationTests = "yes"
+String launchPhpUnitEndToEndTests = "yes"
 String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
@@ -23,6 +24,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run end to end tests in PhpUnit', name: 'launchPhpUnitEndToEndTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
                 string(defaultValue: 'tests/legacy/features,src/Akeneo/Pim/Automation/SuggestData/tests/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end scenarios to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
@@ -39,6 +41,7 @@ stage("Build") {
             launchUnitTests = userInput['launchUnitTests']
             launchAcceptanceTests = userInput['launchAcceptanceTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
+            launchPhpUnitEndToEndTests = userInput['launchPhpUnitEndToEndTests']
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
@@ -71,7 +74,7 @@ stage("Test") {
             "back-php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/EnrichedEntity/tests/back/.php_cd.php src/Akeneo/EnrichedEntity/back && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Asset/.php_cd.php src/Akeneo/Asset"
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cd.php src/Akeneo/Pim/Automation/SuggestData && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Asset/.php_cd.php src/Akeneo/Asset"
             )},
             "back-phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
@@ -79,22 +82,42 @@ stage("Test") {
                 script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --no-interaction --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
-            "back-php-cs-fixer": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
-                junit: "junit_output.xml"
-            )},
+            "back-code-style": {
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/php_cs_fixer_output.xml",
+                    junit: "php_cs_fixer_output.xml"
+                )
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cs.php --format=junit > %workspace%/php_cs_fixer_suggest_data_output.xml",
+                    junit: "php_cs_fixer_suggest_data_output.xml"
+                )
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && vendor/bin/phpcs"
+                )
+            },
             "back-check-pullup": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/akeneo/pim-community-dev/bin/check-pullup"
             )},
-            "front-lint": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && yarn run lint"
-            )},
+            "front-code-style": {
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && yarn run lint"
+                )
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && yarn run tslint -c src/Akeneo/Pim/Automation/SuggestData/tests/front/tslint.json src/Akeneo/Pim/Automation/SuggestData/**/*.ts"
+                )
+            },
             "front-unit": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
@@ -137,6 +160,19 @@ stage("Test") {
             )},
 
             // END TO END TESTS
+            "end-to-end-phpunit": {queue(
+                condition: launchPhpUnitEndToEndTests.equals("yes"),
+                container: tag,
+                containers: pimContainers(image: tag, selenium: false),
+                verbose: (verboseOutputs == "yes"),
+                fetcher: {
+                    return pimPhpunitEndToEndFetcher(
+                        paths:[
+                            "var/www/pim/tests"
+                        ]
+                    )
+                }
+            )},
             "legacy-end-to-end-behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,

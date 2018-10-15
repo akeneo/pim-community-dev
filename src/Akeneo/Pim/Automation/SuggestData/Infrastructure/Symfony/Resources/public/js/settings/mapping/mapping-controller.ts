@@ -1,4 +1,5 @@
-import {isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
+import {ConnectionStatus, getConnectionStatus} from '../../pim-ai/fetcher/connection-fetcher';
+
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
 
@@ -11,7 +12,7 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  initialize(options: { config: { connectionCode: string, entity: string } }) {
+  public initialize(options: { config: { connectionCode: string, entity: string } }) {
     BaseController.prototype.initialize.apply(this, arguments);
     this.options = options;
   }
@@ -19,14 +20,15 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  renderForm() {
-    return isConnectionActivated()
-      .then(connectionIsActivated => {
+  public renderForm(): object {
+    return getConnectionStatus()
+      .then((connectionStatus: ConnectionStatus) => {
         const entity = this.options.config.entity;
         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';
-        if (connectionIsActivated) {
+        if (connectionStatus.is_active) {
           formToBuild = 'pimee-' + entity + '-index';
         }
+
         return FormBuilder
           .build(formToBuild)
           .then((form: any) => {
@@ -34,10 +36,11 @@ class MappingController extends BaseController {
               form.trigger('pim_enrich:form:can-leave', event);
             });
             form.setElement(this.$el).render();
+
             return form;
           });
       });
   }
 }
 
-export = MappingController
+export = MappingController;

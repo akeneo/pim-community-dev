@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -70,7 +69,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     {
         $qb = $this->createQueryBuilder('a');
         $qb
-            ->delete()
             ->where('a.category = :category')
             ->setParameter('category', $category);
 
@@ -80,7 +78,12 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
                 ->setParameter('excludedGroups', $excludedGroups);
         }
 
-        return $qb->getQuery()->execute();
+        $entities = $qb->getQuery()->execute();
+        foreach ($entities as $categoryAccess) {
+            $this->_em->remove($categoryAccess);
+        }
+
+        return count($entities);
     }
 
     /**
@@ -95,11 +98,15 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $qb = $this->createQueryBuilder('a');
 
         $qb
-            ->delete()
             ->where($qb->expr()->in('a.userGroup', ':groups'))
             ->setParameter('groups', $groups);
 
-        return $qb->getQuery()->execute();
+        $entities = $qb->getQuery()->execute();
+        foreach ($entities as $categoryAccess) {
+            $this->_em->remove($categoryAccess);
+        }
+
+        return count($entities);
     }
 
     /**

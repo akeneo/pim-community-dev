@@ -23,17 +23,17 @@ use PhpSpec\ObjectBehavior;
  */
 class ActivateSuggestDataConnectionSpec extends ObjectBehavior
 {
-    public function let(SaveConfigurationHandler $saveConnectorConfigurationHandler)
+    public function let(SaveConfigurationHandler $saveConnectorConfigurationHandler): void
     {
         $this->beConstructedWith($saveConnectorConfigurationHandler);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ActivateSuggestDataConnection::class);
     }
 
-    public function it_activates_a_valid_connection($saveConnectorConfigurationHandler)
+    public function it_activates_a_valid_connection($saveConnectorConfigurationHandler): void
     {
         $saveConnectorConfigurationHandler
             ->handle(new SaveConfigurationCommand(['foo' => 'bar']))

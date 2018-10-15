@@ -1,0 +1,6 @@
+akeneo_referenceentity:
+  acl:
+    reference_entity:
+      create: Crear una entidad
+    record:
+      create: Crear un registro

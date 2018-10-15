@@ -23,7 +23,7 @@ use PhpSpec\ObjectBehavior;
  */
 class InMemoryConfigurationRepositorySpec extends ObjectBehavior
 {
-    public function it_is_an_in_memory_configuration_repository()
+    public function it_is_an_in_memory_configuration_repository(): void
     {
         $this->beConstructedWith();
 
@@ -31,7 +31,7 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
         $this->shouldImplement(ConfigurationRepositoryInterface::class);
     }
 
-    public function it_finds_a_configuration()
+    public function it_finds_a_configuration(): void
     {
         $configuration = new Configuration(['field' => 'value']);
         $this->beConstructedWith($configuration);
@@ -39,7 +39,7 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
         $this->find()->shouldReturn($configuration);
     }
 
-    public function it_saves_a_configuration()
+    public function it_saves_a_configuration(): void
     {
         $configuration = new Configuration(['field' => 'value']);
 

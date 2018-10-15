@@ -7,7 +7,7 @@ class MappingIndex extends BaseIndex {
    *
    * This is the same method than the parent, but adding the 'can-leave' mechanism.
    */
-  renderForm() {
+  public renderForm(): object {
     return FormBuilder.build('pim-' + this.options.config.entity + '-index')
       .then((form: any) => {
         this.on('pim:controller:can-leave', (event: any) => {
@@ -19,4 +19,4 @@ class MappingIndex extends BaseIndex {
   }
 }
 
-export = MappingIndex
+export = MappingIndex;

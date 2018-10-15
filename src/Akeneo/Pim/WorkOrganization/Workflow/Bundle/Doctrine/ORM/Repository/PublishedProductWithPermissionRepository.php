@@ -107,7 +107,7 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
         $publishedProduct = $this->publishedProductRepository->findOneBy($criteria);
         if (null === $publishedProduct) {

@@ -15,6 +15,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@__symfony__.pim_catalog.repository.attribute'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping'
         tags:
             - { name: 'fob.context_service' }
 
@@ -32,6 +33,8 @@ services:
             - '@__symfony__.pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@test.category.builder'
+            - '@__symfony__.pim_catalog.repository.category'
         tags:
             - { name: 'fob.context_service' }
 
@@ -52,5 +55,23 @@ services:
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products'
             - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context\AttributesMappingContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_families'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.proposal:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProposalContext'
+        arguments:
+
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.create_proposals'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.proposal.create_proposal'
         tags:
             - { name: 'fob.context_service' }

@@ -1,9 +1,0 @@
-parameters:
-    pimee_datagrid.datagrid.configuration.product_history.grid_helper.class:   PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper
-
-services:
-    pimee_datagrid.datagrid.configuration.product_history.grid_helper:
-        class: '%pimee_datagrid.datagrid.configuration.product_history.grid_helper.class%'
-        arguments:
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'

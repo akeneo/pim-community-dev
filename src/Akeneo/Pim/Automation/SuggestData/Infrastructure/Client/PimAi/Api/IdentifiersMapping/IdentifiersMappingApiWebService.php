@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 
 /**
- * API Web Service to manage identifiers mapping
+ * API Web Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -31,7 +31,7 @@ class IdentifiersMappingApiWebService implements IdentifiersMappingApiInterface
 
     /**
      * @param UriGenerator $uriGenerator
-     * @param Client       $httpClient
+     * @param Client $httpClient
      */
     public function __construct(
         UriGenerator $uriGenerator,
@@ -46,7 +46,7 @@ class IdentifiersMappingApiWebService implements IdentifiersMappingApiInterface
      */
     public function update(array $mapping): void
     {
-        $route = $this->uriGenerator->generate('/mapping/identifiers');
+        $route = $this->uriGenerator->generate('/api/mapping/identifiers');
 
         $this->httpClient->request('PUT', $route, [
             'form_params' => $mapping,

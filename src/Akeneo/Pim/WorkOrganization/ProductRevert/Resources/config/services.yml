@@ -1,0 +1,14 @@
+services:
+    pimee_revert.datagrid.configuration.product_history.grid_helper:
+        class: 'Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory\GridHelper'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+
+    pim_catalog.product_history.product:
+        class: '%pim_datagrid.datasource.default.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_history }

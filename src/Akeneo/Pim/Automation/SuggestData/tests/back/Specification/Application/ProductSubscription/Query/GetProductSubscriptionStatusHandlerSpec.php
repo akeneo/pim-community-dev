@@ -24,12 +24,12 @@ use PhpSpec\ObjectBehavior;
  */
 class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 {
-    public function let(ProductSubscriptionRepositoryInterface $productSubscriptionRepository)
+    public function let(ProductSubscriptionRepositoryInterface $productSubscriptionRepository): void
     {
         $this->beConstructedWith($productSubscriptionRepository);
     }
 
-    public function it_is_a_product_subscription_query_handler()
+    public function it_is_a_product_subscription_query_handler(): void
     {
         $this->shouldBeAnInstanceOf(GetProductSubscriptionStatusHandler::class);
     }
@@ -37,7 +37,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
     public function it_returns_a_product_subscription_status_for_a_subscribed_product(
         $productSubscriptionRepository,
         ProductSubscription $productSubscription
-    ) {
+    ): void {
         $query = new GetProductSubscriptionStatusQuery(42);
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);

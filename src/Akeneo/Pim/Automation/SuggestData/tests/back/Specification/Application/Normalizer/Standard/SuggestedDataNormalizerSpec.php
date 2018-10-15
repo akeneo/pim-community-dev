@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -12,17 +14,17 @@ use PhpSpec\ObjectBehavior;
  */
 class SuggestedDataNormalizerSpec extends ObjectBehavior
 {
-    public function let(AttributeRepositoryInterface $attributeRepository)
+    public function let(AttributeRepositoryInterface $attributeRepository): void
     {
         $this->beConstructedWith($attributeRepository);
     }
 
-    public function it_is_a_suggested_data_normalizer()
+    public function it_is_a_suggested_data_normalizer(): void
     {
         $this->shouldBeAnInstanceOf(SuggestedDataNormalizer::class);
     }
 
-    public function it_throws_an_exception_if_attribute_does_not_exist($attributeRepository)
+    public function it_throws_an_exception_if_attribute_does_not_exist($attributeRepository): void
     {
         $suggestedData = [
             'foo' => 'bar',
@@ -38,7 +40,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
              ->during('normalize', [new SuggestedData($suggestedData)]);
     }
 
-    public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository)
+    public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository): void
     {
         $suggestedData = [
             'foo' => 'bar',
@@ -55,7 +57,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
              ->during('normalize', [new SuggestedData($suggestedData)]);
     }
 
-    public function it_normalizes_suggested_data($attributeRepository)
+    public function it_normalizes_suggested_data($attributeRepository): void
     {
         $suggestedData = [
             'foo' => 'bar',

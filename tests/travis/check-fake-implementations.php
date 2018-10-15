@@ -33,16 +33,16 @@ function openFileFromRoot($fileName): string {
     return file_get_contents($ROOT . $fileName);
 }
 
-$REFERENCE_FILE = 'src/Akeneo/EnrichedEntity/back/Infrastructure/Symfony/Resources/config/persistence.yml';
+$REFERENCE_FILE = 'src/Akeneo/ReferenceEntity/back/Infrastructure/Symfony/Resources/config/persistence.yml';
 
 $FILES_TO_CHECK = [
-    'src/Akeneo/EnrichedEntity/tests/back/Common/Resources/fake_services.yml',
-    'src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml',
+    'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/fake_services.yml',
+    'src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml',
 ];
 
 $referenceContent = openFileFromRoot($REFERENCE_FILE);
 
-$pattern = '/akeneo_enrichedentity.infrastructure.persistence.(query|repository)\.(.+):/';
+$pattern = '/akeneo_referenceentity.infrastructure.persistence.(query|repository)\.(.+):/';
 $matches = [];
 preg_match_all($pattern, $referenceContent, $matches);
 

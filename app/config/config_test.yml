@@ -2,6 +2,7 @@ imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
     - { resource: security_test.yml }
+    - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
 
 framework:
     test: ~
@@ -30,3 +31,4 @@ parameters:
     asset_storage_dir:    '%kernel.root_dir%/../var/cache/file_storage/asset'
     tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
     upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
+    pimee_mass_edit_asset_batch_size: 5

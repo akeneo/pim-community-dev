@@ -37,4 +37,6 @@ config:
             controllers:
                 pimee_product_asset_mass_edit_action:
                     module: pim/controller/mass-edit
+                    config:
+                        route: pim_enrich_mass_edit_rest_get_filter
                     aclResourceId: pimee_product_asset_index

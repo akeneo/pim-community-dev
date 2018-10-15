@@ -57,7 +57,7 @@ extensions:
             template: pim/template/common/description-header
             templateParams:
                 title: akeneo_suggest_data.settings.module.title.sub_title
-                illustration: Helpcenter-settings.svg
+                illustration: Robot.svg
                 description:
                     - akeneo_suggest_data.settings.module.title.description.first_step
                     - akeneo_suggest_data.settings.module.title.description.second_step
@@ -101,13 +101,15 @@ extensions:
                 unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
                 pim_ai_attribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
                 catalog_attribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
-                suggest_data: akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data
+                suggest_data: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
 
     pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
         module: pimee/settings/front-search-filter
         parent: pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping
         position: 10
         targetZone: filters
+        config:
+            fieldName: 'pim_ai_attribute'
 
     pim-suggest-data-settings-attributes-mapping-index-status-filter:
         module: pimee/settings/mapping/status-filter

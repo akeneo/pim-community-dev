@@ -15,20 +15,26 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 
 /**
- * PIM.ai implementation to connect to a data provider
+ * PIM.ai implementation to connect to a data provider.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -46,28 +52,46 @@ class PimAI implements DataProviderInterface
     /** @var IdentifiersMappingApiInterface */
     private $identifiersMappingApi;
 
+    /** @var AttributesMappingApiInterface */
+    private $attributesMappingApi;
+
     /** @var IdentifiersMappingNormalizer */
     private $identifiersMappingNormalizer;
 
+    /** @var AttributesMappingNormalizer */
+    private $attributesMappingNormalizer;
+
+    /** @var FamilyNormalizer */
+    private $familyNormalizer;
+
     /**
-     * @param AuthenticationApiInterface            $authenticationApi
-     * @param SubscriptionApiInterface              $subscriptionApi
+     * @param AuthenticationApiInterface $authenticationApi
+     * @param SubscriptionApiInterface $subscriptionApi
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param IdentifiersMappingApiInterface        $identifiersMappingApi
-     * @param IdentifiersMappingNormalizer          $identifiersMappingNormalizer
+     * @param IdentifiersMappingApiInterface $identifiersMappingApi
+     * @param AttributesMappingApiInterface $attributesMappingApi
+     * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
+     * @param AttributesMappingNormalizer $attributesMappingNormalizer
+     * @param FamilyNormalizer $familyNormalizer
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
-        IdentifiersMappingNormalizer $identifiersMappingNormalizer
+        AttributesMappingApiInterface $attributesMappingApi,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
+        AttributesMappingNormalizer $attributesMappingNormalizer,
+        FamilyNormalizer $familyNormalizer
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingApi = $identifiersMappingApi;
+        $this->attributesMappingApi = $attributesMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
+        $this->attributesMappingNormalizer = $attributesMappingNormalizer;
+        $this->familyNormalizer = $familyNormalizer;
     }
 
     /**
@@ -80,24 +104,17 @@ class PimAI implements DataProviderInterface
             throw new ProductSubscriptionException('No mapping defined');
         }
 
+        $product = $request->getProduct();
         $mapped = $request->getMappedValues($identifiersMapping);
         if (empty($mapped)) {
             throw new ProductSubscriptionException(
-                sprintf('No mapped values for product with id "%s"', $request->getProduct()->getId())
+                sprintf('No mapped values for product with id "%s"', (string) $product->getIdentifier())
             );
         }
 
-        $productId = $request->getProduct()->getId();
-        $family = $request->getProduct()->getFamily();
-        $familyInfos = [
-            'code' => $family->getCode(),
-            'label' => [
-                $family->getTranslation()->getLocale() => $family->getLabel()
-            ]
-        ];
-
+        $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
         try {
-            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $productId, $familyInfos);
+            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $product->getId(), $familyInfos);
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
@@ -117,26 +134,17 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * TODO: Deal with pagination (see APAI-192)
-     *
-     * @return ProductSubscriptionsResponse
+     * {@inheritdoc}
      */
-    public function fetch(): ProductSubscriptionsResponse
+    public function fetch(): \Iterator
     {
         try {
-            $clientResponse = $this->subscriptionApi->fetchProducts();
+            $subscriptionsPage = $this->subscriptionApi->fetchProducts();
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
 
-        $subscriptions = $clientResponse->content()->getSubscriptions();
-
-        $subscriptionsResponse = new ProductSubscriptionsResponse();
-        foreach ($subscriptions as $subscription) {
-            $subscriptionResponse = $this->buildSubscriptionResponse($subscription);
-            $subscriptionsResponse->add($subscriptionResponse);
-        }
-        return $subscriptionsResponse;
+        return new SubscriptionsCursor($subscriptionsPage);
     }
 
     /**
@@ -162,6 +170,38 @@ class PimAI implements DataProviderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getAttributesMapping(string $familyCode): AttributesMappingResponse
+    {
+        $apiResponse = $this->attributesMappingApi->fetchByFamily($familyCode);
+
+        $attributesMapping = new AttributesMappingResponse();
+        foreach ($apiResponse as $attribute) {
+            $attribute = new DomainAttributeMapping(
+                $attribute->getTargetAttributeCode(),
+                $attribute->getTargetAttributeLabel(),
+                $attribute->getPimAttributeCode(),
+                $this->mapAttributeMappingStatus($attribute->getStatus()),
+                $attribute->getType()
+            );
+            $attributesMapping->addAttribute($attribute);
+        }
+
+        return $attributesMapping;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
+    {
+        $mapping = $this->attributesMappingNormalizer->normalize($attributesMapping);
+
+        $this->attributesMappingApi->update($familyCode, $mapping);
+    }
+
+    /**
      * @param Subscription $subscription
      *
      * @return ProductSubscriptionResponse
@@ -173,5 +213,25 @@ class PimAI implements DataProviderInterface
             $subscription->getSubscriptionId(),
             $subscription->getAttributes()
         );
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return int
+     */
+    private function mapAttributeMappingStatus(string $status): int
+    {
+        $mapping = [
+            AttributeMapping::STATUS_PENDING => DomainAttributeMapping::ATTRIBUTE_PENDING,
+            AttributeMapping::STATUS_INACTIVE => DomainAttributeMapping::ATTRIBUTE_UNMAPPED,
+            AttributeMapping::STATUS_ACTIVE => DomainAttributeMapping::ATTRIBUTE_MAPPED,
+        ];
+
+        if (!array_key_exists($status, $mapping)) {
+            throw new \InvalidArgumentException(sprintf('Unknown mapping attribute status "%s"', $status));
+        }
+
+        return $mapping[$status];
     }
 }

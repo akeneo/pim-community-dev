@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -14,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
 /**
  * Data provider factory
- * Creates the right adapter depending of the data provider used
+ * Creates the right adapter depending of the data provider used.
  *
  * @author Romain Monceau <romain@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

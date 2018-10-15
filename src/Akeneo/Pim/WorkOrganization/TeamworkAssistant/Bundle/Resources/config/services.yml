@@ -147,6 +147,16 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: project_completeness }
 
+    pimee_teamwork_assistant.datagrid.configuration.product.filters_configurator:
+        class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Configuration\Product\FiltersConfigurator'
+        decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
+        decoration_inner_name: pim_datagrid.datagrid.configuration.product.filters_configurator.ce
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
+            - '@request_stack'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@security.token_storage'
+
     ### Calculators
     pimee_teamwork_assistant.calculator.attribute_group_completeness:
         class: '%pimee_teamwork_assistant.calculator.attribute_group_completeness.class%'

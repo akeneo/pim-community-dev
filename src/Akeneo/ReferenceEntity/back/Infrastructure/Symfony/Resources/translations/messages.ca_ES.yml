@@ -1,0 +1,13 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: Entitats de referència
+  acl:
+    reference_entity:
+      create: Crear una entitat
+      delete: Suprimir una entitat
+    record:
+      create: Crear registre
+      delete: Suprimeix un registre
+    attribute:
+      create: Afegir un atribut a l'entitat de referencia
+      edit: Editar un atribut per una entitat de referència

@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
- * Handles a FetchProducts command
+ * Handles a FetchProducts command.
  *
- * It fetches ProductSubscription from on PIM.ai
+ * It fetches ProductSubscription from PIM.ai
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class FetchProductsHandler
 {
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var DataProviderInterface */
+    private $dataProvider;
 
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
@@ -39,10 +39,10 @@ class FetchProductsHandler
      */
     public function __construct(
         DataProviderFactory $dataProviderFactory,
-        ProductSubscriptionRepositoryInterface $productSusbcriptionRepository
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
     ) {
-        $this->dataProviderFactory = $dataProviderFactory;
-        $this->productSubscriptionRepository = $productSusbcriptionRepository;
+        $this->dataProvider = $dataProviderFactory->create();
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
     }
 
     /**
@@ -52,18 +52,17 @@ class FetchProductsHandler
     {
         // TODO: Calculate last date (from command or fetch from repository) APAI-170
 
-        // TODO: Deal with many pages (APAI-92)
-        $dataProvider = $this->dataProviderFactory->create();
-        $subscribedResponses = $dataProvider->fetch();
-
-        foreach ($subscribedResponses->responses() as $subscriptionResponse) {
+        foreach ($this->dataProvider->fetch() as $subscriptionResponse) {
             $subscription = $this->productSubscriptionRepository->findOneByProductId(
                 $subscriptionResponse->getProductId()
             );
 
+            if (null === $subscription) {
+                continue;
+            }
+
             $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
             $subscription->setSuggestedData($suggestedData);
-
             $this->productSubscriptionRepository->save($subscription);
         }
     }

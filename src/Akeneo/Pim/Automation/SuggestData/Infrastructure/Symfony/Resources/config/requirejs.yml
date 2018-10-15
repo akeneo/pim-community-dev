@@ -3,7 +3,7 @@ config:
         # Controllers
         pim/controller-registry:
             controllers:
-                akeneo_suggest_data_connection_index:
+                akeneo_suggest_data_connection_edit:
                     module: pimee/settings/mapping/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:
@@ -43,8 +43,16 @@ config:
                     options:
                         urls:
                             get: akeneo_sugggest_data_attributes_mapping_get
+                attribute-options-mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: akeneo_suggest_data_attribute_options_mapping_get
 
     paths:
+        # Common
+        pimee/common/filterable: akeneosuggestdata/js/common/filterable.ts
+
         # Fetchers
         pimee/fetcher/pim-ai-connection: akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher.ts
 
@@ -54,6 +62,8 @@ config:
         # Savers
         pimee/saver/pim-ai-connection: akeneosuggestdata/js/pim-ai/saver/connection-saver
         pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
+        pimee/saver/attribute-options-mapping: akeneosuggestdata/js/saver/attribute-options-mapping-saver.ts
+        pimee/saver/attribute-options-mapping-form: akeneosuggestdata/js/saver/attribute-options-mapping-saver-form.ts
 
         # Controllers
         pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index.ts
@@ -69,6 +79,7 @@ config:
         pimee/settings/mapping/tabs: akeneosuggestdata/js/settings/mapping/tabs.ts
         pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector.ts
         pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping.ts
+        pimee/settings/mapping/attribute-options-mapping: akeneosuggestdata/js/settings/mapping/attribute-options-mapping.ts
         pimee/settings/mapping/index: akeneosuggestdata/js/settings/mapping/index.ts
         pimee/settings/mapping/state: akeneosuggestdata/js/settings/mapping/state.ts
         pimee/settings/mapping/status-filter: akeneosuggestdata/js/settings/mapping/status-filter.ts
@@ -81,8 +92,10 @@ config:
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
         pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html
         pimee/template/settings/mapping/attributes-mapping: akeneosuggestdata/templates/settings/mapping/attributes-mapping.html
+        pimee/template/settings/mapping/attribute-options-mapping: akeneosuggestdata/templates/settings/mapping/attribute-options-mapping.html
         pimee/template/settings/mapping/tabs: akeneosuggestdata/templates/settings/mapping/tabs.html
         pimee/template/settings/mapping/family-mapping: akeneosuggestdata/templates/settings/mapping/family-mapping.html
         pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html
         pimee/template/settings/mapping/family-line: akeneosuggestdata/templates/settings/mapping/family-line.html
         pimee/template/settings/mapping/status-filter: akeneosuggestdata/templates/settings/mapping/status-filter.html
+        pimee/template/settings/mapping/attribute-options-mapping-modal: akeneosuggestdata/templates/settings/mapping/attribute-options-mapping-modal.html

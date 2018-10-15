@@ -21,22 +21,22 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifierMappingSpec extends ObjectBehavior
 {
-    public function let(AttributeInterface $akeneoAttribute)
+    public function let(AttributeInterface $akeneoAttribute): void
     {
         $this->beConstructedWith('pim_ai_code', $akeneoAttribute);
     }
 
-    public function it_gets_pim_ai_attribute_code()
+    public function it_gets_pim_ai_attribute_code(): void
     {
         $this->getPimAiCode()->shouldReturn('pim_ai_code');
     }
 
-    public function it_gets_akeneo_attribute($akeneoAttribute)
+    public function it_gets_akeneo_attribute($akeneoAttribute): void
     {
         $this->getAttribute()->shouldReturn($akeneoAttribute);
     }
 
-    public function it_sets_an_akeneo_attribute($akeneoAttribute, AttributeInterface $anotherAkeneoAttribute)
+    public function it_sets_an_akeneo_attribute($akeneoAttribute, AttributeInterface $anotherAkeneoAttribute): void
     {
         $this->getAttribute()->shouldReturn($akeneoAttribute);
 
@@ -45,7 +45,7 @@ class IdentifierMappingSpec extends ObjectBehavior
         $this->getAttribute()->shouldReturn($anotherAkeneoAttribute);
     }
 
-    public function it_sets_an_akeneo_attribute_to_null($akeneoAttribute)
+    public function it_sets_an_akeneo_attribute_to_null($akeneoAttribute): void
     {
         $this->getAttribute()->shouldReturn($akeneoAttribute);
 
@@ -54,7 +54,7 @@ class IdentifierMappingSpec extends ObjectBehavior
         $this->getAttribute()->shouldReturn(null);
     }
 
-    public function it_build_an_identifier_mapping_object_without_akeneo_attribute()
+    public function it_build_an_identifier_mapping_object_without_akeneo_attribute(): void
     {
         $this->beConstructedWith('pim_ai_code', null);
 

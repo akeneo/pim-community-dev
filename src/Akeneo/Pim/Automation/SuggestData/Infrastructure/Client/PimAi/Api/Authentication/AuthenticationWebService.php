@@ -19,6 +19,8 @@ use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * TODO: No specs for this class.
+ *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AuthenticationWebService implements AuthenticationApiInterface
@@ -34,22 +36,22 @@ class AuthenticationWebService implements AuthenticationApiInterface
     }
 
     /**
-     * {inheritdoc}
+     * {@inheritdoc}
      */
     public function authenticate(?string $token): bool
     {
-        $route = $this->uriGenerator->generate('/stats');
+        $route = $this->uriGenerator->generate('/api/stats');
 
         try {
             $options = [];
-            if (! empty($token)) {
+            if (!empty($token)) {
                 $options = [
                     'headers' => ['Authorization' => $token],
                 ];
             }
 
             $response = $this->httpClient->request('GET', $route, $options);
-            if ($response->getStatusCode() !== Response::HTTP_OK) {
+            if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return false;
             }
         } catch (ClientException $e) {

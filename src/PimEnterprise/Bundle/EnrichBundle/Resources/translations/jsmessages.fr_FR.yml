@@ -237,7 +237,7 @@ batch_jobs:
     execute_rules.label: Exécution des règles
   publish_product:
     perform.label: Publier les produits
-pim_catalog_volumne:
+pim_catalog_volume:
   section:
     assets:
       title: Axes sur les ressources

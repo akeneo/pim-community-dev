@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: Non ci sono proposte da revisionare.
   no_results:
     proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Espandi
+      collapse_text: Comprimi
 pimee_workflow:
   entity:
     published_product:
@@ -67,3 +72,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposta approvata
     pimee_workflow_product_draft_notification_refuse: Proposta respinta
     pimee_workflow_product_draft_notification_remove: Proposta eliminata
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Data
+      author: Autore
+      product: Prodotto
+      review: Da rivedere
+      empty: Nessuna proposta da revisionare

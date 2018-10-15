@@ -5,5 +5,7 @@ extensions:
         targetZone: meta
         position: 85
         config:
-            default_error_message: akeneo_suggest_data.product.edit.flash.error
-            default_success_message: akeneo_suggest_data.product.edit.flash.success
+            create_product_subscription_fail_message: akeneo_suggest_data.entity.product_subscription.flash.create.fail
+            create_product_subscription_success_message: akeneo_suggest_data.entity.product_subscription.flash.create.success
+            delete_product_subscription_fail_message: akeneo_suggest_data.entity.product_subscription.flash.delete.fail
+            delete_product_subscription_success_message: akeneo_suggest_data.entity.product_subscription.flash.delete.success

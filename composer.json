@@ -15,7 +15,7 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\EnrichedEntity\\": "src/Akeneo/EnrichedEntity/back",
+            "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/back",
             "Akeneo\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php"],
@@ -39,7 +39,8 @@
             "Akeneo\\Test\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData/tests/back",
             "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
-            "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/"
+            "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
+            "Akeneo\\ReferenceEntity\\": "src/Akeneo/ReferenceEntity/tests/back"
         }
     },
     "require": {
@@ -65,11 +66,13 @@
         "phpunit/phpunit": "6.5.3",
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
-        "squizlabs/php_codesniffer": "2.*",
+        "squizlabs/php_codesniffer": "3.*",
         "friends-of-behat/context-service-extension": "^1.1",
         "friends-of-behat/cross-container-extension": "^1.0",
         "friends-of-behat/symfony-extension": "^1.0",
-        "liuggio/fastest": "1.6.*"
+        "liuggio/fastest": "1.6.*",
+        "phpstan/phpstan": "0.10.*",
+        "leanphp/phpspec-code-coverage": "^3.0"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

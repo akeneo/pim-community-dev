@@ -1,0 +1,10 @@
+services:
+    akeneo.pim.automation.suggest_data.connector.validation.connection_status:
+        class: Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation\ConnectionValidator
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.connection.get_status'
+            
+    akeneo.pim.automation.suggest_data.connector.validation.identifiers_mapping:
+        class: Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation\IdentifiersMappingValidator
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'

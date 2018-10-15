@@ -26,7 +26,7 @@ final class Configuration
     private $values;
 
     /**
-     * @param array  $values
+     * @param array $values
      */
     public function __construct(array $values)
     {

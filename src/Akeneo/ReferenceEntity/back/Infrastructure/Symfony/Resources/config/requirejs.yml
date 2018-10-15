@@ -1,0 +1,55 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                akeneo_reference_entities_reference_entity_index:
+                    module: pim/controller/reference-entity/list
+                akeneo_reference_entities_reference_entity_edit:
+                    module: pim/controller/reference-entity/edit
+                akeneo_reference_entities_record_edit:
+                    module: pim/controller/record/edit
+
+        akeneoreferenceentity/application/configuration/value:
+            image:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/file'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/edit/enrich/data/file.tsx'
+            text:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
+                cell: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
+
+        akeneoreferenceentity/application/configuration/sidebar:
+            akeneo_reference_entities_reference_entity_edit:
+                tabs:
+                    record:
+                        label: pim_reference_entity.reference_entity.tab.records
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/record'
+                    attribute:
+                        label: pim_reference_entity.reference_entity.tab.attribute
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/attribute'
+                    property:
+                        label: pim_reference_entity.reference_entity.tab.properties
+                        view: '@akeneoreferenceentity/application/component/reference-entity/edit/properties'
+            akeneo_reference_entities_record_edit:
+                tabs:
+                    enrich:
+                        label: pim_reference_entity.record.tab.enrich
+                        view: '@akeneoreferenceentity/application/component/record/edit/enrich'
+
+        pim/attribute-edit-form/type-specific-form-registry:
+            formNames:
+                akeneo_reference_entity_collection:
+                    create: pim-attribute-form-reference-entity-collection
+                    edit:   pim-attribute-form-reference-entity-collection
+        pim/form/common/attributes/create-button:
+            attribute_icons:
+                akeneo_reference_entity_collection: reference-entity
+
+    paths:
+        pim/controller/reference-entity/list: akeneoreferenceentity/infrastructure/controller/reference-entity/list.tsx
+        pim/controller/reference-entity/edit: akeneoreferenceentity/infrastructure/controller/reference-entity/edit.tsx
+        pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
+
+        pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
+        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.ts

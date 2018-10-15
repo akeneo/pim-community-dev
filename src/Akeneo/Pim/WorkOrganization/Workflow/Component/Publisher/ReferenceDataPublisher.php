@@ -11,8 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher;
 
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 /**
  * Reference data publisher

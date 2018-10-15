@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.suggest_data.command.create_proposals:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\CreateProposalsCommand'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\CreateProposalsCommand'
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.create_proposals'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
@@ -8,7 +8,7 @@ services:
             - { name: 'console.command' }
 
     akeneo.pim.automation.suggest_data.command.init-pimai-user:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\InitPimAiUserCommand'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\InitPimAiUserCommand'
         arguments:
             - '@pim_user.repository.user'
             - '@pim_user.factory.user'

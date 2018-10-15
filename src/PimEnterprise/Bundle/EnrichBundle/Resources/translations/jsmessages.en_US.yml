@@ -253,7 +253,7 @@ batch_jobs:
     publish_product:
         perform.label: Publish products
 
-pim_catalog_volumne:
+pim_catalog_volume:
     section:
         assets:
             title: Axes on assets

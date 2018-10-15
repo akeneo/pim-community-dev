@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -22,28 +21,28 @@ use PhpSpec\ObjectBehavior;
  */
 class InvalidMappingExceptionSpec extends ObjectBehavior
 {
-    public function it_is_an_invalid_mapping_exception()
+    public function it_is_an_invalid_mapping_exception(): void
     {
         $this->beConstructedWith('className');
 
         $this->shouldBeAnInstanceOf(InvalidMappingException::class);
     }
 
-    public function it_is_an_exception()
+    public function it_is_an_exception(): void
     {
         $this->beConstructedWith('className');
 
         $this->shouldBeAnInstanceOf(\Exception::class);
     }
 
-    public function it_returns_the_name_of_the_class_the_exception_was_thrown_from()
+    public function it_returns_the_name_of_the_class_the_exception_was_thrown_from(): void
     {
         $this->beConstructedWith('className');
 
         $this->getClassName()->shouldReturn('className');
     }
 
-    public function it_is_thrown_if_an_attribute_is_mapped_several_times()
+    public function it_is_thrown_if_an_attribute_is_mapped_several_times(): void
     {
         $this->beConstructedThrough('duplicateAttributeCode', [2, 'attribute_code', 'className']);
 
@@ -52,12 +51,12 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_thrown_if_identifier_mapping_is_missing_or_invalid()
+    public function it_is_thrown_if_identifier_mapping_is_missing_or_invalid(): void
     {
         $this->beConstructedThrough('missingOrInvalidIdentifiersInMapping', [
             ['expected_attribute_code_1', 'expected_code_attribute_2'],
             ['an_attribute_code', 'another_attribute_code'],
-            'className'
+            'className',
         ]);
 
         $this->getMessage()->shouldReturn(
@@ -65,7 +64,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_thrown_if_a_mapped_attribute_was_not_found()
+    public function it_is_thrown_if_a_mapped_attribute_was_not_found(): void
     {
         $this->beConstructedThrough('attributeNotFound', ['foobar', 'className']);
 
@@ -74,7 +73,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_thrown_if_it_miss_a_mandatory_attribute()
+    public function it_is_thrown_if_it_miss_a_mandatory_attribute(): void
     {
         $this->beConstructedThrough('mandatoryAttributeMapping', ['foo', 'brand']);
 
@@ -84,7 +83,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->getPath()->shouldReturn('brand');
     }
 
-    public function it_is_thrown_in_case_of_wrong_attribute_type()
+    public function it_is_thrown_in_case_of_wrong_attribute_type(): void
     {
         $this->beConstructedThrough('attributeType', ['foo', 'brand']);
 

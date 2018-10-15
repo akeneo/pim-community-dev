@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: Ne postoji nijedan prijedlog za pregled.
   no_results:
     proposal: Ne postoji nijedan prijedlog za pregled. Pokušajte promijeniti kriterije pretraživanja.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Proširi
+      collapse_text: Sažmi
 pimee_workflow:
   entity:
     published_product:

@@ -12,3 +12,23 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
+
+    pimee_workflow.sql.product.update_draft_author:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductDraft\UpdateDraftAuthor
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.sql.product_model.update_draft_author:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductModelDraft\UpdateDraftAuthor
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.count_product_proposals:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\CountProductProposals
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.count_product_model_proposals:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\CountProductModelProposals
+        arguments:
+            - '@database_connection'

@@ -1,0 +1,13 @@
+services:
+    akeneo_referenceentity.application.registry.attribute_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistry
+
+    akeneo_referenceentity.application.factory.text_attribute_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory
+        tags:
+            - { name: akeneo_referenceentity.attribute_factory }
+
+    akeneo_referenceentity.application.factory.image_attribute_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory
+        tags:
+            - { name: akeneo_referenceentity.attribute_factory }

@@ -25,7 +25,7 @@ extensions:
         targetZone: title
         config:
             countable: false
-            title: akeneo_suggest_data.pim_ai.page_title
+            title: akeneo_suggest_data.connection.page_title
 
     pimee-pim-ai-connection-index-description-header:
         module: pim/common/simple-view
@@ -35,11 +35,11 @@ extensions:
         config:
             template: pim/template/common/description-header
             templateParams:
-                title: akeneo_suggest_data.pim_ai.module.title.sub_title
+                title: akeneo_suggest_data.connection.module.title.sub_title
                 illustration: Helpcenter-settings.svg
                 description:
-                    - akeneo_suggest_data.pim_ai.module.title.description.first_step
-                    - akeneo_suggest_data.pim_ai.module.title.description.second_step
+                    - akeneo_suggest_data.connection.module.title.description.first_step
+                    - akeneo_suggest_data.connection.module.title.description.second_step
 
     pimee-pim-ai-connection-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -56,10 +56,9 @@ extensions:
         targetZone: content
         position: 90
         config:
-            token_label_title: pim_common.label
-            token_label_content: akeneo_suggest_data.pim_ai.module.activation.label
-            token_field_title: akeneo_suggest_data.pim_ai.module.activation.activation_code
-            token_field_placeholder: akeneo_suggest_data.pim_ai.module.activation.paste_activation_code
-            token_save_pre_activation_title: akeneo_suggest_data.pim_ai.module.activation.activate
-            token_save_post_activation_title:  akeneo_suggest_data.pim_ai.module.activation.activated
+            token_label_content: akeneo_suggest_data.connection.module.activation.label
+            token_field_title: akeneo_suggest_data.connection.module.activation.activation_code
+            token_field_placeholder: akeneo_suggest_data.connection.module.activation.paste_activation_code
+            token_save_pre_activation_title: akeneo_suggest_data.connection.module.activation.activate
+            token_save_post_activation_title:  akeneo_suggest_data.connection.module.activation.activated
             code: pim-ai

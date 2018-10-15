@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: レビューする提案はありません
   no_results:
     proposal: レビュー提案がありません。検索条件を変更してください。
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: 展開
+      collapse_text: 閉じる
 pimee_workflow:
   entity:
     published_product:
@@ -67,3 +72,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: 提案の承認
     pimee_workflow_product_draft_notification_refuse: 提案が却下されました
     pimee_workflow_product_draft_notification_remove: 提案が削除されました
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: 日付
+      author: 作成者
+      product: 製品
+      review: レビュー
+      empty: レビューに対する提案はありません

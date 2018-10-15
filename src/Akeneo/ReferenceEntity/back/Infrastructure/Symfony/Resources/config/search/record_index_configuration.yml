@@ -1,0 +1,15 @@
+mappings:
+    pimee_reference_entity_record:
+        properties:
+            identifier:
+                type: 'keyword'
+            reference_entity_code:
+                type: 'keyword'
+            code:
+                type: 'keyword'
+        dynamic_templates:
+            -
+                record_list_search:
+                    path_match: 'record_list_search.*.*'
+                    mapping:
+                        normalizer: 'text_normalizer'

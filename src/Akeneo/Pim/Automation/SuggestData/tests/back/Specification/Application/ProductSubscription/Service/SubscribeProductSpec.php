@@ -24,17 +24,17 @@ use Prophecy\Argument;
  */
 class SubscribeProductSpec extends ObjectBehavior
 {
-    public function let(SubscribeProductHandler $handler)
+    public function let(SubscribeProductHandler $handler): void
     {
         $this->beConstructedWith($handler);
     }
 
-    public function it_is_a_subscribe_single_product_service()
+    public function it_is_a_subscribe_single_product_service(): void
     {
         $this->shouldHaveType(SubscribeProduct::class);
     }
 
-    public function it_subscribes_a_product($handler)
+    public function it_subscribes_a_product($handler): void
     {
         $handler->handle(Argument::type(SubscribeProductCommand::class))->shouldBeCalled();
         $this->subscribe(42);

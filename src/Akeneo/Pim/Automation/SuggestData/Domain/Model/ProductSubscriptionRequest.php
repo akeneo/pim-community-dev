@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
- * Holds a ProductInterface, and provides its values given a defined mapping
+ * Holds a ProductInterface, and provides its values given a defined mapping.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
@@ -43,7 +43,7 @@ final class ProductSubscriptionRequest
     }
 
     /**
-     * Returns the product values corresponding to the provided mapping
+     * Returns the product values corresponding to the provided mapping.
      *
      * @param IdentifiersMapping $mapping
      *
@@ -53,7 +53,7 @@ final class ProductSubscriptionRequest
     {
         $mapped = [];
         foreach ($mapping as $pimAiCode => $mappedAttribute) {
-            if (! $mappedAttribute instanceof AttributeInterface) {
+            if (!$mappedAttribute instanceof AttributeInterface) {
                 continue;
             }
 

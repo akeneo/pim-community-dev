@@ -13,6 +13,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,6 +44,7 @@ class CleanCategoryAccessesCommand extends ContainerAwareCommand
         $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
         $this->getProductCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
         $this->getAssetCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
+        $this->getDoctrine()->getManager()->flush();
         $output->writeln('<info>done !</info>');
     }
 
@@ -68,5 +70,13 @@ class CleanCategoryAccessesCommand extends ContainerAwareCommand
     protected function getUserGroupRepository()
     {
         return $this->getContainer()->get('pim_user.repository.group');
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    private function getDoctrine()
+    {
+        return $this->getContainer()->get('doctrine');
     }
 }

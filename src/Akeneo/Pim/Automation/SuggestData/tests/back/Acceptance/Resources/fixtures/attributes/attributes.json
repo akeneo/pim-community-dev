@@ -1,0 +1,177 @@
+{
+  "sku": {
+    "code": "sku",
+    "type": "pim_catalog_identifier",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "SKU",
+      "fr_FR": "UGS"
+    }
+  },
+  "identifier": {
+    "code": "identifier",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false
+  },
+  "asin": {
+    "code": "asin",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "ASIN",
+      "fr_FR": "ASIN"
+    }
+  },
+  "pim_upc": {
+    "code": "pim_upc",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "UPC",
+      "fr_FR": "UPC"
+    }
+  },
+  "mpn": {
+    "code": "mpn",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "MPN",
+      "fr_FR": "MPN"
+    }
+  },
+  "pim_brand": {
+    "code": "pim_brand",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Brand",
+      "fr_FR": "Marque"
+    }
+  },
+  "ean": {
+    "code": "ean",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false
+  },
+  "description": {
+    "code": "description",
+    "type": "pim_catalog_textarea",
+    "group": "other",
+    "localizable": true,
+    "scopable": true,
+    "labels": {
+      "en_US": "Description",
+      "fr_FR": "Description"
+    }
+  },
+  "memory": {
+    "code": "memory",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Memory",
+      "fr_FR": "Mémoire"
+    }
+  },
+  "name": {
+    "code": "name",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": true,
+    "scopable": false,
+    "labels": {
+      "en_US": "Name",
+      "fr_FR": "Libellé"
+    }
+  },
+  "picture": {
+    "code": "picture",
+    "type": "pim_catalog_image",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Picture",
+      "fr_FR": "Image"
+    }
+  },
+  "processor": {
+    "code": "processor",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Processor",
+      "fr_FR": "Processeur"
+    }
+  },
+  "price": {
+    "code": "price",
+    "type": "pim_catalog_price_collection",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Price",
+      "fr_FR": "Prix"
+    }
+  },
+  "release_date": {
+    "code": "release_date",
+    "type": "pim_catalog_date",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Release date",
+      "fr_FR": "Date de sortie"
+    }
+  },
+  "power_device": {
+    "code": "power_device",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false
+  },
+  "color": {
+    "code": "color",
+    "type": "pim_catalog_simpleselect",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Color",
+      "fr_FR": "Couleur"
+    }
+  },
+  "weight": {
+    "code": "weight",
+    "type": "pim_catalog_number",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Weight",
+      "fr_FR": "Poids"
+    }
+  }
+}

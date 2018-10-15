@@ -6,3 +6,18 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer'
+
+    akeneo.pim.automation.suggest_data.normalizers.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\AttributesMappingNormalizer'
+
+    akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer'
+
+    akeneo.pim.automation.suggest_data.normalizers.families:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\FamiliesNormalizer'
+
+    akeneo.pim.automation.suggest_data.normalizer.connection_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer'

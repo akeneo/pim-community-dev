@@ -66,7 +66,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function find($id)
+    public function find($id, $lockMode = null, $lockVersion = null)
     {
         $product = $this->productRepository->find($id);
         if (null === $product) {
@@ -99,7 +99,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
         $product = $this->productRepository->findOneBy($criteria);
         if (null === $product) {

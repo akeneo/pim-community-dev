@@ -23,12 +23,12 @@ use PhpSpec\ObjectBehavior;
  */
 class ConfigurationRepositorySpec extends ObjectBehavior
 {
-    public function let(EntityManagerInterface $entityManager)
+    public function let(EntityManagerInterface $entityManager): void
     {
         $this->beConstructedWith($entityManager);
     }
 
-    public function it_is_configuration_repository()
+    public function it_is_configuration_repository(): void
     {
         $this->shouldHaveType(ConfigurationRepository::class);
         $this->shouldImplement(ConfigurationRepositoryInterface::class);

@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 /**
  * Represents a standard response from a subscription request
- * Holds a subscription id and optional suggested data
+ * Holds a subscription id and optional suggested data.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */

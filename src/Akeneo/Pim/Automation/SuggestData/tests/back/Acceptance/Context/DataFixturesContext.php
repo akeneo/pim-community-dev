@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
+use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
@@ -66,6 +69,12 @@ class DataFixturesContext implements Context
     /** @var InMemoryProductSubscriptionRepository */
     private $subscriptionRepository;
 
+    /** @var EntityBuilder */
+    private $categoryBuilder;
+
+    /** @var InMemoryCategoryRepository */
+    private $categoryRepository;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param ProductBuilderInterface $productBuilder
@@ -78,6 +87,8 @@ class DataFixturesContext implements Context
      * @param InMemoryAttributeGroupRepository $attributeGroupRepository
      * @param EntityBuilder $attributeGroupBuilder
      * @param InMemoryProductSubscriptionRepository $subscriptionRepository
+     * @param EntityBuilder $categoryBuilder
+     * @param InMemoryCategoryRepository $categoryRepository
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -90,7 +101,9 @@ class DataFixturesContext implements Context
         EntityBuilder $attributeBuilder,
         InMemoryAttributeGroupRepository $attributeGroupRepository,
         EntityBuilder $attributeGroupBuilder,
-        InMemoryProductSubscriptionRepository $subscriptionRepository
+        InMemoryProductSubscriptionRepository $subscriptionRepository,
+        EntityBuilder $categoryBuilder,
+        InMemoryCategoryRepository $categoryRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -103,6 +116,28 @@ class DataFixturesContext implements Context
         $this->attributeGroupBuilder = $attributeGroupBuilder;
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->categoryBuilder = $categoryBuilder;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param string $attributes
+     *
+     * @Given /the predefined attributes? (.*)/
+     */
+    public function thePredefinedAttributes(string $attributes): void
+    {
+        $this->loadAttributes(array_map('strtolower', $this->toArray($attributes)));
+    }
+
+    /**
+     * @param string $familyCode
+     *
+     * @Given the family ":familyCode"
+     */
+    public function theFamily(string $familyCode): void
+    {
+        $this->loadFamily($familyCode);
     }
 
     /**
@@ -119,6 +154,39 @@ class DataFixturesContext implements Context
     /**
      * @param string $identifier
      *
+     * @Given the product without family ":identifier"
+     */
+    public function theProductWithoutFamily(string $identifier): void
+    {
+        $this->loadProduct($identifier, null);
+    }
+
+    /**
+     * @Given the product :identifier has category :categoryCode
+     *
+     * @param string $identifier
+     * @param string $categoryCode
+     */
+    public function theProductHasCategory(string $identifier, string $categoryCode): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        if (in_array($categoryCode, $product->getCategoryCodes())) {
+            return;
+        }
+
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        if (null === $category) {
+            $category = $this->categoryBuilder->build(['code' => $categoryCode]);
+            $this->categoryRepository->save($category);
+        }
+
+        $product->addCategory($category);
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * @param string $identifier
+     *
      * @Given the product ":identifier" is subscribed to PIM.ai
      */
     public function theProductIsSubscribedToPimAi(string $identifier): void
@@ -130,83 +198,20 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads attributes for a specific family and a default attribute group
-     * Fixture content is in a file in Resources/config/fixtures/attributes/
-     *
-     * @param string $familyCode
-     */
-    private function loadFamilyAttributes(string $familyCode): void
-    {
-        $data = $this->loadJsonFileAsArray(sprintf('attributes/attributes-family-%s.json', $familyCode));
-
-        $attributeGroup = $this->attributeGroupBuilder->build(['code' => 'other']);
-        $this->attributeGroupRepository->save($attributeGroup);
-
-        foreach ($data as $rowData) {
-            $attribute = $this->attributeBuilder->build($rowData);
-            $this->attributeRepository->save($attribute);
-        }
-    }
-
-    /**
-     * Loads the family with its attributes
-     * Fixture content is in a file in Resources/config/fixtures/families/
-     *
-     * @param string $familyCode
-     */
-    private function loadFamily(string $familyCode): void
-    {
-        $this->loadFamilyAttributes($familyCode);
-
-        $data = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
-
-        $family = $this->familyBuilder->build($data);
-        $this->familyRepository->save($family);
-    }
-
-    /**
-     * Loads a product with its family and attributes
-     * Fixture content is in a file in Resources/config/fixtures/products/
+     * @Given there is suggested data for subscribed product :identifier
      *
      * @param string $identifier
-     * @param string $familyCode
      */
-    private function loadProduct(string $identifier, string $familyCode): void
+    public function thereIsSuggestedDataForSubscribedProduct(string $identifier): void
     {
-        $this->loadFamily($familyCode);
+        $this->theProductIsSubscribedToPimAi($identifier);
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
 
-        $data = $this->loadJsonFileAsArray(sprintf('products/product-%s-%s.json', $familyCode, $identifier));
+        $suggestedData = $this->loadJsonFileAsArray(sprintf('suggested-data/suggested_data-%s.json', $identifier));
+        $subscription->setSuggestedData(new SuggestedData($suggestedData));
 
-        $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        $rawValues = [];
-        foreach ($data['values'] as $attrCode => $value) {
-            $rawValues[$attrCode] =[
-                '<all_channels>' => [
-                    '<all_locales>' => $value[0]['data']
-                ]
-            ];
-        }
-
-        $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
-        $product->setValues($values);
-
-        $this->productRepository->save($product);
-    }
-
-    /**
-     * Loads a file containing json content and return it as a PHP array
-     *
-     * @param string $filepath
-     *
-     * @return array
-     */
-    private function loadJsonFileAsArray(string $filepath)
-    {
-        $filepath = realpath(sprintf(__DIR__ .'/../Resources/fixtures/%s', $filepath));
-        Assert::true(file_exists($filepath));
-        $jsonContent = file_get_contents($filepath);
-
-        return json_decode($jsonContent, true);
+        $this->subscriptionRepository->save($subscription);
     }
 
     /**
@@ -222,10 +227,10 @@ class DataFixturesContext implements Context
 
             $rawValues = [];
             foreach ($productRow as $attrCode => $value) {
-                $rawValues[$attrCode] =[
+                $rawValues[$attrCode] = [
                     '<all_channels>' => [
-                        '<all_locales>' => $value
-                    ]
+                        '<all_locales>' => $value,
+                    ],
                 ];
             }
 
@@ -248,7 +253,7 @@ class DataFixturesContext implements Context
         foreach ($table->getHash() as $familyData) {
             $family = $this->familyFactory->create();
 
-            if (!isset($familyData['code']) || '' === (string)$familyData['code']) {
+            if (!isset($familyData['code']) || '' === (string) $familyData['code']) {
                 throw new \Exception('Missing required field code for family creation');
             }
             $family->setCode($familyData['code']);
@@ -268,5 +273,132 @@ class DataFixturesContext implements Context
 
             $this->familyRepository->save($family);
         }
+    }
+
+    /**
+     * Loads attributes according to a provided list of attribute codes and a default attribute group.
+     * Fixture content is in a file in "Resources/config/fixtures/attributes/".
+     *
+     * @param array $attributeCodes
+     */
+    private function loadAttributes(array $attributeCodes): void
+    {
+        $normalizedAttributes = $this->loadJsonFileAsArray('attributes/attributes.json');
+
+        $attributeGroup = $this->attributeGroupBuilder->build(['code' => 'other']);
+        $this->attributeGroupRepository->save($attributeGroup);
+
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
+            $this->attributeRepository->save($attribute);
+        }
+    }
+
+    /**
+     * Loads the family with its attributes
+     * Fixture content is in a file in Resources/config/fixtures/families/.
+     *
+     * @param string $familyCode
+     */
+    private function loadFamily(string $familyCode): void
+    {
+        $normalizedFamily = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
+
+        $this->loadAttributes($normalizedFamily['attributes']);
+
+        $family = $this->familyBuilder->build($normalizedFamily);
+        $this->familyRepository->save($family);
+    }
+
+    /**
+     * Loads a product with its family (if any) and attributes.
+     * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
+     *
+     * @param string $identifier
+     * @param null|string $familyCode
+     */
+    private function loadProduct(string $identifier, ?string $familyCode = null): void
+    {
+        if (null !== $familyCode) {
+            $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
+                'products/product-%s-%s.json',
+                $familyCode,
+                $identifier
+            ));
+            $this->loadFamily($familyCode);
+        } else {
+            $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
+                'products/product-%s.json',
+                $identifier
+            ));
+            $this->loadProductAttributes($normalizedProduct);
+        }
+
+        $product = $this->productBuilder->createProduct($identifier, $familyCode);
+        $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
+
+        $this->productRepository->save($product);
+    }
+
+    /**
+     * Loads the attributes of a product, using the values of the product.
+     *
+     * @param array $normalizedProduct
+     */
+    private function loadProductAttributes(array $normalizedProduct): void
+    {
+        $attributeCodes = array_keys($normalizedProduct['values']);
+        $this->loadAttributes(array_merge(['sku'], $attributeCodes));
+    }
+
+    /**
+     * Converts raw data (storage format) into an array of values, and set the values to a product.
+     *
+     * @param ProductInterface $product
+     * @param array $normalizedProduct
+     */
+    private function setValuesFromRawDataToProduct(ProductInterface $product, array $normalizedProduct): void
+    {
+        $rawValues = [];
+        foreach ($normalizedProduct['values'] as $attrCode => $value) {
+            $rawValues[$attrCode] = [
+                '<all_channels>' => [
+                    '<all_locales>' => $value[0]['data'],
+                ],
+            ];
+        }
+
+        $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
+        $product->setValues($values);
+    }
+
+    /**
+     * Loads a file containing json content and return it as a PHP array.
+     *
+     * @param string $filepath
+     *
+     * @return array
+     */
+    private function loadJsonFileAsArray(string $filepath): array
+    {
+        $filepath = realpath(sprintf(__DIR__ . '/../Resources/fixtures/%s', $filepath));
+        Assert::true(file_exists($filepath));
+        $jsonContent = file_get_contents($filepath);
+
+        return json_decode($jsonContent, true);
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    private function toArray(string $list): array
+    {
+        if (empty($list)) {
+            return [];
+        }
+
+        return explode(', ', str_replace(' and ', ', ', $list));
     }
 }

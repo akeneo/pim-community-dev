@@ -1,0 +1,57 @@
+extensions:
+    pimee-suggest-data-settings-attribute-options-mapping-edit:
+        module: pim/form/common/edit-form
+        config:
+            template: pimee/template/settings/mapping/attribute-options-mapping-modal
+
+    pimee-suggest-data-settings-attribute-options-mapping-index-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit
+        targetZone: buttons
+        position: 120
+
+    pimee-suggest-data-settings-attribute-options-mapping-index-save-form:
+        module: pimee/saver/attribute-options-mapping-form
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit
+        targetZone: buttons
+        position: 0
+        config:
+            url: akeneo_suggest_data_attribute_options_mapping_update
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-content:
+        module: pimee/settings/mapping/attribute-options-mapping
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit
+        config:
+            labels:
+                pending: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending
+                mapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped
+                unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
+                franklin_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.franklin_attribute_option
+                catalog_attribute_option: akeneo_suggest_data.entity.attribute_options_mapping.fields.catalog_attribute_option
+                attribute_option_status: akeneo_suggest_data.entity.attribute_options_mapping.fields.attribute_option_status
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-description-header:
+        module: pim/common/simple-view
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit-content
+        targetZone: header
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.sub_title
+                illustration: Robot.svg
+                description: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.description
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-front-search-filter:
+        module: pimee/settings/front-search-filter
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit-content
+        position: 10
+        targetZone: filters
+        config:
+            fieldName: 'franklin_attribute_option'
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-status-filter:
+        module: pimee/settings/mapping/status-filter
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit-content
+        position: 20
+        targetZone: filters
+

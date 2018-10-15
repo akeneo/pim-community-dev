@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\FetchProductsCommand;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\FindCommand;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\SaveCommand;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterDataProviderPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\Console\Application;
@@ -23,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Enterprise Suggest Data Bundle
+ * Enterprise Suggest Data Bundle.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -32,13 +30,13 @@ class AkeneoSuggestDataBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container
             ->addCompilerPass(new RegisterDataProviderPass());
 
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model'
+            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model',
         ];
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
@@ -52,7 +50,7 @@ class AkeneoSuggestDataBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function registerCommands(Application $application)
+    public function registerCommands(Application $application): void
     {
         $application->add(new FetchProductsCommand());
     }

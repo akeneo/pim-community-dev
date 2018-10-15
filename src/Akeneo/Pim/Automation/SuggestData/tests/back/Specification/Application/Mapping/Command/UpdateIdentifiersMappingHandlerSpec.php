@@ -36,12 +36,12 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider
-    ) {
+    ): void {
         $this->beConstructedWith($attributeRepository, $identifiersMappingRepository, $dataProviderFactory);
         $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
-    public function it_is_an_update_identifiers_mapping_handler()
+    public function it_is_an_update_identifiers_mapping_handler(): void
     {
         $this->shouldHaveType(UpdateIdentifiersMappingHandler::class);
     }
@@ -51,12 +51,12 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         DataProviderInterface $dataProvider,
         AttributeInterface $model
-    ) {
+    ): void {
         $command = new UpdateIdentifiersMappingCommand(
             [
-                'mpn'   => 'model',
-                'upc'   => null,
-                'asin'  => null,
+                'mpn' => 'model',
+                'upc' => null,
+                'asin' => null,
                 'brand' => 'attributeNotFound',
             ]
         );
@@ -81,13 +81,13 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeInterface $model,
         AttributeInterface $ean,
         AttributeInterface $id
-    ) {
+    ): void {
         $command = new UpdateIdentifiersMappingCommand(
             [
                 'brand' => 'manufacturer',
-                'mpn'   => 'model',
-                'upc'   => 'ean',
-                'asin'  => 'id',
+                'mpn' => 'model',
+                'upc' => 'ean',
+                'asin' => 'id',
             ]
         );
 
@@ -105,9 +105,9 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $identifiersMapping = new IdentifiersMapping(
             [
                 'brand' => $manufacturer->getWrappedObject(),
-                'mpn'   => $model->getWrappedObject(),
-                'upc'   => $ean->getWrappedObject(),
-                'asin'  => $id->getWrappedObject(),
+                'mpn' => $model->getWrappedObject(),
+                'upc' => $ean->getWrappedObject(),
+                'asin' => $id->getWrappedObject(),
             ]
         );
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
@@ -120,12 +120,12 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $model,
         DataProviderInterface $dataProvider
-    ) {
+    ): void {
         $command = new UpdateIdentifiersMappingCommand(
             [
-                'mpn'   => 'model',
-                'upc'   => null,
-                'asin'  => null,
+                'mpn' => 'model',
+                'upc' => null,
+                'asin' => null,
                 'brand' => null,
             ]
         );
@@ -143,13 +143,13 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         DataProviderInterface $dataProvider,
         AttributeInterface $manufacturer,
         AttributeInterface $ean
-    ) {
+    ): void {
         $command = new UpdateIdentifiersMappingCommand(
             [
                 'brand' => 'manufacturer',
-                'mpn'   => null,
-                'upc'   => 'ean',
-                'asin'  => null,
+                'mpn' => null,
+                'upc' => 'ean',
+                'asin' => null,
             ]
         );
 
@@ -169,13 +169,13 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeInterface $model,
         AttributeInterface $ean,
         $identifiersMappingRepository
-    ) {
+    ): void {
         $command = new UpdateIdentifiersMappingCommand(
             [
                 'brand' => null,
-                'mpn'   => 'model',
-                'upc'   => 'ean',
-                'asin'  => null,
+                'mpn' => 'model',
+                'upc' => 'ean',
+                'asin' => null,
             ]
         );
 
