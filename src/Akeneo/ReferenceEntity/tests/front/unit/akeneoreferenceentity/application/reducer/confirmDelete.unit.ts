@@ -2,12 +2,12 @@ import reducer from 'akeneoreferenceentity/application/reducer/confirmDelete';
 
 describe('akeneo > reference entity > application > reducer --- confirmDelete', () => {
   test('I ignore other commands', () => {
-    const state = {};
-    const newState = reducer(state, {
+    const state = {isActive: false, identifier: undefined, label: undefined};
+    const newState = reducer(undefined, {
       type: 'ANOTHER_ACTION',
     });
 
-    expect(newState).toBe(state);
+    expect(newState).toEqual(state);
   });
 
   test('I can generate a default state', () => {
@@ -19,7 +19,7 @@ describe('akeneo > reference entity > application > reducer --- confirmDelete', 
   });
 
   test('I can start the delete modal', () => {
-    const state = {isActive: false};
+    const state = {isActive: false, identifier: undefined, label: undefined};
     const modalState = reducer(state, {
       type: 'DELETE_MODAL_OPEN',
       isActive: true,
@@ -27,6 +27,8 @@ describe('akeneo > reference entity > application > reducer --- confirmDelete', 
 
     expect(modalState).toEqual({
       isActive: true,
+      identifier: undefined,
+      label: undefined,
     });
   });
 

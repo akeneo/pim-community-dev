@@ -57,7 +57,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify(referenceEntity),
+          body: JSON.stringify({...referenceEntity, record_count: 123}),
         });
       }
     });
@@ -71,18 +71,21 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
     });
 
     expect(response).toEqual({
-      identifier: {
-        identifier: 'sofa',
-      },
-      labelCollection: {
-        labels: {
-          en_US: 'Sofa',
-          fr_FR: 'Canapé',
+      recordCount: 123,
+      referenceEntity: {
+        identifier: {
+          identifier: 'sofa',
         },
-      },
-      image: {
-        filePath: '/path/sofa.jpg',
-        originalFilename: 'sofa.jpg',
+        labelCollection: {
+          labels: {
+            en_US: 'Sofa',
+            fr_FR: 'Canapé',
+          },
+        },
+        image: {
+          filePath: '/path/sofa.jpg',
+          originalFilename: 'sofa.jpg',
+        },
       },
     });
   });

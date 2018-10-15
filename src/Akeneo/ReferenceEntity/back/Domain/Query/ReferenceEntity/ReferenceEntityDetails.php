@@ -28,6 +28,7 @@ class ReferenceEntityDetails
     public const IDENTIFIER = 'identifier';
     public const LABELS = 'labels';
     public const IMAGE = 'image';
+    public const RECORD_COUNT = 'record_count';
 
     /** @var ReferenceEntityIdentifier */
     public $identifier;
@@ -38,12 +39,16 @@ class ReferenceEntityDetails
     /** @var Image */
     public $image;
 
+    /** @var int */
+    public $recordCount;
+
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER => (string) $this->identifier,
-            self::LABELS     => $this->labels->normalize(),
-            self::IMAGE      => $this->image->normalize(),
+            self::IDENTIFIER   => (string) $this->identifier,
+            self::LABELS       => $this->labels->normalize(),
+            self::IMAGE        => $this->image->normalize(),
+            self::RECORD_COUNT => $this->recordCount,
         ];
     }
 }

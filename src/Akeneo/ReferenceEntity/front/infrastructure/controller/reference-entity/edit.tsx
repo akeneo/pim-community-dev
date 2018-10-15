@@ -5,11 +5,15 @@ import * as React from 'react';
 import {Store} from 'redux';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ReferenceEntityView from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import createStore from 'akeneoreferenceentity/infrastructure/store';
 import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
-import {referenceEntityEditionReceived} from 'akeneoreferenceentity/domain/event/reference-entity/edit';
+import referenceEntityFetcher, {
+  ReferenceEntityResult,
+} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import {
+  referenceEntityEditionReceived,
+  referenceEntityRecordCountUpdated,
+} from 'akeneoreferenceentity/domain/event/reference-entity/edit';
 import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
 import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
@@ -37,13 +41,14 @@ class ReferenceEntityEditController extends BaseController {
 
     referenceEntityFetcher
       .fetch(createIdentifier(route.params.identifier))
-      .then(async (referenceEntity: ReferenceEntity) => {
+      .then(async (referenceEntityResult: ReferenceEntityResult) => {
         this.store = createStore(true)(referenceEntityReducer);
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
         this.store.dispatch(updateActivatedLocales() as any);
-        this.store.dispatch(referenceEntityEditionReceived(referenceEntity.normalize()));
+        this.store.dispatch(referenceEntityEditionReceived(referenceEntityResult.referenceEntity.normalize()));
+        this.store.dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));

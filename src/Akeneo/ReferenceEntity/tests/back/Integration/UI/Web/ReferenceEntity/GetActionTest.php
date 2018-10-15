@@ -64,7 +64,8 @@ class GetActionTest extends ControllerIntegrationTestCase
             'image'      => [
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
-            ]
+            ],
+            'record_count' => null
         ]);
         $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }

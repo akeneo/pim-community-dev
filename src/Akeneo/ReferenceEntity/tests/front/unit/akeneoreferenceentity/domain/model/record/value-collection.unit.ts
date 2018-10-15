@@ -1,6 +1,7 @@
-import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
+import {createValueCollection, generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
 import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
 import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {denormalizeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
@@ -77,6 +78,37 @@ describe('akeneo > reference entity > domain > model > record --- value collecti
       {attribute: 'description_1234', channel: null, data: 'nice description', locale: 'en_US'},
       {attribute: 'description_1234', channel: null, data: 'nice description', locale: 'fr_FR'},
     ]);
+  });
+
+  test('I can generate a value key', () => {
+    expect(
+      generateKey(
+        denormalizeIdentifier('description'),
+        denormalizeChannelReference('ecommerce'),
+        denormalizeLocaleReference('en_US')
+      )
+    ).toEqual('description_ecommerce_en_US');
+    expect(
+      generateKey(
+        denormalizeIdentifier('description'),
+        denormalizeChannelReference('ecommerce'),
+        denormalizeLocaleReference(null)
+      )
+    ).toEqual('description_ecommerce');
+    expect(
+      generateKey(
+        denormalizeIdentifier('description'),
+        denormalizeChannelReference(null),
+        denormalizeLocaleReference('en_US')
+      )
+    ).toEqual('description_en_US');
+    expect(
+      generateKey(
+        denormalizeIdentifier('description'),
+        denormalizeChannelReference(null),
+        denormalizeLocaleReference(null)
+      )
+    ).toEqual('description');
   });
 
   test('I cannot create an invalid value collection', () => {

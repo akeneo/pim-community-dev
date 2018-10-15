@@ -21,6 +21,7 @@ interface OwnProps {
   withLocaleSwitcher: boolean;
   withChannelSwitcher: boolean;
   isDirty: boolean;
+  isLoading?: boolean;
   breadcrumbConfiguration: BreadcrumbConfiguration;
 }
 
@@ -52,6 +53,7 @@ const Header = ({
   withChannelSwitcher,
   withLocaleSwitcher,
   isDirty,
+  isLoading,
   breadcrumbConfiguration,
   context,
   structure,
@@ -68,6 +70,7 @@ const Header = ({
                 <BreadCrumb items={breadcrumbConfiguration} />
               </div>
               <div className="AknTitleContainer-buttonsContainer">
+                <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
                 <div className="user-menu">
                   <PimView
                     className="AknTitleContainer-userMenu"

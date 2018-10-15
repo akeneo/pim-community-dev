@@ -21,6 +21,7 @@ export interface EditState {
   attributes: ListState;
   attribute: EditAttributeState;
   form: EditionFormState;
+  recordCount: number;
   structure: StructureState;
   confirmDelete: ConfirmDeleteState;
 }
@@ -35,5 +36,8 @@ export default {
   attribute,
   structure,
   form,
+  recordCount: (state: number = 0, action: {type: string; recordCount: number}) => {
+    return 'REFERENCE_ENTITY_EDITION_RECORD_COUNT_UPDATED' === action.type ? action.recordCount : state;
+  },
   confirmDelete,
 };

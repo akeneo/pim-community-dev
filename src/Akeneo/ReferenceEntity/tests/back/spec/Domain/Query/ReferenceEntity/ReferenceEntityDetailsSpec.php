@@ -28,6 +28,7 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
             'en_US' => 'Philip starck',
         ]);
         $this->image = $image;
+        $this->recordCount = 123;
 
         $this->normalize()->shouldReturn(
             [
@@ -39,7 +40,8 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
                 'image'      => [
                     'filePath'         => '/path/image.jpg',
                     'originalFilename' => 'image.jpg'
-                ]
+                ],
+                'record_count' => 123
             ]
         );
     }

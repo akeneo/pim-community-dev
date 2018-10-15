@@ -10,15 +10,19 @@ import ReferenceEntity, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
-import {deleteAllReferenceEntityRecords} from 'akeneoreferenceentity/application/action/record/delete';
+import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import {needMoreResults, searchUpdated} from 'akeneoreferenceentity/application/action/record/search';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import {createIdentifier as createReferenceIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
+import ReferenceEntityIdentifier, {
+  createIdentifier as createReferenceIdentifier,
+} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import RecordCode, {createCode as createRecordCode} from 'akeneoreferenceentity/domain/model/record/code';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {getDataCellView, CellView} from 'akeneoreferenceentity/application/configuration/value';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 interface StateProps {
   context: {
@@ -31,7 +35,9 @@ interface StateProps {
     columns: Column[];
     total: number;
     isLoading: boolean;
+    page: number;
   };
+  recordCount: number;
   acls: {
     createRecord: boolean;
     deleteAllRecords: boolean;
@@ -39,29 +45,37 @@ interface StateProps {
   };
   confirmDelete: {
     isActive: boolean;
+    identifier?: string;
+    label?: string;
   };
 }
 
 interface DispatchProps {
   events: {
     onRedirectToRecord: (record: NormalizedRecord) => void;
+    onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
-    onDelete: (referenceEntity: ReferenceEntity) => void;
+    onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
-    onOpenDeleteModal: () => void;
+    onOpenDeleteAllRecordsModal: () => void;
+    onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => void;
     onCancelDeleteModal: () => void;
   };
 }
 
-const SecondaryAction = ({onOpenDeleteModal}: {onOpenDeleteModal: () => void}) => {
+export type CellViews = {
+  [key: string]: CellView;
+};
+
+const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsModal: () => void}) => {
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
-          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteModal()}>
+          <button tabIndex={-1} className="AknDropdown-menuLink" onClick={() => onOpenDeleteAllRecordsModal()}>
             {__('pim_reference_entity.record.button.delete_all')}
           </button>
         </div>
@@ -70,71 +84,110 @@ const SecondaryAction = ({onOpenDeleteModal}: {onOpenDeleteModal: () => void}) =
   );
 };
 
-const records = ({context, grid, events, referenceEntity, acls, confirmDelete}: StateProps & DispatchProps) => {
-  return (
-    <React.Fragment>
-      <Header
-        label={referenceEntity.getLabel(context.locale)}
-        image={referenceEntity.getImage()}
-        primaryAction={() => {
-          return acls.createRecord ? (
-            <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
-              {__('pim_reference_entity.record.button.create')}
-            </button>
-          ) : null;
-        }}
-        secondaryActions={() => {
-          return acls.deleteAllRecords ? (
-            <SecondaryAction
-              onOpenDeleteModal={() => {
-                events.onOpenDeleteModal();
-              }}
-            />
-          ) : null;
-        }}
-        withLocaleSwitcher={true}
-        withChannelSwitcher={true}
-        isDirty={false}
-        breadcrumbConfiguration={breadcrumbConfiguration}
-      />
-      {0 !== grid.records.length ? (
-        <Table
-          onRedirectToRecord={events.onRedirectToRecord}
-          onNeedMoreResults={events.onNeedMoreResults}
-          onSearchUpdated={events.onSearchUpdated}
-          locale={context.locale}
-          channel={context.channel}
-          columns={grid.columns}
-          referenceEntity={referenceEntity}
-          records={grid.records}
-          isLoading={grid.isLoading}
-        />
-      ) : (
-        <div className="AknGridContainer-noData">
-          <div className="AknGridContainer-noDataImage" />
-          <div className="AknGridContainer-noDataTitle">
-            {__('pim_reference_entity.record.no_data.title', {
-              entityLabel: referenceEntity.getLabel(context.locale),
-            })}
-          </div>
-          <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
-        </div>
-      )}
-      {confirmDelete.isActive && (
-        <DeleteModal
-          message={__('pim_reference_entity.record.delete_all.confirm', {
-            entityIdentifier: referenceEntity.getIdentifier().stringValue(),
-          })}
-          title={__('pim_reference_entity.record.delete.title')}
-          onConfirm={() => {
-            events.onDelete(referenceEntity);
+class Records extends React.Component<StateProps & DispatchProps, {cellViews: CellViews}> {
+  state = {cellViews: {}};
+
+  static getDerivedStateFromProps(props: StateProps & DispatchProps, {cellViews}: {cellViews: CellViews}) {
+    if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
+      return {
+        cellViews: props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
+          cellViews[column.key] = getDataCellView(column.type as AttributeType);
+
+          return cellViews;
+        }, {}),
+      };
+    }
+
+    return null;
+  }
+
+  render() {
+    const {context, grid, events, referenceEntity, acls, confirmDelete, recordCount} = this.props;
+
+    return (
+      <React.Fragment>
+        <Header
+          label={referenceEntity.getLabel(context.locale)}
+          image={referenceEntity.getImage()}
+          primaryAction={() => {
+            return acls.createRecord ? (
+              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
+                {__('pim_reference_entity.record.button.create')}
+              </button>
+            ) : null;
           }}
-          onCancel={events.onCancelDeleteModal}
+          secondaryActions={() => {
+            return acls.deleteAllRecords ? (
+              <SecondaryAction
+                onOpenDeleteAllRecordsModal={() => {
+                  events.onOpenDeleteAllRecordsModal();
+                }}
+              />
+            ) : null;
+          }}
+          withLocaleSwitcher={true}
+          withChannelSwitcher={true}
+          isDirty={false}
+          isLoading={grid.isLoading}
+          breadcrumbConfiguration={breadcrumbConfiguration}
         />
-      )}
-    </React.Fragment>
-  );
-};
+        {0 !== recordCount ? (
+          <Table
+            onRedirectToRecord={events.onRedirectToRecord}
+            onDeleteRecord={events.onOpenDeleteRecordModal}
+            onNeedMoreResults={events.onNeedMoreResults}
+            onSearchUpdated={events.onSearchUpdated}
+            recordCount={recordCount}
+            locale={context.locale}
+            channel={context.channel}
+            grid={grid}
+            cellViews={this.state.cellViews}
+            referenceEntity={referenceEntity}
+          />
+        ) : (
+          <div className="AknGridContainer-noData">
+            <div className="AknGridContainer-noDataImage" />
+            <div className="AknGridContainer-noDataTitle">
+              {__('pim_reference_entity.record.no_data.title', {
+                entityLabel: referenceEntity.getLabel(context.locale),
+              })}
+            </div>
+            <div className="AknGridContainer-noDataSubtitle">{__('pim_reference_entity.record.no_data.subtitle')}</div>
+          </div>
+        )}
+        {confirmDelete.isActive &&
+          undefined === confirmDelete.identifier && (
+            <DeleteModal
+              message={__('pim_reference_entity.record.delete_all.confirm', {
+                entityIdentifier: referenceEntity.getIdentifier().stringValue(),
+              })}
+              title={__('pim_reference_entity.record.delete.title')}
+              onConfirm={() => {
+                events.onDeleteAllRecords(referenceEntity);
+              }}
+              onCancel={events.onCancelDeleteModal}
+            />
+          )}
+        {confirmDelete.isActive &&
+          undefined !== confirmDelete.identifier && (
+            <DeleteModal
+              message={__('pim_reference_entity.record.delete.message', {
+                recordLabel: confirmDelete.label,
+              })}
+              title={__('pim_reference_entity.record.delete.title')}
+              onConfirm={() => {
+                events.onDeleteRecord(
+                  referenceEntity.getIdentifier(),
+                  createRecordCode(confirmDelete.identifier as string)
+                );
+              }}
+              onCancel={events.onCancelDeleteModal}
+            />
+          )}
+      </React.Fragment>
+    );
+  }
+}
 
 export default connect(
   (state: EditState): StateProps => {
@@ -143,6 +196,7 @@ export default connect(
     const channel =
       undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
     const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
+    const page = undefined === state.grid || undefined === state.grid.query.page ? 0 : state.grid.query.page;
     const columns =
       undefined === state.grid || undefined === state.grid.query || undefined === state.grid.query.columns
         ? []
@@ -160,8 +214,10 @@ export default connect(
         records,
         total,
         columns,
-        isLoading: state.grid.isFetching && state.grid.items.length === 0,
+        isLoading: state.grid.isFetching,
+        page,
       },
+      recordCount: state.recordCount,
       acls: {
         createRecord: securityContext.isGranted('akeneo_referenceentity_record_create'),
         deleteAllRecords: securityContext.isGranted('akeneo_referenceentity_records_delete_all'),
@@ -181,6 +237,9 @@ export default connect(
             )
           );
         },
+        onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => {
+          dispatch(deleteRecord(referenceEntityIdentifier, recordCode, true));
+        },
         onNeedMoreResults: () => {
           dispatch(needMoreResults());
         },
@@ -190,16 +249,19 @@ export default connect(
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
         },
-        onDelete: (referenceEntity: ReferenceEntity) => {
+        onDeleteAllRecords: (referenceEntity: ReferenceEntity) => {
           dispatch(deleteAllReferenceEntityRecords(referenceEntity));
         },
         onCancelDeleteModal: () => {
           dispatch(cancelDeleteModal());
         },
-        onOpenDeleteModal: () => {
+        onOpenDeleteAllRecordsModal: () => {
           dispatch(openDeleteModal());
+        },
+        onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => {
+          dispatch(openDeleteModal(recordCode.stringValue(), label));
         },
       },
     };
   }
-)(records);
+)(Records);

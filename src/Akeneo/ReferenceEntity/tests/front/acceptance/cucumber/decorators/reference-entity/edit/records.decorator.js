@@ -5,7 +5,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
 
   const hasRecord = async identifier => {
     await isLoaded();
-    await page.waitFor('.AknDefault-mainContent .AknGrid-bodyRow');
+    await page.waitFor(`.AknDefault-mainContent .AknGrid-bodyRow [data-identifier="${identifier}"]`);
     const record = await nodeElement.$(`[data-identifier="${identifier}"]`);
 
     return record !== null;

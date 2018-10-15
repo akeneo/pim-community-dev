@@ -12,6 +12,7 @@ class ReferenceEntityBuilder {
       identifier: '',
       labels: {},
       image: null,
+      record_count: 123,
     };
   }
 

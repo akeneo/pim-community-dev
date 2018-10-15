@@ -1,5 +1,5 @@
-export const openDeleteModal = () => {
-  return {type: 'DELETE_MODAL_OPEN'};
+export const openDeleteModal = (identifier?: string, label?: string) => {
+  return {type: 'DELETE_MODAL_OPEN', identifier, label};
 };
 
 export const closeDeleteModal = () => {
