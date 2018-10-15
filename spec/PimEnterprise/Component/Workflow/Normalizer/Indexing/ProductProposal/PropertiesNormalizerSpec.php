@@ -87,4 +87,56 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_normalizes_product_proposal_without_attribute_as_label(
+        $serializer,
+        EntityWithValuesDraftInterface $productProposal,
+        ValueCollectionInterface $valueCollection,
+        ProductInterface $product,
+        FamilyInterface $family,
+        AttributeInterface $attribute
+    ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $productProposal->getId()->willReturn(1);
+        $productProposal->getEntityWithValue()->willReturn($product);
+        $product->getIdentifier()->willReturn('1');
+
+        $productProposal->getAuthor()->willReturn('mary');
+        $product->getCategoryCodes()->willReturn([]);
+
+        $productProposal->getCreatedAt()->willReturn($now);
+        $serializer->normalize(
+            $productProposal->getWrappedObject()->getCreatedAt(),
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+        )->willReturn($now->format('c'));
+
+        $product->getFamily()->willReturn($family);
+        $family->getCode()->willReturn(null);
+        $serializer->normalize(
+            $product->getWrappedObject()->getFamily(),
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+        )->willReturn(['code' => 'family']);
+
+        $productProposal->getValues()->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(true);
+
+        $family->getAttributeAsLabel()->willReturn(null);
+        $attribute->getCode()->shouldNotBeCalled();
+        $product->getValue(null)->willReturn(null);
+
+        $this->normalize($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(
+            [
+                'id' => 'product_draft_1',
+                'entity_with_values_identifier' => '1',
+                'identifier' => '1',
+                'created' => $now->format('c'),
+                'family' => ['code' => 'family'],
+                'author' => 'mary',
+                'categories' => [],
+                'values' => [],
+                'label' => [],
+            ]
+        );
+    }
 }

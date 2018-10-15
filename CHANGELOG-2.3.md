@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7723: fix consistency between TWA widget numbers and the datagrid view 
+- PIM-7731: check for attribute as label not null in normalizers 
 
 # 2.3.11 (2018-10-08)
 
