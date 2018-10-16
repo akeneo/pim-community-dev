@@ -11,3 +11,13 @@ services:
         class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory
         tags:
             - { name: akeneo_referenceentity.attribute_factory }
+
+    akeneo_referenceentity.application.factory.record_attribute_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\RecordAttributeFactory
+        tags:
+            - { name: akeneo_referenceentity.attribute_factory }
+
+    akeneo_referenceentity.application.factory.record_collection_attribute_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\RecordCollectionAttributeFactory
+        tags:
+            - { name: akeneo_referenceentity.attribute_factory }
