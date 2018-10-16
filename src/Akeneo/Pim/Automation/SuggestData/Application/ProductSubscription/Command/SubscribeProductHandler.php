@@ -98,7 +98,7 @@ class SubscribeProductHandler
             );
         }
         if (null === $product->getFamily()) {
-            throw new ProductSubscriptionException(sprintf('Cannot subscribe a product without family'));
+            throw ProductSubscriptionException::familyRequired();
         }
 
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($productId);

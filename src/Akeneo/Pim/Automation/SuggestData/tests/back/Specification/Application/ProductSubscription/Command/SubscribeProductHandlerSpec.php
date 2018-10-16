@@ -61,7 +61,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
-            new ProductSubscriptionException('Cannot subscribe a product without family')
+            ProductSubscriptionException::familyRequired()
         )->during('handle', [$command]);
     }
 
