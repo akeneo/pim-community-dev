@@ -20,9 +20,9 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SimpleSelectRecordAttribute extends AbstractAttribute
+class RecordCollectionAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'simple_select_record';
+    private const ATTRIBUTE_TYPE = 'record_collection';
 
     /** @var ReferenceEntityIdentifier */
     private $recordType;
@@ -86,11 +86,6 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
         );
     }
 
-    protected function getType(): string
-    {
-        return self::ATTRIBUTE_TYPE;
-    }
-
     public function getRecordType(): ReferenceEntityIdentifier
     {
         return $this->recordType;
@@ -99,5 +94,10 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
     public function setRecordType(ReferenceEntityIdentifier $recordType): void
     {
         $this->recordType = $recordType;
+    }
+
+    protected function getType(): string
+    {
+        return self::ATTRIBUTE_TYPE;
     }
 }

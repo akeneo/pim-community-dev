@@ -10,31 +10,31 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\SimpleSelectRecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class SimpleSelectRecordAttributeSpec extends ObjectBehavior
+class RecordCollectionAttributeSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('designer', 'mentor', 'fingerprint'),
+            AttributeIdentifier::create('designer', 'brands', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('mentor'),
-            LabelCollection::fromArray(['fr_FR' => 'Mentor', 'en_US' => 'Mentor']),
+            AttributeCode::fromString('brands'),
+            LabelCollection::fromArray(['fr_FR' => 'Marques', 'en_US' => 'Brands']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            ReferenceEntityIdentifier::fromString('designer')
+            ReferenceEntityIdentifier::fromString('brand')
         ]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SimpleSelectRecordAttribute::class);
+        $this->shouldHaveType(RecordCollectionAttribute::class);
     }
 
     function it_determines_if_it_has_a_given_order()
@@ -46,34 +46,34 @@ class SimpleSelectRecordAttributeSpec extends ObjectBehavior
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([
-                'identifier' => 'mentor_designer_fingerprint',
+                'identifier' => 'brands_designer_fingerprint',
                 'reference_entity_identifier' => 'designer',
-                'code' => 'mentor',
-                'labels' => ['fr_FR' => 'Mentor', 'en_US' => 'Mentor'],
+                'code' => 'brands',
+                'labels' => ['fr_FR' => 'Marques', 'en_US' => 'Brands'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
-                'type' => 'simple_select_record',
-                'record_type' => 'designer',
+                'type' => 'record_collection',
+                'record_type' => 'brand',
             ]
         );
     }
 
     function it_updates_its_labels()
     {
-        $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Tuteur', 'de_DE' => 'Mentor']));
+        $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Anciennes Marques', 'en_US' => 'Old Brands']));
         $this->normalize()->shouldBe([
-                'identifier' => 'mentor_designer_fingerprint',
+                'identifier' => 'brands_designer_fingerprint',
                 'reference_entity_identifier' => 'designer',
-                'code' => 'mentor',
-                'labels' => ['fr_FR' => 'Tuteur', 'de_DE' => 'Mentor'],
+                'code' => 'brands',
+                'labels' => ['fr_FR' => 'Anciennes Marques', 'en_US' => 'Old Brands'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
-                'type' => 'simple_select_record',
-                'record_type' => 'designer',
+                'type' => 'record_collection',
+                'record_type' => 'brand',
             ]
         );
     }
@@ -81,19 +81,20 @@ class SimpleSelectRecordAttributeSpec extends ObjectBehavior
     function it_updates_its_record_type()
     {
         $this->setRecordType(
-            ReferenceEntityIdentifier::fromString('brand')
+            ReferenceEntityIdentifier::fromString('color')
         );
+
         $this->normalize()->shouldBe([
-                'identifier' => 'mentor_designer_fingerprint',
+                'identifier' => 'brands_designer_fingerprint',
                 'reference_entity_identifier' => 'designer',
-                'code' => 'mentor',
-                'labels' => ['fr_FR' => 'Mentor', 'en_US' => 'Mentor'],
+                'code' => 'brands',
+                'labels' => ['fr_FR' => 'Marques', 'en_US' => 'Brands'],
                 'order' => 0,
                 'is_required' => true,
                 'value_per_channel' => false,
                 'value_per_locale' => false,
-                'type' => 'simple_select_record',
-                'record_type' => 'brand',
+                'type' => 'record_collection',
+                'record_type' => 'color',
             ]
         );
     }
