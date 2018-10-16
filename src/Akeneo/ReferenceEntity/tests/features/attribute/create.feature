@@ -27,6 +27,24 @@ Feature: Create an attribute linked to an reference entity
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         | text | 0           | 0                   | none            |                    |
 
   @acceptance-back
+  Scenario: Create a record attribute linked to a reference entity
+    When the user creates a record attribute "mentor" linked to the reference entity "designer" with:
+      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
+    Then there is a record attribute "mentor" in the reference entity "designer" with:
+      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type | type   |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    | record |
+
+  @acceptance-back
+  Scenario: Create a record collection attribute linked to a reference entity
+    When the user creates a record collection attribute "brands" linked to the reference entity "designer" with:
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
+    Then there is a record attribute "brands" in the reference entity "designer" with:
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type | type              |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       | record_collection |
+
+  @acceptance-back
   Scenario: Cannot create an attribute for an reference entity if it already exists
     Given the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
