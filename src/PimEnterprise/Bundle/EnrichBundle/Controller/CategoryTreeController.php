@@ -93,10 +93,8 @@ class CategoryTreeController extends BaseCategoryTreeController
 
     /**
      * {@inheritdoc}
-     *
-     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
      */
-    public function listTreeAction(Request $request)
+    public function listTreeAction(Request $request): Response
     {
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
             throw new AccessDeniedException();
@@ -125,13 +123,15 @@ class CategoryTreeController extends BaseCategoryTreeController
             $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
         }
 
-        return [
+        return $this->render(
+            'AkeneoPimEnrichmentBundle:CategoryTree:listTree.json.twig',
+            [
             'trees'          => $grantedTrees,
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
             'related_entity' => $this->rawConfiguration['related_entity'],
-        ];
+        ]);
     }
 
     /**
@@ -222,8 +222,6 @@ class CategoryTreeController extends BaseCategoryTreeController
      *
      * @throws AccessDeniedException
      *
-     * @Template
-     *
      * @return Response
      */
     public function childrenAction(Request $request)
@@ -253,9 +251,9 @@ class CategoryTreeController extends BaseCategoryTreeController
         $categories = $this->getChildrenCategories($request, $selectNode, $parent);
 
         if (null === $selectNode) {
-            $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
+            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children.json.twig';
         } else {
-            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
+            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children-tree.json.twig';
         }
 
         $withItemsCount = (bool) $request->get('with_items_count', false);
