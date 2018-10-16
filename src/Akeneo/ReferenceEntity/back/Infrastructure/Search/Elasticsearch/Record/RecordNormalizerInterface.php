@@ -8,7 +8,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 
 interface RecordNormalizerInterface
 {
-    public function normalizeRecord(RecordIdentifier $recordIdentifier);
+    public function normalizeRecord(RecordIdentifier $recordIdentifier): array;
 
-    public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier);
+    public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator;
 }

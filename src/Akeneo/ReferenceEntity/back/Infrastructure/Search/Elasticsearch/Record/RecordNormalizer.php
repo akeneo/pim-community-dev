@@ -54,7 +54,8 @@ class RecordNormalizer implements RecordNormalizerInterface
         if (null === $searchableRecordItem) {
             throw RecordNotFoundException::withIdentifier($recordIdentifier);
         }
-        $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($searchableRecordItem->referenceEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier);
+        $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
         $filledMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
 
         return [
@@ -66,7 +67,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         ];
     }
 
-    public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): \Generator
+    public function normalizeRecordsByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
     {
         $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
         $searchableRecordItems = $this->findSearchableRecords->byReferenceEntityIdentifier($referenceEntityIdentifier);
@@ -83,7 +84,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         }
     }
 
-    private function generateSearchMatrixWithValueKeys($referenceEntityIdentifier): array
+    private function generateSearchMatrixWithValueKeys(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $matrixLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
         $matrix = [];
@@ -103,10 +104,11 @@ class RecordNormalizer implements RecordNormalizerInterface
 
     private function fillMatrix(array $matrix, SearchableRecordItem $searchableRecordItem): array
     {
+        $searchRecordListMatrix = [];
         foreach ($matrix as $channelCode => $valueKeysPerLocales) {
             foreach ($valueKeysPerLocales as $localeCode => $valueKeys) {
                 $indexedValues = $this->concatenateDataToIndex($searchableRecordItem, $valueKeys);
-                $valueIndexMatrix[$channelCode][$localeCode] = sprintf(
+                $searchRecordListMatrix[$channelCode][$localeCode] = sprintf(
                     '%s %s %s', $searchableRecordItem->code,
                     $searchableRecordItem->labels[$localeCode] ?? '',
                     $indexedValues
@@ -114,7 +116,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             }
         }
 
-        return $valueIndexMatrix;
+        return $searchRecordListMatrix;
     }
 
     private function concatenateDataToIndex(SearchableRecordItem $searchableRecordItem, array $valueKeys): string

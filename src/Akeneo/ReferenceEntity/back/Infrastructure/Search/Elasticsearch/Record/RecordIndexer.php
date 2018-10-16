@@ -42,8 +42,8 @@ class RecordIndexer implements RecordIndexerInterface
      */
     public function index(RecordIdentifier $recordIdentifier): void
     {
-        $normalizedrecords = $this->normalizer->normalizeRecord($recordIdentifier);
-        $this->recordClient->bulkindexes(self::INDEX_TYPE, $normalizedrecords, self::KEY_AS_ID, refresh::disable());
+        $normalizedRecord = $this->normalizer->normalizeRecord($recordIdentifier);
+        $this->recordClient->index(self::INDEX_TYPE, $normalizedRecord['identifier'], $normalizedRecord, refresh::disable());
     }
 
     public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
