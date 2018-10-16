@@ -23,7 +23,7 @@ class RecordCollectionDataHydratorSpec extends ObjectBehavior
         $this->supports($recordCollectionAttribute)->shouldReturn(true);
     }
 
-    function it_hydrates_record_data()
+    function it_hydrates_record_collection_data()
     {
         $recordData = $this->hydrate(['phillipe_starck', 'patricia_urquiola']);
         $recordData->shouldBeAnInstanceOf(RecordCollectionData::class);
