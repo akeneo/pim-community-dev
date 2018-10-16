@@ -68,7 +68,7 @@ class EntityWithFamilyVariantValuesFiller extends AbstractEntityWithFamilyValues
 
         if (null !== $entity->getParent()) {
             $parentAttributes = $this->getExpectedAttributes($entity->getParent());
-            $attributes = array_merge($attributes, $parentAttributes);
+            $attributes = $parentAttributes + $attributes;
         }
 
         return $attributes;
