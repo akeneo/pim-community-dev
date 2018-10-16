@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\ProductDraft;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\ProductDraft;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\Product\Create;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\Create;
 
-use AkeneoTest\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 
 /**
  * +----------+-----------------------------------------------+

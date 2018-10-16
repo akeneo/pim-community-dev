@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator as AppConnectionValidator;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
 
@@ -22,15 +22,15 @@ use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
  */
 class ConnectionValidator implements ValidatorInterface
 {
-    /** @var GetSuggestDataConnectionStatus */
-    private $connectionStatus;
+    /** @var AppConnectionValidator */
+    private $connectionValidator;
 
     /**
-     * @param GetSuggestDataConnectionStatus $connectionStatus
+     * @param AppConnectionValidator $connectionValidator
      */
-    public function __construct(GetSuggestDataConnectionStatus $connectionStatus)
+    public function __construct(AppConnectionValidator $connectionValidator)
     {
-        $this->connectionStatus = $connectionStatus;
+        $this->connectionValidator = $connectionValidator;
     }
 
     /**
@@ -38,9 +38,7 @@ class ConnectionValidator implements ValidatorInterface
      */
     public function validate($value): void
     {
-        // TODO: ideally this should use a query/handler pattern
-        $connectionStatus = $this->connectionStatus->getStatus();
-        if (true !== $connectionStatus->isActive()) {
+        if (true !== $this->connectionValidator->isValid()) {
             throw new ValidationException('Token is invalid or expired');
         }
     }

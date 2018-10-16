@@ -18,4 +18,46 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
  */
 final class ProductSubscriptionException extends \Exception
 {
+    /** @var string */
+    private const CONSTRAINT_KEY = 'akeneo_suggest_data.entity.product_subscription.constraint.%s';
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function invalidToken(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_token'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function insufficientCredits(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'insufficient_credits'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function invalidIdentifiersMapping(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'no_identifiers_mapping'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function familyRequired(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'family_required'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function invalidMappedValues(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_mapped_values'));
+    }
 }

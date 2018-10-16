@@ -2,7 +2,7 @@ extensions:
     pimee-suggest-data-settings-attribute-options-mapping-edit:
         module: pim/form/common/edit-form
         config:
-            template: pimee/template/settings/mapping/attribute-options-mapping-modal
+            template: pimee/template/attribute-options-mapping/modal
 
     pimee-suggest-data-settings-attribute-options-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
@@ -19,7 +19,7 @@ extensions:
             url: akeneo_suggest_data_attribute_options_mapping_update
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-content:
-        module: pimee/settings/mapping/attribute-options-mapping
+        module: pimee/view/attribute-options-mapping/edit
         parent: pimee-suggest-data-settings-attribute-options-mapping-edit
         config:
             labels:
@@ -42,7 +42,7 @@ extensions:
                 description: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.description
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-front-search-filter:
-        module: pimee/settings/front-search-filter
+        module: pimee/view/common/front-search-filter
         parent: pimee-suggest-data-settings-attribute-options-mapping-edit-content
         position: 10
         targetZone: filters
@@ -50,7 +50,7 @@ extensions:
             fieldName: 'franklin_attribute_option'
 
     pimee-suggest-data-settings-attribute-options-mapping-edit-status-filter:
-        module: pimee/settings/mapping/status-filter
+        module: pimee/view/common/status-filter
         parent: pimee-suggest-data-settings-attribute-options-mapping-edit-content
         position: 20
         targetZone: filters

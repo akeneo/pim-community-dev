@@ -30,18 +30,22 @@ final class ProductSubscriptionResponse
     /** @var array */
     private $suggestedData;
 
+    /** @var bool */
+    private $isMappingMissing;
+
     /**
      * @param int $productId
      * @param string $subscriptionId
      * @param array $suggestedData
      */
-    public function __construct(int $productId, string $subscriptionId, array $suggestedData)
+    public function __construct(int $productId, string $subscriptionId, array $suggestedData, bool $isMappingMissing)
     {
         $this->validate($subscriptionId, $suggestedData);
 
         $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
         $this->suggestedData = $suggestedData;
+        $this->isMappingMissing = $isMappingMissing;
     }
 
     /**
@@ -66,6 +70,14 @@ final class ProductSubscriptionResponse
     public function getSuggestedData(): array
     {
         return $this->suggestedData;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMappingMissing(): bool
+    {
+        return $this->isMappingMissing;
     }
 
     /**

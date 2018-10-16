@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\Product;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
 
 /**
  * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+

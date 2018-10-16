@@ -35,6 +35,9 @@ class ProductSubscription
     /** @var array */
     private $rawSuggestedData;
 
+    /** @var bool */
+    private $isMappingMissing;
+
     /**
      * @param ProductInterface $product
      * @param string $subscriptionId
@@ -43,6 +46,7 @@ class ProductSubscription
     {
         $this->subscriptionId = $subscriptionId;
         $this->product = $product;
+        $this->isMappingMissing = false;
     }
 
     /**
@@ -97,5 +101,25 @@ class ProductSubscription
         $this->suggestedData = null;
 
         return $this;
+    }
+
+    /**
+     * @param bool $isMappingMissing
+     *
+     * @return ProductSubscription
+     */
+    public function markAsMissingMapping(bool $isMappingMissing): self
+    {
+        $this->isMappingMissing = $isMappingMissing;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMappingMissing(): bool
+    {
+        return $this->isMappingMissing;
     }
 }

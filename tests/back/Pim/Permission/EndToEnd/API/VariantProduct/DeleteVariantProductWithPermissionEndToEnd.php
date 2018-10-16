@@ -1,11 +1,11 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\VariantProduct;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use AkeneoTest\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteVariantProductWithPermissionEndToEnd extends ApiTestCase

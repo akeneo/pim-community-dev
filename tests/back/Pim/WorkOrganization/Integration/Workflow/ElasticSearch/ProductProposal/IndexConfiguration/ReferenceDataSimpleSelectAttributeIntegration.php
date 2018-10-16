@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\Workflow\ElasticSearch\ProductProposal\IndexConfiguration;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\ElasticSearch\ProductProposal\IndexConfiguration;
 
 class ReferenceDataSimpleSelectAttributeIntegration extends AbstractProductProposalTestCase
 {

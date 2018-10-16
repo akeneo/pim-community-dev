@@ -26,6 +26,7 @@ class SubscriptionSpec extends ObjectBehavior
                     'label' => ['en_US' => 'Laptop'],
                 ],
             ],
+            'misses_mapping' => false,
         ]);
     }
 
@@ -57,5 +58,35 @@ class SubscriptionSpec extends ObjectBehavior
         $this->beConstructedWith([]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_returns_missing_mapping_if_the_information_exists(): void
+    {
+        $this->beConstructedWith([
+            'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+            'identifiers' => [],
+            'attributes' => [],
+            'extra' => [
+                'tracker_id' => '42',
+            ],
+            'misses_mapping' => true,
+        ]);
+
+        $this->isMappingMissing()->shouldReturn(true);
+    }
+
+    public function it_handles_missing_mapping_if_the_information_does_not_exist(): void
+    {
+        $this->beConstructedWith([
+            'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+            'identifiers' => [],
+            'attributes' => [],
+            'extra' => [
+                'tracker_id' => '42',
+            ],
+            'misses_mapping' => false,
+        ]);
+
+        $this->isMappingMissing()->shouldReturn(false);
     }
 }

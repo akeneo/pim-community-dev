@@ -27,6 +27,11 @@ interface SubscriptionApiInterface
     /**
      * @param array $identifiers
      *
+     * @throws BadRequestException
+     * @throws InsufficientCreditsException
+     * @throws InvalidTokenException
+     * @throws PimAiServerException
+     *
      * @return ApiResponse
      */
     public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse;
@@ -49,6 +54,7 @@ interface SubscriptionApiInterface
      * @param string $subscriptionId
      *
      * @throws BadRequestException
+     * @throws InvalidTokenException
      * @throws PimAiServerException
      */
     public function unsubscribeProduct(string $subscriptionId): void;

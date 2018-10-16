@@ -48,7 +48,7 @@ final class PimAiConfigurationContext extends PimContext
     {
         $configuration = $this->configurationRepository->find();
 
-        Assert::null($configuration);
+        Assert::null($configuration->getToken());
     }
 
     /**

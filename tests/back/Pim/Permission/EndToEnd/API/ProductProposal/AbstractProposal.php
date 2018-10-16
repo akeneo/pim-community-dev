@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Pim\Permission\EndToEnd\API\ProductProposal;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\ProductProposal;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

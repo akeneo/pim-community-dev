@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Remover;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Remover;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

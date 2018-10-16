@@ -32,6 +32,7 @@
         "psr-4": {
             "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",
             "AkeneoTest\\": "vendor/akeneo/pim-community-dev/tests/back",
+            "AkeneoTestEnterprise\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",

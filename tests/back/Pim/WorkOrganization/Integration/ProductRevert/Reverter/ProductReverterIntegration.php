@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\ProductRevert\Reverter;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\ProductRevert\Reverter;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
