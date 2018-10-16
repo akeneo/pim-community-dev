@@ -1,0 +1,87 @@
+pim_reference_entity:
+  reference_entity:
+    button:
+      save: Tallenna
+      create: Luo
+    tab:
+      attribute: Attribuutit
+      properties: Ominaisuudet
+    properties:
+      identifier: Koodi
+      label: Nimike
+      image: Kuva
+    create:
+      header:
+        title: Luo
+      input:
+        label: Nimike
+      confirm: Tallenna
+  record:
+    button:
+      save: Tallenna
+      create: Luo uusi
+      delete: Poista
+    enrich:
+      code: Koodi
+      label: Nimike
+    create:
+      header:
+        title: Luo
+      input:
+        label: Nimike
+      confirm: Tallenna
+    grid:
+      column:
+        code: Koodi
+        image: Kuva
+        label: Nimike
+    tab:
+      enrich: Rikastuta
+  attribute:
+    default:
+      code: Koodi
+      label: Nimike
+      image: Kuva
+    type:
+      text: Teksti
+      image: Kuva
+    create:
+      header:
+        title: Luo
+      input:
+        label: Nimike
+        type: Attribuuttityyppi
+        value_per_locale: Kielikohtainen arvo
+        value_per_channel: Kanavakohtainen arvo
+      confirm: Tallenna
+    edit:
+      input:
+        label: Nimike
+        type: Attribuuttityyppi
+        value_per_locale: Kielikohtainen arvo
+        value_per_channel: Kanavakohtainen arvo
+        max_length: Maksimimerkkimäärä
+        textarea: Tekstialue
+        max_file_size: Suurin tiedostokoko (Mt)
+        allowed_extensions: Sallitut laajennukset
+        validation_rule: Kelpoisuussääntö
+        regular_expression: Tavallinen virke
+        options:
+          validation_rule:
+            none: Ei yhtään
+            email: Sähköposti
+            regular_expression: Tavallinen virke
+            url: URL-osoite
+    notification:
+      save:
+        success: Attribuutin päivittäminen onnistui.
+      create:
+        success: Attribuutin luominen onnistui.
+      delete:
+        success: Attribuutin poistaminen onnistui.
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Tyyppikohtaiset parametrit

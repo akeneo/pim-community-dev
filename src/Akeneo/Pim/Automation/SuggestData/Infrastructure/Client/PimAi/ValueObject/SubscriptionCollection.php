@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
 
 /**
- * Encapsulates a raw subscription list API response returned by PIM.ai
+ * Encapsulates a raw subscription list API response returned by PIM.ai.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -33,9 +33,9 @@ class SubscriptionCollection implements \Countable
     }
 
     /**
-     * @return iterable
+     * @return array
      */
-    public function getSubscriptions(): iterable
+    public function getSubscriptions(): array
     {
         return $this->collection;
     }
@@ -45,7 +45,7 @@ class SubscriptionCollection implements \Countable
      */
     public function getFirst(): ?Subscription
     {
-        if (! array_key_exists(0, $this->collection)) {
+        if (!array_key_exists(0, $this->collection)) {
             return null;
         }
 
@@ -62,6 +62,7 @@ class SubscriptionCollection implements \Countable
 
     /**
      * @param array $rawApiResponse
+     *
      * @return array
      */
     private function buildCollection(array $rawApiResponse): array
@@ -81,7 +82,9 @@ class SubscriptionCollection implements \Countable
      */
     private function validateResponseFormat(array $rawApiResponse): void
     {
-        if (! isset($rawApiResponse['_embedded']['subscription']) || ! is_array($rawApiResponse['_embedded']['subscription'])) {
+        if (!isset($rawApiResponse['_embedded']['subscription'])
+            || !is_array($rawApiResponse['_embedded']['subscription'])
+        ) {
             throw new \InvalidArgumentException('Missing "_embeded" and/or "subscription" keys in API response');
         }
     }

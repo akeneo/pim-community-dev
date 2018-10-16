@@ -1,17 +1,17 @@
 <tr>
-    <th class="AknGrid-headerCell"><%- headers.identifiersLabel %></th>
+    <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- headers.identifiersLabel %></th>
     <th class="AknGrid-headerCell"><%- headers.attributeLabel %></th>
-    <th class="AknGrid-headerCell"><%- headers.suggestDataLabel %></th>
+    <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- headers.suggestDataLabel %></th>
 </tr>
 <% for (pimAiAttributeCode in identifiers) { %>
-<tr class="AknGrid-bodyRow">
-    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
+<tr class="AknGrid-bodyRow <%- getRowClass(identifiersStatuses[pimAiAttributeCode]) %> ">
+    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight AknGrid-bodyCell--sixteen">
         <%- __(`akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.values.${pimAiAttributeCode}`) %>
     </td>
     <td class="AknGrid-bodyCell">
         <div class="AknFormContainer AknFormContainer--inline attribute-selector" data-identifier="<%- pimAiAttributeCode %>"></div>
     </td>
-    <td class="AknGrid-bodyCell">
+    <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
         <%- __(`akeneo_suggest_data.entity.identifier_mapping.fields.status.${identifiersStatuses[pimAiAttributeCode]}`) %>
     </td>
 </tr>

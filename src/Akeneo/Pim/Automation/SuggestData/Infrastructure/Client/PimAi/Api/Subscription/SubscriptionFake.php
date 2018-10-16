@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 /**
- * Fake implementation for PIM.ai subscription
+ * Fake implementation for PIM.ai subscription.
  */
 final class SubscriptionFake implements SubscriptionApiInterface
 {
@@ -71,7 +69,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function fetchProducts(): ApiResponse
+    public function fetchProducts(string $uri = null): SubscriptionsCollection
     {
         switch ($this->status) {
             case self::STATUS_EXPIRED_TOKEN:
@@ -83,15 +81,13 @@ final class SubscriptionFake implements SubscriptionApiInterface
 
         $filename = sprintf('fetch-%s.json', $this->lastFetchDate);
 
-        return new ApiResponse(
-            200,
-            new SubscriptionCollection(
-                json_decode(
-                    file_get_contents(
-                        sprintf(__DIR__ . '/../resources/%s', $filename)
-                    ),
-                    true
-                )
+        return new SubscriptionsCollection(
+            $this,
+            json_decode(
+                file_get_contents(
+                    sprintf(__DIR__ . '/../resources/%s', $filename)
+                ),
+                true
             )
         );
     }
@@ -114,7 +110,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
-     * Fakes an expired token
+     * Fakes an expired token.
      */
     public function expireToken(): void
     {
@@ -122,7 +118,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
-     * Fakes an empty credit
+     * Fakes an empty credit.
      */
     public function disableCredit(): void
     {
@@ -131,7 +127,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
 
     /**
      * Fakes a last fetch date
-     * Could be a date or "yesterday" or "today"
+     * Could be a date or "yesterday" or "today".
      *
      * @param string $lastFetchDate
      */

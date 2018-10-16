@@ -19,7 +19,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider
-    ) {
+    ): void {
         $this->beConstructedWith(
             $subscriptionRepository,
             $dataProviderFactory
@@ -27,14 +27,14 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
-    public function it_is_an_unsubscribe_product_handler()
+    public function it_is_an_unsubscribe_product_handler(): void
     {
         $this->shouldHaveType(UnsubscribeProductHandler::class);
     }
 
     public function it_throws_an_exception_if_the_product_is_not_subscribed(
         $subscriptionRepository
-    ) {
+    ): void {
         $productId = 42;
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
@@ -50,7 +50,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository,
         $dataProvider,
         ProductSubscription $subscription
-    ) {
+    ): void {
         $productId = 42;
         $subscriptionId = 'foo-bar';
 

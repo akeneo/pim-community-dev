@@ -23,7 +23,7 @@ Feature: Publish many products at once
       | sku       | family  | name-en_US | categories |
       | unionjack | jackets | UnionJack  | jackets    |
       | jackadi   | jackets | Jackadi    | jackets    |
-      | teafortwo | tees    | My tee     | tees       |
+      | teafortwo | tees    | MyTea      | tees       |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3636
   Scenario: Allow to mass publish two products that are associated in two ways (jackadi => unionjack, unionjack => jackadi), I should be able to publish them twice
@@ -49,7 +49,7 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     And I am on the published products grid
     Then the grid should contain 2 elements
-    And I should see product unionjack and jackadi
+    And I should see product UnionJack and Jackadi
     And I am on the products grid
     And I select rows unionjack and jackadi
     And I press the "Bulk actions" button
@@ -59,10 +59,10 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     And I am on the published products grid
     Then the grid should contain 2 elements
-    And I should see product unionjack and jackadi
+    And I should see product UnionJack and Jackadi
     When I am on the products grid
     Then the grid should contain 3 elements
-    And I should see product unionjack, jackadi and teafortwo
+    And I should see product UnionJack, Jackadi and MyTea
 
   @jira https://akeneo.atlassian.net/browse/PIM-3636
   Scenario: Allow to mass publish two products that are associated, I should be able to publish them twice
@@ -95,7 +95,7 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     And I am on the published products grid
     Then the grid should contain 2 elements
-    And I should see product unionjack and jackadi
+    And I should see product UnionJack and Jackadi
     And I am on the products grid
     And I select rows unionjack and jackadi
     And I press the "Bulk actions" button
@@ -105,7 +105,7 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     And I am on the published products grid
     Then the grid should contain 2 elements
-    And I should see product unionjack and jackadi
+    And I should see product UnionJack and Jackadi
 
   @jira https://akeneo.atlassian.net/browse/PIM-6024
   Scenario: Succesfully mass publish associated product
@@ -125,8 +125,8 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     And I am on the published products grid
     Then the grid should contain 2 elements
-    And I should see product unionjack and jackadi
-    When I select rows unionjack and jackadi
+    And I should see product UnionJack and Jackadi
+    When I select rows UnionJack and Jackadi
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_published_product_quick_export" quick export to finish
     Then exported file of "csv_published_product_quick_export" should contain:

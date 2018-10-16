@@ -4,6 +4,11 @@ Approve: Hyväksy
 Refuse: Hylkää
 Approve selected: Hyväksy valitut
 Refuse selected: Hylkää valitut
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Laajenna
+      collapse_text: Paina kokoon
 pimee_workflow:
   entity:
     published_product:
@@ -48,3 +53,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Ehdotus hyväksytty
     pimee_workflow_product_draft_notification_refuse: Ehdotus hylätty
     pimee_workflow_product_draft_notification_remove: Ehdotus poistettu
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Päivämäärä
+      author: Tekijä
+      product: Tuote
+      review: Tarkastus
+      empty: Ei ehdotuksia tarkastettavaksi

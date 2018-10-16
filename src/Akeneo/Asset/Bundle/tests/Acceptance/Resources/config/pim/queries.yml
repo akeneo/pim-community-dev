@@ -1,20 +1,20 @@
 services:
     pimee_volume_monitoring.persistence.query.count_assets:
-        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
         arguments:
             - 'count_assets'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pimee_volume_monitoring.persistence.query.count_asset_categories:
-        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
         arguments:
             - 'count_asset_categories'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pimee_volume_monitoring.persistence.query.count_asset_category_trees:
-        class: 'Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryCountQuery'
         arguments:
             - 'count_asset_category_trees'
         tags:

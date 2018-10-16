@@ -45,7 +45,7 @@ Feature: Publish many products at once
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
     And I am on the published products grid
-    And I should see product unionjack
-    Then the row "unionjack" should contain:
+    And I should see product UnionJack
+    Then the row "UnionJack" should contain:
       | column   | value |
       | complete | 20%   |

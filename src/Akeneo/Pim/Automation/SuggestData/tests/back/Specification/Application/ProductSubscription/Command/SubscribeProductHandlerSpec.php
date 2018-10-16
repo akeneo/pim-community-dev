@@ -9,11 +9,9 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInter
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -27,7 +25,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory
-    ) {
+    ): void {
         $this->beConstructedWith(
             $productRepository,
             $subscriptionRepository,
@@ -35,12 +33,12 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_a_subscribe_product_handler()
+    public function it_is_a_subscribe_product_handler(): void
     {
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_product_does_not_exist($productRepository)
+    public function it_throws_an_exception_if_the_product_does_not_exist($productRepository): void
     {
         $productId = 42;
         $productRepository->find($productId)->willReturn(null);
@@ -56,7 +54,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_the_product_has_no_family(
         $productRepository,
         ProductInterface $product
-    ) {
+    ): void {
         $productId = 42;
         $productRepository->find($productId)->willReturn($product);
         $product->getFamily()->willReturn(null);
@@ -72,7 +70,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository,
         ProductInterface $product,
         ProductSubscription $productSubscription
-    ) {
+    ): void {
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
@@ -92,7 +90,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider,
         ProductInterface $product
-    ) {
+    ): void {
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());

@@ -48,9 +48,9 @@ class UpdateIdentifiersMappingHandler
     private $dataProvider;
 
     /**
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param DataProviderFactory                   $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -83,9 +83,9 @@ class UpdateIdentifiersMappingHandler
     /**
      * @param array $identifiers
      *
-     * @return array
-     *
      * @throws InvalidMappingException If attribute does not exist
+     *
+     * @return array
      */
     private function replaceAttributeCodesByAttributes(array $identifiers): array
     {

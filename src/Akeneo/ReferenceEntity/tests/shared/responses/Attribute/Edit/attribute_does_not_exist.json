@@ -1,0 +1,97 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_edit_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer",
+      "attributeIdentifier": "unknown"
+    },
+    "body": {
+      "identifier": "unknown",
+      "reference_entity_identifier": "designer",
+      "code": "unknown_attribute_code",
+      "labels": {
+        "fr_FR": "Uknown"
+      },
+      "order": 0,
+      "is_required": false,
+      "value_per_channel": false,
+      "value_per_locale": false,
+      "type": "wrong_type",
+      "max_file_size": "500.2",
+      "allowed_extensions": [
+        "jpeg"
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "pim_reference_entity.attribute.validation.code.should_exist",
+        "parameters": [],
+        "plural": null,
+        "message": "The attribute was not found",
+        "root": {
+          "editCommands": [
+            {
+              "isRequired": false,
+              "identifier": "unknown"
+            },
+            {
+              "labels": {
+                "fr_FR": "Uknown"
+              },
+              "identifier": "unknown"
+            },
+            {
+              "maxFileSize": "500.2",
+              "identifier": "unknown"
+            },
+            {
+              "allowedExtensions": [
+                "jpeg"
+              ],
+              "identifier": "unknown"
+            }
+          ],
+          "identifier": "unknown"
+        },
+        "propertyPath": "code",
+        "invalidValue": {
+          "editCommands": [
+            {
+              "isRequired": false,
+              "identifier": "unknown"
+            },
+            {
+              "labels": {
+                "fr_FR": "Uknown"
+              },
+              "identifier": "unknown"
+            },
+            {
+              "maxFileSize": "500.2",
+              "identifier": "unknown"
+            },
+            {
+              "allowedExtensions": [
+                "jpeg"
+              ],
+              "identifier": "unknown"
+            }
+          ],
+          "identifier": "unknown"
+        },
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null
+        },
+        "cause": null,
+        "code": null
+      }
+    ]
+  }
+}

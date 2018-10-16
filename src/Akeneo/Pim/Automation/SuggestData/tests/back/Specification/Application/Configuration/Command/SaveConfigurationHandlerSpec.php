@@ -30,17 +30,20 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
     public function let(
         DataProviderFactory $dataProviderFactory,
         ConfigurationRepositoryInterface $repository
-    ) {
+    ): void {
         $this->beConstructedWith($dataProviderFactory, $repository);
     }
 
-    public function it_is_a_save_connector_configuration_command_handler()
+    public function it_is_a_save_connector_configuration_command_handler(): void
     {
         $this->shouldHaveType(SaveConfigurationHandler::class);
     }
 
-    public function it_updates_an_existing_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
-    {
+    public function it_updates_an_existing_configuration(
+        DataProviderInterface $dataProvider,
+        $dataProviderFactory,
+        $repository
+    ): void {
         $command = new SaveConfigurationCommand(['token' => 'bar']);
         $configuration = new Configuration(['token' => 'bar']);
 
@@ -53,8 +56,11 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_saves_a_new_connector_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
-    {
+    public function it_saves_a_new_connector_configuration(
+        DataProviderInterface $dataProvider,
+        $dataProviderFactory,
+        $repository
+    ): void {
         $command = new SaveConfigurationCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
@@ -66,8 +72,10 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_throws_an_exception_if_configuration_is_invalid(DataProviderInterface $dataProvider, $dataProviderFactory)
-    {
+    public function it_throws_an_exception_if_configuration_is_invalid(
+        DataProviderInterface $dataProvider,
+        $dataProviderFactory
+    ): void {
         $command = new SaveConfigurationCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);

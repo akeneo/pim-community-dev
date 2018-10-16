@@ -14,14 +14,15 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  */
 
 /**
- * Interface for the API Service to manage identifiers mapping
+ * Interface for the API Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 interface IdentifiersMappingApiInterface
 {
     /**
-     * Call the API to update the identifiers mapping
+     * Call the API to update the identifiers mapping.
+     *
      * @see Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer
      *
      * @param array $mapping

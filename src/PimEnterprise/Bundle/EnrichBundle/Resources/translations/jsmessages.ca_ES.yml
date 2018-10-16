@@ -153,6 +153,7 @@ pimee_enrich.mass_edit.product:
     publish:
       label: Publicar
       label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+      description: Els productes es publicaran
       warning: Els productes {{ itemsCount }} seleccionats seran publicats.
     unpublish:
       label: Despublicar
@@ -178,6 +179,7 @@ pimee_enrich.mass_edit.asset:
       description: S'afegiran les etiquetes als actius.
       label_count: "{1}Afegir etiquetes a <span class=\"AknFullPage-title--highlight\">1 recurs</span>|]1, Inf[Afegir etiquetes a<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos</span>"
       field: Etiquetes
+      empty_selection: Escull les etiquetes, si us plau
     add_to_category:
       label: Classificar els recursos en categories
       description: Els recursos es posicionaran a dins les següents categories, es perdrà la posició actual.
@@ -235,7 +237,11 @@ batch_jobs:
     execute_rules.label: Execució de les regles
   publish_product:
     perform.label: Publicar productes
-pim_catalog_volumne:
+pim_catalog_volume:
+  section:
+    assets:
+      title: Eixos dels recursos
+      hint: Pot seguir la relació del volum de recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categories de recursos

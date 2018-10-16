@@ -1,2 +1,2 @@
-<div class="AknButton AknButton--glued AknButton--apply" data-value="subscribe"><%- subscribeLabel %></div><!--
---><div class="AknButton AknButton--glued" data-value="unsubscribe"><%- unsubscribeLabel %></div>
+<div class="AknButton AknButton--glued <%- ('subscribe' === currentAction) ? 'AknButton--apply' : ''%>" data-value="subscribe"><%- subscribeLabel %></div><!--
+--><div class="AknButton AknButton--glued <%- ('unsubscribe' === currentAction) ? 'AknButton--apply' : ''%>" data-value="unsubscribe"><%- unsubscribeLabel %></div>

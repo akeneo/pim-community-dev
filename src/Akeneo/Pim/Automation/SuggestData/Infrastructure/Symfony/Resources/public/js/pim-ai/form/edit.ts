@@ -1,7 +1,7 @@
-import * as _ from 'underscore';
-import BaseView = require('pimenrich/js/view/base');
 import {EventsHash} from 'backbone';
-import {getConfiguration, isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
+import BaseView = require('pimenrich/js/view/base');
+import * as _ from 'underscore';
+import {ConnectionStatus, getConfiguration, getConnectionStatus} from '../fetcher/connection-fetcher';
 
 const __ = require('oro/translator');
 const ConnectionSaver = require('pimee/saver/pim-ai-connection');
@@ -9,7 +9,6 @@ const Messenger = require('oro/messenger');
 const template = require('pimee/template/pim-ai-connection/edit');
 
 interface EditConfig {
-  token_label_title: string;
   token_label_content: string;
   token_field_title: string;
   token_field_placeholder: string;
@@ -25,10 +24,9 @@ interface EditConfig {
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class EditView extends BaseView {
-  readonly template: any = _.template(template);
+  private readonly template: any = _.template(template);
 
-  readonly config: EditConfig = {
-    token_label_title: '',
+  private readonly config: EditConfig = {
     token_label_content: '',
     token_field_title: '',
     token_field_placeholder: '',
@@ -46,7 +44,7 @@ class EditView extends BaseView {
     super(options);
 
     this.config = {...this.config, ...options.config};
-  };
+  }
 
   /**
    * {@inheritdoc}
@@ -72,7 +70,7 @@ class EditView extends BaseView {
         this.setData(data);
         this.storedToken = data.token;
       }),
-      BaseView.prototype.configure.apply(this, arguments)
+      BaseView.prototype.configure.apply(this, arguments),
     );
   }
 
@@ -80,17 +78,17 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    isConnectionActivated().then((isConnectionActivated: any) => {
+    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
       const formData = this.getFormData();
 
-      this.isConnectionActivated = isConnectionActivated;
-      true === isConnectionActivated
+      this.isConnectionActivated = connectionStatus.is_active;
+      true === connectionStatus.is_active
         ? this.renderActivatedConnection(formData.token)
         : this.renderUnactivatedConnection(formData.token);
     });
 
     return this;
-  };
+  }
 
   /**
    * Activates the connection to PIM.ai
@@ -122,10 +120,12 @@ class EditView extends BaseView {
 
     const token: string = undefined === fieldValue ? '' : fieldValue.toString();
 
-    this.setData({token: token});
+    this.setData({token});
 
     if (true === this.isConnectionActivated) {
-      this.storedToken !== token ? this.buttonAllowedToActivateConnection() : this.buttonDisallowedToActivateConnection();
+      this.storedToken !== token
+        ? this.buttonAllowedToActivateConnection()
+        : this.buttonDisallowedToActivateConnection();
     }
   }
 
@@ -137,15 +137,14 @@ class EditView extends BaseView {
   private renderUnactivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelTitle: __(this.config.token_label_title),
         tokenLabelContent: __(this.config.token_label_content),
         tokenFieldTitle: __(this.config.token_field_title),
         tokenFieldPlaceholder: __(this.config.token_field_placeholder),
-        token: token,
+        token,
         activationLabel: __(this.config.token_save_pre_activation_title),
         buttonStyle: 'AknButton--slateGrey',
         connectionStatus: 'activate-connection',
-      })
+      }),
     );
   }
 
@@ -157,15 +156,14 @@ class EditView extends BaseView {
   private renderActivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelTitle: __(this.config.token_label_title),
         tokenLabelContent: __(this.config.token_label_content),
         tokenFieldTitle: __(this.config.token_field_title),
         tokenFieldPlaceholder: __(this.config.token_field_placeholder),
-        token: token,
+        token,
         activationLabel: __(this.config.token_save_post_activation_title),
         buttonStyle: 'AknButton--apply AknButton--disabled',
         connectionStatus: 'connection-activated',
-      })
+      }),
     );
   }
 

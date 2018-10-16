@@ -1,5 +1,9 @@
 # UPGRADE FROM 2.3 TO 3.0
 
+## Database charset migration
+
+MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+
 ## Migrate your custom code
 
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:

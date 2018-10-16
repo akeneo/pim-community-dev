@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Su
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Represents the whole PIM.ai API response, with the HTTP code and a list of subscriptions (can be an empty list)
+ * Represents the whole PIM.ai API response, with the HTTP code and a list of subscriptions (can be an empty list).
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -52,7 +52,7 @@ final class ApiResponse
      */
     public function isSuccess(): bool
     {
-        return $this->code() === Response::HTTP_OK;
+        return Response::HTTP_OK === $this->code();
     }
 
     /**

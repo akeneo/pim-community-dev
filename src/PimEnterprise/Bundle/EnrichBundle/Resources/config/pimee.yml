@@ -3,6 +3,9 @@ imports:
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
     - { resource: '@AkeneoAssetBundle/Resources/config/external_api/config.yml' }
 
+parameters:
+    pimee_mass_edit_asset_batch_size: 100
+
 assetic:
     bundles:
         - PimEnterpriseEnrichBundle

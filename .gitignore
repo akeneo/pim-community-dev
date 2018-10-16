@@ -35,6 +35,7 @@ behat.yml
 .phpspec/*.tpl
 composer.phar
 /node_modules
+phpcs.xml
 phpspec.yml
 npm-debug.log
 /docker/*

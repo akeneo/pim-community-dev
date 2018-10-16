@@ -26,7 +26,7 @@ use PHPUnit\Framework\Assert;
  */
 class ProductSubscriptionRepositoryIntegration extends TestCase
 {
-    public function test_it_saves_a_product_subscription()
+    public function test_it_saves_a_product_subscription(): void
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = 'a-random-string';
@@ -45,20 +45,20 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertCount(1, $retrievedSubscriptions);
         Assert::assertEquals(
             [
-                'product_id'      => $product->getId(),
+                'product_id' => $product->getId(),
                 'subscription_id' => $subscriptionId,
-                'raw_suggested_data'  => '{"foo": "bar"}',
+                'raw_suggested_data' => '{"foo": "bar"}',
             ],
             $retrievedSubscriptions[0]
         );
     }
 
-    public function test_that_it_gets_a_subscription_from_a_product_id()
+    public function test_that_it_gets_a_subscription_from_a_product_id(): void
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
         $suggestedData = [
-            'an_attribute'      => 'some data',
+            'an_attribute' => 'some data',
             'another_attribute' => 'some other data',
         ];
         $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
@@ -69,14 +69,14 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
     }
 
-    public function test_that_it_gets_null_for_a_non_subscribed_product_id()
+    public function test_that_it_gets_null_for_a_non_subscribed_product_id(): void
     {
         $result = $this->getRepository()->findOneByProductId(42);
 
         Assert::assertTrue(null === $result);
     }
 
-    public function test_it_saves_empty_suggested_data_as_null()
+    public function test_it_saves_empty_suggested_data_as_null(): void
     {
         $subscription1 = new ProductSubscription($this->createProduct('a_product'), 'subscription-1');
         $subscription1->setSuggestedData(new SuggestedData(null));
@@ -104,7 +104,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         }
     }
 
-    public function test_it_fetches_a_null_raw_suggested_data_as_empty_array()
+    public function test_it_fetches_a_null_raw_suggested_data_as_empty_array(): void
     {
         $product = $this->createProduct('a_product');
 
@@ -116,9 +116,9 @@ SQL;
         $statement = $entityManager->getConnection()->prepare($query);
         $statement->execute(
             [
-                'productId'      => $product->getId(),
+                'productId' => $product->getId(),
                 'subscriptionId' => uniqid(),
-                'suggestedData'  => null,
+                'suggestedData' => null,
             ]
         );
 
@@ -128,7 +128,7 @@ SQL;
         Assert::assertTrue($subscription->getSuggestedData()->isEmpty());
     }
 
-    public function test_it_finds_pending_product_subscriptions()
+    public function test_it_finds_pending_product_subscriptions(): void
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
@@ -149,7 +149,7 @@ SQL;
         Assert::assertSame($suggestedData, $pendingSubscriptions[0]->getSuggestedData()->getValues());
     }
 
-    public function test_it_deletes_a_subscription()
+    public function test_it_deletes_a_subscription(): void
     {
         $productId = $this->createProduct('a_product_to_delete')->getId();
         $subscriptionId = uniqid();
@@ -207,7 +207,7 @@ SQL;
             [
                 'productId' => $productId,
                 'subscriptionId' => $subscriptionId,
-                'suggestedData' => empty($suggestedData) ? null: json_encode($suggestedData),
+                'suggestedData' => empty($suggestedData) ? null : json_encode($suggestedData),
             ]
         );
     }

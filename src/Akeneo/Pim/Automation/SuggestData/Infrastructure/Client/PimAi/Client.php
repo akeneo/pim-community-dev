@@ -42,7 +42,7 @@ class Client
     }
 
     /**
-     * Send request to PIM.ai
+     * Send request to PIM.ai.
      *
      * @param string $method
      * @param string $uri
@@ -56,7 +56,10 @@ class Client
             'headers' => ['Authorization' => $this->getToken()],
         ];
 
-        return $this->httpClient->request($method, $uri, $options);
+        $response = $this->httpClient->request($method, $uri, $options);
+        $response->getBody()->rewind();
+
+        return $response;
     }
 
     /**

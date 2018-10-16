@@ -1,0 +1,31 @@
+default:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/../features'
+            contexts_services:
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.list_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.delete_all_records_context
+                - akeneo_referenceentity.tests.back.acceptance.context.create_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.exception_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
+                - akeneo_referenceentity.tests.back.acceptance.context.edit_record_context
+                - akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        FriendsOfBehat\ContextServiceExtension:
+           imports:
+               - 'Acceptance/Resources/config/behat/services.yml'
+        FriendsOfBehat\CrossContainerExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                env: test_fake
+    formatters:
+        pretty: true

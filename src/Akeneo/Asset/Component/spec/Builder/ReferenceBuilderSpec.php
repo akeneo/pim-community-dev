@@ -43,8 +43,8 @@ class ReferenceBuilderSpec extends ObjectBehavior
 
     function it_builds_missing_localized_references($en_US, $fr_FR, AssetInterface $asset)
     {
-        $asset->hasReference($en_US)->willReturn(true);
-        $asset->hasReference($fr_FR)->willReturn(false);
+        $asset->isEmpty($en_US)->willReturn(true);
+        $asset->isEmpty($fr_FR)->willReturn(false);
         $asset->addReference(Argument::any())->shouldBeCalledTimes(1);
 
         $all = $this->buildMissingLocalized($asset);

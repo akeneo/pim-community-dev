@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -35,19 +37,25 @@ class IdentifiersMappingContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var IdentifiersMappingApiFake */
+    private $identifiersMappingApiFake;
+
     /**
-     * @param ManageIdentifiersMapping              $manageIdentifiersMapping
+     * @param ManageIdentifiersMapping $manageIdentifiersMapping
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param IdentifiersMappingApiFake $identifiersMappingApiFake
      */
     public function __construct(
         ManageIdentifiersMapping $manageIdentifiersMapping,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingApiFake $identifiersMappingApiFake
     ) {
         $this->manageIdentifiersMapping = $manageIdentifiersMapping;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->identifiersMappingApiFake = $identifiersMappingApiFake;
     }
 
     /**
@@ -62,10 +70,12 @@ class IdentifiersMappingContext implements Context
      * @Given a predefined mapping as follows:
      *
      * @param TableNode $table
+     *
+     * @throws InvalidMappingException
      */
     public function aPredefinedMapping(TableNode $table): void
     {
-        $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
+        $mapped = $this->extractIdentifiersMappingFromTable($table);
         $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
 
         $tmp = array_fill_keys($identifiers, null);
@@ -85,7 +95,7 @@ class IdentifiersMappingContext implements Context
     {
         try {
             $this->manageIdentifiersMapping->updateIdentifierMapping(
-                $this->getTableNodeAsArrayWithoutHeaders($table)
+                $this->extractIdentifiersMappingFromTable($table)
             );
 
             return true;
@@ -131,24 +141,6 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @Then the identifiers mapping should be defined as follows:
-     *
-     * @param TableNode $table
-     */
-    public function theIdentifiersMappingIsDefined(TableNode $table): void
-    {
-        $databaseIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
-
-        $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
-
-        foreach ($identifiers as $pimAiCode => $attributeCode) {
-            $identifiers[$pimAiCode] = $this->attributeRepository->findOneByIdentifier($attributeCode);
-        }
-
-        Assert::assertEquals($identifiers, $databaseIdentifiers);
-    }
-
-    /**
      * @Then the identifiers mapping should not be defined
      */
     public function theIdentifiersMappingIsNotDefined(): void
@@ -171,18 +163,13 @@ class IdentifiersMappingContext implements Context
      */
     public function theRetrievedMappingIsTheFollowing(TableNode $table): void
     {
-        $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
+        $identifiers = $this->extractIdentifiersMappingFromTable($table);
 
         Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
-    }
-
-    /**
-     * @Then the identifiers mapping should be valid
-     */
-    public function theIdentifiersMappingShouldBeValid(): void
-    {
-        $identifiers = $this->identifiersMappingRepository->find();
-        Assert::assertFalse($identifiers->isEmpty());
+        Assert::assertEquals(
+            $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
+            $this->identifiersMappingApiFake->get()
+        );
     }
 
     private function assertMappingIsEmpty(): void
@@ -190,6 +177,7 @@ class IdentifiersMappingContext implements Context
         $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
         Assert::assertEquals([], $identifiers);
+        Assert::assertEquals([], $this->identifiersMappingApiFake->get());
     }
 
     /**
@@ -205,5 +193,101 @@ class IdentifiersMappingContext implements Context
         $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $extractedData);
+    }
+
+    /**
+     * Transforms from gherkin table:.
+     *
+     *                                | Not mandatory  | as much locales as you want ...
+     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | brand       | brand          | Brand | Marque |
+     * | mpn         | mpn            | MPN   | MPN    |
+     * | upc         | ean            | EAN   | EAN    |
+     * | asin        | asin           | ASIN  | ASIN   |
+     *
+     * to php array Franklin format:
+     *
+     * [
+     *     [
+     *         'from' => ['id' => 'brand'], (pim_ai_code)
+     *         'to' => [
+     *             'id' => 'brand', (attribute_code)
+     *             'label' => [
+     *                 'en_US' => 'Brand',
+     *                 'fr_FR' => 'Marque',
+     *                 etc.
+     *             ],
+     *         ]
+     *     ], etc.
+     * ]
+     *
+     * @param TableNode $tableNode
+     *
+     * @return array
+     */
+    private function extractIdentifiersMappingToFranklinFormatFromTable(TableNode $tableNode): array
+    {
+        $extractedData = $tableNode->getRows();
+        $indexes = array_shift($extractedData);
+        $locales = array_filter($indexes, function ($value) {
+            return 'pim_ai_code' !== $value && 'attribute_code' !== $value;
+        });
+
+        $mappings = [];
+        foreach ($extractedData as $data) {
+            $rawMapping = array_combine($indexes, $data);
+            $labels = [];
+            foreach ($locales as $locale) {
+                if ('' !== $rawMapping[$locale]) {
+                    $labels[$locale] = $rawMapping[$locale];
+                }
+            }
+
+            $mappings[] = [
+                'from' => ['id' => $rawMapping['pim_ai_code']],
+                'to' => [
+                    'id' => $rawMapping['attribute_code'],
+                    'label' => $labels,
+                ],
+            ];
+        }
+
+        return $mappings;
+    }
+
+    /**
+     * Transforms from gherkin table:.
+     *
+     *                                | Not mandatory and will not be part of extraction |
+     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | brand       | brand          | Brand | Marque |
+     * | mpn         | mpn            | MPN   | MPN    |
+     * | upc         | ean            | EAN   | EAN    |
+     * | asin        | asin           | ASIN  | ASIN   |
+     *
+     * to php array with simple identifier mapping:
+     *
+     * pim_ai_code => attribute_code
+     * [
+     *     'brand' => 'brand',
+     *     'mpn' => 'mpn',
+     *     'upc' => 'ean',
+     *     'asin' => 'asin',
+     * ]
+     *
+     * @param TableNode $tableNode
+     *
+     * @return array
+     */
+    private function extractIdentifiersMappingFromTable(TableNode $tableNode): array
+    {
+        $mapping = [];
+        foreach ($tableNode->getColumnsHash() as $column) {
+            $mapping[$column['pim_ai_code']] = $column['attribute_code'];
+        }
+
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+
+        return array_merge($identifiersMapping, $mapping);
     }
 }

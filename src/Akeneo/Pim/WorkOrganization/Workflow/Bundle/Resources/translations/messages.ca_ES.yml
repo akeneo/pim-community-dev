@@ -119,3 +119,16 @@ job_execution.summary:
   proposal_created: proposta creada
   proposal_skipped: proposta omesa (no hi ha diferències)
 published products: Productes publicats
+pim_analytics:
+  info_type:
+    nb_published_products: Número de productes publicats
+    nb_product_drafts: Nombre d'esborranys de productes
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propostes per revisar
+      date: Data
+      author: Autor/a
+      product: Producte
+      review: Revisar
+      empty: No hi ha cap esborrany de producte per revisar

@@ -1,8 +1,32 @@
 # 2.3.x
 
+# 2.3.10 (2018-10-01)
+
+## Bug fixes
+
+- PIM-7662: Fix migration script to index only the proposed product drafts
+
+## Improvements
+
+- PIM-7662: Add a command to index the product proposals into Elasticsearch
+
+# 2.3.9 (2018-09-25)
+
+## Bug fixes
+
+- PIM-7654: Fix the mass classify when there are more assets than the batch size
+- PIM-7651: Fix history generation of category accesses
+- PIM-7649: Change draft author when the username corresponding to the author is modified
+
+# 2.3.8 (2018-09-14)
+
+# 2.3.7 (2018-09-11)
+
 ## Bug fixes
 
 - PIM-7638: The edit profile button must not be shown if the user have no right to edit his own information
+- PIM-7617: Disable Manage Assets button if user has no permission to show the asset categories
+- PIM-7564: When a user have rights to edit but is not owner, the "save" label on the save button must be "save draft"
 
 # 2.3.6 (2018-09-06)
 

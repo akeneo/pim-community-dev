@@ -87,6 +87,7 @@ class ProductSubscriptionContext implements Context
      * @When I unsubscribe the product :identifier
      *
      * @param string $identifier
+     *
      * @throws ProductSubscriptionException
      */
     public function iUnsubscribeTheProduct(string $identifier): void
@@ -145,7 +146,7 @@ class ProductSubscriptionContext implements Context
     /**
      * @Given there are no more credits on my PIM.ai account
      */
-    public function thereAreNoMoreCreditsOnMyAccount()
+    public function thereAreNoMoreCreditsOnMyAccount(): void
     {
         $this->subscriptionApi->disableCredit();
     }
@@ -155,7 +156,7 @@ class ProductSubscriptionContext implements Context
      *
      * @param mixed $count (could be
      */
-    public function suggestedDataHaveBeenAdded(int $count)
+    public function suggestedDataHaveBeenAdded(int $count): void
     {
         $expectedNumber = (int) $count;
 

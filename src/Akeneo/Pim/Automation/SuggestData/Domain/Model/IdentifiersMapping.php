@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
- * Holds the identifiers mapping. Collection of IdentifierMapping entities
+ * Holds the identifiers mapping. Collection of IdentifierMapping entities.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -77,7 +77,7 @@ class IdentifiersMapping implements \IteratorAggregate
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIterator(): iterable
     {

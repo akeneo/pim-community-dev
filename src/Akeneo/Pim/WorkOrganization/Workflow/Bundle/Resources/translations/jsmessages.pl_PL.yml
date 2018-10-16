@@ -8,6 +8,11 @@ oro:
   datagrid:
     noentities:
       proposal: Brak propozycji do przeglądu.
+pimee_datagrid:
+  cell:
+    expand:
+      expandText: Rozwiń
+      collapseText: Zwiń
 pimee_workflow:
   entity:
     published_product:

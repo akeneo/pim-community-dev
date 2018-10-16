@@ -11,3 +11,8 @@ services:
             - '%akeneo_rule_engine.model.rule_relation.class%'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: attribute_is_smart }
+
+    pim_catalog_rule.datagrid.oro_to_pim_grid_filter:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\OroToPimGridFilterAdapter'
+        arguments:
+            - '@pim_datagrid.extension.mass_action.dispatcher'

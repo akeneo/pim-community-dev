@@ -32,5 +32,6 @@ class AkeneoPimProductRevertExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('reverters.yml');
         $loader->load('serializers.yml');
+        $loader->load('services.yml');
     }
 }

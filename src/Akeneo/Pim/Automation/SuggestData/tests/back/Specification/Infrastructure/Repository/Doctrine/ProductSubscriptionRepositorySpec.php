@@ -24,22 +24,22 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    public function let(EntityManagerInterface $em)
+    public function let(EntityManagerInterface $em): void
     {
         $this->beConstructedWith($em);
     }
 
-    public function it_is_a_product_subscription_repository()
+    public function it_is_a_product_subscription_repository(): void
     {
         $this->shouldBeAnInstanceOf(ProductSubscriptionRepository::class);
     }
 
-    public function it_implements_product_subscription_repository_interface()
+    public function it_implements_product_subscription_repository_interface(): void
     {
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
     }
 
-    public function it_deletes_subscription($em, ProductSubscription $subscription)
+    public function it_deletes_subscription($em, ProductSubscription $subscription): void
     {
         $em->remove($subscription)->shouldBeCalled();
         $em->flush()->shouldBeCalled();

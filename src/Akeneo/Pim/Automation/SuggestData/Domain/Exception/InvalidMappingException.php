@@ -24,6 +24,9 @@ final class InvalidMappingException extends \Exception
     private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
 
     /** @var string */
+    private const ATTRIBUTE_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.attributes_mapping.constraint.%s';
+
+    /** @var string */
     private $className;
 
     /** @var string */
@@ -33,15 +36,15 @@ final class InvalidMappingException extends \Exception
     private $messageParams;
 
     /**
-     * @param string          $className
-     * @param string          $message
-     * @param array           $messageParams
-     * @param string|null     $path
-     * @param int             $code
+     * @param string $className
+     * @param string $message
+     * @param array $messageParams
+     * @param string|null $path
+     * @param int $code
      * @param \Exception|null $previous
      */
     public function __construct(
-        string $className,
+        ?string $className,
         string $message = '',
         array $messageParams = [],
         string $path = null,
@@ -56,9 +59,9 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param int         $frequency
-     * @param string      $attributeCode
-     * @param string      $className
+     * @param int $frequency
+     * @param string $attributeCode
+     * @param string $className
      * @param string|null $path
      *
      * @return InvalidMappingException
@@ -79,9 +82,9 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param array       $expectedIdentifiers
-     * @param array       $givenIdentifiers
-     * @param string      $className
+     * @param array $expectedIdentifiers
+     * @param array $givenIdentifiers
+     * @param string $className
      * @param string|null $path
      *
      * @return InvalidMappingException
@@ -102,8 +105,8 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param string      $attributeCode
-     * @param string      $className
+     * @param string $attributeCode
+     * @param string $className
      * @param string|null $path
      *
      * @return static
@@ -145,6 +148,29 @@ final class InvalidMappingException extends \Exception
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'attribute_type');
 
         return new static($className, $message, [], $attributeCode);
+    }
+
+    /**
+     * @return InvalidMappingException
+     */
+    public static function expectedTargetKey()
+    {
+        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'missing_target_key');
+
+        return new self(null, $message, [], '', 400);
+    }
+
+    /**
+     * @param mixed $targetKey
+     * @param mixed $expectedKey
+     *
+     * @return InvalidMappingException
+     */
+    public static function expectedKey($targetKey, $expectedKey)
+    {
+        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'missing_attribute_key');
+
+        return new self(null, $message, ['expectedKey' => $expectedKey, 'targetKey' => $targetKey], '', 400);
     }
 
     /**

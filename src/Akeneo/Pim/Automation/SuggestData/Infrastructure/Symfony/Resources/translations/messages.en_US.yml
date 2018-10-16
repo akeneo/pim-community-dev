@@ -8,3 +8,8 @@ akeneo_suggest_data:
     mapping_identifier:
         success: The mapping has been successfully saved
         error: An error occurred while saving the mapping
+
+job_execution.summary:
+    configuration_validation: Franklin Insights configuration
+    subscribed: subscribed
+    unsubscribed: unsubscribed

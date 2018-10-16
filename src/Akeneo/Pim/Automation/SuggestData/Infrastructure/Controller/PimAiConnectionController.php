@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\Activate
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,24 +37,30 @@ class PimAiConnectionController
     /** @var GetSuggestDataConnectionStatus */
     private $getSuggestDataConnectionStatus;
 
+    /** @var ConnectionStatusNormalizer */
+    private $connectionStatusNormalizer;
+
     /** @var TranslatorInterface */
     private $translator;
 
     /**
-     * @param ActivateSuggestDataConnection  $activateSuggestDataConnection
-     * @param GetNormalizedConfiguration     $getNormalizedConfiguration
+     * @param ActivateSuggestDataConnection $activateSuggestDataConnection
+     * @param GetNormalizedConfiguration $getNormalizedConfiguration
      * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
-     * @param TranslatorInterface            $translator
+     * @param ConnectionStatusNormalizer $connectionStatusNormalizer
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         ActivateSuggestDataConnection $activateSuggestDataConnection,
         GetNormalizedConfiguration $getNormalizedConfiguration,
         GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus,
+        ConnectionStatusNormalizer $connectionStatusNormalizer,
         TranslatorInterface $translator
     ) {
         $this->activateSuggestDataConnection = $activateSuggestDataConnection;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->getSuggestDataConnectionStatus = $getSuggestDataConnectionStatus;
+        $this->connectionStatusNormalizer = $connectionStatusNormalizer;
         $this->translator = $translator;
     }
 
@@ -72,9 +79,9 @@ class PimAiConnectionController
      */
     public function isActiveAction(): Response
     {
-        $isActive = $this->getSuggestDataConnectionStatus->isActive();
+        $connectionStatus = $this->getSuggestDataConnectionStatus->getStatus();
 
-        return new JsonResponse($isActive);
+        return new JsonResponse($this->connectionStatusNormalizer->normalize($connectionStatus));
     }
 
     /**
@@ -90,16 +97,16 @@ class PimAiConnectionController
             $this->activateSuggestDataConnection->activate($configurationFields);
         } catch (InvalidConnectionConfigurationException $invalidConnection) {
             return new JsonResponse([
-                'message' => 'akeneo_suggest_data.pim_ai.module.activation.invalid',
+                'message' => 'akeneo_suggest_data.connection.flash.invalid',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
-                'message' => 'akeneo_suggest_data.pim_ai.module.activation.error',
+                'message' => 'akeneo_suggest_data.connection.flash.error',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
-            'message' => 'akeneo_suggest_data.pim_ai.module.activation.success',
+            'message' => 'akeneo_suggest_data.connection.flash.success',
         ]);
     }
 }

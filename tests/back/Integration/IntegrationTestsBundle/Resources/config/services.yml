@@ -33,11 +33,6 @@ services:
         arguments:
             - '@akeneo_integration_tests.configuration.catalog.base'
 
-    akeneo_ee_integration_tests.helper.database_helper:
-        class: 'Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Helper\DatabaseHelper'
-        arguments:
-            - '@database_connection'
-
     akeneo_ee_integration_tests.builder.attribute:
         class: 'Akeneo\Test\Common\EntityBuilder'
         shared: false

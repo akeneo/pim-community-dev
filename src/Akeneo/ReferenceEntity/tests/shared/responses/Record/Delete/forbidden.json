@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "DELETE",
+    "route": "akeneo_reference_entities_record_delete_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer",
+      "recordCode": "starck"
+    }
+  },
+  "response": {
+    "status": 403
+  }
+}

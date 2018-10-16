@@ -16,29 +16,27 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Reposit
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
-use Webmozart\Assert\Assert;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    public function it_is_a_product_subscription_repository()
+    public function it_is_a_product_subscription_repository(): void
     {
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
     }
 
-    public function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
+    public function it_is_the_in_memory_implementation_of_the_product_subscription_repository(): void
     {
         $this->shouldBeAnInstanceOf(InMemoryProductSubscriptionRepository::class);
     }
 
-    public function it_saves_a_product_subscription()
+    public function it_saves_a_product_subscription(): void
     {
         $product = new Product();
         $product->setId(42);
@@ -48,12 +46,12 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findOneByProductId(42)->shouldReturn($subscription);
     }
 
-    public function it_returns_null_if_you_asked_for_a_product_without_subscription()
+    public function it_returns_null_if_you_asked_for_a_product_without_subscription(): void
     {
         $this->findOneByProductId(42)->shouldReturn(null);
     }
 
-    public function it_finds_product_subscriptions_with_suggested_data()
+    public function it_finds_product_subscriptions_with_suggested_data(): void
     {
         $product = new Product();
         $product->setId(42);
@@ -72,7 +70,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     public function it_deletes_a_product_susbcription(
         ProductSubscription $subscription,
         ProductInterface $product
-    ) {
+    ): void {
         $product->getId()->willReturn(42);
         $subscription->getProduct()->willReturn($product);
 

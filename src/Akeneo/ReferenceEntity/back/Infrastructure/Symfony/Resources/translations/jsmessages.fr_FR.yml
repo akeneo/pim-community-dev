@@ -1,0 +1,111 @@
+pim_reference_entity:
+  reference_entity:
+    validation:
+      code:
+        pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
+    button:
+      save: Enregistrer
+      create: Créer
+    title: Entités
+    tab:
+      attribute: Attributs
+      properties: Propriétés
+    properties:
+      title: Propriétés de l'entité
+      identifier: Code
+      label: Libellé
+      image: Image
+    index:
+      grid:
+        count: "{{ count }} résultats"
+    create:
+      header:
+        title: Créer
+      subtitle: Entités
+      input:
+        label: Libellé
+      confirm: Enregistrer
+  record:
+    validation:
+      code:
+        pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
+    button:
+      save: Enregistrer
+      create: Créer
+      delete: Supprimer
+    enrich:
+      code: Code
+      label: Libellé
+    create:
+      header:
+        title: Créer
+      subtitle: Entités
+      input:
+        label: Libellé
+      confirm: Enregistrer
+    grid:
+      column:
+        code: Code
+        image: Image
+        label: Libellé
+    tab:
+      enrich: Enrichir
+  attribute:
+    default:
+      code: Code
+      label: Libellé
+      image: Image
+    type:
+      text: Texte
+      image: Image
+    button:
+      add: Ajouter un attribut
+    create:
+      header:
+        title: Créer
+      subtitle: Entités
+      title: Ajouter un nouvel attribut
+      input:
+        label: Libellé
+        type: Type d'attribut
+        value_per_locale: Valeur par locale
+        value_per_channel: Valeur par canal
+      confirm: Enregistrer
+    edit:
+      input:
+        label: Libellé
+        type: Type d'attribut
+        value_per_locale: Valeur par locale
+        value_per_channel: Valeur par canal
+        max_length: Nombre maximum de caractères
+        textarea: Zone de texte
+        max_file_size: Taille de fichier maximale (MB)
+        allowed_extensions: Extensions autorisées
+        validation_rule: Règle de validation
+        regular_expression: Expression régulière
+        options:
+          validation_rule:
+            none: Aucun
+            email: E-mail
+            regular_expression: Expression régulière
+            url: URL
+    delete:
+      confirm: L'attribut sera supprimé. Confirmer ?
+    notification:
+      save:
+        success: Attribut mis à jour avec succès.
+        fail: Une erreur s'est produite pendant la sauvegarde de l'attribut
+      create:
+        success: Attribut créé avec succès.
+        fail: Une erreur s'est produite pendant la création de l'attribut
+      delete:
+        success: Attribut supprimé avec succès.
+        fail: Une erreur s'est produite pendant la suppression de l'attribut
+pim_enrich:
+  confirmation:
+    discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Paramètres spécifiques

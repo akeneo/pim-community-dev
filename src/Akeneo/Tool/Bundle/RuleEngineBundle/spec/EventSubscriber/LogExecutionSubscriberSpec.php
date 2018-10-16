@@ -32,10 +32,12 @@ class LogExecutionSubscriberSpec extends ObjectBehavior
         $logger,
         SelectedRuleEvent $event,
         RuleDefinitionInterface $definition,
-        RuleSubjectSetInterface $subjectSet
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $subject
     ) {
         $event->getDefinition()->willReturn($definition);
         $event->getSubjectSet()->willReturn($subjectSet);
+        $subjectSet->getSubjectsCursor()->willReturn([$subject]);
         $logger->info(Argument::any())->shouldBeCalled();
 
         $this->preApply($event);

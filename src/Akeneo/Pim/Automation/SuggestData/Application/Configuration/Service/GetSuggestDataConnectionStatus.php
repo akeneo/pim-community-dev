@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**
@@ -42,17 +43,19 @@ class GetSuggestDataConnectionStatus
     }
 
     /**
-     * @return bool
+     * @return ConnectionStatus
      */
-    public function isActive(): bool
+    public function getStatus(): ConnectionStatus
     {
         $configuration = $this->configurationRepository->find();
         if (null === $configuration) {
-            return false;
+            return new ConnectionStatus(false);
         }
 
         $dataProvider = $this->dataProviderFactory->create();
 
-        return $dataProvider->authenticate($configuration->getToken());
+        $isActive = $dataProvider->authenticate($configuration->getToken());
+
+        return new ConnectionStatus($isActive);
     }
 }

@@ -225,7 +225,7 @@ batch_jobs:
     execute_rules.label: Esecuzione regole
   publish_product:
     perform.label: Pubblica i prodotti
-pim_catalog_volumne:
+pim_catalog_volume:
   section:
     assets:
       title: Assi su asset

@@ -34,7 +34,7 @@ class SuggestedDataNormalizer
     }
 
     /**
-     * Returns suggested values in standard format
+     * Returns suggested values in standard format.
      *
      * @param SuggestedData $suggestedData
      *
@@ -78,7 +78,7 @@ class SuggestedDataNormalizer
                 break;
             case AttributeTypes::BOOLEAN:
                 if (in_array($value, ['1', '0'])) {
-                    $data = (bool)$value;
+                    $data = (bool) $value;
                 } elseif ('' !== $value) {
                     $data = $value;
                 } else {

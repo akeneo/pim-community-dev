@@ -5,12 +5,12 @@ akeneo_suggest_data:
         status:
           active: Aktiv
           inactive: Inaktiv
-    family_mapping:
+    attributes_mapping:
       fields:
         suggest_data:
-          active: Aktiv
-          inactive: Inaktiv
-  pim_ai:
+          mapped: Aktiv
+          unmapped: Inaktiv
+  connection:
     module:
       activation:
         activated: 'Aktiviert'

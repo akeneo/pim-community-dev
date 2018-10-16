@@ -1,21 +1,32 @@
 <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
 <table class="AknGrid AknGrid--unclickable">
     <tr class="AknGrid-header">
-        <th class="AknGrid-headerCell"><%- pim_ai_attribute %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pim_ai_attribute %></th>
         <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
-        <th class="AknGrid-headerCell"><%- suggest_data %></th>
+        <th class="AknGrid-headerCell"></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- suggest_data %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
         <tr
-                class="AknGrid-bodyRow searchable-row"
+                class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
                 data-pim_ai_attribute="<%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>"
                 data-status="<%- mapping[pim_ai_attribute_code].status %>"
         >
             <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
                 <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
             </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute-code="<%- pim_ai_attribute_code %>"></td>
-            <td class="AknGrid-bodyCell">
+            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- pim_ai_attribute_code %>"></td>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
+                <div class="AknButtonList AknButtonList--right">
+                    <div
+                            class="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item option-mapping"
+                            data-franklin-attribute-code="<%- pim_ai_attribute_code %>"
+                            title="<%- edit %>"
+                            style="display: none;"
+                    ></div>
+                </div>
+            </td>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
                 <%- statuses[mapping[pim_ai_attribute_code].status] %>
             </td>
         </tr>

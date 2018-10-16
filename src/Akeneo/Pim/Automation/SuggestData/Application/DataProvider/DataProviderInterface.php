@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -12,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -37,16 +39,16 @@ interface DataProviderInterface
     public function authenticate(string $token): bool;
 
     /**
-     * @return ProductSubscriptionsResponse
+     * @throws ProductSubscriptionException
+     *
+     * @return \Iterator
      */
-    public function fetch(): ProductSubscriptionsResponse;
+    public function fetch(): \Iterator;
 
     /**
-     * Updates the identifiers mapping
+     * Updates the identifiers mapping.
      *
      * @param IdentifiersMapping $identifiersMapping
-     *
-     * @return void
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
 
@@ -54,4 +56,17 @@ interface DataProviderInterface
      * @param string $subscriptionId
      */
     public function unsubscribe(string $subscriptionId): void;
+
+    /**
+     * @param string $familyCode
+     *
+     * @return AttributesMappingResponse
+     */
+    public function getAttributesMapping(string $familyCode): AttributesMappingResponse;
+
+    /**
+     * @param string $familyCode
+     * @param array $attributesMapping
+     */
+    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void;
 }

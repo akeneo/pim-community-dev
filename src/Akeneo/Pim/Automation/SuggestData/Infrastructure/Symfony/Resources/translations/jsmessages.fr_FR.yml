@@ -1,72 +1,100 @@
 pim_title:
-  akeneo_suggest_data_connection_index: 'Connexion PIM.ai'
-  akeneo_suggest_data_identifiers_mapping_edit: 'Paramètres PIM.ai'
-  akeneo_suggest_data_attributes_mapping_index: 'Paramètres PIM.ai'
+  akeneo_suggest_data_identifiers_mapping_edit: 'Paramètres de Franklin Insights'
+  akeneo_suggest_data_attributes_mapping_edit: 'Paramètres de Franklin Insights'
 pim_menu:
   item:
-    pim_ai: PIM.ai
+    pim_ai: Franklin Insights
 akeneo_suggest_data:
   entity:
     identifier_mapping:
       plural_label: Identifiants
       flash:
         update:
+          first: 'Merci d''avoir enregistré votre mapping ! Vous pouvez maintenant activer des produits pour un enrichissement automatique avec Franklin Insights.'
           success: 'Le mapping des identifiants a été correctement sauvegardé.'
           fail: 'Le mapping des identifiants n''a pas pu être sauvegardé.'
       fields:
         identifier_label:
-          label: Label de l'identifiant
+          label: Identifiant Franklin
           values:
             brand: Marque
             asin: ASIN
             mpn: MPN
             upc: UPC
         catalog_attribute: Attribut du catalogue
-        suggest_data: Suggestion de données
+        suggest_data: Statut de l'identifiant Franklin
         status:
           active: Actif
           inactive: Inactif
-    family_mapping:
-      label: Mapping des familles
+      constraint:
+        duplicate_attribute_code: "Un attribut ne peut pas être utilisé plus d’une fois. L'attribut \"{{ attributeCode }}\" a été utilisé {{ frequency }} fois."
+        missing_or_invalid_identifiers: "Certains mappings d'identifiants sont manquants ou invalides. Attendus: \"{{ expected }}\", trouvé \"{{ given }}\"."
+        attribute_not_found: "L'attribut avec le code \"{{ attributeCode }}\" pour le mapping d'identifiants n'existe pas."
+        mandatory_attribute_mapping: "Cet attribut doit être renseigné"
+        attribute_type: "Ce type d'attribut ne peux pas être utilisé pour un identifiant"
+    attributes_mapping:
+      label: Mapping des attributs
       fields:
-        pim_ai_attribute: 'Attribut PIM.ai'
+        pim_ai_attribute: 'Attribut Franklin'
         suggest_data:
+          label: Statut de l'attribut Franklin
           pending: En attente
-          active: Actif
-          inactive: Inactif
+          mapped: Actif
+          unmapped: Inactif
       module:
         subscribe:
           subscribe: 'Abonner la famille à PIM.ai'
           subscribed: 'Abonnée à PIM.ai'
+      constraint:
+        missing_target_key: 'Clé cible manquante pour le mapping'
+        missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{targetKey }}"'
+    product_subscription:
+      flash:
+        create:
+          success: 'Produit souscrit avec succès à Franklin'
+          fail: 'Impossible de souscrire le produit à Franklin'
+        delete:
+          success: 'Produit abonné avec succès à Franklin'
+          fail: 'Impossible d''abonner le produit à Franklin'
   product:
     edit:
       btn.push: Suggestion de données
-      flash:
-        success: Demande de suggestion de données validée avec succès
-        error: Une erreur est survenue lors de la suggestion de données
-  pim_ai:
-    page_title: 'Connexion PIM.ai'
+      subscription_status_title: 'Abonnement à Franklin'
+  connection:
+    page_title: 'Connexion à Franklin Insights'
+    flash:
+      success: Le code d’activation à Franklin Insights a été enregistré avec succès.
+      invalid: Désolé, code d'activation invalide. Veuillez réessayer avec un code valide.
+      error: Désolé, une erreur est survenue.
     module:
       title:
-        sub_title: 'Bienvenue dans <span class="AknSubTitleContainer-subTitle--main">l''assistant IA des informations produit</span> !'
+        sub_title: 'Bienvenue dans <span class="AknDescriptionHeader-title--highlight">l''assistant IA des informations produit</span> !'
         description:
           first_step: 'La première étape de la connexion consiste à configurer le token de l''API.'
-          second_step: 'L''étape suivante dans le processus de connexion est de paramètrer le maping des <a href="#">identifiants de votre catalogue</a> avec les identifiants de l''assitant.'
+          second_step: 'L''étape suivante dans le processus de connexion est de paramètrer le maping des <a class="AknDescriptionHeader-link" href="#">identifiants de votre catalogue</a> avec les identifiants de l''assistant.'
       activation:
-        label: 'Connecteur PIM.ai'
+        label: 'Connecteur Franklin'
         activation_code: 'Code d''activation'
         paste_activation_code: 'Coller le code d''activation'
         activated: 'Activé'
         activate: 'Activater'
-        invalid: Désolé, code d'activation invalide. Veuillez réessayer avec un code valide.
   settings:
-    page_title: 'Paramètres PIM.ai'
+    page_title: 'Paramètres de Franklin Insights'
     module:
       title:
-        sub_title: 'Bienvenue dans la configuration de l''assistant IA des informations produits'
+        sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
         description:
-          first_step: 'Veuillez sélecitonner les attributs dans votre catalogue qui correspondent aux identifiants produits de l''assistant.'
-          second_step: 'Une fois que les mappings sont sauvegardés, l''assistant pourra collecter et suggérer des informations produit dans votre catalogue.'
+          first_step: 'Afin de vous aider à enrichir votre catalogue, Franklin a besoin de connaître les identifiants de votre catalogue à matcher.'
+          second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
         title: Désolé, rien à afficher pour le moment
         sub_title: Veuillez activer votre compte dans Système > Connexion PIM.ai puis revenez sur cette page.
+  mass_edit:
+    product:
+      operation:
+        suggest_data:
+          label: 'Abonnements à Franklin Insights'
+          label_count: "{1}Modifier l'abonnement d'<span class=\"AknFullPage-title--highlight\">1 produit</span> à Franklin Insights|]1, Inf[Modifier les abonnements de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à Franklin Insights"
+          description: Veuillez sélectionner l’action à appliquer sur les produits sélectionnés sur la grille
+          subscribe_label: S'abonner
+          unsubscribe_label: Se désabonner

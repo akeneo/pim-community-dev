@@ -56,7 +56,7 @@ services:
             - '%tmp_storage_dir%'
 
     pimee_product_asset.controller.category_tree:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
+        class: 'PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pimee_product_asset.context.user'
@@ -72,7 +72,7 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pimee_product_asset.controller.category_tree_asset_picker:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
+        class: 'PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pimee_product_asset.context.user'

@@ -24,7 +24,7 @@ class SaveConfigurationCommand
     private $values;
 
     /**
-     * @param array  $configurationValues
+     * @param array $configurationValues
      *
      * @throws \InvalidArgumentException
      */
@@ -44,9 +44,10 @@ class SaveConfigurationCommand
     /**
      * Validates and adds configuration values.
      *
-     * @throws \InvalidArgumentException
      *
      * @param array $configurationValues
+     *
+     * @throws \InvalidArgumentException
      */
     private function addValues(array $configurationValues): void
     {
