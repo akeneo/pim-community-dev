@@ -36,7 +36,8 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             'Product Weight',
             null,
             AttributeMapping::ATTRIBUTE_PENDING,
-            'metric'
+            'metric',
+            ['23kg', '12kg']
         ));
 
         $expectedMapping = [
@@ -44,6 +45,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'pimAiAttribute' => [
                     'label' => 'Product Weight',
                     'type' => 'metric',
+                    'summary' => ['23kg', '12kg'],
                 ],
                 'attribute' => null,
                 'status' => AttributeMapping::ATTRIBUTE_PENDING,
