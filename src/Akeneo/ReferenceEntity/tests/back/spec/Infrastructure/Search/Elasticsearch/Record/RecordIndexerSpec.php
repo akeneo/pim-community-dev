@@ -36,7 +36,7 @@ class RecordIndexerSpec extends ObjectBehavior
     function it_does_not_index_if_the_list_is_empty(Client $recordEsCLient)
     {
         $recordEsCLient->bulkIndexes(Argument::cetera())->shouldNotBeCalled();
-        $this->bulkIndex([]);
+        $this->index([]);
     }
 
     function it_indexes_multiple_records(Client $recordEsCLient, RecordNormalizerInterface $recordNormalizer)
@@ -70,7 +70,7 @@ class RecordIndexerSpec extends ObjectBehavior
             Argument::type(Refresh::class)
         )->shouldBeCalled();
 
-        $this->bulkIndex([$stark, $coco]);
+        $this->index([$stark, $coco]);
     }
 
     function it_removes_one_record(Client $recordEsCLient)

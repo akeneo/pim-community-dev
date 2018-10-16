@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record\Query;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -23,7 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindValueKeysToIndexForChannelAndLocale;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -40,7 +40,7 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
     {
         parent::setUp();
 
-        $this->findValuesToIndexForChannelAndLocale = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_values_to_index_for_channel_and_locale');
+        $this->findValuesToIndexForChannelAndLocale = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale');
         $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 

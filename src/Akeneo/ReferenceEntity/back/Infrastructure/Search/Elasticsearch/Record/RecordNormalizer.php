@@ -6,11 +6,14 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindValueKeysToIndexForChannelAndLocaleInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SearchableRecordItem;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale;
 
 /**
  * Generates a representation of a record for the search engine.
@@ -24,7 +27,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const CODE = 'code';
     private const REFERENCE_ENTITY_CODE = 'reference_entity_code';
     private const RECORD_LIST_SEARCH = 'record_list_search';
-    const UPDATED_AT = 'updated_at';
+    private const UPDATED_AT = 'updated_at';
 
     /** @var SqlFindActivatedLocalesPerChannels */
     private $findActivatedLocalesPerChannels;
@@ -32,21 +35,16 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var SqlFindValueKeysToIndexForChannelAndLocale */
     private $findValueKeysToIndexForChannelAndLocale;
 
-    /** @var SqlGetReferenceEntityIdentifierForRecordIdentifier */
-    private $getReferenceEntityIdentifierForRecordIdentifier;
-
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
     public function __construct(
-        SqlGetReferenceEntityIdentifierForRecordIdentifier $getReferenceEntityIdentifierForRecordIdentifier,
         SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
-        SqlFindSearchableRecords $findSearchableRecords,
-        FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale
+        FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
+        SqlFindSearchableRecords $findSearchableRecords
     ) {
-        $this->findValueKeysToIndexForChannelAndLocale = $findValueKeysToIndexForChannelAndLocale;
         $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
-        $this->getReferenceEntityIdentifierForRecordIdentifier = $getReferenceEntityIdentifierForRecordIdentifier;
+        $this->findValueKeysToIndexForChannelAndLocale = $findValueKeysToIndexForChannelAndLocale;
         $this->findSearchableRecords = $findSearchableRecords;
     }
 
@@ -56,9 +54,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         if (null === $searchableRecordItem) {
             throw RecordNotFoundException::withIdentifier($recordIdentifier);
         }
-        $referenceEntityIdentifier = ($this->getReferenceEntityIdentifierForRecordIdentifier)($recordIdentifier);
-
-        $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
+        $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($searchableRecordItem->referenceEntityIdentifier);
         $filledMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
 
         return [

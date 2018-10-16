@@ -123,7 +123,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $recordRepository->create($record);
 
-        $findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query');
+        $findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query');
 
         $findIdentifiersForQuery->add('brand_coco_0134dc3e-3ref-4afr-85ef-e81b2d6e95fd');
         $findIdentifiersForQuery->add('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');

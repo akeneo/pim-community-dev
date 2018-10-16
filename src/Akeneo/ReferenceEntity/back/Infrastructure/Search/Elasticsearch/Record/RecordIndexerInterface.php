@@ -10,9 +10,9 @@ interface RecordIndexerInterface
     /**
      * Indexes multiple records
      *
-     * @param RecordIdentifier[] $recordIdentifiers
+     * @param RecordIdentifier $recordIdentifier
      */
-    public function bulkIndex(array $recordIdentifiers);
+    public function index(RecordIdentifier $recordIdentifier);
 
     /**
      * Remove all records belonging to a reference entity

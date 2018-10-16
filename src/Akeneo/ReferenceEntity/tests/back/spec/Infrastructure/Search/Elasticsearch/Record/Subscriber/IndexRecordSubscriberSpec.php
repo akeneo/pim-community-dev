@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\IndexRecordSubscriber;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -25,7 +24,7 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(IndexRecordSubscriber::class);
+        $this->shouldHaveType(\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber::class);
     }
 
     function it_subscribes_to_events()
@@ -40,7 +39,7 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
     ) {
         $identifier = RecordIdentifier::create('designer', 'stark', 'fingerprint');
         $recordRepository->getByIdentifier($identifier)->willReturn($record);
-        $recordIndexer->bulkIndex([$record])->shouldBeCalled();
+        $recordIndexer->index([$record])->shouldBeCalled();
 
         $this->whenRecordUpdated(new RecordUpdatedEvent($identifier));
     }

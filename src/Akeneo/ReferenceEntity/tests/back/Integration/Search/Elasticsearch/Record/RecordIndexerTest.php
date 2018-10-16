@@ -48,7 +48,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
             Image::createEmpty(),
             ValueCollection::fromValues([])
         );
-        $this->recordIndexer->bulkIndex([$record]);
+        $this->recordIndexer->index([$record]);
 
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'dyson');
         Assert::assertCount(3, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
@@ -75,7 +75,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
             Image::createEmpty(),
             ValueCollection::fromValues([])
         );
-        $this->recordIndexer->bulkIndex([$recordDyson, $recordArad]);
+        $this->recordIndexer->index([$recordDyson, $recordArad]);
 
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'dyson');
         $this->searchRecordIndexHelper->assertRecordExists('designer', 'arad');
@@ -87,7 +87,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
      */
     public function it_does_nothing_when_indexing_empty_array()
     {
-        $this->recordIndexer->bulkIndex([]);
+        $this->recordIndexer->index([]);
 
         Assert::assertCount(2, $this->searchRecordIndexHelper->findRecordsByReferenceEntity('designer'));
     }

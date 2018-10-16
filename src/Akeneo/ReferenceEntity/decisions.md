@@ -398,7 +398,7 @@ The search becomes:
         ]
     ]
 
-Whenever the "description" attribute is removed, we do not need to reindex the document as there  will be no way that a user will filter on it since it does not belong in the system anymore (even if this attribute is recreated with the same code thanks to the uuid).
+Whenever the "description" attribute is removed, we do not need to reindex the document as there  will be no way that a user will filter on it since it does not belong to the reference entity's structure anymore (even if this attribute is recreated with the same code thanks to the uuid).
 
 The next time this record is saved, the description value keys will be removed and the ES document will be clean.
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record\Query;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -16,7 +16,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindSearchableRecords;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -33,7 +33,7 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findSearchableRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_searchable_records');
+        $this->findSearchableRecords = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records');
         $this->loadReferenceEntityAndAttributes();
     }
 

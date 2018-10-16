@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -15,17 +15,13 @@ class SearchableRecordItem
 
     /** @var string */
     public $referenceEntityIdentifier;
-
+    
     /** @var string */
     public $code;
 
     /** @var array */
     public $labels;
-
+    
     /** @var array */
     public $values;
-
-    public function __construct()
-    {
-    }
 }

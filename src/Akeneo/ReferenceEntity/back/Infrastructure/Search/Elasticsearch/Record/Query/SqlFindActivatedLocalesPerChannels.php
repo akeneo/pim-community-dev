@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
 use Doctrine\DBAL\Connection;
 

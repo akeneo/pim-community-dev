@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -94,7 +94,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         return $query;
     }
 
-    private function getTerms($searchFilter): string
+    private function getTerms(array $searchFilter): string
     {
         $loweredTerms = strtolower($searchFilter['value']);
         $terms = explode(' ', $loweredTerms);

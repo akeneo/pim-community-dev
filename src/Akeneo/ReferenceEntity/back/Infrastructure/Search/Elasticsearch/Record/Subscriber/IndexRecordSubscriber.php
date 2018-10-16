@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
 
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -39,6 +40,6 @@ class IndexRecordSubscriber implements EventSubscriberInterface
 
     public function whenRecordUpdated(RecordUpdatedEvent $recordUpdatedEvent): void
     {
-        $this->recordIndexer->bulkIndex([$recordUpdatedEvent->getRecordIdentifier()]);
+        $this->recordIndexer->index($recordUpdatedEvent->getRecordIdentifier());
     }
 }

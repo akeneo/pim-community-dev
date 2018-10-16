@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -90,7 +90,7 @@ SQL;
 
     private function cleanValues(string $values): array
     {
-        $cleanValues = strip_tags(html_entity_decode(str_replace(["\r", "\n"], " ", $values)));
+        $cleanValues = strip_tags(html_entity_decode(str_replace(["\r", "\n"], ' ', $values)));
 
         return json_decode($cleanValues, true);
     }

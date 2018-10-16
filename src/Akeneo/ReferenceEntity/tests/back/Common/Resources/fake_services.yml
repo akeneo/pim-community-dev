@@ -71,7 +71,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query:
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersForQuery
 
     # Third party services

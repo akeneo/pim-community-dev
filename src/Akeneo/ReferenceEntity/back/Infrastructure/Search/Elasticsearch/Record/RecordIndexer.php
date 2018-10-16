@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -25,27 +24,25 @@ class RecordIndexer implements RecordIndexerInterface
     /** @var RecordNormalizerInterface */
     private $normalizer;
 
+    /** @var int */
+    private $batchSize;
+
     public function __construct(
         Client $recordClient,
-        RecordNormalizerInterface $normalizer
+        RecordNormalizerInterface $normalizer,
+        int $batchSize
     ) {
         $this->recordClient = $recordClient;
         $this->normalizer = $normalizer;
+        $this->batchSize = $batchSize;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function bulkindex(array $recordIdentifiers): void
+    public function index(RecordIdentifier $recordIdentifier): void
     {
-        if (empty($recordIdentifiers)) {
-            return;
-        }
-
-        $normalizedrecords = array_map(function (RecordIdentifier $recordIdentifier) {
-            return $this->normalizer->normalizeRecord($recordIdentifier);
-        }, $recordIdentifiers);
-
+        $normalizedrecords = $this->normalizer->normalizeRecord($recordIdentifier);
         $this->recordClient->bulkindexes(self::INDEX_TYPE, $normalizedrecords, self::KEY_AS_ID, refresh::disable());
     }
 
@@ -56,7 +53,7 @@ class RecordIndexer implements RecordIndexerInterface
         foreach ($normalizedSearchableRecords as $normalizedSearchableRecord) {
             $toIndex[] = $normalizedSearchableRecord;
 
-            if (\count($toIndex) % 100 === 0) {
+            if (\count($toIndex) % $this->batchSize === 0) {
                 $this->recordClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
                 $toIndex = [];
             }
