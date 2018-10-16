@@ -25,7 +25,7 @@ interface ConfigurationRepositoryInterface
      *
      * @return Configuration
      */
-    public function find(): ?Configuration;
+    public function find(): Configuration;
 
     /**
      * Saves a configuration.

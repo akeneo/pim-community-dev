@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -22,13 +24,13 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetSuggestDataConnectionStatus
+class GetConnectionStatusHandler
 {
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var DataProviderInterface */
+    private $dataProvider;
 
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
@@ -39,22 +41,20 @@ class GetSuggestDataConnectionStatus
         DataProviderFactory $dataProviderFactory
     ) {
         $this->configurationRepository = $configurationRepository;
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->dataProvider = $dataProviderFactory->create();
     }
 
     /**
      * @return ConnectionStatus
      */
-    public function getStatus(): ConnectionStatus
+    public function handle(GetConnectionStatusQuery $query): ConnectionStatus
     {
         $configuration = $this->configurationRepository->find();
-        if (null === $configuration) {
+        if (!$configuration->getToken() instanceof Token) {
             return new ConnectionStatus(false);
         }
 
-        $dataProvider = $this->dataProviderFactory->create();
-
-        $isActive = $dataProvider->authenticate($configuration->getToken());
+        $isActive = $this->dataProvider->authenticate($configuration->getToken());
 
         return new ConnectionStatus($isActive);
     }

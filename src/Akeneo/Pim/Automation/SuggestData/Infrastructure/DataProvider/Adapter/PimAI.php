@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
@@ -124,13 +125,13 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * @param string $token
+     * @param Token $token
      *
      * @return bool
      */
-    public function authenticate(string $token): bool
+    public function authenticate(Token $token): bool
     {
-        return $this->authenticationApi->authenticate($token);
+        return $this->authenticationApi->authenticate((string) $token);
     }
 
     /**

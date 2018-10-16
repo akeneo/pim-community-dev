@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -27,50 +27,40 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfigurationHandler
+class ActivateConnectionHandler
 {
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var ConnectionValidator */
+    private $connectionValidator;
 
     /** @var ConfigurationRepositoryInterface */
     private $repository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param ConnectionValidator $connectionValidator
      * @param ConfigurationRepositoryInterface $repository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        ConnectionValidator $connectionValidator,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->connectionValidator = $connectionValidator;
         $this->repository = $repository;
     }
 
     /**
-     * @param SaveConfigurationCommand $saveConfiguration
+     * @param ActivateConnectionCommand $saveConfiguration
      *
-     * @throws InvalidConnectionConfigurationException
+     * @throws ConnectionConfigurationException
      */
-    public function handle(SaveConfigurationCommand $saveConfiguration): void
+    public function handle(ActivateConnectionCommand $command): void
     {
-        $dataProvider = $this->dataProviderFactory->create();
-        $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
+        $isAuthenticated = $this->connectionValidator->isTokenValid($command->token());
         if (true !== $isAuthenticated) {
-            throw new InvalidConnectionConfigurationException(
-                sprintf('Provided configuration is invalid.')
-            );
+            throw ConnectionConfigurationException::invalidToken();
         }
 
         $configuration = $this->repository->find();
-
-        if (null === $configuration) {
-            $configuration = new Configuration(
-                $saveConfiguration->getValues()
-            );
-        } else {
-            $configuration->setValues($saveConfiguration->getValues());
-        }
+        $configuration->setToken($command->token());
 
         $this->repository->save($configuration);
     }

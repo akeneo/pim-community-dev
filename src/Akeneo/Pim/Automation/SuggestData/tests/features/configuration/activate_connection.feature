@@ -14,6 +14,7 @@ Feature: PIM.ai configuration
     Given PIM.ai has not been configured
     When a system administrator configures PIM.ai using an invalid token
     Then PIM.ai is not activated
+    And a token invalid message is sent
 
   Scenario: The system administrator configures a new token to replace an expired one
     Given PIM.ai is configured with an expired token
@@ -24,13 +25,4 @@ Feature: PIM.ai configuration
     Given PIM.ai is configured with an expired token
     When a system administrator configures PIM.ai using an invalid token
     Then PIM.ai is not activated
-
-  Scenario: The system administrator can retrieve his token
-    Given PIM.ai is configured with a valid token
-    When a system administrator retrieves the PIM.ai configuration
-    Then PIM.ai valid token is retrieved
-
-  Scenario: The system administrator can retrieve his expired token
-    Given PIM.ai is configured with an expired token
-    When a system administrator retrieves the PIM.ai configuration
-    Then PIM.ai expired token is retrieved
+    And a token invalid message is sent

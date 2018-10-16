@@ -11,33 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 
 /**
- * Holds the configuration with the token.
+ * This command is a DTO holding and validating the raw values of a suggest data configuration.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class Configuration
+class ActivateConnectionCommand
 {
-    /** @var string */
+    /** @var Token */
     private $token;
-
-    /**
-     * @return Token|null
-     */
-    public function getToken(): ?Token
-    {
-        return (null === $this->token) ? null : new Token($this->token);
-    }
 
     /**
      * @param Token $token
      */
-    public function setToken(Token $token): void
+    public function __construct(Token $token)
     {
-        $this->token = (string) $token;
+        $this->token = $token;
+    }
+
+    /**
+     * @return Token
+     */
+    public function token()
+    {
+        return $this->token;
     }
 }

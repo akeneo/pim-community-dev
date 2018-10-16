@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Handler;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetNormalizedConfigurationSpec extends ObjectBehavior
+class GetConfigurationHandlerSpec extends ObjectBehavior
 {
     public function let(ConfigurationRepositoryInterface $repository): void
     {

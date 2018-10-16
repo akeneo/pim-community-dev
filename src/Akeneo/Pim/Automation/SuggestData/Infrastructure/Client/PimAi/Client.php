@@ -74,6 +74,6 @@ class Client
             }
         }
 
-        return $this->token;
+        return (string) $this->token;
     }
 }
