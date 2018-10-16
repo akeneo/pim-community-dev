@@ -24,8 +24,8 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
 {
     private const ATTRIBUTE_TYPE = 'simple_select_record';
 
-    /** @var AttributeReferenceEntityIdentifier */
-    private $referenceEntityIdentifierRecordType;
+    /** @var ReferenceEntityIdentifier */
+    private $recordType;
 
     protected function __construct(
         AttributeIdentifier $identifier,
@@ -36,7 +36,7 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeReferenceEntityIdentifier $referenceEntityIdentifierRecordType
+        ReferenceEntityIdentifier $recordType
     ) {
         parent::__construct(
             $identifier,
@@ -49,7 +49,7 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
             $valuePerLocale
         );
 
-        $this->referenceEntityIdentifierRecordType = $referenceEntityIdentifierRecordType;
+        $this->recordType = $recordType;
     }
 
     public static function create(
@@ -61,7 +61,7 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
         AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeReferenceEntityIdentifier $referenceEntityIdentifierRecordType
+        ReferenceEntityIdentifier $recordType
     ): self {
         return new self(
             $identifier,
@@ -72,7 +72,7 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
             $isRequired,
             $valuePerChannel,
             $valuePerLocale,
-            $referenceEntityIdentifierRecordType
+            $recordType
         );
     }
 
@@ -81,7 +81,7 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'reference_entity_identifier_record_type' => $this->referenceEntityIdentifierRecordType->normalize()
+                'record_type' => $this->recordType->normalize()
             ]
         );
     }
@@ -91,13 +91,13 @@ class SimpleSelectRecordAttribute extends AbstractAttribute
         return self::ATTRIBUTE_TYPE;
     }
 
-    public function getReferenceEntityIdentifierRecordType(): AttributeReferenceEntityIdentifier
+    public function getRecordType(): ReferenceEntityIdentifier
     {
-        return $this->referenceEntityIdentifierRecordType;
+        return $this->recordType;
     }
 
-    public function setReferenceEntityIdentifierRecordType(AttributeReferenceEntityIdentifier $referenceEntityIdentifierRecordType): void
+    public function setRecordType(ReferenceEntityIdentifier $recordType): void
     {
-        $this->referenceEntityIdentifierRecordType = $referenceEntityIdentifierRecordType;
+        $this->recordType = $recordType;
     }
 }

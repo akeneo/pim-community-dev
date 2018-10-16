@@ -27,7 +27,7 @@ class RecordCollectionData implements ValueDataInterface
 
     private function __construct(array $recordCodes)
     {
-        Assert::notEmpty($recordCodes, 'Record codes should be an non empty array');
+        Assert::notEmpty($recordCodes, 'Record codes should be a non empty array');
 
         $this->recordCodes = $recordCodes;
     }

@@ -8,7 +8,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\SimpleSelectRecordAttribute;
@@ -29,9 +28,7 @@ class SimpleSelectRecordAttributeSpec extends ObjectBehavior
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeReferenceEntityIdentifier::fromReferenceEntityIdentifier(
-                ReferenceEntityIdentifier::fromString('designer')
-            )
+            ReferenceEntityIdentifier::fromString('designer')
         ]);
     }
 
@@ -58,7 +55,7 @@ class SimpleSelectRecordAttributeSpec extends ObjectBehavior
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'simple_select_record',
-                'reference_entity_identifier_record_type' => 'designer',
+                'record_type' => 'designer',
             ]
         );
     }
@@ -76,17 +73,15 @@ class SimpleSelectRecordAttributeSpec extends ObjectBehavior
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'simple_select_record',
-                'reference_entity_identifier_record_type' => 'designer',
+                'record_type' => 'designer',
             ]
         );
     }
 
-    function it_updates_its_reference_entity_identifier_record_type()
+    function it_updates_its_record_type()
     {
-        $this->setReferenceEntityIdentifierRecordType(
-            AttributeReferenceEntityIdentifier::fromReferenceEntityIdentifier(
-                ReferenceEntityIdentifier::fromString('brand')
-            )
+        $this->setRecordType(
+            ReferenceEntityIdentifier::fromString('brand')
         );
         $this->normalize()->shouldBe([
                 'identifier' => 'mentor_designer_fingerprint',
@@ -98,7 +93,7 @@ class SimpleSelectRecordAttributeSpec extends ObjectBehavior
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'simple_select_record',
-                'reference_entity_identifier_record_type' => 'brand',
+                'record_type' => 'brand',
             ]
         );
     }

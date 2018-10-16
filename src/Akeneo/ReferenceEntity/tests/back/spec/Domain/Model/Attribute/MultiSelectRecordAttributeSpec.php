@@ -8,7 +8,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\MultiSelectRecordAttribute;
@@ -29,9 +28,7 @@ class MultiSelectRecordAttributeSpec extends ObjectBehavior
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeReferenceEntityIdentifier::fromReferenceEntityIdentifier(
-                ReferenceEntityIdentifier::fromString('brand')
-            )
+            ReferenceEntityIdentifier::fromString('brand')
         ]);
     }
 
@@ -58,7 +55,7 @@ class MultiSelectRecordAttributeSpec extends ObjectBehavior
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'multi_select_record',
-                'reference_entity_identifier_record_type' => 'brand',
+                'record_type' => 'brand',
             ]
         );
     }
@@ -76,17 +73,15 @@ class MultiSelectRecordAttributeSpec extends ObjectBehavior
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'multi_select_record',
-                'reference_entity_identifier_record_type' => 'brand',
+                'record_type' => 'brand',
             ]
         );
     }
 
-    function it_updates_its_reference_entity_identifier_record_type()
+    function it_updates_its_record_type()
     {
-        $this->setReferenceEntityIdentifierRecordType(
-            AttributeReferenceEntityIdentifier::fromReferenceEntityIdentifier(
-                ReferenceEntityIdentifier::fromString('color')
-            )
+        $this->setRecordType(
+            ReferenceEntityIdentifier::fromString('color')
         );
 
         $this->normalize()->shouldBe([
@@ -99,7 +94,7 @@ class MultiSelectRecordAttributeSpec extends ObjectBehavior
                 'value_per_channel' => false,
                 'value_per_locale' => false,
                 'type' => 'multi_select_record',
-                'reference_entity_identifier_record_type' => 'color',
+                'record_type' => 'color',
             ]
         );
     }
