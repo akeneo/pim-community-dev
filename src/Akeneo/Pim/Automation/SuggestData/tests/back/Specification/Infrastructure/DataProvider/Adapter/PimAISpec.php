@@ -104,54 +104,8 @@ class PimAISpec extends ObjectBehavior
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
-        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product with id "123456"'))
+        $this->shouldThrow(ProductSubscriptionException::invalidMappedValues())
              ->during('subscribe', [$productSubscriptionRequest]);
-    }
-
-    public function it_catches_client_exceptions_during_subscription(
-        $identifiersMappingRepository,
-        $subscriptionApi,
-        $familyNormalizer,
-        ProductInterface $product,
-        AttributeInterface $ean,
-        ValueInterface $eanValue,
-        FamilyInterface $family
-    ): void {
-        $identifiersMappingRepository->find()->willReturn(
-            new IdentifiersMapping(
-                [
-                    'upc' => $ean->getWrappedObject(),
-                ]
-            )
-        );
-
-        $ean->getCode()->willReturn('ean');
-
-        $product->getId()->willReturn(42);
-        $product->getFamily()->willReturn($family);
-        $product->getValue('ean')->willReturn($eanValue);
-        $eanValue->hasData()->willReturn(true);
-        $eanValue->__toString()->willReturn('123456789');
-
-        $normalizedFamily = [
-            'code' => 'tshirt',
-            'label' => [
-                'en_US' => 'T-shirt',
-                'fr_FR' => 'T-shirt',
-            ],
-        ];
-        $familyNormalizer->normalize($family)->willReturn($normalizedFamily);
-
-        $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
-
-        $subscriptionApi
-            ->subscribeProduct(['upc' => '123456789'], 42, $normalizedFamily)
-            ->willThrow(new ClientException('exception-message'));
-
-        $this->shouldThrow(new ProductSubscriptionException('exception-message'))->during(
-            'subscribe',
-            [$productSubscriptionRequest]
-        );
     }
 
     public function it_subscribes_product_to_pim_ai(
