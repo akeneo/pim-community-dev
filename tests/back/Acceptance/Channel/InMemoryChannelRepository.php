@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -81,7 +82,9 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function getChannelCodes()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->channels->map(function (ChannelInterface $channel): string {
+            return $channel->getCode();
+        })->toArray();
     }
 
     /**
@@ -121,7 +124,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->channels->getValues();
     }
 
     /**
