@@ -8,7 +8,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 
-interface SqlFindValueKeysToIndexForChannelAndLocaleInterface
+interface FindValueKeysToIndexForChannelAndLocaleInterface
 {
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,

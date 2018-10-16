@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 
 interface RecordIndexerInterface
 {
     /**
      * Indexes multiple records
      *
-     * @param Record[] $records
+     * @param RecordIdentifier[] $recordIdentifiers
      */
-    public function bulkIndex(array $records);
+    public function bulkIndex(array $recordIdentifiers);
 
     /**
      * Remove all records belonging to a reference entity

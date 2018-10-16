@@ -247,29 +247,6 @@ SQL;
         );
     }
 
-    /**
-     * TODO: remove, should use the search feature
-     */
-    public function all()
-    {
-        $fetch = <<<SQL
-        SELECT ee.identifier, ee.code, ee.reference_entity_identifier, ee.labels, ee.value_collection, fi.image
-        FROM akeneo_reference_entity_record AS ee
-        LEFT JOIN (
-          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
-          FROM akeneo_file_storage_file_info
-        ) AS fi ON fi.file_key = ee.image;
-SQL;
-        $statement = $this->sqlConnection->executeQuery($fetch, []);
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
-        $all = [];
-        foreach ($result as $normalizedRecord) {
-            $all[] = $this->hydrateRecord($normalizedRecord);
-        }
-
-        return $all;
-    }
     private function getSerializedLabels(Record $record): string
     {
         $labels = [];

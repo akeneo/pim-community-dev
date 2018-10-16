@@ -120,7 +120,7 @@ SQL;
         );
     }
 
-    public function all(): array
+    public function all(): \Generator
     {
         $selectAllQuery = <<<SQL
         SELECT identifier, labels
@@ -130,12 +130,9 @@ SQL;
         $results = $statement->fetchAll();
         $statement->closeCursor();
 
-        $referenceEntities = [];
         foreach ($results as $result) {
-            $referenceEntities[] = $this->hydrateReferenceEntity($result['identifier'], $result['labels'], null);
+            yield $this->hydrateReferenceEntity($result['identifier'], $result['labels'], null);
         }
-
-        return $referenceEntities;
     }
 
     public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void

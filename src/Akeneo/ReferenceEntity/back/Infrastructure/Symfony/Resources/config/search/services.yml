@@ -19,7 +19,10 @@ services:
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_search_matrix_normalizer'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.get_reference_entity_identifier_for_record_identifier'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_searchable_records'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_values_to_index_for_channel_and_locale'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_search_matrix_normalizer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordSearchMatrixNormalizer

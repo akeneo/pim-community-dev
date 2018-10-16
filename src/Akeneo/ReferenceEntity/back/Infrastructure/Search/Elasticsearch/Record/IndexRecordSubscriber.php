@@ -39,8 +39,6 @@ class IndexRecordSubscriber implements EventSubscriberInterface
 
     public function whenRecordUpdated(RecordUpdatedEvent $recordUpdatedEvent): void
     {
-        $this->recordIndexer->bulkIndex(
-            [$this->recordRepository->getByIdentifier($recordUpdatedEvent->getRecordIdentifier())]
-        );
+        $this->recordIndexer->bulkIndex([$recordUpdatedEvent->getRecordIdentifier()]);
     }
 }

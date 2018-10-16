@@ -172,3 +172,13 @@ services:
        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindValueKeysToIndexForChannelAndLocale
        arguments:
            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.get_reference_entity_identifier_for_record_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlGetReferenceEntityIdentifierForRecordIdentifier
+        arguments:
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_searchable_records:
+       class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindSearchableRecords
+       arguments:
+           - '@database_connection'

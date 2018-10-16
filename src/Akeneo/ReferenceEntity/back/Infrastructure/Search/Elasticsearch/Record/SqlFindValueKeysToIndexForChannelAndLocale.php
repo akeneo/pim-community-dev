@@ -9,14 +9,14 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\SqlFindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindValueKeysToIndexForChannelAndLocaleInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindValueKeysToIndexForChannelAndLocale implements SqlFindValueKeysToIndexForChannelAndLocaleInterface
+class SqlFindValueKeysToIndexForChannelAndLocale implements FindValueKeysToIndexForChannelAndLocaleInterface
 {
     /** @var Connection */
     private $sqlConnection;
