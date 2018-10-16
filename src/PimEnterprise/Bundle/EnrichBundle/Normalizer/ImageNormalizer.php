@@ -4,9 +4,9 @@ namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer as BaseImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer as BaseImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 
 /**
  * Image Normalizer for Enterprise Edition.

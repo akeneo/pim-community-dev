@@ -15,12 +15,12 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
-use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController;
 
 /**
  * Thumbnail property for an asset
