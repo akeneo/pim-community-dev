@@ -70,6 +70,16 @@ services:
             - { name: akeneo_referenceentity.record_value_updater }
 
     akeneo_referenceentity.application.edit_record.record_value_updater.empty_updater:
-            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater
-            tags:
-                - { name: akeneo_referenceentity.record_value_updater }
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.record_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.record_collection_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
