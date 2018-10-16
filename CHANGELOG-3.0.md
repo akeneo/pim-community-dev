@@ -133,6 +133,7 @@
 - Change `Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber::massUploadAssets()` signature to replace `Symfony\Component\EventDispatcher\GenericEvent` by `Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent`
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter`. Replace argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
     with  `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, and `string`.
+- Change constructor of `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\FilterConverter`. Remove argument `Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter` and `Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser`.
 
 ## Security
 
