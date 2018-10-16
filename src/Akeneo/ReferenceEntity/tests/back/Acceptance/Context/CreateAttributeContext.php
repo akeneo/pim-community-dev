@@ -77,9 +77,9 @@ class CreateAttributeContext implements Context
         $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = (bool) $attributeData['is_required'];
-        $attributeData['value_per_channel'] = (bool) $attributeData['value_per_channel'];
-        $attributeData['value_per_locale'] = (bool) $attributeData['value_per_locale'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['max_length'] = (int) $attributeData['max_length'];
 
@@ -111,12 +111,12 @@ class CreateAttributeContext implements Context
         $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
-        $expected['is_required'] = (bool) $expected['is_required'];
-        $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
-        $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['max_length'] = (int) $expected['max_length'];
-        $expected['is_textarea'] = '' === $expected['is_textarea'] ? null : (bool) $expected['is_textarea'];
-        $expected['is_rich_text_editor'] = '' === $expected['is_rich_text_editor'] ? null : (bool) $expected['is_rich_text_editor'];
+        $expected['is_textarea'] = '' === $expected['is_textarea'] ? null : json_decode($expected['is_textarea']);
+        $expected['is_rich_text_editor'] = '' === $expected['is_rich_text_editor'] ? null : json_decode($expected['is_rich_text_editor']);
         $expected['validation_rule'] = '' === $expected['validation_rule'] ? null : $expected['validation_rule'];
         $expected['regular_expression'] = '' === $expected['regular_expression'] ? null : $expected['regular_expression'];
         ksort($expected);
@@ -163,9 +163,9 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = (bool) $attributeData['is_required'];
-        $attributeData['value_per_channel'] = (bool) $attributeData['value_per_channel'];
-        $attributeData['value_per_locale'] = (bool) $attributeData['value_per_locale'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['allowed_extensions'] = json_decode($attributeData['allowed_extensions']);
 
@@ -198,9 +198,9 @@ class CreateAttributeContext implements Context
         $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
-        $expected['is_required'] = (bool) $expected['is_required'];
-        $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
-        $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
         $expected['allowed_extensions'] = json_decode($expected['allowed_extensions']);
         ksort($expected);
 
