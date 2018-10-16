@@ -25,7 +25,7 @@ class FormChainedProvider implements FormProviderInterface
             }
         }
 
-        throw new NoCompatibleFormProviderFoundException();
+        throw new NoCompatibleFormProviderFoundException("Cannot find FormProvider supporting {$element->getJobName()}");
     }
 
     /**

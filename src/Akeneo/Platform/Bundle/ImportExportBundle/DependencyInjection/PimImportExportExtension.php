@@ -34,6 +34,7 @@ class PimImportExportExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
+        $loader->load('services.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

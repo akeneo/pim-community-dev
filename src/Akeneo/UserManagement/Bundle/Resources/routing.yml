@@ -1,3 +1,0 @@
-api_connection:
-    resource: '@PimUserBundle/Resources/config/routing/api_connection.yml'
-    prefix: /client

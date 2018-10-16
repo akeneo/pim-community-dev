@@ -209,10 +209,10 @@ services:
             - '@event_dispatcher'
             - '%akeneo_channel.model.currency.interface%'
 
-    pim_enrich.provider.form.job_instance:
+    pim_channel.provider.form.job_instance:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
         arguments:
-                csv_channel_export: pim-job-instance-csv-base-export
+            -   csv_channel_export: pim-job-instance-csv-base-export
                 csv_currency_export: pim-job-instance-csv-base-export
                 csv_locale_export: pim-job-instance-csv-base-export
                 xlsx_channel_export: pim-job-instance-xlsx-base-export
