@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Permission\Integration\Doctrine\Common\Saver;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Doctrine\Common\Saver;
 
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

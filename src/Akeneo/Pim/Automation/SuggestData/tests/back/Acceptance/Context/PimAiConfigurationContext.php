@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -25,48 +29,52 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class PimAiConfigurationContext implements Context
+final class PimAiConfigurationContext implements Context
 {
     private const PIM_AI_VALID_TOKEN = 'valid-token';
 
     private const PIM_AI_INVALID_TOKEN = 'invalid-token';
 
-    /** @var ActivateSuggestDataConnection */
-    private $pimAiConnection;
+    /** @var ActivateConnectionHandler */
+    private $activateConnectionHandler;
 
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
-    /** @var GetNormalizedConfiguration */
-    private $getNormalizedConfiguration;
+    /** @var GetConfigurationHandler */
+    private $getConfigurationHandler;
 
-    /** @var GetSuggestDataConnectionStatus */
-    private $getConnectionStatus;
+    /** @var GetConnectionStatusHandler */
+    private $getConnectionStatusHandler;
+
+    /** @var ConnectionConfigurationException */
+    private $thrownException;
 
     /**
      * Make this context statefull. Useful for testing configuration retrieval.
      *
-     * @var null|array
+     * @var Configuration
      */
     private $retrievedConfiguration;
 
     /**
-     * @param ActivateSuggestDataConnection $pimAiConnection
+     * @param ActivateConnectionHandler $activateConnectionHandler
+     * @param GetConfigurationHandler $getConfigurationHandler
+     * @param GetConnectionStatusHandler $getConnectionStatusHandler
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param GetNormalizedConfiguration $getNormalizedConfiguration
-     * @param GetSuggestDataConnectionStatus $getConnectionStatus
      */
     public function __construct(
-        ActivateSuggestDataConnection $pimAiConnection,
-        ConfigurationRepositoryInterface $configurationRepository,
-        GetNormalizedConfiguration $getNormalizedConfiguration,
-        GetSuggestDataConnectionStatus $getConnectionStatus
+        ActivateConnectionHandler $activateConnectionHandler,
+        GetConfigurationHandler $getConfigurationHandler,
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        ConfigurationRepositoryInterface $configurationRepository
     ) {
-        $this->pimAiConnection = $pimAiConnection;
+        $this->activateConnectionHandler = $activateConnectionHandler;
+        $this->getConfigurationHandler = $getConfigurationHandler;
+        $this->getConnectionStatusHandler = $getConnectionStatusHandler;
         $this->configurationRepository = $configurationRepository;
-        $this->getNormalizedConfiguration = $getNormalizedConfiguration;
-        $this->getConnectionStatus = $getConnectionStatus;
         $this->retrievedConfiguration = null;
+        $this->thrownException = null;
     }
 
     /**
@@ -75,7 +83,8 @@ class PimAiConfigurationContext implements Context
     public function pimAiHasNotBeenConfigured(): void
     {
         $configuration = $this->configurationRepository->find();
-        Assert::assertNull($configuration);
+        Assert::assertInstanceOf(Configuration::class, $configuration);
+        Assert::assertNull($configuration->getToken());
     }
 
     /**
@@ -83,7 +92,8 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsConfiguredWithValidToken(): void
     {
-        $configuration = new Configuration(['token' => static::PIM_AI_VALID_TOKEN]);
+        $configuration = new Configuration();
+        $configuration->setToken(new Token(self::PIM_AI_VALID_TOKEN));
         $this->configurationRepository->save($configuration);
     }
 
@@ -92,7 +102,8 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsConfiguredWithAnExpiredToken(): void
     {
-        $configuration = new Configuration(['token' => static::PIM_AI_INVALID_TOKEN]);
+        $configuration = new Configuration();
+        $configuration->setToken(new Token(self::PIM_AI_INVALID_TOKEN));
         $this->configurationRepository->save($configuration);
     }
 
@@ -101,8 +112,8 @@ class PimAiConfigurationContext implements Context
      */
     public function configuresPimAiUsingValidToken(): void
     {
-        $success = $this->activatePimAiConnection(static::PIM_AI_VALID_TOKEN);
-        Assert::assertTrue($success);
+        $command = new ActivateConnectionCommand(new Token(static::PIM_AI_VALID_TOKEN));
+        $this->activateConnectionHandler->handle($command);
     }
 
     /**
@@ -110,8 +121,14 @@ class PimAiConfigurationContext implements Context
      */
     public function configuresPimAiUsingAnInvalidToken(): void
     {
-        $success = $this->activatePimAiConnection(static::PIM_AI_INVALID_TOKEN);
-        Assert::assertFalse($success);
+        try {
+            $command = new ActivateConnectionCommand(new Token(static::PIM_AI_INVALID_TOKEN));
+            $this->activateConnectionHandler->handle($command);
+
+            throw new ConnectionConfigurationException();
+        } catch (ConnectionConfigurationException $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -119,7 +136,7 @@ class PimAiConfigurationContext implements Context
      */
     public function retrievesTheConfiguration(): void
     {
-        $this->retrievedConfiguration = $this->getNormalizedConfiguration->retrieve();
+        $this->retrievedConfiguration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
     }
 
     /**
@@ -127,7 +144,7 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsActivated(): void
     {
-        $connectionStatus = $this->getConnectionStatus->getStatus();
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertTrue($connectionStatus->isActive());
     }
 
@@ -136,8 +153,21 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsNotActivated(): void
     {
-        $connectionStatus = $this->getConnectionStatus->getStatus();
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertFalse($connectionStatus->isActive());
+    }
+
+    /**
+     * @Then a token invalid message is sent
+     */
+    public function aTokenInvalidMessageIsSent(): void
+    {
+        Assert::assertInstanceOf(ConnectionConfigurationException::class, $this->thrownException);
+        Assert::assertEquals(
+            ConnectionConfigurationException::invalidToken()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+        Assert::assertEquals(422, $this->thrownException->getCode());
     }
 
     /**
@@ -145,7 +175,7 @@ class PimAiConfigurationContext implements Context
      */
     public function aValidTokenIsRetrieved(): void
     {
-        $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_VALID_TOKEN, $this->retrievedConfiguration);
+        Assert::assertEquals(static::PIM_AI_VALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 
     /**
@@ -153,36 +183,6 @@ class PimAiConfigurationContext implements Context
      */
     public function anExpiredTokenIsRetrieved(): void
     {
-        $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_INVALID_TOKEN, $this->retrievedConfiguration);
-    }
-
-    /**
-     * @param string $expectedToken
-     * @param array $expectedConfiguration
-     */
-    private function assertPimAiConfigurationEqualsTo(string $expectedToken, array $expectedConfiguration): void
-    {
-        Assert::assertSame([
-            'code' => Configuration::PIM_AI_CODE,
-            'values' => [
-                'token' => $expectedToken,
-            ],
-        ], $expectedConfiguration);
-    }
-
-    /**
-     * @param string $token
-     *
-     * @return bool
-     */
-    private function activatePimAiConnection(string $token): bool
-    {
-        try {
-            $this->pimAiConnection->activate(['token' => $token]);
-        } catch (InvalidConnectionConfigurationException $exception) {
-            return false;
-        }
-
-        return true;
+        Assert::assertEquals(static::PIM_AI_INVALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 }

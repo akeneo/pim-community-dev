@@ -13,55 +13,52 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class PimAiConnectionController
 {
-    /** @var ActivateSuggestDataConnection */
-    private $activateSuggestDataConnection;
+    /** @var ActivateConnectionHandler */
+    private $activateConnectionHandler;
 
-    /** @var GetNormalizedConfiguration */
-    private $getNormalizedConfiguration;
+    /** @var GetConfigurationHandler */
+    private $getConfigurationHandler;
 
-    /** @var GetSuggestDataConnectionStatus */
-    private $getSuggestDataConnectionStatus;
+    /** @var GetConnectionStatusHandler */
+    private $getConnectionStatusHandler;
 
     /** @var ConnectionStatusNormalizer */
     private $connectionStatusNormalizer;
 
-    /** @var TranslatorInterface */
-    private $translator;
-
     /**
-     * @param ActivateSuggestDataConnection $activateSuggestDataConnection
-     * @param GetNormalizedConfiguration $getNormalizedConfiguration
-     * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
+     * @param ActivateConnectionHandler $activateConnectionHandler
+     * @param GetConfigurationHandler $getConfigurationHandler
+     * @param GetConnectionStatusHandler $getConnectionStatus
      * @param ConnectionStatusNormalizer $connectionStatusNormalizer
-     * @param TranslatorInterface $translator
      */
     public function __construct(
-        ActivateSuggestDataConnection $activateSuggestDataConnection,
-        GetNormalizedConfiguration $getNormalizedConfiguration,
-        GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus,
-        ConnectionStatusNormalizer $connectionStatusNormalizer,
-        TranslatorInterface $translator
+        ActivateConnectionHandler $activateConnectionHandler,
+        GetConfigurationHandler $getConfigurationHandler,
+        GetConnectionStatusHandler $getConnectionStatus,
+        ConnectionStatusNormalizer $connectionStatusNormalizer
     ) {
-        $this->activateSuggestDataConnection = $activateSuggestDataConnection;
-        $this->getNormalizedConfiguration = $getNormalizedConfiguration;
-        $this->getSuggestDataConnectionStatus = $getSuggestDataConnectionStatus;
+        $this->activateConnectionHandler = $activateConnectionHandler;
+        $this->getConfigurationHandler = $getConfigurationHandler;
+        $this->getConnectionStatusHandler = $getConnectionStatus;
         $this->connectionStatusNormalizer = $connectionStatusNormalizer;
-        $this->translator = $translator;
     }
 
     /**
@@ -69,9 +66,15 @@ class PimAiConnectionController
      */
     public function getAction(): Response
     {
-        $normalizedConfiguration = $this->getNormalizedConfiguration->retrieve();
+        $configuration = $this->getConfigurationHandler->handle(new GetConfigurationQuery());
+        $token = $configuration->getToken();
 
-        return new JsonResponse($normalizedConfiguration);
+        return new JsonResponse(
+            [
+                'code' => 'pim-ai',
+                'values' => ['token' => (null === $token) ? null : (string) $token],
+            ]
+        );
     }
 
     /**
@@ -79,7 +82,7 @@ class PimAiConnectionController
      */
     public function isActiveAction(): Response
     {
-        $connectionStatus = $this->getSuggestDataConnectionStatus->getStatus();
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
 
         return new JsonResponse($this->connectionStatusNormalizer->normalize($connectionStatus));
     }
@@ -91,15 +94,21 @@ class PimAiConnectionController
      */
     public function postAction(Request $request): Response
     {
+        // TODO: We should $request->get('token', '') instead decoding json and getting back value
+        // TODO: Should not we assert it is an XML HTTP Request
+        // TODO: Why do we put message here instead of handling response code?
+        // TODO: success = 200, invalid argument = 401, conf exception = 422
         $configurationFields = json_decode($request->getContent(), true);
 
         try {
-            $this->activateSuggestDataConnection->activate($configurationFields);
-        } catch (InvalidConnectionConfigurationException $invalidConnection) {
-            return new JsonResponse([
-                'message' => 'akeneo_suggest_data.connection.flash.invalid',
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } catch (\InvalidArgumentException $exception) {
+            $tokenString = $configurationFields['token'] ?? '';
+
+            $token = new Token($tokenString);
+            $command = new ActivateConnectionCommand($token);
+            $this->activateConnectionHandler->handle($command);
+        } catch (ConnectionConfigurationException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], $e->getCode());
+        } catch (\InvalidArgumentException $e) {
             return new JsonResponse([
                 'message' => 'akeneo_suggest_data.connection.flash.error',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);

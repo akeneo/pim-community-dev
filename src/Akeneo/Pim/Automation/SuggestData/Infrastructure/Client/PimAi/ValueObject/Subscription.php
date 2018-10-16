@@ -57,6 +57,14 @@ class Subscription
     }
 
     /**
+     * @return bool
+     */
+    public function isMappingMissing(): bool
+    {
+        return true === $this->rawSubscription['misses_mapping'];
+    }
+
+    /**
      * @param array $rawSubscription
      *
      * @throws \InvalidArgumentException
@@ -68,6 +76,7 @@ class Subscription
             'identifiers',
             'attributes',
             'extra',
+            'misses_mapping',
         ];
 
         foreach ($expectedKeys as $key) {

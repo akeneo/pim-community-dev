@@ -26,18 +26,15 @@ final class InMemoryConfigurationRepository implements ConfigurationRepositoryIn
     /** @var Configuration */
     private $configuration;
 
-    /**
-     * @param Configuration|null $configuration
-     */
-    public function __construct(Configuration $configuration = null)
+    public function __construct()
     {
-        $this->configuration = $configuration;
+        $this->configuration = new Configuration();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function find(): ?Configuration
+    public function find(): Configuration
     {
         return $this->configuration;
     }

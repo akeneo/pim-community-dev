@@ -61,7 +61,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
-            new ProductSubscriptionException('Cannot subscribe a product without family')
+            ProductSubscriptionException::familyRequired()
         )->during('handle', [$command]);
     }
 
@@ -99,7 +99,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
-        $response = new ProductSubscriptionResponse(42, 'test-id', []);
+        $response = new ProductSubscriptionResponse(42, 'test-id', [], false);
         $dataProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();

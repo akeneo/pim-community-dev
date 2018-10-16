@@ -21,4 +21,42 @@ class ProductSubscriptionExceptionSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(\Exception::class);
     }
+
+    public function it_throws_an_invalid_token_message(): void
+    {
+        $this->beConstructedThrough('invalidToken');
+        $this->getMessage()->shouldReturn('akeneo_suggest_data.entity.product_subscription.constraint.invalid_token');
+    }
+
+    public function it_throws_an_insufficient_credits_message(): void
+    {
+        $this->beConstructedThrough('insufficientCredits');
+        $this
+            ->getMessage()
+            ->shouldReturn('akeneo_suggest_data.entity.product_subscription.constraint.insufficient_credits');
+    }
+
+    public function it_throws_an_invalid_identifiers_mapping_message(): void
+    {
+        $this->beConstructedThrough('invalidIdentifiersMapping');
+        $this
+            ->getMessage()
+            ->shouldReturn('akeneo_suggest_data.entity.product_subscription.constraint.no_identifiers_mapping');
+    }
+
+    public function it_throws_a_family_required_message(): void
+    {
+        $this->beConstructedThrough('familyRequired');
+        $this
+            ->getMessage()
+            ->shouldReturn('akeneo_suggest_data.entity.product_subscription.constraint.family_required');
+    }
+
+    public function it_throws_an_invalid_mapped_values_message(): void
+    {
+        $this->beConstructedThrough('invalidMappedValues');
+        $this
+            ->getMessage()
+            ->shouldReturn('akeneo_suggest_data.entity.product_subscription.constraint.invalid_mapped_values');
+    }
 }

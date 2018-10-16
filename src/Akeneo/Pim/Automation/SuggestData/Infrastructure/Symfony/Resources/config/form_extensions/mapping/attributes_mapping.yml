@@ -63,7 +63,7 @@ extensions:
                     - akeneo_suggest_data.settings.module.title.description.second_step
 
     pimee-suggest-data-settings-attributes-mapping-index-tabs:
-        module: pimee/settings/mapping/tabs
+        module: pimee/view/common/tabs
         parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: content
         position: 90
@@ -77,10 +77,10 @@ extensions:
         module: pim/common/simple-view
         parent: pimee-suggest-data-settings-attributes-mapping-index-tabs
         config:
-            template: pimee/template/settings/mapping/family-mapping
+            template: pimee/template/attributes-mapping/family-mapping
 
     pim-suggest-data-settings-attributes-mapping-index-attribute-family-selector:
-        module: pimee/settings/mapping/family-selector
+        module: pimee/view/attributes-mapping/family-selector
         parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 10
         targetZone: family-selector
@@ -90,7 +90,7 @@ extensions:
             choiceRoute: akeneo_sugggest_data_attributes_mapping_list
 
     pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping:
-        module: pimee/settings/mapping/attributes-mapping
+        module: pimee/view/attributes-mapping/table
         parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 30
         targetZone: mapping
@@ -104,7 +104,7 @@ extensions:
                 suggest_data: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
 
     pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
-        module: pimee/settings/front-search-filter
+        module: pimee/view/common/front-search-filter
         parent: pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping
         position: 10
         targetZone: filters
@@ -112,7 +112,7 @@ extensions:
             fieldName: 'pim_ai_attribute'
 
     pim-suggest-data-settings-attributes-mapping-index-status-filter:
-        module: pimee/settings/mapping/status-filter
+        module: pimee/view/common/status-filter
         parent: pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping
         position: 20
         targetZone: filters

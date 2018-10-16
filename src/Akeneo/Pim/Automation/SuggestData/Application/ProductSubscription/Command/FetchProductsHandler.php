@@ -63,6 +63,7 @@ class FetchProductsHandler
 
             $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
             $subscription->setSuggestedData($suggestedData);
+            $subscription->markAsMissingMapping($subscriptionResponse->isMappingMissing());
             $this->productSubscriptionRepository->save($subscription);
         }
     }

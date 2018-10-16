@@ -109,8 +109,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product');
 
         $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
-VALUES (:productId, :subscriptionId, :suggestedData)
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping) 
+VALUES (:productId, :subscriptionId, :suggestedData, false)
 SQL;
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->prepare($query);
@@ -198,8 +198,8 @@ SQL;
     private function insertSubscription(int $productId, string $subscriptionId, array $suggestedData): void
     {
         $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
-VALUES (:productId, :subscriptionId, :suggestedData)
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping) 
+VALUES (:productId, :subscriptionId, :suggestedData, false)
 SQL;
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->prepare($query);

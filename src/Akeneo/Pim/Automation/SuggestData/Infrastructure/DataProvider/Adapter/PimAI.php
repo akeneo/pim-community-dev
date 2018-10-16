@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
@@ -26,6 +27,10 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attributes
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
@@ -101,22 +106,24 @@ class PimAI implements DataProviderInterface
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
-            throw new ProductSubscriptionException('No mapping defined');
+            throw ProductSubscriptionException::invalidIdentifiersMapping();
         }
 
         $product = $request->getProduct();
         $mapped = $request->getMappedValues($identifiersMapping);
         if (empty($mapped)) {
-            throw new ProductSubscriptionException(
-                sprintf('No mapped values for product with id "%s"', (string) $product->getIdentifier())
-            );
+            throw ProductSubscriptionException::invalidMappedValues();
         }
 
         $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
         try {
             $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $product->getId(), $familyInfos);
-        } catch (ClientException $e) {
-            throw new ProductSubscriptionException($e->getMessage());
+        } catch (InvalidTokenException $e) {
+            throw ProductSubscriptionException::invalidToken();
+        } catch (InsufficientCreditsException $e) {
+            throw ProductSubscriptionException::insufficientCredits();
+        } catch (BadRequestException | PimAiServerException $e) {
+            throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
         }
         $subscription = $clientResponse->content()->getFirst();
 
@@ -124,13 +131,13 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * @param string $token
+     * @param Token $token
      *
      * @return bool
      */
-    public function authenticate(string $token): bool
+    public function authenticate(Token $token): bool
     {
-        return $this->authenticationApi->authenticate($token);
+        return $this->authenticationApi->authenticate((string) $token);
     }
 
     /**
@@ -211,7 +218,8 @@ class PimAI implements DataProviderInterface
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
-            $subscription->getAttributes()
+            $subscription->getAttributes(),
+            $subscription->isMappingMissing()
         );
     }
 

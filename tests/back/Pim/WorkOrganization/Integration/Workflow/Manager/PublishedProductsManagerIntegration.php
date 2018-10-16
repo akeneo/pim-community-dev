@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\WorkOrganization\Integration\Workflow\Manager;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Manager;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Integration\Configuration;

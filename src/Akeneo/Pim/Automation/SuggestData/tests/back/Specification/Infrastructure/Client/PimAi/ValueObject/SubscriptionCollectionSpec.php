@@ -87,6 +87,7 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                     'label' => ['en_US' => 'Laptop'],
                 ],
             ],
+            'misses_mapping' => false,
         ];
     }
 
@@ -103,6 +104,7 @@ class SubscriptionCollectionSpec extends ObjectBehavior
             'extra' => [
                 'tracker_id' => 50,
             ],
+            'misses_mapping' => false,
         ];
     }
 }
