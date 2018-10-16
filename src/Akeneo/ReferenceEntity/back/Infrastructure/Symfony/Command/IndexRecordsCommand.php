@@ -41,10 +41,10 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $recordRepository = $this->getContainer()->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository = $this->getContainer()->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $recordIndexer = $this->getContainer()->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
 
-        $allReferenceEntities = $recordRepository->all();
+        $allReferenceEntities = $referenceEntityRepository->all();
         $count = 0;
         foreach ($allReferenceEntities as $referenceEntity) {
             /** @var ReferenceEntity $referenceEntity */

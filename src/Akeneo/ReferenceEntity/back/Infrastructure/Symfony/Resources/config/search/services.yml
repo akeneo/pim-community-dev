@@ -6,7 +6,6 @@ services:
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
         tags:
             - { name: kernel.event_subscriber }

@@ -43,7 +43,7 @@ SQL;
         );
     }
 
-    public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Generator
+    public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
     {
         $sqlQuery = <<<SQL
         SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, ee.value_collection
