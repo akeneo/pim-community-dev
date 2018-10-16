@@ -8,6 +8,7 @@
 - PIM-7740: bump summernote version to fix scroll glitches
 - PIM-7746: Fix issue when an attribute code is numeric
 - PIM-7727: parent filter search case insensitive
+- PIM-7724: fix role label update and error displayed on permission save action
 
 # 2.3.11 (2018-10-08)
 
