@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class SqlIntegrationTestCase extends KernelTestCase
 {
-    /** @var KernelInterface */
+    /** @var KernelInterface|null */
     protected $testKernel;
 
     /**
@@ -34,7 +34,9 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
      */
     protected function setUp()
     {
-        $this->bootTestKernel();
+        if (null === $this->testKernel) {
+            $this->bootTestKernel();
+        }
     }
 
     protected function bootTestKernel(): void

@@ -35,7 +35,9 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
      */
     protected function setUp()
     {
-        $this->bootTestFakeKernel();
+        if (null === $this->testKernel) {
+            $this->bootTestFakeKernel();
+        }
     }
 
     protected function get(string $service)
