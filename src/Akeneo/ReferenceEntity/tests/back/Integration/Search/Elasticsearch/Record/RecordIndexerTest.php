@@ -174,7 +174,7 @@ class RecordIndexerTest extends SearchIntegrationTestCase
 
         $attributeRepository->create(
             TextAttribute::createText(
-                AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'),                ReferenceEntityIdentifier::fromString('another_reference_entity'),
+                AttributeIdentifier::create('another_reference_entity', 'name', 'fingerprint'), ReferenceEntityIdentifier::fromString('another_reference_entity'),
                 AttributeCode::fromString('name'),
                 LabelCollection::fromArray(['fr_FR' => 'Nom']),
                 AttributeOrder::fromInteger(0),

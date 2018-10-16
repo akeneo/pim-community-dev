@@ -57,7 +57,6 @@ class RecordIndexer implements RecordIndexerInterface
                 $this->recordClient->bulkindexes(self::INDEX_TYPE, $toIndex, self::KEY_AS_ID, refresh::disable());
                 $toIndex = [];
             }
-
         }
 
         if (!empty($toIndex)) {

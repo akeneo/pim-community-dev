@@ -20,7 +20,8 @@ class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
     /** @var RecordIndexerInterface */
     private $recordIndexer;
 
-    public function __construct(RecordIndexerInterface $recordIndexer) {
+    public function __construct(RecordIndexerInterface $recordIndexer)
+    {
         $this->recordIndexer = $recordIndexer;
     }
 

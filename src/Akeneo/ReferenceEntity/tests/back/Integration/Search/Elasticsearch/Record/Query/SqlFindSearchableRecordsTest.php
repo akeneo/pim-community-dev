@@ -77,7 +77,7 @@ class SqlFindSearchableRecordsTest extends SqlIntegrationTestCase
         );
         $count = 0;
         foreach ($items as $searchItem) {
-                $count++;
+            $count++;
         }
         Assert::assertEquals(0, $count, 'There was some searchable item found. expected 0.');
     }
