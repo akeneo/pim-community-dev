@@ -24,7 +24,7 @@ class FileDataHydratorSpec extends ObjectBehavior
         $this->supports($text)->shouldReturn(false);
     }
 
-    function it_hydrates_image_data(ImageAttribute $image)
+    function it_hydrates_image_data()
     {
         $imageData = $this->hydrate([
             'filePath'          => '/a/file/key',
