@@ -42,3 +42,15 @@
     transition-delay: 0s;
   }
 }
+
+.AknLoadingIndicator {
+  background: url("../../images/loader-V2.svg") no-repeat center;
+  background-size: 50px;
+  width: 50px;
+  transition: opacity .2s ease-in-out;
+  transition-delay: .3s;
+
+  &--hidden {
+    opacity: 0;
+  }
+}

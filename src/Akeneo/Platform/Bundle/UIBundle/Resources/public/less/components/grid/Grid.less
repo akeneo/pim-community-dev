@@ -468,10 +468,6 @@
       max-width: 250px;
       overflow: hidden;
       text-overflow: ellipsis;
-
-      &--identifier {
-        background: linear-gradient(to left,RGBa(255,255,255,0) 0px,RGBa(255,255,255,.9) 8px,RGBa(255,255,255,1) 100%);
-      }
     }
 
     & .AknGrid-headerCell {
@@ -489,6 +485,7 @@
     position: sticky;
     left: 0;
     z-index: 3;
+    width: auto;
 
     & .AknGrid-bodyCell, & .AknGrid-headerCell {
       max-width: 250px;
@@ -497,17 +494,35 @@
       text-overflow: ellipsis;
       z-index: 3;
     }
+    & .AknGrid-bodyCell {
+      background: none;
+    }
+
+    & .AknGrid-bodyRow {
+      background: linear-gradient(to left, RGBa(255,255,255,0) 0px,RGBa(255,255,255,.9) 8px,RGBa(255,255,255,1) 100%);
+    }
   }
 
   &--right {
     position: sticky;
     right: 0;
     width: 0;
-    background: linear-gradient(to left, RGBa(255,255,255,1) 0%, RGBa(255,255,255,.9) 45%, RGBa(255,255,255,0) 55%);
+    background: linear-gradient(to left, RGBa(255,255,255,1) 0%, RGBa(255,255,255,.9) 90%, RGBa(255,255,255,0) 100%);
 
     & .AknGrid-bodyCell--action {
       min-width: 0;
       background: none;
     }
+  }
+
+  &-bodyCellContainer {
+    max-height: 50px;
+    line-height: 50px;
+    height: 50px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 10px 0 0;
+    max-width: 250px;
   }
 }
