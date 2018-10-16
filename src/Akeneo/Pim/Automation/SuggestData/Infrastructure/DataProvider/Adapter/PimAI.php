@@ -211,7 +211,8 @@ class PimAI implements DataProviderInterface
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
-            $subscription->getAttributes()
+            $subscription->getAttributes(),
+            $subscription->isMappingMissing()
         );
     }
 

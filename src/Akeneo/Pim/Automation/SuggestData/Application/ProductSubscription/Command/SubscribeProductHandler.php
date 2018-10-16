@@ -79,6 +79,7 @@ class SubscribeProductHandler
         $subscription = new ProductSubscription($product, $subscriptionResponse->getSubscriptionId());
         $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
         $subscription->setSuggestedData($suggestedData);
+        $subscription->markAsMissingMapping($subscriptionResponse->isMappingMissing());
 
         $this->productSubscriptionRepository->save($subscription);
     }

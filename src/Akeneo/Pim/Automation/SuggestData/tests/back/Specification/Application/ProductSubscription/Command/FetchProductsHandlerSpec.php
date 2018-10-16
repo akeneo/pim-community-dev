@@ -45,8 +45,8 @@ class FetchProductsHandlerSpec extends ObjectBehavior
     ): void {
         $dataProvider->fetch()->willReturn($cursor);
 
-        $subscriptionResponse1 = new ProductSubscriptionResponse(42, 'an-id', ['foo' => 'bar']);
-        $subscriptionResponse2 = new ProductSubscriptionResponse(84, 'another-id', ['foo' => 'bar']);
+        $subscriptionResponse1 = new ProductSubscriptionResponse(42, 'an-id', ['foo' => 'bar'], true);
+        $subscriptionResponse2 = new ProductSubscriptionResponse(84, 'another-id', ['foo' => 'bar'], false);
 
         $cursor->valid()->willReturn(true, true, false);
         $cursor->current()->willReturn($subscriptionResponse1, $subscriptionResponse2);
@@ -59,7 +59,10 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         $subscriptionRepository->save($subscription2)->shouldBeCalled();
 
         $subscription1->setSuggestedData(Argument::type(SuggestedData::class))->shouldBeCalled();
+        $subscription1->markAsMissingMapping(true)->shouldBeCalled();
+
         $subscription2->setSuggestedData(Argument::type(SuggestedData::class))->shouldBeCalled();
+        $subscription2->markAsMissingMapping(false)->shouldBeCalled();
 
         $this->handle($command)->shouldReturn(null);
     }

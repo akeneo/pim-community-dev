@@ -73,4 +73,14 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $this->emptySuggestedData();
         $this->getSuggestedData()->getValues()->shouldReturn([]);
     }
+
+    public function it_sets_missing_mapping(): void
+    {
+        $this->markAsMissingMapping(false)->shouldReturn($this);
+    }
+
+    public function it_gets_missing_mapping(): void
+    {
+        $this->isMappingMissing()->shouldReturn(false);
+    }
 }

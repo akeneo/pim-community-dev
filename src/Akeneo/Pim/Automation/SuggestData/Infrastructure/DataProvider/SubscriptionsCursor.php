@@ -48,7 +48,8 @@ class SubscriptionsCursor implements \Iterator
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
-            $subscription->getAttributes()
+            $subscription->getAttributes(),
+            $subscription->isMappingMissing()
         );
     }
 

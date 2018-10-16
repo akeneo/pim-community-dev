@@ -153,6 +153,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                         'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
+                'misses_mapping' => false,
             ],
             [
                 'id' => '2222-bbbb',
@@ -190,6 +191,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                         'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
+                'misses_mapping' => false,
             ],
             [
                 'id' => '3333-cccc',
@@ -228,6 +230,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                         'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
+                'misses_mapping' => false,
             ],
         ];
 

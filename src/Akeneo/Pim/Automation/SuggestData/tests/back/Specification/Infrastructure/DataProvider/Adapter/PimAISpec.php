@@ -334,6 +334,7 @@ class PimAISpec extends ObjectBehavior
                                     'label' => ['en_US' => 'Laptop'],
                                 ],
                             ],
+                            'misses_mapping' => false,
                         ],
                     ],
                 ],
