@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\tests\integration\Repository;
+namespace AkeneoTest\Pim\Structure\Integration\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>

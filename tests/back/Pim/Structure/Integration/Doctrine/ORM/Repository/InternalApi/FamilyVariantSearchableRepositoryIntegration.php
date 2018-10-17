@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\tests\integration\Repository;
+namespace AkeneoTest\Pim\Structure\Integration\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;

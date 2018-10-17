@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\tests\integration\PQB\Filter;
+namespace AkeneoTest\Pim\Enrichment\Integration\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
@@ -25,11 +25,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
  *           +-----> men
  *           +-----> women
  *
+ *
+ * Family Variant configuration:
+ * | Common      | Level 1 | Level 2    |
+ * | description | size    | color, sku |
+ *
  * Dataset:
  *
  *                       +----+
  *                       |    | model-shoe
- *                       |    | category: "shoes"
+ *                       |    | category: "shoes", description: "Superb shoe!", brand: null
  *                       +----+
  *                      X      X
  *                     X        X
@@ -44,22 +49,23 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
  *          X          X       X          X
  *         X            X     X            X
  *        X              X   X              X
- *  +----+          +----+   +----+         +----+          +-----+                       +------+
- *  |    |          |    |   |    |         |    |          |     |                       |      |
- *  |    |          |    |   |    |         |    |          |     |                       |      |
- *  +----+          +----+   +----+         +----+          +-----+                       +------+
- *  red-s          blue-s     red-m         blue-m         another-shoe                   unclassified-product
- *  category:      category:  category:     category:      category: "women,winter-2018"
- *  "women"        "men"      "women"       "men"
+ *  +----+          +----+   +----+         +----+          +-----+                           +------+
+ *  |    |          |    |   |    |         |    |          |     |                           |      |
+ *  |    |          |    |   |    |         |    |          |     |                           |      |
+ *  +----+          +----+   +----+         +----+          +-----+                           +------+
+ *  red-s          blue-s     red-m         blue-m         another-shoe                       unclassified-product
+ *  category:      category:  category:     category:      category: "women,winter-2018"      description: "quantum mechanics"
+ *  "women"        "men"      "women"       "men"          description: "Superb other shoe"
+ *                                                         brand: "nyke"
  *
- * Tests of the filter category used in the UI. The search results need be aggregated towards higher product model level
- * as much as possible.
+ * Tests of the filter category used in the UI along with some filters with attributes. The search results needs be
+ * aggregated towards higher product model level as much as possible.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
+class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * {@inheritdoc}
@@ -76,75 +82,163 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     /**
      * @test
      *
-     * Select a category set on a root product model without including sub categories shows the root product model and
-     * all other products having this category if there are some.
+     * Given:
+     *      - Select a category set on the root product model (without including sub categories)
+     *      - Filter on attribute set on the root product model
+     * should show:
+     *      - The root product model
      */
-    public function withoutIncludingSubCategoriesAggregateResultsTowardsRootProductModel(): void
+    public function withoutIncludingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
     {
-        $result = $this->executeFilter([['categories', Operators::IN_LIST, ['shoes']]]);
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['shoes']],
+            ['description', Operators::STARTS_WITH, 'Superb'],
+        ]);
         $this->assert($result, ['model-shoe']);
     }
 
     /**
      * @test
      *
-     * Select a category set on a sub product model without including sub categories shows the root product model and
-     * all other products having this category if there are some.
+     * Given:
+     *      - Select a category set on the root product model (including sub categories)
+     *      - Filter on attribute set on the root product model
+     * should show:
+     *      - The root product model
+     *      - Other products being in the category children and satisfying the attribute filter
      */
-    public function withoutIncludingSubCategoriesAggregateResultsTowardsSubProductModel(): void
+    public function includingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
     {
-        $result = $this->executeFilter([['categories', Operators::IN_LIST, ['collection-2018']]]);
-        $this->assert($result, ['model-m']);
-    }
-
-    /**
-     * @test
-     *
-     * Select a category set on a variant product without including sub categories shows the variant product and
-     * all other products having this category if there are some.
-     */
-    public function withoutIncludingSubCategoriesWhenNoAggregationIsPossibleShowProductVariant(): void
-    {
-        $result = $this->executeFilter([['categories', Operators::IN_LIST, ['women']]]);
-        $this->assert($result, ['red-s', 'red-m', 'another-shoe']);
-    }
-
-    /**
-     * @test
-     *
-     * Select all unclassified
-     */
-    public function showAllUnclassified(): void
-    {
-        $result = $this->executeFilter([['categories', Operators::UNCLASSIFIED, []]]);
-        $this->assert($result, ['unclassified-product']);
-    }
-
-    /**
-     * @test
-     *
-     * Select a category set on a root product model including sub categories shows the root product model and
-     * all other products having this category or any children category
-     */
-    public function includingSubCategoriesAggregateResultsTowardsRootProductModel(): void
-    {
-        // User selects the "shoes" category
-        $result = $this->executeFilter(
-            [['categories', Operators::IN_LIST, ['shoes', 'men', 'women', 'collection-2018']]]
-        );
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['shoes', 'men', 'women']],
+            ['description', Operators::STARTS_WITH, 'Superb'],
+        ]);
         $this->assert($result, ['model-shoe', 'another-shoe']);
     }
 
     /**
      * @test
      *
-     * Select a category set on a sub product model including sub categories shows the root product model and
-     * all other products having this category or any children category.
+     * Given:
+     *      - Select a category set on a root product model (without including sub categories)
+     *      - Filter on attribute set on the sub product model
+     * should show:
+     *      - The sub product model
      */
-    public function includingSubCategoriesAggregateResultsTowardsSubProductModel(): void
+    public function withoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInSubProductModel(): void
     {
-        $result = $this->executeFilter([['categories', Operators::IN_LIST, ['collection-2018', 'winter-2018']]]);
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['shoes']],
+            ['size', Operators::IN_LIST, ['s']],
+        ]);
+        $this->assert($result, ['model-s']);
+    }
+
+    /**
+     * @test
+     *
+     * Given:
+     *      - Select a category set on a root product model (Without including sub categories)
+     *      - Filter on attribute set on product-variants
+     * should show:
+     *      - The product variants satisfying the filter on attribute
+     */
+    public function withoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInProductVariant()
+    : void {
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['shoes']],
+            ['color', Operators::IN_LIST, ['blue']],
+        ]);
+        $this->assert($result, ['blue-s', 'blue-m']);
+    }
+
+    /**
+     * @test
+     *
+     * Given:
+     *      - Select a category set on a variant product
+     *      - Filter on attribute set on product model
+     * should show:
+     *      - The product variants satisfying the attribute filter
+     */
+    public function selectCategoryOnVariantProductAndFilterOnAttributeSetInProductModel()
+    : void {
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['men']],
+            ['description', Operators::STARTS_WITH, 'Superb'],
+        ]);
+        $this->assert($result, ['blue-s', 'blue-m']);
+    }
+
+    /**
+     * @test
+     *
+     * Given:
+     *      - Filter on attribute set on root product model
+     *      - Select a category set on a sub product model (including sub categories)
+     * should show:
+     *      - The product and the sub product model
+     */
+    public function includingSubCategoriesFilterAttributeSetOnRootProductModelAndSelectCategoryOnSubProductModel()
+    : void {
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['collection-2018', 'winter-2018']],
+            ['description', Operators::STARTS_WITH, 'Superb'],
+        ]);
         $this->assert($result, ['model-m', 'another-shoe']);
+    }
+
+    /**
+     * @test
+     *
+     * Given:
+     *      - Filter on attribute set on root product model
+     *      - Select a category set on a variant product
+     * should show:
+     *      - The product variants having the category and inheriting the root product model values
+     *      - Other products stasifying this filter.
+     */
+    public function filterAttributeSetOnRootProductModelAndSelectCategoryOnProductVariant(): void
+    {
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['women']],
+            ['description', Operators::STARTS_WITH, 'Superb'],
+        ]);
+        $this->assert($result, ['red-s', 'red-m', 'another-shoe']);
+    }
+
+    /**
+     * @test
+     *
+     * Select all unclassified and filter on an attribute
+     */
+    public function showAllUnclassifiedAndFilterOnAttribute(): void
+    {
+        $result = $this->executeFilter([
+            ['categories', Operators::UNCLASSIFIED, []],
+            ['description', Operators::EQUALS, 'quantum mechanics']
+        ]);
+        $this->assert($result, ['unclassified-product']);
+    }
+
+    /**
+     * @test
+     *
+     * Using the IS_EMPTY operator should only show the products and product models which should have the selected
+     * attribute (because it is in their family) and not the others.
+     */
+    public function selectIsEmptyOrNotEmptyOnAnAttribute(): void
+    {
+        sleep(5);
+        $result = $this->executeFilter([
+            ['brand', Operators::IS_EMPTY, '']
+        ]);
+        $this->assert($result, ['model-shoe']);
+
+        $result = $this->executeFilter([
+            ['brand', Operators::IS_NOT_EMPTY, '']
+        ]);
+        $this->assert($result, ['another-shoe']);
     }
 
     /**
@@ -173,7 +267,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             'family_variant' => 'shoe_size_color',
             'parent'         => null,
             'categories'     => ['shoes'],
-            'values'         => ['description' => [['data' => 'A description !', 'locale' => null, 'scope' => null]]],
+            'values'         => ['description' => [['data' => 'Superb shoe!', 'locale' => null, 'scope' => null]]],
         ]);
         $this->createProductModel([
             'code'           => 'model-s',
@@ -210,9 +304,17 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
         $this->createProduct('another-shoe', [
             'categories' => ['women', 'winter-2018'],
-            'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
+            'values' => [
+                'color'       => [['data' => 'blue', 'locale' => null, 'scope' => null]],
+                'description' => [['data' => 'Superb other shoe!', 'locale' => null, 'scope' => null]],
+                'brand' => [['data' => 'nyke', 'locale' => null, 'scope' => null]],
+            ],
         ]);
-        $this->createProduct('unclassified-product', []);
+        $this->createProduct('unclassified-product', [
+            'values' => [
+                'description' => [['data' => 'quantum mechanics', 'locale' => null, 'scope' => null]],
+            ],
+        ]);
     }
 
     /**
@@ -260,10 +362,17 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             'code'      => 'm'
         ]);
 
+        $this->createAttribute([
+            'code'        => 'brand',
+            'type'        => AttributeTypes::TEXT,
+            'localizable' => false,
+            'scopable'    => false,
+        ]);
+
         // Family & Family variant
         $this->createFamily([
             'code'                   => 'shoes',
-            'attributes'             => ['sku', 'color', 'size', 'description'],
+            'attributes'             => ['sku', 'color', 'size', 'description', 'brand'],
             'attribute_requirements' => [],
         ]);
 
