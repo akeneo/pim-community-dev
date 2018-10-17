@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository as BaseJobExecutionRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository as BaseJobExecutionRepository;
 
 /**
  * Override of job execution repository

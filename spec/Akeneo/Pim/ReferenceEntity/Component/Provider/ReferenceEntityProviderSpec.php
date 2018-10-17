@@ -4,10 +4,9 @@ namespace spec\Akeneo\Pim\ReferenceEntity\Component\Provider;
 
 use Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
-use Prophecy\Argument;
 
 class ReferenceEntityProviderSpec extends ObjectBehavior {
     function it_is_initializable()

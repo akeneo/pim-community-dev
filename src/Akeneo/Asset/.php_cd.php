@@ -54,25 +54,31 @@ $rules = [
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
         'Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface',
-        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
-        'Pim\Bundle\EnrichBundle\Controller\FileController', // We should not use public constant
+        'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController', // We should not use public constant
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
-        'Pim\Bundle\EnrichBundle\Flash\Message', // Related to the front end
+        'Akeneo\Platform\Bundle\UIBundle\Flash\Message', // Related to the front end
         'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType',
         'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
+        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
+        'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
+        'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
+        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
+        // TODO: we must not depend on Platefom
+        'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory', // Related to the front end (symfony form type)
-        'Pim\Bundle\EnrichBundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
-        'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
-        'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // Related to the front end (symfony form type)
-        'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
-        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
+        'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface', // Related to the front end (symfony form type)
+        'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end (symfony form type)
+        'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface', // Related to the front end (symfony form type)
     ])->in('Akeneo\Asset\Bundle'),
     $builder->only([
         'Symfony\Component',

@@ -1,7 +1,6 @@
 parameters:
     pimee_enrich.repository.attribute.search.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
     pimee_enrich.repository.attribute.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
-    pim_enrich.repository.job_instance.class:  PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository
     pim_enrich.repository.job_execution.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository
 
 services:
@@ -13,7 +12,7 @@ services:
             - '%pimee_security.entity.attribute_group_access.class%'
 
     pimee_enrich.repository.asset_category_choices:
-        class: '%pim_enrich.repository.category.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository'
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
@@ -25,3 +24,9 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pimee_catalog.filter.attribute_view_right'
             - '%pim_catalog.entity.attribute.class%'
+
+    pim_enrich.repository.job_instance:
+        class: 'PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_batch.entity.job_instance.class%'

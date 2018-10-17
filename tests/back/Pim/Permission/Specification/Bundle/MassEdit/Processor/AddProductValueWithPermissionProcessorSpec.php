@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\MassEdit\Processor;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddProductValueProcessor;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -13,8 +15,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

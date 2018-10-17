@@ -3,10 +3,10 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as LocalizationPresenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;

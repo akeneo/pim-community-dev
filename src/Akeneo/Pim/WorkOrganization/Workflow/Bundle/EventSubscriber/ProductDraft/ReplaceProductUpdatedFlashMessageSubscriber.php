@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;

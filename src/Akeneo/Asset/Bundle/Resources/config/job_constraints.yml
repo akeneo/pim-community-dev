@@ -67,7 +67,7 @@ services:
 
     # Mass Edit -------------------------------------------------------------------------------------------------------
     pimee_product_asset.connector.job.job_parameters.constraints.mass_edit_asset:
-        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit'
         arguments:
             -
                 - 'classify_assets'

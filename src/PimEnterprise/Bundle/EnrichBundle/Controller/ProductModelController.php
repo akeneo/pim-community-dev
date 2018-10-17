@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController as BaseProductModelController;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -18,7 +19,6 @@ use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Controller\ProductModelController as BaseProductModelController;
 
 /**
  * Product model controller

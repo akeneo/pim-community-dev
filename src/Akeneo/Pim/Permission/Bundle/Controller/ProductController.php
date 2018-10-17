@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller;
 
-use Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController as BaseController;
+use Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController as BaseController;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;

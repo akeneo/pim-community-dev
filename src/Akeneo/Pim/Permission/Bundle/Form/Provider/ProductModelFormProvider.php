@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Permission\Bundle\Form\Provider;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
