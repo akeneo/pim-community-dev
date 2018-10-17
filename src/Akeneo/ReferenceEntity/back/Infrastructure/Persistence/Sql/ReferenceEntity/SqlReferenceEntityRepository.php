@@ -120,7 +120,7 @@ SQL;
         );
     }
 
-    public function all(): \Generator
+    public function all(): \Iterator
     {
         $selectAllQuery = <<<SQL
         SELECT identifier, labels

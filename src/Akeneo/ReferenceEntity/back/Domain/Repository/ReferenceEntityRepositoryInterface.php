@@ -27,6 +27,8 @@ interface ReferenceEntityRepositoryInterface
      */
     public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity;
 
+    public function all(): \Iterator;
+
     /**
      * @throws ReferenceEntityNotFoundException
      */
