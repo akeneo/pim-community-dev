@@ -8,18 +8,18 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/common/property',
-        'routing',
-        'pim/router',
-        'pim/user-context',
-        'pim/i18n',
-        'pim/template/form/attribute-group/list'
-    ],
+    'jquery',
+    'underscore',
+    'oro/translator',
+    'pim/form',
+    'pim/fetcher-registry',
+    'pim/common/property',
+    'routing',
+    'pim/router',
+    'pim/user-context',
+    'pim/i18n',
+    'pim/template/form/attribute-group/list'
+],
     function (
         $,
         _,
@@ -58,8 +58,8 @@ define([
              */
             render: function () {
                 this.$el.html(this.template({
-                    attributeGroups: _.sortBy(_.values(this.attributeGroups), function(attributeGroup) {
-                        return [attributeGroup.sort_order, attributeGroup.code].join('_');
+                    attributeGroups: _.sortBy(_.values(this.attributeGroups), function (attributeGroup) {
+                        return attributeGroup.sort_order;
                     }),
                     i18n: i18n,
                     uiLocale: UserContext.get('catalogLocale')
@@ -70,10 +70,10 @@ define([
                     containment: 'parent',
                     tolerance: 'pointer',
                     update: this.updateAttributeOrders.bind(this),
-                    helper: function(e, tr) {
+                    helper: function (e, tr) {
                         var $originals = tr.children();
                         var $helper = tr.clone();
-                        $helper.children().each(function(index) {
+                        $helper.children().each(function (index) {
                             $(this).width($originals.eq(index).width());
                         });
 

@@ -90,7 +90,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
             ->during('save', [$object]);
     }
 
-    function it_get_identifier_by_identifier()
+    function it_gets_the_identifier_attribute()
     {
         $identifier = (new Attribute())->setType(AttributeTypes::IDENTIFIER);
 

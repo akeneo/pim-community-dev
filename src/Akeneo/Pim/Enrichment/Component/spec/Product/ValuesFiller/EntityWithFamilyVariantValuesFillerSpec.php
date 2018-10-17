@@ -158,10 +158,12 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         AttributeInterface $name,
         AttributeInterface $color,
         AttributeInterface $sku,
+        AttributeInterface $intCodeAttribute,
         ValueInterface $skuValue,
         ValueInterface $nameFRValue,
         ValueInterface $nameENValue,
-        ValueInterface $colorValue
+        ValueInterface $colorValue,
+        ValueInterface $intCodeValue
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
@@ -178,7 +180,12 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
 
-        $expectedParentAttributes = [$name];
+        $intCodeAttribute->getCode()->willReturn('1');
+        $intCodeAttribute->getType()->willReturn('pim_catalog_text');
+        $intCodeAttribute->isLocalizable()->willReturn(false);
+        $intCodeAttribute->isScopable()->willReturn(false);
+
+        $expectedParentAttributes = [$name, $intCodeAttribute];
         $expectedAttributes = [$sku, $color];
 
         $parentEntity->getParent()->willReturn(null);
@@ -187,7 +194,7 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         $attributesProvider->getAttributes($parentEntity)->willReturn($expectedParentAttributes);
         $attributesProvider->getAttributes($entity)->willReturn($expectedAttributes);
 
-        $valuesResolver->resolveEligibleValues(['sku' => $sku, 'name' => $name, 'color' => $color])
+        $valuesResolver->resolveEligibleValues(['sku' => $sku, 'name' => $name, 'color' => $color, 1 => $intCodeAttribute])
             ->willReturn([
                 [
                     'attribute' => 'sku',
@@ -212,6 +219,12 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
                     'type' => 'pim_catalog_simpleselect',
                     'locale' => null,
                     'scope' => null
+                ],
+                [
+                    'attribute' => '1',
+                    'type' => 'pim_catalog_text',
+                    'locale' => null,
+                    'scope' => null
                 ]
             ]);
 
@@ -232,7 +245,11 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         $colorValue->getLocale()->willReturn(null);
         $colorValue->getScope()->willReturn(null);
 
-        $entity->getValues()->willReturn([$skuValue, $nameFRValue, $nameENValue, $colorValue]);
+        $intCodeValue->getAttribute()->willReturn($intCodeAttribute);
+        $intCodeValue->getLocale()->willReturn(null);
+        $intCodeValue->getScope()->willReturn(null);
+
+        $entity->getValues()->willReturn([$skuValue, $nameFRValue, $nameENValue, $colorValue, $intCodeValue]);
 
         $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldNotBeCalled();
 

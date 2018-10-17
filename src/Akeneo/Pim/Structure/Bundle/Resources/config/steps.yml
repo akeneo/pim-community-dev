@@ -298,6 +298,21 @@ services:
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
 
+    pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'ensure_attribute_group_order'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order'
+
+    pim_connector.step.xlsx_attribute_group_import.ensure_attribute_group_order:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'ensure_attribute_group_order'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order'
 
     ### Group type
     pim_connector.step.csv_group_type_export.export:

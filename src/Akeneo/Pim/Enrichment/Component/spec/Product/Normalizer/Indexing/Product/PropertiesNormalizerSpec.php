@@ -209,9 +209,75 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $product->isVariant()->willReturn(false);
         $product->getValues()
-            ->shouldBeCalledTimes(2)
+            ->shouldBeCalledTimes(4)
             ->willReturn($valueCollection);
         $valueCollection->isEmpty()->willReturn(false);
+
+        $serializer->normalize($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])
+            ->willReturn(
+                [
+                    'a_size-decimal' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '10.51',
+                        ],
+                    ],
+                    'sku-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'sku label',
+                        ],
+                    ],
+                ]
+            );
+
+        $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            [
+                'id' => '67',
+                'identifier' => 'sku-001',
+                'created' => $now->format('c'),
+                'updated' => $now->format('c'),
+                'family' => [
+                    'code' => 'family',
+                    'labels' => [
+                        'fr_FR' => 'Une famille',
+                        'en_US' => 'A family',
+                    ],
+                ],
+                'enabled' => true,
+                'categories' => ['first_category', 'second_category'],
+                'groups' => ['first_group', 'second_group'],
+                'in_group' => [
+                    'first_group' => true,
+                    'second_group' => true,
+                ],
+                'completeness' => [
+                    'ecommerce' => [
+                        'en_US' => [
+                            66,
+                        ],
+                    ],
+                ],
+                'values' => [
+                    'a_size-decimal' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '10.51',
+                        ],
+                    ],
+                    'sku-text' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'sku label',
+                        ],
+                    ],
+                ],
+                'label' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'sku label',
+                    ],
+                ],
+                'ancestors' => ['ids' => [], 'codes' => []],
+            ]
+        );
+
+        $family->getAttributeAsLabel()->willReturn(null);
 
         $serializer->normalize($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])
             ->willReturn(
@@ -308,7 +374,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             $product->getWrappedObject()->getCreated(),
             ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         )->willReturn($now->format('c'));
-
 
         $product->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($sku);

@@ -51,7 +51,12 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     protected function doesAttributeAsLabelBelongToFamily(FamilyInterface $family)
     {
-        return in_array($family->getAttributeAsLabel()->getCode(), $family->getAttributeCodes());
+        $attributeAsLabel = $family->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return false;
+        }
+
+        return in_array($attributeAsLabel->getCode(), $family->getAttributeCodes());
     }
 
     /**
@@ -61,9 +66,14 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
      */
     protected function isAttributeAsLabelTypeValid(FamilyInterface $family)
     {
+        $attributeAsLabel = $family->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return false;
+        }
+
         return in_array($family->getAttributeAsLabel()->getType(), [
-                AttributeTypes::IDENTIFIER,
-                AttributeTypes::TEXT
-            ]);
+            AttributeTypes::IDENTIFIER,
+            AttributeTypes::TEXT,
+        ]);
     }
 }
