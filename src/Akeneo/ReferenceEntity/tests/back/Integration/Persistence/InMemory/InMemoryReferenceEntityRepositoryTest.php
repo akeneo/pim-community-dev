@@ -79,6 +79,21 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_all_reference_entities()
+    {
+        $designer = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'), [], Image::createEmpty());
+        $brand = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('brand'), [], Image::createEmpty());
+        $this->referenceEntityRepository->create($designer);
+        $this->referenceEntityRepository->create($brand);
+
+        $referenceEntities = iterator_to_array($this->referenceEntityRepository->all());
+        Assert::assertSame($designer, $referenceEntities[0]);
+        Assert::assertSame($brand, $referenceEntities[1]);
+    }
+
+    /**
+     * @test
+     */
     public function it_tells_if_the_repository_has_the_reference_entity()
     {
         $anotherIdentifier = ReferenceEntityIdentifier::fromString('another_identifier');

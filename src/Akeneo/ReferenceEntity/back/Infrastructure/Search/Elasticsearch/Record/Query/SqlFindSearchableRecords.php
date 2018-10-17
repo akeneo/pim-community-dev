@@ -26,8 +26,8 @@ class SqlFindSearchableRecords
     public function byRecordIdentifier(RecordIdentifier $recordIdentifier): ?SearchableRecordItem
     {
         $sqlQuery = <<<SQL
-        SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, ee.value_collection
-        FROM akeneo_reference_entity_record AS ee
+        SELECT identifier, reference_entity_identifier, code, labels, value_collection
+        FROM akeneo_reference_entity_record
         WHERE identifier = :identifier;
 SQL;
 
@@ -46,8 +46,8 @@ SQL;
     public function byReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): \Iterator
     {
         $sqlQuery = <<<SQL
-        SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, ee.value_collection
-        FROM akeneo_reference_entity_record AS ee
+        SELECT identifier, reference_entity_identifier, code, labels, value_collection
+        FROM akeneo_reference_entity_record
         WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
 

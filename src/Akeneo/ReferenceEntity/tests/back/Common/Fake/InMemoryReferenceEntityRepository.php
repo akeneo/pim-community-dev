@@ -78,4 +78,9 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
     {
         return isset($this->referenceEntities[(string) $identifier]);
     }
+
+    public function all(): \Iterator
+    {
+        return new \ArrayIterator(array_values($this->referenceEntities));
+    }
 }

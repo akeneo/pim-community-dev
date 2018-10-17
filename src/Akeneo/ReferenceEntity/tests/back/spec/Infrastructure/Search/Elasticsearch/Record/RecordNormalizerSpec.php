@@ -15,7 +15,6 @@ use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\Sear
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordSearchMatrixNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -76,20 +75,19 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ValueKeyCollection::fromValueKeys([ValueKey::createFromNormalized('name')])
             );
 
-        $normalizedRecord = $this->normalizeRecord($recordIdentifier);
-        $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
-        $normalizedRecord['code']->shouldBeEqualTo('stark');
-        $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
-        $normalizedRecord['record_list_search']->shouldBeEqualTo([
+        $this->normalizeRecord($recordIdentifier)->shouldBeANormalizedRecord(
+            'designer_stark_fingerprint',
+            'stark',
+            'designer',
+            [
                 'ecommerce' => [
-                    'fr_FR' => "stark Philippe Stark Bio",
+                    'fr_FR' => 'stark Philippe Stark Bio',
                 ],
                 'mobile'    => [
-                    'en_US' => "stark  Bio",
+                    'en_US' => 'stark  Bio',
                 ],
             ]
         );
-        $normalizedRecord['updated_at']->shouldBeString();
     }
 
     function it_normalizes_a_searchable_records_by_reference_entity(
