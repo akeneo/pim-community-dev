@@ -168,7 +168,7 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
 
     const recordList = await await getElement(this.page, 'Records');
-    recordList.search(searchInput);
+    await recordList.search(searchInput);
   });
 
   Then('the user should see a filtered list of records', async function() {
@@ -184,13 +184,14 @@ module.exports = async function(cucumber) {
 
   Then('the user should see an unfiltered list of records', async function() {
     const recordList = await await getElement(this.page, 'Records');
-    const isValid = await [
+    const expectedRecordIdentifiers = [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
       'designer_coco_34aee120-fa95-4ff2-8439-bea116120e34',
-    ].reduce(async (isValid, expectedRecord) => {
-      return (await isValid) && (await recordList.hasRecord(expectedRecord));
-    }, true);
-    assert.strictEqual(isValid, true);
+    ];
+
+    for (const expectedRecordIdentifier of expectedRecordIdentifiers) {
+      await recordList.hasRecord(expectedRecordIdentifier);
+    }
   });
 };

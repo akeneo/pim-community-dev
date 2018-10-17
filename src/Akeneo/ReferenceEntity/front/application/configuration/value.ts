@@ -1,17 +1,10 @@
 import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import Channel from 'akeneoreferenceentity/domain/model/channel';
-import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import Locale from 'akeneoreferenceentity/domain/model/locale';
-import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 export class InvalidArgument extends Error {}
 
 export type Denormalizer = (normalizedValue: NormalizedValue) => Value;
 export type ViewGenerator = (value: Value) => any;
-export type CellGenerator = (value: NormalizedValue) => any;
+export type CellView = React.SFC<{value: NormalizedValue}>;
 
 type ValueConfig = {
   [type: string]: {
@@ -22,7 +15,7 @@ type ValueConfig = {
       view: ViewGenerator;
     };
     cell: {
-      cell: CellGenerator;
+      cell: CellView;
     };
   };
 };
@@ -102,54 +95,7 @@ ${moduleExample}`
   return typeConfiguration.view.view;
 };
 
-const generateKey = (attributeIdentifier: AttributeIdentifier, channel: ChannelReference, locale: LocaleReference) => {
-  let key = attributeIdentifier.stringValue();
-  key = !channel.isEmpty() ? `${key}_${channel.stringValue()}` : key;
-  key = !locale.isEmpty() ? `${key}_${locale.stringValue()}` : key;
-
-  return key;
-};
-
-const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
-  if (channel.isEmpty()) {
-    throw new InvalidArgument('A column cannot be generated from an empty ChannelReference');
-  }
-
-  if (locale.isEmpty()) {
-    throw new InvalidArgument('A column cannot be generated from an empty LocaleReference');
-  }
-
-  return {
-    key: generateKey(
-      attribute.identifier,
-      attribute.valuePerChannel ? channel : ChannelReference.create(null),
-      attribute.valuePerLocale ? locale : LocaleReference.create(null)
-    ),
-    labels: attribute.getLabelCollection().normalize(),
-    type: attribute.getType(),
-    channel: channel.normalize() as string,
-    locale: locale.normalize() as string,
-  };
-};
-
-export const getColumns = (attributes: Attribute[], channels: Channel[]) => {
-  return attributes
-    .sort((first: Attribute, second: Attribute) => first.order - second.order)
-    .reduce((columns: Column[], attribute: Attribute) => {
-      channels.forEach((channel: Channel) => {
-        channel.locales.forEach((locale: Locale) => {
-          columns.push(
-            getColumn(attribute, ChannelReference.create(channel.code), LocaleReference.create(locale.code))
-          );
-        });
-      });
-
-      return columns;
-    }, []);
-};
-
-export const getCellView = (config: ValueConfig) => (attribute: Attribute): CellGenerator => {
-  const attributeType = attribute.getType();
+export const getCellView = (config: ValueConfig) => (attributeType: AttributeType): CellView => {
   const typeConfiguration = config[attributeType];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.cell) {
@@ -170,7 +116,7 @@ Actual conf: ${JSON.stringify(config)}`
   if (undefined === typeConfiguration.cell.cell) {
     const capitalizedAttributeType = attributeType.charAt(0).toUpperCase() + attributeType.slice(1);
     const moduleExample = `
-export const view = (value: Normalized${capitalizedAttributeType}Value) => {
+export const cell = (value: Normalized${capitalizedAttributeType}Value) => {
   return <span>{{value.getData()}}</span>;
 };`;
 

@@ -1,4 +1,4 @@
-import Fetcher from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import hydrator from 'akeneoreferenceentity/application/hydrator/reference-entity';
 import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
@@ -8,19 +8,28 @@ import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handl
 
 const routing = require('routing');
 
-export interface ReferenceEntityFetcher extends Fetcher<ReferenceEntityIdentifier, ReferenceEntity> {}
+export interface ReferenceEntityFetcher {
+  fetch: (identifier: ReferenceEntityIdentifier) => Promise<ReferenceEntityResult>;
+  fetchAll: () => Promise<ReferenceEntity[]>;
+  search: (query: Query) => Promise<{items: ReferenceEntity[]; total: number}>;
+}
+
+export type ReferenceEntityResult = {
+  referenceEntity: ReferenceEntity;
+  recordCount: number;
+};
 
 export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetcher {
   constructor(private hydrator: (backendReferenceEntity: any) => ReferenceEntity) {
     Object.freeze(this);
   }
 
-  async fetch(identifier: ReferenceEntityIdentifier): Promise<ReferenceEntity> {
+  async fetch(identifier: ReferenceEntityIdentifier): Promise<ReferenceEntityResult> {
     const backendReferenceEntity = await getJSON(
       routing.generate('akeneo_reference_entities_reference_entity_get_rest', {identifier: identifier.stringValue()})
     ).catch(errorHandler);
 
-    return this.hydrator(backendReferenceEntity);
+    return {referenceEntity: this.hydrator(backendReferenceEntity), recordCount: backendReferenceEntity.record_count};
   }
 
   async fetchAll(): Promise<ReferenceEntity[]> {

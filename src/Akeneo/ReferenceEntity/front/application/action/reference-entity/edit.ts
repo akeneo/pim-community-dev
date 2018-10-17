@@ -5,16 +5,17 @@ import {
   referenceEntityEditionImageUpdated,
   referenceEntityEditionErrorOccured,
   referenceEntityEditionSucceeded,
+  referenceEntityRecordCountUpdated,
 } from 'akeneoreferenceentity/domain/event/reference-entity/edit';
 import {
   notifyReferenceEntityWellSaved,
   notifyReferenceEntitySaveFailed,
 } from 'akeneoreferenceentity/application/action/reference-entity/notify';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
-import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import referenceEntityFetcher, {
+  ReferenceEntityResult,
+} from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import File from 'akeneoreferenceentity/domain/model/file';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
@@ -41,9 +42,11 @@ export const saveReferenceEntity = () => async (dispatch: any, getState: () => E
   dispatch(referenceEntityEditionSucceeded());
   dispatch(notifyReferenceEntityWellSaved());
 
-  const savedReferenceEntity: ReferenceEntity = await referenceEntityFetcher.fetch(referenceEntity.getIdentifier());
-
-  dispatch(referenceEntityEditionReceived(savedReferenceEntity.normalize()));
+  const referenceEntityResult: ReferenceEntityResult = await referenceEntityFetcher.fetch(
+    referenceEntity.getIdentifier()
+  );
+  dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
+  dispatch(referenceEntityEditionReceived(referenceEntityResult.referenceEntity.normalize()));
 };
 
 export const referenceEntityLabelUpdated = (value: string, locale: string) => (

@@ -49,12 +49,12 @@ class RecordItem
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER                 => $this->identifier,
+            self::IDENTIFIER                  => $this->identifier,
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
-            self::CODE                       => $this->code,
-            self::LABELS                     => $this->labels,
-            self::IMAGE                      => $this->image,
-            self::VALUES                     => $this->values,
+            self::CODE                        => $this->code,
+            self::LABELS                      => $this->labels,
+            self::IMAGE                       => $this->image,
+            self::VALUES                      => $this->values,
         ];
     }
 }

@@ -18,6 +18,7 @@ export interface Column {
   type: string;
   channel: string;
   locale: string;
+  code: string;
 }
 
 export interface Query {
@@ -106,9 +107,6 @@ export default <Element>(
       break;
     case 'GRID_START_LOADING_RESULTS':
       state = {...state, isFetching: true};
-      break;
-    case 'GRID_STOP_LOADING_RESULTS':
-      state = {...state, isFetching: false};
       break;
     case 'GRID_STOP_LOADING_RESULTS':
       state = {...state, isFetching: false};

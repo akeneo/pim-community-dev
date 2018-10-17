@@ -61,7 +61,10 @@ pim_reference_entity:
                 should_be_unique: 'This code already exists for this entity.'
         no_data:
             title: There are no record for {{ entityLabel }}
-            subtitle:   Click on the button "Add new" to create the first record
+            subtitle: Click on the button "Add new" to create the first record
+        no_result:
+            title: There are no result for your search
+            subtitle: Try again with new search criteria.
         button:
             save: Save
             create: Add new
@@ -89,11 +92,15 @@ pim_reference_entity:
         delete_all:
             confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
         grid:
+            search: Search on label, code and text attributes
             column:
                 code: Code
                 image: Image
                 label: Label
                 action: Actions
+            more_result:
+                title: That's not it!
+                description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
         tab:
             enrich: Enrich
         notification:

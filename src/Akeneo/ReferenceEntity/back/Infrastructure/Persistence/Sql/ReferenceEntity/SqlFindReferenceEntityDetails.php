@@ -55,6 +55,7 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
         return $this->hydrateReferenceEntityDetails(
             $result['identifier'],
             $result['labels'],
+            $result['record_count'],
             $result['file_key'],
             $result['original_filename']);
     }
@@ -62,13 +63,19 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
     private function fetchResult(ReferenceEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.labels, fi.file_key, fi.original_filename
-        FROM akeneo_reference_entity_reference_entity as ee
-        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image
-        WHERE ee.identifier = :identifier;
+        SELECT
+            re.identifier,
+            re.labels,
+            fi.file_key,
+            fi.original_filename, (
+                SELECT count(*) FROM akeneo_reference_entity_record WHERE reference_entity_identifier = :identifier
+            ) as record_count
+        FROM akeneo_reference_entity_reference_entity as re
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
+        WHERE re.identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
         ]);
 
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
@@ -78,11 +85,6 @@ SQL;
     }
 
     /**
-     * @param string  $identifier
-     * @param string  $normalizedLabels
-     * @param ?string $fileKey
-     * @param ?string $originalFilename
-     *
      * @return ReferenceEntityDetails
      *
      * @throws \Doctrine\DBAL\DBALException
@@ -90,15 +92,17 @@ SQL;
     private function hydrateReferenceEntityDetails(
         string $identifier,
         string $normalizedLabels,
+        string $recordCount,
         ?string $fileKey,
         ?string $originalFilename
     ): ReferenceEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
-        $labels = json_decode($normalizedLabels, true);
+        $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $entityImage = Image::createEmpty();
+        $recordCount = Type::getType(Type::INTEGER)->convertToPHPValue($recordCount, $platform);
 
+        $entityImage = Image::createEmpty();
         if (null !== $fileKey && null !== $originalFilename) {
             $file = new FileInfo();
             $file->setKey($fileKey);
@@ -110,6 +114,7 @@ SQL;
         $referenceEntityItem->identifier = ReferenceEntityIdentifier::fromString($identifier);
         $referenceEntityItem->labels = LabelCollection::fromArray($labels);
         $referenceEntityItem->image = $entityImage;
+        $referenceEntityItem->recordCount = $recordCount;
 
         return $referenceEntityItem;
     }

@@ -1,4 +1,4 @@
-import {getDenormalizer, getFieldView} from 'akeneoreferenceentity/application/configuration/value';
+import {getDenormalizer, getFieldView, getCellView} from 'akeneoreferenceentity/application/configuration/value';
 
 jest.mock('require-context', name => {});
 
@@ -107,6 +107,58 @@ config:
         akeneoreferenceentity/application/configuration/value:
             text:
                 view: '@my_data_view'
+
+Actual conf: ${JSON.stringify({text: {}})}`);
+  });
+
+  test('I can get a cell value view', () => {
+    const getDataCellView = getCellView({
+      text: {
+        cell: {
+          cell: value => {
+            expect(value.data).toEqual('data to render');
+
+            return true;
+          },
+        },
+      },
+    });
+
+    const value = {data: 'data to render', attribute: {getType: () => 'text'}};
+    expect(getDataCellView('text')(value)).toBe(true);
+    expect.assertions(2);
+  });
+
+  test('I get an error if the configuration does not have an proper text cell view', () => {
+    const getDataCellView = getCellView({
+      text: {
+        cell: {},
+      },
+    });
+
+    expect(() => {
+      getDataCellView('text');
+    }).toThrowError(`The module you are exposing to provide a view for a data of type "text" needs to
+export a "cell" property. Here is an example of a valid view es6 module for the "text" type:
+
+export const cell = (value: NormalizedTextValue) => {
+  return <span>{{value.getData()}}</span>;
+};`);
+  });
+
+  test('I get an error if the configuration does not have valid configurations', () => {
+    const getDataCellView = getCellView({
+      text: {},
+    });
+
+    expect(() => {
+      getDataCellView('text');
+    }).toThrowError(`Cannot get the data cell view generator for type "text". The configuration should look like this:
+config:
+    config:
+        akeneoreferenceentity/application/configuration/value:
+            text:
+                cell: '@my_data_cell_view'
 
 Actual conf: ${JSON.stringify({text: {}})}`);
   });

@@ -278,7 +278,7 @@ export default connect(
           dispatch(recordImageUpdated(image));
         },
         onDelete: (record: Record) => {
-          dispatch(deleteRecord(record));
+          dispatch(deleteRecord(record.getReferenceEntityIdentifier(), record.getCode()));
         },
         onOpenDeleteModal: () => {
           dispatch(openDeleteModal());

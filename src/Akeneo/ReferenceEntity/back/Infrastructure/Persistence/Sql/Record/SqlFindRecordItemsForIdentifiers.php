@@ -63,6 +63,7 @@ SQL;
         $recordItems = [];
         foreach ($results as $result) {
             $image = null !== $result['image'] ? json_decode($result['image'], true) : null;
+            $image = null !== $result['image'] ? ['filePath' => $image['file_key'], 'originalFilename' => $image['original_filename']] : null;
             $recordItems[] = $this->hydrateRecordItem(
                 $result['identifier'],
                 $result['reference_entity_identifier'],

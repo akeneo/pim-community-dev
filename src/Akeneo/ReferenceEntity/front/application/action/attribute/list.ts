@@ -3,8 +3,16 @@ import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/ref
 import attributeFetcher from 'akeneoreferenceentity/infrastructure/fetcher/attribute';
 import {attributeListUpdated} from 'akeneoreferenceentity/domain/event/attribute/list';
 import {updateColumns} from 'akeneoreferenceentity/application/event/search';
-import {getColumns} from 'akeneoreferenceentity/application/configuration/value';
 import {notifyAttributeListUpdateFailed} from 'akeneoreferenceentity/application/action/attribute/notify';
+import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import {Column} from 'akeneoreferenceentity/application/reducer/grid';
+import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import Channel from 'akeneoreferenceentity/domain/model/channel';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
+
+export class InvalidArgument extends Error {}
 
 export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntity = denormalizeReferenceEntity(getState().form.data);
@@ -17,4 +25,43 @@ export const updateAttributeList = () => async (dispatch: any, getState: () => E
 
     throw error;
   }
+};
+
+const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
+  if (channel.isEmpty()) {
+    throw new InvalidArgument('A column cannot be generated from an empty ChannelReference');
+  }
+
+  if (locale.isEmpty()) {
+    throw new InvalidArgument('A column cannot be generated from an empty LocaleReference');
+  }
+
+  return {
+    key: generateKey(
+      attribute.identifier,
+      attribute.valuePerChannel ? channel : ChannelReference.create(null),
+      attribute.valuePerLocale ? locale : LocaleReference.create(null)
+    ),
+    labels: attribute.getLabelCollection().normalize(),
+    type: attribute.getType(),
+    channel: channel.normalize() as string,
+    locale: locale.normalize() as string,
+    code: attribute.getCode().stringValue(),
+  };
+};
+
+export const getColumns = (attributes: Attribute[], channels: Channel[]) => {
+  return attributes
+    .sort((first: Attribute, second: Attribute) => first.order - second.order)
+    .reduce((columns: Column[], attribute: Attribute) => {
+      channels.forEach((channel: Channel) => {
+        channel.locales.forEach((locale: Locale) => {
+          columns.push(
+            getColumn(attribute, ChannelReference.create(channel.code), LocaleReference.create(locale.code))
+          );
+        });
+      });
+
+      return columns;
+    }, []);
 };

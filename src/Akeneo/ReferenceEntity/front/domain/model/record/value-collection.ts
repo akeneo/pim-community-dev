@@ -1,6 +1,7 @@
 import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoreferenceentity/domain/model/record/value';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 class InvalidTypeError extends Error {}
 
@@ -35,5 +36,17 @@ export default class ValueCollection {
     return this.values.map((value: Value) => value.normalizeMinimal());
   }
 }
+
+export const generateKey = (
+  attributeIdentifier: AttributeIdentifier,
+  channel: ChannelReference,
+  locale: LocaleReference
+) => {
+  let key = attributeIdentifier.stringValue();
+  key = !channel.isEmpty() ? `${key}_${channel.stringValue()}` : key;
+  key = !locale.isEmpty() ? `${key}_${locale.stringValue()}` : key;
+
+  return key;
+};
 
 export const createValueCollection = ValueCollection.create;

@@ -23,10 +23,12 @@ const stateToQuery = async (state: EditState): Promise<Query> => {
   };
 };
 
+export const MAX_DISPLAYED_RECORDS = 500;
+
 export const needMoreResults = () => (dispatch: any, getState: any) => {
   if (
     !getState().grid.isFetching &&
-    getState().grid.items.length < 500 &&
+    getState().grid.items.length < MAX_DISPLAYED_RECORDS &&
     getState().grid.items.length < getState().grid.total
   ) {
     dispatch(updateRecordResults(true));
