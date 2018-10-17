@@ -7,6 +7,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.get_reference_entity_identifier_for_attribute'
+            - '@pim_catalog.command_launcher'
         tags:
             - { name: kernel.event_subscriber }
 
