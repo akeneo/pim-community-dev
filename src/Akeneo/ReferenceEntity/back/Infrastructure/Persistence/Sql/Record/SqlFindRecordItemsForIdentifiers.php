@@ -101,7 +101,7 @@ SQL;
 
     private function cleanValues(string $values): array
     {
-        $cleanValues = strip_tags(html_entity_decode($values));
+        $cleanValues = strip_tags(html_entity_decode(str_replace(["\r", "\n"], ' ', $values)));
 
         return json_decode($cleanValues, true);
     }
