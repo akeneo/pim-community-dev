@@ -19,6 +19,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -267,6 +269,54 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('210'),
             AttributeAllowedExtensions::fromList(['png'])
+        ));
+    }
+
+    /**
+     * @Given /^a reference entity with a record attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     */
+    public function aReferenceEntityWithARecordAttributeAndTheLabelEqualTo(
+        string $attributeCode,
+        string $label,
+        string $localeCode
+    ) {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(RecordAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([$localeCode => $label]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            ReferenceEntityIdentifier::fromString('dummy_identifier')
+        ));
+    }
+
+    /**
+     * @Given /^a reference entity with a record collection attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     */
+    public function aReferenceEntityWithARecordCollectionAttributeAndTheLabelEqualTo(
+        string $attributeCode,
+        string $label,
+        string $localeCode
+    ) {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(RecordCollectionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([$localeCode => $label]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            ReferenceEntityIdentifier::fromString('dummy_identifier')
         ));
     }
 
@@ -933,5 +983,47 @@ class EditAttributeContext implements Context
             'value_per_locale' => $valuePerChannel,
         ];
         $this->updateAttribute($updateValuePerChannel);
+    }
+
+    /**
+     * @Given /^a reference entity with a record attribute \'([^\']*)\' non required$/
+     */
+    public function aReferenceEntityWithARecordAttributeNonRequired($attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(RecordAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('dummy_identifier')
+        ));
+    }
+
+    /**
+     * @Given /^a reference entity with a record collection attribute \'([^\']*)\' non required$/
+     */
+    public function aReferenceEntityWithARecordCollectionAttributeNonRequired($attributeCode)
+    {
+        $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
+
+        $this->attributeRepository->create(RecordCollectionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('dummy_identifier')
+        ));
     }
 }
