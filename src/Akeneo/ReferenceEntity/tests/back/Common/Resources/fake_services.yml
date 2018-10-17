@@ -93,3 +93,8 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_locale.locale_subscriber:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
