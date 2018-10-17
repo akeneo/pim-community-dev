@@ -9,6 +9,7 @@
 - PIM-7746: Fix issue when an attribute code is numeric
 - PIM-7727: parent filter search case insensitive
 - PIM-7724: fix role label update and error displayed on permission save action
+- PIM-7747: convert boolean strings in User converter
 
 # 2.3.11 (2018-10-08)
 

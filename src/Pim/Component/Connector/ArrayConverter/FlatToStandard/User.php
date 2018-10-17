@@ -95,7 +95,7 @@ class User implements ArrayConverterInterface
         if (in_array($field, ['roles', 'groups'])) {
             $convertedItem[$field] = '' !== $data ? explode(',', $data) : [];
         } elseif (in_array($field, ['enabled', 'email_notifications'])) {
-            $convertedItem[$field] = '1' === $data ? true : false;
+            $convertedItem[$field] = '1' == $data ? true : false;
         } elseif (in_array($field, ['timezone'])) {
             $convertedItem[$field] = '' !== $data ? $data : null;
         } else {
