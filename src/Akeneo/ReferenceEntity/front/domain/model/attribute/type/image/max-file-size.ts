@@ -1,5 +1,5 @@
 import {InvalidArgumentError} from '../image';
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export class MaxFileSize implements NormalizableAdditionalProperty {
   private constructor(readonly maxFileSize: string | null) {

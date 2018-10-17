@@ -1,5 +1,5 @@
 import {InvalidArgumentError} from '../image';
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export enum AllowedExtensionsOptions {
   gif = 'gif',

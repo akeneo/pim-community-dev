@@ -10,7 +10,7 @@ import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
-import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export class InvalidArgument extends Error {}
 

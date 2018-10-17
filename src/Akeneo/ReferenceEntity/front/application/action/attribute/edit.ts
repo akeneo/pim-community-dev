@@ -13,7 +13,7 @@ import {notifyAttributeSaveFailed} from 'akeneoreferenceentity/application/actio
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,

@@ -1,4 +1,4 @@
-import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 

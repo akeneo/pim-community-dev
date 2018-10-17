@@ -23,7 +23,7 @@ import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/id
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 interface StateProps {
   context: {

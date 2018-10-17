@@ -17,7 +17,7 @@ import {NormalizedAllowedExtensions} from 'akeneoreferenceentity/domain/model/at
 import {NormalizedMaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import {NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export interface EditState {
   isActive: boolean;

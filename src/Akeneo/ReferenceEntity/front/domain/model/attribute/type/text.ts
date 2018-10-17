@@ -4,7 +4,11 @@ import ReferenceEntityIdentifier, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {
+  NormalizedAttribute,
+  Attribute,
+  ConcreteAttribute,
+} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {MaxLength, NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 import {IsTextarea, NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {

@@ -14,7 +14,7 @@ import AttributeEditForm from 'akeneoreferenceentity/application/component/attri
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
