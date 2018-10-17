@@ -19,6 +19,10 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_connector.doctrine.cache_clearer'
             - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.compute_product_models_descendants.job_name%'
 
     pimee_connector.writer.file.csv_published_product_quick_export:
         class: '%pim_connector.writer.file.csv_product.class%'

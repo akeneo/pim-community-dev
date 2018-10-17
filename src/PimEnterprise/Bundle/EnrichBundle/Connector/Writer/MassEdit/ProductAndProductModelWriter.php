@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter as BaseWriter;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -34,24 +37,38 @@ class ProductAndProductModelWriter extends BaseWriter
     private $authorizationChecker;
 
     /**
-     * @param BulkSaverInterface            $productSaver
-     * @param BulkSaverInterface            $productModelSaver
-     * @param VersionManager                $versionManager
-     * @param EntityManagerClearerInterface $cacheClearer
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param BulkSaverInterface                         $productSaver
+     * @param BulkSaverInterface                         $productModelSaver
+     * @param VersionManager                             $versionManager
+     * @param EntityManagerClearerInterface              $cacheClearer
+     * @param AuthorizationCheckerInterface              $authorizationChecker
+     * @param TokenStorageInterface|null                 $tokenStorage
+     * @param JobLauncherInterface|null                  $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface|null $jobInstanceRepository
+     * @param string|null                                $jobName
+     *
+     * @todo @merge On master : remove $cacheClearer. It is not used anymore. The cache is now cleared in a dedicated subscriber.
      */
     public function __construct(
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         VersionManager $versionManager,
         EntityManagerClearerInterface $cacheClearer,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage = null, //TODO remove following nullables before merge on 3.x
+        JobLauncherInterface $jobLauncher = null,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository = null,
+        string $jobName = null
     ) {
         parent::__construct(
             $versionManager,
             $productSaver,
             $productModelSaver,
-            $cacheClearer
+            $cacheClearer,
+            $tokenStorage,
+            $jobLauncher,
+            $jobInstanceRepository,
+            $jobName
         );
 
         $this->authorizationChecker = $authorizationChecker;
