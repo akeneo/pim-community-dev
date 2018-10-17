@@ -7,6 +7,7 @@
 - PIM-7734: fix published product datagrid status filter 
 - PIM-7733: Fix memory leak during mass publishing
 - PIM-7742: fix expired assets notification
+- PIM-7736: Fix memory leak during published products indexing
 
 # 2.3.11 (2018-10-08)
 
