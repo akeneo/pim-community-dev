@@ -18,9 +18,6 @@ pim_datagrid:
 pim_dashboard:
     resource: "@PimDashboardBundle/Resources/config/routing.yml"
 
-pim_enrich:
-    resource: "@PimEnrichBundle/Resources/config/routing.yml"
-
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
 
