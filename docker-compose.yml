@@ -33,7 +33,7 @@ services:
     depends_on:
       - 'fpm'
     ports:
-      - '8080:80'
+      - '${DOCKER_PORT_HTTP}:80'
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
@@ -46,7 +46,7 @@ services:
     depends_on:
       - 'fpm'
     ports:
-      - '8081:80'
+      - '${DOCKER_PORT_HTTP_BEHAT}:80'
     volumes:
       - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
@@ -55,7 +55,7 @@ services:
       - 'behat'
 
   mysql:
-    image: 'mysql:5.7'
+    image: 'mysql:5.7.22'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: 'akeneo_pim'
@@ -65,7 +65,7 @@ services:
       - 'akeneo'
 
   mysql-behat:
-    image: 'mysql:5.7'
+    image: 'mysql:5.7.22'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: 'akeneo_pim'
