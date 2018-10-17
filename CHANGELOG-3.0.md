@@ -581,8 +581,9 @@
 - Remove `Oro\Bundle\UserBundle\DependencyInjection`
 - Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Remove `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet`\
-  Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\
-  Remove 2 job steps `pim_connector.step.csv_family.compute_data_related_to_family_variants` and `pim_connector.step.xlsx_family.compute_data_related_to_family_variants`
+- Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\
+- Remove 2 job steps `pim_connector.step.csv_family.compute_data_related_to_family_variants` and `pim_connector.step.xlsx_family.compute_data_related_to_family_variants`
+- Remove service definition `pim_enrich.mass_edit_action.operation_job_launcher`
 
 - Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
 - Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
