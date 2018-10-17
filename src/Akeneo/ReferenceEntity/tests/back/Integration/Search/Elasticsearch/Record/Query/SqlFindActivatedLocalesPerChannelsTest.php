@@ -39,14 +39,24 @@ class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
      */
     public function it_generates_the_matrix(): void
     {
-        Assert::assertSame(
-            [
-                'ecommerce' => ['fr_FR', 'en_US'],
-                'mobile'    => ['de_DE'],
-                'print'     => ['en_US'],
-            ],
-            ($this->findActivatedLocalesPerChannels)()
-        );
+        $localesPerChannels = ($this->findActivatedLocalesPerChannels)();
+//      [
+//          'ecommerce' => ['en_US', 'fr_FR'],
+//          'mobile'    => ['de_DE'],
+//          'print'     => ['en_US'],
+//      ]
+        Assert::assertArrayHasKey('ecommerce', $localesPerChannels);
+        Assert::assertCount(2, $localesPerChannels['ecommerce']);
+        Assert::assertContains('fr_FR', $localesPerChannels['ecommerce']);
+        Assert::assertContains('en_US', $localesPerChannels['ecommerce']);
+
+        Assert::assertArrayHasKey('mobile', $localesPerChannels);
+        Assert::assertCount(1, $localesPerChannels['mobile']);
+        Assert::assertContains('de_DE', $localesPerChannels['mobile']);
+
+        Assert::assertArrayHasKey('print', $localesPerChannels);
+        Assert::assertCount(1, $localesPerChannels['print']);
+        Assert::assertContains('en_US', $localesPerChannels['print']);
     }
 
     private function removeAllLocalesForAllChannels()

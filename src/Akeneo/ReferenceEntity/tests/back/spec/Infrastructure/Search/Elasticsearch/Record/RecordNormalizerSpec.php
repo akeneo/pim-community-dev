@@ -28,8 +28,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
-    )
-    {
+    ) {
         $this->beConstructedWith($findActivatedLocalesPerChannels, $findValueKeysToIndexForChannelAndLocale, $findSearchableRecords);
     }
 
@@ -75,20 +74,21 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ValueKeyCollection::fromValueKeys([ValueKey::createFromNormalized('name')])
             );
 
-        $this->normalizeRecord($recordIdentifier)->shouldBeANormalizedRecord(
-            'designer_stark_fingerprint',
-            'stark',
-            'designer',
-            [
+        $normalizedRecord = $this->normalizeRecord($recordIdentifier);
+        $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
+        $normalizedRecord['code']->shouldBeEqualTo('stark');
+        $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
+        $normalizedRecord['record_list_search']->shouldBeEqualTo([
                 'ecommerce' => [
-                    'fr_FR' => 'stark Philippe Stark Bio',
+                    'fr_FR' => "stark Philippe Stark Bio",
                 ],
                 'mobile'    => [
-                    'en_US' => 'stark  Bio',
+                    'en_US' => "stark  Bio",
                 ],
             ]
         );
-    }
+        $normalizedRecord['updated_at']->shouldBeString();
+     }
 
     function it_normalizes_a_searchable_records_by_reference_entity(
         SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
