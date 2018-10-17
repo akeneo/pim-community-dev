@@ -141,7 +141,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     }
     this.timer = setTimeout(() => {
       this.props.onSearchUpdated(userSearch);
-    }, 100) as any;
+    }, 250) as any;
   }
 
   renderItems(
@@ -258,11 +258,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   )}
                 </tbody>
               </table>
-              <table
-                className="AknGrid AknGrid--light AknGrid--center"
-                style={{flex: 1}}
-                ref="detailTable"
-              >
+              <table className="AknGrid AknGrid--light AknGrid--center" style={{flex: 1}} ref="detailTable">
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     {0 === columnsToDisplay.length ? (

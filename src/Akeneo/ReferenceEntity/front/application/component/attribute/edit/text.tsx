@@ -53,7 +53,7 @@ const getValidationRuleOptions = (): DropdownElement[] => {
   });
 };
 
-export default ({
+const TextView = ({
   attribute,
   onAdditionalPropertyUpdated,
   onSubmit,
@@ -218,3 +218,5 @@ export default ({
     </React.Fragment>
   );
 };
+
+export const view = TextView;

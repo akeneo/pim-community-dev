@@ -13,17 +13,15 @@ import {
   attributeEditionCancel,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
 import {saveAttribute} from 'akeneoreferenceentity/application/action/attribute/edit';
-import TextPropertyView from 'akeneoreferenceentity/application/component/attribute/edit/text';
-import ImagePropertyView from 'akeneoreferenceentity/application/component/attribute/edit/image';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
 
 interface StateProps {
   context: {
@@ -53,38 +51,22 @@ interface DispatchProps {
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class InvalidAttributeTypeError extends Error {}
-
 const getAdditionalProperty = (
   attribute: Attribute,
   onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
   errors: ValidationError[]
 ): JSX.Element => {
-  switch (attribute.type) {
-    case 'text':
-      return (
-        <TextPropertyView
-          attribute={attribute as TextAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    case 'image':
-      return (
-        <ImagePropertyView
-          attribute={attribute as ImageAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    default:
-      throw new InvalidAttributeTypeError(
-        `There is no view capable of rendering attribute of type "${attribute.type}"`
-      );
-  }
+  const AttributeView = getAttributeView(attribute);
+
+  return (
+    <AttributeView
+      attribute={attribute as TextAttribute}
+      onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+      onSubmit={onSubmit}
+      errors={errors}
+    />
+  );
 };
 
 class Edit extends React.Component<EditProps> {

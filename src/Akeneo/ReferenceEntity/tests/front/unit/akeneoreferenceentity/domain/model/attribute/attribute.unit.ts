@@ -1,11 +1,12 @@
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {denormalize as denormalizeImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {ConcreteImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 
-const description = denormalizeAttribute({
+const description = denormalizeTextAttribute({
   identifier: 'description_1234',
   reference_entity_identifier: 'designer',
   code: 'description',
@@ -21,7 +22,7 @@ const description = denormalizeAttribute({
   validation_rule: 'email',
   regular_expression: null,
 });
-const frontView = denormalizeAttribute({
+const frontView = denormalizeImageAttribute({
   identifier: 'front_view_1234',
   reference_entity_identifier: 'designer',
   code: 'front_view',
@@ -47,48 +48,38 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      denormalizeAttribute({
-        identifier: 'description_1234',
-        reference_entity_identifier: 'designer',
-        labels: {en_US: 'My label'},
-        code: 'description',
-        type: 'awesome',
-      });
-    }).toThrow('Attribute type "awesome" is not supported');
+      new ConcreteImageAttribute(
+        denormalizeAttributeIdentifier('front_view_1234'),
+        createReferenceEntityIdentifier('designer'),
+        createCode('front_view'),
+        createLabelCollection({en_US: 'Front View'}),
+        true,
+        false,
+        0
+      );
+    }).toThrow('Attribute expect a boolean as isRequired value');
+
+    expect(() => {
+      new ConcreteImageAttribute(
+        denormalizeAttributeIdentifier('front_view_1234'),
+        createReferenceEntityIdentifier('designer'),
+        createCode('front_view'),
+        createLabelCollection({en_US: 'Front View'}),
+        true,
+        false
+      );
+    }).toThrow('Attribute expect a number as order');
+
+    expect(() => {
+      new ConcreteImageAttribute(
+        'front_view_1234',
+        createReferenceEntityIdentifier('designer'),
+        createCode('front_view'),
+        createLabelCollection({en_US: 'Front View'}),
+        true,
+        false,
+        0
+      );
+    }).toThrow('Attribute expect an AttributeIdentifier argument');
   });
-
-  expect(() => {
-    new ConcreteImageAttribute(
-      denormalizeAttributeIdentifier('front_view_1234'),
-      createReferenceEntityIdentifier('designer'),
-      createCode('front_view'),
-      createLabelCollection({en_US: 'Front View'}),
-      true,
-      false,
-      0
-    );
-  }).toThrow('Attribute expect a boolean as isRequired value');
-
-  expect(() => {
-    new ConcreteImageAttribute(
-      denormalizeAttributeIdentifier('front_view_1234'),
-      createReferenceEntityIdentifier('designer'),
-      createCode('front_view'),
-      createLabelCollection({en_US: 'Front View'}),
-      true,
-      false
-    );
-  }).toThrow('Attribute expect a number as order');
-
-  expect(() => {
-    new ConcreteImageAttribute(
-      'front_view_1234',
-      createReferenceEntityIdentifier('designer'),
-      createCode('front_view'),
-      createLabelCollection({en_US: 'Front View'}),
-      true,
-      false,
-      0
-    );
-  }).toThrow('Attribute expect an AttributeIdentifier argument');
 });

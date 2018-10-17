@@ -1,10 +1,10 @@
 import {createValueCollection, generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
 import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {denormalizeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
+import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 
 const normalizedDescription = {
   identifier: 'description_1234',
@@ -22,7 +22,7 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeAttribute(normalizedDescription);
+const description = denormalizeTextAttribute(normalizedDescription);
 const ecommerce = denormalizeChannelReference('ecommerce');
 const mobile = denormalizeChannelReference('mobile');
 const enUS = denormalizeLocaleReference('en_US');
@@ -31,7 +31,7 @@ const niceDescription = denormalizeTextData('nice description');
 const awesomeName = denormalizeTextData('awesome name');
 const descriptionEnUsValue = createValue(description, denormalizeChannelReference(null), enUS, niceDescription);
 const descriptionFrFrValue = createValue(description, denormalizeChannelReference(null), frFR, niceDescription);
-const name = denormalizeAttribute({
+const name = denormalizeTextAttribute({
   ...normalizedDescription,
   code: 'name',
   value_per_channel: true,

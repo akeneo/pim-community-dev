@@ -15,8 +15,7 @@ export class AttributeSaverImplementation implements AttributeSaver {
   }
 
   async save(attribute: Attribute): Promise<ValidationError[] | null> {
-    const normalizedAttribute = attribute.normalize() as any; //Todo: remove when backend remove is_text_area
-    normalizedAttribute.is_text_area = normalizedAttribute.is_textarea;
+    const normalizedAttribute = attribute.normalize() as any;
     normalizedAttribute.identifier = {
       identifier: normalizedAttribute.identifier,
       reference_entity_identifier: normalizedAttribute.reference_entity_identifier,

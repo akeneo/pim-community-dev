@@ -43,4 +43,4 @@ class FileData extends Data {
 
 export default FileData;
 export const create = FileData.create;
-export const denormalizeData = FileData.createFromNormalized;
+export const denormalize = FileData.createFromNormalized;

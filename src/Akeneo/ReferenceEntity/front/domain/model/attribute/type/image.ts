@@ -94,4 +94,4 @@ export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAt
   }
 }
 
-export const denormalizeAttribute = ConcreteImageAttribute.createFromNormalized;
+export const denormalize = ConcreteImageAttribute.createFromNormalized;

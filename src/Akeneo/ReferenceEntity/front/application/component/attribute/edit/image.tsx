@@ -10,7 +10,7 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
 import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 
-export default ({
+const ImageView = ({
   attribute,
   onAdditionalPropertyUpdated,
   onSubmit,
@@ -81,3 +81,5 @@ export default ({
     </React.Fragment>
   );
 };
+
+export const view = ImageView;

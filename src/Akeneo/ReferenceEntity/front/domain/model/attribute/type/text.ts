@@ -149,4 +149,4 @@ export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttr
   }
 }
 
-export const denormalizeAttribute = ConcreteTextAttribute.createFromNormalized;
+export const denormalize = ConcreteTextAttribute.createFromNormalized;

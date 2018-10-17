@@ -1,5 +1,5 @@
 import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
@@ -20,7 +20,7 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
-const description = denormalizeAttribute(normalizedDescription);
+const description = denormalizeTextAttribute(normalizedDescription);
 const ecommerce = denormalizeChannelReference('ecommerce');
 const enUS = denormalizeLocaleReference('en_US');
 const data = denormalizeTextData('a nice description');
@@ -38,7 +38,7 @@ describe('akeneo > reference entity > domain > model > record --- value', () => 
   test('I cannot create an invalid value', () => {
     expect(() => {
       createValue('description', ecommerce, enUS, data).normalize();
-    }).toThrowError('Value expect CommonConcreteAttribute as attribute argument');
+    }).toThrowError('Value expect ConcreteAttribute as attribute argument');
     expect(() => {
       createValue(description, 'ecommerce', enUS, data).normalize();
     }).toThrowError('Value expect ChannelReference as channel argument');
@@ -54,7 +54,7 @@ describe('akeneo > reference entity > domain > model > record --- value', () => 
     expect(() => {
       createValue(description, denormalizeChannelReference(null), denormalizeLocaleReference(null), data).normalize();
     }).toThrowError('The value for attribute "description" should have a non empty locale reference');
-    const name = denormalizeAttribute({
+    const name = denormalizeTextAttribute({
       ...normalizedDescription,
       code: 'name',
       value_per_channel: true,
