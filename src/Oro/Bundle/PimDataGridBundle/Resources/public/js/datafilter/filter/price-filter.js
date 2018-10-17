@@ -69,7 +69,7 @@ define(
              * @inheritDoc
              */
             _renderCriteria: function(el) {
-                $(el).append(
+                $(el).empty().append(
                     this.popupCriteriaTemplate({
                         label: this.label,
                         operatorChoices: this._getOperatorChoices(),

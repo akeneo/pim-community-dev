@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -27,9 +28,6 @@ class ContextConfigurator implements ConfiguratorInterface
 {
     /** @staticvar string */
     const PRODUCT_STORAGE_KEY = 'product_storage';
-
-    /** @staticvar string */
-    const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
 
     /** @staticvar string */
     const CURRENT_GROUP_ID_KEY = 'current_group_id';
@@ -58,9 +56,6 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var ObjectManager */
     protected $objectManager;
 
@@ -69,7 +64,6 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /**
      * @param ObjectRepository             $objectRepository
-     * @param AttributeRepositoryInterface $attributeRepository
      * @param RequestParameters            $requestParams
      * @param UserContext                  $userContext
      * @param ObjectManager                $objectManager
@@ -78,7 +72,6 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     public function __construct(
         ObjectRepository $objectRepository,
-        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
@@ -86,7 +79,6 @@ class ContextConfigurator implements ConfiguratorInterface
         RequestStack $requestStack
     ) {
         $this->objectRepository = $objectRepository;
-        $this->attributeRepository = $attributeRepository;
         $this->requestParams = $requestParams;
         $this->userContext = $userContext;
         $this->objectManager = $objectManager;
@@ -108,8 +100,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addAssociationTypeId();
         $this->addCurrentProduct();
         $this->addDisplayedColumnCodes();
-        $this->addAttributesIds();
-        $this->addAttributesConfig();
         $this->addPaginationConfig();
     }
 
@@ -129,47 +119,6 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getSourcePath($key)
     {
         return sprintf(self::SOURCE_PATH, $key);
-    }
-
-    /**
-     * Inject the displayed attribute ids in the datagrid configuration
-     */
-    protected function addAttributesIds()
-    {
-        $attributeCodes = $this->getUserGridColumns();
-        $attributeIds = $this->getAttributeIds($attributeCodes);
-
-        $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
-        $this->configuration->offsetSetByPath($path, $attributeIds);
-    }
-
-    /**
-     * Return attribute ids to add to the conf
-     *
-     * @param string[]|null $attributeCodes
-     *
-     * @return integer[]
-     */
-    protected function getAttributeIds($attributeCodes = null)
-    {
-        // as now only attributes usable as grid filters are usable in the grid,
-        // we need to add the variant group axes (even if they are not usable as grid filter)
-        // as usable in the grid (to be displayed in the columns)
-        $attributeIds = $this->getAttributeIdsUseableInGrid($attributeCodes);
-
-        return $attributeIds;
-    }
-
-    /**
-     * Return usable attribute ids
-     *
-     * @param string[]|null $attributeCodes
-     *
-     * @return integer[]
-     */
-    protected function getAttributeIdsUseableInGrid($attributeCodes = null)
-    {
-        return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
     }
 
     /**
@@ -269,16 +218,6 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Inject attributes configurations in the datagrid configuration
-     */
-    protected function addAttributesConfig()
-    {
-        $attributes = $this->getAttributesConfig();
-        $path = $this->getSourcePath(self::USEABLE_ATTRIBUTES_KEY);
-        $this->configuration->offsetSetByPath($path, $attributes);
-    }
-
-    /**
      * Get current locale from datagrid parameters, then request parameters, then user config
      *
      * @return string
@@ -342,27 +281,9 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Get attributes configuration for attribute that can be used in grid (as column or filter)
-     *
-     * @return array
-     */
-    protected function getAttributesConfig()
-    {
-        $attributeIds = $this->getAttributeIds();
-        if (empty($attributeIds)) {
-            return [];
-        }
-
-        $currentLocale = $this->getCurrentLocaleCode();
-        $configuration = $this->attributeRepository->getAttributesAsArray(true, $currentLocale, $attributeIds);
-
-        return $configuration;
-    }
-
-    /**
      * Get user configured datagrid columns
      *
-     * @return null|string[]
+     * @return string[]
      */
     protected function getUserGridColumns()
     {
@@ -372,7 +293,7 @@ class ContextConfigurator implements ConfiguratorInterface
             return explode(',', $params['view']['columns']);
         }
 
-        return null;
+        return [];
     }
 
     /**

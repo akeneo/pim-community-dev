@@ -14,6 +14,8 @@
     font-size: @AknFontSizeBig;
     color: @AknDarkBlue;
     transition: color 0.1s ease-in;
+    text-align: left;
+    cursor: pointer;
   }
 
   &--search:not(:empty) {
@@ -124,6 +126,21 @@
       white-space: nowrap;
       display: block;
       text-overflow: ellipsis;
+    }
+  }
+
+  &-column {
+    width: 230px;
+    display: none;
+    top: -191px;
+    left: 59px;
+    position:absolute;
+    overflow: scroll;
+
+    &--expanded {
+      left: 360px;
+      overflow-x: hidden;
+      padding-bottom: 0 !important;
     }
   }
 

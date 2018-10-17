@@ -160,7 +160,7 @@ function(
          * @inheritDoc
          */
         _renderCriteria: function(el) {
-            $(el).append(
+            $(el).empty().append(
                 this.popupCriteriaTemplate({
                     label: this.label,
                     name: this.name,
@@ -240,7 +240,6 @@ function(
          * @inheritDoc
          */
         _formatDisplayValue: function(value) {
-            Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
             _.each(value.value, function(dateValue, name) {
                 if (dateValue) {
                     value.value[name] = DateFormatter.format(
