@@ -11,8 +11,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,43 +25,46 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FilterConverter
 {
-    /** @var OroToPimGridFilterAdapter */
-    protected $oroToPimGridFilterAdapter;
+    /** @var RequestParameters */
+    private $requestParams;
 
-    /** @var MassActionParametersParser */
-    protected $parameterParser;
+    /** @var ManagerInterface */
+    private $manager;
 
     /**
-     * @param OroToPimGridFilterAdapter  $oroToPimGridFilterAdapter
-     * @param MassActionParametersParser $parameterParser
+     * @param RequestParameters $requestParams
+     * @param ManagerInterface  $manager
      */
     public function __construct(
-        OroToPimGridFilterAdapter $oroToPimGridFilterAdapter,
-        MassActionParametersParser $parameterParser
+        RequestParameters $requestParams,
+        ManagerInterface $manager
     ) {
-        $this->oroToPimGridFilterAdapter = $oroToPimGridFilterAdapter;
-        $this->parameterParser           = $parameterParser;
+        $this->requestParams = $requestParams;
+        $this->manager = $manager;
     }
 
     /**
      * It converts oro grid filters into PQB filters.
      *
-     * @param Request $request
-     * @param string  $filters
+     * @param array $filters
      *
      * @return array
      */
-    public function convert(Request $request, $filters)
+    public function convert($filters)
     {
-        $request->query->add(
-            [
-                'gridName'   => OroToPimGridFilterAdapter::PRODUCT_GRID_NAME,
-                'inset'      => false,
-                'filters'    => $filters,
-            ]
-        );
-        $parameters = $this->parameterParser->parse($request);
+        // as the manager reset the state of the parameters, we have to initialize it first
+        // and then set the filters to be handled by \Akeneo\Pim\Permission\Bundle\Datagrid\Product\SelectedAttributesConfigurator
+        $this->requestParams->setRootParameter(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME);
+        $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        return $this->oroToPimGridFilterAdapter->adapt($parameters);
+        // initialize the datagrid with the filters such as category permissions
+        $datagrid = $this->manager->getDatagrid(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME);
+
+        // trigger the build of the datagrid with the attribute filters
+        $datagrid->getAcceptedDatasource()->getQueryBuilder();
+
+        $filters = $datagrid->getDatasource()->getProductQueryBuilder()->getRawFilters();
+
+        return $filters;
     }
 }
