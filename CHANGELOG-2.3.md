@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.12 (2018-10-17)
+
 ## Bug fixes
 
 - PIM-7674: fix Avatar image broken on dashboard
