@@ -129,6 +129,124 @@ class CreateAttributeContext implements Context
     }
 
     /**
+     * @When /^the user creates a record attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
+     */
+    public function theUserCreatesARecordAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = 'record';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is a record attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     */
+    public function thereIsARecordAttributeInTheReferenceEntityWith(
+        string $attributeCode,
+        string $referenceEntityIdentifier,
+        TableNode $attributeData
+    ) {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+
+        $expected = current($attributeData->getHash());
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['labels'] = json_decode($expected['labels'], true);
+        $expected['order'] = (int) $expected['order'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
+        $expected['record_type'] = (string) $expected['record_type'];
+        ksort($expected);
+
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $actual = $attribute->normalize();
+        ksort($actual);
+
+        Assert::assertSame($expected, $actual);
+    }
+
+    /**
+     * @When /^the user creates a record collection attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
+     */
+    public function theUserCreatesARecordCollectionAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = 'record_collection';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is a record collection attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
+     */
+    public function thereIsARecordCollectionAttributeInTheReferenceEntityWith(
+        string $attributeCode,
+        string $referenceEntityIdentifier,
+        TableNode $attributeData
+    ) {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+
+        $expected = current($attributeData->getHash());
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $expected['labels'] = json_decode($expected['labels'], true);
+        $expected['order'] = (int) $expected['order'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
+        $expected['record_type'] = (string) $expected['record_type'];
+        ksort($expected);
+
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $actual = $attribute->normalize();
+        ksort($actual);
+
+        Assert::assertSame($expected, $actual);
+    }
+
+    /**
      * @Then /^there is no attribute "([^"]*)" for the reference entity "([^"]*)"$/
      */
     public function thereIsNoAttributeInTheReferenceEntity(
