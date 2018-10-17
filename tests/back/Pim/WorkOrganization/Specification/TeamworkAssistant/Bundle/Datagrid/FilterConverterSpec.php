@@ -10,7 +10,7 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class FilterConverterSpec extends ObjectBehavior
