@@ -1,4 +1,4 @@
-import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {ConcreteImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';

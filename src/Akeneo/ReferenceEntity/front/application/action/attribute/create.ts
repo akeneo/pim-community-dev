@@ -1,4 +1,3 @@
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
   attributeCreationSucceeded,
@@ -13,6 +12,7 @@ import {
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoreferenceentity/application/action/attribute/edit';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 
 export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntity = getState().form.data;

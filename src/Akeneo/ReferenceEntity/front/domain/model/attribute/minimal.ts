@@ -7,14 +7,9 @@ import LabelCollection, {
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 
-export enum AttributeType {
-  Text = 'text',
-  Image = 'image',
-}
-
 export interface MinimalNormalizedAttribute {
   reference_entity_identifier: string;
-  type: 'text' | 'image';
+  type: string;
   code: string;
   labels: NormalizedLabelCollection;
   value_per_locale: boolean;
@@ -25,12 +20,12 @@ export default interface MinimalAttribute {
   referenceEntityIdentifier: ReferenceEntityIdentifier;
   code: AttributeCode;
   labelCollection: LabelCollection;
-  type: AttributeType;
+  type: string;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
   getCode: () => AttributeCode;
   getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
-  getType(): AttributeType;
+  getType(): string;
   getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   normalize(): MinimalNormalizedAttribute;
@@ -43,7 +38,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
     readonly code: AttributeCode,
     readonly labelCollection: LabelCollection,
-    readonly type: AttributeType,
+    readonly type: string,
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean
   ) {
@@ -56,10 +51,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Attribute expect a LabelCollection argument');
     }
-    if (typeof type !== 'string' && !Object.values(AttributeType).includes(type)) {
-      throw new InvalidArgumentError(
-        `Attribute expect valid attribute type (${Object.values(AttributeType).join(', ')})`
-      );
+    if (typeof type !== 'string') {
+      throw new InvalidArgumentError('Attribute expect a string as attribute type');
     }
     if (typeof valuePerLocale !== 'boolean') {
       throw new InvalidArgumentError('Attribute expect a boolean as valuePerLocale');
@@ -74,7 +67,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
       createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
-      minimalNormalizedAttribute.type as AttributeType,
+      minimalNormalizedAttribute.type as string,
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel
     );
@@ -88,7 +81,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     return this.code;
   }
 
-  public getType(): AttributeType {
+  public getType(): string {
     return this.type;
   }
 

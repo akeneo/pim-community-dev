@@ -1,9 +1,9 @@
 import Saver from 'akeneoreferenceentity/domain/saver/attribute';
-import Attribute, {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {postJSON} from 'akeneoreferenceentity/tools/fetch';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import MinimalAttribute from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
+import {Attribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 
 const routing = require('routing');
 

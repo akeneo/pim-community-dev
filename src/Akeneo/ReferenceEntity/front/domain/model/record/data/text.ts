@@ -42,4 +42,4 @@ class TextData extends Data {
 
 export default TextData;
 export const create = TextData.create;
-export const denormalize = TextData.createFromNormalized;
+export const denormalizeData = TextData.createFromNormalized;

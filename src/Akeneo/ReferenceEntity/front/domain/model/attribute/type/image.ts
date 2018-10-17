@@ -4,19 +4,14 @@ import ReferenceEntityIdentifier, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import {
-  CommonNormalizedAttribute,
-  CommonAttribute,
-  CommonConcreteAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedAttribute, Attribute, ConcreteAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 import {
   NormalizedMaxFileSize,
   MaxFileSize,
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
 
-export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
+export interface NormalizedImageAttribute extends NormalizedAttribute {
   type: 'image';
   allowed_extensions: NormalizedAllowedExtensions;
   max_file_size: NormalizedMaxFileSize;
@@ -26,7 +21,7 @@ export type NormalizedImageAdditionalProperty = NormalizedMaxFileSize | Normaliz
 
 export type ImageAdditionalProperty = MaxFileSize | AllowedExtensions;
 
-export interface ImageAttribute extends CommonAttribute {
+export interface ImageAttribute extends Attribute {
   maxFileSize: MaxFileSize;
   allowedExtensions: AllowedExtensions;
   normalize(): NormalizedImageAttribute;
@@ -34,7 +29,7 @@ export interface ImageAttribute extends CommonAttribute {
 
 export class InvalidArgumentError extends Error {}
 
-export class ConcreteImageAttribute extends CommonConcreteAttribute implements ImageAttribute {
+export class ConcreteImageAttribute extends ConcreteAttribute implements ImageAttribute {
   private constructor(
     identifier: Identifier,
     referenceEntityIdentifier: ReferenceEntityIdentifier,
@@ -52,7 +47,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
       referenceEntityIdentifier,
       code,
       labelCollection,
-      AttributeType.Image,
+      'image',
       valuePerLocale,
       valuePerChannel,
       order,
@@ -94,3 +89,5 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
     };
   }
 }
+
+export const denormalizeAttribute = ConcreteImageAttribute.createFromNormalized;

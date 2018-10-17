@@ -22,7 +22,6 @@ const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {getDataCellView, CellView} from 'akeneoreferenceentity/application/configuration/value';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 interface StateProps {
   context: {
@@ -91,7 +90,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
     if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
       return {
         cellViews: props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
-          cellViews[column.key] = getDataCellView(column.type as AttributeType);
+          cellViews[column.key] = getDataCellView(column.type);
 
           return cellViews;
         }, {}),

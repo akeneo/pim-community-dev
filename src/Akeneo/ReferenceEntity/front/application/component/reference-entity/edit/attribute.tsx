@@ -5,7 +5,6 @@ import {attributeCreationStart} from 'akeneoreferenceentity/domain/event/attribu
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
-import {denormalizeAttribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
@@ -14,6 +13,8 @@ import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/applicati
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 const securityContext = require('pim/security-context');
 
 interface StateProps {

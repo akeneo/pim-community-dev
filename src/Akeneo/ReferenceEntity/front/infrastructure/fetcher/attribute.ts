@@ -1,10 +1,10 @@
 import AttributeFetcher from 'akeneoreferenceentity/domain/fetcher/attribute';
-import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import hydrator from 'akeneoreferenceentity/application/hydrator/attribute';
 import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoreferenceentity/tools/fetch';
 import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 
 const routing = require('routing');
 

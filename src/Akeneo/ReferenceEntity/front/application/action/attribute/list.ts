@@ -7,10 +7,10 @@ import {notifyAttributeListUpdateFailed} from 'akeneoreferenceentity/application
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 
 export class InvalidArgument extends Error {}
 

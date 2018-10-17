@@ -2,34 +2,37 @@ import Identifier, {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/d
 import MinimalAttribute, {
   MinimalNormalizedAttribute,
   MinimalConcreteAttribute,
-  AttributeType,
 } from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import AttributeCode from 'akeneoreferenceentity/domain/model/attribute/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection from 'akeneoreferenceentity/domain/model/label-collection';
 
-export interface CommonNormalizedAttribute extends MinimalNormalizedAttribute {
+export interface NormalizedAttribute extends MinimalNormalizedAttribute {
   identifier: NormalizedAttributeIdentifier;
   order: number;
   is_required: boolean;
 }
 
-export interface CommonAttribute extends MinimalAttribute {
+export interface Attribute extends MinimalAttribute {
   identifier: Identifier;
   order: number;
   isRequired: boolean;
   equals: (attribute: MinimalAttribute) => boolean;
   getIdentifier: () => Identifier;
-  normalize(): CommonNormalizedAttribute;
+  normalize(): NormalizedAttribute;
 }
 
-export abstract class CommonConcreteAttribute extends MinimalConcreteAttribute implements CommonAttribute {
+export interface NormalizableAdditionalProperty {
+  normalize(): any;
+}
+
+export abstract class ConcreteAttribute extends MinimalConcreteAttribute implements Attribute {
   protected constructor(
     readonly identifier: Identifier,
     referenceEntityIdentifier: ReferenceEntityIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
-    type: AttributeType,
+    type: string,
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     readonly order: number,
@@ -49,11 +52,11 @@ export abstract class CommonConcreteAttribute extends MinimalConcreteAttribute i
     }
   }
 
-  public equals(attribute: CommonAttribute): boolean {
+  public equals(attribute: Attribute): boolean {
     return attribute.getIdentifier().equals(this.identifier);
   }
 
-  public normalize(): CommonNormalizedAttribute {
+  public normalize(): NormalizedAttribute {
     return {
       identifier: this.identifier.normalize(),
       ...super.normalize(),

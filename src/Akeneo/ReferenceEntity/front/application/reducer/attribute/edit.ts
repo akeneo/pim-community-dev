@@ -1,9 +1,5 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {
-  NormalizedAttribute,
-  NormalizedAdditionalProperty,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {
   NormalizedTextAttribute,
   NormalizedTextAdditionalProperty,
 } from 'akeneoreferenceentity/domain/model/attribute/type/text';
@@ -21,6 +17,7 @@ import {NormalizedAllowedExtensions} from 'akeneoreferenceentity/domain/model/at
 import {NormalizedMaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import {NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 
 export interface EditState {
   isActive: boolean;
@@ -138,14 +135,18 @@ const imageAttributeReducer = (
 const additionalPropertyReducer = (
   normalizedAttribute: NormalizedAttribute,
   propertyCode: string,
-  propertyValue: NormalizedAdditionalProperty
+  propertyValue: any
 ) => {
   switch (normalizedAttribute.type) {
     case 'text':
-      return textAttributeReducer(normalizedAttribute, propertyCode, propertyValue as NormalizedTextAdditionalProperty);
+      return textAttributeReducer(
+        normalizedAttribute as NormalizedTextAttribute,
+        propertyCode,
+        propertyValue as NormalizedTextAdditionalProperty
+      );
     case 'image':
       return imageAttributeReducer(
-        normalizedAttribute,
+        normalizedAttribute as NormalizedImageAttribute,
         propertyCode,
         propertyValue as NormalizedImageAdditionalProperty
       );
@@ -180,7 +181,7 @@ export default (
     is_required: boolean;
     errors: ValidationError[];
     propertyCode: string;
-    propertyValue: NormalizedAdditionalProperty;
+    propertyValue: any;
     attribute: NormalizedAttribute;
     attributes: NormalizedAttribute[];
   }

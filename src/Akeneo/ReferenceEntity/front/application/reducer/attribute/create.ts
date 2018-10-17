@@ -1,6 +1,5 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import sanitize from 'akeneoreferenceentity/tools/sanitize';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 export interface CreateState {
   active: boolean;
@@ -9,7 +8,7 @@ export interface CreateState {
     labels: {
       [localeCode: string]: string;
     };
-    type: AttributeType;
+    type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
   };
@@ -20,7 +19,7 @@ const initCreateState = (): CreateState => ({
   active: false,
   data: {
     code: '',
-    type: AttributeType.Text,
+    type: 'text',
     value_per_locale: false,
     value_per_channel: false,
     labels: {},
@@ -35,7 +34,7 @@ export default (
     locale: string;
     value: string;
     errors: ValidationError[];
-    attribute_type: AttributeType;
+    attribute_type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
   }

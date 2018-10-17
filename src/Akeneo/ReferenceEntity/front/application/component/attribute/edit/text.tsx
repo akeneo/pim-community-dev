@@ -2,9 +2,8 @@ import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import {AdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
-import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {TextAttribute, TextAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {RegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
 import {
   ValidationRuleOption,
@@ -61,7 +60,7 @@ export default ({
   errors,
 }: {
   attribute: TextAttribute;
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+  onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
 }) => {

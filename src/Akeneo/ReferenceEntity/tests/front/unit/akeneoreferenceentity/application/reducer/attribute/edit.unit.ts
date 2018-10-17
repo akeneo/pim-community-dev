@@ -1,6 +1,6 @@
 import reducer from 'akeneoreferenceentity/application/reducer/attribute/edit';
 import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {ValidationRuleOption} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
 
 const normalizedDescription = {

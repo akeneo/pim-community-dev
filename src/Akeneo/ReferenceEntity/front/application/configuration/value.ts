@@ -1,15 +1,15 @@
 import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+
 export class InvalidArgument extends Error {}
 
 export type Denormalizer = (normalizedValue: NormalizedValue) => Value;
-export type ViewGenerator = (value: Value) => any;
+export type ViewGenerator = React.SFC<{value: Value; onChange: (value: Value) => void; onSubmit: () => void}>;
 export type CellView = React.SFC<{value: NormalizedValue}>;
 
 type ValueConfig = {
   [type: string]: {
     denormalize: {
-      denormalize: Denormalizer;
+      denormalizeData: Denormalizer;
     };
     view: {
       view: ViewGenerator;
@@ -40,21 +40,21 @@ Actual conf: ${JSON.stringify(config)}`
     );
   }
 
-  if (undefined === typeConfiguration.denormalize.denormalize) {
+  if (undefined === typeConfiguration.denormalize.denormalizeData) {
     const moduleExample = `
-export const denormalize = (normalizedBooleanData: boolean) => {
+export const denormalizeData = (normalizedBooleanData: boolean) => {
   return new BooleanData(normalizedBooleanData);
 };
 `;
 
     throw new InvalidArgument(
       `The module you are exposing to denormalize a value of type "${normalizedValue.attribute.type}" needs to
-export a "denormalize" property. Here is an example of a valid denormalize es6 module:
+export a "denormalizeData" property. Here is an example of a valid denormalize es6 module:
 ${moduleExample}`
     );
   }
 
-  return typeConfiguration.denormalize.denormalize;
+  return typeConfiguration.denormalize.denormalizeData;
 };
 
 export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerator => {
@@ -95,7 +95,7 @@ ${moduleExample}`
   return typeConfiguration.view.view;
 };
 
-export const getCellView = (config: ValueConfig) => (attributeType: AttributeType): CellView => {
+export const getCellView = (config: ValueConfig) => (attributeType: string): CellView => {
   const typeConfiguration = config[attributeType];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.cell) {

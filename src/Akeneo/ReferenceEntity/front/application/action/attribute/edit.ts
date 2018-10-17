@@ -11,8 +11,9 @@ import ValidationError, {createValidationError} from 'akeneoreferenceentity/doma
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {notifyAttributeSaveFailed} from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
-import {denormalizeAttribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,

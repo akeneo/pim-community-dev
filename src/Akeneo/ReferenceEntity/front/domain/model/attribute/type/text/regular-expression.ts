@@ -1,5 +1,6 @@
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/common';
+
 export class RegularExpression implements NormalizableAdditionalProperty {
   private constructor(readonly regularExpression: string | null) {
     if (!RegularExpression.isValid(regularExpression)) {
