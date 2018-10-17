@@ -74,6 +74,16 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFi
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditStoredFileValueCommand: ~
 
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommand: ~
+
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommand: ~
+
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~

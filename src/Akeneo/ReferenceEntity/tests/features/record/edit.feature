@@ -292,6 +292,15 @@ Feature: Edit an record
     And there is no violations errors
     And the record should have the valid image for this attribute
 
+#  @acceptance-back
+  Scenario: Updating the record value of a record
+    Given an reference entity with a record attribute
+    And a record belonging to this reference entity with a value of "philippe_stark" for the record attribute
+    When the user updates the record attribute of the record to "Stark"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the text value "Stark" for this attribute
+
   @acceptance-front
   Scenario: Display a record labels in the edit form
     Given a valid record
