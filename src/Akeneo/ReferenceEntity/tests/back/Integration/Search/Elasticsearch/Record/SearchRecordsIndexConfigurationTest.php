@@ -8,14 +8,28 @@ use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
- * Testing the search usecases for the record grid.
+ * **The idea of the search model is the following:**
  *
- * @see       https://akeneo.atlassian.net/wiki/spaces/AKN/pages/572424236/Search+an+entity+record
+ * A user who wants to search records given:
+ * - A reference entity identifier
+ * - A channel
+ * - A locale
+ *
+ * The search request generated will search on those fields:
+ * - Code
+ * - Label of the given locale
+ * - All values who are not localizable / not scopable
+ * - All values who are localizable on the given locale
+ * - All values who are scopable on the given channel
+ *
+ * **Therefore, the indexing model is as follow:**
+ *
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
+class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
 {
     public function setUp()
     {
@@ -27,11 +41,21 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
     /**
      * @test
      */
+    public function default_search()
+    {
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', []);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
+    }
+
+    /**
+     * @test
+     */
     public function simple_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['year']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['year']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
     }
 
     /**
@@ -39,9 +63,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function insensitve_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['Year']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['year']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
     }
 
     /**
@@ -49,9 +73,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function partial_match_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['play']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_bangolufsen', 'brand_kartell'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['play']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
     }
 
     /**
@@ -59,9 +83,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function exact_matching_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['display']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_kartell'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['display']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_kartell'], $matchingidentifiers);
     }
 
     /**
@@ -69,10 +93,10 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function two_words_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US',
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US',
             ['experience', 'senses']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_bangolufsen'], $matchingIdentifiers);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
     }
 
     /**
@@ -80,10 +104,10 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function another_two_words_search()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US',
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US',
             ['experience', 'starck']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_kartell'], $matchingIdentifiers);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_kartell'], $matchingidentifiers);
     }
 
     /**
@@ -91,9 +115,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function search_on_info_from_labels()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['Bang', 'Olufsen']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_bangolufsen'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['bang', 'olufsen']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
     }
 
     /**
@@ -101,9 +125,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function search_on_info_from_labels_inverted_order()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['Olufsen', 'Bang']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_bangolufsen'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['olufsen', 'bang']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
     }
 
     /**
@@ -111,9 +135,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function search_on_info_from_code()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['Bangolufsen']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_bangolufsen'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['bangolufsen']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
     }
 
     /**
@@ -121,14 +145,13 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
      */
     public function composed_words()
     {
-        $matchingIdentifiers = $this->searchIndexHelper->search('brand', 'ecommerce', 'en_US', ['88', 'year']);
-        sort($matchingIdentifiers);
-        Assert::assertSame(['brand_bangolufsen'], $matchingIdentifiers);
+        $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', ['88', 'year']);
+        sort($matchingidentifiers);
+        assert::assertsame(['brand_bangolufsen'], $matchingidentifiers);
     }
 
     private function loadDataset()
     {
-        $this->searchIndexHelper->resetIndex();
         // Those properties are not indexed
         $kartellCode = 'kartell';
         $kartellDescriptionEnUs = 'Kartell - The Culture of Plastics’’… In just over 50 years, this famous Italian company has revolutionised plastic, elevating it and propelling it into the refined world of luxury. Today, Kartell has more than a hundred showrooms all over the world and a good number of its creations have become cult pieces on display in the most prestigious museums. The famous Kartell Louis Ghost armchair has the most sales for armchairs in the world, with 1.5 million sales! Challenging the material, constantly researching new tactile, visual and aesthetic effects - Kartell faces every challenge! With more than 60 years of experience in dealing with plastic, the brand has a unique know-how and an unquenchable thirst for innovation. Kartellharnesses technological progress: notably, we owe them for the first totally transparent plastic chair, injection moulds, laser welding and more!';
@@ -136,7 +159,9 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
         $kartell = [
             'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_kartell',
+            'code' => $kartellCode,
             'record_list_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
+            'updated_at' => date_create('2018-01-01')->format('Y-m-d')
         ];
 
         // Those properties are not indexed
@@ -147,6 +172,7 @@ class SearchRecordInGridIndexConfigurationTest extends SearchIntegrationTestCase
             'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_alessi',
             'record_list_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
+            'updated_at' => date_create('2017-01-01')->format('Y-m-d')
         ];
 
         // Those properties are not indexed
@@ -161,13 +187,15 @@ TEXT;
             'reference_entity_code' => 'brand',
             'identifier'            => 'brand_bangolufsen',
             'record_list_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
+            'updated_at' => date_create('2016-01-01')->format('Y-m-d')
         ];
 
         $wrongEnrichedEntity = [
             'identifier'            => 'another_reference_entity',
             'reference_entity_code' => 'manufacturer',
             'record_list_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
+            'updated_at' => date_create('2010-01-01')->format('Y-m-d')
         ];
-        $this->searchIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongEnrichedEntity]);
+        $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongEnrichedEntity]);
     }
 }

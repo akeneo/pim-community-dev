@@ -11,6 +11,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,12 +41,17 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $recordRepository = $this->getContainer()->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $referenceEntityRepository = $this->getContainer()->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $recordIndexer = $this->getContainer()->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer');
 
-        $allRecords = $recordRepository->all();
-        $recordIndexer->bulkIndex($allRecords);
+        $allReferenceEntities = $referenceEntityRepository->all();
+        $count = 0;
+        foreach ($allReferenceEntities as $referenceEntity) {
+            /** @var ReferenceEntity $referenceEntity */
+            $recordIndexer->indexByReferenceEntity($referenceEntity->getIdentifier());
+            $count++;
+        }
 
-        $output->writeln(sprintf('<info>%d records have been indexed.</info>', count($allRecords)));
+        $output->writeln(sprintf('<info>The records of %d reference entities have been indexed.</info>', $count));
     }
 }

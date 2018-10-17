@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\IndexRecordSubscriber;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,9 +18,9 @@ use PhpSpec\ObjectBehavior;
  */
 class IndexRecordSubscriberSpec extends ObjectBehavior
 {
-    function let(RecordRepositoryInterface $recordRepository, RecordIndexerInterface $recordIndexer)
+    function let(RecordIndexerInterface $recordIndexer)
     {
-        $this->beConstructedWith($recordRepository, $recordIndexer);
+        $this->beConstructedWith($recordIndexer);
     }
 
     function it_is_initializable()
@@ -33,16 +33,12 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
         $this::getSubscribedEvents()->shouldReturn([RecordUpdatedEvent::class => 'whenRecordUpdated']);
     }
 
-    function it_triggers_the_reindexation_of_an_updated_record(
-        RecordRepositoryInterface $recordRepository,
-        RecordIndexerInterface $recordIndexer,
-        Record $record
-    ) {
-        $identifier = RecordIdentifier::create('designer', 'stark', 'fingerprint');
-        $recordRepository->getByIdentifier($identifier)->willReturn($record);
-        $recordIndexer->bulkIndex([$record])->shouldBeCalled();
+    function it_triggers_the_reindexation_of_an_updated_record(RecordIndexerInterface $recordIndexer)
+    {
+        $recordIdentifier = RecordIdentifier::fromString('starck');
+        $recordIndexer->index($recordIdentifier)->shouldBeCalled();
 
-        $this->whenRecordUpdated(new RecordUpdatedEvent($identifier));
+        $this->whenRecordUpdated(new RecordUpdatedEvent($recordIdentifier));
     }
 }
 

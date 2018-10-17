@@ -1,27 +1,55 @@
+parameters:
+   akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size: 1000
+
 services:
+    # Subscribers
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.remove_record_from_index:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\RemoveRecordFromIndexSubscriber
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+        tags:
+            - { name: kernel.event_subscriber }
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer
         arguments:
             - '@akeneo_referenceentity.client.record'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
-
-    # Subscribers
-    akeneo_referenceentity.infrastructure.search.elasticsearch.index_record_subscriber:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\IndexRecordSubscriber
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
-        tags:
-            - { name: kernel.event_subscriber }
+            - '%akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size%'
 
     # Normalizers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_search_matrix_normalizer'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record_search_matrix_normalizer:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordSearchMatrixNormalizer
+    # Query function
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels'
+            - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\FindIdentifiersForQuery
+        arguments:
+            - '@akeneo_referenceentity.client.record'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale:
+       class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale
+       arguments:
+           - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records:
+       class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords
+       arguments:
+           - '@database_connection'

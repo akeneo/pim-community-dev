@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -55,16 +55,15 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         return $queryResult;
     }
 
-    private function getElasticSearchQuery(RecordQuery $recordQuery)
+    private function getElasticSearchQuery(RecordQuery $recordQuery): array
     {
-        $searchFilter = $recordQuery->getFilter('search');
         $referenceEntityCode = $recordQuery->getFilter('reference_entity');
-
+        $searchFilter = $recordQuery->getFilter('search');
         $query = [
             '_source' => '_id',
             'from' => $recordQuery->getSize() * $recordQuery->getPage(),
             'size' => $recordQuery->getSize(),
-            'sort' => ['identifier' => 'asc'],
+            'sort' => ['updated_at' => 'asc'],
             'query'   => [
                 'constant_score' => [
                     'filter' => [
@@ -83,15 +82,26 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         ];
 
         if (!empty($searchFilter['value'])) {
-            foreach (explode(' ', $searchFilter['value']) as $term) {
-                $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                        'query_string' => [
-                            'default_field' => sprintf('record_list_search.%s.%s', $recordQuery->getChannel(), $recordQuery->getLocale()),
-                            'query'         => sprintf('*%s*', strtolower($term)),
-                        ],
-                    ];
-            }
+            $terms = $this->getTerms($searchFilter);
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'query_string' => [
+                    'default_field' => sprintf('record_list_search.%s.%s', $recordQuery->getchannel(), $recordQuery->getlocale()),
+                    'query'         => $terms
+                ],
+            ];
         }
+
+        return $query;
+    }
+
+    private function getTerms(array $searchFilter): string
+    {
+        $loweredTerms = strtolower($searchFilter['value']);
+        $terms = explode(' ', $loweredTerms);
+        $wildcardTerms = array_map(function (string $term) {
+            return sprintf('*%s*', $term);
+        }, $terms);
+        $query = implode(' AND ', $wildcardTerms);
 
         return $query;
     }

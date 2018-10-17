@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\RemoveRecordFromIndexSubscriber;
+use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\RemoveRecordFromIndexSubscriber;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -19,9 +18,9 @@ use PhpSpec\ObjectBehavior;
  */
 class RemoveRecordFromIndexSubscriberSpec extends ObjectBehavior
 {
-    function let(RecordRepositoryInterface $recordRepository, RecordIndexerInterface $recordIndexer)
+    function let(RecordIndexerInterface $recordIndexer)
     {
-        $this->beConstructedWith($recordRepository, $recordIndexer);
+        $this->beConstructedWith($recordIndexer);
     }
 
     function it_is_initializable()

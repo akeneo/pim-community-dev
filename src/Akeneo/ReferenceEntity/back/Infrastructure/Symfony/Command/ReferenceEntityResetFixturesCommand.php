@@ -159,8 +159,8 @@ SQL;
     public function loadFixtures(): void
     {
         $this->loadReferenceEntities();
-        $this->loadRecords();
         $this->loadAttributes();
+        $this->loadRecords();
     }
 
     /**

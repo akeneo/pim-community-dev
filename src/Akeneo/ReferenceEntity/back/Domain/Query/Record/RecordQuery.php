@@ -24,12 +24,6 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
  */
 class RecordQuery
 {
-    private const CHANNEL = 'channel';
-    private const LOCALE  = 'locale';
-    private const FILTERS = 'filters';
-    private const PAGE    = 'page';
-    private const SIZE    = 'size';
-
     /** @var string */
     private $channel;
 

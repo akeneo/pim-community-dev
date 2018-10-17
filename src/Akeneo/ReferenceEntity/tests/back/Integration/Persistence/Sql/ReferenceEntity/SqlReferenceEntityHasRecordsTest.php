@@ -36,7 +36,7 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->referenceEntityHasRecords = $this->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records');
-        $this->resetDB();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
         $this->loadReferenceEntityAndRecords();
     }
 
@@ -52,11 +52,6 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
         $identifier = ReferenceEntityIdentifier::fromString('brand');
         $hasRecords = ($this->referenceEntityHasRecords)($identifier);
         $this->assertFalse($hasRecords);
-    }
-
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadReferenceEntityAndRecords(): void

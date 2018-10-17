@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
 use Doctrine\DBAL\Connection;
 
@@ -34,7 +34,7 @@ SELECT c.code as channel_code, JSON_ARRAYAGG(l.code) AS locales_codes
 FROM pim_catalog_channel c INNER JOIN pim_catalog_channel_locale cl on c.id = cl.channel_id 
 INNER JOIN pim_catalog_locale l ON cl.locale_id = l.id
 WHERE l.is_activated = 1
-GROUP BY c.code;
+GROUP BY c.code
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);

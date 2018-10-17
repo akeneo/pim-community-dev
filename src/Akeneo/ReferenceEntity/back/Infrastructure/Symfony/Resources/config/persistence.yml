@@ -156,14 +156,3 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordCollectionDataHydrator
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
-
-    # Search
-    akeneo_referenceentity.infrastructure.search.elasticsearch.find_activated_locales_per_channels:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\SqlFindActivatedLocalesPerChannels
-        arguments:
-            - '@database_connection'
-
-    akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\ElasticSearch\Record\FindIdentifiersForQuery
-        arguments:
-            - '@akeneo_referenceentity.client.record'

@@ -1,3 +1,8 @@
+settings:
+    analysis:
+        normalizer:
+            text_normalizer:
+                filter: ['lowercase']
 mappings:
     pimee_reference_entity_record:
         properties:
@@ -7,9 +12,12 @@ mappings:
                 type: 'keyword'
             code:
                 type: 'keyword'
+            updated_at:
+                type: 'date'
         dynamic_templates:
             -
                 record_list_search:
                     path_match: 'record_list_search.*.*'
                     mapping:
+                        type: 'keyword'
                         normalizer: 'text_normalizer'

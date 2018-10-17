@@ -54,7 +54,7 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_reference_entity_and_returns_it()
+    public function it_creates_a_reference_entity_and_returns_it()
     {
         $identifier = ReferenceEntityIdentifier::fromString('identifier');
         $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
@@ -63,6 +63,29 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
 
         $referenceEntityFound = $this->repository->getByIdentifier($identifier);
         $this->assertReferenceEntity($referenceEntity, $referenceEntityFound);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_all_reference_entities()
+    {
+        $designer = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
+            ['en_US' => 'Designer'],
+            Image::createEmpty()
+        );
+        $brand = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
+            ['en_US' => 'Brand'],
+            Image::createEmpty()
+        );
+        $this->repository->create($designer);
+        $this->repository->create($brand);
+
+        $referenceEntities = iterator_to_array($this->repository->all());
+        $this->assertReferenceEntity($brand, $referenceEntities[0]);
+        $this->assertReferenceEntity($designer, $referenceEntities[1]);
     }
 
     /**

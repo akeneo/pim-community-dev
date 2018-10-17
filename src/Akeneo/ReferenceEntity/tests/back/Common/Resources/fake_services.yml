@@ -71,7 +71,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.find_identifiers_for_query:
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersForQuery
 
     # Third party services
@@ -82,3 +82,19 @@ services:
             - '@oro_security.acl.annotation_provider'
             - '@oro_security.acl.object_identity_factory'
             - '@logger'
+
+    # Subscribers
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.remove_record_from_index:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_locale.locale_subscriber:
+        class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
+        tags:
+            - { name: kernel.event_subscriber }
