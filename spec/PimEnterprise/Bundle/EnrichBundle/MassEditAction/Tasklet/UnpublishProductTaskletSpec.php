@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -33,7 +34,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::cetera())->willReturn($pqb);
@@ -47,7 +49,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
             $userManager,
             $tokenStorage,
             $authorizationChecker,
-            $pqbFactory
+            $pqbFactory,
+            $cacheClearer
         );
     }
 

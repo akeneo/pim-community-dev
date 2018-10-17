@@ -62,7 +62,7 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
      * @param UserManager               $userManager
      * @param TokenStorageInterface     $tokenStorage
      *
-     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
+     * @todo merge : remove properties $userManager, $tokenStorage and $objectDetacher in master branch. They are no longer used.
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -117,6 +117,8 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
 
     /**
      * @param array
+     *
+     * @todo merge : remove this unused method in master branch
      */
     protected function detachProducts(array $productsPage)
     {

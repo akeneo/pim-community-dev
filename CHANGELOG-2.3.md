@@ -5,6 +5,7 @@
 - PIM-7723: fix consistency between TWA widget numbers and the datagrid view 
 - PIM-7731: check for attribute as label not null in normalizers 
 - PIM-7734: fix published product datagrid status filter 
+- PIM-7733: Fix memory leak during mass publishing
 - PIM-7742: fix expired assets notification
 
 # 2.3.11 (2018-10-08)
