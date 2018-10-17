@@ -16,7 +16,6 @@ class ContextConfiguratorSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $repository,
-        AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
@@ -25,7 +24,6 @@ class ContextConfiguratorSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $repository,
-            $attributeRepository,
             $requestParams,
             $userContext,
             $objectManager,
