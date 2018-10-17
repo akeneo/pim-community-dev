@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCategoryItemCounterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass;
@@ -57,7 +58,9 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterSerializerPass('pim_storage_serializer'))
             ->addCompilerPass(new RegisterSerializerPass('pim_datagrid_serializer'))
             ->addCompilerPass(new RegisterSerializerPass('pim_serializer'))
-            ->addCompilerPass(new RegisterRendererPass());
+            ->addCompilerPass(new RegisterRendererPass())
+            ->addCompilerPass(new RegisterCategoryItemCounterPass())
+            ->addCompilerPass(new RegisterProductQueryFilterPass('product_and_product_model'))
         ;
 
         $mappings = [

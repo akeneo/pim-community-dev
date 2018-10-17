@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider;
+use Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

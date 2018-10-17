@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

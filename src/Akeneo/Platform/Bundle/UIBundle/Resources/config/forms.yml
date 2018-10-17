@@ -80,6 +80,58 @@ services:
             - '@pim_reference_data.label_renderer'
             - '%pim_ui.form.transformer.ajax_reference_data.class%'
 
+    pim_enrich.factory.transformer.identifiable_model:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory
+        public: false
+        arguments:
+            - 'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\IdentifiableModelTransformer'
+
+    pim_enrich.form.type.product_grid_filter_choice:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType'
+        arguments:
+            - '@pim_enrich.repository.attribute'
+            - '@oro_datagrid.datagrid.manager'
+            - 'product-grid'
+            - ['scope', 'locale']
+        tags:
+            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
+
+    pim_enrich.form.type.localized_collection:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocalizedCollectionType'
+        tags:
+            - { name: form.type, alias: pim_enrich_localized_collection }
+
+    pim_enrich.form.type.media:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\MediaType'
+        arguments:
+            - '%akeneo_file_storage.model.file_info.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_media }
+
+    pim_enrich.form.type.light_entity:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType'
+        tags:
+            - { name: form.type, alias: light_entity }
+
+    pim_enrich.form.type.object_identifier:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\ObjectIdentifierType'
+        tags:
+            - { name: form.type, alias: pim_object_identifier }
+
+    pim_enrich.form.type.translatable_field:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType'
+        arguments:
+            - '@validator'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_translatable_field }
+
+    pim_enrich.type.entity_identifier:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType'
+        arguments: ["@doctrine"]
+        tags:
+            - { name: form.type, alias: pim_enrich_entity_identifier }
+
     pim_localization.form.type.locale:
         class: 'Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType'
         arguments:

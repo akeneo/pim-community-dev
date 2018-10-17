@@ -1,6 +1,0 @@
-pim_pdf_generator_download_product_pdf:
-    path: /{id}/download-pdf
-    defaults: { _controller: pim_pdf_generator.controller.product:downloadPdfAction }
-    requirements:
-        id: '[0-9a-f]+'
-    methods: [GET]

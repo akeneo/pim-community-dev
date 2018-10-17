@@ -14,7 +14,7 @@ class CommandResultSpec extends ObjectBehavior
         'baz' => 'snafu'
     ];
 
-    public function let()
+    function let()
     {
         $this->beConstructedWith($this->ouput, 0);
     }

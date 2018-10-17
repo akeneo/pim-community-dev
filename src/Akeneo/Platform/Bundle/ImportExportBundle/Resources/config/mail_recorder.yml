@@ -1,0 +1,7 @@
+services:
+    pim_enrich.mailer.mail_recorder:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Test\MailRecorder'
+        arguments:
+            - '%kernel.cache_dir%/mailer_mail_store.meta'
+        tags:
+            - { name: swiftmailer.default.plugin }

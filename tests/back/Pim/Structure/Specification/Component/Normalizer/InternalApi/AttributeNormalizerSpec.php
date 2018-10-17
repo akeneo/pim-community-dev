@@ -5,16 +5,16 @@ namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,

@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

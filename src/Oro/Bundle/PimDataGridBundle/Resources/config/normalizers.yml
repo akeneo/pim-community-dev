@@ -98,3 +98,20 @@ services:
         class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
+
+    pim_enrich.normalizer.datagrid_view:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\InternalApi\DatagridViewNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.version:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer'
+        arguments:
+            - '@pim_user.manager'
+            - '@translator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_catalog.localization.presenter.registry'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

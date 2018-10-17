@@ -6,3 +6,7 @@ pim_localization_locale_index:
     path: /system/locale/ui
     defaults: { _controller: pim_localization.controller.locale:indexAction }
     methods: [GET]
+
+form_extensions_internal_api:
+    resource: '@PimUIBundle/Resources/config/routing/internal_api/form_extensions.yml'
+    prefix: /form

@@ -29,6 +29,8 @@ class AkeneoPimEnrichmentExtension extends Extension
         $this->loadLocalizationConfiguration($container, $config);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('connector/cleaners.yml');
+        $loader->load('connector/processors.yml');
         $loader->load('api_filters.yml');
         $loader->load('associations.yml');
         $loader->load('builders.yml');
@@ -91,6 +93,12 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('writers.yml');
         $loader->load('steps.yml');
         $loader->load('widgets.yml');
+        $loader->load('providers.yml');
+        $loader->load('twig.yml');
+        $loader->load('filters.yml');
+        $loader->load('mass_actions.yml');
+        $loader->load('datagrid_actions.yml');
+        $loader->load('files.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);

@@ -33,7 +33,26 @@ services:
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
+    pim_enrich.normalizer.attribute.versioned:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\VersionedAttributeNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_enrich.provider.structure_version.attribute'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
     ### Attribute option
+    pim_enrich.normalizer.structured.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\StructuredAttributeOptionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.factory.attribute_option_value'
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer}
+
     pim_enrich.normalizer.attribute_option:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer'
         arguments:
@@ -65,6 +84,16 @@ services:
             - '@pim_catalog.normalizer.standard.attribute_option'
         tags:
             - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.attribute_option_value_collection:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionValueCollectionNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.attribute_option_value:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionValueNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
 
     ### Family
     pim_enrich.normalizer.family:
@@ -219,3 +248,8 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\ReferenceDataConfigurationNormalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.image:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.file'

@@ -95,6 +95,24 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pim_enrich.repository.locale:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\LocaleRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.locale.class%'
+
+    pim_enrich.repository.currency:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\CurrencyRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.currency.class%'
+
+    pim_enrich.repository.channel:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\ChannelRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.channel.class%'
+
     pim_catalog.normalizer.standard.channel:
         class: 'Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer'
         arguments:
@@ -190,3 +208,28 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%akeneo_channel.model.currency.interface%'
+
+    pim_channel.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -   csv_channel_export: pim-job-instance-csv-base-export
+                csv_currency_export: pim-job-instance-csv-base-export
+                csv_locale_export: pim-job-instance-csv-base-export
+                xlsx_channel_export: pim-job-instance-xlsx-base-export
+                xlsx_currency_export: pim-job-instance-xlsx-base-export
+                xlsx_locale_export: pim-job-instance-xlsx-base-export
+                csv_channel_import: pim-job-instance-csv-base-import
+                csv_currency_import: pim-job-instance-csv-base-import
+                csv_locale_import: pim-job-instance-csv-base-import
+                xlsx_channel_import: pim-job-instance-xlsx-base-import
+                xlsx_currency_import: pim-job-instance-xlsx-base-import
+                xlsx_locale_import: pim-job-instance-xlsx-base-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.twig.locale_extension:
+        class: 'Akeneo\Channel\Bundle\Twig\LocaleExtension'
+        arguments:
+            - '@pim_user.context.user'
+        tags:
+            - { name: twig.extension }

@@ -1,9 +1,6 @@
-parameters:
-    pim_pdf_generator.controller.product.class: Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController
-
 services:
     pim_pdf_generator.controller.product:
-        class: '%pim_pdf_generator.controller.product.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_pdf_generator.renderer.registry'
@@ -92,3 +89,191 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
+
+    pim_enrich.controller.rest.category:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_enrich.twig.category_extension'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.product_category:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCategoryController'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.filter.chained'
+
+
+    pim_enrich.controller.rest.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.validator.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.remover.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_enrich.normalizer.product_violation'
+            - '@pim_catalog.builder.product'
+            - '@pim_enrich.filter.product_attribute_filter'
+
+    pim_enrich.controller.rest.product_comment:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCommentController'
+        arguments:
+            - '@security.token_storage'
+            - '@form.factory'
+            - '@pim_catalog.repository.product'
+            - '@pim_comment.repository.comment'
+            - '@pim_comment.saver.comment'
+            - '@pim_comment.builder.comment'
+            - '@pim_standard_format_serializer'
+            - '@validator'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
+
+    pim_enrich.controller.rest.product_model_category:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelCategoryController'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product_model_category'
+            - '@pim_catalog.filter.chained'
+
+
+    pim_enrich.controller.rest.product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product_model'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.remover.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_enrich.normalizer.product_violation'
+            - '@pim_enrich.normalizer.entity_with_family_variant'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_enrich.filter.product_model_attribute_filter'
+
+    pim_enrich.controller.rest.group:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\GroupController'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.updater.group'
+            - '@pim_catalog.validator.product'
+            - '@pim_enrich.normalizer.group_violation'
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.remover.group'
+            - '@pim_catalog.factory.group'
+            - '@pim_enrich.normalizer.violation'
+
+    pim_enrich.controller.rest.sequential_edit:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\SequentialEditController'
+        arguments:
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
+
+    pim_enrich.controller.rest.value:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ValuesController'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_user.context.user'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_enrich.normalizer.product_violation'
+
+    pim_enrich.controller.rest.mass_edit:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MassEditController'
+        arguments:
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_enrich.mass_edit_action.operation_job_launcher'
+            - '@pim_enrich.converter.mass_operation'
+            - '@pim_datagrid.adapter.items_counter'
+
+    pim_enrich.controller.rest.media:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MediaController'
+        arguments:
+            - '@validator'
+            - '@akeneo_file_storage.file_storage.path_generator'
+            - '%tmp_storage_dir%'
+
+    pim_enrich.controller.rest.versioning:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\VersioningController'
+        arguments:
+            - '@pim_versioning.repository.version'
+            - '@pim_catalog.resolver.fqcn'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+
+    pim_enrich.controller.category_tree.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
+        arguments:
+            - '@event_dispatcher'
+            - '@pim_user.context.user'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
+    pim_enrich.controller.file:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'
+        arguments:
+            - '@liip_imagine.controller'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@pim_enrich.guesser.file_type'
+            - '@pim_enrich.provider.default_image'
+            - ['catalogStorage']
+
+    pim_enrich.controller.product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '%pim_catalog.entity.category.class%'
+            - 'pim_enrich_product_model_categories_view'
+            - '@@AkeneoPimEnrichmentBundle/ProductModel/listCategories.json.twig'
+
+    pim_enrich.controller.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '%pim_catalog.entity.category.class%'
+            - '@oro_security.security_facade'
+            - 'pim_enrich_product_categories_view'
+            - '@@PimEnrich/Product/listCategories.json.twig'

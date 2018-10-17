@@ -51,3 +51,15 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '%pim_api.configuration%'
+
+    pim_enrich.controller.rest.currency:
+        class: 'Akeneo\Channel\Bundle\Controller\InternalApi\CurrencyController'
+        arguments:
+            - '@pim_catalog.repository.currency'
+
+    pim_enrich.controller.currency:
+        class: 'Akeneo\Channel\Bundle\Controller\UI\CurrencyController'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@pim_catalog.saver.currency'

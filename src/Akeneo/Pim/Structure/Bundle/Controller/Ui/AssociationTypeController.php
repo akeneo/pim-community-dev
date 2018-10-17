@@ -2,20 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\Ui;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
-use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\Flash\Message;
-use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Association type controller
@@ -26,57 +14,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AssociationTypeController
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var HandlerInterface */
-    protected $assocTypeHandler;
-
-    /** @var Form */
-    protected $assocTypeForm;
-
-    /** @var AssociationRepositoryInterface */
-    protected $assocRepository;
-
-    /** @var RemoverInterface */
-    protected $assocTypeRemover;
-
-    /** @var AssociationTypeRepositoryInterface */
-    protected $assocTypeRepo;
-
-    /**
-     * @param RequestStack                       $requestStack
-     * @param RouterInterface                    $router
-     * @param TranslatorInterface                $translator
-     * @param AssociationRepositoryInterface     $assocRepository
-     * @param HandlerInterface                   $assocTypeHandler
-     * @param Form                               $assocTypeForm
-     * @param RemoverInterface                   $assocTypeRemover
-     * @param AssociationTypeRepositoryInterface $assocTypeRepo
-     */
-    public function __construct(
-        RequestStack $requestStack,
-        RouterInterface $router,
-        TranslatorInterface $translator,
-        AssociationRepositoryInterface $assocRepository,
-        HandlerInterface $assocTypeHandler,
-        Form $assocTypeForm,
-        RemoverInterface $assocTypeRemover,
-        AssociationTypeRepositoryInterface $assocTypeRepo
-    ) {
-        $this->requestStack = $requestStack;
-        $this->router = $router;
-        $this->translator = $translator;
-        $this->assocRepository = $assocRepository;
-        $this->assocTypeHandler = $assocTypeHandler;
-        $this->assocTypeForm = $assocTypeForm;
-        $this->assocTypeRemover = $assocTypeRemover;
-        $this->assocTypeRepo = $assocTypeRepo;
-    }
-
     /**
      * Edit an association type
      *

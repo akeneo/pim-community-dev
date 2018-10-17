@@ -1,0 +1,8 @@
+pim_enrich_currency_index:
+    path: ''
+
+pim_enrich_currency_toggle:
+    path: /{id}/toggle
+    defaults: { _controller: pim_enrich.controller.currency:toggleAction }
+    requirements:
+        id: \d+

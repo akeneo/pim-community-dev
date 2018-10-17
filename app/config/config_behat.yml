@@ -32,7 +32,7 @@ swiftmailer:
 assetic:
     use_controller: false
 
-pim_enrich:
+pim_import_export:
     record_mails: true
 
 parameters:

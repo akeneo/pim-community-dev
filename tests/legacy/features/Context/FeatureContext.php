@@ -416,7 +416,7 @@ class FeatureContext extends MinkContext implements KernelAwareContext
     /**
      * Get the mail recorder
      *
-     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
+     * @return \Akeneo\Platform\Bundle\ImportExportBundle\Test\MailRecorder
      */
     public function getMailRecorder()
     {

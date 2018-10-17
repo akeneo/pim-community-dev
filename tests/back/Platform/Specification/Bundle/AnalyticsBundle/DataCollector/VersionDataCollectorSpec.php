@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\ServerBag;
 
 class VersionDataCollectorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         RequestStack $requestStack,
         VersionProviderInterface $versionProvider,
         InstallStatusManager $installStatusManager

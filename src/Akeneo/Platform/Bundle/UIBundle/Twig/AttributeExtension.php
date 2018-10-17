@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
+use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**
  * Twig extension to present localized data

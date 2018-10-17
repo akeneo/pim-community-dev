@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationTypeNormalizerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         NormalizerInterface $normalizer,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer

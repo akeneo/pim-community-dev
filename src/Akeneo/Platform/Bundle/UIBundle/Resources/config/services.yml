@@ -1,0 +1,50 @@
+parameters:
+    security.exception_listener.class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\ExceptionListener'
+
+services:
+    pim_enrich.imagine.loader.flysystem:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader'
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - ['catalogStorage']
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
+
+    pim_enrich.resolver.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver'
+        arguments:
+            - '@request_stack'
+            - '%locale%'
+
+    pim_enrich.version_strategy:
+        class: 'Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy'
+        arguments:
+            - '@pim_catalog.version_provider'
+
+    # inject current locale into translatable entities
+    pim_enrich.event_listener.add_locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_enrich.event_listener.close_session:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\CloseSessionListener'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_enrich.event_subscriber.translate_flash_messages:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\TranslateFlashMessagesSubscriber'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    stof_doctrine_extensions.event_listener.locale:
+        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener'
+        arguments:
+            - '@security.token_storage'
+            - '@pim_enrich.event_listener.add_locale'
+            - '@pim_catalog.context.catalog'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
  */
 class AssociationClassResolverSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedWith([
             Product::class => ProductAssociation::class,

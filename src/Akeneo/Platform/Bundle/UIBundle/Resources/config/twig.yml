@@ -51,3 +51,33 @@ services:
             - '@pim_enrich.resolver.locale'
         tags:
             - { name: twig.extension }
+
+    pim_enrich.twig.version_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\VersionExtension'
+        arguments:
+            - '@pim_catalog.version_provider'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.view_element_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension'
+        arguments:
+            - '@pim_enrich.view_element.registry'
+            - '@templating'
+            - '%kernel.debug%'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.translations_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\TranslationsExtension'
+        arguments:
+            - '@pim_catalog.command_launcher'
+            - '@request_stack'
+            - '%assetic.write_to%'
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.object_class_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ObjectClassExtension'
+        tags:
+            - { name: twig.extension }

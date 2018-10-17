@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ConversionUnitsValidatorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         MeasureManager $measureManager,
         ExecutionContext $context

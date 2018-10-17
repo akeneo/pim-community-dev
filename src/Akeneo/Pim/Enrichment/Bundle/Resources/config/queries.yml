@@ -46,3 +46,8 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.association.class%'
+
+    pim_enrich.doctrine.query.ascendant_categories:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AscendantCategories'
+        arguments:
+            - '@doctrine.orm.entity_manager'

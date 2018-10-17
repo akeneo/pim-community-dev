@@ -12,14 +12,14 @@ services:
         factory: 'form.factory:createNamed'
         arguments:
             - 'pim_enrich_currency_form'
-            - 'Pim\Bundle\EnrichBundle\Form\Type\CurrencyType'
+            - 'Akeneo\Platform\Bundle\UIBundle\Form\Type\CurrencyType'
 
     pim_enrich.form.group:
         class: 'Symfony\Component\Form\Form'
         factory: 'form.factory:createNamed'
         arguments:
             - 'pim_enrich_group_form'
-            - '%pim_enrich.form.type.group.class%'
+            - 'Akeneo\Pim\Enrichment\Bundle\Form\Type\GroupType'
 
     pim_enrich.form.group_type:
         class: 'Symfony\Component\Form\Form'
@@ -33,19 +33,12 @@ services:
         factory: 'form.factory:createNamed'
         arguments:
             - 'pim_enrich_associationtype_form'
-            - '%pim_enrich.form.type.association_type.class%'
+            - 'Akeneo\Pim\Structure\Bundle\Form\Type\AssociationTypeType'
 
     pim_enrich.form.type.async_select:
-        class: Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType
         arguments:
             - '@router'
             - '@pim_enrich.factory.transformer.identifiable_model'
         tags:
             - { name: form.type, alias: pim_async_select }
-
-    pim_enrich.form.type.export_select_family:
-        class: Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType
-        arguments:
-            - '@router'
-        tags:
-            - { name: form.type, alias: select_family_type }
