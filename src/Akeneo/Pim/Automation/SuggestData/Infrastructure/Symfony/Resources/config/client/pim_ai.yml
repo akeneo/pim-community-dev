@@ -33,7 +33,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator'
         public: false
         arguments:
-            - 'https://pim-ai.cloud2.akeneo.com'
+            - 'https://pim-ai.dev.cloud.akeneo.com'
 
     akeneo.pim.automation.suggest_data.pimai_client.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice'
