@@ -2,7 +2,7 @@ import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
 
-const fetcherRegistry = require('pim/fetcher-registry');
+const FetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
 const template = require('pimee/template/identifiers-mapping/table');
 
@@ -66,7 +66,7 @@ class EditIdentifiersMappingView extends BaseView {
    */
   public configure(): JQueryPromise<any> {
     return $.when(
-      fetcherRegistry.getFetcher('identifiers-mapping')
+      FetcherRegistry.getFetcher('identifiers-mapping')
         .fetchAll()
         .then((identifiersMapping: { [franklin_identifier: string]: (string | null) }) => {
           this.setData(identifiersMapping);

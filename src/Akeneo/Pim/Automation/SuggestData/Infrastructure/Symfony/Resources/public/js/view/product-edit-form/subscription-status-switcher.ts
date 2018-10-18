@@ -5,7 +5,7 @@ import {getSubscriptionStatus} from '../../fetcher/subscription';
 import SubscriptionStatus from '../../model/subscription-status';
 
 const __ = require('oro/translator');
-const messenger = require('oro/messenger');
+const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/product-edit-form/subscription-status-switcher');
 
@@ -93,7 +93,7 @@ class SubscriptionStatusSwitcher extends BaseView {
       method: 'POST',
       url: Routing.generate('akeneo_suggest_data_subscribe', {productId: this.getFormData().meta.id}),
     }).done(() => {
-      messenger.notify(
+      Messenger.notify(
         'success',
         __(this.config.createProductSubscriptionSuccessMessage),
       );
@@ -105,7 +105,7 @@ class SubscriptionStatusSwitcher extends BaseView {
         errorMessage = response.errors;
       }
 
-      messenger.notify('error', __(errorMessage));
+      Messenger.notify('error', __(errorMessage));
     }).always(() => {
       this.render();
     });
@@ -119,7 +119,7 @@ class SubscriptionStatusSwitcher extends BaseView {
       method: 'DELETE',
       url: Routing.generate('akeneo_suggest_data_unsubscribe', {productId: this.getFormData().meta.id}),
     }).done(() => {
-      messenger.notify(
+      Messenger.notify(
         'success',
         __(this.config.deleteProductSubscriptionSuccessMessage),
       );
@@ -131,7 +131,7 @@ class SubscriptionStatusSwitcher extends BaseView {
         errorMessage = response.errors;
       }
 
-      messenger.notify('error', __(errorMessage));
+      Messenger.notify('error', __(errorMessage));
     }).always(() => {
       this.render();
     });

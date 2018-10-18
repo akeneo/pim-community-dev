@@ -1,5 +1,5 @@
 const __ = require('oro/translator');
-const fetcherRegistry = require('pim/fetcher-registry');
+const FetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
 const MappingSaver = require('pimee/saver/identifiers-mapping');
 
@@ -24,7 +24,7 @@ class MappingSave extends BaseSave {
    */
   public configure() {
     return $.when(
-      fetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then(
+      FetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then(
         (identifiersMapping: Mapping) => {
           if (this.isMappingEmpty(identifiersMapping)) {
             this.updateSuccessMessage = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.first');

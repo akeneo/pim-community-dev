@@ -15,6 +15,7 @@ import {
   AttributeOptionStatus,
   NormalizedAttributeOptionsMapping,
 } from '../../model/normalized-attribute-options-mapping';
+
 const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -57,7 +58,7 @@ class AttributeOptionsMapping extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: Config}) {
+  constructor(options: { config: Config }) {
     super(options);
 
     this.config = {...this.config, ...options.config};

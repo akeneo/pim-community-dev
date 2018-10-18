@@ -2,6 +2,7 @@ import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+
 const __ = require('oro/translator');
 const Router = require('pim/router');
 const template = require('pimee/template/common/tabs');
@@ -14,7 +15,7 @@ const template = require('pimee/template/common/tabs');
  */
 interface Config {
   tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;
-  selected: number|null;
+  selected: number | null;
 }
 
 class Tabs extends BaseView {
@@ -28,7 +29,7 @@ class Tabs extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: Config}) {
+  constructor(options: { config: Config }) {
     super(options);
     this.stateFullAllowed = [];
 
@@ -60,7 +61,7 @@ class Tabs extends BaseView {
       this.listenTo(
         this.getRoot(),
         'pim_enrich:form:entity:post_save',
-        () => {
+        () => {
           this.stateFullAllowed = [];
           this.render();
         },
