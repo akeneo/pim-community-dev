@@ -9,11 +9,11 @@ const Messenger = require('oro/messenger');
 const template = require('pimee/template/franklin-connection/edit');
 
 interface Config {
-  token_label_content: string;
-  token_field_title: string;
-  token_field_placeholder: string;
-  token_save_pre_activation_title: string;
-  token_save_post_activation_title: string;
+  tokenLabelContent: string;
+  tokenFieldTitle: string;
+  tokenFieldPlaceholder: string;
+  tokenSavePreActivationTitle: string;
+  tokenSavePostActivationTitle: string;
 }
 
 /**
@@ -27,11 +27,11 @@ class EditView extends BaseView {
   private readonly template: any = _.template(template);
 
   private readonly config: Config = {
-    token_label_content: '',
-    token_field_title: '',
-    token_field_placeholder: '',
-    token_save_pre_activation_title: '',
-    token_save_post_activation_title: '',
+    tokenLabelContent: '',
+    tokenFieldTitle: '',
+    tokenFieldPlaceholder: '',
+    tokenSavePreActivationTitle: '',
+    tokenSavePostActivationTitle: '',
   };
 
   private storedToken: string = '';
@@ -81,8 +81,8 @@ class EditView extends BaseView {
     getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
       const formData = this.getFormData();
 
-      this.isConnectionActivated = connectionStatus.is_active;
-      true === connectionStatus.is_active
+      this.isConnectionActivated = connectionStatus.isActive;
+      true === connectionStatus.isActive
         ? this.renderActivatedConnection(formData.token)
         : this.renderUnactivatedConnection(formData.token);
     });
@@ -137,11 +137,11 @@ class EditView extends BaseView {
   private renderUnactivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelContent: __(this.config.token_label_content),
-        tokenFieldTitle: __(this.config.token_field_title),
-        tokenFieldPlaceholder: __(this.config.token_field_placeholder),
+        tokenLabelContent: __(this.config.tokenLabelContent),
+        tokenFieldTitle: __(this.config.tokenFieldTitle),
+        tokenFieldPlaceholder: __(this.config.tokenFieldPlaceholder),
         token,
-        activationLabel: __(this.config.token_save_pre_activation_title),
+        activationLabel: __(this.config.tokenSavePreActivationTitle),
         buttonStyle: 'AknButton--slateGrey',
         connectionStatus: 'activate-connection',
       }),
@@ -156,11 +156,11 @@ class EditView extends BaseView {
   private renderActivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelContent: __(this.config.token_label_content),
-        tokenFieldTitle: __(this.config.token_field_title),
-        tokenFieldPlaceholder: __(this.config.token_field_placeholder),
+        tokenLabelContent: __(this.config.tokenLabelContent),
+        tokenFieldTitle: __(this.config.tokenFieldTitle),
+        tokenFieldPlaceholder: __(this.config.tokenFieldPlaceholder),
         token,
-        activationLabel: __(this.config.token_save_post_activation_title),
+        activationLabel: __(this.config.tokenSavePostActivationTitle),
         buttonStyle: 'AknButton--apply AknButton--disabled',
         connectionStatus: 'connection-activated',
       }),
@@ -178,7 +178,7 @@ class EditView extends BaseView {
       .removeClass('connection-activated')
       .addClass('AknButton--slateGrey')
       .addClass('activate-connection')
-      .html(__(this.config.token_save_pre_activation_title));
+      .html(__(this.config.tokenSavePreActivationTitle));
   }
 
   /**
@@ -192,7 +192,7 @@ class EditView extends BaseView {
       .addClass('AknButton--apply ')
       .addClass('AknButton--disabled')
       .addClass('connection-activated')
-      .html(__(this.config.token_save_post_activation_title));
+      .html(__(this.config.tokenSavePostActivationTitle));
   }
 }
 

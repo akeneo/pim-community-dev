@@ -29,7 +29,7 @@ class AttributeOptionsMappingController
     {
         return new JsonResponse([
             'family' => 'router',
-            'franklin_attribute_code' => 'color',
+            'franklinAttributeCode' => 'color',
             'mapping' => [
                 'color_1' => [
                     'franklin_attribute_option_code' => [
@@ -66,8 +66,8 @@ class AttributeOptionsMappingController
         /* Current return from the Front
          * {
          *     "family":"router",
-         *     "franklin_attribute_code":"color",
-         *     "catalog_attribute_code": "color",
+         *     "franklinAttributeCode":"color",
+         *     "catalogAttributeCode": "color",
          *     "mapping":{
          *         "color_1":{
          *             "franklin_attribute_option_code":{"label":"Color 1"},

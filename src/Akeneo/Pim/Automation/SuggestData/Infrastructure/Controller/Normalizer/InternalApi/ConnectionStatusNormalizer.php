@@ -30,7 +30,7 @@ final class ConnectionStatusNormalizer
     public function normalize(ConnectionStatus $connectionStatus): array
     {
         return [
-            'is_active' => $connectionStatus->isActive(),
+            'isActive' => $connectionStatus->isActive(),
         ];
     }
 }

@@ -53,7 +53,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
     {
         return [
             'indicateAnActiveSubscription' => function ($productSubscriptionStatus) {
-                return ['is_subscribed' => true] === $productSubscriptionStatus->normalize();
+                return ['isSubscribed' => true] === $productSubscriptionStatus->normalize();
             },
         ];
     }

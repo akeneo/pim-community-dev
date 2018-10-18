@@ -40,7 +40,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     public function it_returns_an_attribute_mapping(): void
     {
         $mapping = ['color' => [
-            'pim_ai_attribute' => ['type' => 'multiselect'],
+            'pimAiAttribute' => ['type' => 'multiselect'],
             'attribute' => 'tshirt_style',
             'status' => 1,
         ]];

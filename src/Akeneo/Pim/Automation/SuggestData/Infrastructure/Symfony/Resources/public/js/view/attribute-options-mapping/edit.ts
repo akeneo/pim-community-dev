@@ -26,9 +26,9 @@ interface Config {
     pending: string;
     mapped: string;
     unmapped: string;
-    franklin_attribute_option: string;
-    catalog_attribute_option: string;
-    attribute_option_status: string;
+    franklinAttributeOption: string;
+    catalogAttributeOption: string;
+    attributeOptionStatus: string;
   };
 }
 
@@ -44,9 +44,9 @@ class AttributeOptionsMapping extends BaseForm {
       pending: '',
       mapped: '',
       unmapped: '',
-      franklin_attribute_option: '',
-      catalog_attribute_option: '',
-      attribute_option_status: '',
+      franklinAttributeOption: '',
+      catalogAttributeOption: '',
+      attributeOptionStatus: '',
     },
   };
   private familyLabel: string;
@@ -78,7 +78,7 @@ class AttributeOptionsMapping extends BaseForm {
   public render(): BaseForm {
     if (Object.keys(this.getFormData()).length === 0) {
       this.fetchMapping().then((attributeOptionsMapping: NormalizedAttributeOptionsMapping) => {
-        attributeOptionsMapping.catalog_attribute_code = this.catalogAttributeCode;
+        attributeOptionsMapping.catalogAttributeCode = this.catalogAttributeCode;
         this.setData(attributeOptionsMapping);
         this.innerRender();
       });
@@ -175,9 +175,9 @@ class AttributeOptionsMapping extends BaseForm {
         franklinAttributeLabel: this.franklinAttributeLabel,
       }),
       mapping,
-      franklin_attribute_option: __(this.config.labels.franklin_attribute_option),
-      catalog_attribute_option: __(this.config.labels.catalog_attribute_option),
-      attribute_option_status: __(this.config.labels.attribute_option_status),
+      franklinAttributeOption: __(this.config.labels.franklinAttributeOption),
+      catalogAttributeOption: __(this.config.labels.catalogAttributeOption),
+      attributeOptionStatus: __(this.config.labels.attributeOptionStatus),
       statuses: this.getMappingStatuses(),
     }));
 
@@ -185,9 +185,7 @@ class AttributeOptionsMapping extends BaseForm {
       this.appendAttributeOptionSelector(franklinAttributeOptionCode);
     });
 
-    Filterable.afterRender(this, __(
-      'akeneo_suggest_data.entity.attribute_options_mapping.fields.franklin_attribute_option',
-    ));
+    Filterable.afterRender(this, __(this.config.labels.franklinAttributeOption,));
 
     this.renderExtensions();
 
@@ -205,7 +203,7 @@ class AttributeOptionsMapping extends BaseForm {
     );
     const attributeSelector = new SimpleSelectAsync({
       config: {
-        fieldName: 'mapping.' + franklinAttributeOptionCode + '.catalog_attribute_option_code',
+        fieldName: 'mapping.' + franklinAttributeOptionCode + '.catalogAttributeOptionCode',
         label: '',
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',

@@ -37,7 +37,7 @@ final class ProductSubscriptionStatus
     public function normalize(): array
     {
         return [
-            'is_subscribed' => $this->isSubscribed,
+            'isSubscribed' => $this->isSubscribed,
         ];
     }
 }

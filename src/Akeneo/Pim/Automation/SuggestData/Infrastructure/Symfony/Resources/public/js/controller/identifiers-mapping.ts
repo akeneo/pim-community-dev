@@ -30,7 +30,7 @@ class MappingController extends BaseController {
       .then((connectionStatus: ConnectionStatus) => {
         const entity = this.options.config.entity;
         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';
-        if (connectionStatus.is_active) {
+        if (connectionStatus.isActive) {
           formToBuild = 'pimee-' + entity + '-index';
         }
 

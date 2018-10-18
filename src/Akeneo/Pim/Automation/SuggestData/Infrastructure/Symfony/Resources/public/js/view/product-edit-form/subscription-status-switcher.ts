@@ -10,10 +10,10 @@ const Routing = require('routing');
 const template = require('pimee/template/product-edit-form/subscription-status-switcher');
 
 interface Config {
-  create_product_subscription_fail_message: string;
-  create_product_subscription_success_message: string;
-  delete_product_subscription_fail_message: string;
-  delete_product_subscription_success_message: string;
+  createProductSubscriptionFailMessage: string;
+  createProductSubscriptionSuccessMessage: string;
+  deleteProductSubscriptionFailMessage: string;
+  deleteProductSubscriptionSuccessMessage: string;
 }
 
 /**
@@ -52,7 +52,7 @@ class SubscriptionStatusSwitcher extends BaseView {
     const productId = this.getFormData().meta.id;
 
     getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus) => {
-      this.currentStatus = subscriptionStatus.is_subscribed;
+      this.currentStatus = subscriptionStatus.isSubscribed;
       this.$el.html(
         this.template({
           subscriptionStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
@@ -95,11 +95,11 @@ class SubscriptionStatusSwitcher extends BaseView {
     }).done(() => {
       messenger.notify(
         'success',
-        __(this.config.create_product_subscription_success_message),
+        __(this.config.createProductSubscriptionSuccessMessage),
       );
     }).fail((xhr: any) => {
       const response = xhr.responseJSON;
-      let errorMessage = this.config.create_product_subscription_fail_message;
+      let errorMessage = this.config.createProductSubscriptionFailMessage;
 
       if (undefined !== response && undefined !== response.errors) {
         errorMessage = response.errors;
@@ -121,11 +121,11 @@ class SubscriptionStatusSwitcher extends BaseView {
     }).done(() => {
       messenger.notify(
         'success',
-        __(this.config.delete_product_subscription_success_message),
+        __(this.config.deleteProductSubscriptionSuccessMessage),
       );
     }).fail((xhr: any) => {
       const response = xhr.responseJSON;
-      let errorMessage = this.config.delete_product_subscription_fail_message;
+      let errorMessage = this.config.deleteProductSubscriptionFailMessage;
 
       if (undefined !== response && undefined !== response.errors) {
         errorMessage = response.errors;

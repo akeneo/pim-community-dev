@@ -3,7 +3,7 @@ import * as JQuery from 'jquery';
 const Routing = require('routing');
 
 export interface ConnectionStatus {
-  is_active: boolean;
+  isActive: boolean;
 }
 
 export function getConfiguration(): JQueryPromise<any> {

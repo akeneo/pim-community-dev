@@ -29,7 +29,7 @@ class SaverForm extends BaseSaverForm {
 
     return AttributeOptionsMappingSaver
       .setFamilyCode(entity.family)
-      .setFranklinAttributeCode(entity.franklin_attribute_code)
+      .setFranklinAttributeCode(entity.franklinAttributeCode)
       .setUrl(this.config.url)
       .save(null, entity, this.config.method || 'POST')
       .then((data: any) => {

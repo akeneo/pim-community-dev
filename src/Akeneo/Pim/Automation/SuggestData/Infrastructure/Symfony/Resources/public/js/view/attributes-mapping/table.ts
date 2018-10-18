@@ -18,7 +18,7 @@ const UserContext = require('pim/user-context');
 interface NormalizedAttributeMapping {
   mapping: {
     [key: string]: {
-      pim_ai_attribute: {
+      pimAiAttribute: {
         label: string,
         type: string,
       },
@@ -33,9 +33,9 @@ interface Config {
     pending: string,
     mapped: string,
     unmapped: string,
-    pim_ai_attribute: string,
-    catalog_attribute: string,
-    suggest_data: string, // TODO Rename to attribute_mapping_status
+    pimAiAttribute: string,
+    catalogAttribute: string,
+    attributeMappingStatus: string,
   };
 }
 
@@ -66,9 +66,9 @@ class AttributeMapping extends BaseForm {
       pending: '',
       mapped: '',
       unmapped: '',
-      pim_ai_attribute: '',
-      catalog_attribute: '',
-      suggest_data: '',
+      pimAiAttribute: '',
+      catalogAttribute: '',
+      attributeMappingStatus: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
@@ -102,9 +102,9 @@ class AttributeMapping extends BaseForm {
     this.$el.html(this.template({
       mapping,
       statuses: this.getMappingStatuses(),
-      pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
-      catalog_attribute: __(this.config.labels.catalog_attribute),
-      suggest_data: __(this.config.labels.suggest_data),
+      pimAiAttribute: __(this.config.labels.pimAiAttribute),
+      catalogAttribute: __(this.config.labels.catalogAttribute),
+      attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
       edit: __('pim_common.edit'),
     }));
 
@@ -118,7 +118,7 @@ class AttributeMapping extends BaseForm {
       return acc;
     }, {} as { [key: string]: string }));
 
-    Filterable.afterRender(this, __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'));
+    Filterable.afterRender(this, __(this.config.labels.pimAiAttribute));
 
     this.renderExtensions();
     this.delegateEvents();
@@ -148,7 +148,7 @@ class AttributeMapping extends BaseForm {
         fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
-        types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
+        types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pimAiAttribute.type],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
@@ -210,7 +210,7 @@ class AttributeMapping extends BaseForm {
    */
   private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
     const $line = $(event.currentTarget).closest('.line');
-    const franklinAttributeLabel = $line.data('pim_ai_attribute') as string;
+    const franklinAttributeLabel = $line.data('pim-ai-attribute') as string;
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
         $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;

@@ -30,7 +30,7 @@ class AttributesMappingNormalizer
         $normalizedAttributes = [];
         foreach ($attributesMappingResponse as $attribute) {
             $normalizedAttributes[$attribute->getTargetAttributeCode()] = [
-                'pim_ai_attribute' => [
+                'pimAiAttribute' => [
                     'label' => $attribute->getTargetAttributeLabel(),
                     'type' => $attribute->getTargetType(),
                 ],
