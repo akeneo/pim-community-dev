@@ -12,7 +12,6 @@
 namespace Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
