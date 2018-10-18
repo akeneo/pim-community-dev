@@ -99,7 +99,12 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             return [];
         }
 
-        $valuePath = sprintf('%s-text', $product->getFamily()->getAttributeAsLabel()->getCode());
+        $attributeAsLabel = $product->getFamily()->getAttributeAsLabel();
+        if (null === $attributeAsLabel) {
+            return [];
+        }
+
+        $valuePath = sprintf('%s-text', $attributeAsLabel->getCode());
         if (!isset($values[$valuePath])) {
             return [];
         }

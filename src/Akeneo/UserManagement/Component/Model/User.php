@@ -893,7 +893,7 @@ class User implements UserInterface
 
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
-        return 'uploads'.$ds.'users'.$ds.$suffix;
+        return ($forWeb ? $ds : '').'uploads'.$ds.'users'.$ds.$suffix;
     }
 
     /**

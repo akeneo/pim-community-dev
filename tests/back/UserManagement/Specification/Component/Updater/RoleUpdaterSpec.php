@@ -24,26 +24,32 @@ class RoleUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(RoleUpdater::class);
     }
 
-    function it_is_a_updater()
+    function it_is_an_updater()
     {
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_updates_the_role_properties(RoleInterface $role, SecurityIdentityInterface $sid, $aclManager)
+    function it_updates_a_role_label_but_never_the_role_code(
+        RoleInterface $role,
+        SecurityIdentityInterface $sid,
+        $aclManager
+    )
     {
-        $role->setRole('ROLE_ADMINISTRATOR')->shouldBeCalled();
         $role->getRole()->willReturn('ROLE_ADMINISTRATOR');
-        $role->setLabel('name')->shouldBeCalled();
+        $role->setRole('ROLE_ADMINISTRATOR')->shouldNotBeCalled();
+        $role->setLabel('admin')->shouldBeCalled();
 
-        $aclManager->getAllExtensions()->willReturn([]);
+        $role->getRole()->willReturn('ROLE_ADMINISTRATOR');
         $aclManager->getSid($role)->willReturn($sid);
+        $aclManager->getAllExtensions()->willReturn([]);
+
         $aclManager->flush()->shouldBeCalled();
 
         $this->update(
             $role,
             [
-                'label' => 'name',
                 'role' => 'ROLE_ADMINISTRATOR',
+                'label' => 'admin'
             ]
         );
     }
@@ -56,5 +62,29 @@ class RoleUpdaterSpec extends ObjectBehavior
                 'name' => 'name',
             ],
         ]);
+    }
+
+    function it_creates_a_role(
+        RoleInterface $role,
+        SecurityIdentityInterface $sid,
+        $aclManager
+    )
+    {
+        $role->getRole()->willReturn(null);
+        $role->setRole('ROLE_ADMINISTRATOR')->shouldBeCalled();
+        $role->setLabel('administrator')->shouldBeCalled();
+
+        $aclManager->getSid($role)->willReturn($sid);
+        $aclManager->getAllExtensions()->willReturn([]);
+
+        $aclManager->flush()->shouldBeCalled();
+
+        $this->update(
+            $role,
+            [
+                'role' => 'ROLE_ADMINISTRATOR',
+                'label' => 'administrator'
+            ]
+        );
     }
 }

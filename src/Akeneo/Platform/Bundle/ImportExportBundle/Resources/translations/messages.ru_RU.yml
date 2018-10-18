@@ -6,14 +6,14 @@ pim_import_export:
   status:
     0: Готов
   batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
+    1: Завершено
+    2: Запущено
+    3: Запущено
+    4: Завершается
+    5: Остановлено
+    6: Не выполнено
+    7: Прервано
+    8: Неизвестно
   download_archive:
     archive: Скачать созданный архив|Скачать созданные архивы
     output: Скачать созданный файл|скачать созданные файлы
@@ -36,9 +36,13 @@ pim_import_export:
       history.title: Журнал
       job_content.title: Содержание
 pim_title.export_profile.index: Управление профилями экспорта
+pim_title.export_profile.edit: Экспорт профиля %job.label% | Изменить
+pim_title.export_profile.show: Экспорт профиля %job.label% | Просмотр
 pim_title.export_execution.index: История запусков экспорта
 pim_title.export_execution.show: Запуск экспорта | Детали
 pim_title.import_profile.index: Управление профилями импорта
+pim_title.import_profile.edit: Импорт профиля %job.label% | Изменить
+pim_title.import_profile.show: Импорт профиля %job.label% | Просмотр
 pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:
@@ -70,8 +74,8 @@ pim_importexport:
       launch: Запуск исполнения профиля импорта
       history: Просмотр журнала профиля импорта
     export_execution:
-      index: Посмотреть список отчетов об экспорте
-      show: Подробный просмотр отчета об экспорте
+      index: Посмотреть список отчетов по экспорту
+      show: Подробный просмотр отчета по экспорту
       dl_log: Скачать журнал экспорта
       dl_files: Скачать экспортированные файлы
     import_execution:
@@ -138,4 +142,12 @@ Warnings: Предупреждения
 Summary: Сводка
 Start: Начало
 End: Конец
+COMPLETED: Завершено
+STARTING: Запущено
+STARTED: Запущено
+STOPPING: Завершается
+STOPPED: Остановлено
+FAILED: Не выполнено
+ABANDONED: Прервано
+UNKNOWN: Неизвестно
 warning.label: Предупреждение

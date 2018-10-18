@@ -96,7 +96,10 @@ class ComparisonPanelDecorator extends ElementDecorator
      */
     protected function selectedItemsCount()
     {
-        $checkboxes = $this->getBody()->findAll('css', '.copy-field-selector');
+        $checkboxes = $this->spin(function () {
+            return $this->getBody()->findAll('css', '.copy-field-selector');
+        }, 'No checkbox found in copy panel');
+
         $checkedCount = 0;
         foreach ($checkboxes as $checkbox) {
             if ($checkbox->isChecked()) {
