@@ -102,7 +102,7 @@ extensions:
         module: pim/filter/attribute/select
         config:
             url: pim_ui_ajaxentity_list
-            entityClass: Akeneo\Pim\Structure\Component\Model\AttributeOption
+            entityClass: "%pim_catalog.entity.attribute_option.class%"
             operators:
                 - IN
                 - EMPTY
