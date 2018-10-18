@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\MassEdit\Processor;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -12,7 +11,6 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -22,6 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
@@ -47,14 +46,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_sets_values_if_user_is_a_product_owner(
         $validator,
         $productUpdater,
-        $userManager,
         $authorizationChecker,
         $productRepository,
         $stepExecution,
         AttributeInterface $attribute,
         ProductInterface $product,
-        JobExecution $jobExecution,
-        UserInterface $owner,
         JobParameters $jobParameters
     ) {
         $values = [
@@ -79,10 +75,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $violations = new ConstraintViolationList([]);
@@ -100,14 +92,11 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_sets_values_if_user_is_a_product_editor(
         $validator,
         $productUpdater,
-        $userManager,
         $authorizationChecker,
         $productRepository,
         $stepExecution,
         AttributeInterface $attribute,
         ProductInterface $product,
-        JobExecution $jobExecution,
-        UserInterface $editor,
         JobParameters $jobParameters
     ) {
         $values = [
@@ -133,10 +122,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $jobExecution->getUser()->willReturn('editor');
-        $userManager->findUserByUsername('editor')->willReturn($editor);
-        $editor->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
@@ -154,12 +139,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_does_not_set_values_if_user_is_not_allowed_to_edit_the_product(
         $productUpdater,
-        $userManager,
         $authorizationChecker,
         $stepExecution,
         ProductInterface $product,
-        JobExecution $jobExecution,
-        UserInterface $anon,
         JobParameters $jobParameters
     ) {
         $values = [
@@ -183,10 +165,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
-        $jobExecution->getUser()->willReturn('anon');
-        $userManager->findUserByUsername('anon')->willReturn($anon);
-        $anon->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);

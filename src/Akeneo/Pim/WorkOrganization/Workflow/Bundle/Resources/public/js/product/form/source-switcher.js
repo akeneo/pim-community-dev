@@ -38,6 +38,7 @@ define(
                 this.trigger('pim_enrich:form:source_switcher:render:before', context);
                 this.$el.html(this.template(context));
                 this.delegateEvents();
+                this.$el.removeClass('open');
 
                 return this;
             },

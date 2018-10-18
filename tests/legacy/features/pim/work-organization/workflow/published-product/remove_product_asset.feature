@@ -26,7 +26,8 @@ Feature: Remove product assets
     And I should not see asset chicagoskyline
     When I am on the "shirt" product page
     And I switch the locale to "en_US"
-    Then the "Front view" asset gallery should be empty
+    Then the "Front view" asset gallery should contain akene
+    But the "Front view" asset gallery should not contain chicagoskyline
 
   Scenario: Remove an asset is forbidden if the asset is used in a published product
     Given I am on the "shirt" product page

@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AddAttributeValueProcessorSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ValidatorInterface $productValidator,
         ValidatorInterface $productModelValidator,
@@ -49,15 +50,13 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         $propertyAdder,
         $attributeRepository,
         $checkAttributeEditable,
-        $userManager,
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
         AttributeInterface $colorsAttribute,
-        AttributeInterface $suppliersAttribute,
-        UserInterface $owner
+        AttributeInterface $suppliersAttribute
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -111,10 +110,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             ['scope' => null,'locale' => null]
         )->shouldBeCalled();
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $this->process($product);
@@ -125,15 +120,13 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         $propertyAdder,
         $attributeRepository,
         $checkAttributeEditable,
-        $userManager,
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
         AttributeInterface $colorsAttribute,
-        AttributeInterface $suppliersAttribute,
-        UserInterface $owner
+        AttributeInterface $suppliersAttribute
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -187,10 +180,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             ['scope' => null,'locale' => null]
         )->shouldBeCalled();
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
@@ -202,15 +191,13 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         $propertyAdder,
         $attributeRepository,
         $checkAttributeEditable,
-        $userManager,
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
         AttributeInterface $colorsAttribute,
-        AttributeInterface $suppliersAttribute,
-        UserInterface $owner
+        AttributeInterface $suppliersAttribute
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -264,10 +251,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             ['scope' => null,'locale' => null]
         )->shouldNotBeCalled();
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
 

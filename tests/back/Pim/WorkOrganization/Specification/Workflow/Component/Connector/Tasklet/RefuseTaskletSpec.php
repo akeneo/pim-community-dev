@@ -53,13 +53,9 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftManager,
         $productModelDraftRepository,
         $productModelDraftManager,
-        $userProvider,
         $authorizationChecker,
-        $tokenStorage,
         $permissionHelper,
         $stepExecution,
-        UserInterface $userJulia,
-        JobExecution $jobExecution,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -73,12 +69,6 @@ class RefuseTaskletSpec extends ObjectBehavior
         $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
         $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
         $jobParameters->get('comment')->willReturn($configuration['comment']);
-
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
         $productModelDraftRepository->findByIds(Argument::any())->willReturn([$productModelDraft]);
@@ -113,13 +103,9 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftManager,
         $productModelDraftRepository,
         $productModelDraftManager,
-        $userProvider,
         $authorizationChecker,
-        $tokenStorage,
         $permissionHelper,
         $stepExecution,
-        UserInterface $userJulia,
-        JobExecution $jobExecution,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -133,12 +119,6 @@ class RefuseTaskletSpec extends ObjectBehavior
         $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
         $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
         $jobParameters->get('comment')->willReturn($configuration['comment']);
-
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
         $productModelDraftRepository->findByIds(Argument::any())->willReturn([$productModelDraft]);
@@ -175,13 +155,9 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftManager,
         $productModelDraftRepository,
         $productModelDraftManager,
-        $userProvider,
         $authorizationChecker,
-        $tokenStorage,
         $permissionHelper,
         $stepExecution,
-        UserInterface $userJulia,
-        JobExecution $jobExecution,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -195,12 +171,6 @@ class RefuseTaskletSpec extends ObjectBehavior
         $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
         $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
         $jobParameters->get('comment')->willReturn($configuration['comment']);
-
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
         $productModelDraftRepository->findByIds(Argument::any())->willReturn([$productModelDraft]);
@@ -236,13 +206,9 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftRepository,
         $productDraftManager,
         $productModelDraftRepository,
-        $userProvider,
         $authorizationChecker,
-        $tokenStorage,
         $permissionHelper,
         $stepExecution,
-        UserInterface $userJulia,
-        JobExecution $jobExecution,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -254,12 +220,6 @@ class RefuseTaskletSpec extends ObjectBehavior
         $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
         $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
         $jobParameters->get('comment')->willReturn($configuration['comment']);
-
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
         $productModelDraftRepository->findByIds(Argument::any())->shouldBeCalled();

@@ -20,11 +20,11 @@ use Symfony\Component\Process\ExecutableFinder;
  */
 class ImageMagickLauncher
 {
-    /** @var string */
-    protected $defaultConvertPath;
-
     /** @var ExecutableFinder */
     protected $executableFinder;
+
+    /** @var string */
+    protected $defaultConvertPath;
 
     /**
      * @param string $defaultConvertPath
@@ -52,7 +52,7 @@ class ImageMagickLauncher
         $output = [];
         $status = null;
         $cmd = sprintf(
-            '%s %s %s %s %s',
+            '%s %s %s %s %s 2>&1',
             $this->getConvertBinaryPath(),
             $inputOptions,
             escapeshellarg($pathName),

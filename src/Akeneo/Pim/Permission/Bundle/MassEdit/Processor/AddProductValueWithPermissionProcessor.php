@@ -45,6 +45,8 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      * @param UserManager                   $userManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $tokenStorage
+     *
+     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         PropertyAdderInterface $propertyAdder,
@@ -66,7 +68,6 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      */
     public function process($product)
     {
-        $this->initSecurityContext($this->stepExecution);
         if ($this->hasRight($product)) {
             return BaseProcessor::process($product);
         }
@@ -78,6 +79,10 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      * Initialize the SecurityContext from the given $stepExecution
      *
      * @param StepExecution $stepExecution
+     *
+     * @deprecated will be removed in 3.0
+     *
+     * @todo merge : remove this method in master branch. It's no longer used
      */
     protected function initSecurityContext(StepExecution $stepExecution)
     {

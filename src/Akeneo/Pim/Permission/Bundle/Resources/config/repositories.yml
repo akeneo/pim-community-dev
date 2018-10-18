@@ -52,6 +52,7 @@ services:
             - '@pimee_catalog.security.factory.filtered_product'
             - '@pimee_security.deny_not_granted_categorized_entity'
             - '%pim_catalog.entity.product_model.class%'
+            - '@pimee_security.cached_authorization_checker'
 
     pimee_security.repository.product:
         class: '%pimee_security.repository.product.class%'

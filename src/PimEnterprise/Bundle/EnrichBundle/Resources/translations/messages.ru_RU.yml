@@ -1,5 +1,5 @@
 pim_title.locale:
-  edit: "Локали %locale.code% | Изменить"
+  edit: "Локали %locale.code% | Редактировать"
 Permissions: Права доступа
 pane.accordion.permissions: Права доступа
 attribute group.permissions:
@@ -17,7 +17,7 @@ category.permissions:
   own.help: Разрешено публиковать, снимать с публикации, классифицировать, ассоциировать и писать обзоры на продукты в этой категории (подразумевает права на изменение)
   no_access_to_products: Вы не имеете прав доступа к продуктам в деревьях категорий. Пожалуйста, обратитесь к вашему администратору
   apply_on_children.label: Применить изменения на дочерние элементы
-  apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права сохраняются
+  apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права на дочерние элементы сохраняются
 locale.permissions:
   view.label: Разрешено просматривать информацию о продукте
   view.help: Разрешить просмотр сведений о продукте в этой локали
@@ -41,7 +41,7 @@ pim_enrich:
       page_subtitle: Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)
       title: Выберите операцию
       subtitle: Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов
-      confirm: Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.
+      confirm: Вы собираетесь обновить продукт следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов следующей информацией, пожалуйста, подтвердите.
       steps:
         first: Выберите продукты
         second: Выберите операцию
@@ -65,7 +65,7 @@ pim_enrich:
       message:
         error: Вы не владелец продукта, вы не можете снять его с публикации.
         warning: Вы не являетесь владельцем всех выбранных продуктов. Вы не можете снять продукты "%notGranted%" с публикации.
-        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+        info: '%nbProducts% выбранных продуктов будет снят с публикации.'
       not_editable: Вы не имеете прав на изменение продуктов "%identifiers%".
     classify:
       message:
@@ -92,18 +92,18 @@ pimee_enrich:
       permission.title: Права доступа
   channel:
     tab:
-      asset_transformation.title: Преобразования активов
+      asset_transformation.title: Преобразования медиафайлов
   acl.product_ownership.title: Владение
   attributes:
     empty: Пусто
   groups:
-    label: Группы владельцы
+    label: группы владельцев
     empty: Пусто
   asset_transformation:
     not_found: Преобразования не найдены
     title:
       transformation: Преобразование
-      options: Параметры
+      options: Опции
     colorspace:
       title: Цветовое пространство
       options:
@@ -119,7 +119,7 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Маштабирование
+      title: Масштабирование
       options:
         width: 'Ширина %value%px '
         height: 'Высота %value%px'
@@ -140,6 +140,8 @@ edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_pr
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Удалить значение продукта с правами доступа
+edit_common_attributes_with_permission: Редактировать атрибуты с правами доступа
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Редактировать атрибуты с правами доступа
 job_execution.summary:
   mass_published: Продукт опубликован
   mass_unpublished: Продукт снят с публикации

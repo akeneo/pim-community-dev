@@ -6,8 +6,8 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditActi
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
@@ -22,7 +22,6 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -30,6 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PublishProductTaskletSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
@@ -41,17 +41,11 @@ class PublishProductTaskletSpec extends ObjectBehavior
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        UserInterface $userJulia,
-        UserInterface $userMary,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqbFactory->create(Argument::any())->willReturn($pqb);
-
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $userMary->getRoles()->willReturn(['NotProductOwner']);
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userManager->findUserByUsername('mary')->willReturn($userMary);
 
         $this->beConstructedWith(
             $manager,
@@ -61,7 +55,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
             $userManager,
             $tokenStorage,
             $authorizationChecker,
-            $pqbFactory
+            $pqbFactory,
+            $cacheClearer
         );
         $this->setStepExecution($stepExecution);
     }
@@ -76,10 +71,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $tokenStorage,
         $authorizationChecker,
         $stepExecution,
-        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
@@ -107,12 +100,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
@@ -131,13 +120,10 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $tokenStorage,
         $authorizationChecker,
         $stepExecution,
-        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
-        ObjectDetacherInterface $objectDetacher,
         JobParameters $jobParameters
     ) {
         $configuration = [
@@ -162,12 +148,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $violation1 = new ConstraintViolation('error1', 'spec', [], '', '', $product1);
         $violation2 = new ConstraintViolation('error2', 'spec', [], '', '', $product2);
@@ -179,8 +161,6 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
-
-        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
 
         $stepExecution->addWarning(
             Argument::any(),
@@ -199,10 +179,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $tokenStorage,
         $authorizationChecker,
         $stepExecution,
-        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
@@ -230,12 +208,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('mary');
-
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(false);
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);

@@ -34,8 +34,6 @@ class RefuseTasklet extends AbstractReviewTasklet
      */
     public function execute(): void
     {
-        $this->initSecurityContext($this->stepExecution);
-
         $jobParameters = $this->stepExecution->getJobParameters();
         $productDrafts = $this->productDraftRepository->findByIds($jobParameters->get('productDraftIds'));
         $productModelDrafts = $this->productModelDraftRepository->findByIds($jobParameters->get('productModelDraftIds'));

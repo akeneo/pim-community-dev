@@ -109,6 +109,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Опубликованные продукты
+    view: Опубликованные продукты %product.label% | Просмотр
+  product:
+    dispatch: "Продукт %product.label%"
+    show: "Продукт %product.label% | Показать"
   proposal:
     index: Предложения
 btn.editworkingcopy: Редактировать рабочую копию
@@ -133,3 +137,7 @@ job_execution.summary:
   proposal_created: созданных предложений
   proposal_skipped: пропущенных предложений (без изменений)
 published products: Опубликованные продукты
+pim_analytics:
+  info_type:
+    nb_published_products: Количество опубликованных продуктов
+    nb_product_drafts: Количество черновиков продуктов

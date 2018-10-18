@@ -20,6 +20,7 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
@@ -40,6 +41,9 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
+    /** @var EntityManagerClearerInterface */
+    protected $cacheClearer;
+
     /**
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
@@ -49,6 +53,10 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
      * @param TokenStorageInterface               $tokenStorage
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param EntityManagerClearerInterface|null  $cacheClearer
+     *
+     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
+     *               remove property $objectDetacher and nullable on $cacheClearer
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -58,7 +66,8 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        EntityManagerClearerInterface $cacheClearer = null
     ) {
         parent::__construct(
             $manager,
@@ -71,6 +80,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
 
         $this->authorizationChecker = $authorizationChecker;
         $this->pqbFactory = $pqbFactory;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -78,8 +88,6 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
      */
     public function execute(): void
     {
-        $this->initSecurityContext($this->stepExecution);
-
         $jobParameters = $this->stepExecution->getJobParameters();
         $cursor = $this->getProductsCursor($jobParameters->get('filters'));
         $paginator = $this->paginatorFactory->createPaginator($cursor);
@@ -116,9 +124,15 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
             }
 
             $productsPage = array_diff_key($productsPage, $invalidEntitiesWithFamily);
-            $this->detachProducts($invalidEntitiesWithFamily);
             $this->manager->publishAll($productsPage);
-            $this->detachProducts($productsPage);
+
+            // @todo merge : remove condition in master branch (only the cache clearer must be called)
+            if (null !== $this->cacheClearer) {
+                $this->cacheClearer->clear();
+            } else {
+                $this->detachProducts($invalidEntitiesWithFamily);
+                $this->detachProducts($productsPage);
+            }
         }
     }
 

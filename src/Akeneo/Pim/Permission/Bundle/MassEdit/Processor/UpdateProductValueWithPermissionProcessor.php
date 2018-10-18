@@ -17,7 +17,6 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -43,6 +42,8 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
      * @param UserManager                   $userManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $tokenStorage
+     *
+     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
@@ -60,17 +61,9 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
 
     /**
      * {@inheritdoc}
-     *
-     * We override parent to initialize the security context
      */
     public function process($product)
     {
-        $username = $this->stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
-
         if ($this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
             return BaseProcessor::process($product);
         } else {

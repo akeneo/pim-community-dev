@@ -61,6 +61,8 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
      * @param ObjectDetacherInterface   $objectDetacher
      * @param UserManager               $userManager
      * @param TokenStorageInterface     $tokenStorage
+     *
+     * @todo merge : remove properties $userManager, $tokenStorage and $objectDetacher in master branch. They are no longer used.
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -99,6 +101,10 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
      * Initialize the SecurityContext from the given $stepExecution
      *
      * @param StepExecution $stepExecution
+     *
+     * @deprecated will be removed in 3.0
+     *
+     * @todo merge : remove this method in master branch. It's no longer used
      */
     protected function initSecurityContext(StepExecution $stepExecution)
     {
@@ -111,6 +117,8 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
 
     /**
      * @param array
+     *
+     * @todo merge : remove this unused method in master branch
      */
     protected function detachProducts(array $productsPage)
     {

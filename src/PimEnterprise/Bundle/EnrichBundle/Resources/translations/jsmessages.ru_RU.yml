@@ -26,6 +26,10 @@ pim_enrich:
         properties:
           label:
             is_read_only: Только для чтения
+pim:
+  grid:
+    mass_action:
+      asset_edit: Массовое редактирование медиафайлов
 pimee_enrich:
   form:
     job_instance:
@@ -46,6 +50,7 @@ pimee_enrich:
           edit.label: Разрешено изменение атрибутов
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} результат|] 1, Inf [{{ count }} результаты"
       navigation: Опубликованные продукты
       history:
         published: Опубликован
@@ -155,18 +160,28 @@ pimee_enrich:
         height: 'Высота %value%px'
   mass_edit:
     next: Следующая
+    previous: Назад
     cancel: Отмена
     confirm: Подтверждение
     product:
       operation:
         publish:
           label: Опубликовать
+          label_count: "{1}Опубликовать <span class=\"AknFullPage-title--highlight\">1 продукт</span>|] 1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span>"
+          description: Продукты будут опубликованы
         unpublish:
           label: Снять с публикации
+          label_count: "{1}Снять с публикации <span class=\"AknFullPage-title--highlight\">1 продукт</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span>"
+          description: Продукты будут сняты с публикации
+          warning: Выбранные продукты {{ itemsCount }} будет сняты с публикации.
     asset:
+      title: Массовые действия с медиафайлами
       step:
         select:
           label: Выбор медиафайлов
+        choose:
+          title: Массовые действия с медиафайлами
+          label_count: "] 0, Inf [Выберите действие"
         configure:
           label: Настройка
         confirm:
@@ -174,8 +189,10 @@ pimee_enrich:
       operation:
         add_tag:
           label: Добавление тегов к медиафайлам
+          description: Теги будут добавлены к медиафайлам.
           field: Теги
         add_to_category:
+          label: Классифицировать медиафайлы по категориям
           field: Категории
 pim_menu:
   tab:
@@ -185,11 +202,15 @@ pim_menu:
     proposal: Предложения
     published_product: Опубликованные продукты
     rule: Правила
+    upload_asset: Загрузить медиафайлы
 page_title:
   pimee_workflow_proposal_index: Предложения
   pimee_workflow_published_product_index: Опубликованные продукты
+  pimee_workflow_published_product_view: Опубликованные продукты {{ product.label }} | Просмотр
   pimee_product_asset_index: Медиафайлы
+  pimee_product_asset_edit: Медиафайл {{ asset.label }} | Редактировать
   pimee_asset_categorytree_index: Категории
+  pimee_asset_categorytree_edit: Категория {{ category.label }} | Редактировать
   pimee_catalog_rule_rule_index: Правила
 batch_jobs:
   add_product_value_with_permission_and_rules:
@@ -232,3 +253,4 @@ catalog_volume:
   axis:
     count_assets: Медиафайлы
     count_asset_categories: Категории медиафайлов
+    count_asset_category_trees: Деревья категорий медиафайлов

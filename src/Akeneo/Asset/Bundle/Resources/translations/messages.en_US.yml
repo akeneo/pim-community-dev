@@ -151,6 +151,8 @@ pimee_product_asset:
                 second: Configure
                 third: Confirm
 
+    not_editable: You don't have edit permission on the asset "%code%".
+
 pim_enrich:
     mass_edit_action:
         asset-classify-move:

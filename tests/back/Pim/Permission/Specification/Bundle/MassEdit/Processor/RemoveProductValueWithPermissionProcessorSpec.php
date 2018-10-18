@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         PropertyRemoverInterface $propertyRemover,
         ValidatorInterface $validator,
@@ -57,12 +58,8 @@ class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
     function it_should_processes(
         $authorizationChecker,
-        $tokenStorage,
-        $userManager,
         $validator,
         $stepExecution,
-        JobExecution $jobExecution,
-        UserInterface $userJulia,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -73,13 +70,6 @@ class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
-
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
@@ -88,11 +78,7 @@ class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
     function it_should_processes_without_permissions(
         $authorizationChecker,
-        $tokenStorage,
-        $userManager,
         $stepExecution,
-        JobExecution $jobExecution,
-        UserInterface $userJulia,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -104,19 +90,12 @@ class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $jobParameters->get('actions')->willReturn($configuration['actions']);
 
         $this->setStepExecution($stepExecution);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
             Argument::type(InvalidItemInterface::class)
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
-
-        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
-
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
 

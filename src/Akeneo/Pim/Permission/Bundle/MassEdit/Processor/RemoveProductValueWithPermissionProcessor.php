@@ -43,6 +43,8 @@ class RemoveProductValueWithPermissionProcessor extends BaseProcessor
      * @param UserManager                   $userManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $tokenStorage
+     *
+     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         PropertyRemoverInterface $propertyRemover,
@@ -65,12 +67,6 @@ class RemoveProductValueWithPermissionProcessor extends BaseProcessor
      */
     public function process($product)
     {
-        $username = $this->stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
-
         if ($this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
             return BaseProcessor::process($product);
         }

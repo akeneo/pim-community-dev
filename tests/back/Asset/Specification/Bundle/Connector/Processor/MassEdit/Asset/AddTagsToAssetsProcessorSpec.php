@@ -12,6 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\TagInterface;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -20,9 +21,10 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
     function let(
         TagRepositoryInterface $repository,
         ValidatorInterface $validator,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        AuthorizationCheckerInterface $authorizationChecker = null
     ) {
-        $this->beConstructedWith($repository, $validator);
+        $this->beConstructedWith($repository, $validator, $authorizationChecker);
         $this->setStepExecution($stepExecution);
     }
 
@@ -40,6 +42,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         $stepExecution,
         $repository,
         $validator,
+        $authorizationChecker,
         AssetInterface $asset,
         JobParameters $jobParameters,
         TagInterface $foo,
@@ -54,6 +57,8 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
                 ],
             ],
         ];
+
+        $authorizationChecker->isGranted(Attributes::EDIT, $asset)->willReturn(true);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn($actions);
@@ -71,6 +76,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         $stepExecution,
         $repository,
         $validator,
+        $authorizationChecker,
         AssetInterface $asset,
         JobParameters $jobParameters
     ) {
@@ -80,6 +86,8 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
                 'value' => ['foo'],
             ],
         ];
+
+        $authorizationChecker->isGranted(Attributes::EDIT, $asset)->willReturn(true);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn($actions);
@@ -92,6 +100,27 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
             Argument::type(InvalidItemInterface::class)
         )->shouldBeCalled();
         $validator->validate($asset)->willReturn(new ConstraintViolationList([]));
+
+        $this->process($asset);
+    }
+
+    function it_does_not_add_tags_to_an_asset_non_editable_by_the_user(
+        $stepExecution,
+        $authorizationChecker,
+        AssetInterface $asset
+    ) {
+        $authorizationChecker->isGranted(Attributes::EDIT, $asset)->willReturn(false);
+
+        $asset->getCode()->willReturn('akene');
+        $asset->addTag()->shouldNotBeCalled();
+
+        $stepExecution->addWarning(
+            'pimee_product_asset.not_editable',
+            ['%code%' => 'akene'],
+            Argument::type(DataInvalidItem::class)
+        )->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('skipped_assets')->shouldBeCalled();
 
         $this->process($asset);
     }
