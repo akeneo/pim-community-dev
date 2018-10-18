@@ -9,7 +9,7 @@ const messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/product-edit-form/subscription-status-switcher');
 
-interface Configuration {
+interface Config {
   create_product_subscription_fail_message: string;
   create_product_subscription_success_message: string;
   delete_product_subscription_fail_message: string;
@@ -25,12 +25,12 @@ interface Configuration {
 class SubscriptionStatusSwitcher extends BaseView {
   protected currentStatus: boolean;
   private readonly template: any = _.template(template);
-  private readonly config: Configuration;
+  private readonly config: Config;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Configuration }) {
+  constructor(options: { config: Config }) {
     super(options);
 
     this.config = {...this.config, ...options.config};

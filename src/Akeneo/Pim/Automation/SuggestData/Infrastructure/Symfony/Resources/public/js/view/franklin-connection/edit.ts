@@ -8,7 +8,7 @@ const ConnectionSaver = require('pimee/saver/franklin-connection');
 const Messenger = require('oro/messenger');
 const template = require('pimee/template/franklin-connection/edit');
 
-interface EditConfig {
+interface Config {
   token_label_content: string;
   token_field_title: string;
   token_field_placeholder: string;
@@ -26,7 +26,7 @@ interface EditConfig {
 class EditView extends BaseView {
   private readonly template: any = _.template(template);
 
-  private readonly config: EditConfig = {
+  private readonly config: Config = {
     token_label_content: '',
     token_field_title: '',
     token_field_placeholder: '',
@@ -40,7 +40,7 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: EditConfig }) {
+  constructor(options: { config: Config }) {
     super(options);
 
     this.config = {...this.config, ...options.config};
