@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Controller;
+namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController as BaseProductModelController;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;

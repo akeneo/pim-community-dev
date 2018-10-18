@@ -52,5 +52,8 @@ class AkeneoPimPermissionExtension extends Extension
         $loader->load('mass_edit.yml');
         $loader->load('renderers.yml');
         $loader->load('context.yml');
+        $loader->load('view_elements/attribute_group.yml');
+        $loader->load('view_elements/category.yml');
+        $loader->load('view_elements/attribute.yml');
     }
 }
