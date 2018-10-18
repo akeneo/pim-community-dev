@@ -2,7 +2,7 @@ import {EventsHash} from 'backbone';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 import {getSubscriptionStatus} from '../../fetcher/subscription';
-import SubscriptionStatusInterface from '../../model/subscription-status-interface';
+import SubscriptionStatus from '../../model/subscription-status';
 
 const __ = require('oro/translator');
 const messenger = require('oro/messenger');
@@ -51,7 +51,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   public render(): BaseView {
     const productId = this.getFormData().meta.id;
 
-    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatusInterface) => {
+    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus) => {
       this.currentStatus = subscriptionStatus.is_subscribed;
       this.$el.html(
         this.template({

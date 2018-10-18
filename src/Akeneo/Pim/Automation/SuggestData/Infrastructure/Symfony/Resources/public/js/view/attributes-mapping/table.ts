@@ -15,7 +15,7 @@ const template = require('pimee/template/attributes-mapping/attributes-mapping')
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
-interface NormalizedAttributeMappingInterface {
+interface NormalizedAttributeMapping {
   mapping: {
     [key: string]: {
       pim_ai_attribute: {
@@ -97,7 +97,7 @@ class AttributeMapping extends BaseForm {
    */
   public render(): BaseForm {
     this.$el.html('');
-    const familyMapping: NormalizedAttributeMappingInterface = this.getFormData();
+    const familyMapping: NormalizedAttributeMapping = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
     this.$el.html(this.template({
       mapping,

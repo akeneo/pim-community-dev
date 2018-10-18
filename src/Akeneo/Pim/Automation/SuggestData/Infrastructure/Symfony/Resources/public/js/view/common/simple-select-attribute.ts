@@ -12,19 +12,19 @@ const LineTemplate = require('pimee/template/common/attribute-line');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-interface NormalizedAttributeInterface {
+interface NormalizedAttribute {
   code: string;
   labels: { [key: string]: string };
   group: string;
 }
 
-interface NormalizedAttributeGroupInterface {
+interface NormalizedAttributeGroup {
   labels: { [key: string]: string };
 }
 
 class SimpleSelectAttribute extends BaseSimpleSelect {
   private readonly lineView = _.template(LineTemplate);
-  private attributeGroups: { [key: string]: NormalizedAttributeGroupInterface } = {};
+  private attributeGroups: { [key: string]: NormalizedAttributeGroup } = {};
 
   constructor(options: { config: object, className: string }) {
     super({
@@ -41,7 +41,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       FetcherRegistry
         .getFetcher('attribute-group')
         .fetchAll()
-        .then((attributeGroups: { [key: string]: NormalizedAttributeGroupInterface }) => {
+        .then((attributeGroups: { [key: string]: NormalizedAttributeGroup }) => {
           this.attributeGroups = attributeGroups;
         }),
     );
@@ -62,7 +62,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   /**
    * {@inheritdoc}
    */
-  protected convertBackendItem(item: NormalizedAttributeInterface): object {
+  protected convertBackendItem(item: NormalizedAttribute): object {
     return {
       id: item.code,
       text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
