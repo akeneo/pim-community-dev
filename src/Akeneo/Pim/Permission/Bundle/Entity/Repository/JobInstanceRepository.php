@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository as BaseJobInstanceRepository;
 use Doctrine\ORM\QueryBuilder;

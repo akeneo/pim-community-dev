@@ -15,7 +15,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -31,13 +31,13 @@ class JobExecutionManager extends BaseJobExecutionManager
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var JobExecutionRepository */
+    /** @var \Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository */
     protected $repository;
 
     /**
      * Constructor
      *
-     * @param JobExecutionRepository     $repository
+     * @param \Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository     $repository
      * @param SecurityFacade             $securityFacade
      * @param JobProfileAccessRepository $accessRepository
      * @param TokenStorageInterface      $tokenStorage

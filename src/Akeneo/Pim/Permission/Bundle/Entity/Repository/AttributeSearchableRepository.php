@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository as BaseAttributeSearchableRepository;
 use Doctrine\ORM\EntityManagerInterface;

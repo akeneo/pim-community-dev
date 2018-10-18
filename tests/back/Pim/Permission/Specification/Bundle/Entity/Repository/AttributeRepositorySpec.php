@@ -1,13 +1,16 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Specification\Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepository;
 use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -26,17 +29,17 @@ class AttributeRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository');
+        $this->shouldHaveType(AttributeRepository::class);
     }
 
     function it_is_translated_label_provider()
     {
-        $this->shouldImplement('Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface');
+        $this->shouldImplement(TranslatedLabelsProviderInterface::class);
     }
 
     function it_is_doctrine_provider()
     {
-        $this->shouldHaveType('Doctrine\ORM\EntityRepository');
+        $this->shouldHaveType(EntityRepository::class);
     }
 
     function it_provides_translated_labels(

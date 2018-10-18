@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
