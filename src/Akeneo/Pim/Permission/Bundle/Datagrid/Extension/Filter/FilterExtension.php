@@ -23,7 +23,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolver;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
-use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -51,7 +51,7 @@ class FilterExtension extends BaseFilterExtension
      * @param RequestParameters               $requestParams
      * @param TranslatorInterface             $translator
      * @param DatasourceAdapterResolver       $adapterResolver
-     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param \Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface    $attributeRepository
      * @param AttributeGroupAccessRepository  $accessRepository
      * @param UserContext                     $userContext
      * @param DatagridViewRepositoryInterface $datagridViewRepository

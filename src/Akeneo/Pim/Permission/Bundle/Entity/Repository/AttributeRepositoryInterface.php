@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Repository;
+namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
