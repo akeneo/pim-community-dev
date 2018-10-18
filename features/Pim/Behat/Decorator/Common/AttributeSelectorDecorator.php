@@ -65,8 +65,11 @@ class AttributeSelectorDecorator extends ElementDecorator
 
         $button->click();
         $this->spin(function () {
-            $selectedAttributes = $this->find('css', '.AknColumnConfigurator-listContainer .AknVerticalList');
-            return false === $selectedAttributes->has('css', 'AknVerticalList-item');
+            $selectedAttributes = $this->find(
+                'css',
+                '.selected-attributes .AknColumnConfigurator-listContainer .AknVerticalList'
+            );
+            return false === $selectedAttributes->has('css', '.AknVerticalList-item');
         }, 'Cannot clear the selected atributes');
     }
 
