@@ -1,40 +1,73 @@
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-export {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
-import {
-  NormalizedTextAttribute,
-  TextAttribute,
-  ConcreteTextAttribute,
-  TextAdditionalProperty,
-  NormalizedTextAdditionalProperty,
-} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {
-  NormalizedImageAttribute,
-  ImageAttribute,
-  ConcreteImageAttribute,
-  ImageAdditionalProperty,
-  NormalizedImageAdditionalProperty,
-} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import Identifier, {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import MinimalAttribute, {
+  MinimalNormalizedAttribute,
+  MinimalConcreteAttribute,
+} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import AttributeCode from 'akeneoreferenceentity/domain/model/attribute/code';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import LabelCollection from 'akeneoreferenceentity/domain/model/label-collection';
 
-export interface NormalizableAdditionalProperty {
-  normalize(): NormalizedAdditionalProperty;
+export interface NormalizedAttribute extends MinimalNormalizedAttribute {
+  identifier: NormalizedAttributeIdentifier;
+  order: number;
+  is_required: boolean;
 }
 
-export type NormalizedAdditionalProperty = NormalizedImageAdditionalProperty | NormalizedTextAdditionalProperty;
-export type AdditionalProperty = ImageAdditionalProperty | TextAdditionalProperty;
-export type NormalizedAttribute = NormalizedTextAttribute | NormalizedImageAttribute;
-type Attribute = TextAttribute | ImageAttribute;
+export interface Attribute extends MinimalAttribute {
+  identifier: Identifier;
+  order: number;
+  isRequired: boolean;
+  equals: (attribute: MinimalAttribute) => boolean;
+  getIdentifier: () => Identifier;
+  normalize(): NormalizedAttribute;
+}
 
-export default Attribute;
+export interface NormalizableAdditionalProperty {
+  normalize(): any;
+}
 
-class InvalidAttributeTypeError extends Error {}
+export abstract class ConcreteAttribute extends MinimalConcreteAttribute implements Attribute {
+  protected constructor(
+    readonly identifier: Identifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
+    code: AttributeCode,
+    labelCollection: LabelCollection,
+    type: string,
+    valuePerLocale: boolean,
+    valuePerChannel: boolean,
+    readonly order: number,
+    readonly isRequired: boolean
+  ) {
+    super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
-export const denormalizeAttribute = (normalizedAttribute: NormalizedAttribute) => {
-  switch (normalizedAttribute.type) {
-    case AttributeType.Text:
-      return ConcreteTextAttribute.createFromNormalized(normalizedAttribute as NormalizedTextAttribute);
-    case AttributeType.Image:
-      return ConcreteImageAttribute.createFromNormalized(normalizedAttribute as NormalizedImageAttribute);
-    default:
-      throw new InvalidAttributeTypeError(`Attribute type "${normalizedAttribute.type}" is not supported`);
+    if (!(identifier instanceof Identifier)) {
+      throw new InvalidArgumentError('Attribute expect an AttributeIdentifier argument');
+    }
+
+    if (typeof order !== 'number') {
+      throw new InvalidArgumentError('Attribute expect a number as order');
+    }
+    if (typeof isRequired !== 'boolean') {
+      throw new InvalidArgumentError('Attribute expect a boolean as isRequired value');
+    }
   }
-};
+
+  public equals(attribute: Attribute): boolean {
+    return attribute.getIdentifier().equals(this.identifier);
+  }
+
+  public normalize(): NormalizedAttribute {
+    return {
+      identifier: this.identifier.normalize(),
+      ...super.normalize(),
+      order: this.order,
+      is_required: this.isRequired,
+    };
+  }
+
+  public getIdentifier(): Identifier {
+    return this.identifier;
+  }
+}
+
+class InvalidArgumentError extends Error {}

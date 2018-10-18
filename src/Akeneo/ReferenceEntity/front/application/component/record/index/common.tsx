@@ -53,8 +53,12 @@ const CommonView: RowView = ({
           src={getImageShowUrl(denormalizeFile(record.image), 'thumbnail_small')}
         />
       </td>
-      <td className="AknGrid-bodyCell" title={label}>{label}</td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={record.code}>{record.code}</td>
+      <td className="AknGrid-bodyCell" title={label}>
+        {label}
+      </td>
+      <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={record.code}>
+        {record.code}
+      </td>
     </tr>
   );
 };

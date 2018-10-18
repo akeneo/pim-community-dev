@@ -12,21 +12,16 @@ import {
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
-import Attribute, {
-  AdditionalProperty,
-  denormalizeAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {saveAttribute} from 'akeneoreferenceentity/application/action/attribute/edit';
-import TextPropertyView from 'akeneoreferenceentity/application/component/attribute/edit/text';
-import ImagePropertyView from 'akeneoreferenceentity/application/component/attribute/edit/image';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
 
 interface StateProps {
   context: {
@@ -45,7 +40,7 @@ interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
     onIsRequiredUpdated: (isRequired: boolean) => void;
-    onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+    onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
@@ -56,38 +51,22 @@ interface DispatchProps {
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class InvalidAttributeTypeError extends Error {}
-
 const getAdditionalProperty = (
   attribute: Attribute,
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void,
+  onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
   errors: ValidationError[]
 ): JSX.Element => {
-  switch (attribute.type) {
-    case AttributeType.Text:
-      return (
-        <TextPropertyView
-          attribute={attribute as TextAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    case AttributeType.Image:
-      return (
-        <ImagePropertyView
-          attribute={attribute as ImageAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    default:
-      throw new InvalidAttributeTypeError(
-        `There is no view capable of rendering attribute of type "${attribute.type}"`
-      );
-  }
+  const AttributeView = getAttributeView(attribute);
+
+  return (
+    <AttributeView
+      attribute={attribute as TextAttribute}
+      onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+      onSubmit={onSubmit}
+      errors={errors}
+    />
+  );
 };
 
 class Edit extends React.Component<EditProps> {
@@ -322,7 +301,7 @@ export default connect(
         onIsRequiredUpdated: (isRequired: boolean) => {
           dispatch(attributeEditionIsRequiredUpdated(isRequired));
         },
-        onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => {
+        onAdditionalPropertyUpdated: (property: string, value: any) => {
           dispatch(attributeEditionAdditionalPropertyUpdated(property, value));
         },
         onCancel: () => {

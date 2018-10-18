@@ -23,11 +23,12 @@ const DetailView: RowView = ({
     return (
       <tr className="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder">
         {columns.map((colum: Column) => {
-          return (<td key={colum.key} className="AknGrid-bodyCell">
-            <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
-          </td>);
+          return (
+            <td key={colum.key} className="AknGrid-bodyCell">
+              <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
+            </td>
+          );
         })}
-
       </tr>
     );
   }

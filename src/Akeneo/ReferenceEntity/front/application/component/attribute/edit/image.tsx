@@ -3,22 +3,21 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import Select2 from 'akeneoreferenceentity/application/component/app/select2';
-import {AdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import {ImageAttribute, ImageAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {
   AllowedExtensionsOptions,
   AllowedExtensions,
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
 import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 
-export default ({
+const ImageView = ({
   attribute,
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
 }: {
   attribute: ImageAttribute;
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+  onAdditionalPropertyUpdated: (property: string, value: ImageAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
 }) => {
@@ -82,3 +81,5 @@ export default ({
     </React.Fragment>
   );
 };
+
+export const view = ImageView;

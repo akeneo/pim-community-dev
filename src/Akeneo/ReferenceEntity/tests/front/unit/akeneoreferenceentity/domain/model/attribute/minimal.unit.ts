@@ -60,7 +60,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'})
       );
-    }).toThrow('Attribute expect valid attribute type (text, image)');
+    }).toThrow('Attribute expect a string as attribute type');
     expect(() => {
       new MinimalConcreteAttribute(createReferenceEntityIdentifier('designer'), createCode('description'));
     }).toThrow('Attribute expect a LabelCollection argument');

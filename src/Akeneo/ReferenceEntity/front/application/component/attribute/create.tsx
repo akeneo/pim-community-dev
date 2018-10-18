@@ -14,10 +14,10 @@ import {
   attributeCreationValuePerLocaleUpdated,
   attributeCreationValuePerChannelUpdated,
 } from 'akeneoreferenceentity/domain/event/attribute/create';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {createAttribute} from 'akeneoreferenceentity/application/action/attribute/create';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import {getAttributeTypes} from 'akeneoreferenceentity/application/configuration/attribute';
 
 interface StateProps {
   context: {
@@ -28,7 +28,7 @@ interface StateProps {
     labels: {
       [localeCode: string]: string;
     };
-    type: AttributeType;
+    type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
   };
@@ -112,7 +112,7 @@ class Create extends React.Component<CreateProps> {
   };
 
   private getTypeOptions = (): DropdownElement[] => {
-    return Object.values(AttributeType).map((type: string) => {
+    return getAttributeTypes().map((type: string) => {
       return {
         identifier: type,
         label: __(`pim_reference_entity.attribute.type.${type}`),

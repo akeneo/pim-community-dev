@@ -1,8 +1,6 @@
-import Attribute, {
-  denormalizeAttribute,
-  NormalizedAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 
 export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute) => (
   normalizedAttribute: any

@@ -19,6 +19,16 @@ config:
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/details/text.tsx'
 
+        akeneoreferenceentity/application/configuration/attribute:
+            image:
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/image'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/image'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/image.tsx'
+            text:
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+
         akeneoreferenceentity/application/configuration/sidebar:
             akeneo_reference_entities_reference_entity_edit:
                 tabs:

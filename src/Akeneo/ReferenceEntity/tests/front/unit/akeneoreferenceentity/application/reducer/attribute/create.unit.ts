@@ -20,7 +20,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -34,7 +34,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -49,7 +49,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: true,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -63,7 +63,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -79,7 +79,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: 'code_test',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -93,7 +93,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -109,7 +109,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: true,
         value_per_channel: false,
         labels: {},
@@ -123,7 +123,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -139,7 +139,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: true,
         labels: {},
@@ -153,7 +153,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       active: false,
       data: {
         code: '',
-        type: AttributeType.Text,
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -162,14 +162,14 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
-      attribute_type: AttributeType.Image,
+      attribute_type: 'image',
     });
 
     expect(newState).toEqual({
       active: false,
       data: {
         code: '',
-        type: AttributeType.Image,
+        type: 'image',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},

@@ -1,9 +1,9 @@
 import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+
 export class InvalidArgument extends Error {}
 
 export type Denormalizer = (normalizedValue: NormalizedValue) => Value;
-export type ViewGenerator = (value: Value) => any;
+export type ViewGenerator = React.SFC<{value: Value; onChange: (value: Value) => void; onSubmit: () => void}>;
 export type CellView = React.SFC<{value: NormalizedValue}>;
 
 type ValueConfig = {
@@ -24,7 +24,7 @@ export const getDenormalizer = (config: ValueConfig) => (normalizedValue: Normal
   const typeConfiguration = config[normalizedValue.attribute.type];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
-    const confPath = `config:
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${normalizedValue.attribute.type}:
@@ -34,7 +34,7 @@ export const getDenormalizer = (config: ValueConfig) => (normalizedValue: Normal
       `Cannot get the value denormalizer for type "${
         normalizedValue.attribute.type
       }". The configuration should look like this:
-${confPath}
+${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
     );
@@ -62,7 +62,7 @@ export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerat
   const typeConfiguration = config[attributeType];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
-    const confPath = `config:
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${attributeType}:
@@ -70,7 +70,7 @@ export const getFieldView = (config: ValueConfig) => (value: Value): ViewGenerat
 
     throw new InvalidArgument(
       `Cannot get the data field view generator for type "${attributeType}". The configuration should look like this:
-${confPath}
+${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
     );
@@ -95,11 +95,11 @@ ${moduleExample}`
   return typeConfiguration.view.view;
 };
 
-export const getCellView = (config: ValueConfig) => (attributeType: AttributeType): CellView => {
+export const getCellView = (config: ValueConfig) => (attributeType: string): CellView => {
   const typeConfiguration = config[attributeType];
 
   if (undefined === typeConfiguration || undefined === typeConfiguration.cell) {
-    const confPath = `config:
+    const expectedConfiguration = `config:
     config:
         akeneoreferenceentity/application/configuration/value:
             ${attributeType}:
@@ -107,7 +107,7 @@ export const getCellView = (config: ValueConfig) => (attributeType: AttributeTyp
 
     throw new InvalidArgument(
       `Cannot get the data cell view generator for type "${attributeType}". The configuration should look like this:
-${confPath}
+${expectedConfiguration}
 
 Actual conf: ${JSON.stringify(config)}`
     );
@@ -130,6 +130,13 @@ ${moduleExample}`
   return typeConfiguration.cell.cell;
 };
 
+/**
+ * Expanation about the __moduleConfig variable:
+ * It is automatically added by a webpack loader that you can check here:
+ * https://github.com/akeneo/pim-community-dev/blob/master/webpack/config-loader.js
+ * This loader looks at the requirejs.yml file and find every configuration related to this module. It transform it
+ * into a javascript object and add it automatically to the file on the fly.
+ */
 export const getDataDenormalizer = getDenormalizer(__moduleConfig as ValueConfig);
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataCellView = getCellView(__moduleConfig as ValueConfig);
