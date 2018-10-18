@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Controller;
+namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
 use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Locale controller for configuration
@@ -31,11 +32,17 @@ class LocaleController
     protected $formFactory;
 
     /**
+     * @var EngineInterface
+     */
+    private $templating;
+
+    /**
      * @param FormFactoryInterface $formFactory
      */
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(FormFactoryInterface $formFactory, EngineInterface $engine)
     {
         $this->formFactory = $formFactory;
+        $this->templating = $engine;
     }
 
     /**
@@ -43,12 +50,11 @@ class LocaleController
      *
      * @param Locale $locale
      *
-     * @Template
      * @AclAncestor("pimee_enrich_locale_edit")
      *
-     * @return JsonResponse|array
+     * @return  Response
      */
-    public function editAction(Request $request, Locale $locale)
+    public function editAction(Request $request, Locale $locale): Response
     {
         $form = $this->formFactory->create(LocaleType::class, $locale);
         if ($request->isMethod('POST')) {
@@ -65,8 +71,8 @@ class LocaleController
             }
         }
 
-        return [
-            'form' => $form->createView()
-        ];
+        return new Response(
+            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig',['form' => $form->createView()])
+        );
     }
 }
