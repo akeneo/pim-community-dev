@@ -190,12 +190,12 @@ TEXT;
             'updated_at' => date_create('2016-01-01')->format('Y-m-d')
         ];
 
-        $wrongEnrichedEntity = [
+        $wrongReferenceEntity = [
             'identifier'            => 'another_reference_entity',
             'reference_entity_code' => 'manufacturer',
             'record_list_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
             'updated_at' => date_create('2010-01-01')->format('Y-m-d')
         ];
-        $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongEnrichedEntity]);
+        $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongReferenceEntity]);
     }
 }
