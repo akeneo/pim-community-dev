@@ -42,9 +42,5 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('steps.yml');
         $loader->load('twig.yml');
-        $loader->load('view_elements/attribute.yml');
-        $loader->load('view_elements/attribute_group.yml');
-        $loader->load('view_elements/category.yml');
-        $loader->load('view_elements/channel.yml');
     }
 }
