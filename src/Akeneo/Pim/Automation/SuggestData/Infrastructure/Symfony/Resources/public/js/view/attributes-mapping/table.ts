@@ -11,7 +11,7 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
-const template = require('pimee/template/attributes-mapping/attributes-mapping');
+const template = require('pimee/template/attributes-mapping/table');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
@@ -21,6 +21,7 @@ interface NormalizedAttributeMapping {
       pimAiAttribute: {
         label: string,
         type: string,
+        summary: Array<string>,
       },
       attribute: string,
       status: number,

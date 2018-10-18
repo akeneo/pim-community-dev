@@ -83,7 +83,7 @@ config:
         # Templates
         pimee/template/attribute-options-mapping/edit: akeneosuggestdata/templates/attribute-options-mapping/edit.html
         pimee/template/attribute-options-mapping/modal: akeneosuggestdata/templates/attribute-options-mapping/modal.html
-        pimee/template/attributes-mapping/attributes-mapping: akeneosuggestdata/templates/attributes-mapping/table.html
+        pimee/template/attributes-mapping/table: akeneosuggestdata/templates/attributes-mapping/table.html
         pimee/template/attributes-mapping/family-mapping: akeneosuggestdata/templates/attributes-mapping/family-mapping.html
         pimee/template/attributes-mapping/family-line: akeneosuggestdata/templates/attributes-mapping/family-line.html
         pimee/template/common/attribute-line: akeneosuggestdata/templates/common/attribute-line.html
