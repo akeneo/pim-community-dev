@@ -1,11 +1,6 @@
-parameters:
-    pimee_workflow.twig.extension.group_product_values.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\GroupProductValuesExtension
-    pimee_workflow.twig.extension.product_draft_status_grid.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension
-    pimee_security.twig_extension.visible_user_preferences.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\VisibleUserPreferencesExtension
-
 services:
     pimee_workflow.twig.extension.group_product_values:
-        class: '%pimee_workflow.twig.extension.group_product_values.class%'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\GroupProductValuesExtension'
         arguments:
             - '@pimee_workflow.helper.filter_product_values'
             - '@pimee_workflow.helper.sort_product_values'
@@ -13,15 +8,22 @@ services:
             - { name: twig.extension }
 
     pimee_workflow.twig.extension.product_draft_status_grid:
-        class: '%pimee_workflow.twig.extension.product_draft_status_grid.class%'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension'
         arguments:
             - '@pimee_workflow.helper.product_draft_changes_permission'
         tags:
             - { name: twig.extension }
 
     pimee_security.twig_extension.visible_user_preferences:
-        class: '%pimee_security.twig_extension.visible_user_preferences.class%'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\VisibleUserPreferencesExtension'
         arguments:
             - '@pimee_security.repository.category_access'
+        tags:
+            - { name: twig.extension }
+
+    pimee_enrich.twig.attribute_extension:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension'
+        arguments:
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: twig.extension }

@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
@@ -20,6 +20,9 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class AttributeExtension extends \Twig_Extension
 {
+    /** @var AttributeRepositoryInterface */
+    private $repository;
+
     /**
      * @param AttributeRepositoryInterface $repository
      */
