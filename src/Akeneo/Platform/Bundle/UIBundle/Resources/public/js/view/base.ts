@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import * as JQuery from 'jquery';
 import * as Backbone from 'backbone';
-import View from 'pimenrich/js/view/base-interface';
+import View from 'pimui/js/view/base-interface';
 const mediator = require('oro/mediator');
 
 /**

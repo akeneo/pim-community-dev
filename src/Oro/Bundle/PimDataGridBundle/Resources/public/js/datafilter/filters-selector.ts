@@ -1,4 +1,4 @@
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const mediator = require('oro/mediator');

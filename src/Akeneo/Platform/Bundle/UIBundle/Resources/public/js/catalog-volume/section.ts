@@ -1,6 +1,6 @@
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/section');
