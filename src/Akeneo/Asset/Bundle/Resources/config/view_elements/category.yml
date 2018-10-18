@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.view_element.tab.category_permission.template: 'PimEnterpriseEnrichBundle:CategoryTree:Tab/permission.html.twig'
+    pimee_product_asset.view_element.tab.category_permission.template: 'AkeneoPimPermissionBundle:CategoryTree:Tab/permission.html.twig'
 
 services:
     pimee_product_asset.view_element.category.tab.property:
