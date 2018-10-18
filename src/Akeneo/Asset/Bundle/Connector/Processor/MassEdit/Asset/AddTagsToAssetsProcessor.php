@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -13,9 +15,10 @@ namespace Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\TagInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -31,16 +34,22 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var AuthorizationCheckerInterface */
+    private $authorizationChecker;
+
     /**
-     * @param TagRepositoryInterface $repository
-     * @param ValidatorInterface     $validator
+     * @param TagRepositoryInterface        $repository
+     * @param ValidatorInterface            $validator
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         TagRepositoryInterface $repository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -48,6 +57,17 @@ class AddTagsToAssetsProcessor extends AbstractProcessor
      */
     public function process($asset)
     {
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT, $asset)) {
+            $this->stepExecution->addWarning(
+                'pimee_product_asset.not_editable',
+                ['%code%' => $asset->getCode()],
+                new DataInvalidItem($asset)
+            );
+            $this->stepExecution->incrementSummaryInfo('skipped_assets');
+
+            return null;
+        }
+
         $actions = $this->getConfiguredActions();
 
         foreach ($actions as $action) {

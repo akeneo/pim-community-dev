@@ -116,8 +116,8 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $qb->select('asset')->willReturn($qb);
         $qb->from('Akeneo\Asset\Component\Model\Asset', 'asset')->willReturn($qb);
-        $qb->where(':endOfUse1 < asset.endOfUseAt')->willReturn($qb);
-        $qb->andWhere('asset.endOfUseAt < :endOfUse2')->willReturn($qb);
+        $qb->where(':endOfUse1 <= asset.endOfUseAt')->willReturn($qb);
+        $qb->andWhere('asset.endOfUseAt <= :endOfUse2')->willReturn($qb);
         $qb->setParameter(':endOfUse1', '2015-08-15 0:00:00')->willReturn($qb);
         $qb->setParameter(':endOfUse2', '2015-08-15 23:59:59')->willReturn($qb);
 

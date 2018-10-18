@@ -71,9 +71,11 @@ services:
         arguments:
             - '@pimee_product_asset.updater.asset'
             - '@validator'
+            - '@security.authorization_checker'
 
     pimee_product_asset.processor.add_tags_to_assets:
         class: '%pimee_product_asset.processor.add_tags_to_assets.class%'
         arguments:
             - '@pimee_product_asset.repository.tag'
             - '@validator'
+            - '@security.authorization_checker'

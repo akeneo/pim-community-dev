@@ -19,10 +19,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -45,37 +41,19 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /**
      * @param PublishedProductManager   $manager
      * @param PaginatorFactoryInterface $paginatorFactory
      * @param ValidatorInterface        $validator
-     * @param ObjectDetacherInterface   $objectDetacher
-     * @param UserManager               $userManager
-     * @param TokenStorageInterface     $tokenStorage
      */
     public function __construct(
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage
+        ValidatorInterface $validator
     ) {
         $this->manager = $manager;
         $this->paginatorFactory = $paginatorFactory;
         $this->validator = $validator;
-        $this->objectDetacher = $objectDetacher;
-        $this->userManager = $userManager;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -94,30 +72,6 @@ abstract class AbstractProductPublisherTasklet implements TaskletInterface
      * @return ProductQueryBuilderInterface
      */
     abstract protected function getProductQueryBuilder(array $filters = []);
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
-    }
-
-    /**
-     * @param array
-     */
-    protected function detachProducts(array $productsPage)
-    {
-        foreach ($productsPage as $product) {
-            $this->objectDetacher->detach($product);
-        }
-    }
 
     /**
      * @param array $filters

@@ -37,6 +37,7 @@ pimee_product_asset:
     success:
       new: Es crearà un nou recurs
       imported: Arxius importats per al recurs actiu
+      need_refresh: <b>S'ha llançat l'import de recurs</b><br> Per veure els recursos importats en la forma del producte, si us plau, actualitzeu la pàgina del producte quan us arribi la notificació de l'import.
       canceled: L'intent de càrrega ha estat cancel·lat correctament
       deleted: L'arxiu carregat s'ha eliminat correctament
       need_refresh: <b>S'ha llançat l'import de recurs</b><br> Per veure els recursos importats en la forma del producte, si us plau, actualitzeu la pàgina del producte quan us arribi la notificació de l'import.

@@ -3,13 +3,13 @@ user:
     notifications: Уведомления эл. почты
   proposals:
     notifications:
-      to_review: При появлении нового предложения для рассмотра
+      to_review: При появлении нового предложения для рассмотрения
       state: При принятии или отклонении предложения
       yes: true
       no: false
   asset_delay_reminder: Напоминание о медиафайлах (в днях)
   default_published_product_grid_view:
-    label: Представление сетки публикованных товаров по умолчанию
+    label: Представление данных опубликованных товаров в таблице по умолчанию
 Default asset tree: Дерево медиафайлов по умолчанию
 pimee_user:
   user:

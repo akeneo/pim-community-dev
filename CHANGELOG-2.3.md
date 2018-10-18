@@ -1,5 +1,23 @@
 # 2.3.x
 
+# 2.3.12 (2018-10-17)
+
+## Bug fixes
+
+- PIM-7723: fix consistency between TWA widget numbers and the datagrid view 
+- PIM-7731: check for attribute as label not null in normalizers 
+- PIM-7734: fix published product datagrid status filter 
+- PIM-7733: Fix memory leak during mass publishing
+- PIM-7742: fix expired assets notification
+- PIM-7736: Fix memory leak during published products indexing
+
+# 2.3.11 (2018-10-08)
+
+## Bug fixes
+
+- PIM-7672: Fix missing permission check on assets during a mass edit.
+- PIM-7709: Execute all transformations of a channel even if one of them does not support the file to transform
+
 # 2.3.10 (2018-10-01)
 
 ## Bug fixes

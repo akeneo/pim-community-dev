@@ -31,11 +31,9 @@ services:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
             - '@pim_catalog.validator.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_user.manager'
-            - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pimee_workflow.mass_edit_tasklet.unpublish_product:
         class: '%pimee_workflow.mass_edit_tasklet.unpublish_product.class%'
@@ -43,8 +41,6 @@ services:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
             - '@pim_catalog.validator.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_user.manager'
-            - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
+            - '@pim_connector.doctrine.cache_clearer'
