@@ -4,7 +4,7 @@ const BaseSave = require('pim/form/common/save');
 const MappingSaver = require('pimee/saver/identifiers-mapping');
 
 interface Mapping {
-  [key: string]: (string | null);
+  [franklin_attribute: string]: (string | null);
 }
 
 /**
@@ -81,7 +81,7 @@ class MappingSave extends BaseSave {
    *
    * @return {Mapping}
    */
-  private cleanMapping(identifiersMapping: { [key: string]: string }): Mapping {
+  private cleanMapping(identifiersMapping: { [franklin_attribute: string]: string }): Mapping {
     return Object.keys(identifiersMapping).reduce((accumulator: Mapping, index: string) => {
       accumulator[index] = '' !== identifiersMapping[index] ? identifiersMapping[index] : null;
 

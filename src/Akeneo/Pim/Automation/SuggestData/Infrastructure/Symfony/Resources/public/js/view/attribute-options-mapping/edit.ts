@@ -137,10 +137,10 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   /**
-   * @returns {{ [ key: number ]: string }}
+   * @returns {{ [ status: number ]: string }}
    */
   private getMappingStatuses() {
-    const statuses: { [key: number]: string } = {};
+    const statuses: { [status: number]: string } = {};
     statuses[AttributeOptionStatus.Pending] = __(this.config.labels.pending);
     statuses[AttributeOptionStatus.Mapped] = __(this.config.labels.mapped);
     statuses[AttributeOptionStatus.Unmapped] = __(this.config.labels.unmapped);

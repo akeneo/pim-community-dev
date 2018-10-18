@@ -17,7 +17,7 @@ const UserContext = require('pim/user-context');
 
 interface NormalizedAttributeMapping {
   mapping: {
-    [key: string]: {
+    [franklin_attribute: string]: {
       pimAiAttribute: {
         label: string,
         type: string,
@@ -52,7 +52,7 @@ class AttributeMapping extends BaseForm {
   private static readonly ATTRIBUTE_PENDING: number = 0;
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
-  private static readonly VALID_MAPPING: { [key: string]: string[] } = {
+  private static readonly VALID_MAPPING: { [attribute_type: string]: string[] } = {
     metric: [ 'pim_catalog_metric' ],
     select: [ 'pim_catalog_simpleselect' ],
     multiselect: [ 'pim_catalog_multiselect' ],
@@ -116,7 +116,7 @@ class AttributeMapping extends BaseForm {
       acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
 
       return acc;
-    }, {} as { [key: string]: string }));
+    }, {} as { [franklin_attribute: string]: string }));
 
     Filterable.afterRender(this, __(this.config.labels.pimAiAttribute));
 
@@ -159,10 +159,10 @@ class AttributeMapping extends BaseForm {
   }
 
   /**
-   * @returns { [ key: number ]: string }
+   * @returns { [ status: number ]: string }
    */
   private getMappingStatuses() {
-    const statuses: { [key: number]: string } = {};
+    const statuses: { [status: number]: string } = {};
     statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
     statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
     statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);

@@ -14,17 +14,17 @@ const LineTemplate = require('pimee/template/common/attribute-line');
  */
 interface NormalizedAttribute {
   code: string;
-  labels: { [key: string]: string };
+  labels: { [pim_attribute_code: string]: string };
   group: string;
 }
 
 interface NormalizedAttributeGroup {
-  labels: { [key: string]: string };
+  labels: { [pim_attribute_group_code: string]: string };
 }
 
 class SimpleSelectAttribute extends BaseSimpleSelect {
   private readonly lineView = _.template(LineTemplate);
-  private attributeGroups: { [key: string]: NormalizedAttributeGroup } = {};
+  private attributeGroups: { [pim_attribute_group_code: string]: NormalizedAttributeGroup } = {};
 
   constructor(options: { config: object, className: string }) {
     super({
@@ -41,7 +41,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       FetcherRegistry
         .getFetcher('attribute-group')
         .fetchAll()
-        .then((attributeGroups: { [key: string]: NormalizedAttributeGroup }) => {
+        .then((attributeGroups: { [pim_attribute_group_code: string]: NormalizedAttributeGroup }) => {
           this.attributeGroups = attributeGroups;
         }),
     );
