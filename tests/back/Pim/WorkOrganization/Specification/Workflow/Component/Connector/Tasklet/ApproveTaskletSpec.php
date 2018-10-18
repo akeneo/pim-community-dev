@@ -3,9 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -17,10 +15,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ApproveTaskletSpec extends ObjectBehavior
 {
@@ -29,9 +24,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         EntityWithValuesDraftManager $productDraftManager,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         EntityWithValuesDraftManager $productModelDraftManager,
-        UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
         ProductDraftChangesPermissionHelper $permissionHelper,
         StepExecution $stepExecution
     ) {
@@ -40,9 +33,7 @@ class ApproveTaskletSpec extends ObjectBehavior
             $productDraftManager,
             $productModelDraftRepository,
             $productModelDraftManager,
-            $userProvider,
             $authorizationChecker,
-            $tokenStorage,
             $permissionHelper
         );
         $this->setStepExecution($stepExecution);

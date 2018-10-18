@@ -3,6 +3,8 @@
 namespace Specification\Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
 use Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
