@@ -18,9 +18,6 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -44,34 +41,22 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
      * @param ValidatorInterface                  $validator
-     * @param ObjectDetacherInterface             $objectDetacher
-     * @param UserManager                         $userManager
-     * @param TokenStorageInterface               $tokenStorage
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
      * @param EntityManagerClearerInterface|null  $cacheClearer
-     *
-     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
-     *               remove property $objectDetacher and nullable on $cacheClearer
      */
     public function __construct(
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductQueryBuilderFactoryInterface $publishedPqbFactory,
-        EntityManagerClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer
     ) {
         parent::__construct(
             $manager,
             $paginatorFactory,
-            $validator,
-            $objectDetacher,
-            $userManager,
-            $tokenStorage
+            $validator
         );
 
         $this->authorizationChecker = $authorizationChecker;
@@ -109,13 +94,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
             $productsPage = array_diff_key($productsPage, $invalidProducts);
             $this->manager->unpublishAll($productsPage);
 
-            // @todo merge : remove condition in master branch (only the cache clearer must be called)
-            if (null !== $this->cacheClearer) {
-                $this->cacheClearer->clear();
-            } else {
-                $this->detachProducts($invalidProducts);
-                $this->detachProducts($productsPage);
-            }
+            $this->cacheClearer->clear();
         }
     }
 

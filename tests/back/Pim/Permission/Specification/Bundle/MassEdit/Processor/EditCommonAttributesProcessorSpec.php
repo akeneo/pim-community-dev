@@ -7,27 +7,22 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
-    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         ObjectDetacherInterface $productDetacher,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
     ) {
@@ -36,8 +31,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             $productRepository,
             $productUpdater,
             $productDetacher,
-            $userManager,
-            $tokenStorage,
             $authorizationChecker
         );
         $this->setStepExecution($stepExecution);

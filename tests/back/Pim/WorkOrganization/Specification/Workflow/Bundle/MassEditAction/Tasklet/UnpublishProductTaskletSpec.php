@@ -9,22 +9,18 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UnpublishProductTaskletSpec extends ObjectBehavior
 {
-    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
@@ -32,9 +28,6 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductQueryBuilder $pqb,
         CursorInterface $cursor,
-        ObjectDetacherInterface $objectDetacher,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         EntityManagerClearerInterface $cacheClearer
     ) {
@@ -46,9 +39,6 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
             $manager,
             $paginatorFactory,
             $validator,
-            $objectDetacher,
-            $userManager,
-            $tokenStorage,
             $authorizationChecker,
             $pqbFactory,
             $cacheClearer

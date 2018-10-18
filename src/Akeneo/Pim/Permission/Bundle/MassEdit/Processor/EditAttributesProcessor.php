@@ -15,12 +15,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\EditAtt
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,12 +27,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAttributesProcessor extends BaseProcessor
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var UserManager */
-    protected $userManager;
-
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
@@ -47,11 +37,7 @@ class EditAttributesProcessor extends BaseProcessor
      * @param ObjectUpdaterInterface                $productModelUpdater
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param CheckAttributeEditable                $checkAttributeEditable
-     * @param UserManager                           $userManager
-     * @param TokenStorageInterface                 $tokenStorage
      * @param AuthorizationCheckerInterface         $authorizationChecker
-     *
-     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         ValidatorInterface $productValidator,
@@ -60,8 +46,6 @@ class EditAttributesProcessor extends BaseProcessor
         ObjectUpdaterInterface $productModelUpdater,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
@@ -73,27 +57,7 @@ class EditAttributesProcessor extends BaseProcessor
             $checkAttributeEditable
         );
 
-        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->userManager = $userManager;
-    }
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     *
-     * @deprecated will be removed in 3.0
-     *
-     * @todo merge : remove this method in master branch. It's no longer used
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
     }
 
     /**

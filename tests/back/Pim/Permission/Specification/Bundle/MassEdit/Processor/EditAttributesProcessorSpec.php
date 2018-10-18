@@ -3,26 +3,21 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\MassEdit\Processor;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EditAttributesProcessorSpec extends ObjectBehavior
 {
-    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ValidatorInterface $productValidator,
         ValidatorInterface $productModelValidator,
@@ -30,8 +25,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $productModelUpdater,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
     ) {
@@ -42,8 +35,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
             $productModelUpdater,
             $attributeRepository,
             $checkAttributeEditable,
-            $userManager,
-            $tokenStorage,
             $authorizationChecker
         );
         $this->setStepExecution($stepExecution);

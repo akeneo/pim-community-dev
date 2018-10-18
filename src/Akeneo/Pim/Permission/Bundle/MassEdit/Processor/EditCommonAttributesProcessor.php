@@ -15,12 +15,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\EditCom
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,12 +30,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditCommonAttributesProcessor extends BaseProcessor
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var UserManager */
-    protected $userManager;
-
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
@@ -48,19 +38,13 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param ProductRepositoryInterface    $productRepository
      * @param ObjectUpdaterInterface        $productUpdater
      * @param ObjectDetacherInterface       $productDetacher
-     * @param UserManager                   $userManager
-     * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     *
-     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         ObjectDetacherInterface $productDetacher,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
@@ -70,27 +54,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $productDetacher
         );
 
-        $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
-        $this->userManager = $userManager;
-    }
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     *
-     * @deprecated will be removed in 3.0
-     *
-     * @todo merge : remove this method in master branch. It's no longer used
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
     }
 
     /**

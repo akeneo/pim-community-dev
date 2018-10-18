@@ -21,15 +21,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AddAttributeValueProcessorSpec extends ObjectBehavior
 {
-    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ValidatorInterface $productValidator,
         ValidatorInterface $productModelValidator,
         PropertyAdderInterface $propertyAdder,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
@@ -39,8 +36,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             $attributeRepository,
             $checkAttributeEditable,
             ['pim_catalog_multiselect', 'pim_reference_data_multiselect'],
-            $userManager,
-            $tokenStorage,
             $authorizationChecker
         );
     }

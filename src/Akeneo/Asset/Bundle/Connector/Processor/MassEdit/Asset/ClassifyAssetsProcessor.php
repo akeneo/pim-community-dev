@@ -38,16 +38,14 @@ class ClassifyAssetsProcessor extends AbstractProcessor
     private $authorizationChecker;
 
     /**
-     * @param ObjectUpdaterInterface             $updater
-     * @param ValidatorInterface                 $validator
-     * @param AuthorizationCheckerInterface|null $authorizationChecker
-     *
-     * @todo merge : remove nullable on $authorizationChecker in master branch
+     * @param ObjectUpdaterInterface        $updater
+     * @param ValidatorInterface            $validator
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        AuthorizationCheckerInterface $authorizationChecker = null
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->updater = $updater;
         $this->validator = $validator;
@@ -56,12 +54,10 @@ class ClassifyAssetsProcessor extends AbstractProcessor
 
     /**
      * {@inheritdoc}
-     *
-     * @todo merge : remove null check on authorizationChecker in master branch
      */
     public function process($asset)
     {
-        if (null !== $this->authorizationChecker && !$this->authorizationChecker->isGranted(Attributes::EDIT, $asset)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT, $asset)) {
             $this->stepExecution->addWarning(
                 'pimee_product_asset.not_editable',
                 ['%code%' => $asset->getCode()],
