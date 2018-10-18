@@ -25,7 +25,7 @@ class AttributeOptionsMappingController
      *
      * @return JsonResponse
      */
-    public function getAction(): JsonResponse
+    public function getAction(string $familyCode, string $franklinAttributeId): JsonResponse
     {
         return new JsonResponse([
             'family' => 'router',

@@ -18,11 +18,14 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping\AttributeOptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
@@ -69,12 +72,16 @@ class PimAI implements DataProviderInterface
     /** @var FamilyNormalizer */
     private $familyNormalizer;
 
+    /** @var AttributeOptionsMappingInterface */
+    private $attributeOptionsMappingApi;
+
     /**
      * @param AuthenticationApiInterface $authenticationApi
      * @param SubscriptionApiInterface $subscriptionApi
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param IdentifiersMappingApiInterface $identifiersMappingApi
      * @param AttributesMappingApiInterface $attributesMappingApi
+     * @param AttributeOptionsMappingInterface $attributeOptionsMappingApi
      * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
      * @param FamilyNormalizer $familyNormalizer
@@ -85,6 +92,7 @@ class PimAI implements DataProviderInterface
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
+        AttributeOptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
         FamilyNormalizer $familyNormalizer
@@ -94,6 +102,7 @@ class PimAI implements DataProviderInterface
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingApi = $identifiersMappingApi;
         $this->attributesMappingApi = $attributesMappingApi;
+        $this->attributeOptionsMappingApi = $attributeOptionsMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->familyNormalizer = $familyNormalizer;
@@ -207,6 +216,13 @@ class PimAI implements DataProviderInterface
         $mapping = $this->attributesMappingNormalizer->normalize($attributesMapping);
 
         $this->attributesMappingApi->update($familyCode, $mapping);
+    }
+
+    public function getAttributeOptionsMapping(FamilyCode $familyCode, FranklinAttributeId $franklinAttributeId): void
+    {
+        $attributeOptionsMapping = $this
+            ->attributeOptionsMappingApi
+            ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
     }
 
     /**

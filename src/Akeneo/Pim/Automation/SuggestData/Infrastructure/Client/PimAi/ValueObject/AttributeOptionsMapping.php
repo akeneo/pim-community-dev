@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
+
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
+final class AttributeOptionsMapping implements \IteratorAggregate
+{
+    /** @var AttributeOptionMapping[] */
+    private $options = [];
+
+    /**
+     * @param array $optionsData
+     */
+    public function __construct(array $optionsData)
+    {
+        foreach ($optionsData as $optionData) {
+            $this->options[] = new AttributeOptionMapping($optionData);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->options);
+    }
+}

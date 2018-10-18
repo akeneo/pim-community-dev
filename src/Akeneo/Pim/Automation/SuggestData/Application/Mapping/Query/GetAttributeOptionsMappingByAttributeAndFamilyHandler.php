@@ -44,6 +44,8 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandler
     public function handle(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): void
     {
         $this->validate($query);
+
+        $this->dataProvider->getAttributeOptionsMapping($query->familyCode(), $query->franklinAttributeId());
     }
 
     private function validate(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): void
