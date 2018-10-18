@@ -33,17 +33,47 @@
 
 4. Update your **app/AppKernel.php**:
 
-    * Remove the following bundles:
-        - TODO
+    * The following bundles have been renamed:
+        - `Pim\Bundle\FilterBundle\PimFilterBundle` now is `Oro\Bundle\PimFilterBundle\PimFilterBundle`
+        - `Pim\Bundle\UserBundle\PimUserBundle` now is `Akeneo\UserManagement\Bundle\PimUserBundle`
+        - `Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle` now is `Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle`
+        - `Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle` now is `Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle`
+        - `Pim\Bundle\ApiBundle\PimApiBundle` now is `Akeneo\Tool\Bundle\ApiBundle\PimApiBundle`
+        - `Pim\Bundle\ConnectorBundle\PimConnectorBundle` now is `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
+        - `Pim\Bundle\DashboardBundle\PimDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
+        - `Pim\Bundle\DataGridBundle\PimDataGridBundle` now is `Oro\Bundle\PimDataGridBundle\PimDataGridBundle`
+        - `Pim\Bundle\ImportExportBundle\PimImportExportBundle` now is `Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle`
+        - `Pim\Bundle\InstallerBundle\PimInstallerBundle` now is `Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle`
+        - `Pim\Bundle\NotificationBundle\PimNotificationBundle` now is `Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle`
+        - `Pim\Bundle\UIBundle\PimUIBundle` now is `Akeneo\Platform\Bundle\UIBundle\PimUIBundle`
+        - `Pim\Bundle\VersioningBundle\PimVersioningBundle` now is `Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle`
+        - `Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle` now is `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle`
+        - `Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle` now is `Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle`
+        - `Akeneo\Bundle\BatchBundle\AkeneoBatchBundle` now is `Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle`
+        - `Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle` now is `Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle`
+        - `Akeneo\Bundle\BufferBundle\AkeneoBufferBundle` now is `Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle`
+        - `Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle` now is `Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle`
+        - `Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle` now is `Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle`
+        - `Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle` now is `Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle`
 
-    * For Enterprise Edition, you also need to remove the following bundle:
-        - TODO
-        
-    * Add the following bundles:
-        - TODO
-        
-    * For Enterprise Edition, you also need to add the following bundle:
-        - TODO
+    * The following bundles have been removed:
+        - `Pim\Bundle\NavigationBundle\PimNavigationBundle`
+        - `Pim\Bundle\CatalogBundle\PimCatalogBundle`
+        - `Pim\Bundle\CommentBundle\PimCommentBundle`
+        - `Pim\Bundle\EnrichBundle\PimEnrichBundle`
+        - `Pim\Bundle\LocalizationBundle\PimLocalizationBundle`
+        - `Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle`
+        - `Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle`
+        - `Oro\Bundle\UserBundle\OroUserBundle`
+
+    * The following bundles have been added:
+        - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
+        - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
+        - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
+    
+    TODO: Enterprise edition
+
+Maybe the easiest way to do is to copy/paste the `app/AppKernel.php` file of the standard edition and to add your own bundles in the `registerProjectBundles` method.
 
 ## Database charset migration
 
