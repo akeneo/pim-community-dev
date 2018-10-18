@@ -34,7 +34,6 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
-        $loader->load('normalizers.yml');
         $loader->load('parameters.yml');
         $loader->load('providers.yml');
         $loader->load('steps.yml');

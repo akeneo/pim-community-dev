@@ -78,3 +78,9 @@ services:
             - '@pimee_product_asset.manager.category_access'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 100 }
+
+    pim_enrich.normalizer.image:
+        class: 'Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.file'
+            - '@pim_catalog.repository.locale'

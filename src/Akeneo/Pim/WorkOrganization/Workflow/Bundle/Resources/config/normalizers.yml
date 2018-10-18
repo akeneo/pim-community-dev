@@ -66,3 +66,30 @@ services:
             - '@pimee_workflow.repository.published_product'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_enrich.normalizer.product:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.product'
+            - '@pimee_workflow.manager.published_product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_enrich.normalizer.product_model:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductModelNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_model'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;

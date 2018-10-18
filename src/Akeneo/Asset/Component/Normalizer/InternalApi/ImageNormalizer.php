@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Asset\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
