@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\tests\integration\Doctrine\Counter;
+namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\ORM\Counter;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

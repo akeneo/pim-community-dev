@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\tests\integration\Repository;
+namespace AkeneoTest\Platform\Integration\ImportExport\Repository\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
