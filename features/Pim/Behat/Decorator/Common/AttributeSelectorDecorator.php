@@ -70,7 +70,7 @@ class AttributeSelectorDecorator extends ElementDecorator
                 '.selected-attributes .AknColumnConfigurator-listContainer .AknVerticalList'
             );
             return false === $selectedAttributes->has('css', '.AknVerticalList-item');
-        }, 'Cannot clear the selected atributes');
+span class="pl-s1">         }, 'Cannot clear the selected attributes');
     }
 
     /**
