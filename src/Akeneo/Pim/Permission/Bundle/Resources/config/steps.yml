@@ -1,7 +1,4 @@
 services:
-    # Mass Edit steps -------------------------------------------------------------------------------------------------
-
-
     pimee_enrich.step.add_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -86,19 +83,3 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.product.add_attribute_value'
             - '@pimee_security.connector.writer.mass_edit.product_and_product_model'
             - 1000
-
-    # Execute Rules steps ---------------------------------------------------------------------------------------------
-    pimee_enrich.step.execute_rules:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'execute_rules'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
-            - '@pimee_catalog_rule.processor.product_loader'
-            - '@pimee_catalog_rule.executor.rules'
-            - '%pim_job_product_batch_size%'
-
-    # Clean steps -----------------------------------------------------------------------------------------------------
-    pimee_enrich.step.clean:
-        alias: pim_enrich.step.clean

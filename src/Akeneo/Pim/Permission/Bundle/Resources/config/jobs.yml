@@ -90,7 +90,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_enrich.step.edit_common_attributes_with_permission.perform'
-                - '@pimee_enrich.step.clean'
+                - '@pim_enrich.step.clean'
                 - '@pimee_enrich.step.execute_rules'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
