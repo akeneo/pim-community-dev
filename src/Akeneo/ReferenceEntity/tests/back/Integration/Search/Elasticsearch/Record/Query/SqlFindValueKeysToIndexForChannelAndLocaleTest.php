@@ -63,9 +63,6 @@ class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestC
             ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
         Assert::assertSame([
             'name_designer_fingerprint_ecommerce_en_US',
-            'name_designer_fingerprint_ecommerce_fr_FR',
-            'name_designer_fingerprint_mobile_de_DE',
-            'name_designer_fingerprint_print_en_US',
         ], $valueKeyCollection->normalize());
     }
 

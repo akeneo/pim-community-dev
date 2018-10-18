@@ -6,7 +6,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subs
 
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlGetReferenceEntityIdentifierForAttribute;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
@@ -24,17 +23,12 @@ class IndexRecordSubscriber implements EventSubscriberInterface
     /** @var CommandLauncher */
     private $commandLauncher;
 
-    /** @var SqlGetReferenceEntityIdentifierForAttribute */
-    private $getReferenceEntityIdentifierForAttribute;
-
     public function __construct(
         RecordIndexerInterface $recordIndexer,
-        SqlGetReferenceEntityIdentifierForAttribute $getReferenceEntityIdentifierForAttribute,
         CommandLauncher $commandLauncher
     ) {
         $this->recordIndexer = $recordIndexer;
         $this->commandLauncher = $commandLauncher;
-        $this->getReferenceEntityIdentifierForAttribute = $getReferenceEntityIdentifierForAttribute;
     }
 
     /**
