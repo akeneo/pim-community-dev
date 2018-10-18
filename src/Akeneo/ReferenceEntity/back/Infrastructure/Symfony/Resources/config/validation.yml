@@ -136,6 +136,54 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttribut
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
 
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttributeCommand:
+    group_sequence:
+        - CreateRecordAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        order:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        recordType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand:
+    group_sequence:
+        - CreateRecordCollectionAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        order:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        recordType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:
         - EditAttributeCommand
