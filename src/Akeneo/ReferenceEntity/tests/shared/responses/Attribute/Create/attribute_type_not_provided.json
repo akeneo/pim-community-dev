@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_create_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "reference_entity_identifier": "designer",
+      "code": "name",
+      "type": null,
+      "labels": {
+        "fr_FR": "Poids",
+        "en_US": "Weight"
+      },
+      "value_per_channel": false,
+      "value_per_locale": false
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": "There was no valid attribute type provided in the request"
+  }
+}

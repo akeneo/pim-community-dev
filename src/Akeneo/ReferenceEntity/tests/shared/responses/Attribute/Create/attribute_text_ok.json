@@ -7,13 +7,15 @@
     },
     "body": {
       "reference_entity_identifier": "designer",
-      "code": "niceattribute",
+      "code": "name",
       "type": "text",
       "labels": {
-        "en_US": "Nice attribute"
+        "fr_FR": "Nom",
+        "en_US": "Name"
       },
-      "value_per_locale": false,
-      "value_per_channel": true
+      "value_per_channel": true,
+      "value_per_locale": true,
+      "max_length": 255
     }
   },
   "response": {
