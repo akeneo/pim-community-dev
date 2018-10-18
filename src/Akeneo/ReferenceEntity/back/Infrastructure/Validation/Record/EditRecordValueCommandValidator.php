@@ -75,42 +75,15 @@ class EditRecordValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordValueCommand $command): void
     {
-        $violations = $this->checkType($command);
-        if (0 === $violations->count()) {
-            $violations->addAll($this->checkRecordExist($command));
-        }
-
-        if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
-                    ->setParameters($violation->getParameters())
-                    ->atPath((string) $command->attribute->getCode())
-                    ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
-                    ->setInvalidValue($violation->getInvalidValue())
-                    ->addViolation();
-            }
-        }
-    }
-
-    private function checkType(EditRecordValueCommand $command): ConstraintViolationListInterface
-    {
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($command->recordCode, new Constraints\Type('string'));
-
-        return $violations;
-    }
-
-    private function checkRecordExist(EditRecordValueCommand $command): ConstraintViolationListInterface
-    {
-        $recordExist = $this->recordExists->withReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString($command->attribute->getReferenceEntityIdentifier()->normalize()),
-            RecordCode::fromString($command->recordCode)
+        $recordsFound = $this->recordExists->withReferenceEntityAndCodes(
+            ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
+            [$command->recordCode]
         );
 
-        if (!$recordExist) {
-            return $this->context->buildViolation(RecordShouldExist::ERROR_MESSAGE)
-                ->atPath('record_code')
+        if (empty($recordsFound)) {
+            $this->context->buildViolation(EditRecordValueCommandConstraint::ERROR_MESSAGE)
+                ->atPath((string) $command->attribute->getCode())
+                ->setParameter('%record_code%', $command->recordCode)
                 ->addViolation();
         }
     }

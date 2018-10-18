@@ -46,9 +46,9 @@ class RecordUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $text = RecordData::createFromNormalize($command->recordCode);
+        $recordLinked = RecordData::createFromNormalize($command->recordCode);
 
-        $value = Value::create($attribute, $channelReference, $localeReference, $text);
+        $value = Value::create($attribute, $channelReference, $localeReference, $recordLinked);
         $record->setValue($value);
     }
 }

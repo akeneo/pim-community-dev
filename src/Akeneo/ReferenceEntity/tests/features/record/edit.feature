@@ -292,14 +292,53 @@ Feature: Edit an record
     And there is no violations errors
     And the record should have the valid image for this attribute
 
-#  @acceptance-back
+  # Record value
+  @acceptance-back
   Scenario: Updating the record value of a record
     Given an reference entity with a record attribute
-    And a record belonging to this reference entity with a value of "philippe_stark" for the record attribute
-    When the user updates the record attribute of the record to "Stark"
+    And a record belonging to this reference entity with a value of "ikea" for the record attribute
+    When the user updates the record attribute of the record to "made"
     Then there is no exception thrown
     And there is no violations errors
-    And the record should have the text value "Stark" for this attribute
+    And the record should have the record value "made" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the record value of a record with an invalid record value
+    Given an reference entity with a record attribute
+    And a record belonging to this reference entity with a value of "ikea" for the record attribute
+    When the user updates the record attribute of the record to an invalid record value
+    Then an exception is thrown with message "There was no factory found to create the edit record value command of the attribute "brand_linked_designer_fingerprint""
+
+  @acceptance-back
+  Scenario: Updating the record value of a record with a non-existent record
+    Given an reference entity with a record attribute
+    And a record belonging to this reference entity with a value of "ikea" for the record attribute
+    When the user tries to update the record attribute of the record with an unknown value
+    Then there should be a validation error on the property record attribute with message "The record "unknown_brand" was not found."
+
+  # Record collection value
+  @acceptance-back
+  Scenario: Updating the record collection value of a record
+    Given an reference entity with a record collection attribute
+    And a record belonging to this reference entity with values of "ikea,made" for the record collection attribute
+    When the user updates the record collection attribute of the record to "stork,cogip"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the record collection value "stork,cogip" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the record collection value of a record with an invalid record value
+    Given an reference entity with a record collection attribute
+    And a record belonging to this reference entity with values of "ikea,made" for the record collection attribute
+    When the user updates the record collection attribute of the record to an invalid record value
+    Then an exception is thrown with message "There was no factory found to create the edit record value command of the attribute "brand_linked_designer_fingerprint""
+
+  @acceptance-back
+  Scenario: Updating the record collection value of a record with non-existent records
+    Given an reference entity with a record collection attribute
+    And a record belonging to this reference entity with values of "ikea,made" for the record collection attribute
+    When the user updates the record collection attribute of the record with unknown values
+    Then there should be a validation error on the property record attribute with message "The records "unknown_brand,wrong_brand" were not found."
 
   @acceptance-front
   Scenario: Display a record labels in the edit form

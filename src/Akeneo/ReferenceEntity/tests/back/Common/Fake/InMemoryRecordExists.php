@@ -49,4 +49,9 @@ class InMemoryRecordExists implements RecordExistsInterface
 
         return $hasRecord;
     }
+
+    public function withReferenceEntityAndCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
+    {
+        return $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
+    }
 }

@@ -75,45 +75,18 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordCollectionValueCommand $command): void
     {
-        $violations = $this->checkType($command);
-        if (0 === $violations->count()) {
-            $violations->addAll($this->checkRecordsExist($command));
-        }
+        $recordsFound = $this->recordExists->withReferenceEntityAndCodes(
+            ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
+            $command->recordCodes
+        );
 
-        if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
-                    ->setParameters($violation->getParameters())
-                    ->atPath((string) $command->attribute->getCode())
-                    ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
-                    ->setInvalidValue($violation->getInvalidValue())
-                    ->addViolation();
-            }
-        }
-    }
+        $recordsNotExist = array_diff($command->recordCodes, $recordsFound);
 
-    private function checkType(EditRecordCollectionValueCommand $command): ConstraintViolationListInterface
-    {
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($command->recordCodes, new Constraints\Type('array'));
-
-        return $violations;
-    }
-
-    private function checkRecordsExist(EditRecordCollectionValueCommand $command): ConstraintViolationListInterface
-    {
-        foreach ($command->recordCodes as $recordCode) {
-            $recordExist = $this->recordExists->withReferenceEntityAndCode(
-                ReferenceEntityIdentifier::fromString($command->attribute->getReferenceEntityIdentifier()->normalize()),
-                RecordCode::fromString($recordCode)
-            );
-
-            if (!$recordExist) {
-                return $this->context->buildViolation(RecordShouldExist::ERROR_MESSAGE)
-                    ->atPath('record_codes')
-                    ->addViolation();
-            }
+        if (!empty($recordsNotExist)) {
+            $this->context->buildViolation(EditRecordCollectionValueCommandConstraint::ERROR_MESSAGE)
+                ->atPath((string) $command->attribute->getCode())
+                ->setParameter('%record_codes%', implode(',', $recordsNotExist))
+                ->addViolation();
         }
     }
 }

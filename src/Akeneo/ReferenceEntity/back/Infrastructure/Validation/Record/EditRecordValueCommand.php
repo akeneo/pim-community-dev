@@ -21,6 +21,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditRecordValueCommand extends Constraint
 {
+    public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.record.should_exist';
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

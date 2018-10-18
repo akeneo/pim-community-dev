@@ -22,4 +22,6 @@ interface RecordExistsInterface
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool;
 
     public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool;
+
+    public function withReferenceEntityAndCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
 }

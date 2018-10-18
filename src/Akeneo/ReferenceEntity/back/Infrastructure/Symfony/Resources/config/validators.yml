@@ -62,6 +62,20 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.edit_record_value_commands' }
 
+    akeneo_referenceentity.infrastructure.validation.record.edit_record_value_command_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommandValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.edit_record_value_command' }
+
+    akeneo_referenceentity.infrastructure.validation.record.edit_record_collection_value_command_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommandValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.edit_record_collection_value_command' }
+
     akeneo_referenceentity.infrastructure.validation.record.record_should_exist:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordShouldExistValidator
         arguments:
