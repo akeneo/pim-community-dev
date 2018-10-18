@@ -24,7 +24,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         TagRepositoryInterface $repository,
         ValidatorInterface $validator,
         StepExecution $stepExecution,
-        AuthorizationCheckerInterface $authorizationChecker = null
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith($repository, $validator, $authorizationChecker);
         $this->setStepExecution($stepExecution);
