@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Controller;
+namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Doctrine\ORM\EntityRepository;
