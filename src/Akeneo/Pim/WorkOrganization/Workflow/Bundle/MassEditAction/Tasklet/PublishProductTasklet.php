@@ -47,7 +47,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
      * @param ValidatorInterface                  $validator
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param EntityManagerClearerInterface|null  $cacheClearer
+     * @param EntityManagerClearerInterface       $cacheClearer
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -55,7 +55,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         ValidatorInterface $validator,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        EntityManagerClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer
     ) {
         parent::__construct(
             $manager,
