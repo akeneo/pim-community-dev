@@ -64,6 +64,13 @@ class AttributeSelectorDecorator extends ElementDecorator
         }, 'Cannot find the clear button');
 
         $button->click();
+        $this->spin(function () {
+            $selectedAttributes = $this->find(
+                'css',
+                '.selected-attributes .AknColumnConfigurator-listContainer .AknVerticalList'
+            );
+            return false === $selectedAttributes->has('css', '.AknVerticalList-item');
+        }, 'Cannot clear the selected attributes');
     }
 
     /**
