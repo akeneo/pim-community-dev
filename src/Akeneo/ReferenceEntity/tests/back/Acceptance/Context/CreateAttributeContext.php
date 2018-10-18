@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -82,6 +83,9 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['max_length'] = (int) $attributeData['max_length'];
+        $attributeData['is_textarea'] = json_decode($attributeData['is_textarea']);
+        $attributeData['is_rich_text_editor'] = json_decode($attributeData['is_rich_text_editor']);
+        $attributeData['regular_expression'] = json_decode($attributeData['regular_expression']);
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
