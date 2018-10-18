@@ -15,7 +15,6 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFa
 
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -23,8 +22,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
  */
 class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandFactory
 {
-    private const NO_LIMIT = null;
-
     public function supports(array $normalizedCommand): bool
     {
         return isset($normalizedCommand['type']) && 'image' === $normalizedCommand['type'];
@@ -34,11 +31,31 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
     {
         $command = new CreateImageAttributeCommand();
         $this->fillCommonProperties($command, $normalizedCommand);
-        $command->maxFileSize = isset($normalizedCommand['max_file_size']) ?
-            (string) $normalizedCommand['max_file_size'] : self::NO_LIMIT;
-        $command->allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
-            $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
+
+        $this->checkAdditionalProperties($normalizedCommand);
+
+        $command->maxFileSize = (string) $normalizedCommand['max_file_size'];
+        $command->allowedExtensions = $normalizedCommand['allowed_extensions'];
 
         return $command;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkAdditionalProperties(array $nomalizedCommand): void
+    {
+        $keysToCheck = [
+            'max_file_size',
+            'allowed_extensions',
+        ];
+
+        foreach ($keysToCheck as $keyToCheck) {
+            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Expects normalized command to have key "%s"', $keyToCheck)
+                );
+            }
+        }
     }
 }

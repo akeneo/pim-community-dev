@@ -44,4 +44,38 @@ class CreateRecordAttributeCommandFactorySpec extends ObjectBehavior
         $command->valuePerLocale->shouldBeEqualTo(false);
         $command->recordType->shouldBeEqualTo('designer');
     }
+
+    function it_throws_an_exception_if_there_is_one_missing_common_property()
+    {
+        $command = [
+            'reference_entity_identifier' => 'designer',
+            'code' => 'mentor',
+            // 'labels' => ['fr_FR' => 'Mentor'], // For the test purpose, this one is missing
+            'order' => 1,
+            'is_required' => false,
+            'value_per_channel' => false,
+            'value_per_locale' => false,
+            'record_type' => 'designer',
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [$command]);
+    }
+
+    function it_throws_an_exception_if_there_is_one_missing_additional_property()
+    {
+        $command = [
+            'reference_entity_identifier' => 'designer',
+            'code' => 'mentor',
+            'labels' => ['fr_FR' => 'Mentor'],
+            'order' => 1,
+            'is_required' => false,
+            'value_per_channel' => false,
+            'value_per_locale' => false,
+            // 'record_type' => 'designer', // For the test purpose, this one is missing
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [$command]);
+    }
 }

@@ -32,6 +32,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             'max_file_size' => '1512.12',
             'allowed_extensions' => ['pdf', 'png'],
         ]);
+
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('name');
@@ -44,18 +45,39 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->allowedExtensions->shouldBeEqualTo(['pdf', 'png']);
     }
 
-    function it_creates_a_command_with_a_default_properties_if_the_value_is_missing()
+    function it_throws_an_exception_if_there_is_one_missing_common_property()
     {
-        $command = $this->create([]);
-        $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
-        $command->referenceEntityIdentifier->shouldBeEqualTo(null);
-        $command->code->shouldBeEqualTo(null);
-        $command->labels->shouldBeEqualTo(null);
-        $command->order->shouldBeEqualTo(null);
-        $command->isRequired->shouldBeEqualTo(false);
-        $command->valuePerChannel->shouldBeEqualTo(null);
-        $command->valuePerLocale->shouldBeEqualTo(null);
-        $command->maxFileSize->shouldBeEqualTo(null);
-        $command->allowedExtensions->shouldBeEqualTo([]);
+        $command = [
+            'reference_entity_identifier' => 'designer',
+            'code' => 'name',
+            // 'labels' => ['fr_FR' => 'Nom'], // For the test purpose, this one is missing
+            'order' => 1,
+            'is_required' => false,
+            'value_per_channel' => false,
+            'value_per_locale' => false,
+            'max_file_size' => '1512.12',
+            'allowed_extensions' => ['pdf', 'png'],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [$command]);
+    }
+
+    function it_throws_an_exception_if_there_is_one_missing_additional_property()
+    {
+        $command = [
+            'reference_entity_identifier' => 'designer',
+            'code' => 'name',
+            'labels' => ['fr_FR' => 'Nom'],
+            'order' => 1,
+            'is_required' => false,
+            'value_per_channel' => false,
+            'value_per_locale' => false,
+            // 'max_file_size' => '1512.12', // For the test purpose, this one is missing
+            'allowed_extensions' => ['pdf', 'png'],
+        ];
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [$command]);
     }
 }

@@ -15,8 +15,6 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFa
 
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,12 +31,37 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
     {
         $command = new CreateTextAttributeCommand();
         $this->fillCommonProperties($command, $normalizedCommand);
-        $command->maxLength = $normalizedCommand['max_length'] ?? AttributeMaxLength::NO_LIMIT;
-        $command->isTextarea = $normalizedCommand['is_textarea'] ?? false;
-        $command->isRichTextEditor = $normalizedCommand['is_textarea'] ?? false;
-        $command->validationRule = $normalizedCommand['validation_rule'] ?? AttributeValidationRule::NONE;
-        $command->regularExpression = $normalizedCommand['regular_expression'] ?? null;
+
+        $this->checkAdditionalProperties($normalizedCommand);
+
+        $command->maxLength = $normalizedCommand['max_length'];
+        $command->isTextarea = $normalizedCommand['is_textarea'];
+        $command->isRichTextEditor = $normalizedCommand['is_rich_text_editor'];
+        $command->validationRule = $normalizedCommand['validation_rule'];
+        $command->regularExpression = $normalizedCommand['regular_expression'];
 
         return $command;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkAdditionalProperties(array $nomalizedCommand): void
+    {
+        $keysToCheck = [
+            'max_length',
+            'is_textarea',
+            'is_rich_text_editor',
+            'validation_rule',
+            'regular_expression',
+        ];
+
+        foreach ($keysToCheck as $keyToCheck) {
+            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Expects normalized command to have key "%s"', $keyToCheck)
+                );
+            }
+        }
     }
 }
