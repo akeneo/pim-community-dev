@@ -43,7 +43,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
      * @param ValidatorInterface                  $validator
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
-     * @param EntityManagerClearerInterface|null  $cacheClearer
+     * @param EntityManagerClearerInterface       $cacheClearer
      */
     public function __construct(
         PublishedProductManager $manager,
