@@ -72,7 +72,7 @@ class LocaleController
         }
 
         return new Response(
-            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig',['form' => $form->createView()])
+            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig', ['form' => $form->createView()])
         );
     }
 }
