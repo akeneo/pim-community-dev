@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Twig;
+namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -15,7 +15,7 @@ class AttributeExtensionSpec extends ObjectBehavior
 
     function it_is_a_twig_extension()
     {
-        $this->shouldHaveType('Twig_Extension');
+        $this->shouldHaveType(\Twig_Extension::class);
     }
 
     function it_has_functions()
@@ -23,7 +23,7 @@ class AttributeExtensionSpec extends ObjectBehavior
         $functions = $this->getFunctions();
 
         $functions[0]->getName()->shouldBeEqualTo('is_attribute_localizable');
-        $functions[0]->shouldBeAnInstanceOf('\Twig_SimpleFunction');
+        $functions[0]->shouldBeAnInstanceOf(\Twig_SimpleFunction::class);
     }
 
     function it_returns_true_when_attribute_is_localizable($repository, AttributeInterface $attribute)
