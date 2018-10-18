@@ -9,13 +9,19 @@
       "reference_entity_identifier": "designer",
       "code": "name",
       "type": "text",
+      "order": null,
+      "is_required": true,
       "labels": {
         "fr_FR": "Nom",
         "en_US": "Name"
       },
       "value_per_channel": true,
       "value_per_locale": true,
-      "max_length": 255
+      "max_length": 255,
+      "is_textarea": false,
+      "is_rich_text_editor": false,
+      "validation_rule": "none",
+      "regular_expression": null
     }
   },
   "response": {

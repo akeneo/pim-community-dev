@@ -80,13 +80,20 @@ class CreateActionTest extends ControllerIntegrationTestCase
             [
                 'reference_entity_identifier' => 'designer',
                 'code'                       => 'name',
+                'order'                      => null,
+                'is_required'                => false,
                 'labels'                     => [
                     'fr_FR' => 'Intel',
                     'en_US' => 'Intel',
                 ],
                 'type'                       => 'text',
+                'max_length'                 => 255,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
+                'is_textarea'                => false,
+                'is_rich_text_editor'        => false,
+                'validation_rule'            => 'none',
+                'regular_expression'         => null
             ]
         );
 
@@ -104,13 +111,20 @@ class CreateActionTest extends ControllerIntegrationTestCase
             [
                 'reference_entity_identifier' => 'designer',
                 'code'                       => 'description',
+                'order'                      => null,
+                'is_required'                => false,
                 'labels'                     => [
                     'fr_FR' => 'Intel',
                     'en_US' => 'Intel',
                 ],
                 'type'                       => 'text',
+                'max_length'                 => 2000,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
+                'is_textarea'                => true,
+                'is_rich_text_editor'        => false,
+                'validation_rule'            => 'none',
+                'regular_expression'         => null
             ]
         );
 
@@ -127,7 +141,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_if_the_attribute_type_is_not_provided($invalidAttributeType)
+    public function it_returns_an_error_if_the_attribute_type_is_not_provided()
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_type_not_provided.json');
     }

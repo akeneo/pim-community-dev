@@ -9,12 +9,16 @@
       "reference_entity_identifier": "designer",
       "code": "picture",
       "type": "image",
+      "order": null,
+      "is_required": true,
       "labels": {
         "fr_FR": "Image",
         "en_US": "Picture"
       },
       "value_per_channel": true,
-      "value_per_locale": true
+      "value_per_locale": true,
+      "max_file_size": 1024,
+      "allowed_extensions": ["jpg", "png"]
     }
   },
   "response": {
