@@ -34,16 +34,36 @@ class ConfigurationPopin extends Element
         }, 'Column search input not found');
 
         foreach ($labels as $label) {
-            $searchInput->setValue($label);
-
-            $this->spin(function () use ($label) {
-                return $this->find('css',  sprintf('#column-list [data-value="%s"]', $label));
-            }, 'Could not find column in search');
-
+            $this->searchValue($label, $searchInput);
             $item = $this->getItemForLabel($label, true);
-
             $this->dragElementTo($item, $dropZone);
         }
+    }
+
+    /**
+     * Search for a column
+     *
+     * @param $label
+     * @param $searchInput
+     * @return void
+     */
+    public function searchValue($label, $searchInput) {
+        $searchInput->setValue($label);
+
+        $this->spin(function () use ($label, $searchInput) {
+            $items = $this->findAll('css', '#column-list li');
+
+            foreach ($items as $item) {
+                if (strtolower($label) === strtolower($item->getText())) {
+                    $searchInput->setValue('');
+                    return $item;
+                }
+            }
+
+            return false;
+        }, sprintf('Cannot search for column "%s"', $label));
+
+        $this->getSession()->wait(300);
     }
 
     /**
@@ -91,7 +111,6 @@ class ConfigurationPopin extends Element
 
     /**
      * @param string $label
-     * @param $searchInput
      *
      * @throws TimeoutException
      *
