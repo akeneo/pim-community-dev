@@ -28,6 +28,7 @@ vendor
 !/bin/docker/pim-dependencies.sh
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
+!/bin/docker/pim-setup.sh
 !/bin/console
 !/bin/pim-front.sh
 behat.yml
@@ -42,9 +43,6 @@ npm-debug.log
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
-!/docker/setup
-!/docker/setup/Dockerfile
-!/docker/setup/setup-pim
 .env
 docker-compose.override.yml
 composer.lock

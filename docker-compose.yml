@@ -83,17 +83,6 @@ services:
       - 'akeneo'
       - 'behat'
 
-  setup:
-    build:
-      context: ./docker/setup
-      dockerfile: Dockerfile
-    user: docker
-    volumes:
-      - './:/srv/pim'
-    networks:
-      - 'akeneo'
-      - 'behat'
-
 networks:
   akeneo:
   behat:
