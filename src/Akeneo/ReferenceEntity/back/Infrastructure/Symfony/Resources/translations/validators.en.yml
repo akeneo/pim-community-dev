@@ -19,6 +19,10 @@ pim_reference_entity:
             file:
                 extension_not_allowed: '"%file_extension%" files are not allowed for this attribute. Allowed extensions are: %allowed_file_extensions%'
                 file_size_exceeded: 'The file exceeds the max file size set for the attribute.'
+            record:
+                should_exist: 'The record "%record_code%" was not found.'
+            record_collection:
+                should_exist: 'The records "%record_codes%" were not found.'
     attribute:
         validation:
             max_length:
