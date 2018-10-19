@@ -1,3 +1,12 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
@@ -7,11 +16,6 @@ const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
 const LineTemplate = require('pimee/template/common/attribute-line');
 
-/**
- * Attributes simple select
- *
- * @author Pierre Allard <pierre.allard@akeneo.com>
- */
 interface NormalizedAttribute {
   code: string;
   labels: { [pimAttributeCode: string]: string };
@@ -22,6 +26,11 @@ interface NormalizedAttributeGroup {
   labels: { [pimAttributeGroupCode: string]: string };
 }
 
+/**
+ * Attributes simple select
+ *
+ * @author Pierre Allard <pierre.allard@akeneo.com>
+ */
 class SimpleSelectAttribute extends BaseSimpleSelect {
   private readonly lineView = _.template(LineTemplate);
   private attributeGroups: { [pimAttributeGroupCode: string]: NormalizedAttributeGroup } = {};

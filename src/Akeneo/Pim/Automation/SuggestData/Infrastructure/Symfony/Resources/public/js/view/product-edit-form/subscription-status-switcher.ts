@@ -1,3 +1,12 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import {EventsHash} from 'backbone';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
@@ -20,7 +29,6 @@ interface Config {
  * Meta that displays is a product is Subscribed to Franklin or not.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class SubscriptionStatusSwitcher extends BaseView {
   protected currentStatus: boolean;
