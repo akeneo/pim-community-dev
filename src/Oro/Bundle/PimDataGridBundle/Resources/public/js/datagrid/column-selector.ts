@@ -38,6 +38,7 @@ class ColumnSelector extends BaseView {
   public modal: any;
   public page: number = 1;
   public searchInputSelector: string;
+  public hideButton: boolean;
 
   public buttonTemplate: string = `<div class="AknGridToolbar-actionButton"><a class="AknActionButton configure-columns" title="<%- label %>" data-open><%- label %></a></div>`;
 
@@ -122,7 +123,9 @@ class ColumnSelector extends BaseView {
     mediator.once('datagrid_collection_set_after', (datagridCollection: any, datagridElement: any) => {
       this.datagridCollection = datagridCollection;
       this.datagridElement = datagridElement;
+      this.hideButton = (false === this.datagridElement.data('metadata').options.manageColumns)
       this.locale = this.getLocale();
+      this.renderColumnSelector();
     });
 
     return BaseView.prototype.configure.apply(this, arguments);
@@ -142,7 +145,9 @@ class ColumnSelector extends BaseView {
   /**
    * Render the 'columns' button
    */
-  render(): BaseView {
+  renderColumnSelector(): BaseView {
+    if (true === this.hideButton) return this;
+
     this.$el.html(_.template(this.buttonTemplate)({label: __('pim_datagrid.column_configurator.label')}));
 
     return this;
