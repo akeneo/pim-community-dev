@@ -7,15 +7,16 @@
  * file that was distributed with this source code.
  */
 
-const BaseIndex = require('pim/controller/common/index');
+const BaseIndexController = require('pim/controller/common/index');
 const FormBuilder = require('pim/form-builder');
 
 /**
- * Base front-end controller for Suggest Data context.
+ * Front-end controller for Suggest Data context.
+ * Can be use for any entity thanks to its configuration.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class MappingIndex extends BaseIndex {
+class IndexController extends BaseIndexController {
   /**
    * {@inheritdoc}
    *
@@ -33,4 +34,4 @@ class MappingIndex extends BaseIndex {
   }
 }
 
-export = MappingIndex;
+export = IndexController;
