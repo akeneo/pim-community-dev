@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
 
+use Akeneo\ReferenceEntity\Application\Record\SearchRecord\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Elasticsearch\QueryString;
 

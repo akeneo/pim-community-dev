@@ -11,6 +11,7 @@ pim_reference_entity:
                 should_not_be_linked: 'You can not delete this entity because reference entity attributes are related to this entity'
             product_attributes:
                 should_not_be_linked: 'You can not delete this entity because product attributes are related to this entity'
+            should_exist: 'The reference entity "%reference_entity_code%" was not found.'
     record:
         validation:
             code:
