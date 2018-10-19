@@ -38,15 +38,30 @@ class ProductSubscription
     /** @var bool */
     private $isMappingMissing;
 
+    /** @var string */
+    private $requestedAsin;
+
+    /** @var string */
+    private $requestedUpc;
+
+    /** @var string */
+    private $requestedBrand;
+
+    /** @var string */
+    private $requestedMpn;
+
     /**
      * @param ProductInterface $product
      * @param string $subscriptionId
+     * @param array $productIdentifiers
      */
-    public function __construct(ProductInterface $product, string $subscriptionId)
+    public function __construct(ProductInterface $product, string $subscriptionId, array $productIdentifiers)
     {
         $this->subscriptionId = $subscriptionId;
         $this->product = $product;
         $this->isMappingMissing = false;
+
+        $this->fillProductIdentifiers($productIdentifiers);
     }
 
     /**
@@ -121,5 +136,16 @@ class ProductSubscription
     public function isMappingMissing(): bool
     {
         return $this->isMappingMissing;
+    }
+
+    /**
+     * @param array $productIdentifiers
+     */
+    private function fillProductIdentifiers(array $productIdentifiers): void
+    {
+        $this->requestedAsin = $productIdentifiers['asin'] ?? null;
+        $this->requestedUpc = $productIdentifiers['upc'] ?? null;
+        $this->requestedMpn = $productIdentifiers['mpn'] ?? null;
+        $this->requestedBrand = $productIdentifiers['brand'] ?? null;
     }
 }

@@ -82,7 +82,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id')
+            new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id', ['sku' => '72527273070'])
         );
         $product->getIdentifier()->willReturn('foo');
 

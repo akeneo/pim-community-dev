@@ -30,16 +30,22 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = 'a-random-string';
-        $subscription = new ProductSubscription($product, $subscriptionId);
+        $subscription = new ProductSubscription(
+            $product,
+            $subscriptionId,
+            ['upc' => '72527273070', 'asin' => 'B00005N5PF', 'mpn' => 'AS4561AD142', 'brand' => 'intel']
+        );
         $subscription->setSuggestedData(new SuggestedData(['foo' => 'bar']));
 
         $this->getRepository()->save($subscription);
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->query(
-            'SELECT product_id, subscription_id, raw_suggested_data from pim_suggest_data_product_subscription;'
-        );
+        $statement = $entityManager->getConnection()->query('
+            SELECT product_id, subscription_id, raw_suggested_data, 
+            requested_upc, requested_asin, requested_mpn, requested_brand 
+            from pim_suggest_data_product_subscription;
+        ');
         $retrievedSubscriptions = $statement->fetchAll();
 
         Assert::assertCount(1, $retrievedSubscriptions);
@@ -48,6 +54,10 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
                 'product_id' => $product->getId(),
                 'subscription_id' => $subscriptionId,
                 'raw_suggested_data' => '{"foo": "bar"}',
+                'requested_upc' => '72527273070',
+                'requested_asin' => 'B00005N5PF',
+                'requested_mpn' => 'AS4561AD142',
+                'requested_brand' => 'intel',
             ],
             $retrievedSubscriptions[0]
         );
@@ -78,14 +88,26 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
     public function test_it_saves_empty_suggested_data_as_null(): void
     {
-        $subscription1 = new ProductSubscription($this->createProduct('a_product'), 'subscription-1');
+        $subscription1 = new ProductSubscription(
+            $this->createProduct('a_product'),
+            'subscription-1',
+            ['sku' => '72527273070']
+        );
         $subscription1->setSuggestedData(new SuggestedData(null));
         $this->getRepository()->save($subscription1);
 
-        $subscription2 = new ProductSubscription($this->createProduct('another_product'), 'subscription-2');
+        $subscription2 = new ProductSubscription($this->createProduct(
+            'another_product'),
+            'subscription-2',
+            ['sku' => '72527273070']
+        );
         $this->getRepository()->save($subscription2);
 
-        $subscription3 = new ProductSubscription($this->createProduct('a_third_product'), 'subscription-3');
+        $subscription3 = new ProductSubscription(
+            $this->createProduct('a_third_product'),
+            'subscription-3',
+            ['sku' => '72527273070']
+        );
         $subscription3->setSuggestedData(new SuggestedData([]));
         $this->getRepository()->save($subscription3);
 

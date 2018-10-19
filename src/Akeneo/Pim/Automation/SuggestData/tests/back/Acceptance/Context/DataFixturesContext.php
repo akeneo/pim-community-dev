@@ -193,7 +193,7 @@ class DataFixturesContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $subscription = new ProductSubscription($product, uniqid());
+        $subscription = new ProductSubscription($product, uniqid(), ['sku' => '72527273070']);
         $this->subscriptionRepository->save($subscription);
     }
 
