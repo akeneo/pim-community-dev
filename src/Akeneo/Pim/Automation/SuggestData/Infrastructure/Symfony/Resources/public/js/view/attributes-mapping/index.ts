@@ -1,6 +1,20 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 const BaseIndex = require('pim/controller/common/index');
 const FormBuilder = require('pim/form-builder');
 
+/**
+ * Base front-end controller for Suggest Data context.
+ *
+ * @author Pierre Allard <pierre.allard@akeneo.com>
+ */
 class MappingIndex extends BaseIndex {
   /**
    * {@inheritdoc}

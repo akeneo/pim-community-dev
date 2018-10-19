@@ -1,3 +1,12 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import * as _ from 'underscore';
 
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
@@ -11,18 +20,17 @@ interface Config {
   choiceRoute: string;
 }
 
+/** Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
+const MAPPING_EMPTY: number = 0;
+const MAPPING_FULL: number = 1;
+const MAPPING_PENDING_ATTRIBUTES: number = 2;
+
 /**
  * This module allow user to select a catalog family for suggest data updating.
  * When he selects a new family, it updates the main root model with it.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-
-/** Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
-const MAPPING_EMPTY: number = 0;
-const MAPPING_FULL: number = 1;
-const MAPPING_PENDING_ATTRIBUTES: number = 2;
-
 class FamilySelector extends BaseSelect {
   private readonly lineView = _.template(lineTemplate);
 
