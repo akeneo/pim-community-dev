@@ -23,6 +23,7 @@ export enum AttributeOptionStatus {
 export interface NormalizedAttributeOptionsMapping {
   family: string;
   franklin_attribute_code: string;
+  catalog_attribute_code: string;
   mapping: {
     [pimAiAttributeOptionCode: string]: {
       franklin_attribute_option_code: {

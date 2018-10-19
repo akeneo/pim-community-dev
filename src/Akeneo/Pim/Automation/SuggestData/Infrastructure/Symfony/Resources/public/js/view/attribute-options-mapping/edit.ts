@@ -78,6 +78,7 @@ class AttributeOptionsMapping extends BaseForm {
   public render(): BaseForm {
     if (Object.keys(this.getFormData()).length === 0) {
       this.fetchMapping().then((attributeOptionsMapping: NormalizedAttributeOptionsMapping) => {
+        attributeOptionsMapping.catalog_attribute_code = this.catalogAttributeCode;
         this.setData(attributeOptionsMapping);
         this.innerRender();
       });

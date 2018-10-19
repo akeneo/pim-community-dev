@@ -67,6 +67,7 @@ class AttributeOptionsMappingController
          * {
          *     "family":"router",
          *     "franklin_attribute_code":"color",
+         *     "catalog_attribute_code": "color",
          *     "mapping":{
          *         "color_1":{
          *             "franklin_attribute_option_code":{"label":"Color 1"},
