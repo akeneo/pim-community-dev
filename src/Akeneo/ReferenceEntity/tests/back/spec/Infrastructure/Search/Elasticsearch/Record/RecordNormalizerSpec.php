@@ -87,7 +87,7 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
-        $normalizedRecord['updated_at']->shouldBeString();
+        $normalizedRecord['updated_at']->shouldBeInt();
      }
 
     function it_normalizes_a_searchable_records_by_reference_entity(
