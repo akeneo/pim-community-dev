@@ -63,7 +63,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user saves the valid attribute', async function() {
-    const requestContract = getRequestContract('Attribute/Create/ok.json');
+    const requestContract = getRequestContract('Attribute/Create/attribute_text_ok.json');
 
     await listenRequest(this.page, requestContract);
 

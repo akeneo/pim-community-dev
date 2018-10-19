@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_create_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "reference_entity_identifier": "designer",
+      "code": "niceattribute",
+      "type": "text",
+      "labels": {
+        "fr_FR": "Nice attribute",
+        "en_US": "Nice attribute"
+      },
+      "value_per_channel": true,
+      "value_per_locale": false,
+      "max_length": 255,
+      "is_textarea": false,
+      "is_rich_text_editor": false,
+      "validation_rule": "none",
+      "regular_expression": null
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

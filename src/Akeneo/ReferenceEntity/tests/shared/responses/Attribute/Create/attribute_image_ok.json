@@ -7,13 +7,16 @@
     },
     "body": {
       "reference_entity_identifier": "designer",
-      "code": "niceattribute",
-      "type": "text",
+      "code": "picture",
+      "type": "image",
       "labels": {
-        "en_US": "Nice attribute"
+        "fr_FR": "Image",
+        "en_US": "Picture"
       },
-      "value_per_locale": false,
-      "value_per_channel": true
+      "value_per_channel": true,
+      "value_per_locale": true,
+      "max_file_size": 1024,
+      "allowed_extensions": ["jpg", "png"]
     }
   },
   "response": {
