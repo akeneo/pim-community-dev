@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /*
@@ -13,13 +12,15 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
-interface RecordExistsInterface
+/**
+ * Find all the records of a reference entity for codes
+ *
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ */
+interface FindExistingRecordCodesInterface
 {
-    public function withIdentifier(RecordIdentifier $recordIdentifier): bool;
-
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool;
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array;
 }

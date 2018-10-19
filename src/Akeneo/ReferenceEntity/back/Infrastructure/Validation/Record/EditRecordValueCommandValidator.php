@@ -19,13 +19,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommand as EditRecordValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -75,12 +70,12 @@ class EditRecordValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordValueCommand $command): void
     {
-        $recordsFound = $this->recordExists->withReferenceEntityAndCodes(
+        $recordsFound = $this->recordExists->withReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
-            [$command->recordCode]
+            RecordCode::fromString($command->recordCode)
         );
 
-        if (empty($recordsFound)) {
+        if (!$recordsFound) {
             $this->context->buildViolation(EditRecordValueCommandConstraint::ERROR_MESSAGE)
                 ->atPath((string) $command->attribute->getCode())
                 ->setParameter('%record_code%', $command->recordCode)

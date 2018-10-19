@@ -16,14 +16,15 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 
 /**
- * Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryRecordExists implements RecordExistsInterface
+class InMemoryFindExistingRecordCodes implements FindExistingRecordCodesInterface
 {
     /** @var InMemoryRecordRepository */
     private $recordRepository;
@@ -33,20 +34,8 @@ class InMemoryRecordExists implements RecordExistsInterface
         $this->recordRepository = $recordRepository;
     }
 
-    public function withIdentifier(RecordIdentifier $recordIdentifier): bool
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
     {
-        return $this->recordRepository->hasRecord($recordIdentifier);
-    }
-
-    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool
-    {
-        $hasRecord = true;
-        try {
-            $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
-        } catch (RecordNotFoundException $exception) {
-            $hasRecord = false;
-        }
-
-        return $hasRecord;
+        return $this->recordRepository->getByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodes);
     }
 }

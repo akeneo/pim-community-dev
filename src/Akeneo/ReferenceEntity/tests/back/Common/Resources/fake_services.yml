@@ -22,6 +22,11 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindExistingRecordCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:

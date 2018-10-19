@@ -58,7 +58,6 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -161,7 +160,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute$/
+     * @Given /^a reference entity with a text attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttribute()
@@ -253,7 +252,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with an image attribute$/
+     * @Given /^a reference entity with an image attribute$/
      */
     public function anReferenceEntityWithAImageAttribute()
     {
@@ -423,7 +422,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with max length (\d+)$/
+     * @Given /^a reference entity with a text attribute with max length (\d+)$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithMaxLength(int $maxLength)
@@ -450,7 +449,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with an email validation rule$/
+     * @Given /^a reference entity with a text attribute with an email validation rule$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithAnEmailValidationRule()
@@ -477,7 +476,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
+     * @Given /^a reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithARegularExpressionValidationRuleLike(
@@ -530,7 +529,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with an url validation rule$/
+     * @Given /^a reference entity with a text attribute with an url validation rule$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithAnUrlValidationRule()
@@ -603,7 +602,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a localizable attribute$/
+     * @Given /^a reference entity with a localizable attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithALocalizableAttribute()
@@ -732,7 +731,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a scopable attribute$/
+     * @Given /^a reference entity with a scopable attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithAScopableAttribute()
@@ -823,7 +822,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a scopable and localizable attribute$/
+     * @Given /^a reference entity with a scopable and localizable attribute$/
      */
     public function anReferenceEntityWithAScopableAndLocalizableAttribute()
     {
@@ -1233,7 +1232,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with an image attribute having a max file size of 15ko$/
+     * @Given /^a reference entity with an image attribute having a max file size of 15ko$/
      */
     public function anReferenceEntityWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
@@ -1333,7 +1332,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with an image attribute allowing only files with extension png$/
+     * @Given /^a reference entity with an image attribute allowing only files with extension png$/
      */
     public function anReferenceEntityWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
@@ -1523,7 +1522,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a record attribute$/
+     * @Given /^a reference entity with a record attribute$/
      */
     public function anReferenceEntityWithARecordAttribute()
     {
@@ -1814,7 +1813,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a record collection attribute$/
+     * @Given /^a reference entity with a record collection attribute$/
      */
     public function anReferenceEntityWithARecordCollectionAttribute()
     {

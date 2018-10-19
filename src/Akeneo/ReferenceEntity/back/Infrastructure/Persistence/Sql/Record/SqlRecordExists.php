@@ -70,22 +70,6 @@ SQL;
         return $this->isIdentifierExisting($statement);
     }
 
-    public function withReferenceEntityAndCodes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $recordCodes): array
-    {
-        $query = <<<SQL
-        SELECT code
-        FROM akeneo_reference_entity_record
-        WHERE reference_entity_identifier = :referenceEntityIdentifier
-        AND code IN :code
-SQL;
-        $statement = $this->sqlConnection->executeQuery($query, [
-            'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
-            'code' => $recordCodes
-        ]);
-
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
     private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();

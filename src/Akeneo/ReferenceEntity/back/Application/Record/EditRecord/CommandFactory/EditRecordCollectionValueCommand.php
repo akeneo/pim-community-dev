@@ -23,6 +23,6 @@ class EditRecordCollectionValueCommand extends AbstractEditValueCommand
     /** @var RecordCollectionAttribute */
     public $attribute;
 
-    /** @var array */
+    /** @var string[] */
     public $recordCodes;
 }

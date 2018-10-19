@@ -14,18 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommand as EditRecordCollectionValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -33,12 +27,12 @@ use Symfony\Component\Validator\Validation;
  */
 class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var FindExistingRecordCodesInterface */
+    private $existingRecordCodes;
 
-    public function __construct(RecordExistsInterface $recordExists)
+    public function __construct(FindExistingRecordCodesInterface $existingRecordCodes)
     {
-        $this->recordExists = $recordExists;
+        $this->existingRecordCodes = $existingRecordCodes;
     }
 
     public function validate($command, Constraint $constraint)
@@ -75,17 +69,17 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordCollectionValueCommand $command): void
     {
-        $recordsFound = $this->recordExists->withReferenceEntityAndCodes(
+        $foundRecords = ($this->existingRecordCodes)(
             ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
             $command->recordCodes
         );
 
-        $recordsNotExist = array_diff($command->recordCodes, $recordsFound);
+        $missingRecords = array_diff($command->recordCodes, $foundRecords);
 
-        if (!empty($recordsNotExist)) {
+        if (!empty($missingRecords)) {
             $this->context->buildViolation(EditRecordCollectionValueCommandConstraint::ERROR_MESSAGE)
                 ->atPath((string) $command->attribute->getCode())
-                ->setParameter('%record_codes%', implode(',', $recordsNotExist))
+                ->setParameter('%record_codes%', implode(',', $missingRecords))
                 ->addViolation();
         }
     }

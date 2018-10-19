@@ -72,7 +72,7 @@ services:
     akeneo_referenceentity.infrastructure.validation.record.edit_record_collection_value_command_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommandValidator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.edit_record_collection_value_command' }
 
