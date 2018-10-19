@@ -88,6 +88,11 @@
   &-bodyCell {
     cursor: pointer;
 
+    &--flex {
+      display: flex;
+      align-items: center;
+    }
+
     &--full {
       padding: 10px 20px;
       background: white;
@@ -95,9 +100,10 @@
     }
 
     &--actions,
-    &:first-child&--checkbox {
+    &:first-child&--checkbox,
+    .AknGrid-onHoverElement {
       opacity: 0;
-      transition: opacity 0.2s ease-in;
+      transition: opacity 0.1s ease-in;
     }
 
     &--actions {
@@ -126,6 +132,7 @@
 
   &-bodyRow:hover &-bodyCell--actions,
   &-bodyRow:hover &-bodyCell--checkbox,
+  &-bodyRow:hover &-onHoverElement,
   &-bodyRow&-bodyRow--selected &-bodyCell--checkbox,
   &-bodyRow &-bodyCell--checked {
     opacity: 1;
