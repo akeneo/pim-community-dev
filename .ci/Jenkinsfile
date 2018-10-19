@@ -57,7 +57,7 @@ stage("Build") {
                         sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
 
                         sh "gcloud config set gcloudignore/enabled false"
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
+                        sh "gcloud builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
                     }
                 })
             }
@@ -102,7 +102,7 @@ stage("Build") {
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
 
                         sh "gcloud config set gcloudignore/enabled false"
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
+                        sh "gcloud builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                     }
                 })
             } else {
@@ -135,7 +135,7 @@ stage("Build") {
                         sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
 
                         sh "gcloud config set gcloudignore/enabled false"
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm ."
+                        sh "gcloud builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm ."
                     }
                 })
             } else {
@@ -180,7 +180,7 @@ stage("Build") {
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
 
                         sh "gcloud config set gcloudignore/enabled false"
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
+                        sh "gcloud builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
                     }
                 })
             } else {
@@ -487,7 +487,7 @@ def withBuildNode(body) {
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "google/cloud-sdk:198.0.0", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
+            containerTemplate(name: "docker", image: "google/cloud-sdk:220.0.0", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '3000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8.9", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ]) {
