@@ -141,9 +141,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_if_the_attribute_type_is_not_provided()
+    public function it_returns_an_error_if_the_code_is_invalid()
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_type_not_provided.json');
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_code.json');
     }
 
     /**
