@@ -43,21 +43,54 @@ final class AttributeOptionMapping
     }
 
     /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->optionData['status'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFranklinOptionId()
+    {
+        return $this->optionData['from']['id'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFranklinOptionLabel()
+    {
+        return (!isset($this->optionData['from']['label']['en_US'])) ? '' : $this->optionData['from']['label']['en_US'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPimOption()
+    {
+        return $this->optionData['to']['id'];
+    }
+
+    /**
      * @param array $optionData
      *
      * @throws \InvalidArgumentException
      */
-    public function validateOption(array $optionData): void
+    private function validateOption(array $optionData): void
     {
         $this->checkMandatoryKeys($optionData);
         $this->validateStatus($optionData['status']);
-        if (!isset($optionData['from']['id'])) {
+
+        if (!isset($optionData['from']['id']) || !is_string($optionData['from']['id'])) {
             throw new \InvalidArgumentException(
                 sprintf('Missing "id" key in Franklin attribute option code data')
             );
         }
 
-        if (!array_key_exists('to', $optionData) && !empty($optionData['to']) && !isset($optionData['to']['id'])) {
+        if (null !== $optionData['to'] && (!isset($optionData['to']['id']) || !is_string($optionData['to']['id']))) {
             throw new \InvalidArgumentException(
                 sprintf('Missing "id" key in PIM attribute option code data')
             );
@@ -79,10 +112,9 @@ final class AttributeOptionMapping
 
         foreach ($mandatoryKeys as $mandatoryKey) {
             if (!array_key_exists($mandatoryKey, $optionData)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Missing key "%s" in attribute option',
-                    $mandatoryKey
-                ));
+                throw new \InvalidArgumentException(
+                    sprintf('Missing key "%s" in attribute option', $mandatoryKey)
+                );
             }
         }
     }
@@ -95,7 +127,9 @@ final class AttributeOptionMapping
     private function validateStatus(string $status): void
     {
         if (!in_array($status, self::STATUSES)) {
-            throw new \InvalidArgumentException(sprintf('The attribute option status "%s" is invalid', $status));
+            throw new \InvalidArgumentException(
+                sprintf('The attribute option status "%s" is invalid', $status)
+            );
         }
     }
 }

@@ -54,11 +54,11 @@ class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterf
         try {
             $response = $this->httpClient->request('GET', $route);
 
-            //$responseContent = $response->getBody()->getContents();
+            $responseContent = $response->getBody()->getContents();
             // TODO: Temporary mock. Should be removed once Franklin API end-point will be available
-            $mockPath = realpath(__DIR__ . '/../resources/');
-            $filepath = sprintf('%s/%s', $mockPath, 'get_options_mapping_family_router_attribute_color.json');
-            $responseContent = file_get_contents($filepath);
+//            $mockPath = realpath(__DIR__ . '/../resources/');
+//            $filepath = sprintf('%s/%s', $mockPath, 'get_options_mapping_family_router_attribute_color.json');
+//            $responseContent = file_get_contents($filepath);
 
             $responseData = json_decode($responseContent, true);
             if (null === $responseData) {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping;
 use PhpSpec\ObjectBehavior;
 
@@ -44,5 +45,14 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 
     public function it_returns_an_iterator_containing_attribute_options_mapping(): void
     {
+        $directory = realpath(__DIR__ . '/../../../../../Resources/fake/franklin-api/attribute-options-mapping/');
+        $filepath = sprintf('%s/%s', $directory, 'get_family_router_attribute_color.json');
+        $content = json_decode(file_get_contents($filepath), true);
+        $this->beConstructedWith($content);
+
+        $this->getIterator()->shouldReturnAnInstanceOf(\ArrayIterator::class);
+        foreach ($this->getIterator() as $item) {
+            $item->shouldBeanInstanceOf(AttributeOptionMapping::class);
+        }
     }
 }
