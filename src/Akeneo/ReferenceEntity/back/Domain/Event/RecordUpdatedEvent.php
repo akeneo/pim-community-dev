@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event;
+namespace Akeneo\ReferenceEntity\Domain\Event;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Symfony\Component\EventDispatcher\Event;
