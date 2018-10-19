@@ -2,18 +2,18 @@ import {EventsHash} from 'backbone';
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 import {getSubscriptionStatus} from '../../fetcher/subscription';
-import SubscriptionStatusInterface from '../../model/subscription-status-interface';
+import SubscriptionStatus from '../../model/subscription-status';
 
 const __ = require('oro/translator');
-const messenger = require('oro/messenger');
+const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/product-edit-form/subscription-status-switcher');
 
-interface Configuration {
-  create_product_subscription_fail_message: string;
-  create_product_subscription_success_message: string;
-  delete_product_subscription_fail_message: string;
-  delete_product_subscription_success_message: string;
+interface Config {
+  createProductSubscriptionFailMessage: string;
+  createProductSubscriptionSuccessMessage: string;
+  deleteProductSubscriptionFailMessage: string;
+  deleteProductSubscriptionSuccessMessage: string;
 }
 
 /**
@@ -25,12 +25,12 @@ interface Configuration {
 class SubscriptionStatusSwitcher extends BaseView {
   protected currentStatus: boolean;
   private readonly template: any = _.template(template);
-  private readonly config: Configuration;
+  private readonly config: Config;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Configuration }) {
+  constructor(options: { config: Config }) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -51,8 +51,8 @@ class SubscriptionStatusSwitcher extends BaseView {
   public render(): BaseView {
     const productId = this.getFormData().meta.id;
 
-    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatusInterface) => {
-      this.currentStatus = subscriptionStatus.is_subscribed;
+    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus) => {
+      this.currentStatus = subscriptionStatus.isSubscribed;
       this.$el.html(
         this.template({
           subscriptionStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
@@ -93,19 +93,19 @@ class SubscriptionStatusSwitcher extends BaseView {
       method: 'POST',
       url: Routing.generate('akeneo_suggest_data_subscribe', {productId: this.getFormData().meta.id}),
     }).done(() => {
-      messenger.notify(
+      Messenger.notify(
         'success',
-        __(this.config.create_product_subscription_success_message),
+        __(this.config.createProductSubscriptionSuccessMessage),
       );
     }).fail((xhr: any) => {
       const response = xhr.responseJSON;
-      let errorMessage = this.config.create_product_subscription_fail_message;
+      let errorMessage = this.config.createProductSubscriptionFailMessage;
 
       if (undefined !== response && undefined !== response.errors) {
         errorMessage = response.errors;
       }
 
-      messenger.notify('error', __(errorMessage));
+      Messenger.notify('error', __(errorMessage));
     }).always(() => {
       this.render();
     });
@@ -119,19 +119,19 @@ class SubscriptionStatusSwitcher extends BaseView {
       method: 'DELETE',
       url: Routing.generate('akeneo_suggest_data_unsubscribe', {productId: this.getFormData().meta.id}),
     }).done(() => {
-      messenger.notify(
+      Messenger.notify(
         'success',
-        __(this.config.delete_product_subscription_success_message),
+        __(this.config.deleteProductSubscriptionSuccessMessage),
       );
     }).fail((xhr: any) => {
       const response = xhr.responseJSON;
-      let errorMessage = this.config.delete_product_subscription_fail_message;
+      let errorMessage = this.config.deleteProductSubscriptionFailMessage;
 
       if (undefined !== response && undefined !== response.errors) {
         errorMessage = response.errors;
       }
 
-      messenger.notify('error', __(errorMessage));
+      Messenger.notify('error', __(errorMessage));
     }).always(() => {
       this.render();
     });

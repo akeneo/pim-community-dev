@@ -112,7 +112,7 @@ class PimAiConnectionControllerSpec extends ObjectBehavior
         $response->isOk()->shouldReturn(true);
 
         Assert::eq(
-            ['is_active' => true],
+            ['isActive' => true],
             json_decode($response->getContent()->getWrappedObject(), true)
         );
     }

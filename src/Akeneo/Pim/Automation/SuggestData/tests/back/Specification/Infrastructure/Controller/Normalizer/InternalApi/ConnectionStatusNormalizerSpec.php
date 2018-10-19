@@ -32,7 +32,7 @@ class ConnectionStatusNormalizerSpec extends ObjectBehavior
         $connectionStatus = new ConnectionStatus(true);
 
         $this->normalize($connectionStatus)->shouldReturn([
-            'is_active' => true,
+            'isActive' => true,
         ]);
     }
 }

@@ -33,6 +33,6 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
 
     public function it_normalizes_itself(): void
     {
-        $this->normalize()->shouldReturn(['is_subscribed' => true]);
+        $this->normalize()->shouldReturn(['isSubscribed' => true]);
     }
 }

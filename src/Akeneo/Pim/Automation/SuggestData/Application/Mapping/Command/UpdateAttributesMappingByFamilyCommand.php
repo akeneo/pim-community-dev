@@ -63,7 +63,7 @@ class UpdateAttributesMappingByFamilyCommand
      * Format is:
      * [
      *      "color" => [
-     *          "pim_ai_attribute" => [
+     *          "pimAiAttribute" => [
      *              "label" => "Color",
      *              "type" => "multiselect"
      *          ],
@@ -93,7 +93,7 @@ class UpdateAttributesMappingByFamilyCommand
 
             $this->attributesMapping[] = new AttributeMapping(
                 $targetKey,
-                $mappingRow['pim_ai_attribute']['type'],
+                $mappingRow['pimAiAttribute']['type'],
                 $mappingRow['status'],
                 $mappingRow['attribute']
             );

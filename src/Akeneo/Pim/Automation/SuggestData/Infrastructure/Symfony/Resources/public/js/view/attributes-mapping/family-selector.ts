@@ -1,8 +1,15 @@
 import * as _ from 'underscore';
+
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
 const lineTemplate = require('pimee/template/attributes-mapping/family-line');
+
+interface Config {
+  fieldName: string;
+  label: string;
+  choiceRoute: string;
+}
 
 /**
  * This module allow user to select a catalog family for suggest data updating.
@@ -19,7 +26,7 @@ const MAPPING_PENDING_ATTRIBUTES: number = 2;
 class FamilySelector extends BaseSelect {
   private readonly lineView = _.template(lineTemplate);
 
-  constructor(config: { config: object }) {
+  constructor(config: { config: Config }) {
     super(config);
     this.events = {
       'change input': (event: { target: any }) => {

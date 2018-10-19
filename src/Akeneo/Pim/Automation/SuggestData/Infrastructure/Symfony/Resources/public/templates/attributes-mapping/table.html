@@ -1,19 +1,19 @@
 <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
 <table class="AknGrid AknGrid--unclickable">
     <tr class="AknGrid-header">
-        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pim_ai_attribute %></th>
-        <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pimAiAttribute %></th>
+        <th class="AknGrid-headerCell"><%- catalogAttribute %></th>
         <th class="AknGrid-headerCell"></th>
-        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- suggest_data %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeMappingStatus %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
         <tr
                 class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
-                data-pim_ai_attribute="<%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>"
+                data-pim-ai-attribute="<%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>"
                 data-status="<%- mapping[pim_ai_attribute_code].status %>"
         >
             <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
-                <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
+                <%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>
             </td>
             <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- pim_ai_attribute_code %>"></td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">

@@ -1,10 +1,10 @@
 const __ = require('oro/translator');
-const fetcherRegistry = require('pim/fetcher-registry');
+const FetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
 const MappingSaver = require('pimee/saver/identifiers-mapping');
 
-interface MappingInterface {
-  [key: string]: (string | null);
+interface Mapping {
+  [franklinAttribute: string]: (string | null);
 }
 
 /**
@@ -24,8 +24,8 @@ class MappingSave extends BaseSave {
    */
   public configure() {
     return $.when(
-      fetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then(
-        (identifiersMapping: MappingInterface) => {
+      FetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then(
+        (identifiersMapping: Mapping) => {
           if (this.isMappingEmpty(identifiersMapping)) {
             this.updateSuccessMessage = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.first');
             this.isFlash = false;
@@ -61,11 +61,11 @@ class MappingSave extends BaseSave {
   /**
    * Checks if at least one Franklin identifier is mapped to an Akeneo attribute.
    *
-   * @param {MappingInterface} identifiersMapping
+   * @param {Mapping} identifiersMapping
    *
    * @return {boolean}
    */
-  private isMappingEmpty(identifiersMapping: MappingInterface): boolean {
+  private isMappingEmpty(identifiersMapping: Mapping): boolean {
     const mappedAttributes = Object.keys(identifiersMapping).filter(
       (franklinIdentifier: string) => null !== identifiersMapping[franklinIdentifier],
     );
@@ -79,10 +79,10 @@ class MappingSave extends BaseSave {
    *
    * @param {object} identifiersMapping
    *
-   * @return {MappingInterface}
+   * @return {Mapping}
    */
-  private cleanMapping(identifiersMapping: { [key: string]: string }): MappingInterface {
-    return Object.keys(identifiersMapping).reduce((accumulator: MappingInterface, index: string) => {
+  private cleanMapping(identifiersMapping: { [franklinAttribute: string]: string }): Mapping {
+    return Object.keys(identifiersMapping).reduce((accumulator: Mapping, index: string) => {
       accumulator[index] = '' !== identifiersMapping[index] ? identifiersMapping[index] : null;
 
       return accumulator;

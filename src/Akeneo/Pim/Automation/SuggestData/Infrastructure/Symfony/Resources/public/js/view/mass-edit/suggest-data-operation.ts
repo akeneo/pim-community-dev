@@ -5,7 +5,7 @@ const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
 const template = require('pimee/template/mass-edit/suggest-data-operation');
 
-interface SuggestDataOperationConfig {
+interface Config {
   title: string;
   label: string;
   subLabel: string;
@@ -25,7 +25,7 @@ interface SuggestDataOperationConfig {
  */
 class SuggestDataOperation extends Operation {
   private readonly template: any = _.template(template);
-  private readonly config: SuggestDataOperationConfig = {
+  private readonly config: Config = {
     title: '',
     label: '',
     subLabel: '',
@@ -41,7 +41,7 @@ class SuggestDataOperation extends Operation {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: SuggestDataOperationConfig }) {
+  constructor(options: { config: Config }) {
     super({
       ...options, ...{
         className: 'AknButtonList AknButtonList--single',
