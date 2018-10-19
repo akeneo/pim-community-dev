@@ -58,7 +58,7 @@ class SqlFindValueKeysToIndexForChannelAndLocale implements FindValueKeysToIndex
                 FROM
                     (SELECT * FROM akeneo_reference_entity_attribute WHERE attribute_type = 'text') as a
                     LEFT JOIN (SELECT * FROM pim_catalog_channel WHERE code = :channel_code) c ON value_per_channel = 1 AND value_per_locale = 0
-                    LEFT JOIN (SELECT * FROM pim_catalog_locale WHERE code = :locale_code) l ON value_per_channel = 0 AND value_per_locale = 1 
+                    LEFT JOIN (SELECT * FROM pim_catalog_locale WHERE code = :locale_code) l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
                     LEFT JOIN (
                         SELECT
                             c.code as channel_code,
@@ -67,6 +67,7 @@ class SqlFindValueKeysToIndexForChannelAndLocale implements FindValueKeysToIndex
                             pim_catalog_channel c
                             JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
                             JOIN pim_catalog_locale l ON l.id = locale_id
+                        WHERE c.code = :channel_code  AND l.code = :locale_code
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
                     reference_entity_identifier = :reference_entity_identifier

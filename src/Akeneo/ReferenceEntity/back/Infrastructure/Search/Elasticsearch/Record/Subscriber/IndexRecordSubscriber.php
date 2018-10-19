@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
 
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -17,9 +20,15 @@ class IndexRecordSubscriber implements EventSubscriberInterface
     /** @var RecordIndexerInterface */
     private $recordIndexer;
 
-    public function __construct(RecordIndexerInterface $recordIndexer)
-    {
+    /** @var CommandLauncher */
+    private $commandLauncher;
+
+    public function __construct(
+        RecordIndexerInterface $recordIndexer,
+        CommandLauncher $commandLauncher
+    ) {
         $this->recordIndexer = $recordIndexer;
+        $this->commandLauncher = $commandLauncher;
     }
 
     /**
@@ -27,11 +36,25 @@ class IndexRecordSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [RecordUpdatedEvent::class => 'whenRecordUpdated'];
+        return [
+            RecordUpdatedEvent::class    => 'whenRecordUpdated',
+            AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
+        ];
     }
 
     public function whenRecordUpdated(RecordUpdatedEvent $recordUpdatedEvent): void
     {
         $this->recordIndexer->index($recordUpdatedEvent->getRecordIdentifier());
+    }
+
+    public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void
+    {
+        $cmd = sprintf(
+            '%s %s',
+            IndexRecordsCommand::INDEX_RECORDS_COMMAND_NAME,
+            (string) $attributeDeletedEvent->referenceEntityIdentifier
+        );
+
+        $this->commandLauncher->executeBackground($cmd, '/dev/null');
     }
 }

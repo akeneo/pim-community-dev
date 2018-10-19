@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -34,6 +35,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;
 
@@ -42,11 +44,17 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var EventDispatcherMock */
+    private $eventDispatcherMock;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->eventDispatcherMock = $this->get('event_dispatcher');
+        $this->eventDispatcherMock->reset();
+
         $this->resetDB();
         $this->insertReferenceEntity();
     }
@@ -163,6 +171,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
         $this->attributeRepository->deleteByIdentifier($identifier);
 
+        $this->eventDispatcherMock->assertEventDispatched(AttributeDeletedEvent::class);
         $this->expectException(AttributeNotFoundException::class);
         $this->attributeRepository->getByIdentifier($identifier);
     }

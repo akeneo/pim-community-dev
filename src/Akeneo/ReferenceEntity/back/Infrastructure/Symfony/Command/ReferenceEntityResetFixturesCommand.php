@@ -413,7 +413,7 @@ SQL;
     private function indexRecords(): void
     {
         $command = $this->getApplication()->find('akeneo:reference-entity:index-records');
-        $arguments = ['command' => 'akeneo:reference-entity:index-records', '--env' => $this->getContainer()->getParameter('kernel.environment')];
+        $arguments = ['command' => 'akeneo:reference-entity:index-records', '--all' => true, '--env' => $this->getContainer()->getParameter('kernel.environment')];
 
         $input = new ArrayInput($arguments);
         if (0 !== $command->run($input, new NullOutput())) {

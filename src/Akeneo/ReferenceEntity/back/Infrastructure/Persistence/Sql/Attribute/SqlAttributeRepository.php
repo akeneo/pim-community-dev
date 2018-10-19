@@ -19,12 +19,14 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use PDO;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -39,10 +41,17 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
     /** @var AttributeHydratorRegistry */
     private $attributeHydratorRegistry;
 
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
-    {
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    public function __construct(
+        Connection $sqlConnection,
+        AttributeHydratorRegistry $attributeHydratorRegistry,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->sqlConnection = $sqlConnection;
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function create(AbstractAttribute $attribute): void
@@ -78,16 +87,16 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier'                 => $normalizedAttribute['identifier'],
-                'code'                       => $normalizedAttribute['code'],
+                'identifier'                  => $normalizedAttribute['identifier'],
+                'code'                        => $normalizedAttribute['code'],
                 'reference_entity_identifier' => $normalizedAttribute['reference_entity_identifier'],
-                'labels'                     => json_encode($normalizedAttribute['labels']),
-                'attribute_type'             => $normalizedAttribute['type'],
-                'attribute_order'            => $normalizedAttribute['order'],
-                'is_required'                => $normalizedAttribute['is_required'],
-                'value_per_channel'          => $normalizedAttribute['value_per_channel'],
-                'value_per_locale'           => $normalizedAttribute['value_per_locale'],
-                'additional_properties'      => json_encode($additionalProperties),
+                'labels'                      => json_encode($normalizedAttribute['labels']),
+                'attribute_type'              => $normalizedAttribute['type'],
+                'attribute_order'             => $normalizedAttribute['order'],
+                'is_required'                 => $normalizedAttribute['is_required'],
+                'value_per_channel'           => $normalizedAttribute['value_per_channel'],
+                'value_per_locale'            => $normalizedAttribute['value_per_locale'],
+                'additional_properties'       => json_encode($additionalProperties),
             ],
             [
                 'is_required'       => Type::getType(Type::BOOLEAN),
@@ -117,17 +126,17 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
-                'identifier'                 => $normalizedAttribute['identifier'],
+                'identifier'                  => $normalizedAttribute['identifier'],
                 'reference_entity_identifier' => $normalizedAttribute['reference_entity_identifier'],
-                'labels'                     => $normalizedAttribute['labels'],
-                'attribute_order'            => $normalizedAttribute['order'],
-                'is_required'                => $normalizedAttribute['is_required'],
-                'additional_properties'      => $additionalProperties,
+                'labels'                      => $normalizedAttribute['labels'],
+                'attribute_order'             => $normalizedAttribute['order'],
+                'is_required'                 => $normalizedAttribute['is_required'],
+                'additional_properties'       => $additionalProperties,
             ],
             [
-                'is_required' => Type::getType(Type::BOOLEAN),
-                'labels' => Type::getType(Type::JSON_ARRAY),
-                'additional_properties' => Type::getType(Type::JSON_ARRAY)
+                'is_required'           => Type::getType(Type::BOOLEAN),
+                'labels'                => Type::getType(Type::JSON_ARRAY),
+                'additional_properties' => Type::getType(Type::JSON_ARRAY),
             ]
         );
         if ($affectedRows > 1) {
@@ -232,8 +241,10 @@ SQL;
      * @throws AttributeNotFoundException
      * @throws DBALException
      */
-    public function deleteByIdentifier(AttributeIdentifier $identifier): void
+    public function deleteByIdentifier(AttributeIdentifier $attributeIdentifier): void
     {
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($attributeIdentifier);
+
         $sql = <<<SQL
         DELETE FROM akeneo_reference_entity_attribute
         WHERE identifier = :identifier;
@@ -241,12 +252,17 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $sql,
             [
-                'identifier' => $identifier,
+                'identifier' => $attributeIdentifier,
             ]
         );
         if (1 !== $affectedRows) {
-            throw AttributeNotFoundException::withIdentifier($identifier);
+            throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
         }
+
+        $this->eventDispatcher->dispatch(
+            AttributeDeletedEvent::class,
+            new AttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier)
+        );
     }
 
     public function nextIdentifier(
@@ -258,5 +274,21 @@ SQL;
             (string) $attributeCode,
             Uuid::uuid4()->toString()
         );
+    }
+
+    private function getReferenceEntityIdentifier(AttributeIdentifier $attributeIdentifier): ReferenceEntityIdentifier
+    {
+        $query = <<<SQL
+            SELECT reference_entity_identifier
+            FROM akeneo_reference_entity_attribute
+            WHERE identifier = :identifier
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $attributeIdentifier]);
+        $result = $statement->fetch();
+        if (false === $result) {
+            throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
+        }
+
+        return ReferenceEntityIdentifier::fromString($result['reference_entity_identifier']);
     }
 }

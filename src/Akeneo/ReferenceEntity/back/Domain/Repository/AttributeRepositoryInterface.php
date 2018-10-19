@@ -27,7 +27,7 @@ interface AttributeRepositoryInterface
     /**
      * @throws AttributeNotFoundException
      */
-    public function deleteByIdentifier(AttributeIdentifier $identifier): void;
+    public function deleteByIdentifier(AttributeIdentifier $attributeIdentifier): void;
 
     /**
      * @throws AttributeNotFoundException

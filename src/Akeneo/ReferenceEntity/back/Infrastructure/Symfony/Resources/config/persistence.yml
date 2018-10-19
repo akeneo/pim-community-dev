@@ -10,6 +10,7 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+            - '@event_dispatcher'
 
     akeneo_referenceentity.infrastructure.persistence.repository.record:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository
