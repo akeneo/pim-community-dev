@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface;
 
 /**
  * Attribute repository

@@ -90,6 +90,10 @@ $rules = [
         'Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
         // Todo: Remove pim dependencies
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security

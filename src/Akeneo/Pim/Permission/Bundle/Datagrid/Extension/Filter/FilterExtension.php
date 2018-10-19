@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes;
@@ -23,7 +24,6 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolver;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
