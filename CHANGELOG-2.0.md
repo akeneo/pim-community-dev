@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-- PIM-7753: Fix computation of completness of variant products when an attribute at product model level is updated on a bulk action
+- PIM-7753: Fix computation of completeness of variant products when an attribute at product model level is updated on a bulk action
 
 # 2.0.40 (2018-10-15)
 
