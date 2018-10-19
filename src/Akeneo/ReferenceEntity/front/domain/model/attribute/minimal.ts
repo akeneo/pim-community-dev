@@ -6,6 +6,7 @@ import LabelCollection, {
   createLabelCollection,
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import {RecordType, NormalizedRecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
 export interface MinimalNormalizedAttribute {
   reference_entity_identifier: string;
@@ -109,6 +110,51 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
   }
 }
 
+export interface MinimalRecordNormalizedAttribute extends MinimalNormalizedAttribute {
+  record_type: NormalizedRecordType;
+}
+
+class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
+  protected constructor(
+    readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
+    readonly code: AttributeCode,
+    readonly labelCollection: LabelCollection,
+    readonly type: string,
+    readonly valuePerLocale: boolean,
+    readonly valuePerChannel: boolean,
+    readonly recordType: RecordType
+  ) {
+    super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
+
+    if (!(recordType instanceof RecordType)) {
+      throw new InvalidArgumentError('Attribute expect a RecordType argument');
+    }
+  }
+
+  public static createFromNormalized(minimalNormalizedAttribute: MinimalRecordNormalizedAttribute) {
+    return new MinimalRecordConcreteAttribute(
+      createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
+      createCode(minimalNormalizedAttribute.code),
+      createLabelCollection(minimalNormalizedAttribute.labels),
+      minimalNormalizedAttribute.type as string,
+      minimalNormalizedAttribute.value_per_locale,
+      minimalNormalizedAttribute.value_per_channel,
+      RecordType.createFromNormalized(minimalNormalizedAttribute.record_type)
+    );
+  }
+
+  public normalize(): MinimalRecordNormalizedAttribute {
+    return {
+      ...super.normalize(),
+      record_type: this.recordType.normalize(),
+    };
+  }
+}
+
 export const denormalizeMinimalAttribute = (normalizedAttribute: MinimalNormalizedAttribute) => {
+  if (['record', 'record_collection'].includes(normalizedAttribute.type)) {
+    return MinimalRecordConcreteAttribute.createFromNormalized(normalizedAttribute as MinimalRecordNormalizedAttribute);
+  }
+
   return MinimalConcreteAttribute.createFromNormalized(normalizedAttribute);
 };

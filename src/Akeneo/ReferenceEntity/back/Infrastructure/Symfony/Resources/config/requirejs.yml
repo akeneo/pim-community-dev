@@ -21,10 +21,22 @@ config:
 
         akeneoreferenceentity/application/configuration/attribute:
             image:
+                icon: bundles/pimui/images/attribute/icon-image.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/image'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/image'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/image.tsx'
             text:
+                icon: bundles/pimui/images/attribute/icon-text.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+            record:
+                icon: bundles/pimui/images/attribute/icon-select.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+            record_collection:
+                icon: bundles/pimui/images/attribute/icon-multiselect.svg
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'

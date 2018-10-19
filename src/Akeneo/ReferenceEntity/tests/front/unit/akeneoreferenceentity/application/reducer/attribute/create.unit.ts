@@ -24,6 +24,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
+        record_type: null,
       },
       errors: [],
     });
@@ -53,6 +54,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
+        record_type: null,
       },
       errors: [],
     });
@@ -170,6 +172,68 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       data: {
         code: '',
         type: 'image',
+        record_type: null,
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I can update the record type of the attribute', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: 'record',
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED',
+      record_type: 'brand',
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: 'record',
+        record_type: 'brand',
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I cannot update the record type of the attribute if the attribute is not a record', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: 'text',
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED',
+      record_type: 'brand',
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: 'text',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},

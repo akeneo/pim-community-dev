@@ -1,5 +1,6 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import sanitize from 'akeneoreferenceentity/tools/sanitize';
+import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
 export interface CreateState {
   active: boolean;
@@ -11,6 +12,7 @@ export interface CreateState {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
+    record_type: string | null;
   };
   errors: ValidationError[];
 }
@@ -22,6 +24,7 @@ const initCreateState = (): CreateState => ({
     type: 'text',
     value_per_locale: false,
     value_per_channel: false,
+    record_type: null,
     labels: {},
   },
   errors: [],
@@ -37,6 +40,7 @@ export default (
     attribute_type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
+    record_type: string;
   }
 ) => {
   switch (action.type) {
@@ -54,7 +58,22 @@ export default (
     case 'ATTRIBUTE_CREATION_TYPE_UPDATED':
       state = {
         ...state,
-        data: {...state.data, type: action.attribute_type},
+        data: {
+          ...state.data,
+          type: action.attribute_type,
+          record_type: RecordType.supportAttributeType(action.attribute_type) ? state.data.record_type : null,
+        },
+      };
+      break;
+
+    case 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED':
+      if (!RecordType.supportAttributeType(state.data.type)) {
+        return state;
+      }
+
+      state = {
+        ...state,
+        data: {...state.data, record_type: action.record_type},
       };
       break;
 

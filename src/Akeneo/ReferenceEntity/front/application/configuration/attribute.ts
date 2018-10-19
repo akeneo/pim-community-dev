@@ -18,6 +18,7 @@ export type Reducer = (
 
 type AttributeConfig = {
   [type: string]: {
+    icon: string;
     denormalize: {
       denormalize: Denormalizer;
     };
@@ -30,8 +31,20 @@ type AttributeConfig = {
   };
 };
 
-export const getTypes = (config: AttributeConfig) => () => {
-  return Object.keys(config);
+export type AttributeType = {
+  identifier: string;
+  label: string;
+  icon: string;
+};
+
+export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
+  return Object.keys(config).map((identifier: string) => {
+    return {
+      identifier,
+      label: `pim_reference_entity.attribute.type.${identifier}`,
+      icon: config[identifier].icon,
+    };
+  });
 };
 
 export const getDenormalizer = (config: AttributeConfig) => (

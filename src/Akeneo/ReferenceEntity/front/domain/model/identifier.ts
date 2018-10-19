@@ -22,4 +22,6 @@ export default class Identifier {
   }
 }
 
+export type NormalizedIdentifier = string;
+
 export const createIdentifier = Identifier.create;
