@@ -74,26 +74,24 @@ class AppKernel extends Kernel
         return [
             // BAP overriden bundles
             new Oro\Bundle\PimFilterBundle\PimFilterBundle(),
+            new Oro\Bundle\PimDataGridBundle\PimDataGridBundle(),
             new Akeneo\UserManagement\Bundle\PimUserBundle(),
 
             // Channel bundles
             new Akeneo\Channel\Bundle\AkeneoChannelBundle(),
 
             // PIM bundles
+            new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle(),
             new Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle(),
-            new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
-            new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
+
+            // Platform bundles
             new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Oro\Bundle\PimDataGridBundle\PimDataGridBundle(),
-            new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
+            new Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle(),
             new Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle(),
             new Akeneo\Platform\Bundle\UIBundle\PimUIBundle(),
-            new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
             new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
         ];
     }
@@ -106,6 +104,9 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
+            new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
+            new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
+            new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
             new Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
             new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
             new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
@@ -115,6 +116,8 @@ class AppKernel extends Kernel
             new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            // PimApiBundle must be registered after FOSOAuthServerBundle
+            new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
         ];
     }
