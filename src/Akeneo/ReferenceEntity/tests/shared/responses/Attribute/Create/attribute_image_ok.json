@@ -9,8 +9,6 @@
       "reference_entity_identifier": "designer",
       "code": "picture",
       "type": "image",
-      "order": null,
-      "is_required": true,
       "labels": {
         "fr_FR": "Image",
         "en_US": "Picture"

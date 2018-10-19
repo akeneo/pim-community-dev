@@ -83,9 +83,9 @@ class CreateAttributeContext implements Context
         $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
         $attributeData['labels'] = json_decode($attributeData['labels'], true);
         $attributeData['max_length'] = (int) $attributeData['max_length'];
-        $attributeData['is_textarea'] = json_decode($attributeData['is_textarea']);
-        $attributeData['is_rich_text_editor'] = json_decode($attributeData['is_rich_text_editor']);
-        $attributeData['regular_expression'] = json_decode($attributeData['regular_expression']);
+        $attributeData['is_textarea'] = key_exists('is_textarea', $attributeData) ? json_decode($attributeData['is_textarea']) : null;
+        $attributeData['is_rich_text_editor'] = key_exists('is_rich_text_editor', $attributeData) ? json_decode($attributeData['is_rich_text_editor']) : null;
+        $attributeData['regular_expression'] = key_exists('regular_expression', $attributeData) ? json_decode($attributeData['regular_expression']) : null;
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));

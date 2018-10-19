@@ -9,8 +9,6 @@
       "reference_entity_identifier": "designer",
       "code": "name",
       "type": "text",
-      "order": null,
-      "is_required": true,
       "labels": {
         "fr_FR": "Nom",
         "en_US": "Name"

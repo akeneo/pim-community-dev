@@ -23,8 +23,8 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = $this->create([
             'reference_entity_identifier' => 'designer',
-            'code' => 'name',
-            'labels' => ['fr_FR' => 'Nom'],
+            'code' => 'picture',
+            'labels' => ['fr_FR' => 'Portrait'],
             'order' => 1,
             'is_required' => false,
             'value_per_channel' => false,
@@ -35,8 +35,8 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
 
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
         $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
-        $command->code->shouldBeEqualTo('name');
-        $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
+        $command->code->shouldBeEqualTo('picture');
+        $command->labels->shouldBeEqualTo(['fr_FR' => 'Portrait']);
         $command->order->shouldBeEqualTo(1);
         $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
@@ -49,8 +49,8 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = [
             'reference_entity_identifier' => 'designer',
-            'code' => 'name',
-            // 'labels' => ['fr_FR' => 'Nom'], // For the test purpose, this one is missing
+            'code' => 'picture',
+            // 'labels' => ['fr_FR' => 'Portrait'], // For the test purpose, this one is missing
             'order' => 1,
             'is_required' => false,
             'value_per_channel' => false,
@@ -63,21 +63,20 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             ->during('create', [$command]);
     }
 
-    function it_throws_an_exception_if_there_is_one_missing_additional_property()
+    function it_creates_a_command_with_a_default_properties_if_the_value_is_missing()
     {
-        $command = [
+        $command = $this->create([
             'reference_entity_identifier' => 'designer',
-            'code' => 'name',
-            'labels' => ['fr_FR' => 'Nom'],
-            'order' => 1,
-            'is_required' => false,
+            'code' => 'picture',
+            'labels' => ['fr_FR' => 'Portrait'],
             'value_per_channel' => false,
             'value_per_locale' => false,
-            // 'max_file_size' => '1512.12', // For the test purpose, this one is missing
-            'allowed_extensions' => ['pdf', 'png'],
-        ];
+        ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('create', [$command]);
+        $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
+        $command->order->shouldBeEqualTo(null);
+        $command->isRequired->shouldBeEqualTo(false);
+        $command->maxFileSize->shouldBeEqualTo(null);
+        $command->allowedExtensions->shouldBeEqualTo([]);
     }
 }

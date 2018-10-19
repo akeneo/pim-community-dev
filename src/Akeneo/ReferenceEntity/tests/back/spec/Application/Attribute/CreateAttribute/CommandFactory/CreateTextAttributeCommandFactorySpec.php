@@ -55,10 +55,10 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = [
             'reference_entity_identifier' => 'designer',
-            'code' => 'name',
+            // 'code' => 'name', // For the test purpose, this one is missing
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 1,
-            // 'is_required' => false, // For the test purpose, this one is missing
+            'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_length' => 255,
@@ -72,24 +72,23 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             ->during('create', [$command]);
     }
 
-    function it_throws_an_exception_if_there_is_one_missing_additional_property()
+    function it_creates_a_command_with_a_default_property_if_the_none_is_provided()
     {
-        $command = [
+        $command = $this->create([
             'reference_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
-            'order' => 1,
-            'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
-            'max_length' => 255,
-            'is_textarea' => true,
-            // 'is_rich_text_editor' => true, // For the test purpose, this one is missing
-            'validation_rule' => 'regular_expression',
-            'regular_expression' => '/\w+/',
-        ];
+        ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('create', [$command]);
+        $command->shouldBeAnInstanceOf(CreateTextAttributeCommand::class);
+        $command->order->shouldBeEqualTo(null);
+        $command->isRequired->shouldBeEqualTo(false);
+        $command->maxLength->shouldBeEqualTo(null);
+        $command->isTextarea->shouldBeEqualTo(false);
+        $command->isRichTextEditor->shouldBeEqualTo(false);
+        $command->validationRule->shouldBeEqualTo('none');
+        $command->regularExpression->shouldBeEqualTo(null);
     }
 }
