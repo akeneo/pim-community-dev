@@ -91,4 +91,16 @@ class IdentifiersMapping implements \IteratorAggregate
     {
         return empty($this->identifiers) || empty(array_filter($this->identifiers));
     }
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        $validMPNAndBrand = null !== $this->getIdentifier('mpn') && null !== $this->getIdentifier('brand');
+        $validUPC = null !== $this->getIdentifier('upc');
+        $validASIN = null !== $this->getIdentifier('asin');
+
+        return $validASIN || $validUPC || $validMPNAndBrand;
+    }
 }

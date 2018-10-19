@@ -10,13 +10,16 @@
 import {EventsHash} from 'backbone';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 import {getSubscriptionStatus} from '../../fetcher/subscription';
 import SubscriptionStatus from '../../model/subscription-status';
 
 const __ = require('oro/translator');
+const Mediator = require('oro/mediator');
 const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/product-edit-form/subscription-status-switcher');
+const templateReadOnly = require('pimee/template/product-edit-form/subscription-status-switcher-read-only');
 
 interface Config {
   createProductSubscriptionFailMessage: string;
@@ -33,6 +36,7 @@ interface Config {
 class SubscriptionStatusSwitcher extends BaseView {
   protected currentStatus: boolean;
   private readonly template: any = _.template(template);
+  private readonly templateReadOnly: any = _.template(templateReadOnly);
   private readonly config: Config;
 
   /**
@@ -42,6 +46,15 @@ class SubscriptionStatusSwitcher extends BaseView {
     super(options);
 
     this.config = {...this.config, ...options.config};
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public configure(): JQueryPromise<any> {
+    this.listenTo(Mediator, 'pim_enrich:form:entity:post_save', this.render);
+
+    return BaseView.prototype.configure.apply(this, arguments);
   }
 
   /**
@@ -59,21 +72,56 @@ class SubscriptionStatusSwitcher extends BaseView {
   public render(): BaseView {
     const productId = this.getFormData().meta.id;
 
-    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus) => {
+    // TODO: must use product identifier and not id
+    return getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus) => {
       this.currentStatus = subscriptionStatus.isSubscribed;
+      let isReadOnlyMode = false;
+      let errorMessage = '';
+
+      if (!subscriptionStatus.isConnectionActive) {
+        return BaseView.prototype.render.apply(this, arguments);
+      }
+
+      if (!subscriptionStatus.isIdentifierMappingValid) {
+        isReadOnlyMode = true;
+        errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.invalid_mapping';
+      } else if (!subscriptionStatus.hasFamily) {
+        isReadOnlyMode = true;
+        errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.family_required';
+      } else if (!subscriptionStatus.isMappingFilled) {
+        isReadOnlyMode = true;
+        errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.no_identifier_filled';
+      }
+
+      if (isReadOnlyMode) {
+        this.$el.html(
+            this.templateReadOnly({
+              subscriptionStatusTitle: 'akeneo_suggest_data.product.edit.subscription_status_title',
+              status: this.currentStatus ? 'enabled' : 'disabled',
+              statusLabel: this.currentStatus ? 'Enabled' : 'Disabled',
+              errorMessage,
+              __
+            })
+        );
+        this.delegateEvents();
+
+        return BaseView.prototype.render.apply(this, arguments);
+      }
+
       this.$el.html(
-        this.template({
-          subscriptionStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
-          hasSubscribed: this.currentStatus,
-          enabledLabel: __('Enabled'),
-          disabledLabel: __('Disabled'),
-        }),
+          this.template({
+            subscriptionStatusTitle: 'akeneo_suggest_data.product.edit.subscription_status_title',
+            hasSubscribed: this.currentStatus,
+            enabledLabel: 'Enabled',
+            disabledLabel: 'Disabled',
+            isSwitchEnabled: true,
+            __
+          })
       );
+      this.delegateEvents();
+
+      return BaseView.prototype.render.apply(this, arguments);
     });
-
-    this.delegateEvents();
-
-    return BaseView.prototype.render.apply(this, arguments);
   }
 
   /**
@@ -97,6 +145,7 @@ class SubscriptionStatusSwitcher extends BaseView {
    * Subscribes the edited product to PIM.ai.
    */
   private subscribeProduct(): void {
+    // TODO: must use product identifier and not id
     $.ajax({
       method: 'POST',
       url: Routing.generate('akeneo_suggest_data_subscribe', {productId: this.getFormData().meta.id}),

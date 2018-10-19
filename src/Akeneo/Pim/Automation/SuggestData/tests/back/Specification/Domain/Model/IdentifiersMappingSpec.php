@@ -55,6 +55,53 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
+    public function it_is_valid_if_mapping_is_filled(): void
+    {
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_valid_if_mapping_is_filled_with_upc($ean): void
+    {
+        $this->beConstructedWith(['upc' => $ean]);
+
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_valid_if_mapping_is_filled_with_asin($sku): void
+    {
+        $this->beConstructedWith(['asin' => $sku]);
+
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_valid_if_mapping_is_filled_with_mpn_and_brand($manufacturer, $model): void
+    {
+        $this->beConstructedWith(['mpn' => $model, 'brand' => $manufacturer]);
+
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_not_valid_if_mapping_is_not_filled(): void
+    {
+        $this->beConstructedWith([]);
+
+        $this->isValid()->shouldReturn(false);
+    }
+
+    public function it_is_not_valid_if_mapping_is_filled_only_with_brand($manufacturer): void
+    {
+        $this->beConstructedWith(['brand' => $manufacturer]);
+
+        $this->isValid()->shouldReturn(false);
+    }
+
+    public function it_is_not_valid_if_mapping_is_filled_only_with_mpn($model): void
+    {
+        $this->beConstructedWith(['mpn' => $model]);
+
+        $this->isValid()->shouldReturn(false);
+    }
+
     public function it_normalizes_identifiers_mapping($manufacturer, $model, $ean, $sku): void
     {
         $manufacturer->getCode()->willReturn('brand');

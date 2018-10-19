@@ -19,6 +19,4 @@ akeneo_suggest_data_connection_post:
 akeneo_suggest_data_connection_status_get:
     path: /status
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
-    requirements:
-        code: '[\w._-]+'
     methods: [GET]

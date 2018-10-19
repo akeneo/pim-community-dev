@@ -13,20 +13,39 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 {
-    public function let(ProductSubscriptionRepositoryInterface $productSubscriptionRepository): void
-    {
-        $this->beConstructedWith($productSubscriptionRepository);
+    public function let(
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        ProductRepositoryInterface $productRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ): void {
+        $this->beConstructedWith(
+            $productSubscriptionRepository,
+            $getConnectionStatusHandler,
+            $productRepository,
+            $identifiersMappingRepository
+        );
     }
 
     public function it_is_a_product_subscription_query_handler(): void
@@ -36,14 +55,232 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 
     public function it_returns_a_product_subscription_status_for_a_subscribed_product(
         $productSubscriptionRepository,
-        ProductSubscription $productSubscription
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductSubscription $productSubscription,
+        ProductInterface $product,
+        IdentifiersMapping $identifiersMapping
     ): void {
         $query = new GetProductSubscriptionStatusQuery(42);
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
 
+        $connectionStatus = new ConnectionStatus(false, false);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'mpn' => 'pim_mpn',
+            'asin' => 'pim_asin',
+        ]);
+        $product->getFamily()->willReturn(null);
+        $product->getValue('pim_mpn')->willReturn(null);
+        $product->getValue('pim_asin')->willReturn(null);
+
         $productSubscriptionStatus = $this->handle($query);
         $productSubscriptionStatus->shouldIndicateAnActiveSubscription();
+    }
+
+    public function it_returns_a_product_subscription_status_for_a_not_subscribed_product(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductInterface $product,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $connectionStatus = new ConnectionStatus(false, false);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'mpn' => 'pim_mpn',
+            'asin' => 'pim_asin',
+        ]);
+        $product->getFamily()->willReturn(null);
+        $product->getValue('pim_mpn')->willReturn(null);
+        $product->getValue('pim_asin')->willReturn(null);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateAnInactiveSubscription();
+    }
+
+    public function it_returns_a_product_subscription_status_for_a_product_without_family(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductInterface $product,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $connectionStatus = new ConnectionStatus(false, false);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'mpn' => 'pim_mpn',
+            'asin' => 'pim_asin',
+        ]);
+        $product->getFamily()->willReturn(null);
+        $product->getValue('pim_mpn')->willReturn(null);
+        $product->getValue('pim_asin')->willReturn(null);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatProductDoesNotHaveFamily();
+    }
+
+    public function it_returns_a_product_subscription_status_for_a_product_with_family(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductInterface $product,
+        FamilyInterface $family,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $connectionStatus = new ConnectionStatus(false, false);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'mpn' => 'pim_mpn',
+            'asin' => 'pim_asin',
+        ]);
+        $product->getFamily()->willReturn($family);
+        $product->getValue('pim_mpn')->willReturn(null);
+        $product->getValue('pim_asin')->willReturn(null);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatProductHasFamily();
+    }
+
+    public function it_returns_a_product_subscription_status_for_a_product_with_identifiers_mapping_filled(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductInterface $product,
+        ValueInterface $mpnValue,
+        ValueInterface $eanValue,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $connectionStatus = new ConnectionStatus(false, false);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'brand' => 'pim_brand',
+            'mpn' => 'pim_mpn',
+            'ean' => 'pim_ean',
+            'asin' => 'pim_asin',
+        ]);
+        $product->getFamily()->willReturn(null);
+        $product->getValue('pim_brand')->willReturn(null);
+        $product->getValue('pim_mpn')->willReturn($mpnValue);
+        $product->getValue('pim_ean')->willReturn($eanValue);
+        $product->getValue('pim_asin')->willReturn(null);
+
+        $mpnValue->getData()->willReturn(null);
+        $eanValue->getData()->willReturn(12345);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatProductFillsIdentifiersMapping();
+    }
+
+    public function it_returns_a_product_subscription_status_for_a_product_with_identifiers_mapping_not_filled(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductInterface $product,
+        ValueInterface $mpnValue,
+        ValueInterface $eanValue,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+
+        $connectionStatus = new ConnectionStatus(false, false);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'brand' => 'pim_brand',
+            'mpn' => 'pim_mpn',
+            'ean' => 'pim_ean',
+            'asin' => null,
+        ]);
+        $product->getFamily()->willReturn(null);
+        $product->getValue('pim_brand')->willReturn(null);
+        $product->getValue('pim_mpn')->willReturn($mpnValue);
+        $product->getValue('pim_ean')->willReturn($eanValue);
+
+        $mpnValue->getData()->willReturn(null);
+        $eanValue->getData()->willReturn(null);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldIndicateThatProductDoesNotFillIdentifiersMapping();
+    }
+
+    public function it_returns_product_subscription_status_with_a_connection_status(
+        $productSubscriptionRepository,
+        $getConnectionStatusHandler,
+        $productRepository,
+        $identifiersMappingRepository,
+        ProductSubscription $productSubscription,
+        ProductInterface $product,
+        IdentifiersMapping $identifiersMapping
+    ): void {
+        $query = new GetProductSubscriptionStatusQuery(42);
+
+        $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
+
+        $connectionStatus = new ConnectionStatus(true, true);
+        $getConnectionStatusHandler->handle(Argument::any())->willReturn($connectionStatus);
+
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->getIdentifiers()->willReturn([
+            'mpn' => 'pim_mpn',
+            'asin' => 'pim_asin',
+        ]);
+        $product->getFamily()->willReturn(null);
+        $product->getValue('pim_mpn')->willReturn(null);
+        $product->getValue('pim_asin')->willReturn(null);
+
+        $productSubscriptionStatus = $this->handle($query);
+        $productSubscriptionStatus->shouldHaveAConnectionStatus();
     }
 
     /**
@@ -52,8 +289,26 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
     public function getMatchers(): array
     {
         return [
-            'indicateAnActiveSubscription' => function ($productSubscriptionStatus) {
-                return ['isSubscribed' => true] === $productSubscriptionStatus->normalize();
+            'indicateAnActiveSubscription' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return $productSubscriptionStatus->isSubscribed();
+            },
+            'indicateAnInactiveSubscription' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return !$productSubscriptionStatus->isSubscribed();
+            },
+            'haveAConnectionStatus' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return $productSubscriptionStatus->getConnectionStatus() instanceof ConnectionStatus;
+            },
+            'indicateThatProductHasFamily' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return $productSubscriptionStatus->hasFamily();
+            },
+            'indicateThatProductDoesNotHaveFamily' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return !$productSubscriptionStatus->hasFamily();
+            },
+            'indicateThatProductFillsIdentifiersMapping' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return $productSubscriptionStatus->isMappingFilled();
+            },
+            'indicateThatProductDoesNotFillIdentifiersMapping' => function (ProductSubscriptionStatus $productSubscriptionStatus) {
+                return !$productSubscriptionStatus->isMappingFilled();
             },
         ];
     }

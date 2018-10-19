@@ -94,3 +94,4 @@ config:
         pimee/template/identifiers-mapping/table: akeneosuggestdata/templates/identifiers-mapping/table.html
         pimee/template/mass-edit/suggest-data-operation: akeneosuggestdata/templates/mass-edit/suggest-data-operation.html
         pimee/template/product-edit-form/subscription-status-switcher: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher.html
+        pimee/template/product-edit-form/subscription-status-switcher-read-only: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher-read-only.html
