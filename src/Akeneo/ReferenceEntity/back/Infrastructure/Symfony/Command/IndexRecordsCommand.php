@@ -57,7 +57,7 @@ class IndexRecordsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->checkRecordIndexExist();
+        $this->checkRecordIndexExists();
 
         $isIndexAll = $input->getOption('all');
         $referenceEntityCodes = $input->getArgument('reference_entity_codes');
@@ -76,7 +76,7 @@ class IndexRecordsCommand extends ContainerAwareCommand
     /**
      * @throws \RuntimeException
      */
-    private function checkRecordIndexExist()
+    private function checkRecordIndexExists()
     {
         $recordClient = $this->getContainer()->get('akeneo_referenceentity.client.record');
         if (!$recordClient->hasIndex()) {
@@ -109,7 +109,7 @@ class IndexRecordsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param String[] $referenceEntityCodes
+     * @param string[] $referenceEntityCodes
      */
     private function indexByReferenceEntity(array $referenceEntityCodes, OutputInterface $output): void
     {
@@ -134,14 +134,14 @@ class IndexRecordsCommand extends ContainerAwareCommand
             ->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists');
         $existingReferenceEntityCodes = [];
         foreach ($referenceEntityCodes as $referenceEntityCode) {
-            if (!$existsReferenceEntity->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityCode))) {
+            if ($existsReferenceEntity->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityCode))) {
+                $existingReferenceEntityCodes[] = ReferenceEntityIdentifier::fromString($referenceEntityCode);
+            } else {
                 $output->writeln(
-                    sprintf('<info>Skip "%s", This reference entity does not seem exist.</info>',
+                    sprintf('<info>Skip "%s", this reference entity does not exist.</info>',
                         ReferenceEntityIdentifier::fromString($referenceEntityCode))
                 );
-                continue;
             }
-            $existingReferenceEntityCodes[] = ReferenceEntityIdentifier::fromString($referenceEntityCode);
         }
 
         return $existingReferenceEntityCodes;
