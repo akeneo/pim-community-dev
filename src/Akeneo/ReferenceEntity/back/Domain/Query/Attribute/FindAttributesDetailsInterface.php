@@ -24,7 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface FindAttributesDetailsInterface
 {
     /**
-     * @return AbstractAttributeDetails[]
+     * @return AttributeDetails[]
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }
