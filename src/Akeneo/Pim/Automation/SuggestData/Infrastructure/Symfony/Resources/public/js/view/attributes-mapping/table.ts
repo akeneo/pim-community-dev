@@ -3,10 +3,10 @@ import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
+import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
-import {EscapeHtml} from "../../common/escape-html";
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
@@ -21,7 +21,7 @@ interface NormalizedAttributeMapping {
       pimAiAttribute: {
         label: string,
         type: string,
-        summary: Array<string>,
+        summary: string[],
       },
       attribute: string,
       status: number,
@@ -37,7 +37,7 @@ interface Config {
     pimAiAttribute: string,
     catalogAttribute: string,
     attributeMappingStatus: string,
-    values_summary: string,
+    valuesSummary: string,
     type: string,
   };
 }
@@ -72,7 +72,7 @@ class AttributeMapping extends BaseForm {
       pimAiAttribute: '',
       catalogAttribute: '',
       attributeMappingStatus: '',
-      values_summary: '',
+      valuesSummary: '',
       type: '',
     },
   };
@@ -114,7 +114,7 @@ class AttributeMapping extends BaseForm {
       attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
       edit: __('pim_common.edit'),
       type: __(this.config.labels.type),
-      values_summary_key: this.config.labels.values_summary,
+      valuesSummaryKey: this.config.labels.valuesSummary,
     }));
 
     Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
