@@ -29,7 +29,17 @@ class ConfigurationPopin extends Element
             return $this->find('css', '#column-selection');
         }, 'Cannot find the drop zone');
 
+        $searchInput = $this->spin(function () {
+            return $this->find('css', 'input[type="search"]');
+        }, 'Column search input not found');
+
         foreach ($labels as $label) {
+            $searchInput->setValue($label);
+
+            $this->spin(function () use ($label) {
+                return $this->find('css',  sprintf('#column-list [data-value="%s"]', $label));
+            }, 'Could not find column in search');
+
             $item = $this->getItemForLabel($label, true);
 
             $this->dragElementTo($item, $dropZone);
@@ -89,16 +99,6 @@ class ConfigurationPopin extends Element
      */
     protected function getItemForLabel($label)
     {
-        $searchInput = $this->spin(function () {
-            return $this->find('css', 'input[type="search"]');
-        }, 'Column search input not found');
-
-        $searchInput->setValue($label);
-
-        $this->spin(function () use ($label) {
-            return sprintf($this->find('css', '#column-list [data-value="%s"]'), $label);
-        }, 'Could not find column in search');
-
         return $this->spin(function () use ($label) {
             $items = $this->findAll('css', '.ui-sortable-handle');
 
