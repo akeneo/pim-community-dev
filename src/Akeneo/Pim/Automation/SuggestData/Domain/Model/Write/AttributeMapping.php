@@ -21,7 +21,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class AttributeMapping
 {
-    /* The attribute is not mapped yet */
+    /** The attribute is not mapped yet */
     public const ATTRIBUTE_PENDING = 0;
 
     /** The attribute is mapped */

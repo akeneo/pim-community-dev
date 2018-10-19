@@ -190,7 +190,8 @@ class PimAI implements DataProviderInterface
                 $attribute->getTargetAttributeLabel(),
                 $attribute->getPimAttributeCode(),
                 $this->mapAttributeMappingStatus($attribute->getStatus()),
-                $attribute->getType()
+                $attribute->getType(),
+                $attribute->getSummary()
             );
             $attributesMapping->addAttribute($attribute);
         }

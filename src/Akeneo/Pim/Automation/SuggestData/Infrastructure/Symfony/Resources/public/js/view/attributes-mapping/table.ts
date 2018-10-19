@@ -12,15 +12,15 @@ import * as $ from 'jquery';
 import BaseForm = require('pimenrich/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
+import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
-
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
-const template = require('pimee/template/attributes-mapping/attributes-mapping');
+const template = require('pimee/template/attributes-mapping/table');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
@@ -30,6 +30,7 @@ interface NormalizedAttributeMapping {
       pimAiAttribute: {
         label: string,
         type: string,
+        summary: string[],
       },
       attribute: string,
       status: number,
@@ -45,6 +46,8 @@ interface Config {
     pimAiAttribute: string,
     catalogAttribute: string,
     attributeMappingStatus: string,
+    valuesSummary: string,
+    type: string,
   };
 }
 
@@ -78,6 +81,8 @@ class AttributeMapping extends BaseForm {
       pimAiAttribute: '',
       catalogAttribute: '',
       attributeMappingStatus: '',
+      valuesSummary: '',
+      type: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
@@ -109,12 +114,16 @@ class AttributeMapping extends BaseForm {
     const familyMapping: NormalizedAttributeMapping = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
     this.$el.html(this.template({
+      __,
       mapping,
+      escapeHtml: EscapeHtml.escapeHtml,
       statuses: this.getMappingStatuses(),
       pimAiAttribute: __(this.config.labels.pimAiAttribute),
       catalogAttribute: __(this.config.labels.catalogAttribute),
       attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
       edit: __('pim_common.edit'),
+      type: __(this.config.labels.type),
+      valuesSummaryKey: this.config.labels.valuesSummary,
     }));
 
     Object.keys(mapping).forEach((pimAiAttributeCode: string) => {

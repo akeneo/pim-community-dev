@@ -44,6 +44,7 @@ akeneo_suggest_data:
                     pending: Pending
                     mapped: Active
                     unmapped: Inactive
+                values_summary: "Values summary: {{ label }}"
             module:
                 subscribe:
                     subscribe: 'Subscribe family to PIM.ai'

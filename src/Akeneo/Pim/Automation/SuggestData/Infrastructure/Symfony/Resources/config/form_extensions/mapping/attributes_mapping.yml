@@ -102,6 +102,8 @@ extensions:
                 pimAiAttribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
                 catalogAttribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
                 attributeMappingStatus: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
+                valuesSummary: akeneo_suggest_data.entity.attributes_mapping.fields.values_summary
+                type: pim_common.type
 
     pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
         module: pimee/view/common/front-search-filter
