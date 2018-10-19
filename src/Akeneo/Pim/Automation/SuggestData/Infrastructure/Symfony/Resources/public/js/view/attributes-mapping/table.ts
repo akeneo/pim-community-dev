@@ -6,7 +6,7 @@ import * as _ from 'underscore';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
-
+import {EscapeHtml} from "../../common/escape-html";
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
@@ -37,6 +37,8 @@ interface Config {
     pimAiAttribute: string,
     catalogAttribute: string,
     attributeMappingStatus: string,
+    values_summary: string,
+    type: string,
   };
 }
 
@@ -70,6 +72,8 @@ class AttributeMapping extends BaseForm {
       pimAiAttribute: '',
       catalogAttribute: '',
       attributeMappingStatus: '',
+      values_summary: '',
+      type: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
@@ -101,12 +105,16 @@ class AttributeMapping extends BaseForm {
     const familyMapping: NormalizedAttributeMapping = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
     this.$el.html(this.template({
+      __,
       mapping,
+      escapeHtml: EscapeHtml.escapeHtml,
       statuses: this.getMappingStatuses(),
       pimAiAttribute: __(this.config.labels.pimAiAttribute),
       catalogAttribute: __(this.config.labels.catalogAttribute),
       attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
       edit: __('pim_common.edit'),
+      type: __(this.config.labels.type),
+      values_summary_key: this.config.labels.values_summary,
     }));
 
     Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
