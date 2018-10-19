@@ -17,7 +17,7 @@ const UserContext = require('pim/user-context');
 
 interface NormalizedAttributeMapping {
   mapping: {
-    [franklin_attribute: string]: {
+    [franklinAttribute: string]: {
       pimAiAttribute: {
         label: string,
         type: string,
@@ -52,7 +52,7 @@ class AttributeMapping extends BaseForm {
   private static readonly ATTRIBUTE_PENDING: number = 0;
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
-  private static readonly VALID_MAPPING: { [attribute_type: string]: string[] } = {
+  private static readonly VALID_MAPPING: { [attributeType: string]: string[] } = {
     metric: [ 'pim_catalog_metric' ],
     select: [ 'pim_catalog_simpleselect' ],
     multiselect: [ 'pim_catalog_multiselect' ],
@@ -116,7 +116,7 @@ class AttributeMapping extends BaseForm {
       acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
 
       return acc;
-    }, {} as { [franklin_attribute: string]: string }));
+    }, {} as { [franklinAttribute: string]: string }));
 
     Filterable.afterRender(this, __(this.config.labels.pimAiAttribute));
 

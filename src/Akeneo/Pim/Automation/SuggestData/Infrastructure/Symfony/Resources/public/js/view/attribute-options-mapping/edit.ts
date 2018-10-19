@@ -186,7 +186,7 @@ class AttributeOptionsMapping extends BaseForm {
       this.appendAttributeOptionSelector(franklinAttributeOptionCode);
     });
 
-    Filterable.afterRender(this, __(this.config.labels.franklinAttributeOption,));
+    Filterable.afterRender(this, __(this.config.labels.franklinAttributeOption));
 
     this.renderExtensions();
 
