@@ -90,7 +90,7 @@ stage("Build") {
                         sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
 
                         sh "gcloud config set gcloudignore/enabled false"
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-odm ."
+                        sh "gcloud builds submit --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-odm ."
                     }
                 })
             } else {
