@@ -66,7 +66,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             '_source' => '_id',
             'from' => $recordQuery->getSize() * $recordQuery->getPage(),
             'size' => $recordQuery->getSize(),
-            'sort' => ['updated_at' => 'asc'],
+            'sort' => ['updated_at' => 'desc'],
             'query'   => [
                 'constant_score' => [
                     'filter' => [

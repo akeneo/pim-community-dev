@@ -41,11 +41,10 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function default_search()
+    public function default_search_sorted_by_updated_at()
     {
         $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', []);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
+        assert::assertsame(['brand_kartell', 'brand_alessi', 'brand_bangolufsen'], $matchingidentifiers);
     }
 
     /**

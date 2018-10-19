@@ -55,7 +55,7 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_record_items_for_matching_identifiers()
+    public function it_returns_record_items_for_matching_identifiers_with_same_order()
     {
         $recordItems = ($this->findRecordItemsForIdentifiers)([(string) $this->starckIdentifier, (string) $this->cocoIdentifier]);
 
@@ -65,7 +65,10 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
         $starck->code = 'starck';
         $starck->labels = ['fr_FR' => 'Philippe Starck'];
         $starck->values = [];
-        $starck->image = null;
+        $starck->image = [
+            'filePath' => null,
+            'originalFilename' => null
+        ];
 
         $coco = new RecordItem();
         $coco->identifier = (string) $this->cocoIdentifier;
@@ -73,11 +76,13 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
         $coco->code = 'coco';
         $coco->labels = ['fr_FR' => 'Coco Chanel'];
         $coco->values = [];
-        $coco->image = null;
+        $coco->image = [
+            'filePath' => null,
+            'originalFilename' => null
+        ];
 
-        sort($recordItems);
-        $this->assertRecordItem($coco, $recordItems[0]);
-        $this->assertRecordItem($starck, $recordItems[1]);
+        $this->assertRecordItem($starck, $recordItems[0]);
+        $this->assertRecordItem($coco, $recordItems[1]);
     }
 
     private function resetDB(): void
