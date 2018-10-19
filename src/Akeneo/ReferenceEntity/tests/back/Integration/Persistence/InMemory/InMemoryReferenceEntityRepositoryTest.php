@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryReferenceEntityRepositoryTest extends TestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
+    /** @var InMemoryReferenceEntityRepository */
     private $referenceEntityRepository;
 
     public function setup()
@@ -99,8 +99,8 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
         $anotherIdentifier = ReferenceEntityIdentifier::fromString('another_identifier');
         $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $this->referenceEntityRepository->create(ReferenceEntity::create($identifier, [], Image::createEmpty()));
-        Assert::assertTrue($this->referenceEntityRepository->hasRecord($identifier));
-        Assert::assertFalse($this->referenceEntityRepository->hasRecord($anotherIdentifier));
+        Assert::assertTrue($this->referenceEntityRepository->hasReferenceEntity($identifier));
+        Assert::assertFalse($this->referenceEntityRepository->hasReferenceEntity($anotherIdentifier));
     }
 
     /**

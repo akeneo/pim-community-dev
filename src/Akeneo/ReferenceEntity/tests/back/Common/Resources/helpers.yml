@@ -1,4 +1,10 @@
 services:
+    akeneoreference_entity.tests.helper.oauth_authenticated_client_factory:
+        class: Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory
+        arguments:
+        - '@pim_user.repository.user'
+        - '@kernel'
+
     akeneoreference_entity.tests.helper.web_client_helper:
         class: Akeneo\ReferenceEntity\Common\Helper\WebClientHelper
         arguments:

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Connector;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -53,7 +53,7 @@ class RecordForConnector
             'code' => $this->code->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'values' => $this->normalizedValues,
-            'image' => $this->image->normalize(),
+            'main_image' => $this->image->normalize(),
         ];
     }
 }

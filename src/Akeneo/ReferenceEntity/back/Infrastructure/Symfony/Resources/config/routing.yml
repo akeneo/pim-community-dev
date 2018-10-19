@@ -62,6 +62,11 @@ akeneo_reference_entities_record_delete_all_rest:
     defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.delete_all }
     methods: [DELETE]
 
+akeneo_reference_entities_record_rest_connector_get:
+    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records/{recordCode}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.get }
+    methods: [GET]
+
 akeneo_reference_entities_attribute_index_rest:
     path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute'
     defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.index }

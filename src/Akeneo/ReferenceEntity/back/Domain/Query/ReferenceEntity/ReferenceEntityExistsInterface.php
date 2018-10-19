@@ -21,5 +21,5 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 interface ReferenceEntityExistsInterface
 {
-    public function withIdentifier(ReferenceEntityIdentifier $recordIdentifier): bool;
+    public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool;
 }

@@ -155,10 +155,6 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         );
         $attributeRepository->create($attributeItem);
 
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
-
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_delete', true);
     }

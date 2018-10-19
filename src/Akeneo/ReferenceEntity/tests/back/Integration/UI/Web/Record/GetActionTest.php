@@ -191,9 +191,5 @@ class GetActionTest extends ControllerIntegrationTestCase
 
         $findRecordDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_details');
         $findRecordDetails->save($starck);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
     }
 }
