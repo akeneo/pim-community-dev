@@ -2,107 +2,91 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Управление медиафайлами
-        upload: Загрузить
+        manage: Управление активами
         manage_asset:
-          title: Управление медиафайлами
+          title: Управление активами
           cancel: Отмена
           confirm: Подтверждение
-        title: Управление медиафайлами
-        description: Выберите медиафайлы, которые вы хотите прикрепить к вашему продукту
+        title: Управление активами
         preview_title: Предварительный просмотр коллекции медиафайлов
         download: Скачать
         remove: Удалить
+        upload: Загрузить
         yes: true
         no: false
         assetRemoveConfirmationLabel: Вы уверены, что хотите удалить этот медиафайл?
     asset:
-      not_empty: Требуется ввести код. Он не может быть пустым.
-      alpha_numeric_plus_underscore: Для кода можно использовать только латинские буквы алфавита, числа и нижнее подчеркивание.
-      unique: Код должен быть уникальным. Мы сгенерировали для вас новый код.
+      not_empty: Код требуется. Он не может быть пустым.
   enrich_asset:
     grid:
-      edit: Редактирование свойств медиафайла
+      edit: Редактирование свойств актива
   enrich_variation:
     popin:
-      delete:
-        title: Подтвердить удаление
-        message: Вы действительно хотите удалить этот элемент?
       reset:
         title: Сбросить вариации
-        message: Вы уверен, что хотите сбросить все вариации?
   mass_upload:
     menu: Загрузить медиафайлы
     btn:
       remove_all_files: Удалить все файлы
-      delete: Удалить
       import: Импорт
       upload: Загрузить медиафайлы
     success:
       new: Будет создан новый медиафайл
-      imported: Файлы, импортированные для обработки медиафайлов
-      need_refresh: <b>Импорт медиафайлов запущен</b><br> Чтобы увидеть заимпортированные медиафайлы в продуктах, пожалуйста, обновите страницу продуктов, когда получите уведомление о завершении импорта.
       canceled: Загрузка успешно отмененa
       deleted: Загруженный файл успешно удален
+      need_refresh: <b>Импорт медиафайлов запущен</b><br> Чтобы увидеть заимпортированные медиафайлы в продуктах, пожалуйста, обновите страницу продуктов, когда получите уведомление о завершении импорта.
     error:
       list: Невозможно читать уже загруженные файлы
       upload: Произошла ошибка при загрузке
       delete: Не удается удалить файл с сервера
       import: Произошла ошибка во время импорта
-      filename: Недопустимое имя файла для медиафайла
+      filename: Недопустимое имя файла для актива
       code: Недопустимый формат кода для медиафайла
-      locale: Медиафайл существует, но не является локализуемым
-      invalid_locale: Локаль отключена или недоступна
+      locale: Актив существует, но не является локализуемым
+      invalid_locale: Локаль отключена или недопустна
       exists: Файл с таким же именем уже импортирован
       conflicts: Конфликт имен файлов
-    grid:
-      medias: медиафайлы
-      filename: имя файла
-      filetype: тип файла
-      status: статус
-      progress: прогресс
-      actions: действия
-    action:
-      cancel: Отмена
-      remove: Удалить
     status:
       added: Добавлено
       queued: Поставлено в очередь
       uploading: Загрузка
       error: Ошибка
       success: Успешно
-    drag_and_drop: Перетащите медиафайлы или нажмите здесь
+    drag_and_drop: Перетащите активы или нажмите здесь
   datagrid:
     mass_action:
       delete:
-        confirm_content: Вы уверены, что хотите удалить выбранные медиафайлы?
-        success: Выбранные медиафайлы успешно удалены.
-        error: Произошла ошибка при попытке удаления выбранных медиафайлов, пожалуйста, попробуйте еще раз.
+        success: Выбранные активы успешно удалены.
+        error: Произошла ошибка при попытке удаления выбранных активов, пожалуйста, попробуйте еще раз.
         empty_selection: Ничего не выбрано
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Коллекция медиафайлов
 pim_dashboard:
   widget:
     last_operations:
       job_type:
         mass_upload: Массовая загрузка
-page_title:
+pim_title:
   pimee_product_asset_mass_upload: Загрузить медиафайлы
 batch_jobs:
   apply_assets_mass_upload:
-    label: Массовая загрузка медиафайлов
+    label: Масс загрузка медиафайлов
     perform.label: Массовая загрузка
   apply_assets_mass_upload_into_asset_collection:
     label: Массовая загрузка медиафайлов и добавление в продукты
     perform.label: Массовая загрузка медиафайлов и добавление в продукты
   yml_asset_channel_configuration_import:
     label: Импорт конфигурации каналов медиафайлов из Yaml
-    validation.label: Проверка файла
     import_asset.label: Импорт конфигурации каналов медиафайлов из Yaml
   yml_asset_channel_configuration_export:
     label: Экспорт конфигурации каналов медиафайлов в Yaml
     export.label: Экспорт конфигурации каналов медиафайлов в Yaml
   csv_asset_import:
     label: Импорт медиафайлов из CSV
-    validation.label: Проверка файла
     import_tags.label: Импорт тегов из CSV
     import_asset.label: Импорт медиафайлов из CSV
   csv_asset_export:
@@ -113,31 +97,25 @@ batch_jobs:
     export.label: Экспорт вариаций медиафайлов в CSV
   csv_tag_import:
     label: Импорт тегов из CSV
-    validation.label: Проверка файла
     import.label: Импорт тегов из CSV
   csv_asset_category_import:
     label: Импорт категорий медиафайлов из CSV
-    validation.label: Проверка файла
     import_asset_category.label: Импорт категорий медиафайлов из CSV
   csv_asset_configuration_import:
     label: Импорт конфигурации каналов медиафайлов из CSV
-    validation.label: Проверка файла
     import_asset.label: Импорт конфигурации каналов медиафайлов из CSV
   csv_asset_category_export:
     label: Экспорт категорий медиафайлов в CSV
     export.label: Экспорт категорий медиафайлов в CSV
   xlsx_tag_import:
     label: Импорт тегов из XLSX
-    validation.label: Проверка файла
     import.label: Импорт тегов из XLSX
   xlsx_asset_import:
     label: Импорт медиафайлов из XLSX
-    validation.label: Проверка файла
     import_tags.label: Импорт тегов из XLSX
     import_asset.label: Импорт медиафайлов из XLSX
   xlsx_asset_category_import:
     label: Импорт категорий медиафайлов из XLSX
-    validation.label: Проверка файла
     import_asset_category.label: Импорт категорий медиафайлов из XLSX
   xlsx_asset_export:
     label: Экспорт медиафайлов в XLSX
@@ -145,10 +123,15 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Экспорт категорий медиафайлов в XLSX
     export.label: Экспорт категорий медиафайлов в XLSX
-  xlsx_asset_variation_export:
-    label: Экспорт медиафайлов в XLSX
-    export.label: Экспорт медиафайлов в XLSX
   classify_assets:
     perform.label: Переместить медиафайлы в категории
   add_tags_to_assets:
     perform.label: Добавление тегов к медиафайлам
+jstree:
+  asset:
+    all: Все медиафайлы
+    unclassified: Неклассифицированные медиафайлы
+asset_grid:
+  label: Медиафайлы продуктов
+create_asset:
+  title: Создать медиафайл

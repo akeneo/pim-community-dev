@@ -60,7 +60,6 @@ pimee_workflow:
     index: Управление опубликованными продуктами
   product:
     permission:
-      label: Права доступа
       own: Обзор / публикация
       edit: Редактировать
       view: Просмотр
@@ -80,16 +79,8 @@ pimee_workflow:
         second: Выберите операцию
         third: Настройка
         fourth: Подтверждение
-pimee_workflow_product_draft_notification_new_proposal: Новое предложение
-pimee_workflow_import_notification_new_proposals: Новые предложения для импорта
 btn.publish: Опубликовать
 btn.unpublish: Снять с публикации
-pimee_workflow_product_draft_notification_partial_approve: Частичное одобрение предложения
-pimee_workflow_product_draft_notification_partial_reject: Предложение частично одобрено
-pimee_workflow_product_draft_notification_partial_remove: Предложение частично удалено
-pimee_workflow_product_draft_notification_approve: Предложение одобрено
-pimee_workflow_product_draft_notification_refuse: Предложение отклонено
-pimee_workflow_product_draft_notification_remove: Предложение удаленo
 flash:
   product:
     published: Продукт был успешно опубликован.
@@ -106,15 +97,6 @@ pim_menu:
   item:
     published_product: Опубликованные продукты
     proposal: Предложения
-pim_title:
-  published_product:
-    index: Опубликованные продукты
-    view: Опубликованные продукты %product.label% | Просмотр
-  product:
-    dispatch: "Продукт %product.label%"
-    show: "Продукт %product.label% | Показать"
-  proposal:
-    index: Предложения
 btn.editworkingcopy: Редактировать рабочую копию
 confirmation:
   product:
@@ -141,3 +123,12 @@ pim_analytics:
   info_type:
     nb_published_products: Количество опубликованных продуктов
     nb_product_drafts: Количество черновиков продуктов
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Предложения для рассмотрения
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Обзор
+      empty: Нет черновиков для рассмотрения

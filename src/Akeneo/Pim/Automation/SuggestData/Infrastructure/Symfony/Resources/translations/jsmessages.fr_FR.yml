@@ -1,4 +1,5 @@
 pim_title:
+  akeneo_suggest_data_connection_edit: 'Connexion à Franklin Insights'
   akeneo_suggest_data_identifiers_mapping_edit: 'Paramètres de Franklin Insights'
   akeneo_suggest_data_attributes_mapping_edit: 'Paramètres de Franklin Insights'
 pim_menu:
@@ -45,9 +46,12 @@ akeneo_suggest_data:
         subscribe:
           subscribe: 'Abonner la famille à PIM.ai'
           subscribed: 'Abonnée à PIM.ai'
+        index:
+          error: "Vous devez créer une famille dans votre catalogue pour accéder à cette page."
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
-        missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{targetKey }}"'
+        missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'L''attribut de type "{{ targetType }}" ne peut pas être mappé à l''attribut PIM de type "{{ pimType }}"'
     product_subscription:
       flash:
         create:
@@ -56,6 +60,22 @@ akeneo_suggest_data:
         delete:
           success: 'Produit abonné avec succès à Franklin'
           fail: 'Impossible d''abonner le produit à Franklin'
+      constraint:
+        invalid_token: 'Désolé, impossible d''abonner des produits à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous.'
+        family_required: 'Désolé, un produit doit appartenir à une famille pour pouvoir s''abonner à Franklin Insights.'
+        no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
+        insufficient_credits: "Désolé, impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
+        invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
+      attribute_options_mapping:
+        fields:
+          franklin_attribute_option: Option d'attribut Franklin
+          catalog_attribute_option: Option d'attribut du catalogue
+          attribute_option_status: Statut de l'option Franklin
+        module:
+          edit:
+            title: 'Options de l''attribut {{ familyLabel }} - {{ franklinAttributeLabel }}'
+            sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
+            description: 'Afin de vous aider à enrichir votre catalogue, Franklin doit connaître la correspondance avec les options d''attributs de votre catalogue. <a href="" target="_blank">En savoir plus</a>'
   product:
     edit:
       btn.push: Suggestion de données
@@ -98,3 +118,12 @@ akeneo_suggest_data:
           description: Veuillez sélectionner l’action à appliquer sur les produits sélectionnés sur la grille
           subscribe_label: S'abonner
           unsubscribe_label: Se désabonner
+batch_jobs:
+  suggest_data_subscribe_products:
+    label: Abonnement en masse à Franklin Insights
+    validate_configuration.label: Valider la configuration de Franklin Insights
+    subscribe_products.label: S'abnonner aux produits
+  suggest_data_unsubscribe_products:
+    label: Désabonnement en masse à Franklin Insights
+    validate_configuration.label: Valider la configuration de Franklin Insights
+    unsubscribe_products.label: Désabonner des produits
