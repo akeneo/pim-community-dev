@@ -1051,6 +1051,7 @@ pim_enrich:
           description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
         add_attribute_value:
           label: Añadir valores de atributos
+          label_count: "{1}Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Añadir valores de atributos para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Sólo los atributos de valor múltiple pertenecientes a las familias de los productos serán editados con la siguiente data para la local {{ locale }} y el canal {{ scope }}. Los valores de atributos son mantenidos, lo valores previos no.
         change_family:
           label: Cambiar familia
@@ -1085,6 +1086,7 @@ pim_enrich:
           validate: Por favor agregue una asociación antes de continuar con el siguiente espacio
         change_parent_product_model:
           label: Cambiar el modelo de producto de padre
+          label_count: "{1}Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambiar el modelo de producto padre de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: El padre de los productos variantes o modelos de sub-productos seleccionados en la cuadrícula serán modificados al modelo de producto seleccionado.
     family:
       title: Acción masiva sobre las familias

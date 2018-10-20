@@ -1,0 +1,159 @@
+pim_user:
+  user:
+    tab:
+      general.title: Загальне
+      additional.title: Додатково
+      group_and_role.title: Групи та ролі
+      password.title: Пароль
+      business_unit.title: Бізнес-підрозділи
+      email_synchronization.title: Налаштування синхронізації електронної пошти
+      interfaces.title: Інтерфейси
+  group:
+    tab:
+      general.title: Загальне
+      users.title: Користувачі
+oro.user.controller:
+  group.message.saved: "Групу збережено"
+  role.message.saved: "Роль збережено"
+  user.message.saved: "Користувача збережено"
+  status.message.saved: "Статус збережено"
+oro.user.grid.users:
+  columns:
+    username: "Ім'я користувача"
+    email: "Email"
+    firstName: "Ім'я"
+    lastName: "Прізвище"
+    createdAt: "Створено в"
+    updatedAt: "Оновлено в"
+    enabled: "Статус"
+oro.user.grid.roles:
+  columns:
+    label: "Мітка"
+oro.user.grid.groups:
+  columns:
+    name: "Ім’я"
+pim_title:
+  user.index: Користувачі
+  user_role.index: Ролі
+  user_group.index: Групи
+  system_configuration.index: Конфігурація
+user.title: Користувач
+user.overview: Користувач
+Users Management: Керування користувачами
+Create user: Створити користувача
+btn.create.user: Створити користувача
+New user: Новий користувач
+Additional: Додатково
+Groups and Roles: Групи та ролі
+Username: Ім'я користувача
+Password: Пароль
+Password (again): Повторіть пароль
+Re-enter password: Повторно введіть пароль
+Name prefix: Префікс імені
+First name: Ім'я
+Middle name: По батькові
+Last name: Прізвище
+Name suffix: Суфікс імені
+Date of birth: Дата народження
+Avatar: Аватар
+Additional emails: Додаткові email
+Add another email: Додати інший email
+Catalog locale: Локаль каталогу
+Catalog scope: Сфера каталогу
+Default tree: Усталене дерево каталогу 
+Business Units: Бізнес-підрозділи
+Email synchronization settings: Налаштування синхронізації електронної пошти
+Host: Хост
+Port: Порт
+Ssl: SSL
+Last logged in: Останнє відвідування
+Login count: Кількість відвідувань
+Additional Information: Додаткова інформація
+Interfaces: Інтерфейси
+Basic Information: Основна інформація
+Contact Information: Контактна інформація
+User name: Ім'я користувача
+Birthday: День народження
+API key: Ключ API
+Ui locale: Локаль інтерфейсу користувача
+UI locale: Локаль інтерфейсу користувача
+User salt: Сіль користувача
+Current password: Поточний пароль
+New password: Новий пароль
+Repeat new password: Новий пароль (повторно)
+Generate key: Згенерувати ключ
+Primary: первинний
+Removed user: Вилучений користувач
+user:
+  product_grid_filters: Фільтри товарів
+  default_product_grid_view:
+    label: Усталене представлення сітки продуктів
+  default_grid_view:
+    none: Жоден
+  timezone: Часовий пояс
+Role: Роль
+Owner: Власник
+General: Загальне
+Entity: Сутність
+Capabilities: Можливості
+Save and close: Зберегти та закрити
+Has role: Має роль
+role:
+  title: роль
+  overview: роль
+  edit: Змінити роль
+  create: Створити роль
+btn.create.role: Створити роль
+rights:
+  action: Права доступу
+oro_security:
+  acl_group:
+    user: Користувачі
+    role: Ролі
+    group: Групи користувачів
+  acl:
+    user:
+      view: Перегляд списку користувачів
+      create: Створення користувача
+      edit: Зміна користувачів
+      delete: Видалення користувача
+    role:
+      view: Перегляд списку ролей
+      create: Створення ролі
+      edit: Зміна ролей
+      delete: Видалення ролі
+    group:
+      view: Перегляд списку груп користувача
+      create: Створення групи користувача
+      edit: Зміна груп користувача
+      delete: Видалення групи користувача
+(default): Дозволи на сутності за промовчанням
+VIEW: Вид
+CREATE: Створити
+EDIT: Редагувати
+DELETE: Видалити
+ASSIGN: Призначити
+SHARE: Поділитися
+oro:
+  security:
+    access-level:
+      BASIC: Користувач
+      LOCAL: Бізнес-підрозділ
+      DEEP: Ділення
+      GLOBAL: Організація
+      SYSTEM: Система
+      NONE: Жоден
+Create group: Створити групу
+btn.create.user-group: Створити групу
+Has group: Має групу
+Save and Close: Зберегти та закрити
+user-group.overview: Групи
+Log in: Увійти
+Remember me on this computer: Запам'ятати мене на цьому комп'ютері
+Forgot your password?: Забули пароль?
+Username or Email: Ім’я користувача або Email
+Forgot Password: Відновити пароль
+Request: Запит
+Check Email: Перевірити електронну пошту
+password_reset_email_sent: Користувачу надіслано email з посиланням на скидання паролю.
+Go to homepage: Перейти на головну сторінку

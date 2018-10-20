@@ -16,7 +16,7 @@ pim_connector:
     product_association_processor.title: Создание ассоциаций
     group_processor.title: Создание групп
     attribute_processor.title: Создание атрибутов
-    attribute_option_processor.title: Создание выборов атрибутов
+    attribute_option_processor.title: Создание опций атрибутов
     heterogeneous_processor.title: Сериализатор продукта в CSV
     homogeneous_processor.title: Сериализатор объектов в CSV
     transformer_processor.title: Преобразование
@@ -59,8 +59,8 @@ batch_jobs:
     label: Экспорт атрибутов в CSV
     export.label: Экспорт атрибутов
   csv_attribute_option_export:
-    label: Экспорт элементов списочных атрибутов в CSV
-    export.label: Экспорт элементов списочных атрибутов
+    label: Экспорт опций атрибутов в CSV
+    export.label: Экспорт опций атрибутов
   csv_association_type_export:
     label: Экспорт типов ассоциаций в CSV
     export.label: Экспорт типов ассоциаций
@@ -93,9 +93,9 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
-    label: Импорт элементов списочных атрибутов из CSV
+    label: Импорт опций атрибутов из CSV
     validation.label: Проверка файла
-    import.label: Импорт элементов списочных атрибутов
+    import.label: Импорт опций атрибутов
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
     validation.label: Проверка файла
@@ -160,9 +160,9 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт атрибутов
   xlsx_attribute_option_import:
-    label: Импорт элементов списочных атрибутов из XLSX
+    label: Импорт опций атрибутов из XLSX
     validation.label: Проверка файла
-    import.label: Импорт элементов списочных атрибутов
+    import.label: Импорт опций атрибутов
   xlsx_family_import:
     label: Импорт семейств из XLSX
     validation.label: Проверка файла
@@ -185,6 +185,7 @@ batch_jobs:
   xlsx_product_model_import:
     label: Импорт модели продукта в XSLX
     validation.label: Проверка файла
+    import_root_product_model.label: Импорт корневой модели продукта
     import_sub_product_model.label: Импорт подчиненной модели
     import_product_model_descendants.label: Расчет дочерней модели продукта
   xlsx_group_export:

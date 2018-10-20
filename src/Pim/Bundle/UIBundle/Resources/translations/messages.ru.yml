@@ -38,4 +38,12 @@ Most Viewed: Самое просматриваемое
 "Yes": "Да"
 "No": "Нет"
 required: (требуется)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Включить загрузку сообщений
+    loading_message_enabled.tooltip: Показывать информирующие пользователя сообщения во время загрузки страницы
+    loading_messages.label: Доступна загрузка сообщений
+    loading_messages.tooltip: Все загруженные сообщения разделены переносом строки
+  group:
+    loading_message.title: Загрузка сообщений
 other_actions: Другие действия

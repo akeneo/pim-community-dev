@@ -1,0 +1,4 @@
+This directory is not writable: Каталог недоступний для запису.
+This directory is not valid: Невірний каталог.
+pim_import_export.job_instance.unknown_job_definition: Невдала спроба створити %job_type% за допомогою невідомої посадової інструкції
+This code is already taken: Цей код вже використовується

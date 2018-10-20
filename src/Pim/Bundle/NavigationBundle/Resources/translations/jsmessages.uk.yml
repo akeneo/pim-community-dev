@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "На жаль, сторінка була завантажена невірно"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ваші локальні зміни будет втрачено. Ви впевнені, що ви хочете оновити сторінку?"
+"navigation.message.content.outdated": "Вміст сторінки {{ title }} застарів, будь ласка, <a href='#' data-action='page-refresh'>оновіть сторінку</a>"
+"Content of pinned page is outdated": "Вміст зафіксованої сторінки є застарілим"

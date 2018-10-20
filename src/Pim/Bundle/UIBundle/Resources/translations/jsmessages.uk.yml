@@ -1,0 +1,119 @@
+Close: Закрити
+Update: Оновити
+Selected Rows: Виділені рядки
+"Yes": "Так"
+"Yes, Delete": "Так, видалити"
+"Yes, I Agree": "Так, я згоден"
+"Yes, do it": "Так, зробити це"
+"No": "Ні"
+"Ok, got it.": "Гаразд, зрозуміло."
+"Cancel": "Відмінити"
+"Delete Confirmation": "Підтвердження видалення"
+"Edit": "Редагувати"
+"Unexpected error occured. Please contact system administrator.": "Сталася неочікувана помилка. Будь ласка, зверніться до системного адміністратора."
+"Yes, revoke": "Так, відкликати"
+"Revoke Confirmation": "Відкликати підтвердження"
+Now: Зараз
+Prev: Назад
+Next: Наступний
+Today: Сьогодні
+Wk: Wk
+Done: Зроблено
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Оберіть час"
+Time: Час
+Hour: Година
+Minute: Хвилина
+Second: Секунда
+Millisecond: Мілісекунда
+Microsecond: Мікросекунда
+"Time Zone": "Часовий пояс"
+Localized value: Локалізоване значення
+Columns: Стовпці
+Datagrid Configuration: Конфігурація сітки
+Apply: Застосувати
+Action: Дія
+Unit: Одиниця
+Currency: Валюта
+jstree:
+  all: Всі продукти
+  unclassified: Некласифіковані продукти
+  product:
+    all: Всі продукти
+    unclassified: Некласифіковані продукти
+  no_tree: Немає доступного дерева
+  include_sub: Включати підкатегорії
+  loading: Завантаження ...
+datetimepicker:
+  days:
+    Sunday: Неділя
+    Monday: Понеділок
+    Tuesday: Вівторок
+    Wednesday: Середа
+    Thursday: Четвер
+    Friday: П'ятниця
+    Saturday: Субота
+  daysShort:
+    Sun: Неділя
+    Mon: Пн
+    Tue: Вт
+    Wed: Ср
+    Thu: Чт
+    Fri: Пт
+    Sat: Сб
+  daysMin:
+    Su: Су
+    Mo: Пн
+    Tu: Вт
+    We: Ср
+    Th: Чт
+    Fr: Пт
+    Sa: Сб
+  months:
+    January: Січень
+    February: Лютий
+    March: Березень
+    April: Квітень
+    May: Травень
+    June: Червень
+    July: Липень
+    August: Серпень
+    September: Вересень
+    October: Жовтень
+    November: Листопад
+    December: Грудень
+  monthsShort:
+    Jan: Січ
+    Feb: Лют
+    Mar: Бер
+    Apr: Квіт
+    May: Травень
+    Jun: Черв
+    Jul: Лип
+    Aug: Сер
+    Sep: Вер
+    Oct: Жов
+    Nov: Лис
+    Dec: Гру
+oro_config:
+  form:
+    config:
+      title: Конфігурація системи
+      tab:
+        system:
+          title: Система
+      group:
+        localization:
+          title: Локалізація
+          system_locale: Мова
+        notification:
+          title: Сповіщення
+          system_notification: Сповіщення про нові версії
+        loading_message:
+          title: Завантаження повідомлень
+          label: Включити завантаження повідомлень
+        loading_messages:
+          label: Доступне завантаження повідомлень
