@@ -1,0 +1,10 @@
+jstree:
+  asset:
+    all: Всі медіафайли
+    unclassified: Некласифіковані медіафайли
+asset_grid:
+  title: "[] -Inf, 1] {{ count }} Медіафайл продукту|] 1, Inf [{{ count }} Медіафайли продукту"
+  selected: вибрані медіафайли
+  label: Медіафайли продукту
+create_asset:
+  title: Створити медіафайл
