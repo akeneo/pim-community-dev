@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping\AttributeOptionsMappingInterface;
@@ -36,6 +37,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\Inva
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMapping\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
@@ -218,11 +220,24 @@ class PimAI implements DataProviderInterface
         $this->attributesMappingApi->update($familyCode, $mapping);
     }
 
-    public function getAttributeOptionsMapping(FamilyCode $familyCode, FranklinAttributeId $franklinAttributeId): void
-    {
-        $attributeOptionsMapping = $this
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeOptionsMapping(
+        FamilyCode $familyCode,
+        FranklinAttributeId $franklinAttributeId
+    ): AttributeOptionsMapping {
+        $franklinOptionsMapping = $this
             ->attributeOptionsMappingApi
             ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
+
+        $converter = new AttributeOptionsMappingConverter();
+
+        return $converter->clientToApplication(
+            (string) $familyCode,
+            (string) $franklinAttributeId,
+            $franklinOptionsMapping
+        );
     }
 
     /**

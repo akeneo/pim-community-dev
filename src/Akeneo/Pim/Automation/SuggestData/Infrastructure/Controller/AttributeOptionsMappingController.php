@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\AttributeOptionsMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -20,40 +25,34 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class AttributeOptionsMappingController
 {
+    /** @var GetAttributeOptionsMappingByAttributeAndFamilyHandler */
+    private $getAttributeOptionsMappingByAttributeAndFamilyHandler;
+
     /**
-     * TODO Unmock data.
-     *
+     * @param GetAttributeOptionsMappingByAttributeAndFamilyHandler $getAttributeOptionsMappingByAttributeAndFamilyHandler
+     */
+    public function __construct(
+        GetAttributeOptionsMappingByAttributeAndFamilyHandler $getAttributeOptionsMappingByAttributeAndFamilyHandler
+    ) {
+        $this->getAttributeOptionsMappingByAttributeAndFamilyHandler = $getAttributeOptionsMappingByAttributeAndFamilyHandler;
+    }
+
+    /**
      * @return JsonResponse
      */
     public function getAction(string $familyCode, string $franklinAttributeId): JsonResponse
     {
-        return new JsonResponse([
-            'family' => 'router',
-            'franklinAttributeCode' => 'color',
-            'mapping' => [
-                'color_1' => [
-                    'franklinAttributeOptionCode' => [
-                        'label' => 'Color 1',
-                    ],
-                    'catalogAttributeOptionCode' => null,
-                    'status' => 0,
-                ],
-                'color_2' => [
-                    'franklinAttributeOptionCode' => [
-                        'label' => 'Color 2',
-                    ],
-                    'catalogAttributeOptionCode' => 'color2',
-                    'status' => 1,
-                ],
-                'color_3' => [
-                    'franklinAttributeOptionCode' => [
-                        'label' => 'Color 3',
-                    ],
-                    'catalogAttributeOptionCode' => null,
-                    'status' => 2,
-                ],
-            ],
-        ]);
+        $query = new GetAttributeOptionsMappingByAttributeAndFamilyQuery(
+            new FamilyCode($familyCode),
+            new FranklinAttributeId($franklinAttributeId)
+        );
+        $attributeOptionsMapping = $this->getAttributeOptionsMappingByAttributeAndFamilyHandler->handle($query);
+
+        $normalizer = new AttributeOptionsMappingNormalizer();
+
+        return new JsonResponse(
+            $normalizer->normalize($attributeOptionsMapping)
+        );
     }
 
     /**
@@ -70,18 +69,18 @@ class AttributeOptionsMappingController
          *     "catalogAttributeCode": "color",
          *     "mapping":{
          *         "color_1":{
-         *             "franklinAttributeOptionCode":{"label":"Color 1"},
-         *             "catalogAttributeOptionCode":"color1",
+         *             "franklin_attribute_option_code":{"label":"Color 1"},
+         *             "catalog_attribute_option_code":"color1",
          *             "status":0
          *         },
          *         "color_2":{
-         *             "franklinAttributeOptionCode":{"label":"Color 2"},
-         *             "catalogAttributeOptionCode":"color2",
+         *             "franklin_attribute_option_code":{"label":"Color 2"},
+         *             "catalog_attribute_option_code":"color2",
          *             "status":1
          *         },
          *         "color_3":{
-         *             "franklinAttributeOptionCode":{"label":"Color 3"},
-         *             "catalogAttributeOptionCode":null,
+         *             "franklin_attribute_option_code":{"label":"Color 3"},
+         *             "catalog_attribute_option_code":null,
          *             "status":2
          *         }
          *     }

@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
@@ -41,19 +42,19 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandler
         $this->familyRepository = $familyRepository;
     }
 
-    public function handle(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): void
-    {
-        $this->validate($query);
-
-        $this->dataProvider->getAttributeOptionsMapping($query->familyCode(), $query->franklinAttributeId());
-    }
-
-    private function validate(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): void
+    /**
+     * @param GetAttributeOptionsMappingByAttributeAndFamilyQuery $query
+     *
+     * @return AttributeOptionsMapping
+     */
+    public function handle(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): AttributeOptionsMapping
     {
         if (!$this->familyRepository->findOneByIdentifier($query->familyCode()) instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
                 sprintf('Family "%s" does not exist', $query->familyCode())
             );
         }
+
+        return $this->dataProvider->getAttributeOptionsMapping($query->familyCode(), $query->franklinAttributeId());
     }
 }

@@ -19,6 +19,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOpti
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -53,5 +55,22 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandlerSpec extends ObjectBe
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('handle', [$query]);
+    }
+
+    public function it_returns_an_attribute_options_mapping(
+        $familyRepository,
+        $dataProvider,
+        FamilyInterface $family
+    ): void {
+        $familyCode = new FamilyCode('foo');
+        $franklinAttributeId = new FranklinAttributeId('bar');
+        $query = new GetAttributeOptionsMappingByAttributeAndFamilyQuery($familyCode, $franklinAttributeId);
+
+        $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
+
+        $attributeOptionsMapping = new AttributeOptionsMapping('foo', 'bar', []);
+        $dataProvider->getAttributeOptionsMapping('foo', 'bar')->willReturn($attributeOptionsMapping);
+
+        $this->handle($query)->shouldReturn($attributeOptionsMapping);
     }
 }

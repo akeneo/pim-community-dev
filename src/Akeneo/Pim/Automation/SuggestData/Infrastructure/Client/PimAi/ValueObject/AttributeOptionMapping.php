@@ -18,9 +18,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObj
  */
 final class AttributeOptionMapping
 {
-    private const STATUS_PENDING = 'pending';
-    private const STATUS_ACTIVE = 'active';
-    private const STATUS_INACTIVE = 'inactive';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_INACTIVE = 'inactive';
 
     /** @var string[] */
     private const STATUSES = [
