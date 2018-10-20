@@ -154,6 +154,7 @@ pim_enrich:
       create: Crear una família
       edit_properties: Editar les propietats d'una família
       edit_attributes: Editar els atributs d'una família
+      edit_variants: Editar una variant familiar
       remove: Eliminar una família
       history: Veure l'històric de la família
     family_variant:

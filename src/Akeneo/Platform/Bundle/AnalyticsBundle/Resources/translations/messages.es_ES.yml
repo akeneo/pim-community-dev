@@ -1,4 +1,5 @@
 pim_analytics:
+  new_patch_available: Nuevo parche dispoinble
   system_config:
     group:
       notification.title: Notificaciones

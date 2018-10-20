@@ -2,9 +2,11 @@ pim_common:
   actions: Acciones
   add: Agregar
   add_attributes: Agregar atributos
+  after: Después
   all: Todos
   and: "y"
   apply: Aplicar
+  before: Anterior
   by: por
   cancel: Cancelar
   code: Código
@@ -119,9 +121,11 @@ pim_enrich.entity.fallback:
       title: Eliminar este {{ itemName }}
       alternative_title: Confirme eliminación
       item: '¿Está seguro de que desea borrar este elemento?'
+      item_placeholder: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible deshacer esta acción.'
     edit:
       leave: '¿Está seguro que desea salir de esta página?'
       discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
+      discard_changes_title: '¿Está seguro?'
 pim_enrich.entity.product:
   label: producto
   uppercase_label: Producto
@@ -185,6 +189,7 @@ pim_enrich.entity.product:
       complete: Completo
       no_family: Ninguna familia definida. Por favor defina una familia para calcular la completitud de este producto.
       no_completeness: Usted cambió la familia del producto. Por favor guarde los cambios en primero para calcular la completitud para esta nueva familia.
+      missing_values: "{1}1 valor faltante|]1, Inf[{{ count }} valores faltantes"
     sequential_edit:
       item_limit: Sólo los primeros 1000 artículos mostrados en esta edición secuencial ({{ count }} seleccionados)
       empty: Su selección está vacía, por favor cambie su criterio de búsqueda
@@ -218,6 +223,7 @@ pim_enrich.entity.product:
     delete:
       confirm: '¿Está seguro que desea eliminar este producto?'
 pim_enrich.entity.product_model:
+  label: modelo del producto
   uppercase_label: Modelo de producto
   plural_label: Modelos de producto
   flash:
@@ -231,6 +237,7 @@ pim_enrich.entity.product_model:
       fields_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
     delete:
       success: Modelo del producto eliminado con éxito.
+      fail: No se puede eliminar este modelo de producto
   choose: Elija un modelo de producto
   property:
     family_variant: Variante
@@ -242,9 +249,12 @@ pim_enrich.entity.product_model:
       read_only_parent_attribute_from_common: Dicho atributo puede ser actualizado en los atributos comunes.
       read_only_parent_attribute_from_model: "Este atributo puede ser actualizado en los atributos por {{ axes }}"
     variant_axis:
+      label: 'eje variante'
       create: Añadir nuevo
       create_label: "Añadir un nuevo {{ axes }}"
       required_label: '(eje variante)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variante de producto|]1, Inf[{{ complete }} / {{ total }} variantes de productos"
     delete:
       confirm: '¿Está seguro que desea eliminar este modelo de producto? Todos sus productos descendientes, modelos de productos y variaciones, serán borrados también.'
       confirm_for_products_and_product_models: '¿Está seguro que desea eliminar los productos y modelos de producto? Todos los hijos de los modelos de producto serán también eliminados.'
@@ -261,6 +271,8 @@ pim_enrich.entity.channel:
     delete:
       success: Canal eliminado correctamente
       fail: No se puede eliminar este canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canales"
   property:
     category_tree: Árbol de categoría
     do_not_convert: No convertir
@@ -281,6 +293,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: No se puede remover el atributo utilizado como etiqueta
       cant_remove_attribute_as_image: No se puede quitar el atributo utilizado como la imagen principal
       cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
+      fields_not_ready: "La familia no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}"
     create:
       success: Familia creada correctamente
     delete:
@@ -290,6 +303,8 @@ pim_enrich.entity.family:
     attribute_as_label: Atributo utilizado como etiqueta
     attribute_as_image: Atributo usado como la imagen principal
     empty_attribute_as_image: No Seleccionado
+  page_title:
+    index: "]-Inf, 1]{{ count }} familia|]1, Inf[{{ count }} familias"
   module:
     attributes:
       not_required_label: No requerido
@@ -299,11 +314,13 @@ pim_enrich.entity.family:
     delete:
       confirm: '¿Está seguro que desea eliminar esta familia?'
 pim_enrich.entity.family_variant:
+  label: variante de familia
   short_plural_label: Variantes
   short_label: Variante
   flash:
     update:
       success: Variante familiar exitosamente actualizada. Los productos con variantes serán actualizados con sus cambios.
+      fail: La variante familiar no se ha podido actualizar.
     create:
       success: Variante familiar creada con éxito
   module:
@@ -315,6 +332,8 @@ pim_enrich.entity.family_variant:
       level_1: Atributos de variables de nivel uno
       level_2: Atributos de variables de nivel dos
       description: Arrastrar & soltar los atributos al nivel de variante seleccionado para tener estos atributos administrados en el nivel de dicha variante.
+      attribute_remove: Remover atributo
+      attribute_group_remove: Eliminar atributo del grupo
       confirm_attribute_removal_title: Confirme si desea suprimir los atributos
       confirm_attribute_removal_message: Al remover estos atributos los pondrá de vuelta en los atributos comunes de la variante familiar y removerá los valores de los productos variantes
     create:
@@ -322,6 +341,9 @@ pim_enrich.entity.family_variant:
       title: Crear una nueva variante de familia
       description: En una variante de familia, puede definir una estructura para productos con variantes. Elija el número de los distintos niveles de variantes gestionados, los atributos utilizados como ejes variantes para cada nivel y luego defina cómo se distribuyen los atributos.
       variant_levels: Niveles de variantes
+      axis_level: "Nivel de variante de ejes {{ level }}"
+    update_translations:
+      title: Actualizar traducciones
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Opciones
   flash:
@@ -335,6 +357,7 @@ pim_enrich.entity.attribute_option:
   module:
     edit:
       cancel_title: Cancelar modificación
+      cancel_description: Atención, se perderán los datos no guardados. ¿Seguro que quiere cancelar la modificación de esta nueva opción?
 pim_enrich.entity.association_type:
   label: tipo de asociación
   flash:
@@ -347,6 +370,8 @@ pim_enrich.entity.association_type:
     delete:
       success: Tipo de asociación eliminado correctamente
       fail: No se puede eliminar este tipo de asociación
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipo de asociación|]1, Inf[{{ count }}tipos de asociaciones"
   module:
     create:
       button: Crear un tipo de asociación
@@ -364,6 +389,8 @@ pim_enrich.entity.group_type:
     delete:
       success: Tipo de Grupo eliminado correctamente
       fail: No se puede eliminar este tipo de grupo
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipo de grupo|]1, Inf[{{ count }} tipos de grupo"
   module:
     create:
       button: Crear tipo de grupo
@@ -381,6 +408,8 @@ pim_enrich.entity.group:
     delete:
       success: Grupo eliminado correctamente
       fail: No se puede eliminar este grupo
+  page_title:
+    index: "]-Inf, 1]{{ count }} grupo|]1, Inf[{{ count }} grupos"
   module:
     create:
       button: Crear grupo
@@ -397,6 +426,8 @@ pim_enrich.entity.attribute:
     delete:
       success: Atributo eliminado correctamente
       fail: No se puede eliminar este atributo
+  page_title:
+    index: "]-Inf, 1]{{ count }} atributo|]1, Inf[{{ count }} atributos"
   property:
     allowed_extensions: Extensiones permitidas
     auto_option_sorting: Ordene opciones automáticas por orden alfabético
