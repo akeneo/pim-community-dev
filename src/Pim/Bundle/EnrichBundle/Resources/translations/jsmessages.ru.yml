@@ -3,6 +3,7 @@ confirmation:
     item: Вы уверены, что хотите удалить этот элемент?
     association_type: Вы действительно хотите удалить этот тип ассоциации?
     attribute: Вы действительно хотите удалить этот атрибут?
+    attribute_group: Вы действительно хотите удалить эту группу атрибутов?
     family: Вы действительно хотите удалить это семейство?
     product: Вы действительно хотите удалить этот продукт?
     channel: Вы действительно хотите удалить этот канал?
@@ -278,6 +279,7 @@ pim_enrich:
       message:
         created: Семейство успешно создано
       variant:
+        add_variant: Добавить вариант
         create: Создать
         cancel: Отмена
         code: Код
@@ -288,6 +290,11 @@ pim_enrich:
       actions: Действия
     group:
       title: Группа
+      info:
+        deletion_successful: Группа успешно удалена.
+        deletion_failed: Не удалось удалить группу.
+        update_successful: Группа успешно обновлена.
+        update_failed: Не удалось обновить группу.
       btn:
         save: Сохранить
       meta:
@@ -301,6 +308,13 @@ pim_enrich:
       message:
         created: Группа успешно создана
     attribute:
+      info:
+        deletion_successful: Атрибут успешно удалён.
+        deletion_failed: Не удалось удалить атрибут.
+        update_successful: Атрибут успешно обновлён.
+        update_failed: Не удалось обновить атрибут.
+        create_successful: Атрибут успешно создан.
+        create_failed: Не удалось создать атрибут.
       scopable: Область назначаема
       type:
         pim_catalog_identifier: Идентификатор
@@ -324,6 +338,7 @@ pim_enrich:
       title: атрибут
     attribute_group:
       info:
+        update_failed: Не удалось обновить группу атрибутов
         update_successful: Группа атрибутов успешно обновлена
     api_connection:
       create_popin:
@@ -332,9 +347,11 @@ pim_enrich:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
     delete_item: Подтвердить удаление
+    remove_item: Подтвердите удаление
     remove: Удалить
     delete:
       attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
+      attribute_group: Вы действительно хотите удалить атрибут {{ attribute }} из этой группы атрибутов?
       product_model: Подтвердить удаление
   info:
     not_applicable: Н/Д
@@ -348,6 +365,7 @@ pim_enrich:
   form:
     required: (требуется)
     product_model:
+      choose_variant: Выберите вариант
       family_variant: Вариант
     product:
       tab:
@@ -355,6 +373,8 @@ pim_enrich:
           title: Ассоциации
           info:
             none_exist: Титпы ассоциаций отсутствуют.
+            show_groups: Отображать группы
+          target: Цель
         attributes:
           title: Атрибуты
           btn:
@@ -363,10 +383,14 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
+            attributes_selected: "выбрано атрибутов: {{ itemsCount }}"
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
           attribute_group_selector: Группа атрибутов
           attribute_group_all: Все
+          attribute_filter:
+            all: Все атрибуты
+            missing_required: Все недостающие обязательные атрибуты
         categories:
           title: Категории
       panel:
@@ -448,6 +472,7 @@ pim_enrich:
           toolbox:
             select_attributes: Добавить атрибуты
             add: Добавить
+            attributes_groups_selected: 'выбрано групп: {{ itemsCount }}'
           not_required_label: Не обязательно
           required_label: Обязательно
         history:
@@ -502,6 +527,7 @@ pim_enrich:
             no_available_attributes: Нет больше атрибутов для добавления
     job_execution:
       loading: Загрузка...
+      title.details: Подробности выполнения
       refreshBtn.title: Обновить
       meta:
         status.title: Статус
@@ -518,6 +544,9 @@ pim_enrich:
         header.start: Начало
         header.end: Конец
     job_instance:
+      title:
+        import: Профиль импорта
+        export: Профиль экспорта
       button:
         edit.title: Редактировать
         export.title: Экспортировать сейчас
@@ -526,6 +555,8 @@ pim_enrich:
       meta:
         job: Работа
         connector: Соединитель
+      subsection:
+        last_executions: Последние запуски
       tab:
         content:
           title: Содержание
@@ -608,6 +639,7 @@ pim_enrich:
             max_characters: Максимум символов
             max_file_size: Максимальный размер файла (МБ)
             metric_family: Семейство измерений
+            negative_allowed: Допустимы отрицательные значения
             number_max: Макс. число
             number_min: Мин. число
             type: Тип
@@ -633,6 +665,7 @@ pim_enrich:
           toolbox:
             select_attributes: Добавить атрибуты
             add: Добавить
+            attributes_groups_selected: 'выбрано групп: {{ itemsCount }}'
   export:
     product:
       data:
@@ -770,21 +803,32 @@ pim_enrich:
         title: Глобальные настройки
   index:
     import_profiles:
+      create_btn: Создать профиль импорта
       list: Выберите задание
       create_popin:
         title: Создать
+      message:
+        created: Профиль импорта успешно создан
     group:
       create_btn: Создать группу
     export_profiles:
+      create_btn: Создать профиль экспорта
       create_popin:
         title: Создать
+      message:
+        created: Профиль экспорта успешно создан
+    grouptype:
+      create_btn: Создать тип группы
     user:
       create_btn: Создать пользователя
     user_role:
       create_btn: Создать роль
     user_group:
       create_btn: Создать группу
+    channel:
+      create_btn: Создать канал
     attribute:
+      create_btn: Создать атрибут
       modal_title: Выберите тип атрибута
     attribute_group:
       title: Группы атрибутов
@@ -1049,11 +1093,21 @@ batch_jobs:
     label: Импорт типов групп из XLSX
     validation.label: Проверка файла
     import.label: Импорт типов групп
+job_tracker:
+  download_archive:
+    invalid_xlsx: Скачать некорректные данные
+    invalid_csv: Скачать некорректные данные
 pim_menu:
   tab:
+    activity: Активность
+    imports: Импорты
     products: Продукты
+    exports: Экспорты
     settings: Настройки
     system: Система
+    help:
+      title: Помощь
+      helper: Справочный центр Akeneo
   item:
     association_type: Типы ассоциаций
     attribute: Атрибуты
@@ -1079,6 +1133,11 @@ pim_menu:
     user_role: Роли
     info: Информация о системе
     job_tracker: Трекер процессов
+  navigation:
+    activity: Меню раздела Активность
+    system: Меню раздела Система
+    user: Меню раздела Управление пользователями
+    settings: Меню раздела Настройки
   user:
     logout: Выйти
     user_account: Мой аккаунт
