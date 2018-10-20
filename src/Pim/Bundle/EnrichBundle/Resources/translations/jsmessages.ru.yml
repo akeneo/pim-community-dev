@@ -57,6 +57,8 @@ flash:
   role:
     removed: Роль успешно удалена
 error:
+  creating:
+    product: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
   removing:
     item: Не удается удалить этот элемент
     association_type: Не удается удалить этот тип ассоциации
@@ -271,6 +273,10 @@ pim_enrich:
     group:
       title: Группа
       info:
+        deletion_successful: Группа успешно удалена.
+        deletion_failed: Не удалось удалить группу.
+        update_successful: Группа успешно обновлена.
+        update_failed: Не удалось обновить группу.
         field_not_ready:
           The group cannot be saved right now. The following fields are not ready:
             - поля
@@ -316,6 +322,7 @@ pim_enrich:
           info:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
+            attributes_selected: "выбрано атрибутов: {{ itemsCount }}"
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
         categories:
@@ -443,6 +450,9 @@ pim_enrich:
             search_attributes: Поиск...
             no_available_attributes: Нет больше атрибутов для добавления
     job_instance:
+      title:
+        import: Профиль импорта
+        export: Профиль экспорта
       button:
         edit.title: Редактировать
         export.title: Экспортировать сейчас
