@@ -30,7 +30,7 @@ final class AttributeOptionsMapping
     /**
      * @param string $familyCode
      * @param string $franklinAttributeId
-     * @param array $mapping
+     * @param AttributeOptionMapping[] $mapping
      */
     public function __construct(string $familyCode, string $franklinAttributeId, array $mapping = [])
     {

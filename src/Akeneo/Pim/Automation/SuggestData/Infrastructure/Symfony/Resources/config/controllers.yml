@@ -32,3 +32,5 @@ services:
 
     akeneo.pim.automation.suggest_data.controller.attribute_options_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeOptionsMappingController'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.get_attribute_options_mapping_by_family_and_attribute'

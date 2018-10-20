@@ -40,7 +40,7 @@ class GetAttributeOptionsMappingByAttributeAndFamilyQuery
     /**
      * @return FamilyCode
      */
-    public function familyCode()
+    public function familyCode(): FamilyCode
     {
         return $this->familyCode;
     }
@@ -48,7 +48,7 @@ class GetAttributeOptionsMappingByAttributeAndFamilyQuery
     /**
      * @return FranklinAttributeId
      */
-    public function franklinAttributeId()
+    public function franklinAttributeId(): FranklinAttributeId
     {
         return $this->franklinAttributeId;
     }
