@@ -85,3 +85,6 @@ fos_js_routing:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+pim_enrich:
+    resource: "@PimEnterpriseEnrichBundle/Resources/config/routing.yml"
