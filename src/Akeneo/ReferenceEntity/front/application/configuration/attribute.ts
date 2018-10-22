@@ -47,6 +47,10 @@ export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
   });
 };
 
+export const getIcon = (config: AttributeConfig) => (attributeType: string): string => {
+  return config[attributeType].icon;
+};
+
 export const getDenormalizer = (config: AttributeConfig) => (
   normalizedAttribute: NormalizedAttribute
 ): Denormalizer => {
@@ -229,6 +233,7 @@ ${moduleExample}`
  * into a javascript object and add it automatically to the file on the fly.
  */
 export const getAttributeTypes = getTypes(__moduleConfig as AttributeConfig);
+export const getAttributeIcon = getIcon(__moduleConfig as AttributeConfig);
 export const getAttributeView = getView(__moduleConfig as AttributeConfig);
 export const getAttributeDenormalizer = getDenormalizer(__moduleConfig as AttributeConfig);
 export const getAttributeReducer = getReducer(__moduleConfig as AttributeConfig);

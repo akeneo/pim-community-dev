@@ -118,7 +118,7 @@ export interface MinimalRecordNormalizedAttribute extends MinimalNormalizedAttri
   record_type: NormalizedRecordType;
 }
 
-class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
+export class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
   protected constructor(
     readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
     readonly code: AttributeCode,

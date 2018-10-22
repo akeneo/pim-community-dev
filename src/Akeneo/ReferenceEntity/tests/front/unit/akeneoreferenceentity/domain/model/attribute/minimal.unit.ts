@@ -86,7 +86,18 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
         true,
         false
       );
-    }).toThrow('Attribute expect a boolean as valuePerChannel');
+    }).toThrow('Attribute expect a RecordType argument');
+
+    expect(() => {
+      new MinimalRecordConcreteAttribute(
+        createReferenceEntityIdentifier('designer'),
+        createCode('brands'),
+        createLabelCollection({en_US: 'Brands'}),
+        'text',
+        true,
+        false
+      );
+    }).toThrow('MinimalRecordAttribute type needs to be "record" or "record_collection"');
 
     expect(() => {
       new MinimalConcreteAttribute(

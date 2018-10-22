@@ -11,8 +11,8 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {RecordType, NormalizedRecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
-export interface NormalizedRecordAttribute extends NormalizedAttribute {
-  type: 'record';
+export interface NormalizedRecordCollectionAttribute extends NormalizedAttribute {
+  type: 'record_collection';
   record_type: NormalizedRecordType;
 }
 
@@ -20,14 +20,14 @@ export type NormalizedRecordAdditionalProperty = NormalizedRecordType;
 
 export type RecordAdditionalProperty = RecordType;
 
-export interface RecordAttribute extends Attribute {
+export interface RecordCollectionAttribute extends Attribute {
   recordType: RecordType;
-  normalize(): NormalizedRecordAttribute;
+  normalize(): NormalizedRecordCollectionAttribute;
 }
 
 export class InvalidArgumentError extends Error {}
 
-export class ConcreteRecordAttribute extends ConcreteAttribute implements RecordAttribute {
+export class ConcreteRecordCollectionAttribute extends ConcreteAttribute implements RecordCollectionAttribute {
   private constructor(
     identifier: Identifier,
     referenceEntityIdentifier: ReferenceEntityIdentifier,
@@ -44,7 +44,7 @@ export class ConcreteRecordAttribute extends ConcreteAttribute implements Record
       referenceEntityIdentifier,
       code,
       labelCollection,
-      'record',
+      'record_collection',
       valuePerLocale,
       valuePerChannel,
       order,
@@ -58,27 +58,27 @@ export class ConcreteRecordAttribute extends ConcreteAttribute implements Record
     Object.freeze(this);
   }
 
-  public static createFromNormalized(normalizedRecordAttribute: NormalizedRecordAttribute) {
-    return new ConcreteRecordAttribute(
-      createIdentifier(normalizedRecordAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedRecordAttribute.reference_entity_identifier),
-      createCode(normalizedRecordAttribute.code),
-      createLabelCollection(normalizedRecordAttribute.labels),
-      normalizedRecordAttribute.value_per_locale,
-      normalizedRecordAttribute.value_per_channel,
-      normalizedRecordAttribute.order,
-      normalizedRecordAttribute.is_required,
-      RecordType.createFromNormalized(normalizedRecordAttribute.record_type)
+  public static createFromNormalized(normalizedRecordCollectionAttribute: NormalizedRecordCollectionAttribute) {
+    return new ConcreteRecordCollectionAttribute(
+      createIdentifier(normalizedRecordCollectionAttribute.identifier),
+      createReferenceEntityIdentifier(normalizedRecordCollectionAttribute.reference_entity_identifier),
+      createCode(normalizedRecordCollectionAttribute.code),
+      createLabelCollection(normalizedRecordCollectionAttribute.labels),
+      normalizedRecordCollectionAttribute.value_per_locale,
+      normalizedRecordCollectionAttribute.value_per_channel,
+      normalizedRecordCollectionAttribute.order,
+      normalizedRecordCollectionAttribute.is_required,
+      RecordType.createFromNormalized(normalizedRecordCollectionAttribute.record_type)
     );
   }
 
-  public normalize(): NormalizedRecordAttribute {
+  public normalize(): NormalizedRecordCollectionAttribute {
     return {
       ...super.normalize(),
-      type: 'record',
+      type: 'record_collection',
       record_type: this.recordType.normalize(),
     };
   }
 }
 
-export const denormalize = ConcreteRecordAttribute.createFromNormalized;
+export const denormalize = ConcreteRecordCollectionAttribute.createFromNormalized;

@@ -1,5 +1,6 @@
 import {
   getTypes,
+  getIcon,
   getView,
   getDenormalizer,
   getReducer,
@@ -241,5 +242,20 @@ Actual conf: ${JSON.stringify({text: {}})}`);
       {icon: 'icon.svg', identifier: 'text', label: 'pim_reference_entity.attribute.type.text'},
       {icon: 'icon.svg', identifier: 'image', label: 'pim_reference_entity.attribute.type.image'},
     ]);
+  });
+
+  test('I can get an attributet icon', () => {
+    expect(
+      getIcon({
+        text: {
+          icon: 'icon_text.svg',
+          reducer: {},
+        },
+        image: {
+          icon: 'icon_image.svg',
+          reducer: {},
+        },
+      })('text')
+    ).toEqual('icon_text.svg');
   });
 });

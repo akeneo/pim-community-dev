@@ -1,10 +1,11 @@
-import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/record';
 import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import ReferenceEntityIdentifier, {
   NormalizedIdentifier as NormalizedReferenceEntityIdentifier,
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export type NormalizedRecordType = NormalizedReferenceEntityIdentifier | null;
+
+export class InvalidArgumentError extends Error {}
 
 export class RecordType implements NormalizableAdditionalProperty {
   private constructor(readonly recordType?: ReferenceEntityIdentifier) {

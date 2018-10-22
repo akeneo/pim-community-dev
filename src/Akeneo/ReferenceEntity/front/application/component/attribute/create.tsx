@@ -130,6 +130,7 @@ class Create extends React.Component<CreateProps> {
 
     const referenceEntities = await referenceEntityFetcher.fetchAll();
     this.setState({referenceEntities: referenceEntities});
+    this.props.events.onRecordTypeUpdated(referenceEntities[0].getIdentifier().stringValue());
   }
 
   private onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -278,7 +279,7 @@ class Create extends React.Component<CreateProps> {
                         onSelectionChange={this.onRecordTypeUpdate}
                       />
                     </div>
-                    {getErrorsView(this.props.errors, 'record_type')}
+                    {getErrorsView(this.props.errors, 'recordType')}
                   </div>
                 ) : null}
                 <div className="AknFieldContainer" data-code="valuePerLocale">

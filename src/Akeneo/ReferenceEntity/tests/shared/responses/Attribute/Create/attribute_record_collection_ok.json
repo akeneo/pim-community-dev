@@ -8,13 +8,13 @@
     "body": {
       "reference_entity_identifier": "designer",
       "code": "niceattribute",
-      "type": "text",
+      "type": "record_collection",
       "labels": {
-        "fr_FR": "Nice attribute",
         "en_US": "Nice attribute"
       },
+      "value_per_locale": false,
       "value_per_channel": true,
-      "value_per_locale": false
+      "record_type": "brands"
     }
   },
   "response": {

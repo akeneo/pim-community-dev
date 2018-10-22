@@ -15,6 +15,7 @@ import Header from 'akeneoreferenceentity/application/component/reference-entity
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -125,6 +126,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
   render() {
     const {onAttributeEdit, locale} = this.props;
     const attribute = denormalizeAttribute(this.props.attribute);
+    const icon = getAttributeIcon(attribute.getType());
 
     return (
       <div
@@ -138,10 +140,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
             htmlFor={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
           >
-            <img
-              className="AknFieldContainer-labelImage"
-              src={`bundles/pimui/images/attribute/icon-${attribute.type}.svg`}
-            />
+            <img className="AknFieldContainer-labelImage" src={icon} />
             <span>
               {__(`pim_reference_entity.attribute.type.${attribute.type}`)}{' '}
               {attribute.isRequired ? `(${__('pim_reference_entity.attribute.is_required')})` : ''}

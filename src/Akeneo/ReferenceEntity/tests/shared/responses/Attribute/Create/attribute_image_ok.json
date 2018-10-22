@@ -14,9 +14,7 @@
         "en_US": "Picture"
       },
       "value_per_channel": true,
-      "value_per_locale": true,
-      "max_file_size": 1024,
-      "allowed_extensions": ["jpg", "png"]
+      "value_per_locale": true
     }
   },
   "response": {
