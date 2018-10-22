@@ -2,8 +2,59 @@
 
 ## Migrate your standard project
 
+/!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
+
+TODO: add command to stop the daemon...
+
+To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/2.3...standard-for-3dot0).
+
+TODO: change the link!!
+
+1. Download the latest standard edition from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
+
+    ```bash
+    wget http://download.akeneo.com/pim-community-standard-v3.0-latest.tar.gz
+    tar -zxf pim-community-standard-v3.0-latest.tar.gz
+    cd pim-community-standard/
+    ```
+
+2. Update the configuration files:
+
+    First, we'll consider you have a `$PIM_DIR` variable:
+
+    ```bash
+    export PIM_DIR=/path/to/your/current/pim/installation
+    ```
+    
+    Then copy those files, normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes:
+
+    ```bash
+    cp .env.dist $PIM_DIR/
+    cp .gitignore $PIM_DIR/
+    cp docker-compose.override.yml.dist $PIM_DIR/
+    cp docker-compose.yml $PIM_DIR/
+
+    cp app/PimRequirements.php $PIM_DIR/app/
+    cp app/config/config_behat.yml $PIM_DIR/app/config/
+    cp app/config/config_test.yml $PIM_DIR/app/config/
+    cp app/config/pim_parameters.yml $PIM_DIR/app/config/
+    cp app/config/security.yml $PIM_DIR/app/config/
+    cp app/config/security_test.yml $PIM_DIR/app/config/
+    ```
+    
+    At this step, most of the configuration files have been updated. But we still miss a few that are detailed in the next steps.
+
 3. Update your **app/config/config.yml**
 
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+
+    ```bash
+    cp app/config/config.yml $PIM_DIR/app/config
+    # then add your own changes
+    ```
+
+    Or you can follow the detailed list of changes:
+    
     * The reference data configuration has been moved in the Pim Structure. Therefore, you must update your reference data configuration. 
     The key `pim_reference_data` is replaced by `akeneo_pim_structure:reference_data`:
 
@@ -31,7 +82,89 @@
                     type: simple
         ```
 
-4. Update your **app/AppKernel.php**:
+    * The key `pim_enrich.record_mails` has been replaced by `pim_import_export.record_mails`:
+
+        v2.x
+        ```
+        pim_enrich:
+            record_mails: true
+        ```
+
+        v3.0
+        ```
+        pim_import_export:
+            record_mails: true
+        ```
+
+    * The translator now expects the language `en_US`:
+
+        v2.x
+        ```
+        framework:
+            translator:      { fallback: en }
+        ```
+
+        v3.0
+        ```
+        framework:
+            translator:      { fallback: en_US }
+        ```
+    
+    * The configuration file `pim.yml` is not located in the *PimEnrichBundle* anymore:
+
+        v2.x
+        ```
+        imports:
+            - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
+        ```
+
+        v3.0
+        ```
+        imports:
+            - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
+        ```    
+    
+4. Update your **app/config/routing.yml**
+
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+
+    ```bash
+    cp app/config/routing.yml $PIM_DIR/app/config
+    # then add your own changes
+    ```
+
+    Or you can follow the detailed list of changes:
+
+    * The following route configurations have been removed:
+        - pim_comment
+        - pim_pdf_generator
+        - pim_localization
+        - pim_reference_data
+        - oro_user
+        
+    * The following route configurations have been added:
+        
+        ```yaml
+        akeneo_channel:
+            resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
+            prefix:   /
+         
+         akeneo_pim_structure:
+            resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
+         
+         akeneo_pim_enrichment:
+            resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
+        ```
+        
+5. Update your **app/AppKernel.php**:
+
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+
+    ```bash
+    cp app/AppKernel.php $PIM_DIR/app/
+    # then add your own bundles
+    ```
+    Or you can follow the detailed list of changes:
 
     * The following bundles have been renamed:
         - `Pim\Bundle\FilterBundle\PimFilterBundle` now is `Oro\Bundle\PimFilterBundle\PimFilterBundle`
@@ -73,8 +206,53 @@
     
     TODO: Enterprise edition
 
-Maybe the easiest way to do is to copy/paste the `app/AppKernel.php` file of the standard edition and to add your own bundles in the `registerProjectBundles` method.
+6. Update your dependencies:
 
+    The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
+    
+    ```bash
+    cp composer.json $PIM_DIR/
+    # then add your own dependencies
+    ```
+    
+    The easiest way to update your `package.json` is to copy/paste from the latest standard edition and add your custom dependencies.
+    
+    ```bash
+    cp package.json $PIM_DIR/
+    # then add your own dependencies
+    ```
+    
+    Now we are ready to update the backend dependencies:
+    
+    ```bash
+    cd $PIM_DIR
+    php -d memory_limit=3G composer update
+    ```
+    
+     **This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.**
+    If you have custom code in your project, this step may raise errors in the "post-script" command.
+    In this case, go to the chapter "Migrate your custom code" before running the database migration.
+
+    And we also have to update the frontend dependencies:
+    
+    ```bash
+    yarn install
+    ```
+
+7. Migrate your database:
+
+    ```bash
+    rm -rf var/cache
+    bin/console doctrine:migration:migrate --env=prod
+    ```
+
+8. Then re-generate the PIM assets:
+
+    ```bash
+    bin/console pim:installer:assets --symlink --clean --env=prod
+    yarn run webpack
+    ```
+    
 ## Database charset migration
 
 MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
