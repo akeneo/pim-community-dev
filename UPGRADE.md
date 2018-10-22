@@ -12,6 +12,92 @@
 
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
+## The main changes of the 3.0 version
+
+Main changes of the 3.0 are related to the code organization. In order to help the product team grow and delivery more features, we we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
+
+In a nutshell, we went from
+
+```bash
+$ tree src/ -d -L 3
+
+src/
+├── Akeneo
+│   ├── Bundle
+│   │   └── ...
+│   ├── Component
+│   │   └── ...
+└── Pim
+    ├── Bundle
+    │   ├── AnalyticsBundle
+    │   ├── ApiBundle
+    │   ├── CatalogBundle
+    │   ├── CatalogVolumeMonitoringBundle
+    │   ├── CommentBundle
+    │   ├── ConnectorBundle
+    │   ├── DashboardBundle
+    │   ├── DataGridBundle
+    │   ├── EnrichBundle
+    │   ├── FilterBundle
+    │   ├── ImportExportBundle
+    │   ├── InstallerBundle
+    │   ├── LocalizationBundle
+    │   ├── NavigationBundle
+    │   ├── NotificationBundle
+    │   ├── PdfGeneratorBundle
+    │   ├── ReferenceDataBundle
+    │   ├── UIBundle
+    │   ├── UserBundle
+    │   └── VersioningBundle
+    └── Component
+        ├── Api
+        ├── Catalog
+        ├── CatalogVolumeMonitoring
+        ├── Connector
+        ├── Enrich
+        ├── ReferenceData
+        └── User
+```
+
+to 
+
+```bash
+$ tree src/ -d -L 4
+
+src/
+└── Akeneo
+   ├── Channel
+   │   ├── Bundle
+   │   └── Component
+   ├── Pim
+   │   ├── Enrichment
+   │   │   ├── Bundle
+   │   │   └── Component
+   │   └── Structure
+   │       ├── Bundle
+   │       └── Component
+   ├── Platform
+   │   ├── Bundle
+   │   │   └── ...
+   │   ├── Component
+   │   │   └── ...
+   │   └── config
+   ├── Tool
+   │   ├── Bundle
+   │   │   └── ...
+   │   └── Component
+   │       └── ...
+   └── UserManagement
+        ├── Bundle
+        └── Component
+```
+
+This change lead us to move all the classes of the PIM (sed commands are provided at the end of this upgrade guide). It has also a small impact on the configuration files as described in the section *Migrate your standard project*.
+
+If you want to know more about this topic, you can read the blog posts we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
+
+TODO: link to blog post
+
 ## Migrate your standard project
 
 /!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
