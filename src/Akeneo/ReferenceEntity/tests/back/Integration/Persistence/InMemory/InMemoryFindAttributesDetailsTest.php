@@ -16,8 +16,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\TextAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryFindAttributesDetailsTest extends TestCase
@@ -55,9 +54,9 @@ class InMemoryFindAttributesDetailsTest extends TestCase
         $this->assertEmpty(($this->query)($manufacturerIdentifier));
     }
 
-    private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AbstractAttributeDetails
+    private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AttributeDetails
     {
-        $textAttributeDetails = new TextAttributeDetails();
+        $textAttributeDetails = new AttributeDetails();
         $textAttributeDetails->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         $textAttributeDetails->code = AttributeCode::fromString($attributeCode);
 

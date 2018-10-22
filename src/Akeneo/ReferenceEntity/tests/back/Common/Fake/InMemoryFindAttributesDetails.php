@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 
 /**
@@ -25,7 +25,7 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
     private $results = [];
 
-    public function save(AbstractAttributeDetails $referenceEntityDetails): void
+    public function save(AttributeDetails $referenceEntityDetails): void
     {
         $this->results[(string) $referenceEntityDetails->referenceEntityIdentifier][] = $referenceEntityDetails;
     }
