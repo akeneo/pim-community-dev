@@ -1,5 +1,17 @@
 # UPGRADE FROM 2.3 TO 3.0
 
+## Disclaimer
+
+> Please check that you're using Akeneo PIM v2.3
+
+> We're assuming that you created your project from the standard distribution
+
+> This documentation helps to migrate projects based on the Community Edition
+
+> Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
+
+> Please perform a backup of your codebase if you don't use a VCS (Version Control System).
+
 ## Migrate your standard project
 
 /!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
