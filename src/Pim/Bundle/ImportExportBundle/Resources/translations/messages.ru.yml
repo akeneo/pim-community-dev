@@ -1,8 +1,8 @@
-Job: Работа
-Connector: Соединитель
+Job: Процесс
+Connector: Коннектор
 pim_import_export:
-  job: Работа
-  connector: Соединитель
+  job: Процесс
+  connector: Коннектор
   status:
     0: Готов
   batch_status:
@@ -29,7 +29,7 @@ pim_import_export:
       error: Импорт <strong>%label%</strong> не удался
       warning: Импорт <strong>%label%</strong> завершен с некоторыми предупреждениями
       success: Импорт <strong>%label%</strong> завершен
-  list: Выберите задание
+  list: Выбрать процесс
   job_profile:
     tab:
       property.title: Общие свойства
@@ -142,6 +142,7 @@ Warnings: Предупреждения
 Summary: Сводка
 Start: Начало
 End: Конец
+set_attribute_requirements: Установить обязательность/ необязательность атрибутов
 COMPLETED: Завершено
 STARTING: Запущено
 STARTED: Запущено

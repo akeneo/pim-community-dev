@@ -1,0 +1,119 @@
+Item deleted: Елемент видалено
+Are you sure you want to delete this item?: Ви впевнені, що ви хочете видалити цей елемент?
+Delete Error: Помилка при видаленні
+Are you sure you want to do remove selected items?: Ви впевнені, що ви хочете видалити виділені елементи?
+Selected items were removed.: Вибрані елементи були видалені.
+Selected items were not removed.: Не вдалося видалити виділені елементи.
+Please, select items to remove.: Будь-ласка, оберіть елементи, які потрібно видалити.
+Cannot delete item.: Не вдалося видалити елемент.
+Refresh Confirmation: Підтверждення оновлення
+Your local changes will be lost. Are you sure you want to refresh grid?: Ваші локальні зміни буде втрачено. Ви впевнені, що ви хочете оновити сітку?
+Reset Confirmation: Підтвердження скидання
+Your local changes will be lost. Are you sure you want to reset grid?: Ваші локальні зміни буде втрачено. Ви впевнені, що ви хочете скинути сітку?
+Confirmation: Підтвердження
+edit: редагувати
+copy: копіювати
+remove: видалити
+Status: Статус
+All: Всі
+Per page: На сторінці
+Mass Action Confirmation: Підтверждення масової дії
+Mass action performed.: Масова дія виконується.
+Mass action is not performed.: Масова дія не виконується.
+Please, select items to perform mass action.: Будь ласка, виберіть елементи для виконання массової дії.
+Execution Confirmation: Підтвердження виконання
+Are you sure you want to do this?: Ви впевнені, що ви хочете це зробити?
+Action performed.: Дія виконується.
+Action is not performed.: Дія не виконується.
+Please, select item to perform action.: Будь ласка, виберіть елемент для виконання дії.
+View per page: Записів на сторінці
+Enabled: Ввімкнено
+Disabled: Вимкнено
+not_available: Н/Д
+Yes: true
+No: false
+oro.datagrid.entityHint: Сутність
+oro.datagrid.noentities: Записів не знайдено
+oro.datagrid.noresults: "Вибачте, пошук не дав результатів."
+oro.datagrid.noresults_subTitle: "Спробувати знову за іншим критерієм пошуку."
+oro.datagrid.nocolumns: Немає налаштованих стовпців для цієї сітки
+oro.datagrid.pagination.label: "Сторінка"
+oro.datagrid.pagination.totalPages: "з {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} записи"
+oro.datagrid.action.reset: "Скинути"
+oro.datagrid.action.refresh: "Оновити"
+oro_datagrid.select.all: "Всі"
+oro_datagrid.select.visible: "Всі видимі"
+oro_datagrid.select.none: "Жоден"
+oro_datagrid.select.select: "Виберіть"
+pim.grid.ajax_choice_filter.label_empty: порожньо
+pim.grid.ajax_choice_filter.label_not_empty: не є порожнім
+pim:
+  grid:
+    choice_filter:
+      label_contains: містить
+      label_does_not_contain: не містить
+      label_equal: дорівнює
+      label_start_with: починається з
+      label_empty: порожньо
+      label_not_empty: не є порожнім
+      label_in_list: у списку
+      operator: Оператор
+    price_filter:
+      label: Валюта
+    category_filter:
+      done: Зроблено
+Available Columns: Доступні стовпці
+Displayed Columns: Вибрані стовпці
+datagrid_view.columns.min_message: Ви повинні вибрати принаймні один стовпець для відображення
+pim_datagrid:
+  column_configurator:
+    label: Стовпці
+    title: Налаштування стовпців
+    all_groups: Всі групи
+    search: Пошук
+    clear: Очистити
+    displayed_columns: Вибрані стовпці
+    apply: Застосувати
+    cancel: Відмінити
+    remove_column: Видалити
+    description: Виберіть інформацію, яку ви хочете відобразити у стовпці
+    attribute_groups: Групи атрибутів
+  mass_action:
+    delete:
+      confirm_title: Підтвердіть видалення
+      confirm_ok: Підтвердити
+      empty_selection: Не вибрано жодного продукту
+pim.grid.mass_action.quick_export.title: Швидкий експорт
+pim.grid.mass_action.quick_export.launched: Експорт запущений
+pim.grid.action.launch.title: Запуск
+pim.grid.action.show.title: Показати
+Please select view: Будь ласка, виберіть представлення
+Loading...: Завантаження...
+View: Вид
+from: від
+to: до
+grid.view_selector:
+  default_view: Типовий вигляд
+  save_changes: Зберегти представлення
+  remove: Видалити це представлення
+  create_view: Створити представлення
+  create: Створити
+  search: Пошук
+  views: Представлення
+  placeholder: Назва нового представлення
+  choose_label: Обрати ярлик для представлення
+  confirmation:
+    remove: Ви дійсно бажаєте видалити це представлення?
+    delete: Підтвердіть видалення
+grid.view_selector.flash.updated: Представлення табличних даних успішно оновлено
+grid.display_selector:
+  label: Показати
+  gallery: Галерея
+  list: Список
+Client ID: ID клієнта
+Secret: Секретний
+grid.empty_results:
+  associated_product:
+    hint: Немає пов'язаних продуктів
+    subHint: 'Натисніть на кнопку "Додати асоціації" щоб додати зв''язки до цього продукту'

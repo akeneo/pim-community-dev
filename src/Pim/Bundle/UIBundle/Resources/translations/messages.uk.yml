@@ -1,0 +1,49 @@
+User: Користувач
+Run demo: Запустити демо
+Product: Продукт
+Attribute list: Список атрибутів
+Attribute Group list: Список груп атрибутів
+Users: Користувачі
+Roles: Ролі
+Groups: Групи
+Configuration: Конфігурація
+Currency list: Список валют
+Locale list: Список локалей
+Logged in as: Ви увійшли як
+Logout: Вийти
+Login: Увійти
+Previous: Попередній
+Next: Наступний
+Channel list: Список каналів
+Select file: Вибрати файл
+Change file: Змінити файл
+Remove file: Видалити файл
+Delete: Видалити
+Save: Зберегти
+Cancel: Відмінити
+Get help: Отримати допомогу
+My User: Мій акаунт
+oro.form.choose_value: Виберіть значення...
+Read more: Читати далі
+oro.form.click_here_to_select: Натисніть тут, щоб вибрати...
+Add: Додати
+"Learn how to use this space": "Дізнайтеся, як використовувати цей простір"
+"How To Use Pinbar": "Як використовувати Pinbar"
+Pinbar: Pinbar
+Favorites: Улюблене
+Most Viewed: Найпопулярніше
+"Add this page to favorites": "Додати цю сторінку в улюбленого"
+"Minimize the window to the pinbar": "Мінімізувати вікно у pinbar"
+"Loading ...": "Завантаження ..."
+"Yes": "Так"
+"No": "Ні"
+required: (обов'язково)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Дозволити завантаження повідомлень
+    loading_message_enabled.tooltip: Показувати користувачу повідомлення під час завантаження сторінки
+    loading_messages.label: Доступні для завантаження повідомлення
+    loading_messages.tooltip: Всі доступні для завантаження повідомлення розділені розривом рядка
+  group:
+    loading_message.title: Завантаження повідомлень
+other_actions: Інші дії
