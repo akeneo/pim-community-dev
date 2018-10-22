@@ -38,6 +38,11 @@ interface NormalizedAttributeMapping {
   };
 }
 
+interface NormalizedAttribute {
+  code: string;
+  type: string;
+}
+
 interface Config {
   labels: {
     pending: string,
@@ -71,6 +76,7 @@ class AttributeMapping extends BaseForm {
     number: [ 'pim_catalog_number' ],
     text: [ 'pim_catalog_text' ],
   };
+  private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
   private readonly template = _.template(template);
   private readonly config: Config = {
@@ -110,7 +116,6 @@ class AttributeMapping extends BaseForm {
    * {@inheritdoc}
    */
   public render(): BaseForm {
-    this.$el.html('');
     const familyMapping: NormalizedAttributeMapping = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
     this.$el.html(this.template({
@@ -121,25 +126,41 @@ class AttributeMapping extends BaseForm {
       pimAiAttribute: __(this.config.labels.pimAiAttribute),
       catalogAttribute: __(this.config.labels.catalogAttribute),
       attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
-      edit: __('pim_common.edit'),
       type: __(this.config.labels.type),
       valuesSummaryKey: this.config.labels.valuesSummary,
     }));
 
-    Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
-      this.appendAttributeSelector(mapping, pimAiAttributeCode);
-    });
-
-    this.toggleAttributeOptionButtons(Object.keys(mapping).reduce((acc, pimAiAttributeCode: string) => {
-      acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
+    const catalogAttributes = Object.keys(mapping).reduce((acc, franklinAttributeCode: string) => {
+      const catalogAttribute = mapping[franklinAttributeCode].attribute;
+      if ('' !== catalogAttribute && null !== catalogAttribute) {
+        acc.push(catalogAttribute);
+      }
 
       return acc;
-    }, {} as { [franklinAttribute: string]: string }));
+    }, [] as Array<string>);
 
-    Filterable.afterRender(this, __(this.config.labels.pimAiAttribute));
+    FetcherRegistry
+      .getFetcher('attribute')
+      .fetchByIdentifiers(catalogAttributes)
+      .then((attributes: Array<NormalizedAttribute>) => {
+        Object.keys(mapping).forEach((franklinAttributeCode: string) => {
+          const attribute: NormalizedAttribute | undefined = attributes
+            .find((attr: NormalizedAttribute) => {
+                return attr.code === mapping[franklinAttributeCode].attribute;
+              },
+            );
+          const type = undefined === attribute ? '' : attribute.type;
+          const isAttributeOptionsButtonVisible =
+            AttributeMapping.ATTRIBUTE_TYPES_BUTTONS_VISIBILITY.indexOf(type) >= 0;
 
-    this.renderExtensions();
-    this.delegateEvents();
+          this.appendAttributeSelector(mapping, franklinAttributeCode, isAttributeOptionsButtonVisible);
+        });
+
+        Filterable.afterRender(this, __(this.config.labels.pimAiAttribute));
+
+        this.renderExtensions();
+        this.delegateEvents();
+      });
 
     return this;
   }
@@ -155,24 +176,38 @@ class AttributeMapping extends BaseForm {
 
   /**
    * @param mapping
-   * @param {string} pimAiAttributeCode
+   * @param {string} franklinAttributeCode
+   * @param {boolean} isAttributeOptionsButtonVisible
    */
-  private appendAttributeSelector(mapping: any, pimAiAttributeCode: string) {
+  private appendAttributeSelector(
+    mapping: any,
+    franklinAttributeCode: string,
+    isAttributeOptionsButtonVisible: boolean
+  ) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-franklin-attribute-code="' + pimAiAttributeCode + '"]',
+      '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]',
     );
     const attributeSelector = new SimpleSelectAttribute({
       config: {
-        fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
+        fieldName: 'mapping.' + franklinAttributeCode + '.attribute',
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
-        types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pimAiAttribute.type],
+        types: AttributeMapping.VALID_MAPPING[mapping[franklinAttributeCode].pimAiAttribute.type],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
-      $dom.html(attributeSelector.render().$el);
+      attributeSelector.render();
+      if (isAttributeOptionsButtonVisible) {
+        attributeSelector.$el.find('.icons-container').append(
+          $('<div>')
+            .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
+            .attr('data-franklin-attribute-code', franklinAttributeCode)
+            .attr('title', __('pim_common.edit'))
+        );
+      }
+      $dom.prepend(attributeSelector.$el);
     });
   }
 
@@ -186,39 +221,6 @@ class AttributeMapping extends BaseForm {
     statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
 
     return statuses;
-  }
-
-  /**
-   * This method will show or hide the Attribute Option buttons.
-   * The first parameter is the current mapping, from pimAiAttributeCode to pimAttributeCode.
-   *
-   * @param { [pimAiAttributeCode: string]: string | null } mapping
-   */
-  private toggleAttributeOptionButtons(mapping: { [pimAiAttributeCode: string]: string | null }) {
-    const pimAttributes = Object.values(mapping).filter((pimAttribute) => {
-      return '' !== pimAttribute && null !== pimAttribute;
-    });
-
-    FetcherRegistry
-      .getFetcher('attribute')
-      .fetchByIdentifiers(pimAttributes)
-      .then((attributes: Array<{ code: string, type: string }>) => {
-      Object.keys(mapping).forEach((pimAiAttribute) => {
-        const $attributeOptionButton = this.$el.find(
-          '.option-mapping[data-franklin-attribute-code=' + pimAiAttribute + ']',
-        );
-        const attribute: { code: string, type: string } | undefined = attributes
-          .find((attr: { code: string, type: string }) => {
-            return attr.code === mapping[pimAiAttribute];
-          },
-        );
-        const type = undefined === attribute ? '' : attribute.type;
-
-        ['pim_catalog_simpleselect', 'pim_catalog_multiselect'].indexOf(type) >= 0 ?
-          $attributeOptionButton.show() :
-          $attributeOptionButton.hide();
-      });
-    });
   }
 
   /**

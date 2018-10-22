@@ -69,16 +69,16 @@ akeneo_suggest_data:
                 no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
                 insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
                 invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
-            attribute_options_mapping:
-                fields:
-                    franklin_attribute_option: Franklin attribute option
-                    catalog_attribute_option: Catalog attribute option
-                    attribute_option_status: Franklin option status
-                module:
-                    edit:
-                        title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'
-                        sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
-                        description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="" target="_blank">Read more</a>'
+        attribute_options_mapping:
+            fields:
+                franklin_attribute_option: Franklin attribute option
+                catalog_attribute_option: Catalog attribute option
+                attribute_option_status: Franklin option status
+            module:
+                edit:
+                    title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'
+                    sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
+                    description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="" target="_blank">Read more</a>'
 
     product:
         edit:
