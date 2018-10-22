@@ -86,6 +86,5 @@ pimee_catalog_rule:
       error: Произошла ошибка при вычислении затрагиваемых продуктов для правил
 btn:
   Execute rules: Выполнить привила
-rule: Настройки правил
 mass_edit_rule: Настройки правил
 job_execution.summary.rule_calculated: Количество привил

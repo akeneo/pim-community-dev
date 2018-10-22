@@ -4,17 +4,16 @@ Approve: Одобрить
 Refuse: Отклонить
 Approve selected: Одобрить выделенное
 Refuse selected: Отклонить выбраннoе
-oro:
-  datagrid:
-    noentities:
-      proposal: Нет никаких предложений для рассмотрения.
-    noresults:
-      proposal: Нет никаких предложений для рассмотрения. Попробуйте изменить критерии поиска.
+pim_datagrid:
+  no_entities:
+    proposal: Нет никаких предложений для рассмотрения.
+  no_results:
+    proposal: Нет никаких предложений для рассмотрения. Попробуйте изменить критерии поиска.
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Развернуть
-      collapseText: Свернуть
+      expand_text: Развернуть
+      collapse_text: Свернуть
 pimee_workflow:
   entity:
     published_product:
@@ -23,8 +22,6 @@ pimee_workflow:
     proposal:
       modal.title: Оставить комментарий (255 символов макс.)
   proposal:
-    overview: "] -Inf, 1] {{ count }} предложение|] 1, Inf [{{ count }} предложений"
-    selected: предложения выбраны
     mass_action_group:
       review:
         label: Массовое действие
@@ -64,3 +61,21 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Импорт предложений из XLSX
     import.label: Импорт предложений из XLSX
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Новое предложение
+    pimee_workflow_import_notification_new_proposals: Новые предложения для импорта
+    pimee_workflow_product_draft_notification_partial_approve: Частичное одобрение предложения
+    pimee_workflow_product_draft_notification_partial_reject: Предложение частично одобрено
+    pimee_workflow_product_draft_notification_partial_remove: Предложение частично удалено
+    pimee_workflow_product_draft_notification_approve: Предложение одобрено
+    pimee_workflow_product_draft_notification_refuse: Предложение отклонено
+    pimee_workflow_product_draft_notification_remove: Предложение удаленo
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Обзор
+      empty: Нет предложений для обзора

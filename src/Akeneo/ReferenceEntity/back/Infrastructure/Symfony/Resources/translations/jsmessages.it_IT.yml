@@ -16,7 +16,11 @@ pim_reference_entity:
       input:
         label: Etichetta
       confirm: Salva
+    delete:
+      title: Attributo
   record:
+    no_result:
+      subtitle: Riprova con nuovi criteri di ricerca.
     button:
       save: Salva
       create: Aggiungi nuovo
@@ -35,6 +39,7 @@ pim_reference_entity:
         code: Codice
         image: Immagine
         label: Etichetta
+        action: Azioni
     tab:
       enrich: Catalogo
   attribute:
@@ -72,6 +77,8 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Espressione regolare
             url: URL
+    delete:
+      title: Attributo
     notification:
       save:
         success: Attributo aggiornato con successo.
@@ -79,6 +86,12 @@ pim_reference_entity:
         success: Attributo creato con successo.
       delete:
         success: Attributo eliminato correttamente.
+  modal:
+    delete:
+      subtitle: Conferma cancellazione
+      button:
+        cancel: Annulla
+        confirm: Eliminare
 pim_enrich:
   entity:
     attribute:
