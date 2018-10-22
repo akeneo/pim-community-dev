@@ -43,3 +43,7 @@ docker-compose.yml
 yarn.lock
 package-lock.json
 yarn-error.log
+docker-compose.override.yml
+.php_cs.cache
+/web/test_dist/*
+
