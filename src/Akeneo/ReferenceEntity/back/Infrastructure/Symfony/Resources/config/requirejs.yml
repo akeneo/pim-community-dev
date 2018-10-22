@@ -32,13 +32,13 @@ config:
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
             record:
                 icon: bundles/pimui/images/attribute/icon-select.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
             record_collection:
                 icon: bundles/pimui/images/attribute/icon-multiselect.svg
-                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
-                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
 
         akeneoreferenceentity/application/configuration/sidebar:

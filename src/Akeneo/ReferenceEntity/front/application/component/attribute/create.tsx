@@ -22,6 +22,7 @@ import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/applicatio
 import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+import {isRecordAttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 interface StateProps {
   context: {
@@ -252,7 +253,7 @@ class Create extends React.Component<CreateProps> {
                   </div>
                   {getErrorsView(this.props.errors, 'type')}
                 </div>
-                {['record', 'record_collection'].includes(this.props.data.type) ? (
+                {isRecordAttributeType(this.props.data.type) ? (
                   <div className="AknFieldContainer" data-code="record_type">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label

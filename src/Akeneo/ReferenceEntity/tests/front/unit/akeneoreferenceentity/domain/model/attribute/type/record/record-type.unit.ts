@@ -3,7 +3,7 @@ import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/reco
 describe('akeneo > attribute > domain > model > attribute > type > record --- record type', () => {
   test('I can create a RecordType from normalized', () => {
     expect(RecordType.createFromNormalized('brand').normalize()).toEqual('brand');
-    expect(RecordType.createFromNormalized(null).normalize()).toEqual('null');
+    expect(RecordType.createFromNormalized(null).normalize()).toEqual(null);
     expect(() => new RecordType({my: 'object'})).toThrow();
   });
   test('I can validate a RecordType', () => {

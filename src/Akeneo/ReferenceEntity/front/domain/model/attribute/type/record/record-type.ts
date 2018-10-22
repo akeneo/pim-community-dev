@@ -35,10 +35,6 @@ export class RecordType implements NormalizableAdditionalProperty {
     return undefined === this.recordType ? null : this.recordType.stringValue();
   }
 
-  public static supportAttributeType(attributeType: string) {
-    return ['record', 'record_collection'].includes(attributeType);
-  }
-
   public static createFromString(recordType: string) {
     return '' === recordType ? RecordType.createFromNormalized(null) : RecordType.createFromNormalized(recordType);
   }

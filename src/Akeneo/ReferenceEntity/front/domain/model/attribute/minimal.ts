@@ -34,6 +34,10 @@ export default interface MinimalAttribute {
 
 class InvalidArgumentError extends Error {}
 
+export const isRecordAttributeType = (attributeType: string) => {
+  return ['record', 'record_collection'].includes(attributeType);
+};
+
 export class MinimalConcreteAttribute implements MinimalAttribute {
   protected constructor(
     readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
@@ -68,7 +72,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
       createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
-      minimalNormalizedAttribute.type as string,
+      minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel
     );
@@ -126,6 +130,10 @@ class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
   ) {
     super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
+    if (!isRecordAttributeType(type)) {
+      throw new InvalidArgumentError('MinimalRecordAttribute type needs to be "record" or "record_collection"');
+    }
+
     if (!(recordType instanceof RecordType)) {
       throw new InvalidArgumentError('Attribute expect a RecordType argument');
     }
@@ -136,7 +144,7 @@ class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
       createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
-      minimalNormalizedAttribute.type as string,
+      minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel,
       RecordType.createFromNormalized(minimalNormalizedAttribute.record_type)
@@ -152,7 +160,7 @@ class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
 }
 
 export const denormalizeMinimalAttribute = (normalizedAttribute: MinimalNormalizedAttribute) => {
-  if (['record', 'record_collection'].includes(normalizedAttribute.type)) {
+  if (isRecordAttributeType(normalizedAttribute.type)) {
     return MinimalRecordConcreteAttribute.createFromNormalized(normalizedAttribute as MinimalRecordNormalizedAttribute);
   }
 

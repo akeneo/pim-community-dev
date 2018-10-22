@@ -1,6 +1,6 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import sanitize from 'akeneoreferenceentity/tools/sanitize';
-import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
+import {isRecordAttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 export interface CreateState {
   active: boolean;
@@ -56,18 +56,23 @@ export default (
       break;
 
     case 'ATTRIBUTE_CREATION_TYPE_UPDATED':
+      const recordType =
+        !isRecordAttributeType(action.attribute_type) && isRecordAttributeType(state.data.type)
+          ? state.data.record_type
+          : null;
+
       state = {
         ...state,
         data: {
           ...state.data,
           type: action.attribute_type,
-          record_type: RecordType.supportAttributeType(action.attribute_type) ? state.data.record_type : null,
+          record_type: recordType,
         },
       };
       break;
 
     case 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED':
-      if (!RecordType.supportAttributeType(state.data.type)) {
+      if (!isRecordAttributeType(state.data.type)) {
         return state;
       }
 

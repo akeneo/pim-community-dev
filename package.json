@@ -83,7 +83,7 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "regexp-replace-loader": "1.0.0",
-    "summernote": "0.6.5",
+    "summernote": "0.6.16",
     "text-loader": "0.0.1",
     "ts-loader": "^3.5.0",
     "typescript": "^2.7.2",
