@@ -52,6 +52,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute
+        arguments:
+            - '@database_connection'
+
     # Record query functions
     akeneo_referenceentity.infrastructure.persistence.query.record_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlRecordExists
