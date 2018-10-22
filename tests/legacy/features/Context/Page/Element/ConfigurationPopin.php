@@ -33,37 +33,23 @@ class ConfigurationPopin extends Element
             return $this->find('css', 'input[type="search"]');
         }, 'Column search input not found');
 
+        $this->loadAllColumns();
+
         foreach ($labels as $label) {
-            $this->searchValue($label, $searchInput);
-            $item = $this->getItemForLabel($label, true);
+            $item = $this->getItemForLabel($label);
             $this->dragElementTo($item, $dropZone);
         }
     }
 
     /**
-     * Search for a column
-     *
-     * @param $label
-     * @param $searchInput
-     * @return void
+     * Run the infinite scroll on the column list
      */
-    public function searchValue($label, $searchInput) {
-        $searchInput->setValue($label);
+    public function loadAllColumns() {
+        return $this->spin(function() {
+            $this->getSession()->executeScript('$("[data-columns]").scrollTop(10000);');
 
-        $this->spin(function () use ($label, $searchInput) {
-            $items = $this->findAll('css', '#column-list li');
-
-            foreach ($items as $item) {
-                if (strtolower($label) === strtolower($item->getText())) {
-                    $searchInput->setValue('');
-                    return $item;
-                }
-            }
-
-            return false;
-        }, sprintf('Cannot search for column "%s"', $label));
-
-        $this->getSession()->wait(300);
+            return $this->find('css', '[data-columns].more') === null;
+        }, 'Cannot load all columns in list');
     }
 
     /**

@@ -64,7 +64,7 @@ class ColumnSelector extends BaseView {
     </div>
     <div class="AknColumnConfigurator-column">
       <div class="AknColumnConfigurator-columnHeader"> <input class="AknTextField AknColumnConfigurator-searchInput" type="search" placeholder="<%- _.__('pim_datagrid.column_configurator.search') %>"/> </div>
-      <div class="AknColumnConfigurator-listContainer" data-columns></div>
+      <div class="AknColumnConfigurator-listContainer more" data-columns></div>
     </div>
     <div class="AknColumnConfigurator-column">
         <div class="AknColumnConfigurator-columnHeader"><%- _.__("pim_datagrid.column_configurator.displayed_columns") %>
@@ -342,8 +342,10 @@ class ColumnSelector extends BaseView {
   stopListeningToListScroll() {
     this.modal.$el
       .find('[data-columns]')
+      .removeClass('more')
       .off('scroll')
       .unbind();
+
   }
 
   /**
