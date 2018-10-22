@@ -1026,4 +1026,33 @@ class EditAttributeContext implements Context
             ReferenceEntityIdentifier::fromString('dummy_identifier')
         ));
     }
+
+    /**
+     * @Given /^the following record attributes:$/
+     */
+    public function theFollowingRecordAttributes(TableNode $attributesTable)
+    {
+        foreach ($attributesTable->getHash() as $attribute) {
+            if (isset($attribute['identifier'])) {
+                $identifier = AttributeIdentifier::fromString($attribute['identifier']);
+            } else {
+                $identifier = $this->attributeRepository->nextIdentifier(
+                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AttributeCode::fromString($attribute['code'])
+                );
+            }
+
+            $this->attributeRepository->create(RecordAttribute::create(
+                $identifier,
+                ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
+                AttributeCode::fromString($attribute['code']),
+                LabelCollection::fromArray(json_decode($attribute['labels'], true)),
+                AttributeOrder::fromInteger((int) $attribute['order']),
+                AttributeIsRequired::fromBoolean((bool) $attribute['required']),
+                AttributeValuePerChannel::fromBoolean((bool) $attribute['value_per_channel']),
+                AttributeValuePerLocale::fromBoolean((bool) $attribute['value_per_locale']),
+                ReferenceEntityIdentifier::fromString($attribute['record_type'])
+            ));
+        }
+    }
 }
