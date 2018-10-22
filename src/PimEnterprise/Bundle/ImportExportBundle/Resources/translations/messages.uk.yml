@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Дозволено виконувати профіль процесу
+  edit.label: Дозволено редагувати профіль процесу
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Права доступу

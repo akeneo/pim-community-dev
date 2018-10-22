@@ -148,6 +148,7 @@ pimee_product_asset:
         first: Choisir les ressources
         second: Configurer
         third: Confirmer
+  not_editable: Vous n'avez pas la permission d'éditer la ressource "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:

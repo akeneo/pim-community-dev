@@ -9,7 +9,7 @@ permission-changes:
     revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой локали
   attribute group:
     grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой группе атрибутов
-    revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой группе атрибутов
+    revoke: Группа <strong>{{ group }}}</strong> не будет <strong>{{ permission }}</strong> в этой группе атрибутов
   job profile:
     grant: Группа <strong>{{ group }} будет {{ permission }}</strong>
     revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong>
@@ -36,8 +36,10 @@ pimee_enrich:
       tab:
         permission:
           title: Права доступа
+          added: Группа {{ group }} будет доступна {{ permission }} процессу
           execute.label: Разрешено выполнение заданий профиля
           edit.label: Разрешено изменение заданий профиля
+          removed: Группа {{ group }} не будет доступна {{ permission }} процессу
     channel:
       tab:
         asset-transformation:
@@ -48,6 +50,8 @@ pimee_enrich:
           title: Права доступа
           view.label: Разрешено просматривать атрибуты
           edit.label: Разрешено изменение атрибутов
+          removed: Группа {{ group }} не будет доступна {{ permission }} группе атрибутов
+          added: Группа {{ group }} будет доступна {{ permission }} группе атрибутов
   entity:
     product:
       index_title: "] -Inf, 1] {{ count }} результат|] 1, Inf [{{ count }} результаты"
@@ -82,6 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: Предложение было успешно применено.
+              error: "Предложение не может быт применено из-за следующей ошибки: {{ error }}"
             reject:
               success: Это предложение было отклонено.
             remove:
@@ -132,7 +137,7 @@ pimee_enrich:
     not_found: Преобразования не найдены
     title:
       transformation: Преобразование
-      options: Параметры
+      options: Опции
     colorspace:
       title: Цветовое пространство
       options:
@@ -169,6 +174,7 @@ pimee_enrich:
           label: Опубликовать
           label_count: "{1}Опубликовать <span class=\"AknFullPage-title--highlight\">1 продукт</span>|] 1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span>"
           description: Продукты будут опубликованы
+          warning: '{{ itemsCount }} выбранных продуктов будут опубликованы.'
         unpublish:
           label: Снять с публикации
           label_count: "{1}Снять с публикации <span class=\"AknFullPage-title--highlight\">1 продукт</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} продукты</span>"
@@ -176,6 +182,7 @@ pimee_enrich:
           warning: Выбранные продукты {{ itemsCount }} будет сняты с публикации.
     asset:
       title: Массовые действия с медиафайлами
+      confirm: "{1}Пожалуйста, подтвердите, что вы собираетесь обновить медиафайл следующей информацией.|] 1, Inf [Пожалуйста, подтвердите, что вы собираетесь обновить медиафайл следующей информацией {{ itemsCount }}."
       step:
         select:
           label: Выбор медиафайлов
@@ -190,9 +197,13 @@ pimee_enrich:
         add_tag:
           label: Добавление тегов к медиафайлам
           description: Теги будут добавлены к медиафайлам.
+          label_count: "{1}Добавить теги к <span class=\"AknFullPage-title--highlight\">1 медиафайлу</span>|] 1, Inf [Добавить теги к <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} медиафайлы</span>"
           field: Теги
+          empty_selection: Пожалуйста, выберите теги
         add_to_category:
           label: Классифицировать медиафайлы по категориям
+          description: Медиафайлы будут добавлены в следующие категории, исходное расположение будет потеряно.
+          label_count: "{1}Распределить <span class=\"AknFullPage-title--highlight\">1 медиафайл </span> по категориям|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} медиафайлы</span> по категориям"
           field: Категории
 pim_menu:
   tab:
@@ -213,6 +224,9 @@ page_title:
   pimee_asset_categorytree_edit: Категория {{ category.label }} | Редактировать
   pimee_catalog_rule_rule_index: Правила
 batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Импорт медиафайлов конфигурации канала
   add_product_value_with_permission_and_rules:
     label: Добавить значение продукта с проверкой прав доступа & применением правил
     perform.label: Добавить значение продукта
@@ -226,6 +240,7 @@ batch_jobs:
     perform.label: Удалить значение продукта
     execute_rules.label: Выполнение правил
   edit_common_attributes_with_permission_and_rules:
+    label: Редактировать атрибуты с проверкой прав доступа и применения правил
     perform.label: Редактировать атрибуты
     execute_rules.label: Выполнение правил
     cleaner.label: Очистить временные файлы
@@ -250,6 +265,10 @@ batch_jobs:
   publish_product:
     perform.label: Опубликовать продукты
 catalog_volume:
+  section:
+    assets:
+      title: Измерения по медиафайлам
+      hint: Вы можете отслеживать объемы медиафайлов прямо здесь
   axis:
     count_assets: Медиафайлы
     count_asset_categories: Категории медиафайлов

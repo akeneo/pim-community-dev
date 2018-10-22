@@ -24,7 +24,7 @@ pimee_product_asset:
       upload: Загрузить
       delete: Удалить
       download: Скачать
-      generate_from_reference: Создание из образца
+      generate_from_reference: Генерация на основе ссылки
       reset_variations: Сбросить вариации
     confirmation.remove: Вы уверены, что хотите удалить медиафайл «%asset%»?
     confirmation.subTitle: Медиафайлы
@@ -35,7 +35,7 @@ pimee_product_asset:
       code: Код
       description: Описание
       end_of_use: Конец использования
-      reference: Образец
+      reference: Ссылка
       filename: Имя файла
       width: Ширина
       height: Высота
@@ -46,7 +46,7 @@ pimee_product_asset:
       actions: Действия
       download: Скачать
       tag: Теги
-      no_reference: Файл образца не был загружен еще.
+      no_reference: Файл по ссылке не был загружен еще.
       no_variation: Не был создан еще ни один файл вариации.
     flash:
       update:
@@ -60,8 +60,8 @@ pimee_product_asset:
   enrich_reference:
     flash:
       delete:
-        success: Файл образца был удален.
-        error: Файл образца не был удален. Произошла ошибка.
+        success: Файл по ссылке был удален.
+        error: Файл по ссылке не был удален. Произошла ошибка.
   enrich_variation:
     flash:
       transformation:
@@ -148,6 +148,7 @@ pimee_product_asset:
         first: Выбор медиафайлов
         second: Настройка
         third: Подтверждение
+  not_editable: У вас нет доступа на редактирование медиафайла "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:

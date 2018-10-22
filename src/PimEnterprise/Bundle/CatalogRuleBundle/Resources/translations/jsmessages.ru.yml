@@ -1,9 +1,13 @@
 pimee_catalog_rule:
+  overview: "] -Inf, 1] {{ count }} правило|] 1, Inf [{{ count }} правила"
   execution_button: Выполнить привила
+  selected: 'правила выбраны'
   popin:
     execute_rules:
+      confirm_title: Подтвердить выполнение
       confirm_content: Вы уверены, что хотите выполнить все правила? (это может занять много времени)
   notification:
+    fail: Действие не может быть выполнено
     launched: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
   attribute:
     list:
@@ -26,14 +30,17 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите выполнить правило?
           confirm_ok: Подтвердить
       mass_edit_action:
+        confirm_title: Подтвердить расчет
         confirm_content: Вы уверены, что вы хотите вычислить количество продуктов затрагиваемых правилами?
         confirm_ok: Подтвердить
       mass_action:
         execute:
           confirm_ok: Подтвердить
+          confirm_title: Подтвердить выполнение
           confirm_content: Вы уверены, что хотите выполнить выбранные правила?
           success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
           error: Произошла ошибка во время выполнения правил.
@@ -63,6 +70,7 @@ batch_jobs:
   yml_rule_import:
     label: Импорт правил из YAML
     import.label: Импорт правил
+    execute_rules.label: Выполнение правил
   yml_rule_export:
     label: Экспорт правил в YAML
     export.label: Экспорт правил
@@ -77,8 +85,11 @@ batch_jobs:
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   csv_product_model_import_with_rules:
+    label: Импорт моделей продуктов в CSV с правилами
     execute_rules.label: Выполнение правил
     validation.label: Проверка файла
+    import_root_product_model.label: Импорт корневой модели продукта
+    import_sub_product_model.label: Импорт модели подпродукта
   xlsx_product_import_with_rules:
     label: Импорт продуктов из XLSX с правилами
     execute_rules.label: Выполнение правил
@@ -86,5 +97,8 @@ batch_jobs:
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
   xlsx_product_model_import_with_rules:
+    label: Импорт модели продукта в XLSX с правилами
     execute_rules.label: Выполнение правил
     validation.label: Проверка файла
+    import_root_product_model.label: Импорт корневой модели продукта
+    import_sub_product_model.label: Импорт подчиненной модели

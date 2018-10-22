@@ -1,0 +1,17 @@
+user:
+  email:
+    notifications: Сповіщення ел. пошти
+  proposals:
+    notifications:
+      to_review: Коли нова пропозиції для розгляду
+      state: Коли пропозицію прийнято або відхилено
+      yes: true
+      no: false
+  asset_delay_reminder: Нагадування про затримку ресурсів (в днях)
+  default_published_product_grid_view:
+    label: Опубліковане табличне представлення за замовчуванням
+Default asset tree: Дерево ресурсів за замовчуванням
+pimee_user:
+  user:
+    tab:
+      notifications.title: Сповіщення
