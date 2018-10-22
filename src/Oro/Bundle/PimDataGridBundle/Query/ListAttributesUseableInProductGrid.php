@@ -16,12 +16,12 @@ interface ListAttributesUseableInProductGrid
     /**
      * Fetch a paginated list of attributes for the product grid
      *
-     * @param string      $locale        Code of the locale for the translation of the labels
-     * @param int         $page          Number of the page (start at 1)
-     * @param string|null $searchOnLabel String to search in the attribute label
-     * @param int|null    $userId        Context's user id if needed
+     * @param string $locale        Code of the locale for the translation of the labels
+     * @param int    $page          Number of the page (start at 1)
+     * @param string $searchOnLabel String to search in the attribute label
+     * @param int    $userId        Context's user id
      *
      * @return array
      */
-    public function fetch(string $locale, int $page, string $searchOnLabel = '', int $userId = null): array;
+    public function fetch(string $locale, int $page, string $searchOnLabel, int $userId): array;
 }

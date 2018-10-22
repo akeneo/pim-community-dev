@@ -58,7 +58,9 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
             ];
         }
 
-        $availableColumns = $this->get('pim_datagrid.product_grid.query.list_available_columns')->fetch('en_US', 1);
+        $listAvailableColumnsQuery = $this->get('pim_datagrid.product_grid.query.list_available_columns');
+        $availableColumns = $listAvailableColumnsQuery->fetch('en_US', 1, '', '', 2);
+
         $this->assertSame($expectedColumns, $availableColumns);
 
         $expectedColumnsPage2 = [
@@ -72,7 +74,7 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
             ]
         ];
 
-        $availableColumnsPage2 = $this->get('pim_datagrid.product_grid.query.list_available_columns')->fetch('en_US', 2);
+        $availableColumnsPage2 = $listAvailableColumnsQuery->fetch('en_US', 2, '', '', 2);
         $this->assertSame($expectedColumnsPage2, $availableColumnsPage2);
     }
 
@@ -122,7 +124,7 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
             ]
         ];
 
-        $availableColumns = $this->get('pim_datagrid.product_grid.query.list_available_columns')->fetch('en_US', 1, '', 'label');
+        $availableColumns = $this->get('pim_datagrid.product_grid.query.list_available_columns')->fetch('en_US', 1, '', 'label', 2);
 
         $this->assertSame($expectedColumns, $availableColumns);
     }
@@ -168,7 +170,7 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
             ]
         ];
 
-        $availableColumns = $this->get('pim_datagrid.product_grid.query.list_available_columns')->fetch('en_US', 1, 'other', '');
+        $availableColumns = $this->get('pim_datagrid.product_grid.query.list_available_columns')->fetch('en_US', 1, 'other', '', 2);
 
         $this->assertSame($expectedColumns, $availableColumns);
     }
