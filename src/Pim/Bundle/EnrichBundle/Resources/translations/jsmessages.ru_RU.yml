@@ -73,6 +73,7 @@ pim_datagrid:
       csv_grid_context: CSV (видимые столбцы)
       xlsx_all: Excel (все атрибуты)
       xlsx_grid_context: Excel (видимые столбцы)
+    mass_delete: Массовое удаление
     selected:
       family: выбранные семейства
       product: выбранные результаты
@@ -113,6 +114,7 @@ pim_enrich.entity.fallback:
   module:
     delete:
       title: Удалить {{ itemName }}
+      alternative_title: Подтвердите удаление
       item: Вы уверены, что хотите удалить этот элемент?
     edit:
       leave: Вы уверены, что хотите покинуть эту страницу?
@@ -132,6 +134,7 @@ pim_enrich.entity.product:
       fail: Не удалось удалить продукт.
     create:
       success: Продукт успешно создан
+      fail: У продукта не указан атрибут в качестве идентификатора или у вас нет прав для его изменения.
   module:
     create:
       subtitle: Создать продукт
@@ -180,6 +183,16 @@ pim_enrich.entity.product:
     associations:
       title: Ассоциации
       none_exist: Титпы ассоциаций отсутствуют.
+      show_groups: Отображать группы
+      number_of_associations: "{{ productCount }} продукт(ы), {{ productModelCount }} модель(и) продукта(ов) и {{ groupCount }} группа(ы)"
+      target: Цель
+      manage: Добавить {{ associationType }} связи
+      manage_description: Выберите продукты, которые вы хотите связать с текущим продуктом
+      add_associations: Добавить связи
+    attribute_filter:
+      all: Все атрибуты
+      missing_required: Все недостающие обязательные атрибуты
+      at_this_level: Все специфические атрибуты уровня
     change_family:
       title: Изменить семейство продуктов
       merge_attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
@@ -197,8 +210,11 @@ pim_enrich.entity.product_model:
   module:
     attribute:
       read_only_parent_attribute_from_common: Данный атрибут может быть обновлен в общих атрибутах.
+      read_only_parent_attribute_from_model: "Этот атрибут может быть обновлен в атрибутах {{ axes }}"
     variant_axis:
       create: Добавить новый
+    delete:
+      confirm_for_products_and_product_models: Вы уверены, что хотите удалить выбранные продукты и модели продуктов? Все дочерние модели продуктов будут также удалены.
 pim_enrich.entity.channel:
   label: канал
   uppercase_label: Канал
@@ -217,6 +233,8 @@ pim_enrich.entity.channel:
     do_not_convert: Не преобразовывать
     label_conversion_units: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
   module:
+    create:
+      button: Создать канал
     delete:
       confirm: Вы действительно хотите удалить этот канал?
 pim_enrich.entity.family:
@@ -242,6 +260,11 @@ pim_enrich.entity.family:
       confirm: Вы действительно хотите удалить это семейство?
 pim_enrich.entity.family_variant:
   short_label: Вариант
+  module:
+    edit:
+      variant_attributes: Разновидность атрибутов
+    create:
+      label: Добавить вариант
 pim_enrich.entity.attribute_option:
   short_uppercase_label: Параметры
   flash:
@@ -278,11 +301,16 @@ pim_enrich.entity.group_type:
       success: Тип группы успешно удален
       fail: Не удается удалить эту группу типов
   module:
+    create:
+      button: Создать тип группы
     delete:
       confirm: Вы действительно хотите удалить эту группу типов?
 pim_enrich.entity.group:
   label: Группа
   flash:
+    update:
+      success: Группа успешно обновлена.
+      fail: Не удалось обновить группу.
     create:
       success: Группа успешно создана
     delete:
@@ -297,6 +325,9 @@ pim_enrich.entity.attribute:
   label: атрибут
   plural_label: Атрибуты
   flash:
+    update:
+      success: Атрибут успешно обновлён.
+      fail: Не удалось обновить атрибут.
     delete:
       success: Атрибут успешно удален
       fail: Не удается удалить этот атрибут
@@ -318,6 +349,7 @@ pim_enrich.entity.attribute:
       label: Семейство измерений
       choose: Выберите семейство
     name: Имя
+    negative_allowed: Допустимы отрицательные значения
     number_max: Макс. число
     number_min: Мин. число
     reference_data_name:
@@ -349,11 +381,15 @@ pim_enrich.entity.attribute:
   module:
     add_attribute:
       no_available_attributes: Нет больше атрибутов для добавления
+      attributes_selected: "выбрано атрибутов: {{ itemsCount }}"
+    create:
+      button: Создать атрибут
     edit:
       common: Общие параметры
       validation: Параметры проверки
     delete:
       confirm: Вы действительно хотите удалить этот атрибут?
+      confirm_from_group: Вы действительно хотите удалить атрибут {{ attribute }} из этой группы атрибутов?
       confirm_from_product: Вы уверены, что хотите удалить этот атрибут из продукта?
 pim_enrich.entity.attribute_group:
   label: группа атрибутов
@@ -362,8 +398,14 @@ pim_enrich.entity.attribute_group:
   flash:
     update:
       success: Группа атрибутов успешно обновлена
+      fail: Не удалось обновить группу атрибутов
     delete:
       success: Группа атрибутов успешно удалена
+  module:
+    add_attribute_group:
+      attributes_groups_selected: 'выбрано групп: {{ itemsCount }}'
+    delete:
+      confirm: Вы действительно хотите удалить эту группу атрибутов?
 pim_enrich.entity.locale:
   label: локаль
   uppercase_label: Локаль
@@ -374,6 +416,11 @@ pim_enrich.entity.category:
   plural_label: Категории
 pim_enrich.entity.currency:
   plural_label: Валюты
+pim_enrich.entity.job_execution:
+  module:
+    download:
+      invalid_xlsx: Скачать некорректные данные
+      invalid_csv: Скачать некорректные данные
 pim_enrich.export.product:
   data:
     title: Фильтровать по продуктам
@@ -423,6 +470,8 @@ pim_enrich.export.product:
         ">=": Закончен по хотя бы одной локали
         "GREATER OR EQUALS THAN ON ALL LOCALES": Закончен по всем выбранным локалям
         LOWER THAN ON ALL LOCALES: Незакончен ни по одной локали
+        AT LEAST COMPLETE: Как минимум один дочерний продукт заполнен в одной выбранной локали
+        ALL COMPLETE: Все продукты-потомки заполнены по всем выбранным локалям
       empty_selection: Выберите семейство
     category:
       title: Категория
@@ -456,7 +505,10 @@ pim_enrich.mass_edit.product:
       label: Изменить статус
       description: Выбранные продукты будут активированы или деактивированы.
       field: Включить
+    edit_common:
+      label: Изменить значения атрибутов
     add_attribute_value:
+      label: Добавьте значения атрибутов
       description: Только атрибуты, имеющие несколько значений, будут редактироваться для {{ locale }} и {{ scope }}. Новые значения атрибутов добавляются, предыдущие значения сохраняются.
     change_family:
       label: Изменить семейство
@@ -465,8 +517,19 @@ pim_enrich.mass_edit.product:
       label: Добавить в группы
       description: Выберите группы, в которые нужно добавить выбранные продукты
       field: Группы
+    add_to_category:
+      description: Продукты будут классифицированы в следующие категории, исходная классификация сохранена.
+    move_to_category:
+      description: Продукты будут классифицированы в следующие категории, исходная классификация не сохранена.
     remove_from_category:
       description: Продукты будут удалены из следующих категорий.
+    associate_to_product_and_product_model:
+      label: Связать
+      description: Продукты, выбранные в таблице, будут связаны с выбранными продуктами и моделями продуктов для выбранного типа связи
+      validate: Пожалуйста, добавьте связь до перехода к следующему шагу
+    change_parent_product_model:
+      label: Изменить родительскую модель продукта
+      description: Родительская модель продукта или варианта продукта, выделенная в представлении, будет изменена на выбранную модель продукта.
 pim_enrich.mass_edit.family:
   step:
     select:
@@ -479,6 +542,7 @@ pim_title:
   oro_default: Панель управления
   pim_enrich_attributegroup_index: Группы атрибутов
   pim_enrich_attributegroup_create: Группы атрибутов | Создать
+  pim_enrich_catalog_volume_index: Мониторинг объема каталога
   pim_enrich_categorytree_index: Деревья категории
   pim_enrich_categorytree_create: Деревья категорий | Создать
   pim_enrich_categorytree_create_tree: Деревья категорий | Создать
@@ -502,8 +566,14 @@ pim_title:
   pim_analytics_system_info_index: Информация о системе
 pim_menu:
   tab:
+    activity: Активность
+    imports: Импорты
+    exports: Экспорты
     settings: Настройки
     system: Система
+    help:
+      title: Помощь
+      helper: Справочный центр Akeneo
   item:
     association_type: Типы ассоциаций
     attribute_group: Группы атрибутов
@@ -524,6 +594,12 @@ pim_menu:
     user_role: Роли
     info: Информация о системе
     job_tracker: Трекер процессов
+    catalog_volume: Мониторинг объема каталога
+  navigation:
+    activity: Меню раздела Активность
+    system: Меню раздела Система
+    user: Меню раздела Управление пользователями
+    settings: Меню раздела Настройки
   user:
     logout: Выйти
     user_account: Мой аккаунт
@@ -534,12 +610,18 @@ pim_notification:
     quick_export: Быстрый экспорт
     mass_edit: Массовое редактирование
 batch_jobs:
+  add_association:
+    label: Связать
+    perform.label: Связать
   add_attribute_value:
     label: Добавить значения атрибутов
     perform.label: Добавить значения атрибутов
   add_product_value:
     label: Добавить значение продукта
     perform.label: Добавить значение продукта
+  add_to_category:
+    label: Добавить в категорию
+    perform.label: Добавить в категорию
   csv_product_grid_context_quick_export:
     quick_export.label: Быстрый экспорт контекста сетки в CSV
     perform.label: Быстрый экспорт контекста сетки в CSV
@@ -555,6 +637,12 @@ batch_jobs:
   edit_common_attributes:
     label: Редактировать атрибуты
     perform.label: Редактировать атрибуты
+  move_to_category:
+    label: Перенести в категорию
+    perform.label: Перенести в категорию
   update_product_value:
     label: Обновить значение продукта
     perform.label: Обновить значение продукта
+  remove_from_category:
+    label: Удалить из категории
+    perform.label: Удалить из категории

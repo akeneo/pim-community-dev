@@ -273,6 +273,8 @@ pim_enrich.entity.channel:
     delete:
       success: Canal suprimit correctament
       fail: No podeu eliminar aquest canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canales"
   property:
     category_tree: Arbre de categories
     do_not_convert: No convertir
@@ -341,6 +343,7 @@ pim_enrich.entity.family_variant:
       title: Crear una nova variant familiar
       description: En una variant familiar, podeu definir una estructura per productes amb variants. Trieu el nombre de nivells variants a gestionar, els atributs utilitzats com eixos variants per a cada nivell i després definir com es distribueixen els atributs.
       variant_levels: Nivells de variants
+      axis_level: "Nivell de variant d'eixos {{ level }}"
     update_translations:
       title: Actualitzar traduccions
 pim_enrich.entity.attribute_option:
@@ -369,6 +372,8 @@ pim_enrich.entity.association_type:
     delete:
       success: Tipus d'associació suprimit correctament
       fail: No podeu eliminar aquest tipus d'associació
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipus d'associació|]1, Inf[{{ count }} tipus d'associació"
   module:
     create:
       button: Crear tipus d'associació
@@ -386,6 +391,8 @@ pim_enrich.entity.group_type:
     delete:
       success: Tipus de grup suprimit correctament
       fail: No podeu eliminar aquest tipus de grup
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipus de grup|]1, Inf[{{ count }} tipus de grups"
   module:
     create:
       button: Crear tipus de grup
@@ -403,6 +410,8 @@ pim_enrich.entity.group:
     delete:
       success: Grup suprimit correctament
       fail: No podeu eliminar aquest grup
+  page_title:
+    index: "]-Inf, 1]{{ count }} grup|]1, Inf[{{ count }} grups"
   module:
     create:
       button: Crear grup
@@ -419,6 +428,8 @@ pim_enrich.entity.attribute:
     delete:
       success: Atribut suprimit correctament
       fail: No podeu eliminar aquest atribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} atribut|]1, Inf[{{ count }} atributs"
   property:
     allowed_extensions: Extensions permeses
     auto_option_sorting: Ordena opcions automàtiques per ordre alfabètic
@@ -514,17 +525,25 @@ pim_enrich.entity.api_connection:
     delete:
       success: Connexió d'API revocada amb èxit
       fail: No pot revocar aquesta connexió API
+  page_title:
+    index: "]-Inf, 1]{{ count }} connexió API|]1, Inf[{{ count }} connexions API"
 pim_enrich.entity.locale:
   label: configuració regional
   uppercase_label: Configuració Regional
   plural_label: Configuracions regionals
+  page_title:
+    index: "]-Inf, 1]{{ count }} local|]1, Inf[{{ count }} locals"
 pim_enrich.entity.category:
   label: categoria
   uppercase_label: Categoria
   plural_label: Categories
 pim_enrich.entity.currency:
   plural_label: Monedes
+  page_title:
+    index: "]-Inf, 1]{{ count }} moneda|]1, Inf[{{ count }} monedes"
 pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operació|]1, Inf[{{ count }} operacions"
   module:
     create:
       upload: Deixeu anar el fitxer {{ type }} aquí, o clic per buscar en el disc
@@ -694,6 +713,7 @@ pim_enrich.mass_edit.family:
     set_requirements:
       label: Establir els requeriments d'atributs
       description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
+      label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|]1, Inf[Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
 pim_title:
   oro_default: Panell de contol
   pim_enrich_attributegroup_index: Grups d'atribut
