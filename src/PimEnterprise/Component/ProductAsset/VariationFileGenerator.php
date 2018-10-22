@@ -118,6 +118,13 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             $rawTransformations,
             $outputFilename
         );
+
+        if (null === $variationFileInfo) {
+            $this->deleteFile($sourceFileInfo);
+
+            return;
+        }
+
         $variationMetadata = $this->extractMetadata($variationFileInfo);
         $variationFile = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
 

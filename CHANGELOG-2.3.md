@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7756: Don't generate asset variation if no transformation supports the reference file type for a channel
+
 # 2.3.12 (2018-10-17)
 
 ## Bug fixes

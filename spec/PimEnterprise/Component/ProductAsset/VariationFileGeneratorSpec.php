@@ -143,4 +143,32 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             new \LogicException('The source file "path/to/my_original_file.txt" is not present on the filesystem "my_storage".')
         )->during('generate', [$variation]);
     }
+
+    function it_does_not_generate_variation_file_if_no_transformation_has_been_applied(
+        $fileFetcher,
+        $filesystem,
+        $channelConfiguration,
+        $fileTransformer,
+        $fileStorer,
+        $metadataSaver,
+        $variation,
+        $variationSaver,
+        \SplFileInfo $inputFileInfo
+    ) {
+        $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
+        $fileFetcher->fetch($filesystem, 'path/to/my_original_file.txt')->willReturn($inputFileInfo);
+
+        $fileTransformer->transform(
+            $inputFileInfo,
+            ['t1', 't2'],
+            'my_original_file--ecommerce.txt'
+        )->willReturn(null);
+
+        $fileStorer->store(Argument::cetera())->shouldNotBeCalled();
+        $metadataSaver->save(Argument::cetera())->shouldNotBeCalled();
+        $variation->setFileInfo(Argument::cetera())->shouldNotBeCalled();
+        $variationSaver->save(Argument::cetera())->shouldNotBeCalled();
+
+        $this->generate($variation);
+    }
 }
