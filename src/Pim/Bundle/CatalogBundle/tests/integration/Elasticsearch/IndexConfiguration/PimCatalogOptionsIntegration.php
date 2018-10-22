@@ -51,13 +51,18 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
                             'field' => 'values.colors-options.<all_channels>.<all_locales>',
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'colors',
+                        ],
+                    ],
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_7', 'product_8']);
+        $this->assertDocument($productsFound, ['product_8']);
     }
 
     public function testIsNotEmptyOperatorWithOptionValue()
@@ -89,13 +94,18 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
                             'values.colors-options.<all_channels>.<all_locales>' => ['black', 'blue'],
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'colors',
+                        ],
+                    ],
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_6', 'product_7', 'product_8']);
+        $this->assertDocument($productsFound, ['product_6', 'product_8']);
     }
 
     public function testSortAscending()
@@ -154,6 +164,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [
@@ -164,6 +175,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [
@@ -174,6 +186,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [
@@ -184,6 +197,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [
@@ -194,6 +208,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [
@@ -204,6 +219,7 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [
@@ -214,10 +230,12 @@ class PimCatalogOptionsIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => [],
                 'values'     => [],
             ],
             [
                 'identifier' => 'product_8',
+                'attributes_of_family' => ['colors'],
                 'values'     => [
                     'colors-options' => [
                         '<all_channels>' => [

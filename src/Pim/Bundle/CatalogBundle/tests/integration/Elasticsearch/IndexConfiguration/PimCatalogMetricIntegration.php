@@ -266,6 +266,11 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
                             'field' => 'values.a_metric-metric.<all_channels>.<all_locales>.base_data',
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'a_metric',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -366,6 +371,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['a_metric'],
                 'values'     => [
                     'a_metric-metric' => [
                         '<all_channels>' => [
@@ -381,6 +387,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['a_metric'],
                 'values'     => [
                     'a_metric-metric' => [
                         '<all_channels>' => [
@@ -394,6 +401,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['a_metric'],
                 'values'     => [
                     'a_metric-metric' => [
                         '<all_channels>' => [
@@ -408,6 +416,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['a_metric'],
                 'values'     => [
                     'a_metric-metric' => [
                         '<all_channels>' => [
@@ -421,6 +430,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['a_metric'],
                 'values'     => [
                     'a_metric-metric' => [
                         '<all_channels>' => [
@@ -434,6 +444,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['a_metric'],
                 'values'     => [
                     'a_metric-metric' => [
                         '<all_channels>' => [
@@ -447,6 +458,11 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => ['a_metric'],
+                'values'     => [],
+            ],
+            [
+                'identifier' => 'product_8',
                 'values'     => [],
             ],
         ];

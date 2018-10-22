@@ -127,6 +127,11 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
                     'must_not' => [
                         'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'description',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -176,7 +181,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_4', 'product_5', 'product_2', 'product_7', 'product_1', 'product_3', 'product_6']
+            ['product_4', 'product_5', 'product_2', 'product_7', 'product_1', 'product_3', 'product_6', 'product_8']
         );
     }
 
@@ -200,7 +205,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_3', 'product_1', 'product_7', 'product_2', 'product_5', 'product_4', 'product_6']
+            ['product_3', 'product_1', 'product_7', 'product_2', 'product_5', 'product_4', 'product_6', 'product_8']
         );
     }
 
@@ -212,6 +217,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['description'],
                 'values'     => [
                     'description-textarea' => [
                         '<all_channels>' => [
@@ -222,6 +228,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['description'],
                 'values'     => [
                     'description-textarea' => [
                         '<all_channels>' => [
@@ -232,6 +239,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['description'],
                 'values'     => [
                     'description-textarea' => [
                         '<all_channels>' => [
@@ -242,6 +250,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['description'],
                 'values'     => [
                     'description-textarea' => [
                         '<all_channels>' => [
@@ -252,6 +261,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['description'],
                 'values'     => [
                     'description-textarea' => [
                         '<all_channels>' => [
@@ -262,6 +272,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['description'],
             ],
             [
                 'identifier' => 'product_7',
@@ -272,6 +283,10 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
                         ],
                     ],
                 ],
+            ],
+            [
+                'identifier' => 'product_8',
+                'attributes_of_family' => [],
             ],
         ];
 

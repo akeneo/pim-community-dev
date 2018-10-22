@@ -172,13 +172,18 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
                         'must_not' => [
                             'exists' => ['field' => 'values.name-text.<all_channels>.<all_locales>'],
                         ],
+                        'filter'   => [
+                            'term' => [
+                                'attributes_of_family' => 'name',
+                            ],
+                        ],
                     ],
                 ],
             ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_4']);
+        $this->assertDocument($productsFound, ['product_4',]);
     }
 
     public function testNotEmptyOperator()
@@ -221,7 +226,17 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_5', 'product_2', 'product_8', 'product_7', 'product_6', 'product_1', 'product_3', 'product_4']
+            [
+                'product_5',
+                'product_2',
+                'product_8',
+                'product_7',
+                'product_6',
+                'product_1',
+                'product_3',
+                'product_4',
+                'product_9',
+            ]
         );
     }
 
@@ -245,7 +260,17 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_3', 'product_1', 'product_6', 'product_7', 'product_8', 'product_2', 'product_5', 'product_4']
+            [
+                'product_3',
+                'product_1',
+                'product_6',
+                'product_7',
+                'product_8',
+                'product_2',
+                'product_5',
+                'product_4',
+                'product_9',
+            ]
         );
     }
 
@@ -257,6 +282,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -267,6 +293,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -277,6 +304,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -287,9 +315,11 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['name'],
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -300,6 +330,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -310,6 +341,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -320,6 +352,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_8',
+                'attributes_of_family' => ['name'],
                 'values'     => [
                     'name-text' => [
                         '<all_channels>' => [
@@ -328,6 +361,9 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
                     ],
                 ],
             ],
+            [
+                'identifier' => 'product_9',
+            ]
         ];
 
         $this->indexDocuments($products);

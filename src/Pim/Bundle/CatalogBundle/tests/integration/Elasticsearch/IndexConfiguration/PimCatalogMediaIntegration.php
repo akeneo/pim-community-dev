@@ -126,6 +126,11 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
                     'must_not' => [
                         'exists' => ['field' => 'values.an_image-media.<all_channels>.<all_locales>'],
                     ],
+                    'filter' => [
+                        'term' => [
+                            'attributes_of_family' => 'an_image'
+                        ]
+                    ]
                 ],
             ],
         ];
@@ -163,6 +168,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -181,6 +187,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -199,6 +206,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -217,6 +225,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -235,6 +244,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -253,6 +263,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -271,6 +282,7 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => ['an_image'],
                 'values'     => [
                     'an_image-media' => [
                         '<all_channels>' => [
@@ -288,7 +300,13 @@ class PimCatalogMediaIntegration extends AbstractPimCatalogTestCase
                 ],
             ],
             [
-                'identifier' => 'product_8',
+                'identifier'           => 'product_8',
+                'attributes_of_family' => ['an_image'],
+                'values'               => [],
+            ],
+            [
+                'identifier' => 'product_9',
+                'attributes_of_family' => [],
             ],
         ];
 

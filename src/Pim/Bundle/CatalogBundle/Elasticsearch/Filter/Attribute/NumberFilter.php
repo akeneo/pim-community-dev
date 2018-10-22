@@ -114,12 +114,16 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
                 $this->searchQueryBuilder->addFilter($clause);
                 break;
             case Operators::IS_EMPTY:
-                $clause = [
+                $this->searchQueryBuilder->addMustNot([
                     'exists' => [
                         'field' => $attributePath
                     ]
-                ];
-                $this->searchQueryBuilder->addMustNot($clause);
+                ]);
+                $this->searchQueryBuilder->addFilter([
+                    'term' => [
+                        'attributes_of_family' => $attribute->getCode()
+                    ]
+                ]);
                 break;
             case Operators::IS_NOT_EMPTY:
                 $clause = [

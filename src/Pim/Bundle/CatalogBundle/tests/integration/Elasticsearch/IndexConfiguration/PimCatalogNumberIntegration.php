@@ -268,6 +268,11 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
                             'field' => 'values.box_quantity-decimal.<all_channels>.<all_locales>',
                         ],
                     ],
+                    'filter' => [
+                        'term' => [
+                            'attributes_of_family' => 'box_quantity'
+                        ]
+                    ]
                 ],
             ],
         ];
@@ -319,7 +324,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_2', 'product_5', 'product_6', 'product_1', 'product_4', 'product_3', 'product_7']
+            ['product_2', 'product_5', 'product_6', 'product_1', 'product_4', 'product_3', 'product_7', 'product_8']
         );
     }
 
@@ -343,7 +348,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_3', 'product_4', 'product_1', 'product_6', 'product_5', 'product_2', 'product_7']
+            ['product_3', 'product_4', 'product_1', 'product_6', 'product_5', 'product_2', 'product_7', 'product_8']
         );
     }
 
@@ -368,6 +373,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['box_quantity'],
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_channels>' => [
@@ -378,6 +384,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['box_quantity'],
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_channels>' => [
@@ -388,6 +395,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['box_quantity'],
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_channels>' => [
@@ -398,6 +406,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['box_quantity'],
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_channels>' => [
@@ -408,6 +417,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['box_quantity'],
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_channels>' => [
@@ -418,6 +428,7 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['box_quantity'],
                 'values'     => [
                     'box_quantity-decimal' => [
                         '<all_channels>' => [
@@ -428,6 +439,12 @@ class PimCatalogNumberIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => ['box_quantity'],
+                'values'     => [],
+            ],
+            [
+                'identifier' => 'product_8',
+                'attributes_of_family' => [],
                 'values'     => [],
             ],
         ];

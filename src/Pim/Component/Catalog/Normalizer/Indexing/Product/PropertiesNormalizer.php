@@ -142,7 +142,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         return $date;
     }
 
-
     /**
      * @param ProductInterface $product
      *

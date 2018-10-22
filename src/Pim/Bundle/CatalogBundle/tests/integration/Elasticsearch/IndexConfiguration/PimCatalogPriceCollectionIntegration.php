@@ -211,13 +211,18 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
                             'field' => 'values.a_price-prices.<all_channels>.<all_locales>',
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'a_price',
+                        ],
+                    ],
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_5']);
+        $this->assertDocument($productsFound, ['product_8']);
     }
 
     public function testEmptyForCurrencyOperator()
@@ -230,13 +235,18 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
                             'field' => 'values.a_price-prices.<all_channels>.<all_locales>.USD',
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'a_price',
+                        ],
+                    ],
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_5', 'product_7']);
+        $this->assertDocument($productsFound, ['product_7', 'product_8']);
 
         $query = [
             'query' => [
@@ -244,6 +254,11 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
                     'must_not' => [
                         'exists' => [
                             'field' => 'values.a_price-prices.<all_channels>.<all_locales>.CNY',
+                        ],
+                    ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'a_price',
                         ],
                     ],
                 ],
@@ -254,7 +269,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_6']
+            ['product_1', 'product_2', 'product_3', 'product_4', 'product_6', 'product_8']
         );
     }
 
@@ -340,6 +355,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['a_price'],
                 'values'     => [
                     'a_price-prices' => [
                         '<all_channels>' => [
@@ -353,6 +369,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['a_price'],
                 'values'     => [
                     'a_price-prices' => [
                         '<all_channels>' => [
@@ -366,6 +383,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['a_price'],
                 'values'     => [
                     'a_price-prices' => [
                         '<all_channels>' => [
@@ -379,6 +397,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['a_price'],
                 'values'     => [
                     'a_price-prices' => [
                         '<all_channels>' => [
@@ -392,9 +411,11 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => [],
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['a_price'],
                 'values'     => [
                     'a_price-prices' => [
                         '<all_channels>' => [
@@ -407,6 +428,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => ['a_price'],
                 'values'     => [
                     'a_price-prices' => [
                         '<all_channels>' => [
@@ -416,6 +438,10 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
                         ],
                     ],
                 ],
+            ],
+            [
+                'identifier' => 'product_8',
+                'attributes_of_family' => ['a_price'],
             ],
         ];
 

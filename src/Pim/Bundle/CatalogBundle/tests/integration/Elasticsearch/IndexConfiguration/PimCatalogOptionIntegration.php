@@ -41,6 +41,11 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
                             'field' => 'values.color-option.<all_channels>.<all_locales>',
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'color',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -79,6 +84,11 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
                             'values.color-option.<all_channels>.<all_locales>' => ['black', 'blue'],
                         ],
                     ],
+                    'filter'   => [
+                        'term' => [
+                            'attributes_of_family' => 'color',
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -108,7 +118,17 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $this->assertSame(
             $productsFound,
-            ['product_3', 'product_1', 'product_4', 'product_5', 'product_2', 'product_6', 'product_7', 'product_8']
+            [
+                'product_3',
+                'product_1',
+                'product_4',
+                'product_5',
+                'product_2',
+                'product_6',
+                'product_7',
+                'product_8',
+                'product_9',
+            ]
         );
     }
 
@@ -132,7 +152,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $this->assertSame(
             $productsFound,
-            ['product_2', 'product_6', 'product_4', 'product_5', 'product_3', 'product_1', 'product_7', 'product_8']
+            ['product_2', 'product_6', 'product_4', 'product_5', 'product_3', 'product_1', 'product_7', 'product_8', 'product_9']
         );
     }
 
@@ -144,6 +164,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'product_1',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -154,6 +175,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_2',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -164,6 +186,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_3',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -174,6 +197,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_4',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -184,6 +208,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_5',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -194,6 +219,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -204,10 +230,12 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_7',
+                'attributes_of_family' => ['color'],
                 'values'     => [],
             ],
             [
                 'identifier' => 'product_8',
+                'attributes_of_family' => ['color'],
                 'values'     => [
                     'color-option' => [
                         '<all_channels>' => [
@@ -215,6 +243,11 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
                         ],
                     ],
                 ],
+            ],
+            [
+                'identifier' => 'product_9',
+                'attributes_of_family' => [],
+                'values'     => [],
             ],
         ];
 
