@@ -42,12 +42,8 @@ class ListProductGridAvailableColumnGroups implements ListProductGridAvailableCo
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $userId = null): array
+    public function fetch(string $locale, int $userId): array
     {
-        if (null === $userId) {
-            throw new \InvalidArgumentException('$userId must not be null');
-        }
-
         $datagridConfiguration = $this->configurationProvider->getConfiguration('product-grid');
 
         $systemColumns = $datagridConfiguration->offsetGetByPath(
