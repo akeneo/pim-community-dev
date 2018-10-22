@@ -35,7 +35,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $page, string $groupCode = '', string $searchOnLabel = '', int $userId = null): array
+    public function fetch(string $locale, int $page, string $groupCode, string $searchOnLabel, int $userId): array
     {
         $page = max($page, 1);
         $offset = ($page - 1) * ListProductGridAvailableColumnsQuery::COLUMNS_PER_PAGE;

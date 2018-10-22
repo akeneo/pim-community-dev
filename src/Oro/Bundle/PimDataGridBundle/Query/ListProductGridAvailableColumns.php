@@ -14,13 +14,13 @@ interface ListProductGridAvailableColumns
     const COLUMNS_PER_PAGE = 25;
 
     /**
-     * @param string   $locale        Code of the locale for the translation of the labels
-     * @param int      $page          Number of the page (start at 1)
-     * @param string   $groupCodeCode Code of the group of columns
-     * @param string   $searchOnLabel String to search in the column label
-     * @param int|null $userId        Context's user id if needed
+     * @param string $locale        Code of the locale for the translation of the labels
+     * @param int    $page          Number of the page (start at 1)
+     * @param string $groupCodeCode Code of the group of columns
+     * @param string $searchOnLabel String to search in the column label
+     * @param int    $userId        Context's user id
      *
      * @return array
      */
-    public function fetch(string $locale, int $page, string $groupCodeCode = '', string $searchOnLabel = '', int $userId = null): array;
+    public function fetch(string $locale, int $page, string $groupCodeCode, string $searchOnLabel, int $userId): array;
 }

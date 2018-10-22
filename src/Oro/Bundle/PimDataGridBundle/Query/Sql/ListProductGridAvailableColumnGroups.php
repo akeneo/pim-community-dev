@@ -35,7 +35,7 @@ class ListProductGridAvailableColumnGroups implements ListProductGridAvailableCo
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $userId = null): array
+    public function fetch(string $locale, int $userId): array
     {
         $datagridConfiguration = $this->configurationProvider->getConfiguration('product-grid');
 

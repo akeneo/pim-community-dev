@@ -48,7 +48,7 @@ class ListAttributesUsableInProductGridIntegration extends TestCase
 
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
 
-        $firstPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1);
+        $firstPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1, '', 2);
 
         $expectedAttributes = [[
             'code'         => 'sku',
@@ -75,7 +75,7 @@ class ListAttributesUsableInProductGridIntegration extends TestCase
 
         $this->assertSameAttributes($expectedAttributes , $firstPageAttributes);
 
-        $secondPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 2);
+        $secondPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 2, '', 3);
 
         $this->assertSameAttributes([
             [
@@ -130,7 +130,7 @@ class ListAttributesUsableInProductGridIntegration extends TestCase
 
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
 
-        $attributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1, 'match') ;
+        $attributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1, 'match', 2) ;
 
         $this->assertSameAttributes([
             [
