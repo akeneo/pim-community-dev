@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use PhpSpec\ObjectBehavior;
@@ -28,7 +27,7 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(IndexRecordSubscriber::class);
+        $this->shouldHaveType(\Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber::class);
     }
 
     function it_subscribes_to_events()

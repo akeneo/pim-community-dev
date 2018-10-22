@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
+namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
 {
-    /** @var RecordIndexerInterface */
+    /** @var \Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface */
     private $recordIndexer;
 
     public function __construct(RecordIndexerInterface $recordIndexer)

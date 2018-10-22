@@ -8,12 +8,12 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SearchableRecordItem;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 
 /**
  * Generates a representation of a record for the search engine.
@@ -33,7 +33,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     /** @var SqlFindActivatedLocalesPerChannels */
     private $findActivatedLocalesPerChannels;
 
-    /** @var SqlFindValueKeysToIndexForChannelAndLocale */
+    /** @var FindValueKeysToIndexForChannelAndLocaleInterface */
     private $findValueKeysToIndexForChannelAndLocale;
 
     /** @var SqlFindSearchableRecords */

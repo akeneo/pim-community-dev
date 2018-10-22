@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record\Query;
+namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;

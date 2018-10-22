@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindSearchableRecordsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -13,7 +15,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindSearchableRecords
+class SqlFindSearchableRecords implements FindSearchableRecordsInterface
 {
     /** @var Connection */
     private $connection;

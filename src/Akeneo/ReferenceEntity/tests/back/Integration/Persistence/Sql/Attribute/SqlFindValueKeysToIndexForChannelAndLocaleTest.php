@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record\Query;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -23,7 +23,6 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -33,7 +32,7 @@ use PHPUnit\Framework\Assert;
  */
 class SqlFindValueKeysToIndexForChannelAndLocaleTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindValueKeysToIndexForChannelAndLocale */
+    /** @var \Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale */
     private $findValuesToIndexForChannelAndLocale;
 
     public function setUp()

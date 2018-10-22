@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
+namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

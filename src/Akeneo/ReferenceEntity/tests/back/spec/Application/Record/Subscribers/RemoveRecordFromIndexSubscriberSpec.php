@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
+use Akeneo\ReferenceEntity\Application\Record\Subscribers\RemoveRecordFromIndexSubscriber;
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\RemoveRecordFromIndexSubscriber;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

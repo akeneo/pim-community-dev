@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Record\IndexRecords;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query;
+namespace Akeneo\ReferenceEntity\Domain\Query;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

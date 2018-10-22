@@ -30,7 +30,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexerInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
