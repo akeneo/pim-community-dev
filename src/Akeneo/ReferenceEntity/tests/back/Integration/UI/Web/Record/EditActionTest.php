@@ -326,7 +326,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $repository->create($parisRecord);
         $lisbonneRecord = Record::create(
-            RecordIdentifier::create('city', 'lisbone', 'fingerprint'),
+            RecordIdentifier::create('city', 'lisbonne', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('city'),
             RecordCode::fromString('lisbonne'),
             [],
