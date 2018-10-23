@@ -93,6 +93,7 @@ class AttributeMapping extends BaseForm {
   };
   private attributeOptionsMappingModal: any = null;
   private attributeOptionsMappingForm: BaseForm | null = null;
+  private scroll: number = 0;
 
   /**
    * {@inheritdoc}
@@ -108,6 +109,9 @@ class AttributeMapping extends BaseForm {
    */
   public configure(): JQueryPromise<any> {
     Filterable.set(this);
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
+    this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
 
     return BaseForm.prototype.configure.apply(this, arguments);
   }
@@ -160,6 +164,7 @@ class AttributeMapping extends BaseForm {
 
         this.renderExtensions();
         this.delegateEvents();
+        this.setScroll();
       });
 
     return this;
@@ -287,6 +292,20 @@ class AttributeMapping extends BaseForm {
       this.attributeOptionsMappingForm.getFormModel().clear();
       this.attributeOptionsMappingForm = null;
     }
+  }
+
+  /**
+   * Saves the scroll top position before the page re-rendering
+   */
+  private saveScroll(): void {
+    this.scroll = $('.edit-form').scrollTop() as number;
+  }
+
+  /**
+   * Puts back the scroll top position after the render.
+   */
+  private setScroll(): void {
+    $('.edit-form').scrollTop(this.scroll);
   }
 }
 
