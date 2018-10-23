@@ -28,6 +28,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -109,6 +111,62 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.12'),
             AttributeAllowedExtensions::fromList(['pdf', 'png'])
+        );
+
+        $this->attributeRepository->create($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_record_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('mentor');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+
+        $expectedAttribute = RecordAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('mentor'),
+            LabelCollection::fromArray(['en_US' => 'Mentor', 'fr_FR' => 'Mentor']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            $referenceEntityIdentifier
+        );
+
+        $this->attributeRepository->create($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_record_collection_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('brands');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+
+        $expectedAttribute = RecordCollectionAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('brands'),
+            LabelCollection::fromArray(['en_US' => 'Brands', 'fr_FR' => 'Marques']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('brand')
         );
 
         $this->attributeRepository->create($expectedAttribute);
