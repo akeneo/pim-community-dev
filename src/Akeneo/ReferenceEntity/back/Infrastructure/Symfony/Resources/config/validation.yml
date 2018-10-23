@@ -16,6 +16,7 @@ Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateR
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ThereShouldBeLessReferenceEntityThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand:
     group_sequence:

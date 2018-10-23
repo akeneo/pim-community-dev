@@ -48,6 +48,14 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.should_not_be_linked_any_reference_entity_attribute' }
 
+    akeneo_referenceentity.validator.reference_entity.there_should_be_less_reference_entity_than_limit:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ThereShouldBeLessReferenceEntityThanLimitValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '%reference_entity_limit%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.there_should_be_less_reference_entity_than_limit' }
+
     akeneo_referenceentity.infrastructure.validation.attribute.edit_command_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\EditCommandsValidator
         arguments:

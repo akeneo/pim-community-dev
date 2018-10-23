@@ -29,6 +29,14 @@ Feature: Create an reference entity
     Then an exception is thrown with message "Reference entity identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
     And there should be no reference entity
 
+  @acceptance-back
+  Scenario: Cannot create more reference entities than the limit
+    Given 100 random reference entities
+    When the user creates an reference entity "color" with:
+      | labels                                 | image |
+      | {"en_US": "Color", "fr_FR": "Couleur"} | null  |
+    Then there should be a validation error with message 'You cannot create the reference entity "color" because you have reached the limit of 100 reference entities'
+
   @acceptance-front
   Scenario: Creating an reference entity
     Given the user has the following rights:
