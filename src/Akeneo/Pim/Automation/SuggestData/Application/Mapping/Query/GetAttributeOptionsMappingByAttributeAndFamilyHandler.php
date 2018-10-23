@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFacto
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -27,16 +27,16 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandler
     /** @var DataProviderInterface */
     private $dataProvider;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
     /**
      * @param DataProviderFactory $dataProviderFactory
-     * @param IdentifiableObjectRepositoryInterface $familyRepository
+     * @param FamilyRepositoryInterface $familyRepository
      */
     public function __construct(
         DataProviderFactory $dataProviderFactory,
-        IdentifiableObjectRepositoryInterface $familyRepository
+        FamilyRepositoryInterface $familyRepository
     ) {
         $this->dataProvider = $dataProviderFactory->create();
         $this->familyRepository = $familyRepository;
