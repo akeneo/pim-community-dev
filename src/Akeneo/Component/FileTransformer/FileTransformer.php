@@ -38,17 +38,25 @@ class FileTransformer implements FileTransformerInterface
     {
         $mimeType = MimeTypeGuesser::getInstance()->guess($inputFile->getPathname());
 
+        $supportedTransformations = array_filter(
+            $rawTransformations,
+            function (string $transformationName) use ($mimeType) {
+                return $this->registry->has($transformationName, $mimeType);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        if (count($supportedTransformations) < 1) {
+            return null;
+        }
+
         if (null !== $outputFilename) {
             $outputFile = $this->createOutputFile($inputFile, $outputFilename);
         } else {
             $outputFile = $inputFile;
         }
 
-        foreach ($rawTransformations as $name => $options) {
-            if (!$this->registry->has($name, $mimeType)) {
-                continue;
-            }
-
+        foreach ($supportedTransformations as $name => $options) {
             $transformation = $this->registry->get($name, $mimeType);
             $transformation->transform($outputFile, $options);
         }
