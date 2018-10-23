@@ -2,7 +2,19 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--cache-from', 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master', '--build-arg', 'COMPOSER_COMMAND=${_COMPOSER_COMMAND}', '-t', '${_IMAGE_TAG}', '.']
+    args:
+        - 'build'
+        - '--cache-from'
+        - 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master'
+        - '--build-arg'
+        - 'COMPOSER_COMMAND=${_COMPOSER_COMMAND}'
+        - '--build-arg'
+        - 'CE_BRANCH=${_CE_BRANCH}'
+        - '--build-arg'
+        - 'CE_OWNER=${_CE_OWNER}'
+        - '-t'
+        - '${_IMAGE_TAG}'
+        - '.'
 images: [
   '${_IMAGE_TAG}'
 ]
