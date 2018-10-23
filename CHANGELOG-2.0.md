@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.41 (2018-10-23)
+
 ## Bug fixes
 
 - PIM-7751: Fix error when using flters "Type" and "Status" in the process tracker
