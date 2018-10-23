@@ -127,6 +127,20 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.record_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.record_collection_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
     # value hydrators
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry
