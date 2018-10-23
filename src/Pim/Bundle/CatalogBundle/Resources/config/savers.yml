@@ -23,6 +23,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
+            - '@doctrine.orm.entity_manager'
 
     pim_catalog.saver.product_model:
         class: '%pim_catalog.saver.base.class%'

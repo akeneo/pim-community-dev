@@ -20,6 +20,7 @@ class ProductSaverIntegration extends TestCase
     public function testRawValuesForProductWithAllAttributes()
     {
         $product = $this->createProduct('just-a-product-with-all-possible-values', 'familyA');
+        $this->assertTrue($product->getCompletenesses()->isEmpty());
         $standardValues = $this->getStandardValuesWithAllAttributes();
         $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
@@ -33,6 +34,11 @@ class ProductSaverIntegration extends TestCase
         NormalizedProductCleaner::cleanOnlyValues($expectedRawValues);
 
         $this->assertSame($expectedRawValues, $rawValues);
+
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $product = $this->get('pim_catalog.repository.product')->find($product->getId());
+
+        $this->assertFalse($product->getCompletenesses()->isEmpty());
     }
 
     public function testRawValuesForVariantProduct()
@@ -42,6 +48,7 @@ class ProductSaverIntegration extends TestCase
         $this->saveProductModel($productModel);
 
         $product = $this->createVariantProduct($productModel, 'just-a-variant-product-with-a-few-values', 'familyVariantA1');
+        $this->assertTrue($product->getCompletenesses()->isEmpty());
         $standardValues = $this->getStandardValuesWithFewAttributes();
         $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
@@ -55,6 +62,7 @@ class ProductSaverIntegration extends TestCase
         NormalizedProductCleaner::cleanOnlyValues($expectedRawValues);
 
         $this->assertSame($expectedRawValues, $rawValues);
+        $this->assertFalse($product->getCompletenesses()->isEmpty());
     }
 
     /**

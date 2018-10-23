@@ -78,7 +78,6 @@ Pim\Component\Catalog\Model\AbstractProduct:
             mappedBy: product
             cascade:
                 - remove
-                - persist
                 - refresh
                 - detach
         uniqueData:

@@ -5,7 +5,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -19,9 +21,10 @@ class ProductSaverSpec extends ObjectBehavior
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        EntityManagerInterface $entityManager
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher, $uniqueDataSynchronizer);
+        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher, $uniqueDataSynchronizer, $entityManager);
     }
 
     function it_is_a_saver()
@@ -43,6 +46,8 @@ class ProductSaverSpec extends ObjectBehavior
     ) {
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
+
+        $product->getCompletenesses()->willReturn(new ArrayCollection());
 
         $objectManager->persist($product)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
@@ -66,6 +71,9 @@ class ProductSaverSpec extends ObjectBehavior
         $completenessManager->schedule($product2)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
+
+        $product1->getCompletenesses()->willReturn(new ArrayCollection());
+        $product2->getCompletenesses()->willReturn(new ArrayCollection());
 
         $objectManager->persist($product1)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
@@ -107,6 +115,9 @@ class ProductSaverSpec extends ObjectBehavior
 
         $completenessManager->generateMissingForProduct($product1)->shouldBeCalledTimes(1);
         $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
+
+        $product1->getCompletenesses()->willReturn(new ArrayCollection());
+        $product2->getCompletenesses()->willReturn(new ArrayCollection());
 
         $objectManager->persist($product1)->shouldBeCalledTimes(1);
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalledTimes(1);

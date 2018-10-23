@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,22 +34,28 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductUniqueDataSynchronizer */
     protected $uniqueDataSynchronizer;
 
+    /** @var EntityManagerInterface */
+    protected $entityManager;
+
     /**
      * @param ObjectManager                 $objectManager
      * @param CompletenessManager           $completenessManager
      * @param EventDispatcherInterface      $eventDispatcher
      * @param ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+     * @param EntityManagerInterface        $entityManager
      */
     public function __construct(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        EntityManagerInterface $entityManager
     ) {
         $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -62,12 +69,15 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
-        $this->completenessManager->schedule($product);
-        $this->completenessManager->generateMissingForProduct($product);
         $this->uniqueDataSynchronizer->synchronize($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
+
+        $this->completenessManager->schedule($product);
+        $this->completenessManager->generateMissingForProduct($product);
+
+        $this->persistProductCompleteness($product);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
@@ -93,16 +103,16 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
-            $this->completenessManager->schedule($product);
-            $this->completenessManager->generateMissingForProduct($product);
             $this->uniqueDataSynchronizer->synchronize($product);
-
             $this->objectManager->persist($product);
         }
 
         $this->objectManager->flush();
 
         foreach ($products as $product) {
+            $this->completenessManager->schedule($product);
+            $this->completenessManager->generateMissingForProduct($product);
+            $this->persistProductCompleteness($product);
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
@@ -122,6 +132,28 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
                     ClassUtils::getClass($product)
                 )
             );
+        }
+    }
+
+    private function persistProductCompleteness(ProductInterface $product)
+    {
+        $connection = $this->entityManager->getConnection();
+
+        $query = 'INSERT INTO pim_catalog_completeness 
+                  SET locale_id = %1$d, channel_id = %2$d, product_id = %3$d, ratio = %4$d, missing_count = %5$d, required_count = %6$d
+                  ON DUPLICATE KEY UPDATE ratio = %4$d';
+
+        foreach ($product->getCompletenesses() as $completeness) {
+            $queryWithValues = sprintf(
+                $query,
+                $completeness->getLocale()->getId(),
+                $completeness->getChannel()->getId(),
+                $product->getId(),
+                $completeness->getRatio(),
+                $completeness->getMissingCount(),
+                $completeness->getRequiredCount()
+            );
+            $connection->query($queryWithValues);
         }
     }
 }
