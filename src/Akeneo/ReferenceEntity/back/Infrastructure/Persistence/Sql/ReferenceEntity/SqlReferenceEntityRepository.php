@@ -80,7 +80,7 @@ SQL;
             [
                 'identifier' => (string) $referenceEntity->getIdentifier(),
                 'labels' => $serializedLabels,
-                'image' => (null !== $referenceEntity->getImage()) ? $referenceEntity->getImage()->getKey() : null
+                'image' => $referenceEntity->getImage()->isEmpty() ? null : $referenceEntity->getImage()->getKey()
             ]
         );
 
