@@ -69,17 +69,17 @@ class SubscriptionStatusSwitcher extends BaseView {
   /**
    * {@inheritdoc}
    */
-  public render(): BaseView {
+  public render(): any {
     const productId = this.getFormData().meta.id;
 
     // TODO: must use product identifier and not id
-    return getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus) => {
+    return getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatus): Promise<BaseView> => {
       this.currentStatus = subscriptionStatus.isSubscribed;
       let isReadOnlyMode = false;
       let errorMessage = '';
 
       if (!subscriptionStatus.isConnectionActive) {
-        return BaseView.prototype.render.apply(this, arguments);
+        return BaseView.prototype.render.apply(this);
       }
 
       if (!subscriptionStatus.isIdentifierMappingValid) {
@@ -95,32 +95,32 @@ class SubscriptionStatusSwitcher extends BaseView {
 
       if (isReadOnlyMode) {
         this.$el.html(
-            this.templateReadOnly({
-              subscriptionStatusTitle: 'akeneo_suggest_data.product.edit.subscription_status_title',
-              status: this.currentStatus ? 'enabled' : 'disabled',
-              statusLabel: this.currentStatus ? 'Enabled' : 'Disabled',
-              errorMessage,
-              __
-            })
+          this.templateReadOnly({
+            subscriptionStatusTitle: 'akeneo_suggest_data.product.edit.subscription_status_title',
+            status: this.currentStatus ? 'enabled' : 'disabled',
+            statusLabel: this.currentStatus ? 'Enabled' : 'Disabled',
+            errorMessage,
+            __
+          })
         );
         this.delegateEvents();
 
-        return BaseView.prototype.render.apply(this, arguments);
+        return BaseView.prototype.render.apply(this);
       }
 
       this.$el.html(
-          this.template({
-            subscriptionStatusTitle: 'akeneo_suggest_data.product.edit.subscription_status_title',
-            hasSubscribed: this.currentStatus,
-            enabledLabel: 'Enabled',
-            disabledLabel: 'Disabled',
-            isSwitchEnabled: true,
-            __
-          })
+        this.template({
+          subscriptionStatusTitle: 'akeneo_suggest_data.product.edit.subscription_status_title',
+          hasSubscribed: this.currentStatus,
+          enabledLabel: 'Enabled',
+          disabledLabel: 'Disabled',
+          isSwitchEnabled: true,
+          __
+        })
       );
       this.delegateEvents();
 
-      return BaseView.prototype.render.apply(this, arguments);
+      return BaseView.prototype.render.apply(this);
     });
   }
 
