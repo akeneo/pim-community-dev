@@ -19,6 +19,10 @@ export const notifyRecordSaveFailed = () => {
   return notify('error', 'pim_reference_entity.record.notification.save.fail');
 };
 
+export const notifyRecordSaveValidationError = () => {
+  return notify('error', 'pim_reference_entity.record.notification.save.validation_error');
+};
+
 export const notifyRecordWellDeleted = (recordCode: RecordCode) => {
   return notify('success', 'pim_reference_entity.record.notification.delete.success', {code: recordCode.stringValue()});
 };

@@ -1,6 +1,6 @@
 import {
   notifyRecordCreateFailed,
-  notifyRecordWellCreated,
+  notifyRecordWellCreated
 } from 'akeneoreferenceentity/application/action/record/notify';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {recordCreationErrorOccured, recordCreationSucceeded} from 'akeneoreferenceentity/domain/event/record/create';

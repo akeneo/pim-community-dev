@@ -8,6 +8,7 @@ import {EditState} from 'akeneoreferenceentity/application/reducer/reference-ent
 import {
   notifyAttributeWellCreated,
   notifyAttributeCreateFailed,
+  notifyAttributeCreateValidationError
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {
@@ -31,7 +32,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
       dispatch(attributeCreationErrorOccured(validationErrors));
-      dispatch(notifyAttributeCreateFailed());
+      dispatch(notifyAttributeCreateValidationError());
 
       return;
     }

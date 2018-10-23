@@ -9,7 +9,7 @@ import {
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {notifyAttributeSaveFailed} from 'akeneoreferenceentity/application/action/attribute/notify';
+import {notifyAttributeSaveFailed, notifyAttributeSaveValidationError} from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
@@ -33,7 +33,7 @@ export const saveAttribute = (dismiss: boolean = true) => async (
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
       dispatch(attributeEditionErrorOccured(validationErrors));
-      dispatch(notifyAttributeSaveFailed());
+      dispatch(notifyAttributeSaveValidationError());
 
       return;
     }

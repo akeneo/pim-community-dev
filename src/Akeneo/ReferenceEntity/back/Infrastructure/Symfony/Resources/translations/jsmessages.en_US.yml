@@ -108,6 +108,7 @@ pim_reference_entity:
             save:
                 success: Record successfully updated.
                 fail: An error occured during the save of the record
+                validation_error: The record could not be updated
             create:
                 success: Record successfully created.
                 fail: An error occured during the creation of the record
@@ -181,9 +182,11 @@ pim_reference_entity:
             save:
                 success: Attribute successfully updated.
                 fail: An error occured during the save of the attribute
+                validation_error: The attribute could not be updated
             create:
                 success: Attribute successfully created.
                 fail: An error occured during the creation of the attribute
+                validation_error: The attribute could not be created
             delete:
                 success: Attribute successfully deleted.
                 fail: An error occured during the deletion of the attribute
