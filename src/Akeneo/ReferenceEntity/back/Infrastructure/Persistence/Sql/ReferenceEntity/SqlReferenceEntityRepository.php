@@ -154,6 +154,18 @@ SQL;
         }
     }
 
+    public function count(): int
+    {
+        $query = <<<SQL
+        SELECT COUNT(*) as total
+        FROM akeneo_reference_entity_reference_entity
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query);
+        $result = $statement->fetch();
+
+        return intval($result['total']);
+    }
+
     private function hydrateReferenceEntity(
         string $identifier,
         string $normalizedLabels,
