@@ -13,7 +13,7 @@
 export default interface SubscriptionStatus {
   isConnectionActive: boolean;
   isSubscribed: boolean;
-  isIdentifierMappingValid: boolean;
+  isIdentifiersMappingValid: boolean;
   hasFamily: boolean;
   isMappingFilled: boolean;
 }

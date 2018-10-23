@@ -82,7 +82,7 @@ class SubscriptionStatusSwitcher extends BaseView {
         return BaseView.prototype.render.apply(this);
       }
 
-      if (!subscriptionStatus.isIdentifierMappingValid) {
+      if (!subscriptionStatus.isIdentifiersMappingValid) {
         isReadOnlyMode = true;
         errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.invalid_mapping';
       } else if (!subscriptionStatus.hasFamily) {
