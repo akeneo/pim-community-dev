@@ -69,18 +69,14 @@ class PimAiConnectionControllerSpec extends ObjectBehavior
         $response = $this->getAction(Argument::type(Request::class));
         $response->shouldBeAnInstanceOf(JsonResponse::class);
         $response->isOk()->shouldReturn(true);
-        $response->getContent()->shouldReturn(json_encode([
-            'code' => 'pim-ai',
-            'values' => ['token' => 'foo'],
-        ]));
 
-        /*Assert::eq(
+        Assert::eq(
             [
                 'code' => 'pim-ai',
                 'values' => ['token' => 'foo'],
             ],
             json_decode($response->getContent()->getWrappedObject(), true)
-        );*/
+        );
     }
 
     public function it_returns_a_response_without_token($getConfigurationHandler): void

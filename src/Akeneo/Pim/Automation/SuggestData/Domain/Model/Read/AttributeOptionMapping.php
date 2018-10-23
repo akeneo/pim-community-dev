@@ -29,7 +29,7 @@ final class AttributeOptionMapping
     private $franklinAttributeLabel;
 
     /** @var string */
-    private $pimAttributeCode;
+    private $catalogAttributeCode;
 
     /** @var int */
     private $status;
@@ -38,18 +38,18 @@ final class AttributeOptionMapping
      * @param string $franklinAttributeId
      * @param string $franklinAttributeLabel
      * @param int $status
-     * @param string $pimAttributeCode
+     * @param string $catalogAttributeCode
      */
     public function __construct(
         string $franklinAttributeId,
         string $franklinAttributeLabel,
         int $status,
-        ?string $pimAttributeCode
+        ?string $catalogAttributeCode
     ) {
         $this->franklinAttributeId = $franklinAttributeId;
         $this->franklinAttributeLabel = $franklinAttributeLabel;
         $this->status = $status;
-        $this->pimAttributeCode = $pimAttributeCode;
+        $this->catalogAttributeCode = $catalogAttributeCode;
     }
 
     /**
@@ -79,8 +79,8 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function pimAttributeCode(): string
+    public function catalogAttributeCode(): string
     {
-        return $this->pimAttributeCode;
+        return $this->catalogAttributeCode;
     }
 }

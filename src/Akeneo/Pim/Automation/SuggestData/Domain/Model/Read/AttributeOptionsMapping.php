@@ -24,7 +24,7 @@ final class AttributeOptionsMapping
     /** @var string */
     private $franklinAttributeId;
 
-    /** @var array */
+    /** @var AttributeOptionMapping[] */
     private $mapping;
 
     /**

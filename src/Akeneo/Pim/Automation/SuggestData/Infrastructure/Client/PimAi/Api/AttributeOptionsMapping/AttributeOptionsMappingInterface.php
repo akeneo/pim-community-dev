@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping;
+
 /**
  * Interface for the API Service to manage attribute options mapping.
  *
@@ -20,5 +22,13 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attr
  */
 interface AttributeOptionsMappingInterface
 {
-    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId);
+    /**
+     * Fetches options mapping from family and attribute.
+     *
+     * @param string $familyCode
+     * @param string $franklinAttributeId
+     *
+     * @return AttributeOptionsMapping
+     */
+    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): AttributeOptionsMapping;
 }

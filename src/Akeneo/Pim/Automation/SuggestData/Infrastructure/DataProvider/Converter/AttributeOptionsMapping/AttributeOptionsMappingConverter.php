@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping as AppAttributeOptionMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as AppAttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionMapping
     as FranklinAttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping
@@ -32,18 +32,18 @@ final class AttributeOptionsMappingConverter
      * @param string $franklinAttributeId
      * @param FranklinAttributeOptionsMapping $franklinAttrOptionsMapping
      *
-     * @return AppAttributeOptionsMapping
+     * @return AttributeOptionsMapping
      */
     public function clientToApplication(
         string $familyCode,
         string $franklinAttributeId,
         FranklinAttributeOptionsMapping $franklinAttrOptionsMapping
-    ): AppAttributeOptionsMapping {
+    ): AttributeOptionsMapping {
         $pimOptionsMapping = [];
         foreach ($franklinAttrOptionsMapping as $franklinOptionMapping) {
-            $pimStatus = self::convertClientStatusToApplicationStatus($franklinOptionMapping->getStatus());
+            $pimStatus = $this->convertClientStatusToApplicationStatus($franklinOptionMapping->getStatus());
 
-            $pimOptionsMapping[] = new AppAttributeOptionMapping(
+            $pimOptionsMapping[] = new AttributeOptionMapping(
                 $franklinOptionMapping->getFranklinOptionId(),
                 $franklinOptionMapping->getFranklinOptionLabel(),
                 $pimStatus,
@@ -51,7 +51,7 @@ final class AttributeOptionsMappingConverter
             );
         }
 
-        return new AppAttributeOptionsMapping((string) $familyCode, (string) $franklinAttributeId, $pimOptionsMapping);
+        return new AttributeOptionsMapping($familyCode, $franklinAttributeId, $pimOptionsMapping);
     }
 
     /**
@@ -62,11 +62,13 @@ final class AttributeOptionsMappingConverter
     private function convertClientStatusToApplicationStatus(string $clientStatus)
     {
         if (FranklinAttributeOptionMapping::STATUS_PENDING === $clientStatus) {
-            return AppAttributeOptionMapping::STATUS_PENDING;
-        } elseif (FranklinAttributeOptionMapping::STATUS_ACTIVE === $clientStatus) {
-            return AppAttributeOptionMapping::STATUS_ACTIVE;
-        } elseif (FranklinAttributeOptionMapping::STATUS_INACTIVE === $clientStatus) {
-            return AppAttributeOptionMapping::STATUS_INACTIVE;
+            return AttributeOptionMapping::STATUS_PENDING;
+        }
+        if (FranklinAttributeOptionMapping::STATUS_ACTIVE === $clientStatus) {
+            return AttributeOptionMapping::STATUS_ACTIVE;
+        }
+        if (FranklinAttributeOptionMapping::STATUS_INACTIVE === $clientStatus) {
+            return AttributeOptionMapping::STATUS_INACTIVE;
         }
     }
 }

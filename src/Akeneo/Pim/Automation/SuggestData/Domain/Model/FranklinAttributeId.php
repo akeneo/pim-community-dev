@@ -36,8 +36,8 @@ final class FranklinAttributeId
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->targetAttributeId;
+        return $this->targetAttributeId;
     }
 }

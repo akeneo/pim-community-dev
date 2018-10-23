@@ -45,7 +45,7 @@ class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterf
     /**
      * {@inheritdoc}
      */
-    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId)
+    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): AttributeOptionsMapping
     {
         $route = $this->uriGenerator->generate(
             sprintf('/api/mapping/%s/attributes/%s/options', $familyCode, $franklinAttributeId)
@@ -69,7 +69,8 @@ class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterf
         } catch (ServerException | PimAiServerException $e) {
             throw new PimAiServerException(
                 sprintf(
-                    'Something went wrong on PIM.ai side when fetching the options mapping for attribute "%s" and family "%s" : %s',
+                    'Something went wrong on PIM.ai side when fetching the options mapping ' .
+                        'for attribute "%s" and family "%s": %s',
                     $franklinAttributeId,
                     $familyCode,
                     $e->getMessage()
@@ -78,7 +79,7 @@ class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterf
         } catch (ClientException $e) {
             throw new BadRequestException(
                 sprintf(
-                    'Something went wrong when fetching the options mapping for attribute "%s" and family "%s" : %s',
+                    'Something went wrong when fetching the options mapping for attribute "%s" and family "%s": %s',
                     $franklinAttributeId,
                     $familyCode,
                     $e->getMessage()

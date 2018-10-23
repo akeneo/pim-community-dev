@@ -45,7 +45,7 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->optionData['status'];
     }
@@ -53,7 +53,7 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function getFranklinOptionId()
+    public function getFranklinOptionId(): string
     {
         return $this->optionData['from']['id'];
     }
@@ -61,7 +61,7 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function getFranklinOptionLabel()
+    public function getFranklinOptionLabel(): string
     {
         return (!isset($this->optionData['from']['label']['en_US'])) ? '' : $this->optionData['from']['label']['en_US'];
     }
@@ -69,7 +69,7 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function getPimOption()
+    public function getPimOption(): ?string
     {
         return $this->optionData['to']['id'];
     }

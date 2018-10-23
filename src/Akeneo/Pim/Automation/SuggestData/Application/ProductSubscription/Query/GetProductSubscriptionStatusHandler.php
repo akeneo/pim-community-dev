@@ -44,8 +44,6 @@ class GetProductSubscriptionStatusHandler
     {
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($query->getProductId());
 
-        //$connectionStatus = $this->getConnectionStatusHandler->handle($query);
-
         return new ProductSubscriptionStatus($productSubscription instanceof ProductSubscription);
     }
 }
