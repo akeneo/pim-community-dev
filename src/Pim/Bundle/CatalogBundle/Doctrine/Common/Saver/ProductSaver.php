@@ -70,13 +70,12 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
 
         $this->uniqueDataSynchronizer->synchronize($product);
+        $this->completenessManager->schedule($product);
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
 
-        $this->completenessManager->schedule($product);
         $this->completenessManager->generateMissingForProduct($product);
-
         $this->persistProductCompleteness($product);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
@@ -104,13 +103,13 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
             $this->uniqueDataSynchronizer->synchronize($product);
+            $this->completenessManager->schedule($product);
             $this->objectManager->persist($product);
         }
 
         $this->objectManager->flush();
 
         foreach ($products as $product) {
-            $this->completenessManager->schedule($product);
             $this->completenessManager->generateMissingForProduct($product);
             $this->persistProductCompleteness($product);
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
