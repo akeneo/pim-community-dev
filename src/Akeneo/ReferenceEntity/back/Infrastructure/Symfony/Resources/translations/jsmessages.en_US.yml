@@ -43,7 +43,7 @@ pim_reference_entity:
                 code: Code (required)
             confirm: Save
         delete:
-            message: Are you sure you want to delete "{{ referenceEntityLabel }}"?
+            message: Are you sure you want to delete this entity "{{ referenceEntityLabel }}"?
             title: Attribute
         notification:
             save:
@@ -88,7 +88,7 @@ pim_reference_entity:
             confirm: Save
 
         delete:
-            message: Are you sure you want to delete "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
+            message: Are you sure you want to delete this record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
             title: Record
         delete_all:
             confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
@@ -173,7 +173,7 @@ pim_reference_entity:
                         regular_expression: Regular expression
                         url: URL
         delete:
-            message: Are you sure you want to delete "{{ attributeLabel }}"?
+            message: Are you sure you want to delete this attribute "{{ attributeLabel }}"?
             title: Attribute
         notification:
             list:
