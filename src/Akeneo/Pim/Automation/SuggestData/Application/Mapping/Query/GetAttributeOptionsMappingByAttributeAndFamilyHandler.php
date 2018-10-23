@@ -49,7 +49,7 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandler
      */
     public function handle(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): AttributeOptionsMapping
     {
-        if (!$this->familyRepository->findOneByIdentifier($query->familyCode()) instanceof FamilyInterface) {
+        if (!$this->familyRepository->findOneByIdentifier((string) $query->familyCode()) instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
                 sprintf('Family "%s" does not exist', $query->familyCode())
             );

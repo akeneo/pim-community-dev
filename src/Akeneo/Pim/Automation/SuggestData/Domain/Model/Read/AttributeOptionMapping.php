@@ -79,7 +79,7 @@ final class AttributeOptionMapping
     /**
      * @return string
      */
-    public function catalogAttributeCode(): string
+    public function catalogAttributeCode(): ?string
     {
         return $this->catalogAttributeCode;
     }
