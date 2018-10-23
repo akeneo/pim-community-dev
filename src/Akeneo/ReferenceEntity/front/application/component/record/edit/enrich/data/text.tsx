@@ -30,7 +30,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
         ) : (
           <textarea
             id={value.attribute.identifier.stringValue()}
-            className={`AknTextareaField AknTextareaField--light AknTextareaField--narrow ${
+            className={`AknTextareaField AknTextareaField--light ${
               value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''
             }`}
             value={value.data.stringValue()}
