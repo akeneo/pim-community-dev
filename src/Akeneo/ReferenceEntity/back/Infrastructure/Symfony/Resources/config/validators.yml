@@ -41,6 +41,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.should_not_be_linked_any_product_attribute' }
 
+    akeneo_referenceentity.validator.reference_entity.should_not_be_linked_any_reference_entity_attribute:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttributeValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.should_not_be_linked_any_reference_entity_attribute' }
+
     akeneo_referenceentity.infrastructure.validation.attribute.edit_command_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\EditCommandsValidator
         arguments:

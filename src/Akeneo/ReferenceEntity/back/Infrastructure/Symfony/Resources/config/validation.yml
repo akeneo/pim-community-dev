@@ -25,6 +25,7 @@ Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteR
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldHaveNoRecord: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:

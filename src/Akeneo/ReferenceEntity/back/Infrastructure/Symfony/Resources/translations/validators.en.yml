@@ -6,6 +6,8 @@ pim_reference_entity:
                 should_be_unique: 'An reference entity already exists with code "%reference_entity_identifier%"'
             records:
                 should_have_no_record: 'You cannot delete this entity because records exist for this entity'
+            reference_entity_attributes:
+                should_not_be_linked: 'You can not delete this entity because reference entity attributes are related to this entity'
             product_attributes:
                 should_not_be_linked: 'You can not delete this entity because product attributes are related to this entity'
     record:
