@@ -18,6 +18,7 @@ export type Reducer = (
 
 type AttributeConfig = {
   [type: string]: {
+    icon: string;
     denormalize: {
       denormalize: Denormalizer;
     };
@@ -30,8 +31,24 @@ type AttributeConfig = {
   };
 };
 
-export const getTypes = (config: AttributeConfig) => () => {
-  return Object.keys(config);
+export type AttributeType = {
+  identifier: string;
+  label: string;
+  icon: string;
+};
+
+export const getTypes = (config: AttributeConfig) => (): AttributeType[] => {
+  return Object.keys(config).map((identifier: string) => {
+    return {
+      identifier,
+      label: `pim_reference_entity.attribute.type.${identifier}`,
+      icon: config[identifier].icon,
+    };
+  });
+};
+
+export const getIcon = (config: AttributeConfig) => (attributeType: string): string => {
+  return config[attributeType].icon;
 };
 
 export const getDenormalizer = (config: AttributeConfig) => (
@@ -216,6 +233,7 @@ ${moduleExample}`
  * into a javascript object and add it automatically to the file on the fly.
  */
 export const getAttributeTypes = getTypes(__moduleConfig as AttributeConfig);
+export const getAttributeIcon = getIcon(__moduleConfig as AttributeConfig);
 export const getAttributeView = getView(__moduleConfig as AttributeConfig);
 export const getAttributeDenormalizer = getDenormalizer(__moduleConfig as AttributeConfig);
 export const getAttributeReducer = getReducer(__moduleConfig as AttributeConfig);

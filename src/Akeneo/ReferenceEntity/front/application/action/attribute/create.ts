@@ -10,9 +10,11 @@ import {
   notifyAttributeCreateFailed,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
-import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {
+  denormalizeMinimalAttribute,
+  MinimalNormalizedAttribute,
+} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoreferenceentity/application/action/attribute/edit';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const referenceEntity = getState().form.data;
@@ -20,7 +22,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
   const normalizedAttribute = {
     ...formData,
     reference_entity_identifier: referenceEntity.identifier,
-  } as NormalizedAttribute;
+  } as MinimalNormalizedAttribute;
   const attribute = denormalizeMinimalAttribute(normalizedAttribute);
 
   try {

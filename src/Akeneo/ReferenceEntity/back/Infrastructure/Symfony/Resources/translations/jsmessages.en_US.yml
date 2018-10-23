@@ -124,6 +124,8 @@ pim_reference_entity:
         type:
             text: Text
             image: Image
+            record: Reference entity simple link
+            record_collection: Reference entity multiple link
         is_required: required for completeness
         no_data:
             title: There are no custom attributes for {{ entityLabel }}
@@ -139,6 +141,7 @@ pim_reference_entity:
                 code: Code (required)
                 label: Label
                 type: Attribute type
+                record_type: Reference entity to link
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
             confirm: Save
@@ -170,6 +173,8 @@ pim_reference_entity:
             message: Are you sure you want to delete "{{ attributeLabel }}"?
             title: Attribute
         notification:
+            list:
+                fail: An error occured during the update of the attribute list
             save:
                 success: Attribute successfully updated.
                 fail: An error occured during the save of the attribute

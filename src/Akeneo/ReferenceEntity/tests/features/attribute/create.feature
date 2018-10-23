@@ -88,3 +88,21 @@ Feature: Create an attribute linked to an reference entity
     When the user creates an attribute with an invalid code
     And the user saves the attribute with an invalid code
     Then the user should see the validation error "This field may only contain letters, numbers and underscores."
+
+  @acceptance-front
+  Scenario: Create a simple valid record attribute
+    When the user creates a valid record attribute
+    And the user saves the valid record attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid record collection attribute
+    When the user creates a valid record collection attribute
+    And the user saves the valid record collection attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid image attribute
+    When the user creates a valid image attribute
+    And the user saves the valid image attribute
+    Then the user should not see any validation error

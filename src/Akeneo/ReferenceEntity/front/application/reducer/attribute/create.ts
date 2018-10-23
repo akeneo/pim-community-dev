@@ -11,6 +11,7 @@ export interface CreateState {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
+    record_type: string | null;
   };
   errors: ValidationError[];
 }
@@ -22,6 +23,7 @@ const initCreateState = (): CreateState => ({
     type: 'text',
     value_per_locale: false,
     value_per_channel: false,
+    record_type: null,
     labels: {},
   },
   errors: [],
@@ -37,6 +39,7 @@ export default (
     attribute_type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
+    record_type: string;
   }
 ) => {
   switch (action.type) {
@@ -54,7 +57,18 @@ export default (
     case 'ATTRIBUTE_CREATION_TYPE_UPDATED':
       state = {
         ...state,
-        data: {...state.data, type: action.attribute_type},
+        data: {
+          ...state.data,
+          type: action.attribute_type,
+          record_type: state.data.record_type,
+        },
+      };
+      break;
+
+    case 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED':
+      state = {
+        ...state,
+        data: {...state.data, record_type: action.record_type},
       };
       break;
 

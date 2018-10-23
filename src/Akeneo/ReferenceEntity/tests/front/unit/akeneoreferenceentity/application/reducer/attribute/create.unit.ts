@@ -24,6 +24,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
+        record_type: null,
       },
       errors: [],
     });
@@ -53,6 +54,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
+        record_type: null,
       },
       errors: [],
     });
@@ -148,12 +150,13 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     });
   });
 
-  test('I can update the type of the attribute', () => {
+  test('I can reset the record type after updating the type of the attribute', () => {
     const state = {
       active: false,
       data: {
         code: '',
         type: 'text',
+        record_type: null,
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
@@ -170,6 +173,70 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
       data: {
         code: '',
         type: 'image',
+        record_type: null,
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I can update the type of the attribute', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: 'text',
+        record_type: null,
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
+      attribute_type: 'record',
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: 'record',
+        record_type: null,
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I can update the record type of the attribute', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: 'record',
+        value_per_locale: false,
+        value_per_channel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED',
+      record_type: 'brand',
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: 'record',
+        record_type: 'brand',
         value_per_locale: false,
         value_per_channel: false,
         labels: {},
