@@ -678,6 +678,7 @@ class ProductController
     ): array {
         $from = isset($queryParameters['page']) ? ($queryParameters['page'] - 1) * $queryParameters['limit'] : 0;
         $pqb = $this->fromSizePqbFactory->create(['limit' => (int) $queryParameters['limit'], 'from' => (int) $from]);
+        $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
         try {
             $this->setPQBFilters($pqb, $request, $channel);
@@ -751,9 +752,10 @@ class ProductController
             $searchParameterCrypted = $queryParameters['search_after'];
             $searchParameterDecrypted = $this->primaryKeyEncrypter->decrypt($queryParameters['search_after']);
             $pqbOptions['search_after_unique_key'] = $searchParameterDecrypted;
-            $pqbOptions['search_after'] = [$searchParameterDecrypted];
+            $pqbOptions['search_after'] = ['product_' . $searchParameterDecrypted];
         }
         $pqb = $this->searchAfterPqbFactory->create($pqbOptions);
+        $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
         try {
             $this->setPQBFilters($pqb, $request, $channel);

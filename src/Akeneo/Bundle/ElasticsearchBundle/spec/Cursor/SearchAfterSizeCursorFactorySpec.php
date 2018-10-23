@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\ProductAndProductModelSearchAfterSizeCursor;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -20,7 +20,7 @@ class SearchAfterSizeCursorFactorySpec extends ObjectBehavior
         $this->beConstructedWith(
             $searchEngine,
             $cursorableRepository,
-            SearchAfterSizeCursor::class,
+            ProductAndProductModelSearchAfterSizeCursor::class,
             self::DEFAULT_BATCH_SIZE,
             'pim_catalog_product'
         );
@@ -28,7 +28,7 @@ class SearchAfterSizeCursorFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursorFactory');
+        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\ProductAndProductModelSearchAfterSizeCursorFactory');
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 

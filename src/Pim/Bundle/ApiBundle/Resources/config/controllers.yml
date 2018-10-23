@@ -143,7 +143,7 @@ services:
     pim_api.controller.product:
         class: '%pim_api.controller.product.class%'
         arguments:
-            - '@pim_catalog.query.product_query_builder_search_after_size_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_search_after_size_factory'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
             - '@pim_api.checker.query_parameters_product'
@@ -161,7 +161,7 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_api.stream.product_partial_update_stream'
             - '@pim_api.security.primary_key_encrypter'
-            - '@pim_catalog.query.product_query_builder_from_size_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_from_size_factory'
             - '@pim_catalog.builder.product'
             - '@pim_api.filter.product_attribute_filter'
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
@@ -171,8 +171,8 @@ services:
         class: '%pim_api.controller.product_model.class%'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
-            - '@pim_catalog.query.product_model_query_builder_from_size_factory'
-            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_from_size_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_search_after_size_factory'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
             - '@pim_api.checker.query_parameters_product_model'

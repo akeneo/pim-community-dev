@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
+use Akeneo\Bundle\ElasticsearchBundle\Cursor\ProductAndProductModelSearchAfterSizeCursor;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -57,7 +57,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SearchAfterSizeCursor::class);
+        $this->shouldHaveType(ProductAndProductModelSearchAfterSizeCursor::class);
         $this->shouldImplement(CursorInterface::class);
     }
 
