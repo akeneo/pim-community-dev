@@ -93,5 +93,6 @@ config:
         pimee/template/franklin-connection/edit: akeneosuggestdata/templates/franklin-connection/edit.html
         pimee/template/identifiers-mapping/table: akeneosuggestdata/templates/identifiers-mapping/table.html
         pimee/template/mass-edit/suggest-data-operation: akeneosuggestdata/templates/mass-edit/suggest-data-operation.html
+        pimee/template/mass-edit/suggest-data-operation-read-only: akeneosuggestdata/templates/mass-edit/suggest-data-operation-read-only.html
         pimee/template/product-edit-form/subscription-status-switcher: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher.html
         pimee/template/product-edit-form/subscription-status-switcher-read-only: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher-read-only.html
