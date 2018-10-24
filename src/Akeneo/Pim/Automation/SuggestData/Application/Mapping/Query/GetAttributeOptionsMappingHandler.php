@@ -22,7 +22,7 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class GetAttributeOptionsMappingByAttributeAndFamilyHandler
+class GetAttributeOptionsMappingHandler
 {
     /** @var DataProviderInterface */
     private $dataProvider;
@@ -43,11 +43,11 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandler
     }
 
     /**
-     * @param GetAttributeOptionsMappingByAttributeAndFamilyQuery $query
+     * @param GetAttributeOptionsMappingQuery $query
      *
      * @return AttributeOptionsMapping
      */
-    public function handle(GetAttributeOptionsMappingByAttributeAndFamilyQuery $query): AttributeOptionsMapping
+    public function handle(GetAttributeOptionsMappingQuery $query): AttributeOptionsMapping
     {
         if (!$this->familyRepository->findOneByIdentifier((string) $query->familyCode()) instanceof FamilyInterface) {
             throw new \InvalidArgumentException(

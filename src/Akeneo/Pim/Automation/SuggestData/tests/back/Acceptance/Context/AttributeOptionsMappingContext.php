@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
@@ -28,8 +28,8 @@ use Webmozart\Assert\Assert;
  */
 class AttributeOptionsMappingContext implements Context
 {
-    /** @var GetAttributeOptionsMappingByAttributeAndFamilyHandler */
-    private $getAttributeOptionsMappingByAttributeAndFamilyHandler;
+    /** @var GetAttributeOptionsMappingHandler */
+    private $getAttributeOptionsMappingHandler;
 
     /** @var AttributeOptionsMapping */
     private $attributeOptionsMapping;
@@ -41,13 +41,12 @@ class AttributeOptionsMappingContext implements Context
     private $franklinAttributeId;
 
     /**
-     * @param GetAttributeOptionsMappingByAttributeAndFamilyHandler $getAttributeOptionsMappingByAttributeAndFamilyHandler
+     * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
      */
     public function __construct(
-        GetAttributeOptionsMappingByAttributeAndFamilyHandler $getAttributeOptionsMappingByAttributeAndFamilyHandler
+        GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
     ) {
-        $this->getAttributeOptionsMappingByAttributeAndFamilyHandler
-            = $getAttributeOptionsMappingByAttributeAndFamilyHandler;
+        $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
     }
 
     /**
@@ -56,16 +55,18 @@ class AttributeOptionsMappingContext implements Context
      * @param mixed $familyCode
      * @param mixed $franklinAttributeId
      */
-    public function iRetrieveTheAttributeOptionsMappingForTheFamilyAndTheAttribute($familyCode, $franklinAttributeId): void
-    {
+    public function iRetrieveTheAttributeOptionsMappingForTheFamilyAndTheAttribute(
+        $familyCode,
+        $franklinAttributeId
+    ): void {
         $this->familyCode = $familyCode;
         $this->franklinAttributeId = $franklinAttributeId;
 
-        $query = new GetAttributeOptionsMappingByAttributeAndFamilyQuery(
+        $query = new GetAttributeOptionsMappingQuery(
             new FamilyCode($familyCode),
             new FranklinAttributeId($franklinAttributeId)
         );
-        $this->attributeOptionsMapping = $this->getAttributeOptionsMappingByAttributeAndFamilyHandler->handle($query);
+        $this->attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
         Assert::isInstanceOf($this->attributeOptionsMapping, AttributeOptionsMapping::class);
     }
 

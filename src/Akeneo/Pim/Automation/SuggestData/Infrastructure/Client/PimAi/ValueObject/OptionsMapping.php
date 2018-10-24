@@ -16,9 +16,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObj
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class AttributeOptionsMapping implements \IteratorAggregate
+final class OptionsMapping implements \IteratorAggregate
 {
-    /** @var AttributeOptionMapping[] */
+    /** @var OptionMapping[] */
     private $options = [];
 
     /**
@@ -27,7 +27,7 @@ final class AttributeOptionsMapping implements \IteratorAggregate
     public function __construct(array $optionsData)
     {
         foreach ($optionsData as $optionData) {
-            $this->options[] = new AttributeOptionMapping($optionData);
+            $this->options[] = new OptionMapping($optionData);
         }
     }
 

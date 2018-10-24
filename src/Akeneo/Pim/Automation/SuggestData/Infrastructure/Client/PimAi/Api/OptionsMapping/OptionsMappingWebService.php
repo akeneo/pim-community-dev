@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterface
+class OptionsMappingWebService implements OptionsMappingInterface
 {
     /** @var UriGenerator */
     private $uriGenerator;
@@ -45,7 +45,7 @@ class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterf
     /**
      * {@inheritdoc}
      */
-    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): AttributeOptionsMapping
+    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): OptionsMapping
     {
         $route = $this->uriGenerator->generate(
             sprintf('/api/mapping/%s/attributes/%s/options', $familyCode, $franklinAttributeId)
@@ -58,7 +58,7 @@ class AttributeOptionsMappingWebService implements AttributeOptionsMappingInterf
                 throw new PimAiServerException();
             }
 
-            return new AttributeOptionsMapping($responseData);
+            return new OptionsMapping($responseData);
         } catch (ServerException | PimAiServerException $e) {
             throw new PimAiServerException(
                 sprintf(

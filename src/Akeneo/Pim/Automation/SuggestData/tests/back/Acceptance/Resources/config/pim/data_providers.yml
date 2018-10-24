@@ -15,4 +15,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingFake'
 
     akeneo.pim.automation.suggest_data.pimai_client.attribute_options_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping\AttributeOptionsMappingFake'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingFake'

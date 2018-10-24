@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionMapping;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionMappingSpec extends ObjectBehavior
+class OptionMappingSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -33,7 +33,7 @@ class AttributeOptionMappingSpec extends ObjectBehavior
 
     public function it_is_an_attribte_option_mapping(): void
     {
-        $this->shouldHaveType(AttributeOptionMapping::class);
+        $this->shouldHaveType(OptionMapping::class);
     }
 
     public function it_raises_an_exception_if_the_status_is_incorrect(): void

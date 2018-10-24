@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Qu
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
@@ -27,7 +27,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class GetAttributeOptionsMappingByAttributeAndFamilyHandlerSpec extends ObjectBehavior
+class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 {
     public function let(
         DataProviderFactory $dataProviderFactory,
@@ -41,14 +41,14 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandlerSpec extends ObjectBe
 
     public function it_is_a_get_attribute_option_mapping_handler(): void
     {
-        $this->shouldBeAnInstanceOf(GetAttributeOptionsMappingByAttributeAndFamilyHandler::class);
+        $this->shouldBeAnInstanceOf(GetAttributeOptionsMappingHandler::class);
     }
 
     public function it_throws_an_exception_when_the_family_does_not_exist($familyRepository): void
     {
         $familyCode = new FamilyCode('foo');
         $franklinAttributeId = new FranklinAttributeId('bar');
-        $query = new GetAttributeOptionsMappingByAttributeAndFamilyQuery($familyCode, $franklinAttributeId);
+        $query = new GetAttributeOptionsMappingQuery($familyCode, $franklinAttributeId);
 
         $familyRepository->findOneByIdentifier($familyCode)->willReturn(null);
 
@@ -64,7 +64,7 @@ class GetAttributeOptionsMappingByAttributeAndFamilyHandlerSpec extends ObjectBe
     ): void {
         $familyCode = new FamilyCode('foo');
         $franklinAttributeId = new FranklinAttributeId('bar');
-        $query = new GetAttributeOptionsMappingByAttributeAndFamilyQuery($familyCode, $franklinAttributeId);
+        $query = new GetAttributeOptionsMappingQuery($familyCode, $franklinAttributeId);
 
         $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class GetAttributeOptionsMappingByAttributeAndFamilyQuerySpec extends ObjectBehavior
+class GetAttributeOptionsMappingQuerySpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -37,7 +37,7 @@ class GetAttributeOptionsMappingByAttributeAndFamilyQuerySpec extends ObjectBeha
         $franklinAttributeId = new FranklinAttributeId('bar');
 
         $this->beConstructedWith($familyCode, $franklinAttributeId);
-        $this->shouldBeAnInstanceOf(GetAttributeOptionsMappingByAttributeAndFamilyQuery::class);
+        $this->shouldBeAnInstanceOf(GetAttributeOptionsMappingQuery::class);
     }
 
     public function it_returns_family_code(): void

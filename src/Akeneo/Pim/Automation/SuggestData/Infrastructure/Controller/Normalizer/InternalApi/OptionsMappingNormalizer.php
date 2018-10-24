@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsMappingNormalizer
+class OptionsMappingNormalizer
 {
     /**
      * @param AttributeOptionsMapping $attributeOptionsMapping

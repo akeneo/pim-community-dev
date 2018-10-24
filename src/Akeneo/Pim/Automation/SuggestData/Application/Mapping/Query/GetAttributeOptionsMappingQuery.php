@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class GetAttributeOptionsMappingByAttributeAndFamilyQuery
+class GetAttributeOptionsMappingQuery
 {
     /** @var FamilyCode */
     private $familyCode;

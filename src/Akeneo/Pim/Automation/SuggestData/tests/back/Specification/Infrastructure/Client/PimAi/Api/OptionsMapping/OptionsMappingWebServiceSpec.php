@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping\AttributeOptionsMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping\AttributeOptionsMappingWebService;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use PhpSpec\ObjectBehavior;
@@ -30,7 +30,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsMappingWebServiceSpec extends ObjectBehavior
+class OptionsMappingWebServiceSpec extends ObjectBehavior
 {
     public function let(
         UriGenerator $uriGenerator,
@@ -44,12 +44,12 @@ class AttributeOptionsMappingWebServiceSpec extends ObjectBehavior
 
     public function it_is_an_attribute_options_mapping_web_service(): void
     {
-        $this->shouldHaveType(AttributeOptionsMappingWebService::class);
+        $this->shouldHaveType(OptionsMappingWebService::class);
     }
 
     public function it_implements_attribute_options_mapping_interface(): void
     {
-        $this->shouldImplement(AttributeOptionsMappingInterface::class);
+        $this->shouldImplement(OptionsMappingInterface::class);
     }
 
     public function it_fetches_attribute_options_mapping($uriGenerator, $httpClient, $response, $stream): void
@@ -72,7 +72,7 @@ class AttributeOptionsMappingWebServiceSpec extends ObjectBehavior
 
         $this
             ->fetchByFamilyAndAttribute('foo', 'bar')
-            ->shouldReturnAnInstanceOf(AttributeOptionsMapping::class);
+            ->shouldReturnAnInstanceOf(OptionsMapping::class);
     }
 
     public function it_throws_a_server_exception_when_an_empty_response_is_sent_from_franklin(

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsMappingSpec extends ObjectBehavior
+class OptionsMappingSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -29,7 +29,7 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 
     public function it_is_an_attribute_options_mapping(): void
     {
-        $this->shouldHaveType(AttributeOptionsMapping::class);
+        $this->shouldHaveType(OptionsMapping::class);
     }
 
     public function it_is_traversable(): void
@@ -52,7 +52,7 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
 
         $this->getIterator()->shouldReturnAnInstanceOf(\ArrayIterator::class);
         foreach ($this->getIterator() as $item) {
-            $item->shouldBeanInstanceOf(AttributeOptionMapping::class);
+            $item->shouldBeanInstanceOf(OptionMapping::class);
         }
     }
 }

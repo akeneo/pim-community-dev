@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsMappingFake implements AttributeOptionsMappingInterface
+class OptionsMappingFake implements OptionsMappingInterface
 {
     /** @var array */
     private $mappings = [];
@@ -26,7 +26,7 @@ class AttributeOptionsMappingFake implements AttributeOptionsMappingInterface
     /**
      * {@inheritdoc}
      */
-    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): AttributeOptionsMapping
+    public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): OptionsMapping
     {
         $filename = sprintf('get_family_%s_attribute_%s.json', $familyCode, $franklinAttributeId);
         $filepath = sprintf(
@@ -38,7 +38,7 @@ class AttributeOptionsMappingFake implements AttributeOptionsMappingInterface
             throw new \Exception(sprintf('File "%s" does not exist', $filepath));
         }
 
-        return new AttributeOptionsMapping(
+        return new OptionsMapping(
             json_decode(file_get_contents($filepath), true)
         );
     }

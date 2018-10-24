@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMapping;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeOptionsMapping
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
     as FranklinAttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMapping\AttributeOptionsMappingConverter;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -31,7 +31,7 @@ class AttributeOptionsMappingConverterSpec extends ObjectBehavior
 
     public function it_converts_a_client_attribute_options_mapping_into_application_model(): void
     {
-        $fakeDirectory = realpath(__DIR__ . '/../../../../../Resources/fake/franklin-api/attribute-options-mapping');
+        $fakeDirectory = realpath(__DIR__ . '/../../../../Resources/fake/franklin-api/attribute-options-mapping');
         $filename = 'get_family_router_attribute_color.json';
         $mappingData = json_decode(file_get_contents(sprintf('%s/%s', $fakeDirectory, $filename)), true);
         $clientMapping = new FranklinAttributeOptionsMapping($mappingData);

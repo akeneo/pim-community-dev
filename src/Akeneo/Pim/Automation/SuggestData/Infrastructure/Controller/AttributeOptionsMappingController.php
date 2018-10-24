@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingByAttributeAndFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\AttributeOptionsMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\OptionsMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -25,16 +25,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class AttributeOptionsMappingController
 {
-    /** @var GetAttributeOptionsMappingByAttributeAndFamilyHandler */
-    private $getAttributeOptionsMappingByAttributeAndFamilyHandler;
+    /** @var GetAttributeOptionsMappingHandler */
+    private $getAttributeOptionsMappingHandler;
 
     /**
-     * @param GetAttributeOptionsMappingByAttributeAndFamilyHandler $getAttributeOptionsMappingByAttributeAndFamilyHandler
+     * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
      */
     public function __construct(
-        GetAttributeOptionsMappingByAttributeAndFamilyHandler $getAttributeOptionsMappingByAttributeAndFamilyHandler
+        GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
     ) {
-        $this->getAttributeOptionsMappingByAttributeAndFamilyHandler = $getAttributeOptionsMappingByAttributeAndFamilyHandler;
+        $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
     }
 
     /**
@@ -42,13 +42,13 @@ class AttributeOptionsMappingController
      */
     public function getAction(string $familyCode, string $franklinAttributeId): JsonResponse
     {
-        $query = new GetAttributeOptionsMappingByAttributeAndFamilyQuery(
+        $query = new GetAttributeOptionsMappingQuery(
             new FamilyCode($familyCode),
             new FranklinAttributeId($franklinAttributeId)
         );
-        $attributeOptionsMapping = $this->getAttributeOptionsMappingByAttributeAndFamilyHandler->handle($query);
+        $attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
 
-        $normalizer = new AttributeOptionsMappingNormalizer();
+        $normalizer = new OptionsMappingNormalizer();
 
         return new JsonResponse(
             $normalizer->normalize($attributeOptionsMapping)
