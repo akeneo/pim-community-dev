@@ -11,7 +11,9 @@ export default (debug: boolean = true) => (reducer: any): Store<any> => {
   return createStore(
     combineReducers(reducer),
     true === debug
-      ? composeWithDevTools(applyMiddleware(thunkMiddleware, routerMiddleware(router), formNotifier(), grid(), userContext()))
+      ? composeWithDevTools(
+          applyMiddleware(thunkMiddleware, routerMiddleware(router), formNotifier(), grid(), userContext())
+        )
       : applyMiddleware(thunkMiddleware, routerMiddleware(router), formNotifier())
   );
 };

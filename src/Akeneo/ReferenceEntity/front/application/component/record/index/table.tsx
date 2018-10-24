@@ -202,15 +202,24 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews, referenceEntity} = this.props;
+    const {
+      grid,
+      locale,
+      channel,
+      onRedirectToRecord,
+      onDeleteRecord,
+      recordCount,
+      cellViews,
+      referenceEntity,
+    } = this.props;
     const columnsToDisplay = grid.columns.filter(
       (column: Column) => column.channel === channel && column.locale === locale
     );
     const referenceEntityIdentifier = referenceEntity.getIdentifier().stringValue();
-    const userSearch: any = (null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)) ?
-      sessionStorage.getItem(`search-${referenceEntityIdentifier}`) :
-      ''
-    ;
+    const userSearch: any =
+      null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
+        ? sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
+        : '';
 
     return (
       <React.Fragment>

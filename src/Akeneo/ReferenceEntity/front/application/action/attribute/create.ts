@@ -8,7 +8,7 @@ import {EditState} from 'akeneoreferenceentity/application/reducer/reference-ent
 import {
   notifyAttributeWellCreated,
   notifyAttributeCreateFailed,
-  notifyAttributeCreateValidationError
+  notifyAttributeCreateValidationError,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {

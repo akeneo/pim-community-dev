@@ -27,10 +27,10 @@ Feature: Edit an reference entity
     Then the image of the reference entity 'designer' should be '"/path/image2.jpg"'
 
   @acceptance-back
-  Scenario: Updating without update the image
+  Scenario: Updating a reference entity with an empty image
     Given an image on an reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
-    When the user updates the reference entity 'designer' with the label 'en_US' equal to '"Designer"'
-    Then the image of the reference entity 'designer' should be '"/path/image.jpg"'
+    When the user updates the reference entity 'designer' with an empty default image
+    Then the reference entity 'designer' should have an empty image
 
   @acceptance-back
   Scenario Outline: Updating with an invalid image

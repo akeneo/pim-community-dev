@@ -44,10 +44,10 @@ class ReferenceEntityEditController extends BaseController {
       .then(async (referenceEntityResult: ReferenceEntityResult) => {
         this.store = createStore(true)(referenceEntityReducer);
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
-        const userSearch: any = (null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)) ?
-          sessionStorage.getItem(`search-${referenceEntityIdentifier}`) :
-          ''
-        ;
+        const userSearch: any =
+          null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
+            ? sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
+            : '';
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);

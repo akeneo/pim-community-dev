@@ -97,10 +97,10 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
     private function getTerms(array $searchFilter): string
     {
-        $loweredTerms = QueryString::escapeValue(strtolower($searchFilter['value']));
+        $loweredTerms = strtolower($searchFilter['value']);
         $terms = explode(' ', $loweredTerms);
         $wildcardTerms = array_map(function (string $term) {
-            return sprintf('*%s*', $term);
+            return sprintf('*%s*', QueryString::escapeValue($term));
         }, $terms);
         $query = implode(' AND ', $wildcardTerms);
 

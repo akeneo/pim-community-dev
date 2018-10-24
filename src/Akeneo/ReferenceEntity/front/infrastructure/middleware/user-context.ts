@@ -10,4 +10,4 @@ export default () => () => (next: any) => (action: any) => {
   }
 
   return next(action);
-}
+};
