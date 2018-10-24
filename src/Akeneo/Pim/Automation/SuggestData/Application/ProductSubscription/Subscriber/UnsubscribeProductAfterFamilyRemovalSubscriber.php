@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subs
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\DoesPersistedProductHaveFamilyInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -51,6 +52,7 @@ class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberI
     {
         return [
             StorageEvents::PRE_SAVE => 'unsubscribeSingleProduct',
+            StorageEvents::PRE_SAVE_ALL => 'unsubscribeMultipleProducts',
         ];
     }
 
@@ -59,6 +61,10 @@ class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberI
      */
     public function unsubscribeSingleProduct(GenericEvent $event): void
     {
+        if (false === $event->getArgument('unitary')) {
+            return;
+        }
+
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {
             return;
@@ -70,7 +76,41 @@ class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberI
 
         if ($this->doesPersistedProductHaveFamily->check($product)) {
             $command = new UnsubscribeProductCommand($product->getId());
-            $this->unsubscribeProductHandler->handle($command);
+            try {
+                $this->unsubscribeProductHandler->handle($command);
+            } catch (ProductSubscriptionException $exception) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function unsubscribeMultipleProducts(GenericEvent $event): void
+    {
+        if (true === $event->getArgument('unitary')) {
+            return;
+        }
+
+        $products = $event->getSubject();
+        foreach ($products as $product) {
+            if (!$product instanceof ProductInterface) {
+                continue;
+            }
+
+            if (null === $product->getId() || null !== $product->getFamily()) {
+                continue;
+            }
+
+            if ($this->doesPersistedProductHaveFamily->check($product)) {
+                $command = new UnsubscribeProductCommand($product->getId());
+                try {
+                    $this->unsubscribeProductHandler->handle($command);
+                } catch (ProductSubscriptionException $exception) {
+                    continue;
+                }
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Un
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\DoesPersistedProductHaveFamilyInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\UnsubscribeProductAfterFamilyRemovalSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -47,18 +48,33 @@ class UnsubscribeProductAfterFamilyRemovalSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    public function it_subscribes_to_pre_save_storage_event(): void
+    public function it_subscribes_to_pre_save_storage_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn([
             StorageEvents::PRE_SAVE => 'unsubscribeSingleProduct',
+            StorageEvents::PRE_SAVE_ALL => 'unsubscribeMultipleProducts',
         ]);
     }
 
-    public function it_throws_an_exception_if_the_event_does_not_contain_a_product(
+    public function it_does_nothing_on_a_single_product_if_the_event_is_not_unitary(
         $didProductLoseItsFamily,
         $unsubscribeProductHandler
     ): void {
-        $event = new GenericEvent(new \StdClass());
+        $product = new Product();
+        $product->setId(42);
+        $event = new GenericEvent($product, ['unitary' => false]);
+
+        $didProductLoseItsFamily->check(Argument::any())->shouldNotBeCalled();
+        $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->unsubscribeSingleProduct($event);
+    }
+
+    public function it_does_nothing_if_the_event_does_not_contain_a_product(
+        $didProductLoseItsFamily,
+        $unsubscribeProductHandler
+    ): void {
+        $event = new GenericEvent(new \StdClass(), ['unitary' => true]);
 
         $didProductLoseItsFamily->check(Argument::any())->shouldNotBeCalled();
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
@@ -72,7 +88,7 @@ class UnsubscribeProductAfterFamilyRemovalSubscriberSpec extends ObjectBehavior
     ): void {
         $product = new Product();
         $product->setId(42);
-        $event = new GenericEvent($product);
+        $event = new GenericEvent($product, ['unitary' => true]);
 
         $didProductLoseItsFamily->check($product)->willReturn(true);
 
@@ -85,7 +101,7 @@ class UnsubscribeProductAfterFamilyRemovalSubscriberSpec extends ObjectBehavior
     public function it_does_not_unsubscribe_a_new_product($didProductLoseItsFamily): void
     {
         $product = new Product();
-        $event = new GenericEvent($product);
+        $event = new GenericEvent($product, ['unitary' => true]);
 
         $didProductLoseItsFamily->check(Argument::any())->shouldNotBeCalled();
 
@@ -98,10 +114,63 @@ class UnsubscribeProductAfterFamilyRemovalSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $product->setId(42);
         $product->setFamily($family);
-        $event = new GenericEvent($product);
+        $event = new GenericEvent($product, ['unitary' => true]);
 
         $didProductLoseItsFamily->check(Argument::any())->shouldNotBeCalled();
 
         $this->unsubscribeSingleProduct($event);
+    }
+
+    public function it_does_not_unsubscribe_a_product_that_is_not_subscribed(
+        $didProductLoseItsFamily,
+        $unsubscribeProductHandler
+    ): void {
+        $product = new Product();
+        $product->setId(42);
+        $event = new GenericEvent($product, ['unitary' => true]);
+
+        $didProductLoseItsFamily->check($product)->willReturn(true);
+
+        $command = new UnsubscribeProductCommand(42);
+        $unsubscribeProductHandler->handle($command)->willThrow(ProductSubscriptionException::class);
+
+        $this->shouldNotThrow(\Exception::class)->during('unsubscribeSingleProduct', [$event]);
+    }
+
+    public function it_does_nothing_on_multiple_products_if_the_event_is_unitary(
+        $didProductLoseItsFamily,
+        $unsubscribeProductHandler
+    ): void {
+        $ultimateProduct = new Product();
+        $ultimateProduct->setId(42);
+        $evilProduct = new Product();
+        $evilProduct->setId(666);
+        $event = new GenericEvent([$ultimateProduct, $evilProduct], ['unitary' => true]);
+
+        $didProductLoseItsFamily->check(Argument::any())->shouldNotBeCalled();
+        $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
+
+        $this->unsubscribeSingleProduct($event);
+    }
+
+    public function it_unsubscribes_several_products_that_lost_their_family(
+        $didProductLoseItsFamily,
+        $unsubscribeProductHandler
+    ): void {
+        $ultimateProduct = new Product();
+        $ultimateProduct->setId(42);
+        $evilProduct = new Product();
+        $evilProduct->setId(666);
+        $event = new GenericEvent([$ultimateProduct, $evilProduct], ['unitary' => false]);
+
+        $didProductLoseItsFamily->check($ultimateProduct)->willReturn(true);
+        $didProductLoseItsFamily->check($evilProduct)->willReturn(true);
+
+        $command = new UnsubscribeProductCommand(42);
+        $unsubscribeProductHandler->handle($command)->shouldBeCalled();
+        $command = new UnsubscribeProductCommand(666);
+        $unsubscribeProductHandler->handle($command)->shouldBeCalled();
+
+        $this->unsubscribeMultipleProducts($event);
     }
 }

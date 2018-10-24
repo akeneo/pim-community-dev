@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationFake;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -46,11 +47,18 @@ class UnsubscribeProductsAfterFamilyRemovalIntegration extends TestCase
         $this->createIdentifierMapping(['asin' => 'sku']);
     }
 
-    public function test_a_product_is_unsubscribed_from_franklin_when_its_family_is_removed(): void
+    public function test_that_a_product_is_unsubscribed_from_franklin_when_its_family_is_removed(): void
     {
         $this->givenTheProductIsSubscribedToFranklin('B00EYZY6AC');
         $this->whenTheFamilyIsRemovedFromProduct('B00EYZY6AC');
-        $this->thenTheProductShouldNotBeSubscribedAnymore('B00EYZY6AC');
+        $this->thenTheProductsShouldNotBeSubscribedAnymore(['B00EYZY6AC']);
+    }
+
+    public function test_that_several_products_are_unsubscribed_from_franklin_when_their_family_are_removed(): void
+    {
+        $this->givenSeveralProductsAreSubscribedToFranklin(['B00EYZY6AC']);
+        $this->whenTheFamilyIsRemovedFromSeveralProductsAtOnce(['B00EYZY6AC']);
+        $this->thenTheProductsShouldNotBeSubscribedAnymore(['B00EYZY6AC']);
     }
 
     /**
@@ -81,11 +89,48 @@ class UnsubscribeProductsAfterFamilyRemovalIntegration extends TestCase
     }
 
     /**
+     * Subscribes several products to Franklin.
+     *
+     * @param string[] $productIdentifiers
+     */
+    private function givenSeveralProductsAreSubscribedToFranklin(array $productIdentifiers): void
+    {
+        foreach ($productIdentifiers as $productIdentifier) {
+            $this->givenTheProductIsSubscribedToFranklin($productIdentifier);
+        }
+    }
+
+    /**
      * Sets the family of a product to "null".
      *
      * @param string $productIdentifier
      */
     private function whenTheFamilyIsRemovedFromProduct(string $productIdentifier): void
+    {
+        $product = $this->removeFamilyFromProduct($productIdentifier);
+
+        $this->get('pim_catalog.saver.product')->save($product);
+    }
+
+    /**
+     * @param string[] $productIdentifiers
+     */
+    private function whenTheFamilyIsRemovedFromSeveralProductsAtOnce(array $productIdentifiers): void
+    {
+        $products = [];
+        foreach ($productIdentifiers as $productIdentifier) {
+            $products[] = $this->removeFamilyFromProduct($productIdentifier);
+        }
+
+        $this->get('pim_catalog.saver.product')->saveAll($products);
+    }
+
+    /**
+     * @param string $productIdentifier
+     *
+     * @return ProductInterface
+     */
+    private function removeFamilyFromProduct(string $productIdentifier): ProductInterface
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
 
@@ -107,23 +152,25 @@ class UnsubscribeProductsAfterFamilyRemovalIntegration extends TestCase
             );
         }
 
-        $this->get('pim_catalog.saver.product')->save($product);
+        return $product;
     }
 
     /**
      * Checks that a product is not subscribed anymore.
      *
-     * @param string $productIdentifier
+     * @param string[] $productIdentifiers
      */
-    private function thenTheProductShouldNotBeSubscribedAnymore(string $productIdentifier): void
+    private function thenTheProductsShouldNotBeSubscribedAnymore(array $productIdentifiers): void
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        foreach ($productIdentifiers as $productIdentifier) {
+            $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
 
-        $subscription = $this
-            ->get('akeneo.pim.automation.suggest_data.repository.product_subscription')
-            ->findOneByProductId($product->getId());
+            $subscription = $this
+                ->get('akeneo.pim.automation.suggest_data.repository.product_subscription')
+                ->findOneByProductId($product->getId());
 
-        Assert::null($subscription);
+            Assert::null($subscription);
+        }
     }
 
     /**
