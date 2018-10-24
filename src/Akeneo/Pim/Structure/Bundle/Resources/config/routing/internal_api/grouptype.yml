@@ -1,11 +1,3 @@
-pim_enrich_grouptype_index:
-    path: ''
-
-pim_enrich_grouptype_edit:
-    path: /{code}/edit
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
 pim_enrich_grouptype_rest_create:
     path: /rest
     defaults: { _controller: pim_enrich.controller.rest.group_type:createAction }

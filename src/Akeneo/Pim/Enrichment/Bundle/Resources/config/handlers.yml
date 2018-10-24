@@ -1,9 +1,6 @@
-parameters:
-    pim_enrich.form.handler.group.class: Akeneo\Pim\Enrichment\Bundle\Form\Handler\GroupHandler
-
 services:
     pim_enrich.form.handler.group:
-        class: '%pim_enrich.form.handler.group.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Form\Handler\GroupHandler'
         arguments:
             - '@pim_enrich.form.group'
             - '@request_stack'

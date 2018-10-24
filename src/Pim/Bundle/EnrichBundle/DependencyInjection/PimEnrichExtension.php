@@ -30,22 +30,6 @@ class PimEnrichExtension extends Extension
         );
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('category_counters.yml');
         $loader->load('colors.yml');
-        $loader->load('command.yml');
-        $loader->load('controllers.yml');
-        $loader->load('datagrid_listeners.yml');
-        $loader->load('forms.yml');
-        $loader->load('handlers.yml');
-        $loader->load('jobs.yml');
-        $loader->load('providers.yml');
-        $loader->load('queries.yml');
-        $loader->load('query_builder.yml');
-        $loader->load('steps.yml');
-        $loader->load('structure_version.yml');
-        $loader->load('view_elements/attribute.yml');
-        $loader->load('view_elements/category.yml');
-        $loader->load('view_elements/group_type.yml');
-        $loader->load('view_elements/mass_edit.yml');
     }
 }

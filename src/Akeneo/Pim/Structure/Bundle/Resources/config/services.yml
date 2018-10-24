@@ -112,3 +112,25 @@ services:
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: twig.extension }
+
+    # Form
+    pim_enrich.form.family:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'form.factory:createNamed'
+        arguments:
+            - 'pim_enrich_family_form'
+            - 'Akeneo\Pim\Structure\Bundle\Form\Type\FamilyType'
+
+    pim_enrich.form.group_type:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'form.factory:createNamed'
+        arguments:
+            - 'pim_enrich_grouptype_form'
+            - 'Akeneo\Pim\Structure\Bundle\Form\Type\GroupTypeType'
+
+    pim_enrich.form.association_type:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'form.factory:createNamed'
+        arguments:
+            - 'pim_enrich_associationtype_form'
+            - 'Akeneo\Pim\Structure\Bundle\Form\Type\AssociationTypeType'
