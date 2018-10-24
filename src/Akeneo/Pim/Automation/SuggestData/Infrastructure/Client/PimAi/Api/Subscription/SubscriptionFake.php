@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
@@ -38,7 +39,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse
+    public function subscribe(RequestCollection $request): ApiResponse
     {
         switch ($this->status) {
             case self::STATUS_EXPIRED_TOKEN:
@@ -51,6 +52,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
                 break;
         }
 
+        $identifiers = $request->get(0)->identifiers();
         $filename = sprintf('subscriptions/post/%s-%s.json', key($identifiers), current($identifiers));
 
         return new ApiResponse(

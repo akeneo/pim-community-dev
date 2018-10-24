@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AbstractApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
@@ -34,15 +35,13 @@ class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInter
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse
+    public function subscribe(RequestCollection $request): ApiResponse
     {
         $route = $this->uriGenerator->generate('/api/subscriptions');
 
-        $params = $identifiers + ['tracker_id' => $trackerId] + ['family' => $familyInfos];
-
         try {
             $response = $this->httpClient->request('POST', $route, [
-                'form_params' => [$params],
+                'form_params' => $request->toFormParams(),
             ]);
 
             $content = json_decode($response->getBody()->getContents(), true);

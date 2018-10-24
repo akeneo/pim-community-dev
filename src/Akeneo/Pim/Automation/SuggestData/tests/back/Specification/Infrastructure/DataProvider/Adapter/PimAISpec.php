@@ -32,6 +32,8 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Identifier
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\Request;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
@@ -174,14 +176,15 @@ class PimAISpec extends ObjectBehavior
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
 
-        $subscriptionApi->subscribeProduct(
+        $request = new RequestCollection();
+        $request->add(new Request(
             [
                 'upc' => '123456789',
                 'asin' => '987654321',
             ],
             42,
-            $normalizedFamily
-        )->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
+            $normalizedFamily));
+        $subscriptionApi->subscribe($request)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this
             ->subscribe($productSubscriptionRequest)
