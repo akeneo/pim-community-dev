@@ -141,12 +141,12 @@ class AttributeMapping extends BaseForm {
       }
 
       return acc;
-    }, [] as Array<string>);
+    }, [] as string[]);
 
     FetcherRegistry
       .getFetcher('attribute')
       .fetchByIdentifiers(catalogAttributes)
-      .then((attributes: Array<NormalizedAttribute>) => {
+      .then((attributes: NormalizedAttribute[]) => {
         Object.keys(mapping).forEach((franklinAttributeCode: string) => {
           const attribute: NormalizedAttribute | undefined = attributes
             .find((attr: NormalizedAttribute) => {
@@ -187,7 +187,7 @@ class AttributeMapping extends BaseForm {
   private appendAttributeSelector(
     mapping: any,
     franklinAttributeCode: string,
-    isAttributeOptionsButtonVisible: boolean
+    isAttributeOptionsButtonVisible: boolean,
   ) {
     const $dom = this.$el.find(
       '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]',
@@ -209,7 +209,7 @@ class AttributeMapping extends BaseForm {
           $('<div>')
             .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
             .attr('data-franklin-attribute-code', franklinAttributeCode)
-            .attr('title', __('pim_common.edit'))
+            .attr('title', __('pim_common.edit')),
         );
       }
       $dom.prepend(attributeSelector.$el);
