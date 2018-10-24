@@ -8,9 +8,9 @@
  */
 
 import {EventsHash} from 'backbone';
+import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
-import * as $ from 'jquery';
 import {getSubscriptionStatus} from '../../fetcher/subscription';
 import SubscriptionStatus from '../../model/subscription-status';
 
@@ -100,8 +100,8 @@ class SubscriptionStatusSwitcher extends BaseView {
             status: this.currentStatus ? 'enabled' : 'disabled',
             statusLabel: this.currentStatus ? 'Enabled' : 'Disabled',
             errorMessage,
-            __
-          })
+            __,
+          }),
         );
         this.delegateEvents();
 
@@ -115,8 +115,8 @@ class SubscriptionStatusSwitcher extends BaseView {
           enabledLabel: 'Enabled',
           disabledLabel: 'Disabled',
           isSwitchEnabled: true,
-          __
-        })
+          __,
+        }),
       );
       this.delegateEvents();
 

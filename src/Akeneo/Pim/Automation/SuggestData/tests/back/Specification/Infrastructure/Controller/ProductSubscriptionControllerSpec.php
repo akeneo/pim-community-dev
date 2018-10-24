@@ -27,7 +27,7 @@ use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductSubscriptionControllerSpec extends ObjectBehavior
 {

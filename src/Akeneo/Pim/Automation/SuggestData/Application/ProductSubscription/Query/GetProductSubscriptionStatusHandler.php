@@ -68,7 +68,7 @@ class GetProductSubscriptionStatusHandler
      */
     public function handle(GetProductSubscriptionStatusQuery $query): ProductSubscriptionStatus
     {
-        $product = $this->productRepository->findOneBy(['id' => $query->getProductId()]);
+        $product = $this->productRepository->find($query->getProductId());
         if (null === $product) {
             throw new \InvalidArgumentException(sprintf('There is no product with id "%s"', $query->getProductId()));
         }
@@ -93,8 +93,8 @@ class GetProductSubscriptionStatusHandler
         $identifiersMapping = $this->identifiersMappingRepository->find();
         foreach ($identifiersMapping->getIdentifiers() as $pimAttributeCode) {
             if (null !== $pimAttributeCode &&
-                null !== $product->getValue($pimAttributeCode) &&
-                null !== $product->getValue($pimAttributeCode)->getData()
+                null !== $product->getValue($pimAttributeCode->getCode()) &&
+                null !== $product->getValue($pimAttributeCode->getCode())->getData()
             ) {
                 return true;
             }
