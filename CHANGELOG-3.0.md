@@ -16,6 +16,7 @@
 
 ## BC breaks
 
+- Remove `Pim\Bundle\EnrichBundle\PimEnrichBundle`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController` to `Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController` to `Akeneo\UserManagement\Bundle\Controller\ApiClientController`
 - Move `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner`
