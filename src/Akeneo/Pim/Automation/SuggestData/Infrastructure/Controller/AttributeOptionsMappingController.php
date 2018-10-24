@@ -32,24 +32,24 @@ class AttributeOptionsMappingController
             'franklinAttributeCode' => 'color',
             'mapping' => [
                 'color_1' => [
-                    'franklin_attribute_option_code' => [
+                    'franklinAttributeOptionCode' => [
                         'label' => 'Color 1',
                     ],
-                    'catalog_attribute_option_code' => null,
+                    'catalogAttributeOptionCode' => null,
                     'status' => 0,
                 ],
                 'color_2' => [
-                    'franklin_attribute_option_code' => [
+                    'franklinAttributeOptionCode' => [
                         'label' => 'Color 2',
                     ],
-                    'catalog_attribute_option_code' => 'color2',
+                    'catalogAttributeOptionCode' => 'color2',
                     'status' => 1,
                 ],
                 'color_3' => [
-                    'franklin_attribute_option_code' => [
+                    'franklinAttributeOptionCode' => [
                         'label' => 'Color 3',
                     ],
-                    'catalog_attribute_option_code' => null,
+                    'catalogAttributeOptionCode' => null,
                     'status' => 2,
                 ],
             ],
@@ -70,18 +70,18 @@ class AttributeOptionsMappingController
          *     "catalogAttributeCode": "color",
          *     "mapping":{
          *         "color_1":{
-         *             "franklin_attribute_option_code":{"label":"Color 1"},
-         *             "catalog_attribute_option_code":"color1",
+         *             "franklinAttributeOptionCode":{"label":"Color 1"},
+         *             "catalogAttributeOptionCode":"color1",
          *             "status":0
          *         },
          *         "color_2":{
-         *             "franklin_attribute_option_code":{"label":"Color 2"},
-         *             "catalog_attribute_option_code":"color2",
+         *             "franklinAttributeOptionCode":{"label":"Color 2"},
+         *             "catalogAttributeOptionCode":"color2",
          *             "status":1
          *         },
          *         "color_3":{
-         *             "franklin_attribute_option_code":{"label":"Color 3"},
-         *             "catalog_attribute_option_code":null,
+         *             "franklinAttributeOptionCode":{"label":"Color 3"},
+         *             "catalogAttributeOptionCode":null,
          *             "status":2
          *         }
          *     }

@@ -3,7 +3,6 @@
     <tr class="AknGrid-header">
         <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pimAiAttribute %></th>
         <th class="AknGrid-headerCell"><%- catalogAttribute %></th>
-        <th class="AknGrid-headerCell"/>
         <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeMappingStatus %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
@@ -32,16 +31,7 @@
                     </div>
                 </div>
             </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- pim_ai_attribute_code %>"/>
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
-                <div class="AknButtonList AknButtonList--right">
-                    <div
-                            class="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item option-mapping"
-                            data-franklin-attribute-code="<%- pim_ai_attribute_code %>"
-                            title="<%- edit %>"
-                            style="display: none;"
-                    ></div>
-                </div>
+            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- pim_ai_attribute_code %>">
             </td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
                 <%- statuses[mapping[pim_ai_attribute_code].status] %>
