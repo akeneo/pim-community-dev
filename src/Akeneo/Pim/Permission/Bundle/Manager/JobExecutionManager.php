@@ -31,13 +31,13 @@ class JobExecutionManager extends BaseJobExecutionManager
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var \Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository */
+    /** @var JobExecutionRepository */
     protected $repository;
 
     /**
      * Constructor
      *
-     * @param \Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository     $repository
+     * @param JobExecutionRepository     $repository
      * @param SecurityFacade             $securityFacade
      * @param JobProfileAccessRepository $accessRepository
      * @param TokenStorageInterface      $tokenStorage

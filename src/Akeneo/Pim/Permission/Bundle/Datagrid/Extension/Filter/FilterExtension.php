@@ -51,7 +51,7 @@ class FilterExtension extends BaseFilterExtension
      * @param RequestParameters               $requestParams
      * @param TranslatorInterface             $translator
      * @param DatasourceAdapterResolver       $adapterResolver
-     * @param \Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface    $attributeRepository
+     * @param AttributeRepositoryInterface    $attributeRepository
      * @param AttributeGroupAccessRepository  $accessRepository
      * @param UserContext                     $userContext
      * @param DatagridViewRepositoryInterface $datagridViewRepository
