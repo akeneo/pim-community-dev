@@ -60,7 +60,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
 
     akeneo.pim.automation.suggest_data.pimai_client.attribute_options_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributeOptionsMapping\AttributeOptionsMappingWebService'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingWebService'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
