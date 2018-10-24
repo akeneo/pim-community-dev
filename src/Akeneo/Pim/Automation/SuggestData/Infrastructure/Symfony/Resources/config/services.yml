@@ -20,3 +20,8 @@ services:
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.saver.product_draft'
             - '@event_dispatcher'
+
+    akeneo.pim.automation.suggest_data.service.product_subscription.does_persisted_product_have_a_family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\ProductSubscription\DoesPersistedProductHaveFamily'
+        arguments:
+            - '@doctrine.orm.entity_manager'

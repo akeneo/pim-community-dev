@@ -41,3 +41,10 @@ services:
             - '@pim_catalog.updater.attribute'
             - '@validator'
 
+    akeneo_ee_integration_tests.builder.family:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
