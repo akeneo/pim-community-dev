@@ -35,7 +35,7 @@ Feature: Create an reference entity
     When the user creates an reference entity "color" with:
       | labels                                 | image |
       | {"en_US": "Color", "fr_FR": "Couleur"} | null  |
-    Then there should be a validation error with message 'You cannot create the reference entity "color" because you have reached the limit of 100 reference entities'
+    Then there should be a validation error with message 'You cannot create the reference entity "Color" because you have reached the limit of 100 reference entities'
 
   @acceptance-front
   Scenario: Creating an reference entity

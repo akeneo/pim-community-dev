@@ -133,8 +133,12 @@ final class CreateReferenceEntityContext implements Context
             $command->code = uniqid();
             $command->labels = ['en_US' => uniqid('label_')];
 
-            if ($this->validator->validate($command)->count() > 0) {
-                throw new \RuntimeException('Cannot create the reference entity, command not valid');
+            $violations = $this->validator->validate($command);
+            if ($violations->count() > 0) {
+                $errorMessage = $violations->get(0)->getMessage();
+                throw new \RuntimeException(
+                    sprintf('Cannot create the reference entity, command not valid (%s)', $errorMessage)
+                );
             }
 
             ($this->createReferenceEntityHandler)($command);
