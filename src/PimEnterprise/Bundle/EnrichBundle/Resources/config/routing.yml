@@ -1,6 +1,3 @@
-pim:
-    resource: '@PimEnrichBundle/Resources/config/routing.yml'
-
 pimee_locale:
     resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_locale.yml'
     prefix: /configuration/locale
