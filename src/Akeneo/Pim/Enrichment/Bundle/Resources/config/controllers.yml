@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
+    pim_file_controller_filesystem_alias: ['catalogStorage']
 
 services:
     pim_pdf_generator.controller.product:
@@ -254,7 +255,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
-            - ['catalogStorage']
+            - '%pim_file_controller_filesystem_alias%'
 
     pim_enrich.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController'
