@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\Elasticsearch\QueryString;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
@@ -96,7 +97,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
     private function getTerms(array $searchFilter): string
     {
-        $loweredTerms = strtolower($searchFilter['value']);
+        $loweredTerms = QueryString::escapeValue(strtolower($searchFilter['value']));
         $terms = explode(' ', $loweredTerms);
         $wildcardTerms = array_map(function (string $term) {
             return sprintf('*%s*', $term);
