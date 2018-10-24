@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Permission\Bundle\Datagrid\Product;
+namespace Specification\Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
