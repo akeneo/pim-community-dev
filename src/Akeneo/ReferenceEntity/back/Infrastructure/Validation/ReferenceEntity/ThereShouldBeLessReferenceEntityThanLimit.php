@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ThereShouldBeLessReferenceEntityThanLimit extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.reference_entity.limit_reached';
+    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.code.limit_reached';
 
     public function getTargets()
     {

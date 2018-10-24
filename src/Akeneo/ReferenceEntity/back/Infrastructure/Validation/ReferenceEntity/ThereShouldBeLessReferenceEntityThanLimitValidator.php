@@ -78,8 +78,9 @@ class ThereShouldBeLessReferenceEntityThanLimitValidator extends ConstraintValid
 
         if ($total >= $this->referenceEntityLimit) {
             $this->context->buildViolation(ThereShouldBeLessReferenceEntityThanLimit::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $command->code)
+                ->setParameter('%reference_entity_label%', current($command->labels))
                 ->setParameter('%limit%', $this->referenceEntityLimit)
+                ->atPath('labels')
                 ->addViolation();
         }
     }

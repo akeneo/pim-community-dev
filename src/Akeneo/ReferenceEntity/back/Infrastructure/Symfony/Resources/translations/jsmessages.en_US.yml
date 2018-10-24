@@ -9,6 +9,7 @@ pim_reference_entity:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'This code already exists for this entity.'
+                limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
         button:
             save: Save
             create: Create
