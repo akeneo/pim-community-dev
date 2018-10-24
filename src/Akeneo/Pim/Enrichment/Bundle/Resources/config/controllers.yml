@@ -279,4 +279,4 @@ services:
             - '%pim_catalog.entity.category.class%'
             - '@oro_security.security_facade'
             - 'pim_enrich_product_categories_view'
-            - '@@PimEnrich/Product/listCategories.json.twig'
+            - '@@AkeneoPimEnrichmentBundle/Product/listCategories.json.twig'
