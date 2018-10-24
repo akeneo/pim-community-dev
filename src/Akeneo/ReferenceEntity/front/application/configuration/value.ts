@@ -14,10 +14,14 @@ type ValueConfig = {
     view: {
       view: ViewGenerator;
     };
-    cell: {
+    cell?: {
       cell: CellView;
     };
   };
+};
+
+export const hasCellView = (config: ValueConfig) => (attributeType: string): boolean => {
+  return undefined !== config[attributeType] && undefined !== config[attributeType].cell;
 };
 
 export const getDenormalizer = (config: ValueConfig) => (normalizedValue: NormalizedValue): Denormalizer => {
@@ -140,3 +144,4 @@ ${moduleExample}`
 export const getDataDenormalizer = getDenormalizer(__moduleConfig as ValueConfig);
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataCellView = getCellView(__moduleConfig as ValueConfig);
+export const hasDataCellView = hasCellView(__moduleConfig as ValueConfig);

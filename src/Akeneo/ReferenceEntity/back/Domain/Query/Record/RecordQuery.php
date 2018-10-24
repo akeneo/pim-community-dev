@@ -48,8 +48,7 @@ class RecordQuery
                 if (!(
                     key_exists('field', $filter) &&
                     key_exists('operator', $filter) &&
-                    key_exists('value', $filter) &&
-                    key_exists('context', $filter)
+                    key_exists('value', $filter)
                 )) {
                     throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
                 }

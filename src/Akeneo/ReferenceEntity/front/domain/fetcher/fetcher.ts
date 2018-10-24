@@ -2,7 +2,7 @@ interface Filter {
   field: string;
   operator: string;
   value: any;
-  context: any;
+  context?: any;
 }
 
 export interface Query {

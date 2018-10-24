@@ -6,6 +6,7 @@ import ReferenceEntityIdentifier, {
 export type NormalizedRecordType = NormalizedReferenceEntityIdentifier | null;
 
 export class InvalidArgumentError extends Error {}
+export class InvalidCallError extends Error {}
 
 export class RecordType implements NormalizableAdditionalProperty {
   private constructor(readonly recordType?: ReferenceEntityIdentifier) {
@@ -42,5 +43,13 @@ export class RecordType implements NormalizableAdditionalProperty {
 
   public stringValue(): string {
     return undefined === this.recordType ? '' : this.recordType.stringValue();
+  }
+
+  public getReferenceEntityIdentifier(): ReferenceEntityIdentifier {
+    if (undefined === this.recordType) {
+      throw new InvalidCallError('The reference enity identifier is undefined');
+    }
+
+    return this.recordType;
   }
 }

@@ -86,6 +86,8 @@ class ReferenceEntityEditController extends BaseController {
         if (error.request) {
           promise.reject(error.request);
         }
+
+        throw error;
       });
 
     return promise.promise();
