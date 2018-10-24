@@ -160,6 +160,15 @@ class PimAI implements DataProviderInterface
     }
 
     /**
+     * @param ProductSubscriptionRequest[] $requests
+     *
+     * @return ProductSubscriptionResponse[]
+     */
+    public function bulkSubscribe(array $requests): array
+    {
+    }
+
+    /**
      * @param Token $token
      *
      * @return bool

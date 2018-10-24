@@ -37,6 +37,13 @@ interface DataProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
+     * @param ProductSubscriptionRequest[] $requests
+     *
+     * @return ProductSubscriptionResponse[]
+     */
+    public function bulkSubscribe(array $requests): array;
+
+    /**
      * @param Token $token
      *
      * @return bool
