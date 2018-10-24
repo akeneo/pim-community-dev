@@ -27,9 +27,6 @@ doctrine_migrations:
     namespace: Pim\Upgrade\Schema
     name: PIM Enterprise Migrations
 
-pim_enrich:
-    max_products_category_removal: '%max_products_category_removal%'
-
 akeneo_elasticsearch:
     hosts: "%index_hosts%"
     indexes:
