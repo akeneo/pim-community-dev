@@ -1,2 +1,10 @@
-parameters:
-    pim_file_controller_filesystem_alias: ['catalogStorage', 'assetStorage']
+services:
+    pim_enrich.controller.file:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'
+        arguments:
+            - '@liip_imagine.controller'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.repository.file_info'
+            - '@pim_enrich.guesser.file_type'
+            - '@pim_enrich.provider.default_image'
+            - ['catalogStorage', 'assetStorage']
