@@ -90,8 +90,58 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
 
-        $products = $this->getProductsCursor();
+        $variantProducts = $this->variantProducts();
+        $this->delete($variantProducts);
 
+        $subProductModels = $this->findSubProductModels();
+        $this->delete($subProductModels);
+
+        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
+        $this->delete($productsAndRootProductModels);
+    }
+
+    private function variantProducts(): CursorInterface
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+        $options = ['filters' => $filters];
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
+        $productQueryBuilder->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+
+        return $productQueryBuilder->execute();
+    }
+
+    private function findSubProductModels(): CursorInterface
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+        $options = ['filters' => $filters];
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
+        $productQueryBuilder->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
+        $productQueryBuilder->addFilter('parent', Operators::IS_NOT_EMPTY, null);
+
+        return $productQueryBuilder->execute();
+    }
+
+    /**
+     * @return CursorInterface
+     */
+    protected function findSimpleProductsAndRootProductModels(): CursorInterface
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+        $options = ['filters' => $filters];
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
+        $productQueryBuilder->addFilter('parent', Operators::IS_EMPTY, null);
+
+        return $productQueryBuilder->execute();
+    }
+
+    /**
+     * @param CursorInterface $products
+     */
+    private function delete(CursorInterface $products): void
+    {
         $loopCount = 0;
         $entitiesToRemove = [];
         while ($products->valid()) {
@@ -114,20 +164,6 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         if (!empty($entitiesToRemove)) {
             $this->doDelete($entitiesToRemove);
         }
-    }
-
-    /**
-     * @return CursorInterface
-     */
-    protected function getProductsCursor(): CursorInterface
-    {
-        $filters = $this->stepExecution->getJobParameters()->get('filters');
-        $options = ['filters' => $filters];
-
-        $productQueryBuilder = $this->pqbFactory->create($options);
-        $productQueryBuilder->addFilter('parent', Operators::IS_EMPTY, null);
-
-        return $productQueryBuilder->execute();
     }
 
     /**
