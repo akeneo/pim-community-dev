@@ -7,7 +7,7 @@ common:
   pimMasterDomain: ${pimmaster_dns_name}
 
 nfs:
-  persitence:
+  persistence:
     storageClass: standard
   storageClass:
     name: nfs-srnt-${pfid}
