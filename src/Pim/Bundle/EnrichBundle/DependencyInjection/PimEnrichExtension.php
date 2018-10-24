@@ -28,8 +28,5 @@ class PimEnrichExtension extends Extension
             'pim_enrich_max_products_category_removal',
             $configs[0]['max_products_category_removal']
         );
-
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('colors.yml');
     }
 }
