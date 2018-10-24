@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {RowView} from 'akeneoreferenceentity/application/component/record/index/table';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import {getLabel} from 'pimenrich/js/i18n';
+import {getLabel} from 'pimui/js/i18n';
 const router = require('pim/router');
 
 const ActionView: RowView = ({

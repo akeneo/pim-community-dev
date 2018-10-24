@@ -9,7 +9,7 @@
 
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
-import BaseForm = require('pimenrich/js/view/base');
+import BaseForm = require('pimui/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';

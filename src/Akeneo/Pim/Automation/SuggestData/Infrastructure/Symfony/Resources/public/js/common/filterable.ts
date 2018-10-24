@@ -11,7 +11,7 @@ import * as $ from 'jquery';
 import * as _ from 'underscore';
 const noDataTemplate = require('pim/template/common/no-data');
 const __ = require('oro/translator');
-import BaseForm = require('pimenrich/js/view/base');
+import BaseForm = require('pimui/js/view/base');
 
 export enum FilterValue {
   Equals = 'equals',

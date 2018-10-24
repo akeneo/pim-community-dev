@@ -9,7 +9,7 @@ import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import {CellViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
 import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/record/search';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
-import {getLabel} from 'pimenrich/js/i18n';
+import {getLabel} from 'pimui/js/i18n';
 
 interface TableState {
   locale: string;
