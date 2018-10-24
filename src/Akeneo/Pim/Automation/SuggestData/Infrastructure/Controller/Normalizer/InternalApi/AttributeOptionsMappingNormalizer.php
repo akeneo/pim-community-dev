@@ -29,7 +29,7 @@ class AttributeOptionsMappingNormalizer
     {
         return [
             'family' => $attributeOptionsMapping->familyCode(),
-            'franklin_attribute_code' => $attributeOptionsMapping->franklinAttributeId(),
+            'franklinAttributeCode' => $attributeOptionsMapping->franklinAttributeId(),
             'mapping' => $this->normalizeMapping($attributeOptionsMapping->mapping()),
         ];
     }
@@ -45,10 +45,10 @@ class AttributeOptionsMappingNormalizer
         foreach ($attributeOptionsMapping as $attributeOptionMapping) {
             $normalizedMapping[] = [
                 $attributeOptionMapping->franklinAttributeId => [
-                    'franklin_attribute_option_code' => [
+                    'franklinAttributeOptionCode' => [
                         'label' => $attributeOptionMapping->franklinAttributeLabel,
                     ],
-                    'catalog_attribute_option_code' => $attributeOptionMapping->pimAttributeCode,
+                    'catalogAttributeOptionCode' => $attributeOptionMapping->pimAttributeCode,
                     'status' => $attributeOptionMapping->status(),
                 ],
             ];
