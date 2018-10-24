@@ -53,16 +53,8 @@ stage("Build") {
     pod {
         container('docker') {
             checkout scm
-
-            dir('packages/pim-community-dev') {
-                checkout([$class: 'GitSCM',
-                    branches: [[name: ceBranch]],
-                    userRemoteConfigs: [[credentialsId: "github-credentials", url: "https://github.com/${ceOwner}/pim-community-dev.git"]]
-                ])
-            }
-
             sh "cp .ci/Dockerfile Dockerfile"
-            sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composerCommand} ."
+            sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composerCommand},_CE_BRANCH=${ceBranch},_CE_OWNER=${ceOwner} ."
         }
     }
 }

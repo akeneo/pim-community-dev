@@ -1,6 +1,8 @@
 FROM akeneo/fpm:php-7.2
 
 ARG COMPOSER_COMMAND=update
+ARG CE_OWNER=akeneo
+ARG CE_BRANCH=master
 
 ENV COMPOSER_CACHE_DIR=/tmp/composer/cache
 ENV COMPOSER_MEMORY_LIMIT=5G
@@ -39,10 +41,7 @@ COPY --from=eu.gcr.io/akeneo-ci/github-akeneo-ci-dependencies-warmer:master /tmp
 COPY . .
 COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-RUN composer config --unset extra.branch-alias --working-dir=packages/pim-community-dev \
-    && composer config repositories.pim-community-dev '{"type": "path", "url": "packages/pim-community-dev", "options": {"symlink": false}}'  \
-    && composer require --no-update "akeneo/pim-community-dev:@dev" \
-    && composer $COMPOSER_COMMAND --no-ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest \
+RUN .ci/bin/install-vendor $COMPOSER_COMMAND $CE_OWNER $CE_BRANCH \
     && bin/console pim:installer:assets --env=prod \
     && bin/console pim:installer:dump-extensions --env=prod \
     && bin/console pim:installer:dump-require-paths --env=prod \
