@@ -43,6 +43,11 @@ class ReferenceEntityEditController extends BaseController {
       .fetch(createIdentifier(route.params.identifier))
       .then(async (referenceEntityResult: ReferenceEntityResult) => {
         this.store = createStore(true)(referenceEntityReducer);
+        const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
+        const userSearch: any = (null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)) ?
+          sessionStorage.getItem(`search-${referenceEntityIdentifier}`) :
+          ''
+        ;
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
@@ -54,7 +59,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
-        this.store.dispatch(updateFilter('search', '=', ''));
+        this.store.dispatch(updateFilter('search', '=', userSearch));
         this.store.dispatch(updateRecordResults());
         this.store.dispatch(updateAttributeList() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));

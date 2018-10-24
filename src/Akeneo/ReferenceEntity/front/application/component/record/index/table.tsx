@@ -202,10 +202,15 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
+    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews, referenceEntity} = this.props;
     const columnsToDisplay = grid.columns.filter(
       (column: Column) => column.channel === channel && column.locale === locale
     );
+    const referenceEntityIdentifier = referenceEntity.getIdentifier().stringValue();
+    const userSearch: any = (null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)) ?
+      sessionStorage.getItem(`search-${referenceEntityIdentifier}`) :
+      ''
+    ;
 
     return (
       <React.Fragment>
@@ -214,6 +219,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
             type="text"
             className="AknFilterBox-search"
             placeholder={__('pim_reference_entity.record.grid.search')}
+            defaultValue={userSearch}
             onChange={this.onSearchUpdated.bind(this)}
           />
         </div>
