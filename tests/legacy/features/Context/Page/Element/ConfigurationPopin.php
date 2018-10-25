@@ -44,8 +44,9 @@ class ConfigurationPopin extends Element
     /**
      * Run the infinite scroll on the column list
      */
-    public function loadAllColumns() {
-        return $this->spin(function() {
+    public function loadAllColumns()
+    {
+        return $this->spin(function () {
             $this->getSession()->executeScript('$("[data-columns]").scrollTop(10000);');
 
             return $this->find('css', '[data-columns].more') === null;
