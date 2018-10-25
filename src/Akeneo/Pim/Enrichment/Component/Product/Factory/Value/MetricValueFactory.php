@@ -41,7 +41,7 @@ class MetricValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, $ignoreUnknownData = false)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
     {
         $this->checkData($attribute, $data);
 
