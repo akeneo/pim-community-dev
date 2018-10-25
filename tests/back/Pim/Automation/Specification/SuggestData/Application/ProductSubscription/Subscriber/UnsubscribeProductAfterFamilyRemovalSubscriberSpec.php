@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSub
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\DoesPersistedProductHaveFamilyInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\UnsubscribeProductAfterFamilyRemovalSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductFamilyRemovalSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Structure\Component\Model\Family;
@@ -40,7 +40,7 @@ class UnsubscribeProductAfterFamilyRemovalSubscriberSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(UnsubscribeProductAfterFamilyRemovalSubscriber::class);
+        $this->shouldBeAnInstanceOf(ProductFamilyRemovalSubscriber::class);
     }
 
     public function it_is_an_event_subscriber(): void

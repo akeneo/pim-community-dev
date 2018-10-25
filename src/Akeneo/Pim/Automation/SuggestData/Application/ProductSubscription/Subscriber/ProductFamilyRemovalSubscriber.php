@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberInterface
+class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
 {
     /** @var SelectProductFamilyIdQueryInterface */
     private $selectProductFamilyIdQuery;
@@ -51,32 +51,58 @@ class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'unsubscribeProduct',
+            StorageEvents::PRE_SAVE => 'onPreSave',
         ];
     }
 
     /**
-     * Unsubscribe product when family.
+     * Pre-save event action
      *
      * @param GenericEvent $event
      */
-    public function unsubscribeProduct(GenericEvent $event): void
+    public function onPreSave(GenericEvent $event): void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {
             return;
         }
 
-        if (null === $product->getId() || null !== $product->getFamily()) {
+        if (null === $product->getId()) {
             return;
         }
 
-        if (null !== $this->selectProductFamilyIdQuery->execute($product->getId())) {
+        if ($this->hasFamilyRemoved($product)) {
+            $this->unsubscribeProduct($product->getId());
+        }
+    }
+
+    /**
+     * Checks if the product family has been removed
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    private function hasFamilyRemoved($product)
+    {
+        return null !== $product->getFamily()
+            && null !== $this->selectProductFamilyIdQuery->execute($product->getId());
+    }
+
+    /**
+     * Call product unsubscription
+     *
+     * @param int $productId
+     */
+    private function unsubscribeProduct(int $productId): void
+    {
+        if (null !== $this->selectProductFamilyIdQuery->execute($productId)) {
             try {
-                $command = new UnsubscribeProductCommand($product->getId());
+                $command = new UnsubscribeProductCommand($productId);
                 $this->unsubscribeProductHandler->handle($command);
             } catch (ProductNotSubscribedException $e) {
                 // Silently catch exception if the product is not subscribed
+                // We don't check it here as the handler already check it. No need to do it twice
                 return;
             }
         }
