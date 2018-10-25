@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\User;
 
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryGroupRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, ObjectRepository
+class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterface, ObjectRepository
 {
     /** @var GroupInterface[] */
     private $groups;
@@ -86,6 +86,14 @@ class InMemoryGroupRepository implements IdentifiableObjectRepositoryInterface, 
      * {@inheritdoc}
      */
     public function getClassName()
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultUserGroup()
     {
         throw new NotImplementedException();
     }
