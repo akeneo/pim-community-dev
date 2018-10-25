@@ -34,9 +34,9 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $attributesMapping->addAttribute(new AttributeMapping(
             'product_weight',
             'Product Weight',
+            'metric',
             null,
             AttributeMapping::ATTRIBUTE_PENDING,
-            'metric',
             ['23kg', '12kg']
         ));
 

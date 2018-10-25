@@ -199,9 +199,9 @@ class PimAI implements DataProviderInterface
             $attribute = new DomainAttributeMapping(
                 $attribute->getTargetAttributeCode(),
                 $attribute->getTargetAttributeLabel(),
+                $attribute->getTargetAttributeType(),
                 $attribute->getPimAttributeCode(),
                 $this->mapAttributeMappingStatus($attribute->getStatus()),
-                $attribute->getType(),
                 $attribute->getSummary()
             );
             $attributesMapping->addAttribute($attribute);

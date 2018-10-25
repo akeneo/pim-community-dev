@@ -67,32 +67,14 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
 
     private function getApiJsonReturn(): string
     {
-        return
-        <<<JSON
-[
-  {
-    "from": {
-      "id": "product_weight",
-      "label": {
-        "en_us": "Product Weight"
-      }
-    },
-    "to": null,
-    "type": "metric",
-    "status": "pending"
-  },
-  {
-    "from": {
-      "id": "color",
-      "label": {
-        "en_us": "Color"
-      }
-    },
-    "to": null,
-    "type": "multiselect",
-    "status": "active"
-  }
-]
-JSON;
+        $directory = realpath(
+            sprintf('%s/../../../../../../../../Infrastructure/Client/PimAi/Api/resources', __DIR__)
+        );
+        $filepath = sprintf('%s/%s.json', $directory, 'attributes-mapping-family-router');
+        if (!file_exists($filepath)) {
+            throw new \InvalidArgumentException(sprintf('File "%s" not found', $filepath));
+        }
+
+        return file_get_contents($filepath);
     }
 }

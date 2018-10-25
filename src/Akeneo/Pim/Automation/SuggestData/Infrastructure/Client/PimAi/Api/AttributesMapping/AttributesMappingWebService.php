@@ -57,20 +57,18 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
         try {
             $response = $this->httpClient->request('GET', $route);
 
-            $attributes = [];
             $responseContent = $response->getBody()->getContents();
-            /*
-             * TODO: should be removed later. see APAI-302
-             */
-            if (!empty($responseContent)) {
-                $attributes = json_decode($responseContent, true);
+            $content = json_decode($responseContent, true);
+            if (!array_key_exists('mapping', $content)) {
+                throw new PimAiServerException('No "mapping" key found');
             }
+            $attributes = $content['mapping'];
 
             return new AttributesMapping($attributes);
-        } catch (ServerException $e) {
+        } catch (ServerException | PimAiServerException $e) {
             throw new PimAiServerException(
                 sprintf(
-                    'Something went wrong on PIM.ai side when fetching the family attributes of family "%s" : %s',
+                    'Something went wrong on Franklin side when fetching the family attributes of family "%s" : %s',
                     $familyCode,
                     $e->getMessage()
                 )

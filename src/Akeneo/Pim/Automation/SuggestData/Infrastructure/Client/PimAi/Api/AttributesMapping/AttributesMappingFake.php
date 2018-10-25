@@ -39,7 +39,7 @@ class AttributesMappingFake implements AttributesMappingApiInterface
         }
 
         return new AttributesMapping(
-            json_decode(file_get_contents($filepath), true)
+            json_decode(file_get_contents($filepath), true)['mapping']
         );
     }
 
