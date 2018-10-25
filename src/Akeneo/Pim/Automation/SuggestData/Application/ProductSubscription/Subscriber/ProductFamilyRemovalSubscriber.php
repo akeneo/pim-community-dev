@@ -56,7 +56,7 @@ class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Pre-save event action
+     * Pre-save event action.
      *
      * @param GenericEvent $event
      */
@@ -77,7 +77,7 @@ class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Checks if the product family has been removed
+     * Checks if the product family has been removed.
      *
      * @param ProductInterface $product
      *
@@ -85,12 +85,12 @@ class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
      */
     private function hasFamilyRemoved($product)
     {
-        return null !== $product->getFamily()
+        return null === $product->getFamily()
             && null !== $this->selectProductFamilyIdQuery->execute($product->getId());
     }
 
     /**
-     * Call product unsubscription
+     * Call product unsubscription.
      *
      * @param int $productId
      */
