@@ -25,18 +25,32 @@ class ConfigurationPopin extends Element
      */
     public function addColumns($labels)
     {
+        $dropZone = $this->spin(function () {
+            return $this->find('css', '#column-selection');
+        }, 'Cannot find the drop zone');
+
         $searchInput = $this->spin(function () {
             return $this->find('css', 'input[type="search"]');
         }, 'Column search input not found');
 
-        $dropZone = $this->spin(function () {
-            return $this->find('css', '#column-selection');
-        }, 'Cannot find the drop zone');
+        $this->loadAllColumns();
 
         foreach ($labels as $label) {
             $item = $this->getItemForLabel($label);
             $this->dragElementTo($item, $dropZone);
         }
+    }
+
+    /**
+     * Run the infinite scroll on the column list
+     */
+    public function loadAllColumns()
+    {
+        return $this->spin(function () {
+            $this->getSession()->executeScript('$("[data-columns]").scrollTop(10000);');
+
+            return $this->find('css', '[data-columns].more') === null;
+        }, 'Cannot load all columns in list');
     }
 
     /**
