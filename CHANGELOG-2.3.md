@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.13 (2018-10-25)
+
 ## Bug fixes
 
 - PIM-7759: Date range grid filters should be ignored when no value is set
