@@ -8,18 +8,21 @@ import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/
 import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
 import __ from 'akeneoreferenceentity/tools/translator';
 
-class ErrorBoundary extends React.Component<{fieldName: string}, {hasError: boolean, error: Error|null}> {
+class ErrorBoundary extends React.Component<{fieldName: string}, {hasError: boolean; error: Error | null}> {
   constructor(props: {fieldName: string}) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = {hasError: false, error: null};
   }
 
   static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
+    return {hasError: true, error};
   }
 
   componentDidCatch(error: Error | null) {
-    this.setState({ hasError: true, error: error || new Error('An error occured during the rendering of the field view') });
+    this.setState({
+      hasError: true,
+      error: error || new Error('An error occured during the rendering of the field view'),
+    });
   }
 
   render() {
@@ -64,7 +67,13 @@ export default (
         </div>
         <div className="AknFieldContainer-inputContainer">
           <ErrorBoundary fieldName={value.attribute.getLabel(locale.stringValue())}>
-            <DataView value={value} onChange={onValueChange} onSubmit={onFieldSubmit} />
+            <DataView
+              value={value}
+              onChange={onValueChange}
+              onSubmit={onFieldSubmit}
+              channel={channel}
+              locale={locale}
+            />
           </ErrorBoundary>
         </div>
         {getErrorsView(errors, value)}

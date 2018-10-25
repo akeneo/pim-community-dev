@@ -67,6 +67,8 @@ pim_reference_entity:
         no_result:
             title: There are no result for your search
             subtitle: Try again with new search criteria.
+        selector:
+            no_value: Click here to select a record.
         error:
             value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
         button:

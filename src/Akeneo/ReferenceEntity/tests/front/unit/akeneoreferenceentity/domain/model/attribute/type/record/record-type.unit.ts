@@ -1,4 +1,5 @@
 import {RecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 describe('akeneo > attribute > domain > model > attribute > type > record --- record type', () => {
   test('I can create a RecordType from normalized', () => {
@@ -17,5 +18,10 @@ describe('akeneo > attribute > domain > model > attribute > type > record --- re
     expect(RecordType.createFromString('brand').stringValue()).toEqual('brand');
     expect(RecordType.createFromString('').stringValue()).toEqual('');
     expect(() => RecordType.createFromString({my: 'object'})).toThrow();
+  });
+  });
+  test('I can get the reference entity identifier', () => {
+    expect(RecordType.createFromString('brand').getReferenceEntityIdentifier()).toEqual(createIdentifier('brand'));
+    expect(() => RecordType.createFromNormalized(null).getReferenceEntityIdentifier()).toThrow();
   });
 });

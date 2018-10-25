@@ -6,21 +6,29 @@ import {RecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type
 import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 
-class RecordView extends React.Component<{
-  attribute: RecordAttribute;
-  errors: ValidationError[];
-  locale: string;
-}, {referenceEntity: ReferenceEntity|null}> {
+class RecordView extends React.Component<
+  {
+    attribute: RecordAttribute;
+    errors: ValidationError[];
+    locale: string;
+  },
+  {referenceEntity: ReferenceEntity | null}
+> {
   state = {referenceEntity: null};
   async componentDidMount() {
-
-    const referenceEntityResult = await referenceEntityFetcher.fetch(this.props.attribute.recordType.getReferenceEntityIdentifier());
+    const referenceEntityResult = await referenceEntityFetcher.fetch(
+      this.props.attribute.recordType.getReferenceEntityIdentifier()
+    );
     this.setState({referenceEntity: referenceEntityResult.referenceEntity});
   }
 
-  render () {
-    if (null != this.state.referenceEntity) {}
-    const value = null !== this.state.referenceEntity ? (this.state.referenceEntity as any).getLabel(this.props.locale) : this.props.attribute.recordType.stringValue();
+  render() {
+    if (null != this.state.referenceEntity) {
+    }
+    const value =
+      null !== this.state.referenceEntity
+        ? (this.state.referenceEntity as any).getLabel(this.props.locale)
+        : this.props.attribute.recordType.stringValue();
 
     return (
       <React.Fragment>
@@ -46,6 +54,6 @@ class RecordView extends React.Component<{
       </React.Fragment>
     );
   }
-};
+}
 
 export const view = RecordView;

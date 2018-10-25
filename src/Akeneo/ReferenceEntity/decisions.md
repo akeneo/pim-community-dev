@@ -198,7 +198,7 @@ Each editRecordValueCommand will have those properties :
 - data
 (Each of those commands will be created via a dedicated factory, registered as such in a registry).
 
-To create the editRecordValueCommand typed by the attribute, we will have to : 
+To create the editRecordValueCommand typed by the attribute, we will have to :
  - create an associative array of attribute indexed by identifier for each reference entity (QueryFunction)
  - get the attribute identifier of each raw value to be able to retrieve the attribute (thanks to the array create previously)
  - create the specific editRecordValueCommand of this attribute type
@@ -444,3 +444,17 @@ To reach a satifying response time with the search model 2, we need to significa
 #### Status: Rejected
 
 *Decision*: *We will implement the search model 1 "keyword" and try to improve the indexing time as munch as we can so it does not become a bottleneck on the PIM*.
+
+## 29/10/2018
+
+### Operators in filter
+
+#### Problem:
+
+On the PIM today, the operators use a mix of algebric symbols (`<`, `=`, `!=`), SQL style operators (`NOT IN`, `IN`, etc) and homemade operators (`AT_LEAST_COMPLETE_ON_ONE_LOCALE`, etc). Problem is that to keep track of all of them and to be consistent, we implemented a [Operators.php](https://github.com/akeneo/pim-community-dev/blob/cf809f1895afe7a0e916aa2b84fccf9f1f208632/src/Akeneo/Pim/Enrichment/Component/Product/Query/Filter/Operators.php) class.
+
+#### Solution
+
+We think that we should still use a class to contains all the operators. But we should also normalize those operators to avoid mapping as much as possible.
+
+To sum up, the operator tho check equality should be named 'EQUALS' and be used by the front and the backend.

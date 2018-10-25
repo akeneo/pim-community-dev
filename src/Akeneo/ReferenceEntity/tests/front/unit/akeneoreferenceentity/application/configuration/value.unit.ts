@@ -1,4 +1,9 @@
-import {getDenormalizer, getFieldView, getCellView} from 'akeneoreferenceentity/application/configuration/value';
+import {
+  getDenormalizer,
+  getFieldView,
+  getCellView,
+  hasCellView,
+} from 'akeneoreferenceentity/application/configuration/value';
 
 jest.mock('require-context', name => {});
 
@@ -161,5 +166,26 @@ config:
                 cell: '@my_data_cell_view'
 
 Actual conf: ${JSON.stringify({text: {}})}`);
+  });
+
+  test('I can know if a value has a cell view', () => {
+    expect(
+      hasCellView({
+        text: {
+          cell: {
+            cell: value => {},
+          },
+        },
+      })('text')
+    ).toBe(true);
+    expect(
+      hasCellView({
+        text: {
+          cell: {
+            cell: value => {},
+          },
+        },
+      })('image')
+    ).toBe(false);
   });
 });

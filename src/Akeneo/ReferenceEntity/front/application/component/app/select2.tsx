@@ -3,10 +3,13 @@ import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 
 export interface Select2Props {
+  fieldId: string;
+  fieldName: string;
   data: {
     [choiceValue: string]: string;
   };
   value: string[];
+  multiple: boolean;
   readonly: boolean;
   onSelect: (value: string) => void;
   onUnselect: (value: string) => void;
@@ -47,8 +50,11 @@ export default class Select2 extends React.Component<Select2Props> {
 
     return (
       <select
-      {...this.props}
-      className="select2"
+        id={props.fieldId}
+        className="select2"
+        name={props.fieldName}
+        multiple={props.multiple}
+        disabled={props.readonly}
         onChange={event => {
           const newValues = Array.prototype.slice
             .call(event.currentTarget.childNodes)
