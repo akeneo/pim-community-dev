@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attr
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use GuzzleHttp\Exception\ClientException;
@@ -46,7 +46,7 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
      * @param string $familyCode
      *
      * @throws BadRequestException
-     * @throws PimAiServerException
+     * @throws FranklinServerException
      *
      * @return AttributesMapping
      */
@@ -60,13 +60,13 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
             $responseContent = $response->getBody()->getContents();
             $content = json_decode($responseContent, true);
             if (!array_key_exists('mapping', $content)) {
-                throw new PimAiServerException('No "mapping" key found');
+                throw new FranklinServerException('No "mapping" key found');
             }
             $attributes = $content['mapping'];
 
             return new AttributesMapping($attributes);
-        } catch (ServerException | PimAiServerException $e) {
-            throw new PimAiServerException(
+        } catch (ServerException | FranklinServerException $e) {
+            throw new FranklinServerException(
                 sprintf(
                     'Something went wrong on Franklin side when fetching the family attributes of family "%s" : %s',
                     $familyCode,

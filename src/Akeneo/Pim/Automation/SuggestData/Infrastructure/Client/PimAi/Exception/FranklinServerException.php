@@ -20,6 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientExce
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class PimAiServerException extends ClientException
+class FranklinServerException extends ClientException
 {
 }

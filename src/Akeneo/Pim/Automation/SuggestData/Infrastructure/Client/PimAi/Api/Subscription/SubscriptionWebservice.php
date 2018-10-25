@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use GuzzleHttp\Exception\ClientException;
@@ -64,13 +64,13 @@ class SubscriptionWebservice implements SubscriptionApiInterface
 
             $content = json_decode($response->getBody()->getContents(), true);
             if (null === $content) {
-                throw new PimAiServerException('Empty response');
+                throw new FranklinServerException('Empty response');
             }
 
             return new ApiResponse($response->getStatusCode(), new SubscriptionCollection($content));
-        } catch (ServerException | PimAiServerException $e) {
-            throw new PimAiServerException(sprintf(
-                'Something went wrong on PIM.ai side during product subscription: %s',
+        } catch (ServerException | FranklinServerException $e) {
+            throw new FranklinServerException(sprintf(
+                'Something went wrong on Franklin side during product subscription: %s',
                 $e->getMessage()
             ));
         } catch (ClientException $e) {
@@ -107,8 +107,8 @@ class SubscriptionWebservice implements SubscriptionApiInterface
 
             return new SubscriptionsCollection($this, json_decode($response->getBody()->getContents(), true));
         } catch (ServerException $e) {
-            throw new PimAiServerException(
-                sprintf('Something went wrong on PIM.ai side during product subscription: %s.', $e->getMessage())
+            throw new FranklinServerException(
+                sprintf('Something went wrong on Franklin side during product subscription: %s.', $e->getMessage())
             );
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
@@ -136,8 +136,8 @@ class SubscriptionWebservice implements SubscriptionApiInterface
         try {
             $this->httpClient->request('DELETE', $route);
         } catch (ServerException $e) {
-            throw new PimAiServerException(
-                sprintf('Something went wrong on PIM.ai side during product subscription: %s', $e->getMessage())
+            throw new FranklinServerException(
+                sprintf('Something went wrong on Franklin side during product subscription: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
