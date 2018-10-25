@@ -51,8 +51,12 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $cacheClearer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor,
         ProductInterface $product123,
         ProductInterface $product456,
         ProductInterface $product789
@@ -69,21 +73,33 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
 
-        $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
-        $pqb->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
-        $pqb->execute()->willReturn($cursor);
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($variantProductsPQB, $subProductModelPQB, $rootProductModelPQB);
 
-        $cursor->valid()->willReturn(true, true, true, false);
-        $cursor->current()->willReturn($product123, $product456, $product789);
-        $cursor->next()->shouldBeCalled();
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->valid()->willReturn(true, false);
+        $variantProductsCursor->current()->willReturn($product789);
+        $variantProductsCursor->next()->shouldBeCalled();
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->valid()->willReturn(false);
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->valid()->willReturn(true, true, false);
+        $rootProductModelCursor->current()->willReturn($product123, $product456);
+        $rootProductModelCursor->next()->shouldBeCalled();
 
         $filter
             ->filterObject(Argument::any(), 'pim.enrich.product.delete')
             ->shouldBeCalled()
             ->willReturn(false);
 
-        $productRemover->removeAll([$product123, $product456])->shouldBeCalled();
         $productRemover->removeAll([$product789])->shouldBeCalled();
+        $productRemover->removeAll([$product123, $product456])->shouldBeCalled();
         $productModelRemover->removeAll([])->shouldBeCalled();
 
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
@@ -108,8 +124,12 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $filter,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor,
         ProductModelInterface $productModel123,
         ProductModelInterface $productModel456,
         ProductModelInterface $productModel789
@@ -126,13 +146,26 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
 
-        $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
-        $pqb->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
-        $pqb->execute()->willReturn($cursor);
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($variantProductsPQB, $subProductModelPQB, $rootProductModelPQB);
 
-        $cursor->valid()->willReturn(true, true, true, false);
-        $cursor->current()->willReturn($productModel123, $productModel456, $productModel789);
-        $cursor->next()->shouldBeCalled();
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->valid()->willReturn(false);
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->valid()->willReturn(true, true, false);
+        $subProductModelCursor->current()->willReturn($productModel123, $productModel456);
+        $subProductModelCursor->next()->shouldBeCalled();
+
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->valid()->willReturn(true, false);
+        $rootProductModelCursor->current()->willReturn($productModel789);
+        $rootProductModelCursor->next()->shouldBeCalled();
 
         $filter
             ->filterObject(Argument::any(), 'pim.enrich.product.delete')
@@ -165,8 +198,12 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $filter,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductModelInterface $productModel3,
@@ -193,20 +230,27 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
 
-        $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
-        $pqb->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
-        $pqb->execute()->willReturn($cursor);
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($variantProductsPQB, $subProductModelPQB, $rootProductModelPQB);
 
-        $cursor->valid()->willReturn(true, true, true, true, true, true, false);
-        $cursor->current()->willReturn(
-            $productModel1,
-            $product4,
-            $product5,
-            $product6,
-            $productModel2,
-            $productModel3
-        );
-        $cursor->next()->shouldBeCalled();
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->valid()->willReturn(true, true, false);
+        $variantProductsCursor->current()->willReturn($product4, $product5);
+        $variantProductsCursor->next()->shouldBeCalled();
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->valid()->willReturn(true, true, false);
+        $subProductModelCursor->current()->willReturn($productModel1, $productModel2);
+        $subProductModelCursor->next()->shouldBeCalled();
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->valid()->willReturn(true, true, false);
+        $rootProductModelCursor->current()->willReturn($productModel3, $product6);
+        $rootProductModelCursor->next()->shouldBeCalled();
 
         $filter
             ->filterObject(Argument::any(), 'pim.enrich.product.delete')
@@ -216,14 +260,14 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
 
-        $productRemover->removeAll([$product4])->shouldBeCalled();
-        $productModelRemover->removeAll([$productModel1])->shouldBeCalled();
+        $productRemover->removeAll([$product4, $product5])->shouldBeCalled();
+        $productModelRemover->removeAll([])->shouldBeCalled([]);
 
-        $productRemover->removeAll([$product5, $product6])->shouldBeCalled();
-        $productModelRemover->removeAll([])->shouldBeCalled();
+        $productRemover->removeAll([])->shouldBeCalled();
+        $productModelRemover->removeAll([$productModel1, $productModel2])->shouldBeCalled([]);
 
-        $productRemover->removeAll([])->shouldBeCalled([]);
-        $productModelRemover->removeAll([$productModel2, $productModel3])->shouldBeCalled([]);
+        $productModelRemover->removeAll([$productModel3])->shouldBeCalled();
+        $productRemover->removeAll([$product6])->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('deleted_product_models', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('deleted_products', 1)->shouldBeCalled();
@@ -249,8 +293,12 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $filter,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductInterface $product1,
@@ -273,18 +321,23 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
 
-        $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
-        $pqb->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
-        $pqb->execute()->willReturn($cursor);
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($variantProductsPQB, $subProductModelPQB, $rootProductModelPQB);
 
-        $cursor->valid()->willReturn(true, true, true, true, false);
-        $cursor->current()->willReturn(
-            $productModel1,
-            $productModel2,
-            $product1,
-            $product2
-        );
-        $cursor->next()->shouldBeCalled();
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->valid()->willReturn(false);
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->valid()->willReturn(false);
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->valid()->willReturn(true, true, true, true, false);
+        $rootProductModelCursor->current()->willReturn($productModel1, $productModel2, $product1, $product2);
+        $rootProductModelCursor->next()->shouldBeCalled();
 
         $filter
             ->filterObject($productModel1, 'pim.enrich.product.delete')
@@ -325,47 +378,6 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementReadCount()->shouldBeCalledTimes(4);
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
-
-        $this->execute();
-    }
-
-    function it_deletes_all_products_and_product_model(
-        $pqbFactory,
-        $productRemover,
-        $productModelRemover,
-        $cacheClearer,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $cursor,
-        ProductModelInterface $productModel,
-        ProductInterface $product
-    ) {
-        $this->setStepExecution($stepExecution);
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filters')->willReturn([]);
-
-        $pqbFactory->create(['filters' => []])->willReturn($pqb);
-        $pqb->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
-        $pqb->execute()->willReturn($cursor);
-
-        $cursor->valid()->willReturn(true, true, false);
-        $cursor->current()->willReturn($productModel, $product);
-        $cursor->next()->shouldBeCalled();
-
-        $stepExecution->addSummaryInfo('deleted_products', 0)->shouldBeCalled();
-        $stepExecution->addSummaryInfo('deleted_product_models', 0)->shouldBeCalled();
-
-        $productRemover->removeAll([$product])->shouldBeCalled();
-        $productModelRemover->removeAll([$productModel])->shouldBeCalled();
-
-        $stepExecution->incrementSummaryInfo('deleted_product_models', 1)->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('deleted_products', 1)->shouldBeCalled();
-
-        $stepExecution->incrementReadCount()->shouldBeCalledTimes(2);
-
-        $cacheClearer->clear()->shouldBeCalled();
 
         $this->execute();
     }
