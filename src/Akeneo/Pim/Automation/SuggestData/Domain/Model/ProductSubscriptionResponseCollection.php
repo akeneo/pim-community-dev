@@ -33,14 +33,6 @@ final class ProductSubscriptionResponseCollection
     }
 
     /**
-     * @return ProductSubscriptionResponse[]
-     */
-    public function responses(): array
-    {
-        return $this->responses;
-    }
-
-    /**
      * @return array
      */
     public function warnings(): array
@@ -53,6 +45,16 @@ final class ProductSubscriptionResponseCollection
      */
     public function add(ProductSubscriptionResponse $response): void
     {
-        $this->responses[] = $response;
+        $this->responses[$response->getProductId()] = $response;
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return ProductSubscriptionResponse|null
+     */
+    public function get(int $index): ?ProductSubscriptionResponse
+    {
+        return $this->responses[$index] ?? null;
     }
 }

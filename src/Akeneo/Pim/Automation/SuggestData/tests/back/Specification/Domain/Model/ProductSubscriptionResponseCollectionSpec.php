@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class ProductSubscriptionRequestCollection extends ObjectBehavior
+class ProductSubscriptionResponseCollectionSpec extends ObjectBehavior
 {
     public function it_is_a_subscription_responses_collection(): void
     {
@@ -39,14 +39,19 @@ class ProductSubscriptionRequestCollection extends ObjectBehavior
         $this->warnings()->shouldReturn($warnings);
     }
 
-    public function it_can_add_subscriptions_responses(): void
+    public function it_returns_null_if_index_does_not_exist(): void
     {
         $this->beConstructedWith([]);
-        $this->responses()->shouldReturn([]);
+        $this->get(42)->shouldReturn(null);
+    }
+
+    public function it_can_add_and_retrieve_subscription_responses(): void
+    {
+        $this->beConstructedWith([]);
 
         $response = new ProductSubscriptionResponse(42, '123-456-789', [], false);
         $this->add($response)->shouldReturn(null);
 
-        $this->responses()->shouldReturn([$response]);
+        $this->get(42)->shouldReturn($response);
     }
 }
