@@ -49,6 +49,15 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
+
+        $uow = $this->objectManager->getUnitOfWork();
+        $setPersister = \Closure::bind(function ($uow, $className, $persister) {
+            $uow->persisters[$className] = $persister;
+        }, null, $uow);
+
+        $completenessClass = 'Pim\Component\Catalog\Model\Completeness';
+        $class = $this->objectManager->getClassMetadata($completenessClass);
+        $setPersister($uow, $completenessClass,  new CompletenessPersister($objectManager, $class));
     }
 
     /**
