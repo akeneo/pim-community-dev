@@ -1137,3 +1137,4 @@
 - Move `Pim\Component\Enrich\Model\AvailableAttributes` to `Akeneo\Pim\Structure\Component\Model\AvailableAttributes`
 - Move `Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface`
 - Change method `create` of `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface` To add a boolean parameter to determine if a unknown element of a collection must be ignored or not.
+- Move `Akeneo\Pim\Enrichment\Component\Product\Query\Escaper\QueryString` to `Akeneo\Tool\Component\Elasticsearch\QueryString`
