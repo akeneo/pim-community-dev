@@ -24,6 +24,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
@@ -150,9 +152,9 @@ class PimAI implements DataProviderInterface
     /**
      * @param ProductSubscriptionRequest[] $subscriptionRequests
      *
-     * @return ProductSubscriptionResponse[]
+     * @return ProductSubscriptionResponseCollection
      */
-    public function bulkSubscribe(array $subscriptionRequests): array
+    public function bulkSubscribe(array $subscriptionRequests): ProductSubscriptionResponseCollection
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
@@ -170,16 +172,13 @@ class PimAI implements DataProviderInterface
         }
 
         $response = $this->doSubscribe($clientRequest);
-        $warnings += $response->getWarnings();
 
-        // TODO: find a way to return the warnings as well
-
-        $subscriptionResponses = [];
+        $responses = new ProductSubscriptionResponseCollection($warnings);
         foreach ($response->getSubscriptions() as $subscription) {
-            $subscriptionResponses[] = $this->buildSubscriptionResponse($subscription);
+            $responses->add($this->buildSubscriptionResponse($subscription));
         }
 
-        return $subscriptionResponses;
+        return $responses;
     }
 
     /**
@@ -189,7 +188,7 @@ class PimAI implements DataProviderInterface
      */
     public function authenticate(Token $token): bool
     {
-        return $this->authenticationApi->authenticate((string) $token);
+        return $this->authenticationApi->authenticate((string)$token);
     }
 
     /**
@@ -270,13 +269,13 @@ class PimAI implements DataProviderInterface
     ): ReadAttributeOptionsMapping {
         $franklinOptionsMapping = $this
             ->attributeOptionsMappingApi
-            ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
+            ->fetchByFamilyAndAttribute((string)$familyCode, (string)$franklinAttributeId);
 
         $converter = new AttributeOptionsMappingConverter();
 
         return $converter->clientToApplication(
-            (string) $familyCode,
-            (string) $franklinAttributeId,
+            (string)$familyCode,
+            (string)$franklinAttributeId,
             $franklinOptionsMapping
         );
     }
