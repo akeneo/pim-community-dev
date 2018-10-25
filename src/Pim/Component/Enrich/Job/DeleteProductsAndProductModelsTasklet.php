@@ -90,7 +90,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
 
-        $variantProducts = $this->variantProducts();
+        $variantProducts = $this->findVariantProducts();
         $this->delete($variantProducts);
 
         $subProductModels = $this->findSubProductModels();
@@ -100,7 +100,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->delete($productsAndRootProductModels);
     }
 
-    private function variantProducts(): CursorInterface
+    private function findVariantProducts(): CursorInterface
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
         $options = ['filters' => $filters];
@@ -126,7 +126,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     /**
      * @return CursorInterface
      */
-    protected function findSimpleProductsAndRootProductModels(): CursorInterface
+    private function findSimpleProductsAndRootProductModels(): CursorInterface
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
         $options = ['filters' => $filters];
