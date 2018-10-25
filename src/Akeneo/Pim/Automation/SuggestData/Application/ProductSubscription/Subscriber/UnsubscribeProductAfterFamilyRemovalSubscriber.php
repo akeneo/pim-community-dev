@@ -15,8 +15,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subs
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\DoesPersistedProductHaveFamilyInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,21 +27,21 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberInterface
 {
-    /** @var DoesPersistedProductHaveFamilyInterface */
-    private $doesPersistedProductHaveFamily;
+    /** @var SelectProductFamilyIdQueryInterface */
+    private $selectProductFamilyIdQuery;
 
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
     /**
-     * @param DoesPersistedProductHaveFamilyInterface $doesPersistedProductHaveFamily
+     * @param SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
      */
     public function __construct(
-        DoesPersistedProductHaveFamilyInterface $doesPersistedProductHaveFamily,
+        SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery,
         UnsubscribeProductHandler $unsubscribeProductHandler
     ) {
-        $this->doesPersistedProductHaveFamily = $doesPersistedProductHaveFamily;
+        $this->selectProductFamilyIdQuery = $selectProductFamilyIdQuery;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
     }
 
@@ -51,20 +51,17 @@ class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'unsubscribeSingleProduct',
-            StorageEvents::PRE_SAVE_ALL => 'unsubscribeMultipleProducts',
+            StorageEvents::PRE_SAVE => 'unsubscribeProduct',
         ];
     }
 
     /**
+     * Unsubscribe product when family.
+     *
      * @param GenericEvent $event
      */
-    public function unsubscribeSingleProduct(GenericEvent $event): void
+    public function unsubscribeProduct(GenericEvent $event): void
     {
-        if (false === $event->getArgument('unitary')) {
-            return;
-        }
-
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {
             return;
@@ -74,42 +71,13 @@ class UnsubscribeProductAfterFamilyRemovalSubscriber implements EventSubscriberI
             return;
         }
 
-        if ($this->doesPersistedProductHaveFamily->check($product)) {
-            $command = new UnsubscribeProductCommand($product->getId());
+        if (null !== $this->selectProductFamilyIdQuery->execute($product->getId())) {
             try {
-                $this->unsubscribeProductHandler->handle($command);
-            } catch (ProductSubscriptionException $exception) {
-                return;
-            }
-        }
-    }
-
-    /**
-     * @param GenericEvent $event
-     */
-    public function unsubscribeMultipleProducts(GenericEvent $event): void
-    {
-        if (true === $event->getArgument('unitary')) {
-            return;
-        }
-
-        $products = $event->getSubject();
-        foreach ($products as $product) {
-            if (!$product instanceof ProductInterface) {
-                continue;
-            }
-
-            if (null === $product->getId() || null !== $product->getFamily()) {
-                continue;
-            }
-
-            if ($this->doesPersistedProductHaveFamily->check($product)) {
                 $command = new UnsubscribeProductCommand($product->getId());
-                try {
-                    $this->unsubscribeProductHandler->handle($command);
-                } catch (ProductSubscriptionException $exception) {
-                    continue;
-                }
+                $this->unsubscribeProductHandler->handle($command);
+            } catch (ProductNotSubscribedException $e) {
+                // Silently catch exception if the product is not subscribed
+                return;
             }
         }
     }

@@ -2,7 +2,7 @@ services:
     akeneo.pim.automation.suggest_data.subscriber.unsubscribe_product_after_family_removal:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\UnsubscribeProductAfterFamilyRemovalSubscriber'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.service.product_subscription.does_persisted_product_have_a_family'
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_family_id_query'
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
         tags:
             - { name: kernel.event_subscriber }
