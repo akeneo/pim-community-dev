@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Query\Escaper;
+namespace Akeneo\Tool\Component\Elasticsearch;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
