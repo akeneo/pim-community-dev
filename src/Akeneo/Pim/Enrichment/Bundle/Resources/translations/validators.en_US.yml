@@ -82,3 +82,6 @@ pim_catalog:
         pim_immutable_product_validator: The same identifier is already set on another product
         pim_immutable_product_model_validator: The same code is already set on another product model.
 
+mass_edit:
+    edit_common_attributes:
+        invalid_values: There are errors in the attributes form
