@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Subscription;
+namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Persistence\Query\Product;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -21,36 +22,46 @@ use Webmozart\Assert\Assert;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class DoesPersistedProductHaveFamilyIntegration extends TestCase
+class SelectProductFamilyIdQueryIntegration extends TestCase
 {
+    /** @var integer */
+    private $familyId;
+
     /**
      * {@inheritdoc}
      */
-    protected function setUp(): void
+    protected function tearDown()
     {
-        parent::setUp();
+        $this->familyId = null;
+        parent::tearDown();
     }
 
     public function test_that_a_product_has_a_family_in_database(): void
     {
         $product = $this->createProductWithFamily();
 
-        $productHasFamily = $this->get(
-            'akeneo.pim.automation.suggest_data.service.product_subscription.does_persisted_product_have_a_family'
-        )->check($product);
+        $familyId = $this->getQueryService()->execute($product->getId());
 
-        Assert::true($productHasFamily);
+        Assert::eq($this->familyId, $familyId);
     }
 
     public function test_that_a_product_has_no_family_in_database(): void
     {
         $product = $this->createProductWithoutFamily();
 
-        $productHasFamily = $this->get(
-            'akeneo.pim.automation.suggest_data.service.product_subscription.does_persisted_product_have_a_family'
-        )->check($product);
+        $familyId = $this->getQueryService()->execute($product->getId());
 
-        Assert::false($productHasFamily);
+        Assert::null($familyId);
+    }
+
+    /**
+     * @return SelectProductFamilyIdQuery
+     */
+    private function getQueryService(): SelectProductFamilyIdQuery
+    {
+        return $this->get(
+            'akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_family_id_query'
+        );
     }
 
     /**
@@ -69,14 +80,13 @@ class DoesPersistedProductHaveFamilyIntegration extends TestCase
         $family = $this
             ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
             ->build(['code' => 'a_test_family']);
-
         $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
+        $this->familyId = $family->getId();
 
         $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier('product_with_family')
             ->withFamily($family->getCode())
             ->build();
-
         $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
 
         return $product;
@@ -88,7 +98,7 @@ class DoesPersistedProductHaveFamilyIntegration extends TestCase
     private function createProductWithoutFamily(): ProductInterface
     {
         $product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier('product_with_family')
+            ->withIdentifier('product_without_family')
             ->build();
 
         $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
