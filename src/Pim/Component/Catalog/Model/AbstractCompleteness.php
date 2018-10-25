@@ -98,11 +98,38 @@ abstract class AbstractCompleteness implements CompletenessInterface
     }
 
     /**
+     * @param int $ratio
+     * @return AbstractCompleteness
+     */
+    public function setRatio(int $ratio): self
+    {
+        $this->ratio = $ratio;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getMissingCount()
     {
         return $this->missingCount;
+    }
+
+    /**
+     * @param int $missingCount
+     */
+    public function setMissingCount(int $missingCount): void
+    {
+        $this->missingCount = $missingCount;
+    }
+
+    /**
+     * @param int $requiredCount
+     */
+    public function setRequiredCount(int $requiredCount): void
+    {
+        $this->requiredCount = $requiredCount;
     }
 
     /**

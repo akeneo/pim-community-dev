@@ -129,13 +129,65 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $completenessCollection = $product->getCompletenesses();
 
-        if (!$completenessCollection->isEmpty()) {
-            $completenessCollection->clear();
+        $newCompletenesses = $this->completenessCalculator->calculate($product);
+
+        $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
+
+        $currentLocalesChannels = [];
+        foreach ($completenessCollection as $currentCompleteness) {
+            $currentLocalesChannels[] = $currentCompleteness->getLocale()->getId() . '/' . $currentCompleteness->getChannel()->getId();
         }
 
-        $newCompletenesses = $this->completenessCalculator->calculate($product);
-        foreach ($newCompletenesses as $completeness) {
-            $completenessCollection->add($completeness);
+        $newLocalesChannels = [];
+        foreach ($newCompletenesses as $newCompleteness) {
+            $newLocalesChannels[] = $newCompleteness->getLocale()->getId() . '/' . $newCompleteness->getChannel()->getId();
+        }
+
+        $completenessesToAdd = array_diff($newLocalesChannels, $currentLocalesChannels);
+        $this->addNewCompletenesses($completenessCollection, $newCompletenesses, $completenessesToAdd);
+
+        $completenessesToRemove = array_diff($currentLocalesChannels, $newLocalesChannels);
+        $this->removeOutdatedCompletenesses($completenessCollection, $completenessesToRemove);
+    }
+
+    private function updateExistingCompletenesses($completenessCollection, $newCompletenesses)
+    {
+        foreach ($completenessCollection as $currentCompleteness) {
+            foreach ($newCompletenesses as $newCompleteness) {
+                if ($newCompleteness->getLocale()->getId() === $currentCompleteness->getLocale()->getId()
+                    && $newCompleteness->getChannel()->getId() === $currentCompleteness->getChannel()->getId()
+                ) {
+                    $currentCompleteness->setRatio($newCompleteness->getRatio());
+                    $currentCompleteness->setMissingCount($newCompleteness->getMissingCount());
+                    $currentCompleteness->setRequiredCount($newCompleteness->getRequiredCount());
+                }
+            }
+        }
+    }
+
+    private function addNewCompletenesses($completenessCollection, $newCompletenesses, $completenessesToAdd)
+    {
+        foreach ($completenessesToAdd as $completenessToAdd) {
+            list($localeId, $channelId) = explode('/', $completenessToAdd);
+
+            foreach ($newCompletenesses as $newCompleteness) {
+                if ($newCompleteness->getLocale()->getId() === (int) $localeId && $newCompleteness->getChannel()->getId() === (int) $channelId) {
+                    $completenessCollection->add($newCompleteness);
+                }
+            }
+        }
+    }
+
+    private function removeOutdatedCompletenesses($completenessCollection, $completenessesToRemove)
+    {
+        foreach ($completenessesToRemove as $completenessToRemove) {
+            list($localeId, $channelId) = explode('/', $completenessToRemove);
+
+            foreach ($completenessCollection as $currentCompleteness) {
+                if ($currentCompleteness->getLocale()->getId() === (int) $localeId && $currentCompleteness->getChannel()->getId() === (int) $channelId) {
+                    $completenessCollection->removeElement($currentCompleteness);
+                }
+            }
         }
     }
 }
