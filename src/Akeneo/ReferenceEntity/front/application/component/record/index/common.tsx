@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import {getLabel} from 'pimenrich/js/i18n';
+import {getLabel} from 'pimui/js/i18n';
 import {RowView} from 'akeneoreferenceentity/application/component/record/index/table';
 
 const CommonView: RowView = ({

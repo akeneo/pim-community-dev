@@ -9,7 +9,7 @@
 
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');

@@ -8,7 +8,7 @@
  */
 
 import {EventsHash} from 'backbone';
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {getSubscriptionStatus} from '../../fetcher/subscription';
 import SubscriptionStatus from '../../model/subscription-status';
