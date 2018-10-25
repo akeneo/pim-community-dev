@@ -181,6 +181,24 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_counts_all_reference_entities()
+    {
+        $this->assertEquals(0, $this->repository->count());
+
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $designer = ReferenceEntity::create($designerIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $brandIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $brand = ReferenceEntity::create($brandIdentifier, ['en_US' => 'Brand', 'fr_FR' => 'Marque'], Image::createEmpty());
+
+        $this->repository->create($designer);
+        $this->repository->create($brand);
+
+        $this->assertEquals(2, $this->repository->count());
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_reference_entity()
     {
         $identifier = ReferenceEntityIdentifier::fromString('unknown');

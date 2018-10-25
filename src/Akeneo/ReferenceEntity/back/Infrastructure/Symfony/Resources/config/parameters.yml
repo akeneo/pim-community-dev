@@ -1,0 +1,3 @@
+parameters:
+    # Maximum number of reference entities
+    reference_entity_limit: 100
