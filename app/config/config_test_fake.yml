@@ -21,3 +21,6 @@ framework:
 
 swiftmailer:
     disable_delivery: true
+
+parameters:
+    reference_entity_record_limit_per_reference_entity: 1000

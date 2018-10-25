@@ -45,7 +45,9 @@ services:
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
             - '@__symfony__.akeneo_referenceentity.application.record.create_record_handler'
+            - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
+            - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
         tags:
             - { name: fob.context_service }
 
