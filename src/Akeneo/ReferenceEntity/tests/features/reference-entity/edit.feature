@@ -29,7 +29,7 @@ Feature: Edit an reference entity
   @acceptance-back
   Scenario: Updating a reference entity with an empty image
     Given an image on an reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
-    When the user updates the reference entity 'designer' with an empty default image
+    When the user updates the reference entity 'designer' with an empty image
     Then the reference entity 'designer' should have an empty image
 
   @acceptance-back

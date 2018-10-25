@@ -45,8 +45,8 @@ class ReferenceEntityEditController extends BaseController {
         this.store = createStore(true)(referenceEntityReducer);
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
         const userSearch: any =
-          null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
-            ? sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
+          null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
+            ? sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
             : '';
 
         // Not idea, maybe we should discuss about it

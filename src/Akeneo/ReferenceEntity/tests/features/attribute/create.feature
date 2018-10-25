@@ -74,8 +74,8 @@ Feature: Create an attribute linked to an reference entity
 
     Examples:
       | invalid_attribute_code | message                                                  |
-      | labels                 | The code cannot be any of those values: "%code, label, image%" |
-      | code                   | The code cannot be any of those values: "%code, label, image%" |
+      | labels                 | The code cannot be any of those values: "%code, labels, image%" |
+      | code                   | The code cannot be any of those values: "%code, labels, image%" |
 
   @acceptance-front
   Scenario: Create a simple valid text attribute

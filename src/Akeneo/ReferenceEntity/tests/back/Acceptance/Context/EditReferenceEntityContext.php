@@ -195,9 +195,9 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user updates the reference entity \'([^\']*)\' with an empty default image$/
+     * @When /^the user updates the reference entity \'([^\']*)\' with an empty image$/
      */
-    public function theUserUpdatesTheReferenceEntityWithAnEmptyDefaultImage(string $identifier)
+    public function theUserUpdatesTheReferenceEntityWithAnEmptyImage(string $identifier)
     {
         $editReferenceEntityCommand = new EditReferenceEntityCommand();
         $editReferenceEntityCommand->identifier = $identifier;

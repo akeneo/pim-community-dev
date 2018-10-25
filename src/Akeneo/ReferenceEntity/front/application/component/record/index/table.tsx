@@ -10,6 +10,8 @@ import {CellViews} from 'akeneoreferenceentity/application/component/reference-e
 import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/record/search';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
+import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
+import {getFilter} from 'akeneoreferenceentity/tools/filter';
 
 interface TableState {
   locale: string;
@@ -20,6 +22,7 @@ interface TableState {
     total: number;
     isLoading: boolean;
     page: number;
+    filters: Filter[];
   };
   cellViews: CellViews;
   recordCount: number;
@@ -202,24 +205,11 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {
-      grid,
-      locale,
-      channel,
-      onRedirectToRecord,
-      onDeleteRecord,
-      recordCount,
-      cellViews,
-      referenceEntity,
-    } = this.props;
+    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
     const columnsToDisplay = grid.columns.filter(
       (column: Column) => column.channel === channel && column.locale === locale
     );
-    const referenceEntityIdentifier = referenceEntity.getIdentifier().stringValue();
-    const userSearch: any =
-      null !== sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
-        ? sessionStorage.getItem(`search-${referenceEntityIdentifier}`)
-        : '';
+    const userSearch = getFilter(grid.filters, 'search').value;
 
     return (
       <React.Fragment>

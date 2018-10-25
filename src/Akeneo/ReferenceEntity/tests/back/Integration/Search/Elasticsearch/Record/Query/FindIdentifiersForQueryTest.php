@@ -189,7 +189,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 B&O PLAY delivers stand-alone products with clear and simple operations - portable products that are intuitive to use, easy to integrate into your daily life, and deliver excellent high-quality experiences.
 
 ‘’We want to evoke senses, to elevate the experience of listening and watching. We have spoken to musicians and studio recorders who all love the fact that more people listen to music in more places, but hate the fact that the quality of the listening experience has been eroded. We want to provide the opportunity to experience media in a convenient and easy way but still in outstanding high quality.  Firmly grounded in our 88-year history in Bang & Olufsen, we interpret the same core values for a new type of contemporary products."
-Is it the "special senses" ?
+Are they the "special senses" ?
 TEXT;
         $bangolufsenDesigner = 'Cecilie Manz';
         $bangolufsen = [
