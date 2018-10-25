@@ -35,3 +35,15 @@ batch_jobs:
     xlsx_channel_import:
         label: Channel import in XLSX
         import.label: Channel import
+
+pim_enrich.entity.locale:
+    label: locale
+    uppercase_label: Locale
+    plural_label: Locales
+    page_title:
+        index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
+
+pim_enrich.entity.currency:
+    plural_label: Currencies
+    page_title:
+        index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
