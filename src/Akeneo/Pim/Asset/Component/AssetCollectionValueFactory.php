@@ -55,7 +55,7 @@ class AssetCollectionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
     {
         $this->checkData($attribute, $data);
 
@@ -67,7 +67,7 @@ class AssetCollectionValueFactory implements ValueFactoryInterface
             $attribute,
             $channelCode,
             $localeCode,
-            $this->getReferenceDataCollection($attribute, $data)
+            $this->getReferenceDataCollection($attribute, $data, $ignoreUnknownData)
         );
 
         return $value;
@@ -123,15 +123,15 @@ class AssetCollectionValueFactory implements ValueFactoryInterface
      *
      * @return array
      */
-    protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes)
+    protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes, bool $ignoreUnknownData)
     {
         $collection = [];
 
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         foreach ($referenceDataCodes as $referenceDataCode) {
-            $referenceData = $this->getReferenceData($attribute, $repository, $referenceDataCode);
-            if (!in_array($referenceData, $collection, true)) {
+            $referenceData = $this->getReferenceData($attribute, $repository, $referenceDataCode, $ignoreUnknownData);
+            if (null !== $referenceData && !in_array($referenceData, $collection, true)) {
                 $collection[] = $referenceData;
             }
         }
@@ -147,21 +147,22 @@ class AssetCollectionValueFactory implements ValueFactoryInterface
      *       one reference data, when the others in the collection could be valid. So the value will not
      *       be loaded at all, when what we want is the value to be loaded minus the wrong reference data.
      *
-     * @param AttributeInterface $attribute
-     * @param ReferenceDataRepositoryInterface                         $repository
-     * @param string                                                   $referenceDataCode
+     * @param AttributeInterface               $attribute
+     * @param ReferenceDataRepositoryInterface $repository
+     * @param string                           $referenceDataCode
+     * @param bool                             $ignoreUnknownData
      *
-     * @throws InvalidPropertyException
      * @return ReferenceDataInterface
      */
     protected function getReferenceData(
         AttributeInterface $attribute,
         ReferenceDataRepositoryInterface $repository,
-        $referenceDataCode
+        $referenceDataCode,
+        bool $ignoreUnknownData
     ) {
         $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
 
-        if (null === $referenceData) {
+        if (null === $referenceData && false === $ignoreUnknownData) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'reference data code',
