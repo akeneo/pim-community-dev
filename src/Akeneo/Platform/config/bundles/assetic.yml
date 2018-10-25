@@ -3,7 +3,9 @@ assetic:
         - OroAsseticBundle
         - PimUserBundle
         - PimUIBundle
+        - AkeneoChannelBundle
         - AkeneoPimEnrichmentBundle
+        - AkeneoPimStructureBundle
         - PimEnrichBundle
         - PimNotificationBundle
     filters:

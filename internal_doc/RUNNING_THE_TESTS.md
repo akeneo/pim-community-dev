@@ -254,12 +254,12 @@ $ yarn run unit tests/front/unit/pimenrich
 
 If you want to run the tests from a specific file:
 ```bash
-$ yarn run unit tests/front/unit/pimenrich/js/i18n2.unit.ts
+$ yarn run unit tests/front/unit/pimui/js/i18n2.unit.ts
 ```
 
 If you want to run a specific test, specify the name of the test:
 ```bash
-$ yarn run unit tests/front/unit/pimenrich/js/i18n2.unit.ts -t 'get label for existing translation' 
+$ yarn run unit tests/front/unit/pimui/js/i18n2.unit.ts -t 'get label for existing translation' 
 ```
 
 ### Cucumber.js + Puppeteer

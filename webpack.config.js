@@ -50,7 +50,7 @@ const webpackConfig = {
     version: true,
   },
   target: 'web',
-  entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')],
+  entry: ['babel-polyfill', path.resolve(rootDir, './web/bundles/pimui/js/index.js')],
   output: {
     path: path.resolve('./web/dist/'),
     publicPath: '/dist/',

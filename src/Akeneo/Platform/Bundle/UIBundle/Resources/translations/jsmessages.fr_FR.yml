@@ -113,3 +113,206 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Vos modifications courantes seront perdues. Êtes-vous certain(e) de vouloir actualiser la page ?"
 "navigation.message.content.outdated": "Le contenu de la page {{ title }} est dépassé, veuillez <a href='#' data-action='page-refresh'>actualiser la page</a>"
 "Content of pinned page is outdated": "Le contenu de la page épinglée est dépassé"
+
+pim_common:
+  actions: Actions
+  add: Ajouter
+  add_attributes: Ajouter des attributs
+  after: Après
+  all: Tous
+  and: et
+  apply: Appliquer
+  before: Avant
+  by: par
+  cancel: Annuler
+  code: Code
+  confirm: Confirmer
+  confirm_deletion: Supprimer l'élément
+  create: Créer
+  created: Créé
+  delete: Supprimer
+  done: Fait
+  edit: Modifier
+  entity_updated: Des modifications n'ont pas encore été sauvegardées.
+  from: De
+  general_properties: Propriétés générales
+  history: Historique
+  label: Libellé
+  label_translations: Traduction des libellés
+  less_than: Moins de
+  loading: Chargement en cours...
+  more_than: Plus de
+  next: Suivant
+  "no": "Non"
+  none: Aucun
+  not_available: N/A
+  now: Maintenant
+  ok: OK
+  permissions: Permissions
+  previous: Précédent
+  properties: Propriétés
+  required_label: (obligatoire)
+  save: Enregistrer
+  select2:
+    search: Rechercher...
+    no_match: Aucune correspondance trouvée
+    load_more: Chargement de plus de résultats...
+  status: État
+  to: À
+  type: Type
+  update: Mettre à jour
+  "yes": "Oui"
+  operator: Opérateur
+  operators:
+    "=": Est égal à
+    "!=": N'est pas égal à
+    ">=": Supérieur ou égal à
+    ">": Supérieur à
+    "<=": Inférieur ou égal à
+    "<": Inférieur à
+    EMPTY: Est vide
+    NOT EMPTY: N'est pas vide
+    CONTAINS: Contient
+    DOES NOT CONTAIN: Ne contient pas
+    STARTS WITH: Commence par
+    ENDS WITH: Finit par
+
+error:
+  exception: Oups! Une erreur {{ status_code }} s'est produite...
+  forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
+alert:
+  attribute_option:
+    error_occured_during_submission: Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur
+    save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
+  session_storage:
+    not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Une erreur est survenue
+    update:
+      fail: Échec de la mise à jour
+      success: Mise à jour effectuée avec succès
+    delete:
+      fail: Impossible de supprimer cet élément
+      success: Élément supprimé avec succès
+  module:
+    delete:
+      title: Supprimer l'élément {{ itemName }}
+      alternative_title: Confirmer la suppression
+      item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
+      item_placeholder: Êtes-vous sûr(e) de vouloir supprimer ce(tte) {{ itemName }} ? Il est impossible d'annuler cette action.
+    edit:
+      leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
+      discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
+      discard_changes_title: Êtes-vous sûr(e) ?
+
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: Connexion API créée avec succès
+    delete:
+      success: La connexion API a été révoquée avec succès
+      fail: Impossible de révoquer cette connexion API
+  page_title:
+    index: "] -Inf, 1]{{ count }} connexion API|]1, Inf[{{ count }} connexions API"
+
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} opération|]1, Inf[{{ count }} opérations"
+  module:
+    create:
+      upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
+    download:
+      archive: Télécharger l'archive générée
+      output: Télécharger les fichiers générés
+      input: Télécharger les fichiers lus
+      invalid_xlsx: Télécharger les données invalides
+      invalid_csv: Télécharger les données invalides
+
+pim_title:
+  oro_default: Tableau de bord
+  pim_enrich_attributegroup_index: Groupes d'attributs
+  pim_enrich_attributegroup_create: Groupe d'attributs | Création
+  pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Édition
+  pim_enrich_catalog_volume_index: Volumétrie du catalogue
+  pim_enrich_categorytree_index: Arborescences des catégories
+  pim_enrich_categorytree_create: Arborescences | Création
+  pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
+  pim_enrich_categorytree_create_tree: Arborescences | Création
+  pim_enrich_attribute_index: Attributs
+  pim_enrich_attribute_create: Attributs | Création
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Édition
+  pim_enrich_product_index: Produits
+  pim_enrich_product_edit: Produit {{ product.label }} | Édition
+  pim_enrich_product_model_edit: Modèle de produit {{ product.label }} | Édition
+  pim_enrich_family_index: Familles
+  pim_enrich_family_edit: Famille {{ family.label }} | Édition
+  pim_enrich_channel_index: Canaux
+  pim_enrich_channel_create: Canaux | Création
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Édition
+  pim_enrich_currency_index: Devises
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Groupes
+  pim_enrich_group_edit: Groupe {{ group.label }} | Édition
+  pim_enrich_associationtype_index: Types d'association
+  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Édition
+  pim_enrich_grouptype_index: Types de groupe
+  pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Édition
+  pim_enrich_mass_edit_action_choose: Édition en masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition en masse | Configurer
+  pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
+  pim_enrich_job_tracker_index: Traqueur de processus
+  pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
+  pim_enrich_api_connection_index: Connexions API
+  pim_enrich_api_connection_create: Connexions d'API | Création
+  pim_enrich_mass_edit_action: Edition en masse
+  pim_analytics_system_info_index: Informations système
+pim_menu:
+  tab:
+    activity: Activité
+    imports: Imports
+    exports: Exports
+    settings: Paramètres
+    system: Système
+    help:
+      title: Aide
+      helper: Centre d'aide Akeneo
+  item:
+    association_type: Types d'association
+    attribute_group: Groupes d'attributs
+    channel: Canaux
+    currency: Devises
+    dashboard: Tableau de bord
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    product_model: Modèles de produits
+    export_history: Historique des exports
+    export_profile: Profils d'export
+    import_history: Historique des imports
+    import_profile: Profils d'import
+    configuration: Configuration
+    user_management: Gestion des utilisateurs
+    user: Utilisateurs
+    user_group: Groupes d'utilisateurs
+    user_role: Rôles
+    info: Informations système
+    job_tracker: Traqueur de processus
+    api_connection: Connexions API
+    catalog_volume: Volumétrie du catalogue
+  navigation:
+    activity: Centre d'activité
+    system: Navigation système
+    user: Navigation utilisateurs
+    settings: Navigation paramètres
+    product: Navigation produit
+    product_infos: Infos produit
+  user:
+    logout: Déconnexion
+    user_account: Mon compte
+pim_notification:
+  types:
+    import: Import
+    export: Export
+    quick_export: Export rapide
+    mass_edit: Edition en masse

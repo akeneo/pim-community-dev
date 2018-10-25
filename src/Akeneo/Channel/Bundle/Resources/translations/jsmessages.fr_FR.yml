@@ -1,0 +1,36 @@
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      success: Le canal a bien été mis à jour.
+      fail: Le canal n'a pas pu être mis à jour.
+    create:
+      success: Canal créé avec succès.
+      fail: Le canal ne peut pas être créé.
+    delete:
+      success: Canal supprimé avec succès
+      fail: Impossible de supprimer ce canal
+  page_title:
+    index: "]-Inf, 1]{{ count }} canal|]1, Inf[{{ count }} canaux"
+  property:
+    category_tree: Arborescence
+    do_not_convert: Ne pas convertir
+    label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
+  module:
+    create:
+      button: Créer un canal
+    delete:
+      confirm: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
+
+pim_enrich.entity.locale:
+  label: locale
+  uppercase_label: Locale
+  plural_label: Locales
+  page_title:
+    index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
+
+pim_enrich.entity.currency:
+  plural_label: Devises
+  page_title:
+    index: "]-Inf, 1]{{ count }} devise|]1, Inf[{{ count }} devises"
