@@ -47,7 +47,7 @@ class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data): ValueInterface
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false): ValueInterface
     {
         $this->checkData($attribute, $data);
 
