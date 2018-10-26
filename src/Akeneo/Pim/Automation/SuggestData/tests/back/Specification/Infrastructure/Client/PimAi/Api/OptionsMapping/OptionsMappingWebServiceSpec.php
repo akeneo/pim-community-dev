@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMap
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 use GuzzleHttp\Exception\ClientException;
@@ -88,7 +88,7 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
         $httpClient->request('GET', 'foo')->willReturn($response);
 
         $this
-            ->shouldThrow(PimAiServerException::class)
+            ->shouldThrow(FranklinServerException::class)
             ->during('fetchByFamilyAndAttribute', ['foo', 'bar']);
     }
 
@@ -114,7 +114,7 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
             ->request('GET', 'foo')
             ->willThrow(new ServerException('foo', $request->getWrappedObject()));
 
-        $this->shouldThrow(PimAiServerException::class)->during('fetchByFamilyAndAttribute', ['foo', 'bar']);
+        $this->shouldThrow(FranklinServerException::class)->during('fetchByFamilyAndAttribute', ['foo', 'bar']);
     }
 
     public function it_throws_a_bad_request_exception_when_franklin_sent_a_client_exception(
