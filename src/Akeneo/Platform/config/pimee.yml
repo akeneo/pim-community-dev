@@ -8,10 +8,6 @@ imports:
 parameters:
     pimee_mass_edit_asset_batch_size: 100
 
-assetic:
-    bundles:
-        - PimEnterpriseEnrichBundle
-
 twig:
     form_theme: ['AkeneoAssetBundle:Form:pimee-fields.html.twig']
 

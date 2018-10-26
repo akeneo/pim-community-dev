@@ -85,7 +85,6 @@ class AppKernel extends Kernel
             new Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
             new Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle(),
             new Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle(),
-            new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
             new Akeneo\Platform\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
             new Akeneo\Asset\Bundle\AkeneoAssetBundle(),
             new Akeneo\Pim\Asset\Bundle\AkeneoPimAssetBundle(),
@@ -94,6 +93,7 @@ class AppKernel extends Kernel
             new Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle(),
             new Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle(),
             new Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\AkeneoSuggestDataBundle(),
+            new Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle(),
         ];
     }
 
