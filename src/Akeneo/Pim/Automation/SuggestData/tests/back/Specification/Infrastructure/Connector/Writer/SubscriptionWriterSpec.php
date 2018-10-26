@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
@@ -36,14 +37,16 @@ use Prophecy\Argument;
 class SubscriptionWriterSpec extends ObjectBehavior
 {
     public function let(
+        DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         StepExecution $stepExecution,
         IdentifiersMapping $identifiersMapping
     ): void {
+        $dataProviderFactory->create()->willReturn($dataProvider);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $this->beConstructedWith($dataProvider, $productSubscriptionRepository, $identifiersMappingRepository);
+        $this->beConstructedWith($dataProviderFactory, $productSubscriptionRepository, $identifiersMappingRepository);
         $this->setStepExecution($stepExecution);
         $this->initialize();
     }

@@ -25,7 +25,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
@@ -39,6 +38,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscripti
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
@@ -188,7 +188,7 @@ class PimAI implements DataProviderInterface
      */
     public function authenticate(Token $token): bool
     {
-        return $this->authenticationApi->authenticate((string)$token);
+        return $this->authenticationApi->authenticate((string) $token);
     }
 
     /**
@@ -269,13 +269,13 @@ class PimAI implements DataProviderInterface
     ): ReadAttributeOptionsMapping {
         $franklinOptionsMapping = $this
             ->attributeOptionsMappingApi
-            ->fetchByFamilyAndAttribute((string)$familyCode, (string)$franklinAttributeId);
+            ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
 
         $converter = new AttributeOptionsMappingConverter();
 
         return $converter->clientToApplication(
-            (string)$familyCode,
-            (string)$franklinAttributeId,
+            (string) $familyCode,
+            (string) $franklinAttributeId,
             $franklinOptionsMapping
         );
     }
@@ -348,7 +348,7 @@ class PimAI implements DataProviderInterface
             throw ProductSubscriptionException::invalidToken();
         } catch (InsufficientCreditsException $e) {
             throw ProductSubscriptionException::insufficientCredits();
-        } catch (BadRequestException | PimAiServerException $e) {
+        } catch (BadRequestException | FranklinServerException $e) {
             throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
         }
 

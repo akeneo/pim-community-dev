@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
@@ -36,8 +37,8 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var DataProviderFactory */
+    private $dataProviderFactory;
 
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
@@ -45,20 +46,23 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var DataProviderInterface */
+    private $dataProvider;
+
     /** @var IdentifiersMapping */
     private $identifiersMapping;
 
     /**
-     * @param DataProviderInterface $dataProvider
+     * @param DataProviderFactory $dataProviderFactory
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
-        DataProviderInterface $dataProvider,
+        DataProviderFactory $dataProviderFactory,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
-        $this->dataProvider = $dataProvider;
+        $this->dataProviderFactory = $dataProviderFactory;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
@@ -68,6 +72,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function initialize(): void
     {
+        $this->dataProvider = $this->dataProviderFactory->create();
         $this->identifiersMapping = $this->identifiersMappingRepository->find();
     }
 
