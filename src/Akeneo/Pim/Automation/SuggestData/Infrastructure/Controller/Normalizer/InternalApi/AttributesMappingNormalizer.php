@@ -32,7 +32,7 @@ class AttributesMappingNormalizer
             $normalizedAttributes[$attribute->getTargetAttributeCode()] = [
                 'pimAiAttribute' => [
                     'label' => $attribute->getTargetAttributeLabel(),
-                    'type' => $attribute->getTargetType(),
+                    'type' => $attribute->getTargetAttributeType(),
                     'summary' => $attribute->getSummary(),
                 ],
                 'attribute' => $attribute->getPimAttributeCode(),

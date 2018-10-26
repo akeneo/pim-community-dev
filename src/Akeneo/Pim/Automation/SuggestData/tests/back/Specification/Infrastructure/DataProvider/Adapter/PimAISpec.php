@@ -224,18 +224,18 @@ class PimAISpec extends ObjectBehavior
                     'label' => [
                         'en_us' => 'Product Weight',
                     ],
+                    'type' => 'metric',
                 ],
                 'to' => null,
-                'type' => 'metric',
                 'summary' => ['23kg',  '12kg'],
                 'status' => 'pending',
             ],
             [
                 'from' => [
                     'id' => 'color',
+                    'type' => 'multiselect',
                 ],
                 'to' => ['id' => 'color'],
-                'type' => 'multiselect',
                 'status' => 'pending',
                 'summary' => ['blue',  'red'],
             ],

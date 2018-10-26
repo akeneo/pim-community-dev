@@ -32,9 +32,9 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Identifier
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
@@ -133,7 +133,7 @@ class PimAI implements DataProviderInterface
             throw ProductSubscriptionException::invalidToken();
         } catch (InsufficientCreditsException $e) {
             throw ProductSubscriptionException::insufficientCredits();
-        } catch (BadRequestException | PimAiServerException $e) {
+        } catch (BadRequestException | FranklinServerException $e) {
             throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
         }
         $subscription = $clientResponse->content()->getFirst();
@@ -199,9 +199,9 @@ class PimAI implements DataProviderInterface
             $attribute = new DomainAttributeMapping(
                 $attribute->getTargetAttributeCode(),
                 $attribute->getTargetAttributeLabel(),
+                $attribute->getTargetAttributeType(),
                 $attribute->getPimAttributeCode(),
                 $this->mapAttributeMappingStatus($attribute->getStatus()),
-                $attribute->getType(),
                 $attribute->getSummary()
             );
             $attributesMapping->addAttribute($attribute);

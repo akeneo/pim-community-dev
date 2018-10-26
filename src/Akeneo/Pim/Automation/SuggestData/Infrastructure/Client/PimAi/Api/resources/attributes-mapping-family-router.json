@@ -1,34 +1,59 @@
-[
-  {
-    "from": {
-      "id": "product_weight",
-      "label": {
-        "en_us": "Product Weight"
-      }
-    },
-    "to": null,
-    "type": "metric",
-    "summary": [
-      "23kg",
-      "12kg"
-    ],
-    "status": "pending"
+{
+  "_links": {
+    "map-attributes": {
+      "href": "/api/mapping/router/attributes",
+      "type": "application/prs.hal-forms+json"
+    }
   },
-  {
-    "from": {
-      "id": "color",
-      "label": {
-        "en_us": "Color"
+  "_embedded": {
+    "map-attributes": {
+      "_links": {
+        "self": {
+          "href": "/api/mapping/router/attributes"
+        }
+      },
+      "_templates": {
+        "default": {
+          "templated": true,
+          "title": "Map attributes",
+          "method": "PUT",
+          "contentType": "application/json",
+          "properties": []
+        }
       }
-    },
-    "to": {
-      "id": "product color"
-    },
-    "type": "multiselect",
-    "summary": [
-      "blue",
-      "red"
-    ],
-    "status": "active"
-  }
-]
+    }
+  },
+  "mapping": [
+    {
+      "from": {
+        "id": "product_weight",
+        "label": {
+          "en_us": "Product Weight"
+        },
+        "type": "metric"
+      },
+      "to": null,
+      "summary": [
+        "23kg",
+        "12kg"
+      ],
+      "status": "pending"
+    }, {
+      "from": {
+        "id": "color",
+        "label": {
+          "en_us": "Color"
+        },
+        "type": "multiselect"
+      },
+      "to": {
+        "id": "product color"
+      },
+      "summary": [
+        "blue",
+        "red"
+      ],
+      "status": "active"
+    }
+  ]
+}

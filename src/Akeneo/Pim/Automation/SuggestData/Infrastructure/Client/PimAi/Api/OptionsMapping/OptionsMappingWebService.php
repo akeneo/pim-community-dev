@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Opti
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 use GuzzleHttp\Exception\ClientException;
@@ -55,12 +55,12 @@ class OptionsMappingWebService implements OptionsMappingInterface
             $response = $this->httpClient->request('GET', $route);
             $responseData = json_decode($response->getBody()->getContents(), true);
             if (null === $responseData) {
-                throw new PimAiServerException();
+                throw new FranklinServerException();
             }
 
             return new OptionsMapping($responseData);
-        } catch (ServerException | PimAiServerException $e) {
-            throw new PimAiServerException(
+        } catch (ServerException | FranklinServerException $e) {
+            throw new FranklinServerException(
                 sprintf(
                     'Something went wrong on PIM.ai side when fetching the options mapping ' .
                         'for attribute "%s" and family "%s": %s',
