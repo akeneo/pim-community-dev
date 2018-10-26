@@ -118,9 +118,9 @@ Feature: Create an attribute linked to an reference entity
   @acceptance-back
   Scenario: Cannot create more image attributes than the limit
     Given 100 random attributes for a reference entity
-    When the user creates an image attribute "image" linked to the reference entity "designer" with:
-      | code  | labels                                         | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
-      | image | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
+    When the user creates an image attribute "stylist" linked to the reference entity "designer" with:
+      | labels                                         | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
+      | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
     Then there should be a validation error with message 'You cannot create the attribute "Stylist view" because you have reached the limit of 100 attributes for this reference entity'
 
   @acceptance-back
