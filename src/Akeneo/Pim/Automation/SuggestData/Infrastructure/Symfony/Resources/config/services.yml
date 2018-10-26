@@ -9,9 +9,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.repository.configuration'
-            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
     akeneo.pim.automation.suggest_data.proposal.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert'

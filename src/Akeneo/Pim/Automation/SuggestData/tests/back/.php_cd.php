@@ -29,6 +29,11 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\Enrichment\Component',
+
+            // Events
+            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            'Symfony\Component\EventDispatcher\GenericEvent',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Application'),
 

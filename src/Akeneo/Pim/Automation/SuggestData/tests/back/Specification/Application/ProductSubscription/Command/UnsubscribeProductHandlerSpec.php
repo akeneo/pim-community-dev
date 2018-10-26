@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFacto
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -39,11 +39,9 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $command = new UnsubscribeProductCommand($productId);
-        $this->shouldThrow(
-            new ProductSubscriptionException(
-                sprintf('The product with id "%d" is not subscribed', $productId)
-            )
-        )->during('handle', [$command]);
+        $this
+            ->shouldThrow(ProductNotSubscribedException::class)
+            ->during('handle', [$command]);
     }
 
     public function it_unsubscribes_the_product_and_deletes_the_subscription(
