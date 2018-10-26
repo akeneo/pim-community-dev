@@ -20,8 +20,8 @@ export const updateFilter = (field: string, operator: string, value: string) => 
   return {type: 'GRID_UPDATE_FILTER', field, operator, value};
 };
 
-export const gridStatusUpdated = () => {
-  return {type: 'GRID_STATUS_UPDATED'};
+export const gridStateUpdated = () => {
+  return {type: 'GRID_STATE_UPDATED'};
 };
 
 export const updateColumns = (columns: Column[]) => {
