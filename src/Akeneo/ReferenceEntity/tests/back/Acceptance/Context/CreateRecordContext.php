@@ -142,11 +142,7 @@ final class CreateRecordContext implements Context
 
             $this->violationsContext->addViolations($this->validator->validate($command));
 
-            try {
-                ($this->createRecordHandler)($command);
-            } catch (\Exception $e) {
-                $this->exceptionContext->setException($e);
-            }
+            ($this->createRecordHandler)($command);
         }
     }
 }
