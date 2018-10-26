@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeCode
 {
-    public const RESERVED_CODES = ['code', 'labels'];
+    public const RESERVED_CODES = ['code', 'labels', 'image'];
 
     /** @var string */
     private $code;

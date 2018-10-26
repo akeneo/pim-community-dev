@@ -43,7 +43,7 @@ pim_reference_entity:
                 code: Code (required)
             confirm: Save
         delete:
-            message: Are you sure you want to delete "{{ referenceEntityLabel }}"?
+            message: Are you sure you want to delete the entity "{{ referenceEntityLabel }}"?
             title: Attribute
         notification:
             save:
@@ -88,7 +88,7 @@ pim_reference_entity:
             confirm: Save
 
         delete:
-            message: Are you sure you want to delete "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
+            message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
             title: Record
         delete_all:
             confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
@@ -108,6 +108,7 @@ pim_reference_entity:
             save:
                 success: Record successfully updated.
                 fail: An error occured during the save of the record
+                validation_error: The record could not be updated
             create:
                 success: Record successfully created.
                 fail: An error occured during the creation of the record
@@ -173,7 +174,7 @@ pim_reference_entity:
                         regular_expression: Regular expression
                         url: URL
         delete:
-            message: Are you sure you want to delete "{{ attributeLabel }}"?
+            message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
             title: Attribute
         notification:
             list:
@@ -181,9 +182,11 @@ pim_reference_entity:
             save:
                 success: Attribute successfully updated.
                 fail: An error occured during the save of the attribute
+                validation_error: The attribute could not be updated
             create:
                 success: Attribute successfully created.
                 fail: An error occured during the creation of the attribute
+                validation_error: The attribute could not be created
             delete:
                 success: Attribute successfully deleted.
                 fail: An error occured during the deletion of the attribute

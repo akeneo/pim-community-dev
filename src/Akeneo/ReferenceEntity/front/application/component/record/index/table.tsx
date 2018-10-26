@@ -10,6 +10,8 @@ import {CellViews} from 'akeneoreferenceentity/application/component/reference-e
 import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/record/search';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
+import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
+import {getFilter} from 'akeneoreferenceentity/tools/filter';
 
 interface TableState {
   locale: string;
@@ -20,6 +22,7 @@ interface TableState {
     total: number;
     isLoading: boolean;
     page: number;
+    filters: Filter[];
   };
   cellViews: CellViews;
   recordCount: number;
@@ -206,6 +209,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     const columnsToDisplay = grid.columns.filter(
       (column: Column) => column.channel === channel && column.locale === locale
     );
+    const userSearch = getFilter(grid.filters, 'search').value;
 
     return (
       <React.Fragment>
@@ -214,6 +218,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
             type="text"
             className="AknFilterBox-search"
             placeholder={__('pim_reference_entity.record.grid.search')}
+            defaultValue={userSearch}
             onChange={this.onSearchUpdated.bind(this)}
           />
         </div>

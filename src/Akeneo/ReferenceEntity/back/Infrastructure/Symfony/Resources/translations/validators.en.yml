@@ -39,6 +39,7 @@ pim_reference_entity:
                 should_exist: 'The attribute was not found'
             regular_expression:
                 invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
+                should_not_be_empty: 'The regular expression cannot be empty.'
             should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
             should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
