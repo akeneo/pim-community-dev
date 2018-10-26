@@ -1,0 +1,156 @@
+extensions:
+    pimee-published-product-index:
+        module: pim/common/simple-view
+        targetZone: self
+        config:
+            template: pim/template/common/default-template
+        forwarded-events:
+            grid_load:start: grid_load:start
+            grid_load:complete: grid_load:complete
+
+    pimee-published-product-index-grid-container:
+        module: pim/common/simple-view
+        parent: pimee-published-product-index
+        targetZone: content
+        config:
+            template: pim/template/product/index
+            templateParams:
+                gridName: published-product-grid
+
+    pimee-published-product-index-grid-title:
+        module: pim/common/grid-title
+        parent: pimee-published-product-index
+        targetZone: title
+        config:
+            title: pimee_enrich.entity.published_product.page_title.index
+
+    pimee-published-product-index-left-column:
+        module: pim/form/common/column
+        parent: pimee-published-product-index
+        position: 5
+        targetZone: column
+        config:
+          stateCode: published_product_index
+          navigationTitle: pim_menu.navigation.published_products
+
+    pimee-published-product-index-column-inner:
+        module: pim/common/simple-view
+        parent: pimee-published-product-index-left-column
+        targetZone: navigation
+        config:
+            template: pim/template/product/grid/column-inner
+
+    pimee-product-index-category-switcher:
+        module: pim/grid/category-switcher
+        parent: pimee-published-product-index-column-inner
+        targetZone: column-context-switcher
+
+    pimee-published-product-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pimee-published-product-index-column-inner
+        targetZone: column-context-switcher
+        position: 10
+        config:
+            routeName: pimee_workflow_published_product_index
+            localeParamName: dataLocale
+
+    pimee-published-product-index-view-selector:
+        module: pim/grid/view-selector
+        parent: pimee-published-product-index-column-inner
+        targetZone: view-selector
+        config:
+            gridName: published-product-grid
+
+    pimee-published-product-index-category-tree:
+        module: pim/grid/category-tree
+        parent: pimee-published-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
+        config:
+            gridName: published-product-grid
+            categoryTreeName: pim_enrich_published_product_categorytree
+
+    pimee-published-product-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pimee-published-product-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-products
+
+    pimee-published-product-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-published-product-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pimee-published-product-index-mass-actions:
+        module: pim/grid/mass-actions
+        parent: pimee-published-product-index
+        targetZone: bottom-panel
+        config:
+            label: pim_datagrid.mass_action.selected.product
+
+    pimee-published-product-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pimee-published-product-index-column-inner
+        targetZone: manage-filters-button
+
+    pimee-published-product-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pimee-published-product-index-column-inner
+        targetZone: filters
+        config:
+            displayedAsColumn: true
+
+    pimee-published-product-index-actions-panel:
+        module: oro/datagrid/actions-panel
+        parent: pimee-published-product-index-mass-actions
+        targetZone: actions-panel
+
+    pimee-published-product-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pimee-published-product-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: published-product-grid
+
+    pimee-published-product-index-columns:
+        module: pim/datagrid/configure-columns-action
+        parent: pimee-published-product-index-grid-container
+        targetZone: toolbar
+        position: 10
+
+    pimee-published-product-index-display-selector:
+        module: pim/datagrid/display-selector
+        parent: pimee-published-product-index-grid-container
+        targetZone: toolbar
+        position: 20
+        config:
+            gridName: published-product-grid
+
+    pimee-published-product-index-grid:
+        module: pim/grid/table
+        parent: pimee-published-product-index-grid-container
+        targetZone: grid
+        config:
+            gridName: published-product-grid
+            localeParamName: dataLocale
+            datagridLoadUrl: pim_datagrid_load
+
+    pimee-published-product-index-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pimee-published-product-index
+        targetZone: buttons
+        position: 50
+
+    pimee-published-product-index-redirect:
+        module: pim/common/redirect
+        parent: pimee-published-product-index-secondary-actions
+        targetZone: secondary-actions
+        config:
+            buttonClass: 'AknDropdown-menuLink'
+            route: pim_enrich_product_index
+            label: pim_enrich.entity.product.plural_label
+

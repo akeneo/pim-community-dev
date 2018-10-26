@@ -1,0 +1,122 @@
+extensions:
+    pim-product-edit-form-save:
+        module: pimee/product-edit-form/save
+
+    pim-product-edit-form-delete:
+        module: pimee/product-edit-form/delete
+
+    pim-product-edit-form-copy:
+        module: pimee/product-edit-form/attributes/copy
+
+    pim-product-edit-form-send-for-approval:
+        module: pimee/product-edit-form/send-for-approval
+        parent: pim-product-edit-form
+        targetZone: buttons
+        position: 85
+        config:
+            idKeyName: productId
+            routes:
+                ready: pimee_workflow_product_draft_ready
+
+    pim-product-edit-form-smart-attribute:
+        module: pimee/product-edit-form/attributes/smart-attribute
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 110
+
+    pim-product-edit-form-history-published:
+        module: pimee/product-edit-form/tab/history/published
+        parent: pim-product-edit-form-history
+        targetZone: self
+        position: 100
+
+    pim-product-edit-form-revert:
+        module: pimee/product-edit-form/tab/history/revert
+        parent: pim-product-edit-form-history
+        aclResourceId: pimee_revert_product_version_revert
+        targetZone: self
+        position: 100
+
+    pim-product-edit-form-publish:
+        module: pimee/product-edit-form/publish
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        position: 30
+
+    pim-product-edit-form-meta-published:
+        module: pimee/product-edit-form/meta/published
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 100
+
+    pim-product-edit-form-meta-owner-group:
+        module: pimee/product-edit-form/meta/owner-groups
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 120
+
+    pim-product-edit-form-meta-draft-status:
+        module: pimee/product-edit-form/meta/draft-status
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 130
+
+    pim-product-edit-form-read-only-locale:
+        module: pimee/product-edit-form/attributes/read-only-locale
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 100
+
+    pim-product-edit-form-read-only-attribute-group:
+        module: pimee/product-edit-form/attributes/read-only-attribute-group
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 100
+
+    pim-product-edit-form-copy-source-switcher:
+        module: pimee/product-edit-form/source-switcher
+        parent: pim-product-edit-form-copy
+        targetZone: context-selectors
+        position: 120
+
+    pim-product-edit-form-working-copy:
+        module: pimee/product-edit-form/working-copy
+        parent: pim-product-edit-form
+        targetZone: self
+        position: 100
+
+    pim-product-edit-form-proposals:
+        module: pimee/product-edit-form/proposals
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
+        position: 115
+        config:
+            datagridName: product-draft-grid
+
+    pim-product-edit-form-categories:
+        module: pimee/product-edit-form/categories
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_categories_view
+        position: 100
+
+    pim-product-edit-form-associations:
+        module: pimee/product-edit-form/associations
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_associations_view
+        position: 110
+        config:
+            aclAddAssociations: pim_enrich_associations_edit
+
+    pim-product-edit-form-status-switcher:
+        module: pimee/product-edit-form/meta/status-switcher
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        aclResourceId: pim_enrich_product_change_state
+        position: 80
+
+    pim-product-edit-form-read-only-attribute:
+        module: pimee/product-edit-form/attributes/read-only-attribute
+        parent: pim-product-edit-form-attributes
+        position: 100

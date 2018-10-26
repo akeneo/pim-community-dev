@@ -1,0 +1,3 @@
+extensions:
+    pimee-asset-mass-upload:
+        module: pimee/productasset/mass-upload

@@ -1,0 +1,91 @@
+extensions:
+    pim-proposal-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+        forwarded-events:
+            grid_load:start: grid_load:start
+
+    pim-proposal-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-proposal-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-proposal-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-proposal-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-proposal-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-proposal-index
+        targetZone: title
+        config:
+            title: pimee_workflow.proposal.overview
+
+    pim-proposal-index-left-column:
+        module: pim/form/common/column
+        parent: pim-proposal-index
+        targetZone: column
+        config:
+          stateCode: proposal_index
+          navigationTitle: pim_enrich.entity.proposal.navigation
+
+    pim-proposal-index-column-inner:
+        module: pim/common/simple-view
+        parent: pim-proposal-index-left-column
+        targetZone: navigation
+        config:
+          template: pim/template/product/grid/column-inner
+
+    pim-proposal-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-proposal-index-column-inner
+        targetZone: manage-filters-button
+
+    pim-proposal-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-proposal-index-column-inner
+        targetZone: filters
+        config:
+            displayedAsColumn: true
+
+    pim-proposal-index-mass-actions:
+        module: pim/grid/mass-actions
+        parent: pim-proposal-index
+        targetZone: bottom-panel
+        config:
+            label: pimee_workflow.proposal.selected
+
+    pim-proposal-index-actions-panel:
+        module: oro/datagrid/actions-panel
+        parent: pim-proposal-index-mass-actions
+        targetZone: actions-panel
+
+    pim-proposal-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-proposal-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: proposal-grid
+
+    pim-proposal-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-proposal-index-grid-container
+        position: 1000
+        config:
+            alias: proposal-grid
+            localeKey: dataLocale
+
+    pim-proposal-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-proposal-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-activity
+            item: pim-menu-activity-proposal

@@ -1,0 +1,9 @@
+extensions:
+    pim-attribute-edit-form-properties-common-is-read-only:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-edit-form-properties-common
+        targetZone: content
+        position: 180
+        config:
+            fieldName: is_read_only
+            label: pim_enrich.entity.attribute.property.is_read_only

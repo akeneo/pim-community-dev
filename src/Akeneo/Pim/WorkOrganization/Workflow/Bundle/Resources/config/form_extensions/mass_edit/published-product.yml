@@ -1,0 +1,32 @@
+extensions:
+    pim-mass-published-product-edit:
+        module: pim/mass-edit-form/form
+        config:
+            backRoute: pimee_workflow_published_product_index
+            launchedLabel: pim_enrich.mass_edit.product.step.launched.label
+            launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
+            confirm: pim_enrich.mass_edit.product.confirm
+
+    pim-mass-published-product-edit-choose:
+        module: pim/mass-edit-form/choose
+        parent: pim-mass-published-product-edit
+        position: 100
+        targetZone: choose
+        config:
+            title: pim_enrich.mass_edit.product.step.choose.title
+            labelCount: pim_enrich.mass_edit.product.step.choose.label_count
+
+    pim-mass-published-product-edit-configure-unpublish:
+        module: pimee/mass-edit-form/product/publish
+        parent: pim-mass-published-product-edit
+        aclResourceId: pimee_workflow_published_product_index
+        position: 200
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: pimee_enrich.mass_edit.product.operation.unpublish.label
+            labelCount: pimee_enrich.mass_edit.product.operation.unpublish.label_count
+            description: pimee_enrich.mass_edit.product.operation.unpublish.description
+            code: unpublish
+            jobInstanceCode: unpublish_product
+            warning: pimee_enrich.mass_edit.product.operation.unpublish.warning
+            icon: icon-unpublish
