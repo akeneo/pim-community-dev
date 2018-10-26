@@ -23,6 +23,7 @@ import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar'
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
 import {updateFilter} from 'akeneoreferenceentity/application/event/search';
+import {getFilter} from 'akeneoreferenceentity/tools/filter';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -46,7 +47,12 @@ class ReferenceEntityEditController extends BaseController {
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
         const userSearch: any =
           null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
-            ? sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
+            ? getFilter(
+                JSON.parse(sessionStorage.getItem(
+                  `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
+                ) as string),
+                'search'
+              ).value
             : '';
 
         // Not idea, maybe we should discuss about it

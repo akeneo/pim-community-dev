@@ -126,6 +126,8 @@ export default <Element>(
 
       state = {...state, query: {...state.query, filters: [...filters, filter]}};
       break;
+    case 'GRID_STATUS_UPDATED':
+      break;
     default:
       break;
   }

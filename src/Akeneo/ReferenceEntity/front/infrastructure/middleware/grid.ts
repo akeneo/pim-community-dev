@@ -1,8 +1,8 @@
 export default () => (store: any) => (next: any) => (action: any) => {
-  if ('GRID_UPDATE_FILTER' === action.type) {
+  if ('GRID_STATUS_UPDATED' === action.type) {
     sessionStorage.setItem(
       `pim_reference_entity.record.grid.search.${store.getState().form.data.identifier}`,
-      action.value
+      JSON.stringify(store.getState().grid.query.filters)
     );
   }
 
