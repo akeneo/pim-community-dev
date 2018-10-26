@@ -39,7 +39,7 @@ class AttributeMapping
     /** @var string */
     private $status;
 
-    /** @var string|null */
+    /** @var string */
     private $targetAttributeType;
 
     /** @var string[] */
@@ -56,7 +56,7 @@ class AttributeMapping
     public function __construct(
         string $targetAttributeCode,
         ?string $targetAttributeLabel,
-        ?string $targetAttributeType,
+        string $targetAttributeType,
         ?string $pimAttributeCode,
         int $status,
         array $summary
