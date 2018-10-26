@@ -39,7 +39,8 @@ class CheckPullUp
 
 class ForbiddenDirectory
 {
-    private const PATH_START = 'src/Pim';
+    private const PATH_START_PIM = 'src/Pim'; // for src/Pim in CE and src/PimEntreprise in EE
+    private const PATH_START_SPEC = 'spec/'; // for spec/ in EE
 
     /** @var string */
     private $path;
@@ -49,8 +50,8 @@ class ForbiddenDirectory
 
     public function __construct(string $path, Reason $reason)
     {
-        if (0 !== strpos($path, self::PATH_START)) {
-            throw new \LogicException(sprintf('The path "%s" should start by "%s".', $path, self::PATH_START));
+        if (0 !== strpos($path, self::PATH_START_PIM) && 0 !== strpos($path, self::PATH_START_SPEC)) {
+            throw new \LogicException(sprintf('The path "%s" should start by "%s" or "%s".', $path, self::PATH_START_PIM, self::PATH_START_SPEC));
         }
 
         $this->path = $path;
