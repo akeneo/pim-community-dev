@@ -39,7 +39,8 @@ class CheckPullUp
 
 class ForbiddenDirectory
 {
-    private const PATH_START = 'src/Pim';
+    private const PATH_START_PIM = 'src/Pim'; // for src/Pim in CE and src/PimEntreprise in EE
+    private const PATH_START_SPEC = 'spec/'; // for spec/ in EE
 
     /** @var string */
     private $path;
@@ -49,8 +50,8 @@ class ForbiddenDirectory
 
     public function __construct(string $path, Reason $reason)
     {
-        if (0 !== strpos($path, self::PATH_START)) {
-            throw new \LogicException(sprintf('The path "%s" should start by "%s".', $path, self::PATH_START));
+        if (0 !== strpos($path, self::PATH_START_PIM) && 0 !== strpos($path, self::PATH_START_SPEC)) {
+            throw new \LogicException(sprintf('The path "%s" should start by "%s" or "%s".', $path, self::PATH_START_PIM, self::PATH_START_SPEC));
         }
 
         $this->path = $path;
@@ -212,6 +213,11 @@ $pullUpOk = $check(
         ),
         new ForbiddenDirectory('src/PimEnterprise/Component/User', new Moved('src/UserManagement')),
         new ForbiddenDirectory('src/PimEnterprise/Component/Workflow', new Moved('src/Akeneo/Pim/WorkOrganization')),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/EnrichBundle', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Enrich', Dispatched::mainEnterpriseBusinessTopics()),
+
+        //tests folder
+        new ForbiddenDirectory('spec/Akeneo/Pim/Permission', new Moved('tests/back/Pim/Permission/Specification')),
     ]
 );
 
