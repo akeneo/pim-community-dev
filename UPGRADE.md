@@ -194,6 +194,8 @@ TODO: change the link!!
             record_mails: true
         ```
 
+    * The key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed.
+
     * The translator now expects the language `en_US`:
 
         v2.x
