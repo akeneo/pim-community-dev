@@ -40,40 +40,42 @@ stage("Build") {
     }
     milestone 2
 
-    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
-        parallel(
-            "pim-ce": {
-                pod {
-                    container('docker') {
-                        checkout scm
-
-                        sh "cp .ci/Dockerfile Dockerfile"
-                        sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
-                    }
-                }
-            },
-            "pim-ee": {
-                if (runInEnterpriseEdition.equals("yes")) {
-                    pod {
-                        container('docker') {
-                            checkout([$class: 'GitSCM',
-                                branches: [[name: 'master']],
-                                userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                            ])
-
-                            dir('packages/pim-community-dev') {
+    if (launchUnitTests.equals("yes") || launchAcceptanceTests.equals("yes") || launchIntegrationTests.equals("yes") || launchEndToEndTests.equals("yes")) {
+        withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
+            parallel(
+                    "pim-ce": {
+                        pod {
+                            container('docker') {
                                 checkout scm
-                            }
 
-                            sh "cp .ci/Dockerfile Dockerfile"
-                            sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
+                                sh "cp .ci/Dockerfile Dockerfile"
+                                sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
+                            }
+                        }
+                    },
+                    "pim-ee": {
+                        if (runInEnterpriseEdition.equals("yes")) {
+                            pod {
+                                container('docker') {
+                                    checkout([$class: 'GitSCM',
+                                              branches: [[name: 'master']],
+                                              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+                                    ])
+
+                                    dir('packages/pim-community-dev') {
+                                        checkout scm
+                                    }
+
+                                    sh "cp .ci/Dockerfile Dockerfile"
+                                    sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
+                                }
+                            }
+                        } else {
+                            echo "Skipping Enterprise Edition matrix"
                         }
                     }
-                } else {
-                    echo "Skipping Enterprise Edition matrix"
-                }
-            }
-        )
+            )
+        }
     }
 }
 
