@@ -151,6 +151,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Bundle/ReferenceDataBundle', new Moved('src/Akeneo/Pim')),
         new ForbiddenDirectory('src/Pim/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
         new ForbiddenDirectory('src/Pim/Bundle/LocalizationBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Platform/Bundle/UIBundle'])),
+        new ForbiddenDirectory('src/Pim/Bundle/EnrichBundle', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure', 'src/Akeneo/Platform/Bundle/UIBundle'])),
 
         // Community Components
         new ForbiddenDirectory('src/Pim/Component/Enrich', new Dispatched(['src/Akeneo/Pim/Structure', 'src/Akeneo/Pim/Enrichment'])),
