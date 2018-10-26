@@ -42,7 +42,7 @@ class SelectProductFamilyIdQuery implements SelectProductFamilyIdQueryInterface
     {
         $query = <<<SQL
 SELECT family_id
-FROM :tableName
+FROM pim_catalog_product
 WHERE id = :product_id 
 SQL;
         $bindParams = [
@@ -52,6 +52,6 @@ SQL;
         $statement = $this->entityManager->getConnection()->executeQuery($query, $bindParams);
         $result = $statement->fetch();
 
-        return $result['family_id'];
+        return (null === $result['family_id']) ? null : (int) $result['family_id'];
     }
 }
