@@ -14,7 +14,7 @@
 
 ## The main changes of the 3.0 version
 
-Main changes of the 3.0 are related to the code organization. In order to help the product team grow and delivery more features, we we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
+Main changes of the 3.0 are related to the code organization. In order to help the product team grow and delivery more features, we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
 
 In a nutshell, we went from
 
@@ -59,7 +59,7 @@ src/
         └── User
 ```
 
-to 
+to something like
 
 ```bash
 $ tree src/ -d -L 4
@@ -92,9 +92,9 @@ src/
         └── Component
 ```
 
-This change lead us to move all the classes of the PIM (sed commands are provided at the end of this upgrade guide). It has also a small impact on the configuration files as described in the section *Migrate your standard project*.
+This change lead us to move all the classes of the PIM (`sed` commands are provided in the section _Migrate your custom code_ of this upgrade guide). It has also a small impact on the configuration files as described in the section *Migrate your standard project*.
 
-If you want to know more about this topic, you can read the blog posts we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
+If you want to know more about this topic, you can read the [blog posts](#) we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
 
 TODO: link to blog post
 
@@ -124,7 +124,7 @@ TODO: change the link!!
     export PIM_DIR=/path/to/your/current/pim/installation
     ```
     
-    Then copy those files, normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes:
+    Then copy the following files, normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes:
 
     ```bash
     cp .env.dist $PIM_DIR/
@@ -236,11 +236,11 @@ TODO: change the link!!
     Or you can follow the detailed list of changes:
 
     * The following route configurations have been removed:
-        - pim_comment
-        - pim_pdf_generator
-        - pim_localization
-        - pim_reference_data
-        - oro_user
+        - `pim_comment`
+        - `pim_pdf_generator`
+        - `pim_localization`
+        - `pim_reference_data`
+        - `oro_user`
         
     * The following route configurations have been added:
         
