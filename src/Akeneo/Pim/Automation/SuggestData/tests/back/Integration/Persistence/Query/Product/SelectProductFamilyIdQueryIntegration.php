@@ -24,13 +24,13 @@ use Webmozart\Assert\Assert;
  */
 class SelectProductFamilyIdQueryIntegration extends TestCase
 {
-    /** @var integer */
+    /** @var int */
     private $familyId;
 
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->familyId = null;
         parent::tearDown();
@@ -55,6 +55,14 @@ class SelectProductFamilyIdQueryIntegration extends TestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+
+    /**
      * @return SelectProductFamilyIdQuery
      */
     private function getQueryService(): SelectProductFamilyIdQuery
@@ -62,14 +70,6 @@ class SelectProductFamilyIdQueryIntegration extends TestCase
         return $this->get(
             'akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_family_id_query'
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
     }
 
     /**
