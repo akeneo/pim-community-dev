@@ -1,9 +1,6 @@
-parameters:
-    pimee_product_asset.doctrine.counter.granted_category_items.class: Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter
-
 services:
     pimee_product_asset.doctrine.counter.category_asset:
-        class: '%pimee_product_asset.doctrine.counter.granted_category_items.class%'
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryItemsCounter'
         arguments:
             - '@pimee_product_asset.repository.asset_category'
             - '@pimee_product_asset.repository.category'

@@ -1,9 +1,0 @@
-{% if is_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::EDIT_ITEMS'), dataLocale) %}
-    {{ elements.createBtn(
-        'product',
-        null,
-        { 'class': 'create-product' },
-        'pim_enrich_product_create',
-        'plus'
-    ) }}
-{% endif %}

@@ -20,6 +20,17 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
 
+    pimee_enrich.doctrine.counter.category_product:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory_without_permission'
+            - '@pim_catalog.repository.category'
+            - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+        tags:
+            - { name: pim_enrich.doctrine.counter.category_item, type: product }
+
     pimee_security.product_grid.query.list_attributes:
         class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListAttributesUseableInProductGrid
         arguments:

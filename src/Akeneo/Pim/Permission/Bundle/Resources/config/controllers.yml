@@ -48,3 +48,77 @@ services:
             - '@pim_datagrid.manager.datagrid_view'
             - '@pimee_security.product_grid.query.list_available_columns'
             - '@pimee_security.product_grid.query.list_available_column_groups'
+
+    # overridden to filter categories with a category access repository that handles permissions
+    pim_enrich.controller.category_tree.product:
+        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
+        arguments:
+            - '@event_dispatcher'
+            - '@pim_user.context.user'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
+    # overriden to add security checks and use a smarter product saver which update draft or working copy
+    pim_enrich.controller.product:
+        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\ProductController'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '%pim_catalog.entity.category.class%'
+            - '@oro_security.security_facade'
+            - 'pim_enrich_product_categories_view'
+            - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
+            - '@pim_catalog.manager.category'
+
+    pim_enrich.controller.product_model:
+        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\ProductModelController'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '%pim_catalog.entity.category.class%'
+            - 'pim_enrich_product_model_categories_view'
+            - '@@AkeneoPimEnrichment/ProductModel/listCategories.json.twig'
+            - '@pim_catalog.manager.category'
+
+    pim_enrich.controller.locale:
+        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\LocaleController'
+        arguments:
+            - '@form.factory'
+            - '@templating'
+
+    pim_enrich.controller.rest.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_standard_format_serializer'
+            - '@akeneo_batch.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_batch.remover.job_instance'
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@pim_connector.launcher.authenticated_job_launcher'
+            - '@security.token_storage'
+            - '@router'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.violation'
+            - '@akeneo_batch.job_instance_factory'
+            - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'
+            - '%upload_tmp_dir%'

@@ -14,7 +14,24 @@
 - TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
 
 ## BC breaks
-
+- Move `PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductModelNormalizer`
+- Move `Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryItemsCounter`
+- Move `PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType` to `Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository` to `Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository` to `Akeneo\Pim\Permission\Bundle\Entity\Repository\JobInstanceRepository`
+- Move `PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface` to `Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepositoryInterface`
+- Move `PimEnterprise\Bundle\EnrichBundle\Repository\AttributeSearchableRepository` to `Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeSearchableRepository`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepository`
+- Move `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to `Akeneo\Pim\Permission\Bundle\Controller\Ui\ProductController`
+- Move `PimEnterprise\Bundle\EnrichBundle\Controller\ProductModelController` to `Akeneo\Pim\Permission\Bundle\Controller\Ui\ProductModelController`
+- Move `PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController` to `Akeneo\Pim\Permission\Bundle\Controller\Ui\LocaleController`
+- Move `PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController` to `Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer` to `Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleRelationNormalizer`
+- Move `PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController` to `Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\RuleRelationController`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\ImageNormalizer` to `Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer`
+- Replace `%akeneo_rule_engine.normalizer.rule_definition.class%` by `Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleDefinitionNormalizer`
+- Replace `%pimee_product_asset.doctrine.counter.granted_category_items.class%` by `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryItemsCounter`
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts applies the conversion.
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension` to `Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents`

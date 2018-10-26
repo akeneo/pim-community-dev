@@ -111,7 +111,7 @@ services:
             - '@pim_user.context.user'
 
     pimee_workflow.controller.category_tree.published_product:
-        class: 'PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController'
+        class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'
@@ -134,3 +134,46 @@ services:
             - '@pim_enrich.mass_edit_action.operation_authenticated_job_launcher'
             - '@pim_enrich.converter.mass_operation'
             - '@pim_datagrid.adapter.items_counter'
+
+    pim_enrich.controller.rest.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.product'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.validator.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pimee_security.filter.product_edit_data'
+            - '@pim_catalog.remover.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_enrich.normalizer.product_violation'
+            - '@pim_catalog.builder.product'
+            - '@pim_enrich.filter.product_attribute_filter'
+
+    pim_enrich.controller.rest.product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product_model'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.remover.product_model'
+            - '@pim_catalog.validator.product_model'
+            - '@pimee_workflow.saver.product_model_delegating'
+            - '@pim_enrich.normalizer.product_violation'
+            - '@pim_enrich.normalizer.entity_with_family_variant'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_enrich.filter.product_model_attribute_filter'

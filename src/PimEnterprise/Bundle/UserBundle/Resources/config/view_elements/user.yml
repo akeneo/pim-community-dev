@@ -1,7 +1,7 @@
 parameters:
-    pim_user.view_element.user.tab.group_and_role.template:  'PimEnterpriseEnrichBundle:User/Tab:group_and_role.html.twig'
-    pim_user.view_element.user.tab.additional.template:      'PimEnterpriseEnrichBundle:User/Tab:additional.html.twig'
-    pimee_user.view_element.user.tab.notifications.template: 'PimEnterpriseEnrichBundle:User/Tab:notifications.html.twig'
+    pim_user.view_element.user.tab.group_and_role.template:  'PimEnterpriseUserBundle:User/Tab:group_and_role.html.twig'
+    pim_user.view_element.user.tab.additional.template:      'PimEnterpriseUserBundle:User/Tab:additional.html.twig'
+    pimee_user.view_element.user.tab.notifications.template: 'PimEnterpriseUserBundle:User/Tab:notifications.html.twig'
 
 services:
     pimee_user.view_element.user.tab.notifications:
