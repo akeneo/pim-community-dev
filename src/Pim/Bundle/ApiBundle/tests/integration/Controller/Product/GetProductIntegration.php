@@ -192,7 +192,6 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => 'ecommerce',
                         'data'   => [
-                            ['amount' => '15.00', 'currency' => 'EUR'],
                             ['amount' => '20.00', 'currency' => 'USD'],
                         ],
                     ],
@@ -201,7 +200,6 @@ class GetProductIntegration extends AbstractProductTestCase
                         'scope'  => 'tablet',
                         'data'   => [
                             ['amount' => '17.00', 'currency' => 'EUR'],
-                            ['amount' => '24.00', 'currency' => 'USD'],
                         ],
                     ],
                 ],
