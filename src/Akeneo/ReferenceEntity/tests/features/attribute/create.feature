@@ -106,3 +106,35 @@ Feature: Create an attribute linked to an reference entity
     When the user creates a valid image attribute
     And the user saves the valid image attribute
     Then the user should not see any validation error
+
+  @acceptance-back
+  Scenario: Cannot create more text attributes than the limit
+    Given 100 random attributes for a reference entity
+    When the user creates a text attribute "name" linked to the reference entity "designer" with:
+      | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+    Then there should be a validation error with message 'You cannot create the attribute "Stylist" because you have reached the limit of 100 attributes for this reference entity'
+
+  @acceptance-back
+  Scenario: Cannot create more image attributes than the limit
+    Given 100 random attributes for a reference entity
+    When the user creates an image attribute "image" linked to the reference entity "designer" with:
+      | code  | labels                                         | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
+      | image | {"en_US": "Stylist view", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
+    Then there should be a validation error with message 'You cannot create the attribute "Stylist view" because you have reached the limit of 100 attributes for this reference entity'
+
+  @acceptance-back
+  Scenario: Cannot create more record attributes than the limit
+    Given 100 random attributes for a reference entity
+    When the user creates a record attribute "mentor" linked to the reference entity "designer" with:
+      | code   | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type |
+      | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
+    Then there should be a validation error with message 'You cannot create the attribute "Mentor" because you have reached the limit of 100 attributes for this reference entity'
+
+  @acceptance-back
+  Scenario: Cannot create more record collection attributes than the limit
+    Given 100 random attributes for a reference entity
+    When the user creates a record collection attribute "brands" linked to the reference entity "designer" with:
+      | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type |
+      | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
+    Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this reference entity'

@@ -70,6 +70,14 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.text_property_updates_should_be_coherent_validator' }
 
+    akeneo_referenceentity.infrastructure.validation.attribute.there_should_be_less_attributes_than_limit:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimitValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '%reference_entity_maximum_attribute%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.there_should_be_less_attributes_than_limit' }
+
     akeneo_referenceentity.infrastructure.validation.record.edit_value_commands_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommandsValidator
         arguments:

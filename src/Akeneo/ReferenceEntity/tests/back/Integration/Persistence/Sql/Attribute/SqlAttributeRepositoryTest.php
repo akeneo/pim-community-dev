@@ -294,6 +294,53 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $this->assertAttribute($expectedAttribute, $actualAttribute);
     }
 
+    /**
+     * @test
+     */
+    public function it_counts_all_reference_entity_attributes()
+    {
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $this->assertEquals(0, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($expectedAttribute);
+
+        $this->assertEquals(1, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+
+        $identifier = AttributeIdentifier::create('designer', 'name2', 'test');
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('name2'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($expectedAttribute);
+
+        $this->assertEquals(2, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+    }
+
     private function assertAttribute(
         AbstractAttribute $expectedAttribute,
         AbstractAttribute $actualAttribute

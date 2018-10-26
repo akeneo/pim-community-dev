@@ -121,6 +121,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttribute
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
@@ -147,6 +148,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttribut
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttributeCommand:
     group_sequence:
@@ -171,6 +173,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttribu
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand:
     group_sequence:
@@ -195,6 +198,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollect
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:
