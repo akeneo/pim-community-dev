@@ -83,3 +83,9 @@ pimee_dashboard:
       product: Produit
       review: Relire
       empty: Il n'y a aucune proposition à examiner
+pim_menu:
+  navigation:
+    published_products: Produits publiés
+  item:
+    proposal: Propositions
+    published_product: Produits publiés

@@ -71,6 +71,8 @@ flash:
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
 
 batch_jobs:
+    add_attribute_value:
+        execute_rules.label: Rules execution
     default_steps:
         execute_rules: Rules execution
     yml_rule_import:
@@ -96,3 +98,10 @@ batch_jobs:
 pim_notification:
     types:
         rule: Rules Settings
+
+pim_menu:
+    item:
+        rule: Rules
+
+pim_title:
+    pimee_catalog_rule_rule_index: Rules

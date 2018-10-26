@@ -211,3 +211,38 @@ pim_api:
     acl_group:
         asset_category: Asset categories
         asset: Assets
+
+pimee_enrich:
+    channel:
+        tab:
+            asset_transformation.title: Asset transformations
+    asset_transformation:
+        not_found: No transformation found
+        title:
+            transformation: Transformation
+            options: Options
+        colorspace:
+            title: Colorspace
+            options:
+                colorspace: '%value% colorspace'
+        resize:
+            title: Resize
+            options:
+                width: '%value%px width'
+                height: '%value%px height'
+        resolution:
+            title: Resolution
+            options:
+                resolution: '%value%'
+                resolution-unit: '%value%'
+        scale:
+            title: Scale
+            options:
+                width: '%value%px width'
+                height: '%value%px height'
+                ratio: '%value%% ratio'
+        thumbnail:
+            title: Thumbnail
+            options:
+                width: '%value%px width'
+                height: '%value%px height'
