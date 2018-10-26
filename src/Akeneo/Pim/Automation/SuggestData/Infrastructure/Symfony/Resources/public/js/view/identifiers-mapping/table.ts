@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
 

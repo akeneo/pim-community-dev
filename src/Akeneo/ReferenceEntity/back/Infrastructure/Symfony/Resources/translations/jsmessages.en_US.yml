@@ -9,6 +9,7 @@ pim_reference_entity:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'This code already exists for this entity.'
+                limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
         button:
             save: Save
             create: Create
@@ -117,6 +118,8 @@ pim_reference_entity:
                 success: All "{{ entityIdentifier }}" records successfully deleted.
                 fail: An error occured during the deletion of all this reference entity's records
     attribute:
+        validation:
+            limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this reference entity'
         default:
             code: Code
             label: Label

@@ -82,6 +82,14 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    {
+        return count($this->findByReferenceEntity($referenceEntityIdentifier));
+    }
+
+    /**
      * @return AbstractAttribute[]
      */
     public function getAttributes(): array

@@ -222,6 +222,25 @@ SQL;
         return $attributes;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    {
+        $fetch = <<<SQL
+        SELECT COUNT(*)
+        FROM akeneo_reference_entity_attribute
+        WHERE reference_entity_identifier = :reference_entity_identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            ['reference_entity_identifier' => $referenceEntityIdentifier,]
+        );
+        $count = $statement->fetchColumn();
+
+        return intval($count);
+    }
+
     private function getAdditionalProperties(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);

@@ -22,7 +22,6 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -331,5 +330,34 @@ class CreateAttributeContext implements Context
         ksort($actual);
 
         Assert::assertSame($expected, $actual);
+    }
+
+    /**
+     * @Given /^(\d+) random attributes for a reference entity$/
+     */
+    public function randomAttributesForReferenceEntity(int $number)
+    {
+        for ($i = 0; $i < $number; $i++) {
+            $attributeCode = uniqid();
+            $attributeData['type'] = 'text';
+            $attributeData['identifier']['identifier'] = $attributeCode;
+            $attributeData['identifier']['reference_entity_identifier'] = 'designer';
+            $attributeData['reference_entity_identifier'] = 'designer';
+            $attributeData['code'] = $attributeCode;
+            $attributeData['order'] = $i;
+            $attributeData['is_required'] = false;
+            $attributeData['value_per_channel'] = false;
+            $attributeData['value_per_locale'] = false;
+            $attributeData['labels'] = [];
+            $attributeData['max_length'] = 50;
+            $attributeData['is_textarea'] = null;
+            $attributeData['is_rich_text_editor'] = null;
+            $attributeData['regular_expression'] = null;
+
+            $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+            $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+            ($this->handler)($command);
+        }
     }
 }

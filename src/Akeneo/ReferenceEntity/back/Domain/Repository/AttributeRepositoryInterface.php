@@ -41,5 +41,10 @@ interface AttributeRepositoryInterface
      */
     public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 
+    /**
+     * Count attributes for a given reference entity
+     */
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
+
     public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
 }

@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');

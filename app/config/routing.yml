@@ -66,7 +66,7 @@ pim_suggest_data:
 oro_default:
     path:  /
     defaults:
-        template:    PimEnrichBundle::index.html.twig
+        template:    PimUIBundle::index.html.twig
         _controller: FrameworkBundle:Template:template
 
 oro_config:

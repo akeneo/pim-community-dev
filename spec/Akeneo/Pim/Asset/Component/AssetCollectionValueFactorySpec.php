@@ -201,7 +201,7 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foo' => ['bar']]]);
     }
 
-    function it_throws_an_exception_when_provided_data_is_not_an_existing_reference_data_code(
+    function it_throws_an_exception_when_provided_data_is_not_an_existing_asset_code(
         $repositoryResolver,
         ReferenceDataRepositoryInterface $referenceDataRepository,
         AttributeInterface $attribute
@@ -226,6 +226,41 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         );
 
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foobar']]);
+    }
+
+    function it_does_not_stop_when_provided_data_is_not_an_existing_asset_code_with_ignore_unknown_data_option_active(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        Fabric $silk,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('assets_collection_attribute');
+        $attribute->getType()->willReturn('pim_assets_collection');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'foobar'])->willReturn(null);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            ['silk', 'foobar'],
+            true
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
+        $productValue->shouldHaveAttribute('assets_collection_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldHaveReferenceData([$silk]);
     }
 
     public function getMatchers()

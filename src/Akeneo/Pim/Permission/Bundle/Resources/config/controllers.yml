@@ -46,7 +46,8 @@ services:
             - '@pim_datagrid.extension.filter'
             - '@pim_user.context.user'
             - '@pim_datagrid.manager.datagrid_view'
-            - '@pim_datagrid.product_grid.query.list_attributes_as_column'
+            - '@pimee_security.product_grid.query.list_available_columns'
+            - '@pimee_security.product_grid.query.list_available_column_groups'
 
     # overridden to filter categories with a category access repository that handles permissions
     pim_enrich.controller.category_tree.product:
@@ -78,7 +79,7 @@ services:
             - '%pim_catalog.entity.category.class%'
             - '@oro_security.security_facade'
             - 'pim_enrich_product_categories_view'
-            - '@@PimEnrich/Product/listCategories.json.twig'
+            - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
             - '@pim_catalog.manager.category'
 
     pim_enrich.controller.product_model:
@@ -90,7 +91,7 @@ services:
             - '@oro_security.security_facade'
             - '%pim_catalog.entity.category.class%'
             - 'pim_enrich_product_model_categories_view'
-            - '@@PimEnrich/ProductModel/listCategories.json.twig'
+            - '@@AkeneoPimEnrichment/ProductModel/listCategories.json.twig'
             - '@pim_catalog.manager.category'
 
     pim_enrich.controller.locale:

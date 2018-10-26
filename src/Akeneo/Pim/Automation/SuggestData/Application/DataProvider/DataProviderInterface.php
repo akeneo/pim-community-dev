@@ -16,9 +16,12 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -70,4 +73,13 @@ interface DataProviderInterface
      * @param array $attributesMapping
      */
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void;
+
+    /**
+     * @param FamilyCode $familyCode
+     * @param FranklinAttributeId $franklinAttributeId
+     */
+    public function getAttributeOptionsMapping(
+        FamilyCode $familyCode,
+        FranklinAttributeId $franklinAttributeId
+    ): AttributeOptionsMapping;
 }

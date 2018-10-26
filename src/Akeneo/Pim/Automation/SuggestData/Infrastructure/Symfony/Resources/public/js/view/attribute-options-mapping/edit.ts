@@ -8,7 +8,7 @@
  */
 
 import * as $ from 'jquery';
-import BaseForm = require('pimenrich/js/view/base');
+import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filterable} from '../../common/filterable';
 import {

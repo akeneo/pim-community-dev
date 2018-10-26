@@ -8,7 +8,7 @@
  */
 
 import {EventsHash} from 'backbone';
-import BaseForm = require('pimenrich/js/view/base');
+import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
 
