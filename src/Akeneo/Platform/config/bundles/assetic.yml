@@ -6,7 +6,6 @@ assetic:
         - AkeneoChannelBundle
         - AkeneoPimEnrichmentBundle
         - AkeneoPimStructureBundle
-        - PimEnrichBundle
         - PimNotificationBundle
     filters:
         lessphp:
