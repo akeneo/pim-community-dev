@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,8 +29,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ProductSubscriptionController
 {
-    /** @var SubscribeProduct */
-    private $subscribeProduct;
+    /** @var SubscribeProductHandler */
+    private $subscribeProductHandler;
 
     /** @var GetProductSubscriptionStatusHandler */
     private $getProductSubscriptionStatusHandler;
@@ -41,18 +42,18 @@ class ProductSubscriptionController
     private $productSubscriptionStatusNormalizer;
 
     /**
-     * @param SubscribeProduct $subscribeProduct
+     * @param SubscribeProductHandler $subscribeProductHandler
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
      * @param InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
      */
     public function __construct(
-        SubscribeProduct $subscribeProduct,
+        SubscribeProductHandler $subscribeProductHandler,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
         InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
     ) {
-        $this->subscribeProduct = $subscribeProduct;
+        $this->subscribeProductHandler = $subscribeProductHandler;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
         $this->productSubscriptionStatusNormalizer = $productSubscriptionStatusNormalizer;
@@ -66,7 +67,8 @@ class ProductSubscriptionController
     public function subscribeAction(int $productId): Response
     {
         try {
-            $this->subscribeProduct->subscribe($productId);
+            $command = new SubscribeProductCommand($productId);
+            $this->subscribeProductHandler->handle($command);
 
             return new JsonResponse();
         } catch (ProductSubscriptionException $e) {

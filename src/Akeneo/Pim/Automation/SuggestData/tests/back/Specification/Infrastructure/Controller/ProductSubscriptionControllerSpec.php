@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ProductSubscriptionControllerSpec extends ObjectBehavior
 {
     public function let(
-        SubscribeProduct $subscribeProduct,
+        SubscribeProductHandler $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
         InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
