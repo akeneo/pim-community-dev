@@ -58,12 +58,7 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface
             $this->activatedCurrenciesForChannels = $this->fetchActivatedCurrenciesForAllChannels();
         }
 
-        $currencies = [];
-        foreach ($this->activatedCurrenciesForChannels as $channel => $currenciesForChannel) {
-            $currencies = array_merge($currencies, $currenciesForChannel);
-        }
-
-        return array_unique($currencies);
+        return array_unique(array_merge(...array_values($this->activatedCurrenciesForChannels)));
     }
 
     /**

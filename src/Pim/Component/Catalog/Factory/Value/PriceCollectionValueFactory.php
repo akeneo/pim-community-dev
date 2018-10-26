@@ -42,7 +42,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         PriceFactory $priceFactory,
         $productValueClass,
         $supportedAttributeType,
-        FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel = null
+        ?FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel = null
     ) {
         $this->priceFactory = $priceFactory;
         $this->productValueClass = $productValueClass;
