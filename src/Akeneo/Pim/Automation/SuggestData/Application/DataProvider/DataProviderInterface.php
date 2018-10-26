@@ -34,12 +34,16 @@ interface DataProviderInterface
     /**
      * @param ProductSubscriptionRequest $request
      *
+     * @throws ProductSubscriptionException
+     *
      * @return ProductSubscriptionResponse
      */
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
      * @param ProductSubscriptionRequest[] $requests
+     *
+     * @throws ProductSubscriptionException
      *
      * @return ProductSubscriptionResponseCollection
      */

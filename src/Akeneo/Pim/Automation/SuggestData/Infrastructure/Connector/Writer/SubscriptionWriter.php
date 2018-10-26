@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
@@ -21,6 +22,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -28,7 +31,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInterface
+class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -81,18 +84,32 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function write(array $items): void
     {
-        $collection = $this->dataProvider->bulkSubscribe($items);
+        try {
+            $collection = $this->dataProvider->bulkSubscribe($items);
 
-        /** @var ProductSubscriptionRequest $item */
-        foreach ($items as $item) {
-            $response = $collection->get($item->getProduct()->getId());
-            if (null === $response) {
-                // TODO: handle
+            foreach ($items as $item) {
+                $response = $collection->get($item->getProduct()->getId());
+                if (null === $response) {
+                    continue;
+                }
+
+                $subscription = $this->buildSubscription($item, $response);
+                $this->productSubscriptionRepository->save($subscription);
+                $this->stepExecution->incrementSummaryInfo('subscribed');
             }
-
-            $subscription = $this->buildSubscription($item, $response);
-            $this->productSubscriptionRepository->save($subscription);
-            $this->stepExecution->incrementSummaryInfo('subscribed');
+        } catch (ProductSubscriptionException $e) {
+            $this->stepExecution->addWarning(
+                $e->getMessage(),
+                [],
+                new DataInvalidItem(
+                    array_map(
+                        function (ProductSubscriptionRequest $request) {
+                            return ['identifier' => $request->getProduct()->getIdentifier()];
+                        },
+                        $items
+                    )
+                )
+            );
         }
     }
 
