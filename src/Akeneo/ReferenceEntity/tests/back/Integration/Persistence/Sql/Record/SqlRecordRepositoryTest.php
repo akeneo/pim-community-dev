@@ -493,4 +493,36 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $attributesRepository->create($name);
         $attributesRepository->create($image);
     }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_records_by_reference_entity()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $this->assertSame(0, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $starck = Record::create(
+            $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('starck')),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('starck'),
+            ['fr_FR' => 'Philippe Starck'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($starck);
+        $this->assertSame(1, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $bob = Record::create(
+            $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('bob')),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('bob'),
+            ['fr_FR' => 'Bob'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($bob);
+        $this->assertSame(2, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+    }
 }

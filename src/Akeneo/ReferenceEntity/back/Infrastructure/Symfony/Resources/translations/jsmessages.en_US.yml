@@ -57,6 +57,7 @@ pim_reference_entity:
                 fail: An error occured during the deletion of the reference entity
     record:
         validation:
+            limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'This code already exists for this entity.'

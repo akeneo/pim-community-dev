@@ -26,6 +26,7 @@ pim_reference_entity:
                 should_exist: 'The record "%record_code%" was not found.'
             record_collection:
                 should_exist: 'The records "%record_codes%" were not found.'
+            limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'
     attribute:
         validation:
             max_length:

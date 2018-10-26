@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
@@ -293,5 +294,37 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->expectException(RecordNotFoundException::class);
         $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $unknownCode);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_records_by_reference_entity()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $this->assertSame(0, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $starck = Record::create(
+            RecordIdentifier::fromString('starck_designer'),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('starck'),
+            ['fr_FR' => 'Philippe Starck'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->recordRepository->create($starck);
+        $this->assertSame(1, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $bob = Record::create(
+            RecordIdentifier::fromString('bob_designer'),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('bob'),
+            ['fr_FR' => 'Bob'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->recordRepository->create($bob);
+        $this->assertSame(2, $this->recordRepository->countByReferenceEntity($referenceEntityIdentifier));
     }
 }

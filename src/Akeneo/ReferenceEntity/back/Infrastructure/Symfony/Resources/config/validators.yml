@@ -105,3 +105,11 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.record_should_exist' }
+
+    akeneo_referenceentity.infrastructure.validation.record.there_should_be_less_records_than_limit:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\ThereShouldBeLessRecordsThanLimitValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '%reference_entity_record_limit_per_reference_entity%'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.there_should_be_less_records_than_limit' }

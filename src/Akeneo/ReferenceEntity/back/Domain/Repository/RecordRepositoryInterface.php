@@ -43,5 +43,7 @@ interface RecordRepositoryInterface
 
     public function count(): int;
 
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
+
     public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code):  RecordIdentifier;
 }
