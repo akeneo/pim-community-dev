@@ -9,7 +9,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
       cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
       cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
-      fields_not_ready: "La famille ne peut actuellement pas être sauvée. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "La famille ne peut actuellement pas être sauvée. Les champs suivants ne sont pas prêts : {{ fields }}"
     create:
       success: Famille créée avec succès
     delete:
@@ -80,7 +80,7 @@ pim_enrich.entity.association_type:
     update:
       success: Le type d'association a été mis à jour avec succès.
       fail: Le type d’association n’a pas pu être modifié.
-      fields_not_ready: "Le type d'association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "Le type d'association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
     create:
       success: Le type d'association est créé avec succès
     delete:
@@ -99,7 +99,7 @@ pim_enrich.entity.group_type:
     update:
       success: Le type de groupe a bien été mis à jour.
       fail: Le type de groupe n'a pas pu être mis à jour.
-      fields_not_ready: "Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
     create:
       success: Le type de groupe a bien été créé
     delete:
@@ -112,7 +112,6 @@ pim_enrich.entity.group_type:
       button: Créer un type de groupe
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
-
 pim_enrich.entity.attribute:
   label: attribut
   plural_label: Attributs
@@ -120,7 +119,7 @@ pim_enrich.entity.attribute:
     update:
       success: Attribut mis à jour avec succès.
       fail: L'attribut n'a pas pu être mis à jour.
-      fields_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
     delete:
       success: Attribut supprimé avec succès
       fail: Impossible de supprimer cet attribut
@@ -203,7 +202,7 @@ pim_enrich.entity.attribute_group:
     update:
       success: Groupe d'attributs mis à jour avec succès
       fail: Le groupe d'attributs n'a pas pu être mis à jour.
-      fields_not_ready: "Le groupe d''attributs ne peut actuellement pas être sauvé. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "Le groupe d''attributs ne peut actuellement pas être sauvé. Les champs suivants ne sont pas prêts : {{ fields }}"
     delete:
       success: Groupe d'attributs supprimé avec succès
       fail: Impossible de supprimer ce groupe d'attributs
@@ -214,4 +213,23 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
-
+pim_enrich.mass_edit.family:
+  title: Action de masse sur les familles
+  confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
+  step:
+    select:
+      label: Choisir des familles
+    choose:
+      title: Actions de masse sur les familles
+      label_count: "]0, Inf[Sélectionnez votre action"
+    configure:
+      label: Configurer
+    confirm:
+      label: Confirmer
+    launched:
+      label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+  operation:
+    set_requirements:
+      label: Configurer les exigences d'attributs
+      description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
+      label_count: "{1}Modifier les exigences d'attributs d'<span class=\"AknFullPage-title--highlight\">1 famille</span>|]1, Inf[Modifier les exigences d'attributes de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familles</span>"

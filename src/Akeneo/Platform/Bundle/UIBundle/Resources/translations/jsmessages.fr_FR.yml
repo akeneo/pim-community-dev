@@ -113,7 +113,6 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Vos modifications courantes seront perdues. Êtes-vous certain(e) de vouloir actualiser la page ?"
 "navigation.message.content.outdated": "Le contenu de la page {{ title }} est dépassé, veuillez <a href='#' data-action='page-refresh'>actualiser la page</a>"
 "Content of pinned page is outdated": "Le contenu de la page épinglée est dépassé"
-
 pim_common:
   actions: Actions
   add: Ajouter
@@ -176,7 +175,6 @@ pim_common:
     DOES NOT CONTAIN: Ne contient pas
     STARTS WITH: Commence par
     ENDS WITH: Finit par
-
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
@@ -205,7 +203,6 @@ pim_enrich.entity.fallback:
       leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
       discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
       discard_changes_title: Êtes-vous sûr(e) ?
-
 pim_enrich.entity.api_connection:
   flash:
     create:
@@ -215,7 +212,6 @@ pim_enrich.entity.api_connection:
       fail: Impossible de révoquer cette connexion API
   page_title:
     index: "] -Inf, 1]{{ count }} connexion API|]1, Inf[{{ count }} connexions API"
-
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} opération|]1, Inf[{{ count }} opérations"
@@ -228,7 +224,6 @@ pim_enrich.entity.job_execution:
       input: Télécharger les fichiers lus
       invalid_xlsx: Télécharger les données invalides
       invalid_csv: Télécharger les données invalides
-
 pim_title:
   oro_default: Tableau de bord
   pim_enrich_attributegroup_index: Groupes d'attributs

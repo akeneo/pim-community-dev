@@ -110,3 +110,196 @@ oro_config:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Se perderán los cambios locales. ¿Está seguro que desea actualizar la página?"
 "navigation.message.content.outdated": "El contenido de la página {{ title }} es obsoleto, por favor <a href='#' data-action='page-refresh'> actualice la página</a>"
 "Content of pinned page is outdated": "Contenido de página anclada esta anticuado"
+pim_common:
+  actions: Acciones
+  add: Agregar
+  add_attributes: Agregar atributos
+  after: Después
+  all: Todos
+  and: "y"
+  apply: Aplicar
+  before: Anterior
+  by: por
+  cancel: Cancelar
+  code: Código
+  confirm: Confirmar
+  confirm_deletion: Confirmar la eliminación
+  create: Crear
+  created: Creado
+  delete: Eliminar
+  done: Hecho
+  edit: Editar
+  entity_updated: Hay cambios sin guardar.
+  from: De
+  general_properties: Propiedades generales
+  history: Histórico
+  label: Etiqueta
+  label_translations: Traducciones de etiqueta
+  less_than: Menor que
+  loading: Cargando...
+  more_than: Mayor que
+  next: Siguiente
+  "no": "No"
+  none: Ninguno
+  not_available: N / A
+  now: Ahora
+  ok: OK
+  permissions: Permisos
+  previous: Previo
+  properties: Propiedades
+  required_label: (obligatorio)
+  save: Guardar
+  select2:
+    search: Buscar...
+    no_match: No se encuentran coincidencias
+    load_more: Cargando más resultados...
+  status: Estado
+  to: hasta
+  type: Tipo
+  update: Actualizar
+  "yes": "SÍ"
+  operator: Operador
+  operators:
+    "=": Es igual que
+    "!=": No es igual que
+    ">=": Mayor o igual que
+    ">": Mayor que
+    "<=": Menor o igual que
+    "<": Menor que
+    EMPTY: Está vacía
+    NOT EMPTY: No está vacío
+    CONTAINS: Contiene
+    DOES NOT CONTAIN: No contiene
+    STARTS WITH: Comienza por
+    ENDS WITH: Termina por
+error:
+  exception: Oups! Un error {{ status_code }} ha ocurrido...
+  forbidden: Prohibido. Usted no tiene permitido acceder a esta página
+alert:
+  attribute_option:
+    error_occured_during_submission: Se produjo un error durante el envío del formulario al servidor
+    save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
+  session_storage:
+    not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Ocurrió un error
+    update:
+      fail: Error al actualizar
+      success: Actualización exitosa
+    delete:
+      fail: No se puede eliminar este elemento
+      success: Elemento eliminado correctamente
+  module:
+    delete:
+      title: Eliminar este {{ itemName }}
+      alternative_title: Confirme eliminación
+      item: '¿Está seguro de que desea borrar este elemento?'
+      item_placeholder: '¿Está seguro que desea eliminar este {{ itemName }}? No es posible deshacer esta acción.'
+    edit:
+      leave: '¿Está seguro que desea salir de esta página?'
+      discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
+      discard_changes_title: '¿Está seguro?'
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: Conexión API creada exitosamente
+    delete:
+      success: Conexión API revocada con éxito
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Soltar su archivo {{ type }} aquí, o haga clic para buscar en el disco
+    download:
+      archive: Descargar archivo generado
+      output: Descargar archivo generado
+      input: Descargar archivos leídos
+      invalid_xlsx: Descargar datos inválidos
+      invalid_csv: Descargar datos inválidos
+pim_title:
+  oro_default: Cartelera
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de Atributos | Crear
+  pim_enrich_attributegroup_edit: Grupo de atributo {{ group.label }} | Editar
+  pim_enrich_catalog_volume_index: Monitoreo del volumen del catálogo
+  pim_enrich_categorytree_index: Árbol de categoría
+  pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_edit: Árbol de categoría {{ category.label }} | Editar
+  pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Crear
+  pim_enrich_attribute_edit: Atributo {{ attribute.label }} | Editar
+  pim_enrich_product_index: Productos
+  pim_enrich_product_edit: Producto {{ product.label }} | Editar
+  pim_enrich_product_model_edit: Modelo del producto {{ product.label }} | Editar
+  pim_enrich_family_index: Familias
+  pim_enrich_family_edit: Familia {{ family.label }} | Editar
+  pim_enrich_channel_index: Canales
+  pim_enrich_channel_create: Canales | Crear
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editar
+  pim_enrich_currency_index: Monedas
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Grupos
+  pim_enrich_group_edit: Grupo {{ group.label }} | Editar
+  pim_enrich_associationtype_index: Tipos de asociaciones
+  pim_enrich_associationtype_edit: Tipo de asociación {{ association type.label }} | Editar
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_grouptype_edit: Tipo de grupo {{ group type.label }} | Editar
+  pim_enrich_mass_edit_action_choose: Edición masiva | Seleccionar
+  pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
+  pim_enrich_mass_edit_action_perform: Edición masiva | Realizar
+  pim_enrich_job_tracker_index: Seguimiento de procesos
+  pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
+  pim_enrich_api_connection_index: Conexiones API
+  pim_enrich_api_connection_create: Conexiones API | Crear
+  pim_enrich_mass_edit_action: Edición en masa
+  pim_analytics_system_info_index: Información del sistema
+pim_menu:
+  tab:
+    activity: Actividad
+    imports: Importaciones
+    exports: Exportaciones
+    settings: Configuración
+    system: Sistema
+    help:
+      title: Ayuda
+      helper: Centro de ayuda de Akeneo
+  item:
+    association_type: Tipos de asociaciones
+    attribute_group: Grupos de atributos
+    channel: Canales
+    currency: Monedas
+    dashboard: Cartelera
+    family: Familias
+    group: Grupos
+    group_type: Tipos de grupo
+    product_model: Modelo de productos
+    export_history: Histórico de exportaciones
+    export_profile: Perfiles de exportación
+    import_history: Histórico de importaciones
+    import_profile: Perfiles de importación
+    configuration: Configuración
+    user_management: Gestión de Usuarios
+    user: Usuarios
+    user_group: Grupos de Usuario
+    user_role: Roles
+    info: Información del sistema
+    job_tracker: Seguimiento de procesos
+    api_connection: Conexiones API
+    catalog_volume: Monitoreo del volumen del catálogo
+  navigation:
+    activity: Actividad de navegación
+    system: Sistema de navegación
+    user: Navegación del gestor de usuario
+    settings: Navegación de ajustes
+    product: Navegación de productos
+    product_infos: Información de producto
+  user:
+    logout: Salir
+    user_account: Mi cuenta
+pim_notification:
+  types:
+    import: Importar
+    export: Exportar
+    quick_export: Exportación rápida
+    mass_edit: Edición en masa

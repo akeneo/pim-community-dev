@@ -46,7 +46,6 @@ pim_ui.system_config:
   group:
     loading_message.title: Messages de chargement
 other_actions: Autres actions
-
 pim_common:
   cancel: Annuler
   save: Enregistrer
@@ -59,7 +58,6 @@ pim_common:
   create: Créer
   permissions: Permissions
   properties: Propriétés
-
 pim_enrich:
   acl:
     locale:
@@ -186,9 +184,6 @@ pim_enrich:
     association type: Créer un type d'association
     group type: Créer le type de groupe
     drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
-
-tree:
-  edit: Editer l'arbre
 confirmation:
   delete: Supprimer l'élément
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
@@ -274,7 +269,6 @@ Other: Autre
 Variants behavior when edited: Comportement des variantes lors de l'édition
 Edit: Modifier
 Remove: Supprimer
-Delete: Supprimer
 Parameters: Paramètres
 System: Système
 Values: Valeurs
@@ -487,4 +481,5 @@ job_tracker:
     title: Traqueur de processus
   filter:
     started_at: Démarré à
+
 
