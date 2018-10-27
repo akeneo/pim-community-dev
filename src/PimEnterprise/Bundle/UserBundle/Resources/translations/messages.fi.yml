@@ -10,7 +10,7 @@ user:
   asset_delay_reminder: Muistutus assetin käyttöoikeuden päättymisestä (päivissä)
   default_published_product_grid_view:
     label: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
-Default asset tree: Omaisuuden oletuspuu
+Default asset tree: Assettien oletuspuu
 pimee_user:
   user:
     tab:
