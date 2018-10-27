@@ -1268,6 +1268,8 @@ batch_jobs:
     validation.label: Validazione del file
     import.label: Importazione famiglie
     compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
+    compute_data_related_to_family_root_product_models.label: Calcola dati modelli di prodotto radice
+    compute_data_related_to_family_sub_product_models.label: Calcola dati modelli di sotto-prodotti
     compute_data_related_to_family_products.label: Calcola dati di prodotto
   csv_family_variant_import:
     label: Importazione famiglia variante in CSV
@@ -1333,6 +1335,8 @@ batch_jobs:
     validation.label: Validazione del file
     import.label: Importazione famiglie
     compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
+    compute_data_related_to_family_root_product_models.label: Calcola dati modelli di prodotto radice
+    compute_data_related_to_family_sub_product_models.label: Calcola dati modelli di sotto-prodotti
     compute_data_related_to_family_products.label: Calcola dati di prodotto
   xlsx_family_variant_import:
     label: Importazione famiglia variante in XLSX
