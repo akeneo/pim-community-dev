@@ -58,10 +58,10 @@ akeneo_suggest_data:
         delete:
           success: 'S''ha cancel·lat correctament la subscripció del producte del PIM.ai'
           fail: 'Impossible cancel·lar la subscripció del producte del PIM.ai'
-      attribute_options_mapping:
-        module:
-          edit:
-            sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
+    attribute_options_mapping:
+      module:
+        edit:
+          sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
   product:
     edit:
       btn.push: Suggerència de dades
