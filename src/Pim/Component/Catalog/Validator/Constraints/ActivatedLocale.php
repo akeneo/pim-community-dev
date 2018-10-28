@@ -14,4 +14,7 @@ class ActivatedLocale extends Constraint
 {
     /** @var string */
     public $message = 'The locale "%locale%" exists but has to be activated.';
+
+    /** @var string */
+    public $propertyPath = '';
 }
