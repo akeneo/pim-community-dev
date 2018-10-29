@@ -31,6 +31,12 @@ interface TableState {
   referenceEntity: ReferenceEntity;
 }
 
+const columnCollectionsAreDifferent = (firstCollumnCollection: Column[], secondColumnCollection: Column[]): boolean => {
+  return !(firstCollumnCollection.length === secondColumnCollection.length && firstCollumnCollection.reduce(
+    (allEqual: boolean, column: Column, index: number) => allEqual && column === secondColumnCollection[index]
+  , true));
+}
+
 export type RowView = React.SFC<{
   isLoading: boolean;
   record: NormalizedRecord;
@@ -56,17 +62,15 @@ interface TableProps extends TableState, TableDispatch {}
  * On the second table, you will have the additional properties of the records (details.tsx)
  * On the thrid one, you have all the actions of the record.
  */
-export default class Table extends React.Component<TableProps, {nextItemToAddPosition: number}> {
+export default class Table extends React.Component<TableProps, {columns: Column[]}> {
   private needResize = false;
   private horizontalScrollContainer: React.RefObject<HTMLDivElement>;
   private verticalScrollContainer: React.RefObject<HTMLDivElement>;
   private detailTable: React.RefObject<HTMLTableElement>;
   private commonTable: React.RefObject<HTMLTableElement>;
   private actionTable: React.RefObject<HTMLTableElement>;
+  private columns: Column[] = [];
 
-  readonly state = {
-    nextItemToAddPosition: 0,
-  };
 
   constructor(props: TableProps) {
     super(props);
@@ -91,17 +95,13 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     }
   }
 
-  componentDidUpdate(previousProps: TableProps) {
+  componentDidUpdate() {
     if (this.needResize) {
       this.resizeScrollContainer();
     }
     const horizontalScrollContainer = this.horizontalScrollContainer.current;
     if (this.props.grid.page === 0 && null !== horizontalScrollContainer) {
       horizontalScrollContainer.scrollTop = 0;
-    }
-
-    if (this.props.grid.records.length !== previousProps.grid.records.length) {
-      this.setState({nextItemToAddPosition: previousProps.grid.records.length});
     }
   }
 
@@ -150,69 +150,22 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     }
   }
 
-  renderItems(
-    records: NormalizedRecord[],
-    locale: string,
-    isLoading: boolean,
-    onRedirectToRecord: (record: NormalizedRecord) => void,
-    onDeleteRecord: (recordCode: RecordCode, label: string) => void,
-    View: RowView,
-    columns: Column[],
-    cellViews: CellViews,
-    recordCount: number
-  ): JSX.Element[] {
-    if (0 === records.length && isLoading) {
-      const record = {
-        identifier: '',
-        reference_entity_identifier: '',
-        code: '',
-        labels: {},
-        image: null,
-        values: [],
-      };
-
-      const placeholderCount = recordCount < 30 ? recordCount : 30;
-
-      return Array.from(Array(placeholderCount).keys()).map(key => (
-        <View
-          isLoading={isLoading}
-          key={key}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={() => {}}
-          onDeleteRecord={() => {}}
-          position={key}
-          columns={columns}
-          cellViews={cellViews}
-        />
-      ));
+  getColumnsToDisplay(columns: Column[], channel: string, locale: string) {
+    const columnsToDisplay = columns.filter(
+      (column: Column) => column.channel === channel && column.locale === locale
+    );
+    if (columnCollectionsAreDifferent(columnsToDisplay, this.columns)) {
+      this.columns = columnsToDisplay;
     }
 
-    return records.map((record: NormalizedRecord, index: number) => {
-      const itemPosition = index - this.state.nextItemToAddPosition;
-
-      return (
-        <View
-          isLoading={false}
-          key={record.identifier}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={onRedirectToRecord}
-          onDeleteRecord={onDeleteRecord}
-          position={itemPosition > 0 ? itemPosition : 0}
-          columns={columns}
-          cellViews={cellViews}
-        />
-      );
-    });
+    return this.columns;
   }
 
   render(): JSX.Element | JSX.Element[] {
     const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
-    const columnsToDisplay = grid.columns.filter(
-      (column: Column) => column.channel === channel && column.locale === locale
-    );
     const userSearch = getFilter(grid.filters, 'full_text').value;
+    const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
+
     const noResult = 0 === grid.records.length && false === grid.isLoading;
     const placeholder = 0 === grid.records.length && grid.isLoading;
 
@@ -243,7 +196,6 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                     placeholder={placeholder}
                     onRedirectToRecord={onRedirectToRecord}
                     recordCount={recordCount}
-                    nextItemToAddPosition={this.state.nextItemToAddPosition}
                   />
                 </tbody>
               </table>
@@ -264,17 +216,15 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
-                  {this.renderItems(
-                    grid.records,
-                    locale,
-                    grid.isLoading,
-                    onRedirectToRecord,
-                    onDeleteRecord,
-                    DetailsView,
-                    columnsToDisplay,
-                    cellViews,
-                    recordCount
-                  )}
+                  <DetailsView
+                    records={grid.records}
+                    locale={locale}
+                    placeholder={placeholder}
+                    onRedirectToRecord={onRedirectToRecord}
+                    recordCount={recordCount}
+                    columns={columnsToDisplay}
+                    cellViews={cellViews}
+                  />
                 </tbody>
               </table>
               <table className="AknGrid AknGrid--light AknGrid--right" ref={this.actionTable}>
@@ -289,7 +239,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                     locale={locale}
                     placeholder={placeholder}
                     onRedirectToRecord={onRedirectToRecord}
-                    onDeleteRecord={onRedirectToRecord}
+                    onDeleteRecord={onDeleteRecord}
                     recordCount={recordCount}
                   />
                 </tbody>
