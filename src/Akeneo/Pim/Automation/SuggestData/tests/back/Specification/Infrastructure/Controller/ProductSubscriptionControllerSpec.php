@@ -65,7 +65,13 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         $productSubscriptionStatusNormalizer
     ): void {
         $connectionStatus = new ConnectionStatus(true, true);
-        $productSubscriptionStatus = new ProductSubscriptionStatus($connectionStatus, true, true, true);
+        $productSubscriptionStatus = new ProductSubscriptionStatus(
+            $connectionStatus,
+            true,
+            true,
+            true,
+            false
+        );
         $getProductSubscriptionStatusHandler
             ->handle(Argument::type(GetProductSubscriptionStatusQuery::class))
             ->willReturn($productSubscriptionStatus);
@@ -76,6 +82,7 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
             'isSubscribed' => true,
             'hasFamily' => true,
             'isMappingFilled' => true,
+            'isProductVariant' => false,
         ]);
 
         $this->getProductSubscriptionStatusAction(42)->shouldReturnAnInstanceOf(JsonResponse::class);

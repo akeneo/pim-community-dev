@@ -82,6 +82,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $mpn->getCode()->willReturn('pim_mpn');
         $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
         $product->getValue('pim_asin')->willReturn(null);
 
@@ -116,6 +117,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $mpn->getCode()->willReturn('pim_mpn');
         $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
         $product->getValue('pim_asin')->willReturn(null);
 
@@ -150,6 +152,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $mpn->getCode()->willReturn('pim_mpn');
         $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
         $product->getValue('pim_asin')->willReturn(null);
 
@@ -185,6 +188,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $mpn->getCode()->willReturn('pim_mpn');
         $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn($family);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
         $product->getValue('pim_asin')->willReturn(null);
 
@@ -227,6 +231,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $brand->getCode()->willReturn('pim_brand');
         $ean->getCode()->willReturn('pim_ean');
         $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_brand')->willReturn(null);
         $product->getValue('pim_mpn')->willReturn($mpnValue);
         $product->getValue('pim_ean')->willReturn($eanValue);
@@ -272,6 +277,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $mpn->getCode()->willReturn('pim_mpn');
         $ean->getCode()->willReturn('pim_ean');
         $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_brand')->willReturn(null);
         $product->getValue('pim_mpn')->willReturn($mpnValue);
         $product->getValue('pim_ean')->willReturn($eanValue);
@@ -311,6 +317,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $mpn->getCode()->willReturn('pim_mpn');
         $asin->getCode()->willReturn('pim_asin');
         $product->getFamily()->willReturn(null);
+        $product->isVariant()->willReturn(false);
         $product->getValue('pim_mpn')->willReturn(null);
         $product->getValue('pim_asin')->willReturn(null);
 

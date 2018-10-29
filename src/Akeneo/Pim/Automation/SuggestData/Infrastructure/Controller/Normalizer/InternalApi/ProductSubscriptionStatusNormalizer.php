@@ -43,6 +43,7 @@ class ProductSubscriptionStatusNormalizer
             'isSubscribed' => $productSubscriptionStatus->isSubscribed(),
             'hasFamily' => $productSubscriptionStatus->hasFamily(),
             'isMappingFilled' => $productSubscriptionStatus->isMappingFilled(),
+            'isProductVariant' => $productSubscriptionStatus->isProductVariant(),
         ];
     }
 }

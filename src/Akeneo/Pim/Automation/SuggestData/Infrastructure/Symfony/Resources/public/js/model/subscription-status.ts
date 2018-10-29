@@ -16,4 +16,5 @@ export default interface SubscriptionStatus {
   isIdentifiersMappingValid: boolean;
   hasFamily: boolean;
   isMappingFilled: boolean;
+  isProductVariant: boolean;
 }

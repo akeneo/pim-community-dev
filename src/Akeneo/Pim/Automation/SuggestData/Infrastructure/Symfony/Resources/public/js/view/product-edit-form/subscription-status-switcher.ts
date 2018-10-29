@@ -82,6 +82,10 @@ class SubscriptionStatusSwitcher extends BaseView {
         return BaseView.prototype.render.apply(this);
       }
 
+      if (subscriptionStatus.isProductVariant) {
+        return BaseView.prototype.render.apply(this);
+      }
+
       if (!subscriptionStatus.isIdentifiersMappingValid) {
         isReadOnlyMode = true;
         errorMessage = 'akeneo_suggest_data.entity.product_subscription.module.product_edit_form.invalid_mapping';

@@ -79,7 +79,8 @@ class GetProductSubscriptionStatusHandler
             $connectionStatus,
             $productSubscription instanceof ProductSubscription,
             null !== $product->getFamily(),
-            $this->isMappingFilled($product)
+            $this->isMappingFilled($product),
+            $product->isVariant()
         );
     }
 
