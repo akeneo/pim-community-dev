@@ -154,7 +154,7 @@ TODO: change the link!!
     Or you can follow the detailed list of changes:
     
     * The reference data configuration has been moved in the Pim Structure. Therefore, you must update your reference data configuration. 
-    The key `pim_reference_data` is replaced by `akeneo_pim_structure:reference_data`:
+    The key `pim_reference_data` is replaced by `akeneo_pim_structure.reference_data`:
 
         v2.x
         ```
@@ -236,6 +236,7 @@ TODO: change the link!!
     Or you can follow the detailed list of changes:
 
     * The following route configurations have been removed:
+        - `pim_enrich`
         - `pim_comment`
         - `pim_pdf_generator`
         - `pim_localization`
@@ -256,6 +257,26 @@ TODO: change the link!!
             resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
         ```
         
+    * The following have been updated:
+        
+        ```yaml
+        oro_default:
+            path:  /
+            defaults:
+                template:    PimEnrichBundle::index.html.twig
+                _controller: FrameworkBundle:Template:template
+        ```
+        
+        to
+        
+        ```yaml
+        oro_default:
+            path:  /
+            defaults:
+                template:    PimUIBundle::index.html.twig
+                _controller: FrameworkBundle:Template:template
+        ```
+        
 5. Update your **app/AppKernel.php**:
 
     Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
@@ -268,23 +289,23 @@ TODO: change the link!!
 
     * The following bundles have been renamed:
         - `Pim\Bundle\FilterBundle\PimFilterBundle` now is `Oro\Bundle\PimFilterBundle\PimFilterBundle`
-        - `Pim\Bundle\UserBundle\PimUserBundle` now is `Akeneo\UserManagement\Bundle\PimUserBundle`
-        - `Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle` now is `Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle`
-        - `Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle` now is `Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle`
-        - `Pim\Bundle\ApiBundle\PimApiBundle` now is `Akeneo\Tool\Bundle\ApiBundle\PimApiBundle`
-        - `Pim\Bundle\ConnectorBundle\PimConnectorBundle` now is `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
-        - `Pim\Bundle\DashboardBundle\PimDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
         - `Pim\Bundle\DataGridBundle\PimDataGridBundle` now is `Oro\Bundle\PimDataGridBundle\PimDataGridBundle`
+        - `Pim\Bundle\UserBundle\PimUserBundle` now is `Akeneo\UserManagement\Bundle\PimUserBundle`
+        - `Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle` now is `Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle`
+        - `Pim\Bundle\DashboardBundle\PimDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
         - `Pim\Bundle\ImportExportBundle\PimImportExportBundle` now is `Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle`
         - `Pim\Bundle\InstallerBundle\PimInstallerBundle` now is `Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle`
         - `Pim\Bundle\NotificationBundle\PimNotificationBundle` now is `Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle`
         - `Pim\Bundle\UIBundle\PimUIBundle` now is `Akeneo\Platform\Bundle\UIBundle\PimUIBundle`
-        - `Pim\Bundle\VersioningBundle\PimVersioningBundle` now is `Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle`
         - `Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle` now is `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle`
-        - `Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle` now is `Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle`
+        - `Pim\Bundle\VersioningBundle\PimVersioningBundle` now is `Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle`
+        - `Pim\Bundle\ApiBundle\PimApiBundle` now is `Akeneo\Tool\Bundle\ApiBundle\PimApiBundle`
+        - `Pim\Bundle\ConnectorBundle\PimConnectorBundle` now is `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
         - `Akeneo\Bundle\BatchBundle\AkeneoBatchBundle` now is `Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle`
         - `Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle` now is `Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle`
         - `Akeneo\Bundle\BufferBundle\AkeneoBufferBundle` now is `Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle`
+        - `Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle` now is `Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle`
+        - `Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle` now is `Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle`
         - `Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle` now is `Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle`
         - `Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle` now is `Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle`
         - `Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle` now is `Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle`
