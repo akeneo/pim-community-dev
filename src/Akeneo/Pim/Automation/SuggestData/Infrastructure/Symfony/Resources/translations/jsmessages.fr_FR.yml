@@ -66,16 +66,10 @@ akeneo_suggest_data:
         no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
         insufficient_credits: "Désolé, impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
         invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
-      attribute_options_mapping:
-        fields:
-          franklin_attribute_option: Option d'attribut Franklin
-          catalog_attribute_option: Option d'attribut du catalogue
-          attribute_option_status: Statut de l'option Franklin
-        module:
-          edit:
-            title: 'Options de l''attribut {{ familyLabel }} - {{ franklinAttributeLabel }}'
-            sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
-            description: 'Afin de vous aider à enrichir votre catalogue, Franklin doit connaître la correspondance avec les options d''attributs de votre catalogue. <a href="" target="_blank">En savoir plus</a>'
+    attribute_options_mapping:
+      module:
+        edit:
+          sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
   product:
     edit:
       btn.push: Suggestion de données

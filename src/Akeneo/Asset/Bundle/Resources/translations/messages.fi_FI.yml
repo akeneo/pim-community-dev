@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Poista assetti
       categories_view: Katso assetin kategorioita
       mass_upload: Assettien massatuonti
+      remove_from_collection: Poista tuotteen assetti
     category_asset_picker:
       list: Listaa assetin kategoriat assettivalitsimessa
     category:
