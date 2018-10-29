@@ -207,7 +207,7 @@ pimee_enrich:
           field: Kategoriat
 pim_menu:
   tab:
-    asset: Resurssit
+    asset: Assetit
   item:
     asset_category: Assettikategoriat
     proposal: Ehdotukset
@@ -218,7 +218,7 @@ page_title:
   pimee_workflow_proposal_index: Ehdotukset
   pimee_workflow_published_product_index: Julkaistut tuotteet
   pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä
-  pimee_product_asset_index: Resurssit
+  pimee_product_asset_index: Assetit
   pimee_product_asset_edit: Assetti {{ asset.label }} | Muokkaus
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
@@ -257,6 +257,6 @@ catalog_volume:
       title: Assettien ulottuvuudet
       hint: Voit seurata tässä katalogin kokoa liittyen assetteihin
   axis:
-    count_assets: Resurssit
+    count_assets: Assetit
     count_asset_categories: Assettikategoriat
-    count_asset_category_trees: Assettikategoriat
+    count_asset_category_trees: Assettikategoriapuut

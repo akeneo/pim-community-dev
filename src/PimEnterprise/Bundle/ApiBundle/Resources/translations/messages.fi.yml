@@ -8,4 +8,4 @@ pim_api:
       list: Listaa assetit ja lataa niiden alkuperäiset ja varioidut tiedostot
   acl_group:
     asset_category: Assettikategoriat
-    asset: Resurssit
+    asset: Assetit

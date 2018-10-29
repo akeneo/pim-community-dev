@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Poista assetti
       categories_view: Katso assetin kategorioita
       mass_upload: Assettien massatuonti
+      remove_from_collection: Poista tuotteen assetti
     category_asset_picker:
       list: Listaa assetin kategoriat assettivalitsimessa
     category:
@@ -26,7 +27,7 @@ pimee_product_asset:
       generate_from_reference: Luo viittauksesta
       reset_variations: Nollaa variaatiot
     confirmation.remove: Oletko varma, että haluat poistaa assetin "%asset%" ?
-    confirmation.subTitle: Resurssit
+    confirmation.subTitle: Assetit
     grid:
       edit: Muokkaa assetin ominaisuuksia
     view:
@@ -80,7 +81,7 @@ pimee_product_asset:
   popin.create:
     title: Luo uusi resurssi
     is_localized: Lokalisoitavissa
-  menu: Resurssit
+  menu: Assetit
   page_tab:
     title:
       view: Tuoteresurssi %asset.code% | Näkymä
@@ -140,7 +141,7 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Resurssit
+      page_title: Assetit
       page_subtitle: Massamuokkaa (1 assetti)|Massamuokkaa (%count% assettia)
       confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:

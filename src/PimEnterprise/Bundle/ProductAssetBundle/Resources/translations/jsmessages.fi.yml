@@ -2,13 +2,13 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Hallinnoi resursseja
+        manage: Hallinnoi assetteja
         upload: Tuo
         manage_asset:
-          title: Hallinnoi resursseja
+          title: Hallinnoi assetteja
           cancel: Peruuta
           confirm: Vahvista
-        title: Hallinnoi resursseja
+        title: Hallinnoi assetteja
         description: Valitse assetit, jotka haluat liittää tuotteelle
         preview_title: Assettien esikatselu
         download: Lataa
