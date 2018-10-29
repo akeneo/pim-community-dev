@@ -47,7 +47,7 @@ flash:
   attribute_group:
     removed: Attribuuttiryhmän poisto onnistui
   family:
-    removed: Tuoteperhe poistettu
+    removed: Perhe poistettu
   family_variant:
     removed: Varianttiperhe onnistuneesti poistettu
   product:
@@ -89,9 +89,9 @@ error:
     export profile: Vientiprofiilia ei voi poistaa
     user: Käyttäjää ei voi poistaa
     role: Roolia ei voi poistaa
-    attribute_option: Määriteasetuksen poistossa virhe
+    attribute_option: Virhe attribuutin vaihtoehdon poistossa
   saving:
-    attribute_option: Määriteasennusta ei voi tallentaa
+    attribute_option: Attribuutin vaihtoehtoa ei voi tallentaa
     export_profile: Vientiprofiilia ei voi tallentaa. Tarkista että suodattimet on täytetty oikein
 alert:
   attribute_option:
@@ -109,7 +109,7 @@ label:
 Code: Koodi
 Edit: Muokkaa
 Delete: Poista
-Edit attributes of the product: Muokkaa tuotteen ominaisuuksia
+Edit attributes of the product: Muokkaa tuotteen attribuutteja
 Classify the product: Luokittele tuote
 Delete the product: Poista tuote
 Change status: Muuta tuotteen tila
@@ -247,7 +247,7 @@ pim_enrich:
       create_popin:
         type: Tuotemalli
         title: Luo tuotemalli
-        content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten ominaisuuksien rikastamista.
+        content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten attribuuttien rikastamista.
       info:
         create_successful: Tuotemallin luominen onnistui
         update_successful: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
@@ -322,15 +322,15 @@ pim_enrich:
       btn:
         save: Tallenna
     family:
-      title: tuoteperhe
+      title: perhe
       selected: valitut perheet
       info:
         update_successful: Perheen päivittäminen onnistui.
         create_successful: Kanava luotu.
-        update_failed: Tuoteperheen tallennuksessa tapahtui virhe.
+        update_failed: Perheen tallennuksessa tapahtui virhe.
         cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
         cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
-        attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata tuoteperheen attribuutteja
+        attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata perheen attribuutteja
         cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
       meta:
         created: Luotu
@@ -342,7 +342,7 @@ pim_enrich:
       create_popin:
         title: Luo
       message:
-        created: Tuoteperhe luotu
+        created: Perhe luotu
       variant:
         common:
           title: Yhteiset attribuutit
@@ -506,7 +506,7 @@ pim_enrich:
         completeness:
           title: Valmistumisaste
           info:
-            no_family: Ryhmää ei ole määritelty. Määritä ryhmä, jotta voit laskea tuotteen täyttöasteen.
+            no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden perheen täyttöasteen.
           missing_values: "{1}1 puuttuva arvo|] 1, Inf [{{ count }} puuttuvaa arvoa"
         history:
@@ -524,7 +524,7 @@ pim_enrich:
           save_and_finish: Tallenna ja lopeta
       change_family:
         modal:
-          title: Vaihda tuoteperhettä
+          title: Vaihda perhettä
           merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
           keep_attributes: Mitään attribuutteja ei poisteta.
           change_family_to: Vaihda perhe olemaan
@@ -1056,7 +1056,7 @@ pim_enrich:
         change_family:
           label: Muuta perhe
           label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen perhe</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen perhe</span>"
-          description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
+          description: Valittujen tuotteiden perhe vaihdetaan valittuun perheeseen
           field: Perhe
         add_to_group:
           label: Lisää ryhmiin
@@ -1093,7 +1093,7 @@ pim_enrich:
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
       step:
         select:
-          label: Valitse tuoteperheet
+          label: Valitse perheet
         choose:
           title: Perheiden massamuokkaus
           label_count: "] 0, Inf [Valitse toiminto"
@@ -1482,7 +1482,7 @@ catalog_volume:
       title: Ulottuvuudet koskien tuotemalleja
   axis:
     count_products: Tuotteet
-    average_max_attributes_per_family: Attribuutteja tuoteperheellä
+    average_max_attributes_per_family: Attribuutteja perheellä
     count_channels: Kanavat
     count_locales: Lokaatioita (aktivoidut)
     count_scopable_attributes: Kanavakohtaisia attribuutteja
