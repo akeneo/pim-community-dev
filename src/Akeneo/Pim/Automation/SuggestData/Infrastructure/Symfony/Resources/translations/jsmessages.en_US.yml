@@ -70,6 +70,11 @@ akeneo_suggest_data:
                 insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
                 invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
                 not_subscribed: 'The product is not subscribed'
+            module:
+                product_edit_form:
+                    family_required: 'Product family required.'
+                    no_identifier_filled: 'Product identifiers required.'
+                    invalid_mapping: "Identifiers mapping required."
         attribute_options_mapping:
             fields:
                 franklin_attribute_option: Franklin attribute option

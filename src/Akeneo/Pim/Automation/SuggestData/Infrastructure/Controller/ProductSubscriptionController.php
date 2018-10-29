@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetP
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,19 +37,25 @@ class ProductSubscriptionController
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
+    /** @var InternalApi\ProductSubscriptionStatusNormalizer */
+    private $productSubscriptionStatusNormalizer;
+
     /**
      * @param SubscribeProduct $subscribeProduct
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
+     * @param InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
-        UnsubscribeProductHandler $unsubscribeProductHandler
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
     ) {
         $this->subscribeProduct = $subscribeProduct;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
+        $this->productSubscriptionStatusNormalizer = $productSubscriptionStatusNormalizer;
     }
 
     /**
@@ -77,7 +84,7 @@ class ProductSubscriptionController
         $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($productId);
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($getProductSubscriptionStatus);
 
-        return new JsonResponse($productSubscriptionStatus->normalize());
+        return new JsonResponse($this->productSubscriptionStatusNormalizer->normalize($productSubscriptionStatus));
     }
 
     /**

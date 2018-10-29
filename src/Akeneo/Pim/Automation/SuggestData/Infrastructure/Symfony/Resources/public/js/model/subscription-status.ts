@@ -11,5 +11,9 @@
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 export default interface SubscriptionStatus {
+  isConnectionActive: boolean;
   isSubscribed: boolean;
+  isIdentifiersMappingValid: boolean;
+  hasFamily: boolean;
+  isMappingFilled: boolean;
 }

@@ -158,6 +158,26 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
+     * @Then identifiers mapping should be valid
+     */
+    public function identifiersMappingShouldBeValid(): void
+    {
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
+
+        Assert::assertTrue($connectionStatus->isIdentifiersMappingValid());
+    }
+
+    /**
+     * @Then identifiers mapping should not be valid
+     */
+    public function identifiersMappingShouldNotBeValid(): void
+    {
+        $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
+
+        Assert::assertFalse($connectionStatus->isIdentifiersMappingValid());
+    }
+
+    /**
      * @Then a token invalid message is sent
      */
     public function aTokenInvalidMessageIsSent(): void

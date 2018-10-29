@@ -21,3 +21,6 @@ services:
 
     akeneo.pim.automation.suggest_data.normalizer.connection_status:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer'
+
+    akeneo.pim.automation.suggest_data.normalizer.product_subscription_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ProductSubscriptionStatusNormalizer'

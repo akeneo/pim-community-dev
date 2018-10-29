@@ -21,18 +21,33 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectionStatusSpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-        $this->beConstructedWith(true);
-    }
-
     public function it_is_a_suggest_data_connection_status(): void
     {
+        $this->beConstructedWith(true, true);
         $this->shouldBeAnInstanceOf(ConnectionStatus::class);
     }
 
     public function it_returns_if_the_connection_status_is_active(): void
     {
+        $this->beConstructedWith(true, true);
         $this->isActive()->shouldReturn(true);
+    }
+
+    public function it_returns_if_the_connection_status_is_not_active(): void
+    {
+        $this->beConstructedWith(false, true);
+        $this->isActive()->shouldReturn(false);
+    }
+
+    public function it_returns_if_the_identifiers_mapping_is_valid(): void
+    {
+        $this->beConstructedWith(true, true);
+        $this->isIdentifiersMappingValid()->shouldReturn(true);
+    }
+
+    public function it_returns_if_the_identifiers_mapping_is_not_valid(): void
+    {
+        $this->beConstructedWith(true, false);
+        $this->isIdentifiersMappingValid()->shouldReturn(false);
     }
 }

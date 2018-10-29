@@ -80,6 +80,9 @@ class IdentifiersMappingContext implements Context
 
         $tmp = array_fill_keys($identifiers, null);
         $tmp = array_merge($tmp, $mapped);
+        $tmp = array_map(function ($value) {
+            return '' !== $value ? $value : null;
+        }, $tmp);
 
         $this->manageIdentifiersMapping->updateIdentifierMapping($tmp);
     }

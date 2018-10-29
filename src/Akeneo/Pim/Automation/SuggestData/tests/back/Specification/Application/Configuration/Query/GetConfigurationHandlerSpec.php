@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Handler;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -30,24 +31,14 @@ class GetConfigurationHandlerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(GetNormalizedConfiguration::class);
+        $this->shouldHaveType(GetConfigurationHandler::class);
     }
 
-    public function it_queries_a_normalized_configuration($repository): void
+    public function it_queries_a_normalized_configuration(GetConfigurationQuery $query, $repository): void
     {
-        $configuration = new Configuration(['foo' => 'bar']);
+        $configuration = new Configuration();
         $repository->find()->willReturn($configuration);
 
-        $this->retrieve()->shouldReturn([
-            'code' => Configuration::PIM_AI_CODE,
-            'values' => ['foo' => 'bar'],
-        ]);
-    }
-
-    public function it_returns_an_empty_array_if_configuration_does_not_exist($repository): void
-    {
-        $repository->find()->willReturn(null);
-
-        $this->retrieve()->shouldReturn([]);
+        $this->handle($query)->shouldReturn($configuration);
     }
 }

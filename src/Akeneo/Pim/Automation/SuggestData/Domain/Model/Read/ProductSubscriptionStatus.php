@@ -23,21 +23,62 @@ final class ProductSubscriptionStatus
     /** @var bool */
     private $isSubscribed;
 
+    /** @var ConnectionStatus */
+    private $connectionStatus;
+
+    /** @var bool */
+    private $hasFamily;
+
+    /** @var bool */
+    private $isMappingFilled;
+
     /**
+     * @param ConnectionStatus $connectionStatus
      * @param bool $isSubscribed
+     * @param bool $hasFamily
+     * @param bool $isMappingFilled
      */
-    public function __construct(bool $isSubscribed)
-    {
+    public function __construct(
+        ConnectionStatus $connectionStatus,
+        bool $isSubscribed,
+        bool $hasFamily,
+        bool $isMappingFilled
+    ) {
         $this->isSubscribed = $isSubscribed;
+        $this->connectionStatus = $connectionStatus;
+        $this->hasFamily = $hasFamily;
+        $this->isMappingFilled = $isMappingFilled;
     }
 
     /**
-     * @return array
+     * @return bool
      */
-    public function normalize(): array
+    public function isSubscribed(): bool
     {
-        return [
-            'isSubscribed' => $this->isSubscribed,
-        ];
+        return $this->isSubscribed;
+    }
+
+    /**
+     * @return ConnectionStatus
+     */
+    public function getConnectionStatus(): ConnectionStatus
+    {
+        return $this->connectionStatus;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFamily(): bool
+    {
+        return $this->hasFamily;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMappingFilled(): bool
+    {
+        return $this->isMappingFilled;
     }
 }
