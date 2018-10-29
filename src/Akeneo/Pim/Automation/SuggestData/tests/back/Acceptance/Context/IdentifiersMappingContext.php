@@ -213,6 +213,7 @@ class IdentifiersMappingContext implements Context
      * [
      *     [
      *         'from' => ['id' => 'brand'], (pim_ai_code)
+     *         'status' => 'active',
      *         'to' => [
      *             'id' => 'brand', (attribute_code)
      *             'label' => [
@@ -246,16 +247,20 @@ class IdentifiersMappingContext implements Context
                 }
             }
 
-            $mappings[] = [
+            $mappings[$rawMapping['pim_ai_code']] = [
                 'from' => ['id' => $rawMapping['pim_ai_code']],
-                'to' => [
+                'status' => empty($rawMapping['attribute_code']) ? 'inactive' : 'active',
+            ];
+
+            if (!empty($rawMapping['attribute_code'])) {
+                $mappings[$rawMapping['pim_ai_code']]['to'] = [
                     'id' => $rawMapping['attribute_code'],
                     'label' => $labels,
-                ],
-            ];
+                ];
+            }
         }
 
-        return $mappings;
+        return array_values($mappings);
     }
 
     /**

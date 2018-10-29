@@ -69,7 +69,10 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | upc         | brand          |
     Then the retrieved mapping should be the following:
       | pim_ai_code | attribute_code |
+      | brand       |                |
+      | mpn         |                |
       | upc         | brand          |
+      | asin        |                |
 
     Examples:
       | attribute_type           |
@@ -89,18 +92,18 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
     Then the identifiers mapping should not be saved
 
     Examples:
-      | attribute_type                    |
-      | pim_catalog_textarea              |
-      | pim_catalog_price_collection      |
-      | pim_assets_collection             |
-      | pim_catalog_multiselect           |
-      | pim_reference_data_multiselect    |
-      | pim_reference_data_simpleselect   |
-      | pim_catalog_image                 |
-      | pim_catalog_file                  |
-      | pim_catalog_boolean               |
-      | pim_catalog_metric                |
-      | pim_catalog_date                  |
+      | attribute_type                     |
+      | pim_catalog_textarea               |
+      | pim_catalog_price_collection       |
+      | pim_assets_collection              |
+      | pim_catalog_multiselect            |
+      | pim_reference_data_multiselect     |
+      | pim_reference_data_simpleselect    |
+      | pim_catalog_image                  |
+      | pim_catalog_file                   |
+      | pim_catalog_boolean                |
+      | pim_catalog_metric                 |
+      | pim_catalog_date                   |
       | akeneo_reference_entity_collection |
 
   Scenario: Fails to map PIM.ai attribute with unexisting PIM attribute
