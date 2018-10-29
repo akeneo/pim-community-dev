@@ -457,4 +457,4 @@ On the PIM today, the operators use a mix of algebric symbols (`<`, `=`, `!=`), 
 
 We think that we should still use a class to contains all the operators. But we should also normalize those operators to avoid mapping as much as possible.
 
-To sum up, the operator tho check equality should be named 'EQUALS' and be used by the front and the backend.
+To sum up, the operator to check equality should be named 'EQUALS' and be used by the front and the backend.

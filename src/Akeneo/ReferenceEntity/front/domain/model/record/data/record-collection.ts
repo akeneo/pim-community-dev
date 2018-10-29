@@ -6,45 +6,51 @@ class InvalidTypeError extends Error {}
 export type NormalizedRecordCollectionData = string[] | null;
 
 class RecordCollectionData extends Data {
-  private constructor(readonly recordData: RecordCode[]) {
+  private constructor(readonly recordCollectionData: RecordCode[]) {
     super();
     Object.freeze(this);
 
-    if (!Array.isArray(recordData)) {
+    if (!Array.isArray(recordCollectionData)) {
       throw new InvalidTypeError('RecordCollectionData expect an array of RecordCode as parameter to be created');
     }
 
-    recordData.forEach((recordCode: RecordCode) => {
+    recordCollectionData.forEach((recordCode: RecordCode) => {
       if (!(recordCode instanceof RecordCode)) {
         throw new InvalidTypeError('RecordCollectionData expect an array of RecordCode as parameter to be created');
       }
     });
   }
 
-  public static create(recordData: RecordCode[]): RecordCollectionData {
-    return new RecordCollectionData(recordData);
+  public static create(recordCollectionData: RecordCode[]): RecordCollectionData {
+    return new RecordCollectionData(recordCollectionData);
   }
 
   public static createFromNormalized(
     normalizedRecordCollectionData: NormalizedRecordCollectionData
   ): RecordCollectionData {
-    return null === normalizedRecordCollectionData
-      ? new RecordCollectionData([])
-      : new RecordCollectionData(
-          normalizedRecordCollectionData.map((recordCode: string) => RecordCode.create(recordCode))
-        );
+    return new RecordCollectionData(
+      Array.isArray(normalizedRecordCollectionData)
+        ? normalizedRecordCollectionData.map((recordCode: string) => RecordCode.create(recordCode))
+        : []
+    );
   }
 
   public isEmpty(): boolean {
-    return 0 === this.recordData.length;
+    return 0 === this.recordCollectionData.length;
   }
 
   public equals(data: Data): boolean {
-    return data instanceof RecordCollectionData && this.recordData === data.recordData;
+    return (
+      data instanceof RecordCollectionData &&
+      this.recordCollectionData.length === data.recordCollectionData.length &&
+      !this.recordCollectionData.some((recordCode: RecordCode, index: number) => {
+        return !recordCode.equals(data.recordCollectionData[index]);
+      })
+    );
   }
 
   public normalize(): NormalizedRecordCollectionData {
-    return this.recordData.map((recordCode: RecordCode) => recordCode.stringValue());
+    return this.recordCollectionData.map((recordCode: RecordCode) => recordCode.stringValue());
   }
 }
 

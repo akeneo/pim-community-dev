@@ -23,8 +23,6 @@ class RecordView extends React.Component<
   }
 
   render() {
-    if (null != this.state.referenceEntity) {
-    }
     const value =
       null !== this.state.referenceEntity
         ? (this.state.referenceEntity as any).getLabel(this.props.locale)

@@ -32,7 +32,11 @@ class RecordData extends Data {
   }
 
   public equals(data: Data): boolean {
-    return data instanceof RecordData && this.recordData === data.recordData;
+    return (
+      data instanceof RecordData &&
+      ((this.isEmpty() && data.isEmpty()) ||
+        (data.recordData !== null && this.recordData !== null && this.recordData.equals(data.recordData)))
+    );
   }
 
   public normalize(): NormalizedRecordData {

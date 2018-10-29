@@ -5,12 +5,12 @@ import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 const routing = require('routing');
 import Record, {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {getLabel} from 'pimenrich/js/i18n';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
+import {getLabel} from 'pimui/js/i18n';
 
 export interface RecordSelectorProps {
   value: RecordCode[] | RecordCode | null;
