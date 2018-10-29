@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetP
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ProductSubscriptionStatusNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\ProductSubscriptionController;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -35,7 +35,7 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         SubscribeProduct $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
     ): void {
         $this->beConstructedWith(
             $subscribeProduct,

@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetP
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ProductSubscriptionStatusNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -37,20 +37,20 @@ class ProductSubscriptionController
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
-    /** @var ProductSubscriptionStatusNormalizer */
+    /** @var InternalApi\ProductSubscriptionStatusNormalizer */
     private $productSubscriptionStatusNormalizer;
 
     /**
      * @param SubscribeProduct $subscribeProduct
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
-     * @param ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
+     * @param InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
     ) {
         $this->subscribeProduct = $subscribeProduct;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;

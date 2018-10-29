@@ -84,13 +84,13 @@ class SubscriptionStatusSwitcher extends BaseView {
 
       if (!subscriptionStatus.isIdentifiersMappingValid) {
         isReadOnlyMode = true;
-        errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.invalid_mapping';
+        errorMessage = 'akeneo_suggest_data.entity.product_subscription.module.product_edit_form.invalid_mapping';
       } else if (!subscriptionStatus.hasFamily) {
         isReadOnlyMode = true;
-        errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.family_required';
+        errorMessage = 'akeneo_suggest_data.entity.product_subscription.module.product_edit_form.family_required';
       } else if (!subscriptionStatus.isMappingFilled) {
         isReadOnlyMode = true;
-        errorMessage = 'akeneo_suggest_data.entity.product_subscription.pef.constraint.no_identifier_filled';
+        errorMessage = 'akeneo_suggest_data.entity.product_subscription.module.product_edit_form.no_identifier_filled';
       }
 
       if (isReadOnlyMode) {
