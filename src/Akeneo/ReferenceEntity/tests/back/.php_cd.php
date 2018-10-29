@@ -32,6 +32,7 @@ $rules = [
         'Akeneo\Platform\Bundle\InstallerBundle',
         'Ramsey\Uuid\Uuid',
         'Symfony',
+        'Webmozart\Assert\Assert',
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 
