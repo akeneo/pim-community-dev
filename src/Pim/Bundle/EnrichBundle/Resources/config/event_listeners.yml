@@ -37,6 +37,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_enrich.event_subscriber.perister_configurator:
+        class: Pim\Bundle\EnrichBundle\EventListener\PersisterConfiguratorSubscriber
+        arguments:
+            - '@pim_catalog.object_manager.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
     # Storage event listeners
     pim_enrich.event_subscriber.storage.channel_locale:
         class: '%pim_enrich.event_subscriber.storage.channel_locale.class%'
