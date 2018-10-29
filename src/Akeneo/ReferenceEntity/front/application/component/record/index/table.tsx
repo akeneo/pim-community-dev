@@ -1,6 +1,7 @@
-import CommonView from 'akeneoreferenceentity/application/component/record/index/common';
+import CommonRows from 'akeneoreferenceentity/application/component/record/index/common';
 import ActionView from 'akeneoreferenceentity/application/component/record/index/action';
 import DetailsView from 'akeneoreferenceentity/application/component/record/index/detail';
+import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -12,6 +13,7 @@ import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
 
 interface TableState {
   locale: string;
@@ -149,20 +151,6 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     }
   }
 
-  /**
-   * This method is triggered each time the user types on the search field
-   * It dispatches events only if the user pauses for more than 100ms
-   */
-  onSearchUpdated(event: React.ChangeEvent<HTMLInputElement>) {
-    const userSearch = event.currentTarget.value;
-    if (undefined !== this.timer) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      this.props.onSearchUpdated(userSearch);
-    }, 250) as any;
-  }
-
   renderItems(
     records: NormalizedRecord[],
     locale: string,
@@ -226,30 +214,14 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
       (column: Column) => column.channel === channel && column.locale === locale
     );
     const userSearch = getFilter(grid.filters, 'full_text').value;
+    const noResult = 0 === grid.records.length && false === grid.isLoading;
+    const placeholder = 0 === grid.records.length && grid.isLoading;
 
     return (
       <React.Fragment>
-        <div className="AknFilterBox-searchContainer">
-          <input
-            type="text"
-            className="AknFilterBox-search"
-            placeholder={__('pim_reference_entity.record.grid.search')}
-            defaultValue={userSearch}
-            onChange={this.onSearchUpdated.bind(this)}
-          />
-        </div>
-        {0 === grid.records.length && false === grid.isLoading ? (
-          <div className="AknGridContainer-noData">
-            <div className="AknGridContainer-noDataImage" />
-            <div className="AknGridContainer-noDataTitle">
-              {__('pim_reference_entity.record.no_result.title', {
-                entityLabel: this.props.referenceEntity.getLabel(locale),
-              })}
-            </div>
-            <div className="AknGridContainer-noDataSubtitle">
-              {__('pim_reference_entity.record.no_result.subtitle')}
-            </div>
-          </div>
+        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} />
+        {noResult ? (
+          <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
         ) : (
           <div
             className="AknDefault-horizontalScrollContainer"
@@ -266,17 +238,14 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
-                  {this.renderItems(
-                    grid.records,
-                    locale,
-                    grid.isLoading,
-                    onRedirectToRecord,
-                    onDeleteRecord,
-                    CommonView,
-                    [],
-                    {},
-                    recordCount
-                  )}
+                  <CommonRows
+                    records={grid.records}
+                    locale={locale}
+                    placeholder={placeholder}
+                    onRedirectToRecord={onRedirectToRecord}
+                    recordCount={recordCount}
+                    nextItemToAddPosition={this.state.nextItemToAddPosition}
+                  />
                 </tbody>
               </table>
               <table className="AknGrid AknGrid--light AknGrid--center" style={{flex: 1}} ref={this.detailTable}>
