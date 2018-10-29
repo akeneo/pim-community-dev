@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Updater\Copier;
+namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
-use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

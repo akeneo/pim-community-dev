@@ -1,11 +1,9 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Updater\Copier;
+namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)

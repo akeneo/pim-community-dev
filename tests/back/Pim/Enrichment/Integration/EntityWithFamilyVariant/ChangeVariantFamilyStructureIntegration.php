@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\EntityWithFamilyVariant;
+namespace AkeneoTest\Pim\Enrichment\Integration\EntityWithFamilyVariant;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

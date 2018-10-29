@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Standard;
+namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Standard;
 
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 

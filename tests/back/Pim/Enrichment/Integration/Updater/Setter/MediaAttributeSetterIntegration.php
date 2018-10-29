@@ -1,10 +1,9 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Updater\Setter;
+namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Setter;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

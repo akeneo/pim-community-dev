@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Indexing;
+namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Indexing;
 
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the "indexing_product" format
