@@ -1,25 +1,26 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Validation\Attribute;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute\Validation;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PriceCollectionIntegration extends AbstractAttributeTestCase
+class NumberIntegration extends AbstractAttributeTestCase
 {
-    public function testPriceCollectionIsNotRequired()
+    public function testNumberIsNotRequired()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'required'         => true,
             ]
         );
@@ -31,39 +32,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('required', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionIsNotUnique()
+    public function testNumberShouldNotHaveAllowedExtensions()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
-                'group'            => 'attributeGroupA',
-                'decimals_allowed' => true,
-                'unique'           => true,
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This attribute type can\'t have unique value', $violations->get(0)->getMessage());
-        $this->assertSame('unique', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testPriceCollectionShouldNotHaveAllowedExtensions()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'               => 'new_price',
-                'type'               => 'pim_catalog_price_collection',
+                'code'               => 'new_number',
+                'type'               => 'pim_catalog_number',
                 'group'              => 'attributeGroupA',
                 'decimals_allowed'   => true,
+                'negative_allowed'   => false,
                 'allowed_extensions' => ['gif', 'png'],
             ]
         );
@@ -75,17 +55,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('allowedExtensions', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveAMetricFamily()
+    public function testNumberShouldNotHaveAMetricFamily()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'metric_family'    => 'Length',
             ]
         );
@@ -97,18 +78,19 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('metricFamily', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveADefaultMetricUnit()
+    public function testDoesNotHaveADefaultMetricUnit()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'                => 'new_price',
-                'type'                => 'pim_catalog_price_collection',
+                'code'                => 'new_number',
+                'type'                => 'pim_catalog_number',
                 'group'               => 'attributeGroupA',
                 'decimals_allowed'    => true,
-                'default_metric_unit' => 'METER',
+                'negative_allowed'    => false,
+                'default_metric_unit' => 'KILOWATT',
             ]
         );
 
@@ -119,17 +101,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('defaultMetricUnit', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveAReferenceDataName()
+    public function testNumberShouldNotHaveAReferenceDataName()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'                => 'new_price',
-                'type'                => 'pim_catalog_price_collection',
+                'code'                => 'new_number',
+                'type'                => 'pim_catalog_number',
                 'group'               => 'attributeGroupA',
                 'decimals_allowed'    => true,
+                'negative_allowed'    => false,
                 'reference_data_name' => 'color',
             ]
         );
@@ -141,18 +124,19 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveAutoOptionSorting()
+    public function testNumberShouldNotHaveAutoOptionSorting()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'                => 'new_price',
-                'type'                => 'pim_catalog_price_collection',
+                'code'                => 'new_number',
+                'type'                => 'pim_catalog_number',
                 'group'               => 'attributeGroupA',
                 'decimals_allowed'    => true,
-                'auto_option_sorting' => false,
+                'negative_allowed'    => false,
+                'auto_option_sorting' => true,
             ]
         );
 
@@ -163,18 +147,19 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveMaxCharacters()
+    public function testNumberShouldNotHaveMaxCharacters()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
-                'max_characters'   => 42,
+                'negative_allowed' => false,
+                'max_characters'   => '42',
             ]
         );
 
@@ -185,17 +170,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveAValidationRule()
+    public function testNumberShouldNotHaveAValidationRule()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'validation_rule'  => 'email',
             ]
         );
@@ -207,17 +193,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('validationRule', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveAValidationRegexp()
+    public function testNumberShouldNotHaveAValidationRegexp()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'              => 'new_price',
-                'type'              => 'pim_catalog_price_collection',
+                'code'              => 'new_number',
+                'type'              => 'pim_catalog_number',
                 'group'             => 'attributeGroupA',
                 'decimals_allowed'  => true,
+                'negative_allowed'  => false,
                 'validation_regexp' => '/[a-z]+/',
             ]
         );
@@ -229,17 +216,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('validationRegexp', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveWysiwygEnabled()
+    public function testNumberShouldNotHaveWysiwygEnabled()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'wysiwyg_enabled'  => false,
             ]
         );
@@ -251,39 +239,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('wysiwygEnabled', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveNegativeAllowed()
+    public function testNumberShouldNotHaveADateMin()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
-                'negative_allowed' => true,
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
-        $this->assertSame('negativeAllowed', $violations->get(0)->getPropertyPath());
-    }
-
-    public function testPriceCollectionShouldNotHaveADateMin()
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
-                'group'            => 'attributeGroupA',
-                'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'date_min'         => '2015-11-24',
             ]
         );
@@ -295,17 +262,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('dateMin', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveADateMax()
+    public function testNumberShouldNotHaveADateMax()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'date_max'         => '2015-11-24',
             ]
         );
@@ -317,17 +285,18 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('dateMax', $violations->get(0)->getPropertyPath());
     }
 
-    public function testPriceCollectionShouldNotHaveAMaxFileSize()
+    public function testNumberShouldNotHaveAMaxFileSize()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_price',
-                'type'             => 'pim_catalog_price_collection',
+                'code'             => 'new_number',
+                'type'             => 'pim_catalog_number',
                 'group'            => 'attributeGroupA',
                 'decimals_allowed' => true,
+                'negative_allowed' => false,
                 'max_file_size'    => 1024,
             ]
         );

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace AkeneoTest\Pim\Structure\Integration\Family;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
