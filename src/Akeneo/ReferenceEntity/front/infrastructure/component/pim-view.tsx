@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 const viewBuilder = require('pim/form-builder');
 
@@ -9,28 +8,25 @@ interface PimViewProps {
 }
 
 export default class PimView extends React.Component<PimViewProps, {}> {
-  private el: any;
+  private el: React.RefObject<HTMLDivElement>;
 
   constructor(props: PimViewProps) {
     super(props);
 
-    this.el = null;
+    this.el = React.createRef();
   }
 
   componentDidMount() {
-    this.el = ReactDOM.findDOMNode(this);
-    setTimeout(() => {
-      viewBuilder.build(this.props.viewName).then((view: any) => {
-        view.setElement(this.el).render();
+    if (null !== this.el.current) {
+      setTimeout(() => {
+        viewBuilder.build(this.props.viewName).then((view: any) => {
+          view.setElement(this.el.current).render();
+        });
       });
-    });
+    }
   }
 
   render() {
-    return <div className={this.props.className} />;
-  }
-
-  componentWillUnmount() {
-    this.el = null;
+    return <div className={this.props.className} ref={this.el}/>;
   }
 }

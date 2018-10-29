@@ -57,22 +57,32 @@ interface TableProps extends TableState, TableDispatch {}
 export default class Table extends React.Component<TableProps, {nextItemToAddPosition: number}> {
   private timer: undefined | number;
   private needResize = false;
+  private horizontalScrollContainer: React.RefObject<HTMLDivElement>;
+  private verticalScrollContainer: React.RefObject<HTMLDivElement>;
+  private detailTable: React.RefObject<HTMLTableElement>;
+  private commonTable: React.RefObject<HTMLTableElement>;
+  private actionTable: React.RefObject<HTMLTableElement>;
+
   readonly state = {
     nextItemToAddPosition: 0,
   };
 
-  componentWillReceiveProps(nextProps: TableProps) {
-    if (this.props.grid.records.length !== nextProps.grid.records.length) {
-      this.setState({nextItemToAddPosition: this.props.grid.records.length});
-    }
+  constructor(props: TableProps) {
+    super(props);
+
+    this.horizontalScrollContainer = React.createRef();
+    this.verticalScrollContainer = React.createRef();
+    this.detailTable = React.createRef();
+    this.commonTable = React.createRef();
+    this.actionTable = React.createRef();
   }
 
   componentDidMount() {
-    const detailTable = this.refs.detailTable as any;
-    const verticalScrollContainer = this.refs.verticalScrollContainer as any;
+    const detailTable = this.detailTable.current;
+    const verticalScrollContainer = this.verticalScrollContainer.current;
     if (
-      undefined !== detailTable &&
-      undefined !== verticalScrollContainer &&
+      null !== detailTable &&
+      null !== verticalScrollContainer &&
       detailTable.offsetWidth !== verticalScrollContainer.offsetWidth
     ) {
       this.needResize = true;
@@ -80,13 +90,17 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(previousProps: TableProps) {
     if (this.needResize) {
       this.resizeScrollContainer();
     }
-    const horizontalScrollContainer = this.refs.horizontalScrollContainer as any;
-    if (this.props.grid.page === 0 && undefined !== horizontalScrollContainer) {
+    const horizontalScrollContainer = this.horizontalScrollContainer.current;
+    if (this.props.grid.page === 0 && null !== horizontalScrollContainer) {
       horizontalScrollContainer.scrollTop = 0;
+    }
+
+    if (this.props.grid.records.length !== previousProps.grid.records.length) {
+      this.setState({nextItemToAddPosition: previousProps.grid.records.length});
     }
   }
 
@@ -97,17 +111,17 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   resizeScrollContainer() {
-    const verticalScrollContainer = this.refs.verticalScrollContainer as any;
-    const horizontalScrollContainer = this.refs.horizontalScrollContainer as any;
-    const commonTable = this.refs.commonTable as any;
-    const detailTable = this.refs.detailTable as any;
-    const actionTable = this.refs.actionTable as any;
+    const verticalScrollContainer = this.verticalScrollContainer.current;
+    const horizontalScrollContainer = this.horizontalScrollContainer.current;
+    const commonTable = this.commonTable.current;
+    const detailTable = this.detailTable.current;
+    const actionTable = this.actionTable.current;
     if (
-      undefined !== verticalScrollContainer &&
-      undefined !== horizontalScrollContainer &&
-      undefined !== commonTable &&
-      undefined !== detailTable &&
-      undefined !== actionTable
+      null !== verticalScrollContainer &&
+      null !== horizontalScrollContainer &&
+      null !== commonTable &&
+      null !== detailTable &&
+      null !== actionTable
     ) {
       const newWidth = commonTable.offsetWidth + detailTable.offsetWidth + actionTable.offsetWidth;
       const minWidth = horizontalScrollContainer.offsetWidth;
@@ -122,14 +136,16 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   handleScroll() {
-    const verticalScrollContainer = this.refs.verticalScrollContainer as any;
-    const horizontalScrollContainer = this.refs.horizontalScrollContainer as any;
-    const scrollSize = verticalScrollContainer.offsetHeight;
-    const scrollPosition = horizontalScrollContainer.scrollTop;
-    const containerSize = horizontalScrollContainer.offsetHeight;
-    const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
-    if (remainingHeightToBottom < 5 * containerSize) {
-      this.props.onNeedMoreResults();
+    const verticalScrollContainer = this.verticalScrollContainer.current;
+    const horizontalScrollContainer = this.horizontalScrollContainer.current;
+    if (null !== verticalScrollContainer && null !== horizontalScrollContainer) {
+      const scrollSize = verticalScrollContainer.offsetHeight;
+      const scrollPosition = horizontalScrollContainer.scrollTop;
+      const containerSize = horizontalScrollContainer.offsetHeight;
+      const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
+      if (remainingHeightToBottom < 5 * containerSize) {
+        this.props.onNeedMoreResults();
+      }
     }
   }
 
@@ -238,10 +254,10 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
           <div
             className="AknDefault-horizontalScrollContainer"
             onScroll={this.handleScroll.bind(this)}
-            ref="horizontalScrollContainer"
+            ref={this.horizontalScrollContainer}
           >
-            <div className="AknDefault-verticalScrollContainer" ref="verticalScrollContainer">
-              <table className="AknGrid AknGrid--light AknGrid--left" ref="commonTable">
+            <div className="AknDefault-verticalScrollContainer" ref={this.verticalScrollContainer}>
+              <table className="AknGrid AknGrid--light AknGrid--left" ref={this.commonTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.image')}</th>
@@ -263,7 +279,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   )}
                 </tbody>
               </table>
-              <table className="AknGrid AknGrid--light AknGrid--center" style={{flex: 1}} ref="detailTable">
+              <table className="AknGrid AknGrid--light AknGrid--center" style={{flex: 1}} ref={this.detailTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     {0 === columnsToDisplay.length ? (
@@ -293,7 +309,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   )}
                 </tbody>
               </table>
-              <table className="AknGrid AknGrid--light AknGrid--right" ref="actionTable">
+              <table className="AknGrid AknGrid--light AknGrid--right" ref={this.actionTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     <th className="AknGrid-headerCell AknGrid-headerCell--action" />

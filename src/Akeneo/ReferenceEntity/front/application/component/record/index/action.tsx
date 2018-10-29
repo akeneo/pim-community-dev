@@ -5,7 +5,7 @@ import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 const router = require('pim/router');
 
-const ActionView: RowView = ({
+const ActionView: RowView = React.memo(({
   record,
   isLoading = false,
   locale,
@@ -92,6 +92,6 @@ const ActionView: RowView = ({
       </td>
     </tr>
   );
-};
+});
 
 export default ActionView;

@@ -76,14 +76,16 @@ interface Props {
   onSelectionChange: (element: DropdownElement) => void;
 }
 
-class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement: string}> {
+interface State {isOpen: boolean; selectedElement: string}
+
+class Dropdown extends React.Component<Props, State> {
   state = {
     isOpen: false,
     selectedElement: this.props.selectedElement,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.setState({selectedElement: nextProps.selectedElement});
+  static getDerivedStateFromProps(props: Props, state: State) {
+    return {...state, selectedElement: props.selectedElement};
   }
 
   open() {

@@ -75,7 +75,9 @@ class ReferenceEntityEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <ReferenceEntityView />
+            <React.StrictMode>
+              <ReferenceEntityView />
+            </React.StrictMode>
           </Provider>,
           this.el
         );
