@@ -136,6 +136,19 @@
     margin: 0 10px 10px 0;
   }
 
+  &-validationError {
+    display: flex;
+    align-items: baseline;
+    margin-top: 3px;
+    color: @AknRed;
+    font-style: italic;
+
+    &--arrow {
+      background: url("../../images/red_arrow.svg") no-repeat 0 40%;
+      padding-left: 15px;
+    }
+  }
+
   &--right {
     margin-right: 10px;
   }
@@ -148,6 +161,10 @@
 
   &--left {
     margin-left: 10px;
+  }
+
+  &--read-only {
+    cursor: default;
   }
 }
 
