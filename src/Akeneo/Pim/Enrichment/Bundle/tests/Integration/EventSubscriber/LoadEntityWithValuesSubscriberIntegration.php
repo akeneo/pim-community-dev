@@ -1,12 +1,11 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace AkeneoTest\Pim\Structure\Integration\Family;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * Integration tests to verify a product is well loaded from database with its product values.

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace AkeneoTest\Pim\Structure\Integration\Family;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabel;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxis;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**

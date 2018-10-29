@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Attribute\Query;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

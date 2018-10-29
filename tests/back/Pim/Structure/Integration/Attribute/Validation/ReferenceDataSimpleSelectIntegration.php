@@ -1,30 +1,28 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Validation\Attribute;
-
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute\Validation;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ * @group ce
  */
-abstract class AbstractAttributeTestCase extends TestCase
+class ReferenceDataSimpleSelectIntegration extends AbstractAttributeTestCase
 {
-    protected function assertNotRequired($type)
+    public function testReferenceDataSimpleSelectIsNotRequired()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'     => 'new_attribute',
-                'type'     => $type,
-                'group'    => 'attributeGroupA',
-                'required' => true,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'required'            => true,
             ]
         );
 
@@ -35,17 +33,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('required', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertNotUnique($type)
+    public function testReferenceDataSimpleSelectIsNotUnique()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'   => 'new_attribute',
-                'type'   => $type,
-                'group'  => 'attributeGroupA',
-                'unique' => true,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'unique'              => true,
             ]
         );
 
@@ -56,17 +55,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('unique', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveAllowedExtensions($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveAllowedExtensions()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'               => 'new_attribute',
-                'type'               => $type,
-                'group'              => 'attributeGroupA',
-                'allowed_extensions' => ['gif', 'png'],
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'allowed_extensions'  => ['gif', 'png'],
             ]
         );
 
@@ -77,17 +77,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('allowedExtensions', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveAMetricFamily($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveAMetricFamily()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'          => 'new_attribute',
-                'type'          => $type,
-                'group'         => 'attributeGroupA',
-                'metric_family' => 'Length',
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'metric_family'       => 'Length',
             ]
         );
 
@@ -98,16 +99,17 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('metricFamily', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveADefaultMetricUnit($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveADefaultMetricUnit()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'                => 'new_attribute',
-                'type'                => $type,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
                 'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
                 'default_metric_unit' => 'KILOWATT',
             ]
         );
@@ -119,37 +121,58 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('defaultMetricUnit', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveAReferenceDataName($type)
+    public function testReferenceDataSimpleSelectHasAReferenceDataName()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'                => 'new_attribute',
-                'type'                => $type,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
                 'group'               => 'attributeGroupA',
-                'reference_data_name' => 'color',
             ]
         );
 
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('This attribute cannot be linked to reference data.', $violations->get(0)->getMessage());
+        $this->assertSame('This value should not be blank.', $violations->get(0)->getMessage());
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveAutoOptionSorting($type)
+    public function testReferenceDataSimpleSelectHasAValidReferenceDataName()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'                => 'new_attribute',
-                'type'                => $type,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
                 'group'               => 'attributeGroupA',
+                'reference_data_name' => 'invalid',
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('Reference data "invalid" does not exist. Allowed values are: fabrics, color', $violations->get(0)->getMessage());
+        $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testReferenceDataMultiSelectShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
                 'auto_option_sorting' => false,
             ]
         );
@@ -161,17 +184,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
     }
 
-    public function assertDoesNotHaveMaxCharacters($type)
+    public function testNumberShouldNotHaveMaxCharacters()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'           => 'new_attribute',
-                'type'           => $type,
-                'group'          => 'attributeGroupA',
-                'max_characters' => 42,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'max_characters'      => 42,
             ]
         );
 
@@ -182,38 +206,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertMaxCharactersIsNotGreaterThan($type, $limit)
+    public function testReferenceDataSimpleSelectShouldNotHaveAValidationRule()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'           => 'new_attribute',
-                'type'           => $type,
-                'group'          => 'attributeGroupA',
-                'max_characters' => $limit + 1,
-            ]
-        );
-
-        $violations = $this->validateAttribute($attribute);
-
-        $this->assertCount(1, $violations);
-        $this->assertSame(sprintf('This value should be less than or equal to %d.', $limit), $violations->get(0)->getMessage());
-        $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
-    }
-
-    protected function assertDoesNotHaveAValidationRule($type)
-    {
-        $attribute = $this->createAttribute();
-
-        $this->updateAttribute(
-            $attribute,
-            [
-                'code'            => 'new_attribute',
-                'type'            => $type,
-                'group'           => 'attributeGroupA',
-                'validation_rule' => 'email',
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'validation_rule'     => 'email',
             ]
         );
 
@@ -224,17 +228,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('validationRule', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveAValidationRegexp($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveAValidationRegexp()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'              => 'new_attribute',
-                'type'              => $type,
-                'group'             => 'attributeGroupA',
-                'validation_regexp' => '/[a-z]+/',
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'validation_regexp'   => '/[a-z]+/',
             ]
         );
 
@@ -245,17 +250,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('validationRegexp', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveWysiwygEnabled($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveWysiwygEnabled()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'            => 'new_attribute',
-                'type'            => $type,
-                'group'           => 'attributeGroupA',
-                'wysiwyg_enabled' => true,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'wysiwyg_enabled'     => false,
             ]
         );
 
@@ -266,17 +272,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('wysiwygEnabled', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveANumberMin($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveANumberMin()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'       => 'new_attribute',
-                'type'       => $type,
-                'group'      => 'attributeGroupA',
-                'number_min' => 13,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'number_min'          => 1,
             ]
         );
 
@@ -287,17 +294,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('numberMin', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveANumberMax($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveANumberMax()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'       => 'new_attribute',
-                'type'       => $type,
-                'group'      => 'attributeGroupA',
-                'number_max' => 13,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'number_max'          => 42,
             ]
         );
 
@@ -308,17 +316,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('numberMax', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveDecimalsAllowed($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveDecimalsAllowed()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_attribute',
-                'type'             => $type,
-                'group'            => 'attributeGroupA',
-                'decimals_allowed' => true,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'decimals_allowed'    => false,
             ]
         );
 
@@ -329,17 +338,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('decimalsAllowed', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveNegativeAllowed($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveNegativeAllowed()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'             => 'new_attribute',
-                'type'             => $type,
-                'group'            => 'attributeGroupA',
-                'negative_allowed' => true,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'negative_allowed'    => false,
             ]
         );
 
@@ -350,17 +360,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('negativeAllowed', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveADateMin($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveADateMin()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'     => 'new_attribute',
-                'type'     => $type,
-                'group'    => 'attributeGroupA',
-                'date_min' => '2015-11-24',
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'date_min'            => '2015-11-24',
             ]
         );
 
@@ -371,17 +382,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('dateMin', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveADateMax($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveADateMax()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'     => 'new_attribute',
-                'type'     => $type,
-                'group'    => 'attributeGroupA',
-                'date_max' => '2015-11-24',
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'date_max'            => '2015-11-24',
             ]
         );
 
@@ -392,17 +404,18 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('dateMax', $violations->get(0)->getPropertyPath());
     }
 
-    protected function assertDoesNotHaveAMaxFileSize($type)
+    public function testReferenceDataSimpleSelectShouldNotHaveAMaxFileSize()
     {
         $attribute = $this->createAttribute();
 
         $this->updateAttribute(
             $attribute,
             [
-                'code'          => 'new_attribute',
-                'type'          => $type,
-                'group'         => 'attributeGroupA',
-                'max_file_size' => 1024,
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'max_file_size'       => 1024,
             ]
         );
 
@@ -411,50 +424,5 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertCount(1, $violations);
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
-    }
-
-    /**
-     * @param $code
-     *
-     * @return AttributeInterface|null
-     */
-    protected function getAttribute($code)
-    {
-        return $this->get('pim_catalog.repository.attribute')->findOneByCode($code);
-    }
-
-    /**
-     * @return AttributeInterface
-     */
-    protected function createAttribute()
-    {
-        return $this->get('pim_catalog.factory.attribute')->create();
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param array                                                    $data
-     */
-    protected function updateAttribute(AttributeInterface $attribute, array $data)
-    {
-        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return ConstraintViolationListInterface
-     */
-    protected function validateAttribute(AttributeInterface $attribute)
-    {
-        return $this->get('validator')->validate($attribute);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return $this->catalog->useTechnicalCatalog();
     }
 }

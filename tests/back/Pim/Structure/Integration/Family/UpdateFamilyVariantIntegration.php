@@ -1,13 +1,13 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace AkeneoTest\Pim\Structure\Integration\Family;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**

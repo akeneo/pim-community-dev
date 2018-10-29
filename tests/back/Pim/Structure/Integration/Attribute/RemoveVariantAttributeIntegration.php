@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Attribute;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 
 /**
  * @author    Elodie Raposo (elodie.raposo@akeneo.com)
