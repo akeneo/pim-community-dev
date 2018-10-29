@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Storage;
+namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Storage;
 
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the storage format

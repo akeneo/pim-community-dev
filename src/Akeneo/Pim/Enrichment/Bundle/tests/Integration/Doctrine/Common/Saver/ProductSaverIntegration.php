@@ -2,13 +2,13 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Doctrine\Common\Saver;
 
-use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Statement;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Doctrine\DBAL\Statement;
 
 /**
  * Integration tests to verify a product is well saved in database.

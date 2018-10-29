@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Standard;
+namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Standard;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
