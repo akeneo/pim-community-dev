@@ -4,7 +4,9 @@ import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import {CellViews} from 'akeneoreferenceentity/application/component/reference-entity/edit/record';
 import {RowView} from 'akeneoreferenceentity/application/component/record/index/table';
 
-const DetailView: RowView = React.memo(
+const memo = (React as any).memo;
+
+const DetailView: RowView = memo(
   ({
     record,
     isLoading = false,

@@ -3,8 +3,9 @@ import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
+const memo = (React as any).memo;
 
-const CommonRow = React.memo(
+const CommonRow = memo(
   ({
     record,
     locale,
@@ -14,7 +15,6 @@ const CommonRow = React.memo(
     record: NormalizedRecord;
     locale: string;
     placeholder?: boolean;
-    position: number;
   } & {
     onRedirectToRecord: (record: NormalizedRecord) => void;
   }) => {
@@ -64,13 +64,12 @@ const CommonRow = React.memo(
   }
 );
 
-const CommonRows = React.memo(
+const CommonRows = memo(
   ({
     records,
     locale,
     placeholder,
     onRedirectToRecord,
-    nextItemToAddPosition,
     recordCount,
   }: {
     records: NormalizedRecord[];
@@ -99,14 +98,11 @@ const CommonRows = React.memo(
           record={record}
           locale={locale}
           onRedirectToRecord={() => {}}
-          position={key}
         />
       ));
     }
 
-    return records.map((record: NormalizedRecord, index: number) => {
-      const itemPosition = index - nextItemToAddPosition;
-
+    return records.map((record: NormalizedRecord) => {
       return (
         <CommonRow
           placeholder={false}
@@ -114,7 +110,6 @@ const CommonRows = React.memo(
           record={record}
           locale={locale}
           onRedirectToRecord={onRedirectToRecord}
-          position={itemPosition > 0 ? itemPosition : 0}
         />
       );
     });

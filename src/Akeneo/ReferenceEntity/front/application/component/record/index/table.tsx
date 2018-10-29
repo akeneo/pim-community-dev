@@ -1,5 +1,5 @@
 import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
-import ActionView from 'akeneoreferenceentity/application/component/record/index/action';
+import ActionViews from 'akeneoreferenceentity/application/component/record/index/action';
 import DetailsView from 'akeneoreferenceentity/application/component/record/index/detail';
 import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
@@ -57,7 +57,6 @@ interface TableProps extends TableState, TableDispatch {}
  * On the thrid one, you have all the actions of the record.
  */
 export default class Table extends React.Component<TableProps, {nextItemToAddPosition: number}> {
-  private timer: undefined | number;
   private needResize = false;
   private horizontalScrollContainer: React.RefObject<HTMLDivElement>;
   private verticalScrollContainer: React.RefObject<HTMLDivElement>;
@@ -145,7 +144,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
       const scrollPosition = horizontalScrollContainer.scrollTop;
       const containerSize = horizontalScrollContainer.offsetHeight;
       const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
-      if (remainingHeightToBottom < 5 * containerSize) {
+      if (remainingHeightToBottom < (scrollSize / 3)) {
         this.props.onNeedMoreResults();
       }
     }
@@ -219,7 +218,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
 
     return (
       <React.Fragment>
-        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} />
+        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250}/>
         {noResult ? (
           <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
         ) : (
@@ -285,17 +284,14 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
-                  {this.renderItems(
-                    grid.records,
-                    locale,
-                    grid.isLoading,
-                    onRedirectToRecord,
-                    onDeleteRecord,
-                    ActionView,
-                    [],
-                    {},
-                    recordCount
-                  )}
+                  <ActionViews
+                    records={grid.records}
+                    locale={locale}
+                    placeholder={placeholder}
+                    onRedirectToRecord={onRedirectToRecord}
+                    onDeleteRecord={onRedirectToRecord}
+                    recordCount={recordCount}
+                  />
                 </tbody>
               </table>
             </div>

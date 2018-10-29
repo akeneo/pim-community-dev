@@ -1,27 +1,27 @@
 import * as React from 'react';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
-import {RowView} from 'akeneoreferenceentity/application/component/record/index/table';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 const router = require('pim/router');
 
-const ActionView: RowView = React.memo(
+const memo = (React as any).memo;
+
+const ActionRow = memo(
   ({
     record,
-    isLoading = false,
+    placeholder = false,
     locale,
     onRedirectToRecord,
     onDeleteRecord,
   }: {
     record: NormalizedRecord;
     locale: string;
-    isLoading?: boolean;
-    position: number;
+    placeholder?: boolean;
   } & {
     onRedirectToRecord: (record: NormalizedRecord) => void;
     onDeleteRecord: (recordCode: RecordCode, label: string) => void;
   }) => {
-    if (true === isLoading) {
+    if (true === placeholder) {
       return (
         <tr>
           <td className="AknGrid-bodyCell">
@@ -44,7 +44,7 @@ const ActionView: RowView = React.memo(
 
     return (
       <tr
-        className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
+        className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${placeholder ? 'AknLoadingPlaceHolder' : ''}`}
         data-identifier={record.identifier}
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--action">
@@ -96,4 +96,59 @@ const ActionView: RowView = React.memo(
   }
 );
 
-export default ActionView;
+const ActionRows = memo(
+  ({
+    records,
+    locale,
+    placeholder,
+    onRedirectToRecord,
+    onDeleteRecord,
+    recordCount,
+  }: {
+    records: NormalizedRecord[];
+    locale: string;
+    placeholder: boolean;
+    onRedirectToRecord: (record: NormalizedRecord) => void;
+    onDeleteRecord: (recordCode: RecordCode, label: string) => void;
+    recordCount: number;
+  }) => {
+    if (placeholder) {
+      const record = {
+        identifier: '',
+        reference_entity_identifier: '',
+        code: '',
+        labels: {},
+        image: null,
+        values: [],
+      };
+
+      const placeholderCount = recordCount < 30 ? recordCount : 30;
+
+      return Array.from(Array(placeholderCount).keys()).map(key => (
+        <ActionRow
+          placeholder={true}
+          key={key}
+          record={record}
+          locale={locale}
+          onRedirectToRecord={() => {}}
+          onDeleteRecord={() => {}}
+        />
+      ));
+    }
+
+    return records.map((record: NormalizedRecord) => {
+      return (
+        <ActionRow
+          placeholder={false}
+          key={record.identifier}
+          record={record}
+          locale={locale}
+          onRedirectToRecord={onRedirectToRecord}
+          onDeleteRecord={onDeleteRecord}
+        />
+      );
+    });
+  }
+);
+
+export default ActionRows;

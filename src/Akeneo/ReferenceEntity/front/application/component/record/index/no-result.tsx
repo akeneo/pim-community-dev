@@ -1,7 +1,9 @@
 import __ from 'akeneoreferenceentity/tools/translator';
 import * as React from 'react';
 
-const NoResult = React.memo((entityLabel: string) => {
+const memo = (React as any).memo;
+
+const NoResult = memo((entityLabel: string) => {
   <div className="AknGridContainer-noData">
     <div className="AknGridContainer-noDataImage" />
     <div className="AknGridContainer-noDataTitle">

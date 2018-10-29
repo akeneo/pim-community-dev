@@ -3,14 +3,14 @@ import * as React from 'react';
 
 type Props = {
   value: string;
-  delay: number;
+  changeThreshold: number;
   onChange: (newValue: string) => void;
 };
 
 export default class SearchField extends React.Component<Props> {
   private timer = null;
   static defaultProps = {
-    delay: 250,
+    changeThreshold: 250,
   };
 
   /**
@@ -20,16 +20,14 @@ export default class SearchField extends React.Component<Props> {
   onSearchUpdated(event: React.ChangeEvent<HTMLInputElement>) {
     const userSearch = event.currentTarget.value;
     if (null !== this.timer) {
-      clearTimeout(this.timer);
+      clearTimeout(this.timer as any);
     }
     this.timer = setTimeout(() => {
       this.props.onChange(userSearch);
-    }, this.props.delay) as any;
+    }, this.props.changeThreshold) as any;
   }
 
   render() {
-    const {value, onChange} = this.props;
-
     return (
       <div className="AknFilterBox-searchContainer">
         <input
