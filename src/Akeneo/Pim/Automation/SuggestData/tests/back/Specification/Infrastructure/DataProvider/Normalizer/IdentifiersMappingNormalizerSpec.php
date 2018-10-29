@@ -20,6 +20,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @author Pierre Allard <pierre.allard@akeneo.com>
+ */
 class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 {
     public function it_is_subscription_collection(): void
@@ -68,14 +71,8 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $this->normalize($mapping)->shouldReturn(
             [
                 [
-                    'from' => ['id' => 'mpn'],
-                    'to' => [
-                        'id' => 'sku',
-                        'label' => [],
-                    ],
-                ],
-                [
                     'from' => ['id' => 'brand'],
+                    'status' => 'active',
                     'to' => [
                         'id' => 'brand_code',
                         'label' => [
@@ -83,6 +80,22 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
                             'en_US' => 'Brand',
                         ],
                     ],
+                ],
+                [
+                    'from' => ['id' => 'mpn'],
+                    'status' => 'active',
+                    'to' => [
+                        'id' => 'sku',
+                        'label' => [],
+                    ],
+                ],
+                [
+                    'from' => ['id' => 'upc'],
+                    'status' => 'inactive',
+                ],
+                [
+                    'from' => ['id' => 'asin'],
+                    'status' => 'inactive',
                 ],
             ]
         );

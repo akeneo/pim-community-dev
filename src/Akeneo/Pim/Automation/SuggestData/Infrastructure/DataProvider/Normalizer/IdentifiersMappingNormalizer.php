@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
-
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -12,6 +10,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normaliz
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 
@@ -30,6 +30,13 @@ class IdentifiersMappingNormalizer
     public function normalize(IdentifiersMapping $mapping): array
     {
         $normalizedMapping = [];
+        foreach (IdentifiersMapping::PIM_AI_IDENTIFIERS as $pimAiIdentifier) {
+            $normalizedMapping[$pimAiIdentifier] = [
+                'from' => ['id' => $pimAiIdentifier],
+                'status' => 'inactive',
+            ];
+        }
+
         foreach ($mapping->getIdentifiers() as $identifier => $attribute) {
             if (null !== $attribute) {
                 $labels = [];
@@ -40,16 +47,14 @@ class IdentifiersMappingNormalizer
                     }
                 }
 
-                $normalizedMapping[] = [
-                    'from' => ['id' => $identifier],
-                    'to' => [
-                        'id' => $attribute->getCode(),
-                        'label' => $labels,
-                    ],
+                $normalizedMapping[$identifier]['status'] = 'active';
+                $normalizedMapping[$identifier]['to'] = [
+                    'id' => $attribute->getCode(),
+                    'label' => $labels,
                 ];
             }
         }
 
-        return $normalizedMapping;
+        return array_values($normalizedMapping);
     }
 }
