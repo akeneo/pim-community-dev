@@ -12,6 +12,10 @@
 
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
+## PHP Version
+
+Akeneo PIM v3.0 is now using PHP 7.2.
+
 ## The main changes of the 3.0 version
 
 Main changes of the 3.0 are related to the code organization. In order to help the product team grow and delivery more features, we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
@@ -153,6 +157,35 @@ TODO: change the link!!
 
     Or you can follow the detailed list of changes:
     
+        
+    * The configuration file `pim.yml` is not located in the *PimEnrichBundle* anymore:
+
+        v2.x
+        ```
+        imports:
+            - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
+        ```
+
+        v3.0
+        ```
+        imports:
+            - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
+        ```    
+    
+    * The translator now expects the language `en_US`:
+
+        v2.x
+        ```
+        framework:
+            translator:      { fallback: en }
+        ```
+
+        v3.0
+        ```
+        framework:
+            translator:      { fallback: en_US }
+        ```
+             
     * The reference data configuration has been moved in the Pim Structure. Therefore, you must update your reference data configuration. 
     The key `pim_reference_data` is replaced by `akeneo_pim_structure.reference_data`:
 
@@ -180,50 +213,8 @@ TODO: change the link!!
                     type: simple
         ```
 
-    * The key `pim_enrich.record_mails` has been replaced by `pim_import_export.record_mails`:
-
-        v2.x
-        ```
-        pim_enrich:
-            record_mails: true
-        ```
-
-        v3.0
-        ```
-        pim_import_export:
-            record_mails: true
-        ```
-
     * The key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed.
 
-    * The translator now expects the language `en_US`:
-
-        v2.x
-        ```
-        framework:
-            translator:      { fallback: en }
-        ```
-
-        v3.0
-        ```
-        framework:
-            translator:      { fallback: en_US }
-        ```
-    
-    * The configuration file `pim.yml` is not located in the *PimEnrichBundle* anymore:
-
-        v2.x
-        ```
-        imports:
-            - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
-        ```
-
-        v3.0
-        ```
-        imports:
-            - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
-        ```    
-    
 4. Update your **app/config/routing.yml**
 
     Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
@@ -276,6 +267,26 @@ TODO: change the link!!
                 template:    PimUIBundle::index.html.twig
                 _controller: FrameworkBundle:Template:template
         ```
+
+5. Update your **app/config/security.yml**:
+
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+
+    * The following have been updated:
+    
+    The parameter `security.encoders` has moved from
+     
+    ```yaml
+    encoders:
+        Pim\Bundle\UserBundle\Entity\User: sha512
+    ```
+    
+    to
+    
+    ```yaml
+    encoders:
+        Akeneo\UserManagement\Component\Model\User: sha512
+    ```
         
 5. Update your **app/AppKernel.php**:
 
