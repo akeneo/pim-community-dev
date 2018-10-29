@@ -1,7 +1,6 @@
 No products to remove: Aucun produit à supprimer
 "dot (.)": point (.)
 "comma (,)": virgule (,)
-
 pim_enrich:
   category:
     tab:
@@ -10,7 +9,6 @@ pim_enrich:
     suggest_selection: Veuillez sélectionner une catégorie à gauche
     or: ou
     create_new: Créer une nouvelle catégorie
-
   mass_edit_action:
     limit_exceeded: Veuillez sélectionner moins de %limit% éléments à modifier
     product:
@@ -24,7 +22,6 @@ pim_enrich:
         second: Choisir une opération
         third: Configurer
         fourth: Confirmer
-
     change-status:
       label: Changer le statut
       description: Les produits sélectionnés vont être activés ou désactivés.
@@ -74,7 +71,8 @@ pim_enrich:
     mass_action:
       quick_export:
         launched_flash: L'export des produits est en cours
-
 category:
   edit: Édition de la catégorie
   overview: Catégories
+tree:
+  edit: Editer l'arbre

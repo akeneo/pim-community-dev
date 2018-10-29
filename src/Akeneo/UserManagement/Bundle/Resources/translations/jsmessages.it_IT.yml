@@ -3,23 +3,40 @@ pim_title:
   pim_user_role_index: Ruoli
   pim_user_group_index: Gruppi degli utenti
   oro_config_configuration_system: Configurazione
+  pim_user_view: 'Utente {{ username }} | Visualizza'
+  pim_user_update: 'Utente {{ username }} | Modifica'
+  pim_user_create: 'Utenti | Crea'
+  pim_user_profile_view: '{{ username }}'
+  pim_user_profile_update: '{{ username }} | Modifica'
+  pim_user_role_update: 'Ruolo {{ role }} | Modifica'
+  pim_user_role_create: 'Ruolo | Crea'
   pim_user_security_login: Login
+  pim_user_reset_reset: Reimposta password
   pim_user_reset_request: Password Dimenticata
+  pim_user_reset_check_email: Reimpostazione password | Controllo Email
+  pim_user_group_create: 'Gruppi | Crea'
+  pim_user_group_update: 'Gruppo {{ group }} | Modifica'
 pim_user_management:
   entity:
     user:
+      page_title:
+        index: "]-Inf, 1] {{ count }} utente|]1, Inf [{{ count }} utenti"
       module:
         create:
           button: Crea utente
         delete:
           confirm: Sei sicuro di voler eliminare questo utente?
     role:
+      page_title:
+        index: "]-Inf, 1] {{ count }} ruolo|]1, Inf [{{ count }} ruoli"
       module:
         create:
           button: Crea Ruolo
         delete:
           confirm: Sei sicuro di voler eliminare questo ruolo?
     group:
+      page_title:
+        index: "]-Inf, 1] {{ count }} gruppo|]1, Inf [{{ count }} gruppi"
       module:
         create:
           button: Crea gruppo

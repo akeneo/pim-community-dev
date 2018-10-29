@@ -106,7 +106,208 @@ oro_config:
           label: Abilita i messaggi di caricamento
         loading_messages:
           label: Messaggi di caricamento disponibili
+pim_ui:
+  flash:
+    unsaved_changes: 'Hai delle modifiche non salvate, sei sicuro di voler abbandonare?'
 "Sorry, page was not loaded correctly": "Spiacenti, la pagina non è stata caricata correttamente"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Le modifiche effettuate andranno perse. Sei sicuro di voler aggiornare la pagina?"
 "navigation.message.content.outdated": "Il contenuto della pagina {{ title }} non è aggiornato, prego <a href='#' data-action='page-refresh'>refresh the page</a>"
 "Content of pinned page is outdated": "Il contenuto della pagina bloccata è scaduto"
+pim_common:
+  actions: Azioni
+  add: Aggiungi
+  add_attributes: Aggiungi attributi
+  after: Dopo
+  all: Tutti
+  and: e
+  apply: Applica
+  before: Prima
+  by: da
+  cancel: Annulla
+  code: Codice
+  confirm: Conferma
+  confirm_deletion: Conferma cancellazione
+  create: Crea
+  created: Creato
+  delete: Eliminare
+  done: Completato
+  edit: Modifica
+  entity_updated: Ci sono modifiche non salvate.
+  from: Da
+  general_properties: Proprietà generali
+  history: Cronologia
+  label: Etichetta
+  label_translations: Traduzioni etichetta
+  less_than: Meno di
+  loading: Caricamento in corso...
+  more_than: Più di
+  next: Successivo
+  "no": "No"
+  none: Nessun
+  not_available: N/A
+  now: Ora
+  ok: Ok
+  permissions: Autorizzazioni
+  previous: Precedente
+  properties: Proprietà
+  required_label: (obbligatorio)
+  save: Salva
+  select2:
+    search: Ricerca...
+    no_match: Nessuna corrispondenza trovata
+    load_more: Carica ulteriori risultati...
+  status: Stato
+  to: A
+  type: Tipo
+  update: Carica
+  "yes": "Sì"
+  operator: Operatore
+  operators:
+    "=": È uguale a
+    "!=": Non è uguale a
+    ">=": Maggiore o uguale a
+    ">": Maggiore di
+    "<=": Inferiore o uguale a
+    "<": Inferiore a
+    EMPTY: È vuoto
+    NOT EMPTY: Non è vuoto
+    CONTAINS: Contiene
+    DOES NOT CONTAIN: Non contiene
+    STARTS WITH: Inizia con
+    ENDS WITH: Termina con
+error:
+  exception: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
+  forbidden: Vietato. Non è consentito accedere a questa pagina
+alert:
+  attribute_option:
+    error_occured_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
+  session_storage:
+    not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Si è verificato un errore
+    update:
+      fail: Aggiornamento non riuscito
+      success: Aggiornamento completato
+    delete:
+      fail: Non è possibile eliminare questo articolo
+      success: Articolo rimosso con successo
+  module:
+    delete:
+      title: Elimina questo {{ itemName }}
+      alternative_title: Conferma rimozione
+      item: Sei sicuro di voler eliminare questo articolo?
+      item_placeholder: Sei sicuro di voler eliminare questo {{ itemName }}? Non è possibile annullare questa azione.
+    edit:
+      leave: Sei sicuro di voler lasciare questa pagina?
+      discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
+      discard_changes_title: Sei sicuro?
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: Connessione API creata correttamente
+    delete:
+      success: Connessione API revocata correttamente
+      fail: Non è possibile revocare questa connessione API
+  page_title:
+    index: "]-Inf, 1]{{ count }} connessione API|]1, Inf[{{ count }} Connesioni API"
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} operazione|]1, Inf[{{ count }} operazioni"
+  module:
+    create:
+      upload: Rilascia i tuoi file {{ type }} qui, o clicca per selezionare dal disco
+    download:
+      archive: Scarica archivio generato
+      output: Scarica file generati
+      input: Scarica file letti
+      invalid_xlsx: Scarica dati non validi
+      invalid_csv: Scarica dati non validi
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Gruppi di attributi
+  pim_enrich_attributegroup_create: Gruppi di attributo | Crea
+  pim_enrich_attributegroup_edit: Gruppo attributi {{ group.label }} | Modifica
+  pim_enrich_catalog_volume_index: Monitoraggio del volume di catalogo
+  pim_enrich_categorytree_index: Albero della categoria
+  pim_enrich_categorytree_create: Strutture di categoria | Crea
+  pim_enrich_categorytree_edit: Albero di categoria {{ category.label }} | Modifica
+  pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
+  pim_enrich_attribute_index: Attributi
+  pim_enrich_attribute_create: Attributi | Crea
+  pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
+  pim_enrich_product_index: Articoli
+  pim_enrich_product_edit: Prodotto {{ product.label }} | Modifica
+  pim_enrich_product_model_edit: Modello di prodotto {{ product.label }} | Modifica
+  pim_enrich_family_index: Famiglie
+  pim_enrich_family_edit: Famiglia {{ family.label }} | Modifica
+  pim_enrich_channel_index: Canali
+  pim_enrich_channel_create: Canali | Crea
+  pim_enrich_channel_edit: Canale {{ channel.label }} | Modifica
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Impostazioni locali
+  pim_enrich_group_index: Gruppi
+  pim_enrich_group_edit: Gruppo {{ group.label }} | Modifica
+  pim_enrich_associationtype_index: Tipi di associazione
+  pim_enrich_associationtype_edit: Tipo di associazione {{ association type.label }} | Modifica
+  pim_enrich_grouptype_index: Tipi di gruppo
+  pim_enrich_grouptype_edit: Tipo di gruppo {{ group type.label }} | Modifica
+  pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
+  pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
+  pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
+  pim_enrich_job_tracker_index: Tracker di processo
+  pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
+  pim_enrich_api_connection_index: Connessioni API
+  pim_enrich_api_connection_create: Connessione API | Crea
+  pim_enrich_mass_edit_action: Modifica di massa
+  pim_analytics_system_info_index: Informazioni di sistema
+pim_menu:
+  tab:
+    activity: Attività
+    imports: Importazioni
+    exports: Esportazioni
+    settings: Impostazioni
+    system: Sistema
+    help:
+      title: Aiuto
+      helper: Help Center Akeneo
+  item:
+    association_type: Tipi di associazione
+    attribute_group: Gruppi di attributi
+    channel: Canali
+    currency: Valute
+    dashboard: Dashboard
+    family: Famiglie
+    group: Gruppi
+    group_type: Tipi di gruppo
+    product_model: Modelli di prodotto
+    export_history: Cronologia esportazioni
+    export_profile: Profili di esportazione
+    import_history: Cronologia importazioni
+    import_profile: Profili di importazione
+    configuration: Configurazione
+    user_management: Gestione degli utenti
+    user: Utenti
+    user_group: Gruppi degli utenti
+    user_role: Ruoli
+    info: Informazioni di sistema
+    job_tracker: Tracker di processo
+    api_connection: Connessioni API
+    catalog_volume: Monitoraggio del volume di catalogo
+  navigation:
+    activity: Navigazione attività
+    system: Sistema
+    user: Gestione utenti
+    settings: Impostazioni
+    product: Navigazione prodotti
+    product_infos: Info prodotto
+  user:
+    logout: Disconnetti
+    user_account: Il mio profilo
+pim_notification:
+  types:
+    import: Importa
+    export: Esporta
+    quick_export: Esportazione rapida
+    mass_edit: Modifica di massa

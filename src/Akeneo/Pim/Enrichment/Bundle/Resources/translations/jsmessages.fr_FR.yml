@@ -26,46 +26,6 @@ pim_comment:
   placeholder:
     new: Ajouter un nouveau commentaire...
     reply: Répondre à ce commentaire...
-
-pim_datagrid:
-  mass_action_group:
-    bulk_actions:
-      label: Actions de masse
-    quick_export:
-      label: Export rapide
-  mass_action:
-    delete:
-      confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
-      success: Les produits sélectionnés ont été supprimés.
-      error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
-    quick_export:
-      csv_all: CSV (tous les attributs)
-      csv_grid_context: CSV (contexte de la grille)
-      xlsx_all: Excel (tous les attributs)
-      xlsx_grid_context: Excel (contexte de la grille)
-    mass_edit: Actions de masse
-    sequential_edit: Modification séquentielle
-    mass_delete: Suppression massive
-    selected:
-      family: familles sélectionnées
-      product: résultats sélectionnés
-  view_selector:
-    view: Vues
-  actions:
-    edit_product_attributes: Modifier les attributs du produit
-    classify_product: Classer le produit
-    delete_product: Supprimer le produit
-    change_status: Changer le statut
-    toggle_status: Changer le statut
-    other: Autres actions
-  empty_results:
-    associated_product:
-      hint: Il n’y a aucun produit associé
-      subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'
-  filters:
-    label: Filtres
-    system: Système
-
 pim_enrich.entity.product:
   label: produit
   uppercase_label: Produit
@@ -74,7 +34,7 @@ pim_enrich.entity.product:
     update:
       success: Le produit a bien été mis à jour.
       fail: Le produit n'a pas pu être mis à jour.
-      fields_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       file_upload: Une erreur s'est produite lors du transfert du fichier.
     delete:
@@ -176,7 +136,7 @@ pim_enrich.entity.product_model:
     update:
       success: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
       fail: Le modèle de produit n'a pas pu être mis à jour.
-      fields_not_ready: "Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
     delete:
       success: Le modèle de produit a bien été supprimé.
       fail: Impossible de supprimer ce modèle de produit
@@ -198,16 +158,15 @@ pim_enrich.entity.product_model:
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} produit variant|]1, Inf[{{ complete }} / {{ total }} produits variants"
     delete:
-      confirm: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
+      confirm: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
       confirm_for_products_and_product_models: Êtes-vous sûr(e) de vouloir supprimer les produits et modèles de produits sélectionnés ? Tous les enfants des modèles de produits seront aussi supprimés.
-
 pim_enrich.entity.group:
   label: Groupe
   flash:
     update:
       success: Groupe mis à jour avec succès.
       fail: Le groupe n'a pas pu être mis à jour.
-      fields_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      fields_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
     create:
       success: Groupe créé avec succès
     delete:
@@ -220,12 +179,10 @@ pim_enrich.entity.group:
       button: Créer un groupe
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
-
 pim_enrich.entity.category:
   label: catégorie
   uppercase_label: Catégorie
   plural_label: Catégories
-
 pim_enrich.export.product:
   data:
     title: Filtrer les produits
@@ -367,27 +324,44 @@ pim_enrich.mass_edit.product:
       label: Changer le parent de produits
       label_count: "{1}Changer le parent d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Changer le parent de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
-pim_enrich.mass_edit.family:
-  title: Action de masse sur les familles
-  confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
-  step:
-    select:
-      label: Choisir des familles
-    choose:
-      title: Actions de masse sur les familles
-      label_count: "]0, Inf[Sélectionnez votre action"
-    configure:
-      label: Configurer
-    confirm:
-      label: Confirmer
-    launched:
-      label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
-  operation:
-    set_requirements:
-      label: Configurer les exigences d'attributs
-      description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
-      label_count: "{1}Modifier les exigences d'attributs d'<span class=\"AknFullPage-title--highlight\">1 famille</span>|]1, Inf[Modifier les exigences d'attributes de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familles</span>"
-
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Actions de masse
+    quick_export:
+      label: Export rapide
+  mass_action:
+    delete:
+      confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
+      success: Les produits sélectionnés ont été supprimés.
+      error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
+    quick_export:
+      csv_all: CSV (tous les attributs)
+      csv_grid_context: CSV (contexte de la grille)
+      xlsx_all: Excel (tous les attributs)
+      xlsx_grid_context: Excel (contexte de la grille)
+    mass_edit: Actions de masse
+    sequential_edit: Modification séquentielle
+    mass_delete: Suppression massive
+    selected:
+      family: familles sélectionnées
+      product: résultats sélectionnés
+  view_selector:
+    view: Vues
+  actions:
+    edit_product_attributes: Modifier les attributs du produit
+    classify_product: Classer le produit
+    delete_product: Supprimer le produit
+    change_status: Changer le statut
+    toggle_status: Changer le statut
+    other: Autres actions
+  empty_results:
+    associated_product:
+      hint: Il n’y a aucun produit associé
+      subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'
+  filters:
+    label: Filtres
+    system: Système
 batch_jobs:
   add_association:
     label: Associer
@@ -441,7 +415,7 @@ batch_jobs:
   xlsx_product_grid_context_quick_export:
     quick_export.label: Exportation rapide de la grille de produits en XLSX
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
-    perform.label: Export rapide de la grille de produits en XLSX
+    perform.label: Exportation rapide de la grille de produits en XLSX
   xlsx_product_quick_export:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX

@@ -1,0 +1,161 @@
+pim_enrich.entity.family:
+  label: семейство
+  uppercase_label: Семейство
+  plural_label: Семейства
+  flash:
+    update:
+      fail: Произошла ошибка во время обновления семейства.
+    create:
+      success: Семейство успешно создано
+    delete:
+      success: Семейство успешно удалено
+      fail: Не удается удалить это семейство
+  property:
+    attribute_as_label: Атрибут используется в качестве метки
+    empty_attribute_as_image: Не выбран
+  module:
+    attributes:
+      not_required_label: Не обязательно
+      required_label: Обязательно
+    delete:
+      confirm: Вы действительно хотите удалить это семейство?
+pim_enrich.entity.family_variant:
+  short_label: Вариант
+  module:
+    edit:
+      variant_attributes: Разновидность атрибутов
+    create:
+      label: Добавить вариант
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Параметры
+  flash:
+    create:
+      success: Элемент в списке атрибута успешно создан
+      fail: Произошла ошибка при попытке создания элемента списка для атрибута
+    update:
+      fail: Не удается сохранить элемента списка атрибута
+    delete:
+      fail: При удалении элемента списка атрибута произошла ошибка
+  module:
+    edit:
+      cancel_title: Отмена изменений
+pim_enrich.entity.association_type:
+  label: тип ассоциации
+  flash:
+    create:
+      success: Тип ассоциации успешно создан
+    delete:
+      success: Тип ассоциации успешно удален
+      fail: Не удается удалить этот тип ассоциации
+  module:
+    delete:
+      confirm: Вы действительно хотите удалить этот тип ассоциации?
+pim_enrich.entity.group_type:
+  label: тип группы
+  flash:
+    update:
+      success: Тип группы успешно обновлён.
+      fail: Не удалось обновить тип группы.
+    create:
+      success: Тип группы успешно создан
+    delete:
+      success: Тип группы успешно удален
+      fail: Не удается удалить эту группу типов
+  module:
+    create:
+      button: Создать тип группы
+    delete:
+      confirm: Вы действительно хотите удалить эту группу типов?
+pim_enrich.entity.attribute:
+  label: атрибут
+  plural_label: Атрибуты
+  flash:
+    update:
+      success: Атрибут успешно обновлён.
+      fail: Не удалось обновить атрибут.
+    delete:
+      success: Атрибут успешно удален
+      fail: Не удается удалить этот атрибут
+  property:
+    allowed_extensions: Допустимые расширения
+    available_locales: Доступные локали
+    date_max: Макс. дата
+    date_min: Мин. дата
+    default_metric_unit:
+      label: Единица измерения по умолчанию
+      choose: Выберите единицу измерения
+    group:
+      label: Группа атрибутов
+      choose: Выберите группу атрибутов
+    is_locale_specific: Специфично для локали
+    max_characters: Максимум символов
+    max_file_size: Максимальный размер файла (МБ)
+    metric_family:
+      label: Семейство измерений
+      choose: Выберите семейство
+    name: Имя
+    negative_allowed: Допустимы отрицательные значения
+    number_max: Макс. число
+    number_min: Мин. число
+    reference_data_name:
+      choose: Выберите ссылочный тип данных
+    type:
+      choose: Выберите тип атрибута
+      pim_catalog_identifier: Идентификатор
+      pim_catalog_text: Текст
+      pim_catalog_textarea: Текстовая область
+      pim_catalog_number: Число
+      pim_catalog_price_collection: Цена
+      pim_catalog_multiselect: Множественный выбор
+      pim_catalog_simpleselect: Простой выбор
+      pim_catalog_file: Файл
+      pim_catalog_image: Изображение
+      pim_catalog_boolean: "Да/Нет"
+      pim_catalog_date: Дата
+      pim_catalog_metric: Метрическая
+      pim_reference_data_simpleselect: Простой раскрывающийся список справочныx данныx
+      pim_reference_data_multiselect: Множественный раскрывающийся список справочныx данныx
+    unique: Уникальное значение
+    useable_as_grid_filter: Используется в сетке
+    validation_regexp: Регулярное выражение
+    validation_rule:
+      label: Правило проверки
+      email: E-mail
+      regexp: Регулярное выражение
+      url: URL
+  module:
+    add_attribute:
+      no_available_attributes: Нет больше атрибутов для добавления
+      attributes_selected: "выбрано атрибутов: {{ itemsCount }}"
+    create:
+      button: Создать атрибут
+    edit:
+      common: Общие параметры
+      validation: Параметры проверки
+    delete:
+      confirm: Вы действительно хотите удалить этот атрибут?
+      confirm_from_group: Вы действительно хотите удалить атрибут {{ attribute }} из этой группы атрибутов?
+      confirm_from_product: Вы уверены, что хотите удалить этот атрибут из продукта?
+pim_enrich.entity.attribute_group:
+  label: группа атрибутов
+  uppercase_label: Группа атрибутов
+  plural_label: Группы атрибутов
+  flash:
+    update:
+      success: Группа атрибутов успешно обновлена
+      fail: Не удалось обновить группу атрибутов
+    delete:
+      success: Группа атрибутов успешно удалена
+  module:
+    add_attribute_group:
+      attributes_groups_selected: 'выбрано групп: {{ itemsCount }}'
+    delete:
+      confirm: Вы действительно хотите удалить эту группу атрибутов?
+pim_enrich.mass_edit.family:
+  step:
+    select:
+      label: Выберите семейства
+    configure:
+      label: Настройка
+    confirm:
+      label: Подтверждение

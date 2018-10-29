@@ -1,6 +1,9 @@
 pim_catalog_volume:
+  product_values: "Hai <span class=\"AknDescriptionHeader-title--highlight\">{{values}}</span> valori di prodotto nel tuo PIM! Mediamente sono <span class=\"AknDescriptionHeader-title--highlight\">{{average}}</span> valori di prodotto per ogni prodotto! 💪"
+  product_values_description: 'Più valori di prodotto hai, più valore ha il tuo PIM, più alto è il tuo ROI! Maggiori dettagli <a href="#" class="AknDescriptionHeader-link">qui</a>'
   section:
     product_values:
+      hint: Sapevi che il numero totale di valori di prodotto nel tuo PIM è direttamente collegato agli assi seguenti?<br/>Per maggiori dettagli, ti invitiamo a <a href="{{}}" target="_blank">leggere questo articolo</a>.
       title: Assi che influenzano il numero di valori di prodotto
     catalog_structure:
       hint: Potresti sapere che una buona struttura di catalogo è davvero importante ed è una condizione per un arricchimento efficiente. Qui sotto ci sono i vari assi per monitorare la struttura del tuo catalogo.
@@ -21,5 +24,6 @@ pim_catalog_volume:
     average_max_options_per_attribute: Opzioni per attributo
     count_categories: Categorie
     count_category_trees: Albero della categoria
+    count_variant_products: Prodotti varianti
     count_product_models: Modelli di prodotto
     warning: Wow! Hai raggiunto il record con questo asse! Non esitare a contattarci se hai bisogno di aiuto con questo tipo di volume.
