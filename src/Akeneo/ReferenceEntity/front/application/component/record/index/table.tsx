@@ -1,4 +1,4 @@
-import CommonRows from 'akeneoreferenceentity/application/component/record/index/common';
+import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
 import ActionView from 'akeneoreferenceentity/application/component/record/index/action';
 import DetailsView from 'akeneoreferenceentity/application/component/record/index/detail';
 import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
