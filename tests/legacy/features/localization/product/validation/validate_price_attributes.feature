@@ -28,7 +28,7 @@ Feature: Validate localized price attributes of a product
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of scopable price attribute
-    Given I change the "Prix" to "4,9 USD"
+    Given I change the "Prix" to "4,9 EUR"
     And I save the product
     Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
     And there should be 1 error in the "[other]" tab
@@ -40,7 +40,7 @@ Feature: Validate localized price attributes of a product
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number min constraint of scopable price attribute
-    Given I change the "Douane" to "9,9 USD"
+    Given I change the "Douane" to "9,9 EUR"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."
     And there should be 1 error in the "[other]" tab
@@ -52,7 +52,7 @@ Feature: Validate localized price attributes of a product
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number max constraint of scopable price attribute
-    Given I change the "Douane" to "222,2 USD"
+    Given I change the "Douane" to "222,2 EUR"
     And I save the product
     Then I should see validation tooltip "Cette valeur doit être inférieure ou égale à 100."
     And there should be 1 error in the "[other]" tab
