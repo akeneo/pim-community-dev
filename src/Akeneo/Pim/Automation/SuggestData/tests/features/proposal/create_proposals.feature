@@ -2,7 +2,7 @@
 Feature: Create proposals
   In order to automatically enrich my products
   As the System
-  I want to create proposals from PIM.ai suggested data
+  I want to create proposals from Franklin suggested data
 
   Scenario: Successfully create a proposal from valid suggested data
     Given the product "B00EYZY6AC" of the family "router"

@@ -78,9 +78,9 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @Given PIM.ai has not been configured
+     * @Given Franklin has not been configured
      */
-    public function pimAiHasNotBeenConfigured(): void
+    public function franklinHasNotBeenConfigured(): void
     {
         $configuration = $this->configurationRepository->find();
         Assert::assertInstanceOf(Configuration::class, $configuration);
@@ -88,9 +88,9 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @Given PIM.ai is configured with a valid token
+     * @Given Franklin is configured with a valid token
      */
-    public function pimAiIsConfiguredWithValidToken(): void
+    public function franklinIsConfiguredWithValidToken(): void
     {
         $configuration = new Configuration();
         $configuration->setToken(new Token(self::PIM_AI_VALID_TOKEN));
@@ -98,9 +98,9 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @Given PIM.ai is configured with an expired token
+     * @Given Franklin is configured with an expired token
      */
-    public function pimAiIsConfiguredWithAnExpiredToken(): void
+    public function franklinIsConfiguredWithAnExpiredToken(): void
     {
         $configuration = new Configuration();
         $configuration->setToken(new Token(self::PIM_AI_INVALID_TOKEN));
@@ -108,18 +108,18 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @When a system administrator configures PIM.ai using a valid token
+     * @When a system administrator configures Franklin using a valid token
      */
-    public function configuresPimAiUsingValidToken(): void
+    public function configuresFranklinUsingValidToken(): void
     {
         $command = new ActivateConnectionCommand(new Token(static::PIM_AI_VALID_TOKEN));
         $this->activateConnectionHandler->handle($command);
     }
 
     /**
-     * @When a system administrator configures PIM.ai using an invalid token
+     * @When a system administrator configures Franklin using an invalid token
      */
-    public function configuresPimAiUsingAnInvalidToken(): void
+    public function configuresFranklinUsingAnInvalidToken(): void
     {
         try {
             $command = new ActivateConnectionCommand(new Token(static::PIM_AI_INVALID_TOKEN));
@@ -132,7 +132,7 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @When a system administrator retrieves the PIM.ai configuration
+     * @When a system administrator retrieves the Franklin configuration
      */
     public function retrievesTheConfiguration(): void
     {
@@ -140,18 +140,18 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @Then PIM.ai is activated
+     * @Then Franklin is activated
      */
-    public function pimAiIsActivated(): void
+    public function franklinIsActivated(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertTrue($connectionStatus->isActive());
     }
 
     /**
-     * @Then PIM.ai is not activated
+     * @Then Franklin is not activated
      */
-    public function pimAiIsNotActivated(): void
+    public function franklinNotActivated(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertFalse($connectionStatus->isActive());
@@ -191,7 +191,7 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @Then PIM.ai valid token is retrieved
+     * @Then Franklin valid token is retrieved
      */
     public function aValidTokenIsRetrieved(): void
     {
@@ -199,7 +199,7 @@ final class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @Then PIM.ai expired token is retrieved
+     * @Then Franklin expired token is retrieved
      */
     public function anExpiredTokenIsRetrieved(): void
     {

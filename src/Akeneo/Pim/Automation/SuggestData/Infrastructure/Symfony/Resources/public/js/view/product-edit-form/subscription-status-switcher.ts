@@ -142,7 +142,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   }
 
   /**
-   * Subscribes the edited product to PIM.ai.
+   * Subscribes the edited product to Franklin.
    */
   private subscribeProduct(): void {
     // TODO: must use product identifier and not id
@@ -169,7 +169,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   }
 
   /**
-   * Unsubscribe the edited product to PIM.ai.
+   * Unsubscribe the edited product to Franklin.
    */
   private unsubscribeProduct(): void {
     $.ajax({

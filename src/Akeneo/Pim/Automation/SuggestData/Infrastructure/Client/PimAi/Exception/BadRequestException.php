@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptio
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 
 /**
- * Exception thrown when a request to PIM.ai fails because of invalid request parameters.
+ * Exception thrown when a request to Franklin fails because of invalid request parameters.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */

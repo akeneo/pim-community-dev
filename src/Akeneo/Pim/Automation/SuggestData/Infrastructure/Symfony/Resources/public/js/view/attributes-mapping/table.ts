@@ -57,7 +57,7 @@ interface Config {
 }
 
 /**
- * This module will allow user to map the attributes from PIM.ai to the catalog attributes.
+ * This module will allow user to map the attributes from Franklin to the catalog attributes.
  * It displays a grid with all the attributes to map.
  *
  * The attribute types authorized for the mapping are defined in

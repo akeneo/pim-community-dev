@@ -32,6 +32,6 @@ Feature: Fetch product subscription status
 
   Scenario: I retrieved the product subscription status for a product already subscribed
     Given the product "B00EYZY6AC" of the family "router"
-    And the product "B00EYZY6AC" is subscribed to PIM.ai
+    And the product "B00EYZY6AC" is subscribed to Franklin
     When I retrieve the product subscription status of the product "B00EYZY6AC"
     Then the product subscription status has subscribed product

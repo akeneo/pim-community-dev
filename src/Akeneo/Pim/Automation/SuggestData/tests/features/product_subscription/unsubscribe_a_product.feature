@@ -1,19 +1,19 @@
 @acceptance-back
-Feature: Unsubscribe a product to PIM.ai
+Feature: Unsubscribe a product to Franklin
   In order to manage the products I subscribed to
   As Julia
-  I want to unsubscribe a product to PIM.ai
+  I want to unsubscribe a product to Franklin
 
   @end-to-end @javascript
-  Scenario: Successfully unsubscribe a product to PIM.ai
+  Scenario: Successfully unsubscribe a product to Franklin
     Given the product "B00EYZY6AC" of the family "router"
-    And the product "B00EYZY6AC" is subscribed to PIM.ai
+    And the product "B00EYZY6AC" is subscribed to Franklin
     When I unsubscribe the product "B00EYZY6AC"
     Then the product "B00EYZY6AC" should not be subscribed
 
   Scenario: Failed to unsubscribe a product with an invalid token
     Given the product "B00EYZY6AC" of the family "router"
-    And the product "B00EYZY6AC" is subscribed to PIM.ai
-    And the PIM.ai token is expired
+    And the product "B00EYZY6AC" is subscribed to Franklin
+    And the Franklin token is expired
     When I unsubscribe the product "B00EYZY6AC"
     Then the product "B00EYZY6AC" should be subscribed

@@ -1,11 +1,11 @@
 @acceptance-back
-Feature: Map the PIM identifiers with PIM.ai identifiers
+Feature: Map the PIM identifiers with Franklin identifiers
   In order to automatically enrich my products
   As a system administrator
-  I want to map my PIM identifiers to the PIM.ai identifiers
+  I want to map my PIM identifiers to the Franklin identifiers
 
   Background:
-    Given PIM.ai is configured with a valid token
+    Given Franklin is configured with a valid token
 
   Scenario: Successfully retrieve the mapping for the display
     Given the predefined attributes pim_brand, MPN, EAN and ASIN
@@ -22,7 +22,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | upc         | ean            |       |        |
       | asin        | asin           | ASIN  | ASIN   |
 
-  Scenario: Successfully map PIM.ai attributes to PIM attributes for the first time
+  Scenario: Successfully map Franklin attributes to PIM attributes for the first time
     Given the predefined attributes pim_brand, MPN, EAN and ASIN
     And an empty identifiers mapping
     When the identifiers are mapped with valid values as follows:
@@ -59,7 +59,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | upc         | sku            | SKU   | UGS    |
       | asin        | identifier     |       |        |
 
-  Scenario Outline: Successfully map PIM.ai attributes with valid PIM attribute types
+  Scenario Outline: Successfully map Franklin attributes with valid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code  | type             |
@@ -78,7 +78,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | pim_catalog_identifier   |
       | pim_catalog_number       |
 
-  Scenario Outline: Fails to map PIM.ai attributes with invalid PIM attribute types
+  Scenario Outline: Fails to map Franklin attributes with invalid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code  | type             |
@@ -103,7 +103,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | pim_catalog_date                  |
       | akeneo_reference_entity_collection |
 
-  Scenario: Fails to map PIM.ai attribute with unexisting PIM attribute
+  Scenario: Fails to map Franklin attribute with unexisting PIM attribute
     Given an empty identifiers mapping
     When the identifiers are mapped with invalid values as follows:
       | pim_ai_code | attribute_code |

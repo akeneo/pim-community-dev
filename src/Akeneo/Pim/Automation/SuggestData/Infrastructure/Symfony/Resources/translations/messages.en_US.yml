@@ -3,7 +3,7 @@ akeneo_suggest_data:
         suggest_data:
             index: Suggest data
         pim_ai:
-            title: Manage connection to PIM.ai
+            title: Manage connection to Franklin
         settings.mapping: Map structure between your catalog and PIM.ai
     mapping_identifier:
         success: The mapping has been successfully saved
