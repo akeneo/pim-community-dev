@@ -151,7 +151,7 @@ final class PimAiConfigurationContext implements Context
     /**
      * @Then Franklin is not activated
      */
-    public function franklinNotActivated(): void
+    public function franklinIsNotActivated(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
         Assert::assertFalse($connectionStatus->isActive());
