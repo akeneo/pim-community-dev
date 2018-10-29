@@ -74,7 +74,7 @@ const DetailRows = memo(
     onRedirectToRecord,
     recordCount,
     columns,
-    cellViews
+    cellViews,
   }: {
     records: NormalizedRecord[];
     locale: string;
@@ -109,7 +109,6 @@ const DetailRows = memo(
       ));
     }
 
-    console.log('render details', records.length, recordCount, columns.length, cellViews.length);
     return records.map((record: NormalizedRecord) => {
       return (
         <DetailRow

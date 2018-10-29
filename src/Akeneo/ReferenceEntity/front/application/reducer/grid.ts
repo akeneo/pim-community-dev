@@ -34,7 +34,7 @@ class ConcreteQuery implements Query {
   readonly page: number;
   readonly size: number;
 
-  public constructor(columns: Column[] = [], filters: Filter[] = [], page: number = 0, size: number = 50) {
+  public constructor(columns: Column[] = [], filters: Filter[] = [], page: number = 0, size: number = 200) {
     this.columns = columns;
     this.filters = filters;
     this.page = page;
@@ -127,7 +127,6 @@ export default <Element>(
       state = {...state, query: {...state.query, filters: [...filters, filter]}};
       break;
     case 'GRID_STATE_UPDATED':
-      break;
     default:
       break;
   }

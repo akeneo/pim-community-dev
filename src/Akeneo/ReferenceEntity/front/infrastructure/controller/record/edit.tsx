@@ -56,9 +56,7 @@ class RecordEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <React.StrictMode>
-              <RecordView />
-            </React.StrictMode>
+            <RecordView />
           </Provider>,
           this.el
         );

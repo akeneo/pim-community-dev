@@ -31,9 +31,7 @@ class ReferenceEntityListController extends BaseController {
 
     ReactDOM.render(
       <Provider store={store}>
-        <React.StrictMode>
-          <ReferenceEntityView />
-        </React.StrictMode>
+        <ReferenceEntityView />
       </Provider>,
       this.el
     );

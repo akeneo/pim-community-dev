@@ -92,13 +92,7 @@ const CommonRows = memo(
       const placeholderCount = recordCount < 30 ? recordCount : 30;
 
       return Array.from(Array(placeholderCount).keys()).map(key => (
-        <CommonRow
-          placeholder={placeholder}
-          key={key}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={() => {}}
-        />
+        <CommonRow placeholder={placeholder} key={key} record={record} locale={locale} onRedirectToRecord={() => {}} />
       ));
     }
 

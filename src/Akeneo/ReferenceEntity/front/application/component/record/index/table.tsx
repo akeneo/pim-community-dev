@@ -1,6 +1,6 @@
 import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
-import ActionViews from 'akeneoreferenceentity/application/component/record/index/action';
-import DetailsView from 'akeneoreferenceentity/application/component/record/index/detail';
+import ActionViews from 'akeneoreferenceentity/application/component/record/index/row/action';
+import DetailsView from 'akeneoreferenceentity/application/component/record/index/row/detail';
 import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import * as React from 'react';
@@ -32,10 +32,14 @@ interface TableState {
 }
 
 const columnCollectionsAreDifferent = (firstCollumnCollection: Column[], secondColumnCollection: Column[]): boolean => {
-  return !(firstCollumnCollection.length === secondColumnCollection.length && firstCollumnCollection.reduce(
-    (allEqual: boolean, column: Column, index: number) => allEqual && column === secondColumnCollection[index]
-  , true));
-}
+  return !(
+    firstCollumnCollection.length === secondColumnCollection.length &&
+    firstCollumnCollection.reduce(
+      (allEqual: boolean, column: Column, index: number) => allEqual && column === secondColumnCollection[index],
+      true
+    )
+  );
+};
 
 export type RowView = React.SFC<{
   isLoading: boolean;
@@ -70,7 +74,6 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   private commonTable: React.RefObject<HTMLTableElement>;
   private actionTable: React.RefObject<HTMLTableElement>;
   private columns: Column[] = [];
-
 
   constructor(props: TableProps) {
     super(props);
@@ -144,16 +147,14 @@ export default class Table extends React.Component<TableProps, {columns: Column[
       const scrollPosition = horizontalScrollContainer.scrollTop;
       const containerSize = horizontalScrollContainer.offsetHeight;
       const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
-      if (remainingHeightToBottom < (scrollSize / 3)) {
+      if (remainingHeightToBottom < scrollSize / 3) {
         this.props.onNeedMoreResults();
       }
     }
   }
 
   getColumnsToDisplay(columns: Column[], channel: string, locale: string) {
-    const columnsToDisplay = columns.filter(
-      (column: Column) => column.channel === channel && column.locale === locale
-    );
+    const columnsToDisplay = columns.filter((column: Column) => column.channel === channel && column.locale === locale);
     if (columnCollectionsAreDifferent(columnsToDisplay, this.columns)) {
       this.columns = columnsToDisplay;
     }
@@ -171,7 +172,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
 
     return (
       <React.Fragment>
-        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250}/>
+        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
         {noResult ? (
           <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
         ) : (
