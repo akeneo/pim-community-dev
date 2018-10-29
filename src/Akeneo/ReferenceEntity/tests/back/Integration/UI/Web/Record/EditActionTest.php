@@ -255,9 +255,5 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
             ->create($portraitAttribute);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
     }
 }

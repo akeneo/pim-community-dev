@@ -104,3 +104,9 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
             - '@oro_security.security_facade'
+
+    akeneo_referenceentity.infrastructure.connector.action.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordForConnectorAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'

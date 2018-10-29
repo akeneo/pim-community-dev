@@ -75,6 +75,9 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordForConnectorByReferenceEntityAndCode
+
     # Attributes query functions
     akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists

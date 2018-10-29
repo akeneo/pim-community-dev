@@ -1,0 +1,11 @@
+services:
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_record_for_connector_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetRecordForConnectorContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+        tags:
+            - { name: fob.context_service }
+

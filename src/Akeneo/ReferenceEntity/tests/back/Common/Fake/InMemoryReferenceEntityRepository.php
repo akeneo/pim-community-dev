@@ -74,7 +74,7 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
         return count($this->referenceEntities);
     }
 
-    public function hasRecord(ReferenceEntityIdentifier $identifier): bool
+    public function hasReferenceEntity(ReferenceEntityIdentifier $identifier): bool
     {
         return isset($this->referenceEntities[(string) $identifier]);
     }

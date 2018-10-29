@@ -11,14 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\ReferenceEntity\Domain\Query\Connector;
+namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Connector\RecordForConnector;
-use Akeneo\ReferenceEntity\Domain\Query\Connector\ValueCollectionForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
 use PhpSpec\ObjectBehavior;
 
 class RecordForConnectorSpec extends ObjectBehavior
@@ -94,7 +92,7 @@ class RecordForConnectorSpec extends ObjectBehavior
                      ],
                  ]
              ],
-             'image' => null,
+             'main_image' => null,
          ]);
      }
 }

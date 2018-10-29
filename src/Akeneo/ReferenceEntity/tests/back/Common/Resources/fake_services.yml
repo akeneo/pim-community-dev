@@ -27,6 +27,9 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordForConnectorByReferenceEntityAndCode
+
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:
@@ -92,6 +95,15 @@ services:
             - '@oro_security.acl.annotation_provider'
             - '@oro_security.acl.object_identity_factory'
             - '@logger'
+
+    fos_oauth_server.security.authentication.listener:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
+
+    security.access_listener:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
+
+    cache.adapter.array:
+        class: Symfony\Component\Cache\Adapter\ArrayAdapter
 
     # Subscribers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:

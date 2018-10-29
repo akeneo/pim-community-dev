@@ -16,20 +16,19 @@ namespace Akeneo\ReferenceEntity\Common\Helper;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
- * This class is capable of generating an http client authenticated with the given user.
+ * Allows to generate an http client authenticated with the given user with Oauth.
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AuthenticatedClientFactory
+class OauthAuthenticatedClientFactory
 {
     /** @var UserRepositoryInterface */
     private $userRepository;
@@ -47,8 +46,10 @@ class AuthenticatedClientFactory
     {
         $user = $this->createUser($username);
         $client = $this->createClient();
-        $token = $this->getUserToken($user);
-        $this->createSession($client, $token);
+        $token = new OAuthToken($user->getRoles());
+        $client->getContainer()->get('security.token_storage')->setToken($token);
+
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer fake_token');
 
         return $client;
     }
@@ -69,20 +70,5 @@ class AuthenticatedClientFactory
         $client->followRedirects();
 
         return $client;
-    }
-
-    private function getUserToken(User $user): UsernamePasswordToken
-    {
-        return new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-    }
-
-    private function createSession(Client $client, TokenInterface $token): void
-    {
-        $session = $client->getContainer()->get('session');
-        $session->set('_security_main', serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $client->getCookieJar()->set($cookie);
     }
 }

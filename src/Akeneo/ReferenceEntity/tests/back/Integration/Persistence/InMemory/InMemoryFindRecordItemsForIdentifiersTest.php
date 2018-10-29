@@ -44,7 +44,7 @@ class InMemoryFindRecordItemsForIdentifiersTest extends TestCase
     /**
      * @test
      */
-    public function it_return_an_empty_list_of_records_if_indetifiers_are_not_matching()
+    public function it_return_an_empty_list_of_records_if_identifiers_are_not_matching()
     {
         $result = ($this->query)(['brand_kartell_fingerprint', 'brand_dyson_fingerprint']);
 

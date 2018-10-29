@@ -5,7 +5,6 @@ imports:
     - { resource: ../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/CatalogVolumeMonitoring/Resources/config/pim/queries.yml }
     - { resource: ../../tests/back/Asset/Acceptance/Resources/config/pim/queries.yml }
-    - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/pim/event_subscribers.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/fake_services.yml }
@@ -18,6 +17,11 @@ framework:
     csrf_protection: true
     profiler:
         collect: false
+
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.array
 
 swiftmailer:
     disable_delivery: true
