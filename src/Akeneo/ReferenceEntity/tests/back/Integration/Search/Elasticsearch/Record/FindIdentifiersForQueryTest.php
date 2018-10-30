@@ -54,7 +54,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 
         $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
         Assert::assertsame([
-            'identifiers' => ['brand_bangolufsen', 'brand_alessi', 'brand_kartell'],
+            'identifiers' => ['brand_kartell', 'brand_alessi', 'brand_bangolufsen'],
             'total' => 3
         ], $matchingidentifiers->normalize());
     }
@@ -87,7 +87,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
 
         $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
         Assert::assertsame([
-            'identifiers' => ['brand_bangolufsen', 'brand_alessi', 'brand_kartell'],
+            'identifiers' => ['brand_kartell', 'brand_alessi', 'brand_bangolufsen'],
             'total' => 3
         ], $matchingidentifiers->normalize());
     }
@@ -305,8 +305,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         ]);
 
         $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
-        Assert::assertsame([
-            'identifiers' => ['brand_alessi', 'brand_kartell'],
+        Assert::assertSame([
+            'identifiers' => ['brand_kartell', 'brand_alessi'],
             'total' => 2
         ], $matchingidentifiers->normalize());
     }

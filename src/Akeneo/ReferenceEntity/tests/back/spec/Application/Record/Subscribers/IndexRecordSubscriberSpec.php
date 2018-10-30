@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
+use Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexByReferenceEntityInBackgroundInterface;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
-use Akeneo\Tool\Component\Console\CommandLauncher;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -20,9 +19,11 @@ use PhpSpec\ObjectBehavior;
  */
 class IndexRecordSubscriberSpec extends ObjectBehavior
 {
-    function let(RecordIndexerInterface $recordIndexer, CommandLauncher $commandLauncher)
-    {
-        $this->beConstructedWith($recordIndexer, $commandLauncher);
+    function let(
+        RecordIndexerInterface $recordIndexer,
+        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
+    ) {
+        $this->beConstructedWith($recordIndexer, $indexByReferenceEntityInBackground);
     }
 
     function it_is_initializable()
@@ -46,15 +47,17 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
         $this->whenRecordUpdated(new RecordUpdatedEvent($recordIdentifier));
     }
 
-    function it_runs_a_reindexing_command_when_an_attribute_is_removed(CommandLauncher $commandLauncher)
-    {
+    function it_runs_a_reindexing_command_when_an_attribute_is_removed(
+        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
+    ) {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $this->whenAttributeIsDeleted(
             new AttributeDeletedEvent(
-                ReferenceEntityIdentifier::fromString('designer'),
+                $referenceEntityIdentifier,
                 AttributeIdentifier::fromString('name_designer_123')
             )
         );
-        $commandLauncher->executeBackground(IndexRecordsCommand::INDEX_RECORDS_COMMAND_NAME . ' designer');
+        $indexByReferenceEntityInBackground->execute($referenceEntityIdentifier)->shouldBeCalled();
     }
 }
 

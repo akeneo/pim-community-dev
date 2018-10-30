@@ -122,8 +122,8 @@ services:
         tags:
         - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.acceptance.context.reindex_records_context:
-        class: Akeneo\ReferenceEntity\Acceptance\Context\ReIndexRecordsContext
+    akeneo_referenceentity.tests.back.acceptance.context.index_records_context:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\IndexRecordsContext
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.application.record.index_records'

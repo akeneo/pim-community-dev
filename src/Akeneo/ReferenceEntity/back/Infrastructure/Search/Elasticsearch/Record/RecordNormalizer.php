@@ -65,7 +65,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
             self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
             self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
-            self::UPDATED_AT               => date_create('now')->format('Y-m-d'),
+            self::UPDATED_AT               => $this->now()
         ];
     }
 
@@ -83,7 +83,7 @@ class RecordNormalizer implements RecordNormalizerInterface
                 self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
                 self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
                 self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
-                self::UPDATED_AT               => date_create('now')->format('Y-m-d'),
+                self::UPDATED_AT               => $this->now()
             ];
         }
     }
@@ -149,5 +149,10 @@ class RecordNormalizer implements RecordNormalizerInterface
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
 
         return $cleanedData;
+    }
+
+    private function now(): int
+    {
+        return (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp();
     }
 }

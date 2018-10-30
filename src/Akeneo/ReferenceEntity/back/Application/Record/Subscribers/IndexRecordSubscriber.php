@@ -7,7 +7,6 @@ namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
-use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
