@@ -8,6 +8,7 @@
  */
 
 import * as _ from 'underscore';
+import AttributeMapping = require('./table');
 
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -27,11 +28,6 @@ interface Config {
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class FamilySelector extends BaseSelect {
-  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family */
-  private static readonly MAPPING_PENDING: number = 0;
-  private static readonly MAPPING_FULL: number = 1;
-  private static readonly MAPPING_EMPTY: number = 2;
-
   private readonly lineView = _.template(lineTemplate);
 
   constructor(config: { config: Config }) {
@@ -82,13 +78,13 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: { status: number }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
-      case FamilySelector.MAPPING_FULL:
+      case AttributeMapping.FAMILY_MAPPING_FULL:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
         break;
-      case FamilySelector.MAPPING_PENDING:
+      case AttributeMapping.FAMILY_MAPPING_PENDING:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
         break;
-      case FamilySelector.MAPPING_EMPTY:
+      case AttributeMapping.FAMILY_MAPPING_EMPTY:
       default:
         result.className = '';
     }

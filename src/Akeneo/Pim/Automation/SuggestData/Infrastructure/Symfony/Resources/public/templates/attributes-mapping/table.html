@@ -1,3 +1,6 @@
+<div class="AknFieldContainer AknFieldContainer-familyAttributeMapping <%- familyMappingStatus.className %>">
+    <%- __(familyMappingStatus.label) %>
+</div>
 <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
 <table class="AknGrid AknGrid--unclickable">
     <tr class="AknGrid-header">
@@ -6,10 +9,9 @@
         <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeMappingStatus %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
-        <tr
-                class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
-                data-pim-ai-attribute="<%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>"
-                data-status="<%- mapping[pim_ai_attribute_code].status %>"
+        <tr class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
+            data-pim-ai-attribute="<%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>"
+            data-status="<%- mapping[pim_ai_attribute_code].status %>"
         >
             <td class="AknGrid-bodyCell AknGrid-bodyCell--flex AknGrid-bodyCell--highlight searchable-value">
                 <%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>

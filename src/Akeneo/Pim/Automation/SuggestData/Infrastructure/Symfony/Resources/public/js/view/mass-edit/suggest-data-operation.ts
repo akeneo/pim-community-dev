@@ -45,7 +45,7 @@ class SuggestDataOperation extends Operation {
 
     return false;
   }
-  
+
   private readonly template: any = _.template(template);
   private readonly config: Config = {
     title: '',
