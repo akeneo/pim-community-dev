@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -23,12 +24,12 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
  */
 class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryInterface
 {
-    /** @var string[] */
-    private $identifiers = [];
+    /** @var Record[] */
+    private $records = [];
 
-    public function add(string $identifier): void
+    public function add(Record $record): void
     {
-        $this->identifiers[$identifier] = $identifier;
+        $this->records[] = $record;
     }
 
     /**
@@ -36,29 +37,47 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
      */
     public function __invoke(RecordQuery $query): IdentifiersForQueryResult
     {
-        $referenceEntityCode = $query->getFilter('reference_entity');
+        $referenceEntityFilter = $query->getFilter('reference_entity');
         $fullTextFilter = ($query->hasFilter('full_text')) ? $query->getFilter('full_text') : null;
         $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
 
-        $identifiers = array_values(array_filter($this->identifiers, function (string $identifier) use ($referenceEntityCode) {
-            return '' === $referenceEntityCode['value'] ||
-                false !== strpos($identifier, $referenceEntityCode['value']);
+        $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
+            return '' === $referenceEntityFilter['value']
+                || (string) $record->getReferenceEntityIdentifier() === $referenceEntityFilter['value'];
         }));
 
-        $identifiers = array_values(array_filter($identifiers, function (string $identifier) use ($fullTextFilter) {
-            return null === $fullTextFilter ||
-                '' === $fullTextFilter['value'] ||
-                false !== strpos($identifier, $fullTextFilter['value']);
+        $records = array_values(array_filter($records, function (Record $record) use ($fullTextFilter, $query) {
+            return null === $fullTextFilter
+                || '' === $fullTextFilter['value']
+                || false !== strpos((string) $record->getCode(), $fullTextFilter['value'])
+                || false !== strpos($record->getLabel($query->getLocale()), $fullTextFilter['value']);
         }));
 
-        $identifiers = array_values(array_filter($identifiers, function (string $identifier) use ($codeFilter) {
-            return null === $codeFilter ||
-                false === strpos($identifier, $codeFilter['value']);
+        $records = array_values(array_filter($records, function (Record $record) use ($codeFilter): bool {
+            if (null === $codeFilter) {
+                return true;
+            }
+
+            $codes = explode(',', $codeFilter['value']);
+
+            if ('NOT IN' === $codeFilter['operator']) {
+                return !in_array($record->getCode(), $codes);
+            }
+
+            if ('IN' === $codeFilter['operator']) {
+                return in_array($record->getCode(), $codes);
+            }
+
+            throw new \LogicException(
+                sprintf('Unknown operator %s for code filter', $codeFilter['operator'])
+            );
         }));
 
         $result = new IdentifiersForQueryResult();
-        $result->total = count($identifiers);
-        $result->identifiers = $identifiers;
+        $result->total = count($records);
+        $result->identifiers = array_map(function (Record $record): string {
+            return (string) $record->getIdentifier();
+        }, $records);
 
         return $result;
     }

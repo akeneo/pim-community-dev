@@ -278,6 +278,39 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         ], $matchingidentifiers->normalize());
     }
 
+    /**
+     * @test
+     */
+    public function code_in_filter()
+    {
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code',
+                    'operator' => 'IN',
+                    'value' => ['kartell', 'alessi'],
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_alessi', 'brand_kartell'],
+            'total' => 2
+        ], $matchingidentifiers->normalize());
+    }
+
     private function loadDataset()
     {
         // Those properties are not indexed

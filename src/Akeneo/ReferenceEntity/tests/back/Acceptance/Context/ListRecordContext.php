@@ -33,8 +33,8 @@ use PHPUnit\Framework\Assert;
  */
 final class ListRecordContext implements Context
 {
-    /** RecordItem[] */
-    private $result = [];
+    /** IdentifiersForQueryResult */
+    private $result;
 
     /** @var RecordRepositoryInterface */
     private $recordRepository;
@@ -95,13 +95,58 @@ final class ListRecordContext implements Context
     }
 
     /**
-     * @Then the search result should be :recordCodes
-    */
-    public function theSearchResultShouldBe($recordCodes)
+     * @When /^the user filters records by "([^"]+)" with operator "([^"]+)" and value "([^"]*)"$/
+     */
+    public function theUserFiltersRecordsByWithOperatorAndValue($filter, $operator, $value)
     {
-        array_map(function (RecordItem $recordItem) use ($recordCodes) {
-            Assert::assertContains($recordItem->code, explode(',', $recordCodes));
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => $filter,
+                    'operator' => $operator,
+                    'value' => $value,
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'designer',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $this->result = ($this->searchRecord)($query);
+    }
+
+    /**
+     * @Then the search result should be :recordCodes
+     */
+    public function theSearchResultShouldBe(string $expectedRecordCodes)
+    {
+        $expectedRecordCodes = explode(',', $expectedRecordCodes);
+        $resultCodes = array_map(function (RecordItem $recordItem): string {
+            return $recordItem->code;
         }, $this->result->items);
+
+        array_map(function (string $expectedRecordCode) use ($resultCodes) {
+            Assert::assertContains($expectedRecordCode, $resultCodes);
+        }, $expectedRecordCodes);
+
+        Assert::assertCount(count($expectedRecordCodes), $resultCodes, 'More results found than expected');
+    }
+
+    /**
+     * @Then /^there should be no result$/
+     */
+    public function thereShouldBeNoResult()
+    {
+        Assert::assertEquals(0, $this->result->total);
+        Assert::assertEmpty($this->result->items);
     }
 
     /**
@@ -148,6 +193,6 @@ final class ListRecordContext implements Context
         );
         $this->recordRepository->create($record);
 
-        $this->findIdentifiersForQuery->add((string) $identifier);
+        $this->findIdentifiersForQuery->add($record);
     }
 }
