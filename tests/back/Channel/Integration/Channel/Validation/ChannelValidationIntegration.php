@@ -1,11 +1,9 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Validation;
+namespace AkeneoTest\Pim\Channel\Integration\Channel\Validation;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
