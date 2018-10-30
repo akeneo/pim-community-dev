@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateProductModelIntegration extends AbstractProductModelTestCase
+class CreateProductModelEndToEnd extends AbstractProductModelTestCase
 {
     public function testSubProductModelCreation()
     {

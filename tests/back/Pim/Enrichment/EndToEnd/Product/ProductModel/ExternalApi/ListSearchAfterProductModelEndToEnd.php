@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
-class ListSearchAfterProductModelIntegration extends AbstractProductModelTestCase
+class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
 {
     /**
      * @group ce

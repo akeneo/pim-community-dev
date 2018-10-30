@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 
 class AbstractProductModelTestCase extends AbstractProductTestCase
 {

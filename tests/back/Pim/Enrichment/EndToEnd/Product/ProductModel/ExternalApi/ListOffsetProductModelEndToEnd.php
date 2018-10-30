@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class ListOffsetProductModelIntegration extends AbstractProductModelTestCase
+class ListOffsetProductModelEndToEnd extends AbstractProductModelTestCase
 {
     /**
      * @group ce

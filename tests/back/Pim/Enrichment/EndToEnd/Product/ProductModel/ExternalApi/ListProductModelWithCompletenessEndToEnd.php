@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -10,7 +10,7 @@ use Akeneo\Test\Integration\Configuration;
 /**
  * @group ce
  */
-class ListProductModelWithCompletenessIntegration extends AbstractProductModelTestCase
+class ListProductModelWithCompletenessEndToEnd extends AbstractProductModelTestCase
 {
     /**
      * {@inheritdoc}

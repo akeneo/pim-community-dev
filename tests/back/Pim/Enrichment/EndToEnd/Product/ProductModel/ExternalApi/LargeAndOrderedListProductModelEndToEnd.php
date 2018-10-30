@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\ExternalApi\AbstractProductTestCase;
 
-class LargeAndOrderedListProductModelIntegration extends AbstractProductTestCase
+class LargeAndOrderedListProductModelEndToEnd extends AbstractProductTestCase
 {
     /** @var ProductModelInterface[] */
     private $productModels;

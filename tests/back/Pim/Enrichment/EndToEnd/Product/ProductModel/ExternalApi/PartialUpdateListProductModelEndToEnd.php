@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
-use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListProductModelIntegration extends AbstractProductModelTestCase
+class PartialUpdateListProductModelEndToEnd extends AbstractProductModelTestCase
 {
     /**
      * {@inheritdoc}
