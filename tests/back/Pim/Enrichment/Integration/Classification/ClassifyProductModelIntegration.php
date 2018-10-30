@@ -2,8 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Classification;
 
-use Akeneo\Pim\Enrichment\Bundle\tests\fixture\EntityBuilder;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 
 class ClassifyProductModelIntegration extends TestCase
 {

@@ -1,19 +1,21 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\fixture;
+namespace AkeneoTest\Pim\Enrichment\Integration\Fixture;
+
+use AkeneoTest\Pim\Enrichment\Integration\Fixture;
 
 /**
  * Load variant product tree. Those fixtures are used to check the FilterCompletess filter for product and product model.
  */
 class CompletenessFilter
 {
-    /** @var EntityBuilder */
+    /** @var Fixture\EntityBuilder */
     private $entityBuilder;
 
     /**
      * @param EntityBuilder $entityBuilder
      */
-    public function __construct(EntityBuilder $entityBuilder)
+    public function __construct(Fixture\EntityBuilder $entityBuilder)
     {
         $this->entityBuilder = $entityBuilder;
     }

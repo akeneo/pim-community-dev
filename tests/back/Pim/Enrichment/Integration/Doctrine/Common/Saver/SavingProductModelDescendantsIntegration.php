@@ -2,10 +2,10 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Enrichment\Bundle\tests\fixture\EntityBuilder;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
-use Akeneo\Pim\Enrichment\Bundle\tests\assert\AssertEntityWithValues;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use AkeneoTest\Pim\Enrichment\Integration\Assert\AssertEntityWithValues;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
