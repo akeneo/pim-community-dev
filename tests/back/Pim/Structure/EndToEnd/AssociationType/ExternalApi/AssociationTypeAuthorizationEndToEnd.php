@@ -1,8 +1,7 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Security;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AssociationType\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AssociationTypeAuthorizationIntegration extends ApiTestCase
+class AssociationTypeAuthorizationEndToEnd extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {

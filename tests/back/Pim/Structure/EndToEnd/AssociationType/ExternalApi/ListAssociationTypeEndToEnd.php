@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\AssociationType;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AssociationType\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListAssociationTypeIntegration extends ApiTestCase
+class ListAssociationTypeEndToEnd extends ApiTestCase
 {
     public function testListAssociationTypes()
     {
