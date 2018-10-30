@@ -153,7 +153,7 @@ class SearchRecordIndexHelper
         foreach ($terms as $term) {
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_list_search.%s.%s', $channel, $locale),
+                    'default_field' => sprintf('record_full_text_search.%s.%s', $channel, $locale),
                     'query' => sprintf('*%s*', $term),
                 ],
             ];

@@ -59,7 +59,9 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     private function getElasticSearchQuery(RecordQuery $recordQuery): array
     {
         $referenceEntityCode = $recordQuery->getFilter('reference_entity');
-        $searchFilter = $recordQuery->getFilter('search');
+        $fullTextFilter = ($recordQuery->hasFilter('full_text')) ? $recordQuery->getFilter('full_text') : null;
+        $codeLabelFilter = ($recordQuery->hasFilter('code_label')) ? $recordQuery->getFilter('code_label') : null;
+        $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $query = [
             '_source' => '_id',
             'from' => $recordQuery->getSize() * $recordQuery->getPage(),
@@ -82,13 +84,31 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ],
         ];
 
-        if (!empty($searchFilter['value'])) {
-            $terms = $this->getTerms($searchFilter);
+        if (null !== $fullTextFilter && !empty($fullTextFilter['value'])) {
+            $terms = $this->getTerms($fullTextFilter);
             $query['query']['constant_score']['filter']['bool']['filter'][] = [
                 'query_string' => [
-                    'default_field' => sprintf('record_list_search.%s.%s', $recordQuery->getchannel(), $recordQuery->getlocale()),
+                    'default_field' => sprintf('record_full_text_search.%s.%s', $recordQuery->getchannel(), $recordQuery->getlocale()),
                     'query'         => $terms
                 ],
+            ];
+        }
+
+        if (null !== $codeLabelFilter && !empty($codeLabelFilter['value'])) {
+            $terms = $this->getTerms($codeLabelFilter);
+            $query['query']['constant_score']['filter']['bool']['filter'][] = [
+                'query_string' => [
+                    'default_field' => sprintf('record_code_label_search.%s', $recordQuery->getlocale()),
+                    'query'         => $terms
+                ],
+            ];
+        }
+
+        if (null !== $codeFilter && !empty($codeFilter['value']) && 'NOT IN' === $codeFilter['operator']) {
+            $query['query']['constant_score']['filter']['bool']['must_not'][] = [
+                'terms' => [
+                    'code' => $codeFilter['value']
+                ]
             ];
         }
 

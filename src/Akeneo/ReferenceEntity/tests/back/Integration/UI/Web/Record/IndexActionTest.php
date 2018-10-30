@@ -26,8 +26,6 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const RECORD_LIST_ROUTE = 'akeneo_reference_entities_record_index_rest';
-
     private const RESPONSES_DIR = 'Record/Search/';
 
     /** @var Client */
@@ -49,9 +47,17 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_a_list_of_records()
+    public function it_returns_a_list_of_records_with_full_text_search()
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_list_of_records_filtered_by_code_or_label()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'code_label_and_code_filtered.json');
     }
 
     /**
@@ -125,7 +131,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query');
 
-        $findIdentifiersForQuery->add('brand_coco_0134dc3e-3ref-4afr-85ef-e81b2d6e95fd');
+        $findIdentifiersForQuery->add('brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd');
         $findIdentifiersForQuery->add('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
         $findIdentifiersForQuery->add('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
     }

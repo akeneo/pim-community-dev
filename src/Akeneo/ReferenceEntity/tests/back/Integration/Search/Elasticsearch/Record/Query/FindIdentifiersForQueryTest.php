@@ -38,7 +38,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'search',
+                    'field' => 'full_text',
                     'operator' => '=',
                     'value' => '',
                     'context' => []
@@ -71,7 +71,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'search',
+                    'field' => 'full_text',
                     'operator' => '=',
                     'value' => 'year',
                     'context' => []
@@ -104,7 +104,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'search',
+                    'field' => 'full_text',
                     'operator' => '=',
                     'value' => 'experience senses',
                     'context' => []
@@ -137,9 +137,129 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'search',
+                    'field' => 'full_text',
                     'operator' => '=',
                     'value' => '"special senses"',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_bangolufsen'],
+            'total' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function code_label_filter()
+    {
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code_label',
+                    'operator' => '=',
+                    'value' => 'alessi',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ],
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_alessi'],
+            'total' => 1
+        ], $matchingidentifiers->normalize());
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'fr_FR',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code_label',
+                    'operator' => '=',
+                    'value' => 'Marcel Francais',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ],
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => ['brand_alessi'],
+            'total' => 1
+        ], $matchingidentifiers->normalize());
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code_label',
+                    'operator' => '=',
+                    'value' => 'Marcel Francais',
+                    'context' => []
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'brand',
+                    'context' => []
+                ],
+            ]
+        ]);
+
+        $matchingidentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertsame([
+            'identifiers' => [],
+            'total' => 0
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function code_not_in_filter()
+    {
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'code',
+                    'operator' => 'NOT IN',
+                    'value' => ['kartell', 'alessi'],
                     'context' => []
                 ],
                 [
@@ -166,9 +286,10 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         $kartellDesigner = 'Philippe Starck';
         $kartell = [
             'reference_entity_code' => 'brand',
-            'identifier'                  => 'brand_kartell',
+            'identifier'            => 'brand_kartell',
             'code' => $kartellCode,
-            'record_list_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
+            'record_code_label_search' => ['en_US' => $kartellCode . ' ' . $kartellDesigner],
+            'record_full_text_search'  => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
             'updated_at' => date_create('2018-01-01')->format('Y-m-d')
         ];
 
@@ -178,8 +299,13 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         $alessiDesigner = 'Marcel Wanders';
         $alessi = [
             'reference_entity_code' => 'brand',
-            'identifier'                  => 'brand_alessi',
-            'record_list_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
+            'identifier'            => 'brand_alessi',
+            'code' => $alessiCode,
+            'record_code_label_search' => [
+                'en_US' => $alessiCode . ' ' . $alessiDesigner,
+                'fr_FR' => $alessiCode . ' Marcel Francais',
+            ],
+            'record_full_text_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
             'updated_at' => date_create('2017-01-01')->format('Y-m-d')
         ];
 
@@ -195,14 +321,18 @@ TEXT;
         $bangolufsen = [
             'reference_entity_code' => 'brand',
             'identifier'            => 'brand_bangolufsen',
-            'record_list_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
+            'code' => $bangolufsenCode,
+            'record_code_label_search' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDesigner],
+            'record_full_text_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
             'updated_at' => date_create('2016-01-01')->format('Y-m-d')
         ];
 
         $wrongReferenceEntity = [
             'identifier'            => 'another_reference_entity',
             'reference_entity_code' => 'manufacturer',
-            'record_list_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
+            'code' => 'manu_code',
+            'record_code_label_search' => ['fr_FR' => 'wrong_reference'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
             'updated_at' => date_create('2010-01-01')->format('Y-m-d')
         ];
         $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongReferenceEntity]);

@@ -23,7 +23,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
         page: 0,
         filters: [
           {
-            field: 'search',
+            field: 'full_text',
             operator: '=',
             value: 's',
             context: {},
@@ -78,7 +78,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
         page: 0,
         filters: [
           {
-            field: 'search',
+            field: 'full_text',
             operator: '=',
             value: 'search',
             context: {},

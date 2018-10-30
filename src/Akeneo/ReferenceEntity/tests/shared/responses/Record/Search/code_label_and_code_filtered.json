@@ -12,9 +12,15 @@
             "page": 0,
             "filters": [
                 {
-                    "field": "full_text",
+                    "field": "code_label",
                     "operator": "=",
-                    "value": "",
+                    "value": "s",
+                    "context": {}
+                },
+                {
+                    "field": "code",
+                    "operator": "NOT IN",
+                    "value": "dyson",
                     "context": {}
                 },
                 {
@@ -31,17 +37,6 @@
         "body": {
             "items": [
                 {
-                    "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-                    "reference_entity_identifier": "designer",
-                    "code": "dyson",
-                    "labels": {
-                        "en_US": "Dyson",
-                        "fr_FR": "Dyson"
-                    },
-                    "image": null,
-                    "values": {}
-                },
-                {
                     "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
                     "reference_entity_identifier": "designer",
                     "code": "starck",
@@ -50,19 +45,9 @@
                     },
                     "image": null,
                     "values": {}
-                },
-                {
-                    "identifier": "designer_coco_34aee120-fa95-4ff2-8439-bea116120e34",
-                    "reference_entity_identifier": "designer",
-                    "code": "coco",
-                    "labels": {
-                        "en_US": "Coco Chanel"
-                    },
-                    "image": null,
-                    "values": {}
                 }
             ],
-            "total": 3
+            "total": 1
         }
     }
 }

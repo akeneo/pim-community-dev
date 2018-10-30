@@ -51,7 +51,7 @@ class ReferenceEntityEditController extends BaseController {
                 JSON.parse(sessionStorage.getItem(
                   `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
                 ) as string),
-                'search'
+                'full_text'
               ).value
             : '';
 
@@ -65,7 +65,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
-        this.store.dispatch(updateFilter('search', '=', userSearch));
+        this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(updateRecordResults());
         this.store.dispatch(updateAttributeList() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));

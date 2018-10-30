@@ -36,7 +36,7 @@ export const needMoreResults = () => (dispatch: any, getState: any) => {
 };
 
 export const searchUpdated = (searchInput: string) => (dispatch: any) => {
-  dispatch(updateFilter('search', '=', searchInput));
+  dispatch(updateFilter('full_text', '=', searchInput));
   dispatch(updateRecordResults(false));
   dispatch(gridStateUpdated());
 };

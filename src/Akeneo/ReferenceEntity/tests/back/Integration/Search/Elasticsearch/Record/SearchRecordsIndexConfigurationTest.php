@@ -160,7 +160,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
             'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_kartell',
             'code' => $kartellCode,
-            'record_list_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
+            'record_full_text_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
             'updated_at' => date_create('2018-01-01')->format('Y-m-d')
         ];
 
@@ -171,7 +171,7 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
         $alessi = [
             'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_alessi',
-            'record_list_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
+            'record_full_text_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
             'updated_at' => date_create('2017-01-01')->format('Y-m-d')
         ];
 
@@ -186,14 +186,14 @@ TEXT;
         $bangolufsen = [
             'reference_entity_code' => 'brand',
             'identifier'            => 'brand_bangolufsen',
-            'record_list_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
+            'record_full_text_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
             'updated_at' => date_create('2016-01-01')->format('Y-m-d')
         ];
 
         $wrongReferenceEntity = [
             'identifier'            => 'another_reference_entity',
             'reference_entity_code' => 'manufacturer',
-            'record_list_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
             'updated_at' => date_create('2010-01-01')->format('Y-m-d')
         ];
         $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongReferenceEntity]);

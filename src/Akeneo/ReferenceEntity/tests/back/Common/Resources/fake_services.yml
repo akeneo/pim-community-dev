@@ -85,7 +85,7 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersForQuery
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
 
     # Third party services
     oro_security.security_facade:

@@ -78,7 +78,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
         $normalizedRecord['code']->shouldBeEqualTo('stark');
         $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
-        $normalizedRecord['record_list_search']->shouldBeEqualTo([
+        $normalizedRecord['record_full_text_search']->shouldBeEqualTo([
                 'ecommerce' => [
                     'fr_FR' => "stark Philippe Stark Bio",
                 ],

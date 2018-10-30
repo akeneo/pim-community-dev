@@ -26,8 +26,9 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const IDENTIFIER = 'identifier';
     private const CODE = 'code';
     private const REFERENCE_ENTITY_CODE = 'reference_entity_code';
-    private const RECORD_LIST_SEARCH = 'record_list_search';
+    private const RECORD_FULL_TEXT_SEARCH = 'record_full_text_search';
     private const UPDATED_AT = 'updated_at';
+    private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
 
     /** @var SqlFindActivatedLocalesPerChannels */
     private $findActivatedLocalesPerChannels;
@@ -56,14 +57,16 @@ class RecordNormalizer implements RecordNormalizerInterface
         }
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier);
         $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
-        $filledMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
+        $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
+        $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
 
         return [
-            self::IDENTIFIER            => $searchableRecordItem->identifier,
-            self::CODE                  => $searchableRecordItem->code,
-            self::REFERENCE_ENTITY_CODE => $searchableRecordItem->referenceEntityIdentifier,
-            self::RECORD_LIST_SEARCH    => $filledMatrix,
-            self::UPDATED_AT            => date_create('now')->format('Y-m-d'),
+            self::IDENTIFIER               => $searchableRecordItem->identifier,
+            self::CODE                     => $searchableRecordItem->code,
+            self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
+            self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
+            self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
+            self::UPDATED_AT               => date_create('now')->format('Y-m-d'),
         ];
     }
 
@@ -72,14 +75,16 @@ class RecordNormalizer implements RecordNormalizerInterface
         $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
         $searchableRecordItems = $this->findSearchableRecords->byReferenceEntityIdentifier($referenceEntityIdentifier);
         foreach ($searchableRecordItems as $searchableRecordItem) {
-            $filledMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
+            $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
+            $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
 
             yield [
-                self::IDENTIFIER            => $searchableRecordItem->identifier,
-                self::CODE                  => $searchableRecordItem->code,
-                self::REFERENCE_ENTITY_CODE => $searchableRecordItem->referenceEntityIdentifier,
-                self::RECORD_LIST_SEARCH    => $filledMatrix,
-                self::UPDATED_AT            => date_create('now')->format('Y-m-d'),
+                self::IDENTIFIER               => $searchableRecordItem->identifier,
+                self::CODE                     => $searchableRecordItem->code,
+                self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
+                self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
+                self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
+                self::UPDATED_AT               => date_create('now')->format('Y-m-d'),
             ];
         }
     }
@@ -97,6 +102,17 @@ class RecordNormalizer implements RecordNormalizerInterface
                 )->normalize();
                 $matrix[$channelCode][$localeCode] = array_flip($valueKeys);
             }
+        }
+
+        return $matrix;
+    }
+
+    private function createCodeLabelMatrix(SearchableRecordItem $searchableRecordItem): array
+    {
+        $matrix = [];
+
+        foreach ($searchableRecordItem->labels as $localeCode => $label) {
+            $matrix[$localeCode] = sprintf('%s %s', $searchableRecordItem->code, $label);
         }
 
         return $matrix;
@@ -129,6 +145,10 @@ class RecordNormalizer implements RecordNormalizerInterface
             $valuesToIndex
         );
 
-        return implode(' ', $dataToIndex);
+        $stringToIndex = implode(' ', $dataToIndex);
+        $cleanedData = str_replace(["\r", "\n"], " ", $stringToIndex);
+        $cleanedData = strip_tags(html_entity_decode($cleanedData));
+
+        return $cleanedData;
     }
 }

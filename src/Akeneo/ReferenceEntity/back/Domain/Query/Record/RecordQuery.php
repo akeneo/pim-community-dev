@@ -97,6 +97,17 @@ class RecordQuery
         return $filter;
     }
 
+    public function hasFilter(string $field): bool
+    {
+        foreach ($this->filters as $filter) {
+            if ($filter['field'] === $field) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getSize(): int
     {
         return $this->size;

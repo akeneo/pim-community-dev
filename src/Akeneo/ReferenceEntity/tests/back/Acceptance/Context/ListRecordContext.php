@@ -77,7 +77,7 @@ final class ListRecordContext implements Context
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'search',
+                    'field' => 'full_text',
                     'operator' => '=',
                     'value' => $searchInput,
                     'context' => []
@@ -116,7 +116,7 @@ final class ListRecordContext implements Context
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'search',
+                    'field' => 'full_text',
                     'operator' => '=',
                     'value' => '',
                     'context' => []

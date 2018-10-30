@@ -209,7 +209,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     const columnsToDisplay = grid.columns.filter(
       (column: Column) => column.channel === channel && column.locale === locale
     );
-    const userSearch = getFilter(grid.filters, 'search').value;
+    const userSearch = getFilter(grid.filters, 'full_text').value;
 
     return (
       <React.Fragment>
