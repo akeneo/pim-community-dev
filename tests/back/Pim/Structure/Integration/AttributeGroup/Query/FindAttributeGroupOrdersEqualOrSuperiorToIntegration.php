@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\tests\Integration\Doctrine\Query;
+namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Query;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Test\Integration\TestCase;
