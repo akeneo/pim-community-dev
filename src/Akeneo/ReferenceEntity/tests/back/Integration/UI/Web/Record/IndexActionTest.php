@@ -63,6 +63,14 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_a_list_of_records_filtered_by_code_inclusive()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'code_filtered.json');
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_empty_list()
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'no_result.json');
