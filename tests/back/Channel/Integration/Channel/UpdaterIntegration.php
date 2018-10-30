@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Channel\Component\tests\integration\Channel;
+namespace AkeneoTest\Pim\Channel\Integration\Channel;
 
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\TestCase;
