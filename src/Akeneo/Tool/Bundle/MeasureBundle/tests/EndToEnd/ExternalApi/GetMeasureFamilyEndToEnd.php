@@ -5,7 +5,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\tests\EndToEnd\ExternalApi;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetMeasureFamilyIntegration extends ApiTestCase
+class GetMeasureFamilyEndToEnd extends ApiTestCase
 {
     public function testGetAMeasureFamily()
     {
