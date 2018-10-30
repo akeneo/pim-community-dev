@@ -44,7 +44,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Ide
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 
 /**
- * PIM.ai implementation to connect to a data provider.
+ * Franklin implementation to connect to a data provider.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

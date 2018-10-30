@@ -25,7 +25,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_is_a_product_subscription_status(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, false);
 
         $this->beAnInstanceOf(ProductSubscriptionStatus::class);
     }
@@ -33,7 +33,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_indicates_that_product_is_subscribed(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, false);
 
         $this->isSubscribed()->shouldReturn(true);
     }
@@ -41,7 +41,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_indicates_that_product_is_not_subscribed(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, false, true, true);
+        $this->beConstructedWith($connectionStatus, false, true, true, false);
 
         $this->isSubscribed()->shouldReturn(false);
     }
@@ -49,7 +49,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_has_a_connection_status(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, false);
 
         $this->getConnectionStatus()->shouldReturn($connectionStatus);
     }
@@ -57,7 +57,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_indicates_that_product_has_family(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, false);
 
         $this->hasFamily()->shouldReturn(true);
     }
@@ -65,7 +65,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_indicates_that_product_has_not_family(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, false, true);
+        $this->beConstructedWith($connectionStatus, true, false, true, false);
 
         $this->hasFamily()->shouldReturn(false);
     }
@@ -73,7 +73,7 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_indicates_that_product_has_identifiers_mapping_filled(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, false);
 
         $this->isMappingFilled()->shouldReturn(true);
     }
@@ -81,8 +81,24 @@ class ProductSubscriptionStatusSpec extends ObjectBehavior
     public function it_indicates_that_product_has_not_identifiers_mapping_filled(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $this->beConstructedWith($connectionStatus, true, true, false);
+        $this->beConstructedWith($connectionStatus, true, true, false, false);
 
         $this->isMappingFilled()->shouldReturn(false);
+    }
+
+    public function it_indicates_that_product_is_variant(): void
+    {
+        $connectionStatus = new ConnectionStatus(true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, true);
+
+        $this->isProductVariant()->shouldReturn(true);
+    }
+
+    public function it_indicates_that_product_is_not_a_variant(): void
+    {
+        $connectionStatus = new ConnectionStatus(true, true);
+        $this->beConstructedWith($connectionStatus, true, true, true, false);
+
+        $this->isProductVariant()->shouldReturn(false);
     }
 }

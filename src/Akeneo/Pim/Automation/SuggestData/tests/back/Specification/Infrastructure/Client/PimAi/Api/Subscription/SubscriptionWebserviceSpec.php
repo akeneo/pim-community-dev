@@ -191,7 +191,7 @@ JSON;
 
         $this
             ->shouldThrow(
-                new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe.')
+                new InsufficientCreditsException('Not enough credits on Franklin to subscribe.')
             )
             ->during('fetchProducts', ['/my/uri']);
     }
@@ -207,7 +207,7 @@ JSON;
 
         $this
             ->shouldThrow(
-                new InvalidTokenException('The PIM.ai token is missing or invalid.')
+                new InvalidTokenException('The Franklin token is missing or invalid.')
             )
             ->during('fetchProducts', ['/my/uri']);
     }

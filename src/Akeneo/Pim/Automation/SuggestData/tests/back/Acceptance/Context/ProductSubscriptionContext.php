@@ -74,13 +74,13 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @When I subscribe the product :identifier to PIM.ai
+     * @When I subscribe the product :identifier to Franklin
      *
      * @param string $identifier
      */
-    public function iSubscribeTheProductToPimAi(string $identifier): void
+    public function iSubscribeTheProductToFranklin(string $identifier): void
     {
-        $this->subscribeProductToPimAi($identifier, false);
+        $this->subscribeProductToFranklin($identifier, false);
     }
 
     /**
@@ -103,16 +103,16 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Given the following product subscribed to pim.ai:
+     * @Given the following product subscribed to Franklin:
      *
      * @param TableNode $table
      */
-    public function theFollowingProductSubscribedToPimAi(TableNode $table): void
+    public function theFollowingProductSubscribedToFranklin(TableNode $table): void
     {
         $this->dataFixturesContext->theFollowingProduct($table);
 
         foreach ($table->getHash() as $productRow) {
-            $this->subscribeProductToPimAi($productRow['identifier'], true);
+            $this->subscribeProductToFranklin($productRow['identifier'], true);
         }
     }
 
@@ -136,7 +136,7 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Given the PIM.ai token is expired
+     * @Given the Franklin token is expired
      */
     public function theTokenIsExpired(): void
     {
@@ -144,7 +144,7 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Given there are no more credits on my PIM.ai account
+     * @Given there are no more credits on my Franklin account
      */
     public function thereAreNoMoreCreditsOnMyAccount(): void
     {
@@ -168,7 +168,7 @@ class ProductSubscriptionContext implements Context
      * @param string $identifier
      * @param bool $throwExceptions
      */
-    private function subscribeProductToPimAi(string $identifier, bool $throwExceptions = false): void
+    private function subscribeProductToFranklin(string $identifier, bool $throwExceptions = false): void
     {
         $product = $this->findProduct($identifier);
         try {

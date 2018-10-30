@@ -22,7 +22,7 @@ final class ProductFetchingContext implements Context
 
     /**
      * @param FetchProductsHandler $fetchProductsHandler
-     * @param SubscriptionFake $subscriptionFake
+     * @param SubscriptionFake $subscriptionApi
      */
     public function __construct(
         FetchProductsHandler $fetchProductsHandler,
@@ -33,9 +33,9 @@ final class ProductFetchingContext implements Context
     }
 
     /**
-     * @When the subscribed products are fetched from PIM.ai
+     * @When the subscribed products are fetched from Franklin
      */
-    public function theProductsAreFetchedFromPimAi(): void
+    public function theProductsAreFetchedFromFranklin(): void
     {
         try {
             $this->fetchProductsHandler->handle(new FetchProductsCommand());

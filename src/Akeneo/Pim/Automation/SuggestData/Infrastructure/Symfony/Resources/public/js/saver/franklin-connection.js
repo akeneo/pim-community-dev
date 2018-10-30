@@ -10,7 +10,7 @@
 'use strict';
 
 /**
- * Saves the connection configuration to PIM.ai.
+ * Saves the connection configuration to Franklin.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */

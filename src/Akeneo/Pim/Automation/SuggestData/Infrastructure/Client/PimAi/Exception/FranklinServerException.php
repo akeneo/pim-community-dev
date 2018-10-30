@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptio
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 
 /**
- * Exception thrown when something went wrong on PIM.ai server side.
+ * Exception thrown when something went wrong on Franklin server side.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */

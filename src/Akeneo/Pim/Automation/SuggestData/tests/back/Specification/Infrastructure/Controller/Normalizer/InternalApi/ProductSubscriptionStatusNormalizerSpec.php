@@ -22,7 +22,13 @@ class ProductSubscriptionStatusNormalizerSpec extends ObjectBehavior
     public function it_normalizes_a_product_subscription_status(): void
     {
         $connectionStatus = new ConnectionStatus(true, true);
-        $productSubscriptionStatus = new ProductSubscriptionStatus($connectionStatus, true, true, true);
+        $productSubscriptionStatus = new ProductSubscriptionStatus(
+            $connectionStatus,
+            true,
+            true,
+            true,
+            true
+        );
 
         $this->normalize($productSubscriptionStatus)->shouldReturn([
             'isConnectionActive' => true,
@@ -30,10 +36,17 @@ class ProductSubscriptionStatusNormalizerSpec extends ObjectBehavior
             'isSubscribed' => true,
             'hasFamily' => true,
             'isMappingFilled' => true,
+            'isProductVariant' => true,
         ]);
 
         $connectionStatus = new ConnectionStatus(false, false);
-        $productSubscriptionStatus = new ProductSubscriptionStatus($connectionStatus, false, false, false);
+        $productSubscriptionStatus = new ProductSubscriptionStatus(
+            $connectionStatus,
+            false,
+            false,
+            false,
+            false
+        );
 
         $this->normalize($productSubscriptionStatus)->shouldReturn([
             'isConnectionActive' => false,
@@ -41,6 +54,7 @@ class ProductSubscriptionStatusNormalizerSpec extends ObjectBehavior
             'isSubscribed' => false,
             'hasFamily' => false,
             'isMappingFilled' => false,
+            'isProductVariant' => false,
         ]);
     }
 }

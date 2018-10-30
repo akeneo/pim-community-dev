@@ -82,6 +82,10 @@ class SubscriptionStatusSwitcher extends BaseView {
         return BaseView.prototype.render.apply(this);
       }
 
+      if (subscriptionStatus.isProductVariant) {
+        return BaseView.prototype.render.apply(this);
+      }
+
       if (!subscriptionStatus.isIdentifiersMappingValid) {
         isReadOnlyMode = true;
         errorMessage = 'akeneo_suggest_data.entity.product_subscription.module.product_edit_form.invalid_mapping';
@@ -142,7 +146,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   }
 
   /**
-   * Subscribes the edited product to PIM.ai.
+   * Subscribes the edited product to Franklin.
    */
   private subscribeProduct(): void {
     // TODO: must use product identifier and not id
@@ -169,7 +173,7 @@ class SubscriptionStatusSwitcher extends BaseView {
   }
 
   /**
-   * Unsubscribe the edited product to PIM.ai.
+   * Unsubscribe the edited product to Franklin.
    */
   private unsubscribeProduct(): void {
     $.ajax({

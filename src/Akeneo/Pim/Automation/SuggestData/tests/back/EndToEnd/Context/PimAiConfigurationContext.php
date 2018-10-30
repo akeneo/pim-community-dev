@@ -42,9 +42,9 @@ final class PimAiConfigurationContext extends PimContext
     }
 
     /**
-     * @Given PIM.ai has not been configured
+     * @Given Franklin has not been configured
      */
-    public function pimAiHasNotBeenConfigured(): void
+    public function franklinHasNotBeenConfigured(): void
     {
         $configuration = $this->configurationRepository->find();
 
@@ -52,12 +52,12 @@ final class PimAiConfigurationContext extends PimContext
     }
 
     /**
-     * @When a system administrator configures PIM.ai using a valid token
+     * @When a system administrator configures Franklin using a valid token
      *
      * @throws \Context\Spin\TimeoutException
      * @throws \Exception
      */
-    public function pimAiIsConfiguredWithValidToken(): void
+    public function franklinIsConfiguredWithValidToken(): void
     {
         $this->loadDefaultCatalog();
         $this->loginAsAdmin();
@@ -65,13 +65,13 @@ final class PimAiConfigurationContext extends PimContext
     }
 
     /**
-     * @Then PIM.ai is activated
+     * @Then Franklin is activated
      *
      * @throws \Context\Spin\TimeoutException
      */
-    public function pimAiIsActivated(): void
+    public function franklinIsActivated(): void
     {
-        $this->checkPimAiConfigurationIsSaved();
+        $this->checkFranklinConfigurationIsSaved();
         $this->checkActivationButtonIsGreen();
     }
 
@@ -96,7 +96,7 @@ final class PimAiConfigurationContext extends PimContext
      */
     private function configureValidToken(): void
     {
-        $this->getNavigationContext()->iAmOnThePage('PIM.ai configuration');
+        $this->getNavigationContext()->iAmOnThePage('Franklin configuration');
 
         $this->spin(function (): bool {
             if (null === $this->getCurrentPage()->find('css', '.token-field')) {
@@ -116,7 +116,7 @@ final class PimAiConfigurationContext extends PimContext
     /**
      * @throws \Context\Spin\TimeoutException
      */
-    private function checkPimAiConfigurationIsSaved(): void
+    private function checkFranklinConfigurationIsSaved(): void
     {
         $this->spin(function (): bool {
             $configuration = $this->configurationRepository->find();
@@ -126,7 +126,7 @@ final class PimAiConfigurationContext extends PimContext
             }
 
             return true;
-        }, 'There is no PIM.ai configuration saved.');
+        }, 'There is no Franklin configuration saved.');
     }
 
     /**
@@ -148,6 +148,6 @@ final class PimAiConfigurationContext extends PimContext
             }
 
             return true;
-        }, 'Activation button does not indicate that the connection to PIM.ai is active.');
+        }, 'Activation button does not indicate that the connection to Franklin is active.');
     }
 }

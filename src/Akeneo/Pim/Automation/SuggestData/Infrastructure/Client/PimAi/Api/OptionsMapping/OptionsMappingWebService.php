@@ -62,7 +62,7 @@ class OptionsMappingWebService implements OptionsMappingInterface
         } catch (ServerException | FranklinServerException $e) {
             throw new FranklinServerException(
                 sprintf(
-                    'Something went wrong on PIM.ai side when fetching the options mapping ' .
+                    'Something went wrong on Franklin side when fetching the options mapping ' .
                         'for attribute "%s" and family "%s": %s',
                     $franklinAttributeId,
                     $familyCode,

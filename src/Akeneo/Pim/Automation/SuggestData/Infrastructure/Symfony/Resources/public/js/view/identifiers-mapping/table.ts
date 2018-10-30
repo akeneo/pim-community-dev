@@ -16,7 +16,7 @@ const __ = require('oro/translator');
 const template = require('pimee/template/identifiers-mapping/table');
 
 /**
- * Maps pim.ai identifiers with akeneo attributes.
+ * Maps Franklin identifiers with akeneo attributes.
  *
  * The attribute types authorized for the identifiers mapping are defined in
  * UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
@@ -110,7 +110,7 @@ class EditIdentifiersMappingView extends BaseView {
   }
 
   /**
-   * Renders a simple select attribute field for each PIM.ai identifiers.
+   * Renders a simple select attribute field for each Franklin identifiers.
    *
    * @param identifiersMapping
    */

@@ -67,7 +67,7 @@ final class ProductSubscriptionRequest
     }
 
     /**
-     * For PIM.ai, MPN and Brand form one identifier.
+     * For Franklin, MPN and Brand form one identifier.
      * As a result, we should never subscribe a product if it has a value for only one of them.
      *
      * @param array $mapped

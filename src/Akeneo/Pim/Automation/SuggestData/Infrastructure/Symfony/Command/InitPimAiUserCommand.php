@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Initializes PIM.ai user.
+ * Initializes Franklin user.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
@@ -88,7 +88,7 @@ final class InitPimAiUserCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Initializes the PIM.ai user');
+        $this->setDescription('Initializes the Franklin user');
     }
 
     /**

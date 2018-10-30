@@ -32,22 +32,28 @@ final class ProductSubscriptionStatus
     /** @var bool */
     private $isMappingFilled;
 
+    /** @var bool */
+    private $isProductVariant;
+
     /**
      * @param ConnectionStatus $connectionStatus
      * @param bool $isSubscribed
      * @param bool $hasFamily
      * @param bool $isMappingFilled
+     * @param bool $isProductVariant
      */
     public function __construct(
         ConnectionStatus $connectionStatus,
         bool $isSubscribed,
         bool $hasFamily,
-        bool $isMappingFilled
+        bool $isMappingFilled,
+        bool $isProductVariant
     ) {
         $this->isSubscribed = $isSubscribed;
         $this->connectionStatus = $connectionStatus;
         $this->hasFamily = $hasFamily;
         $this->isMappingFilled = $isMappingFilled;
+        $this->isProductVariant = $isProductVariant;
     }
 
     /**
@@ -80,5 +86,13 @@ final class ProductSubscriptionStatus
     public function isMappingFilled(): bool
     {
         return $this->isMappingFilled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProductVariant(): bool
+    {
+        return $this->isProductVariant;
     }
 }

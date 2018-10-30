@@ -187,9 +187,9 @@ class DataFixturesContext implements Context
     /**
      * @param string $identifier
      *
-     * @Given the product ":identifier" is subscribed to PIM.ai
+     * @Given the product ":identifier" is subscribed to Franklin
      */
-    public function theProductIsSubscribedToPimAi(string $identifier): void
+    public function theProductIsSubscribedToFranklin(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
@@ -204,7 +204,7 @@ class DataFixturesContext implements Context
      */
     public function thereIsSuggestedDataForSubscribedProduct(string $identifier): void
     {
-        $this->theProductIsSubscribedToPimAi($identifier);
+        $this->theProductIsSubscribedToFranklin($identifier);
         $product = $this->productRepository->findOneByIdentifier($identifier);
         $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
 

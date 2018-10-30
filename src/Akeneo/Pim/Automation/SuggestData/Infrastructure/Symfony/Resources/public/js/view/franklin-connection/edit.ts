@@ -26,7 +26,7 @@ interface Config {
 }
 
 /**
- * Setups the connection to PIM.ai.
+ * Setups the connection to Franklin.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
@@ -98,7 +98,7 @@ class EditView extends BaseView {
   }
 
   /**
-   * Activates the connection to PIM.ai
+   * Activates the connection to Franklin
    */
   public activate(): void {
     const data = this.getFormData();
@@ -176,7 +176,7 @@ class EditView extends BaseView {
 
   /**
    * Makes the button grey with text "Activate" so the user knows that connection
-   * to PIM.ai is not active and new token can be submitted.
+   * to Franklin is not active and new token can be submitted.
    */
   private buttonAllowedToActivateConnection() {
     $('.suggest-data-connection')
@@ -190,7 +190,7 @@ class EditView extends BaseView {
 
   /**
    * Makes the button green with text "Activated" so the user knows that
-   * connection to PIM.ai is already active.
+   * connection to Franklin is already active.
    */
   private buttonDisallowedToActivateConnection() {
     $('.suggest-data-connection')

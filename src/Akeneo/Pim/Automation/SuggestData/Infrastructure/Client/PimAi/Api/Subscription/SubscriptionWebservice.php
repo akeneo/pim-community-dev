@@ -75,10 +75,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
             ));
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
-                throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
+                throw new InsufficientCreditsException('Not enough credits on Franklin to subscribe');
             }
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The PIM.ai token is missing or invalid');
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
             }
 
             throw new BadRequestException(sprintf(
@@ -112,10 +112,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
             );
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
-                throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe.');
+                throw new InsufficientCreditsException('Not enough credits on Franklin to subscribe.');
             }
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The PIM.ai token is missing or invalid.');
+                throw new InvalidTokenException('The Franklin token is missing or invalid.');
             }
 
             throw new BadRequestException(
@@ -141,7 +141,7 @@ class SubscriptionWebservice implements SubscriptionApiInterface
             );
         } catch (ClientException $e) {
             if (Response::HTTP_FORBIDDEN === $e->getCode()) {
-                throw new InvalidTokenException('The PIM.ai token is missing or invalid');
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
             }
 
             throw new BadRequestException(

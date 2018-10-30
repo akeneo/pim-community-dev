@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping as Dom
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 
 /**
- * Prepare AttributesMapping model from Domain layer in order to be used by PIM.ai client.
+ * Prepare AttributesMapping model from Domain layer in order to be used by Franklin client.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
