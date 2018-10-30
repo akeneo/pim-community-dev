@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Attribute;
+namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @group ce
  */
-class GetAttributeIntegration extends ApiTestCase
+class GetAttributeEndToEnd extends ApiTestCase
 {
     public function testGetAnAttribute()
     {
