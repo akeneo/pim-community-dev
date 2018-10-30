@@ -104,6 +104,8 @@ class CompletenessManager
     }
 
     /**
+     * @deprecated Not used anymore.
+     *
      * Schedule recalculation of completenesses for a product
      *
      * @param ProductInterface $product
