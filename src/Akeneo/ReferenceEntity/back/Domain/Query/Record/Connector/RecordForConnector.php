@@ -53,7 +53,7 @@ class RecordForConnector
             'code' => $this->code->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'values' => $this->normalizedValues,
-            'main_image' => $this->image->normalize(),
+            'main_image' => $this->image->isEmpty() ? null : $this->image->getKey()
         ];
     }
 }
