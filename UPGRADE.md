@@ -2,11 +2,11 @@
 
 ## Disclaimer
 
-> Please check that you're using Akeneo PIM v2.3
+> Please check that you're using Akeneo PIM v2.3.
 
-> We're assuming that you created your project from the standard distribution
+> We're assuming that you created your project from the standard distribution.
 
-> This documentation helps to migrate projects based on the Community Edition
+> This documentation helps to migrate projects based on the Community Edition.
 
 > Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
 
@@ -18,7 +18,7 @@ Akeneo PIM v3.0 is now using PHP 7.2.
 
 ## The main changes of the 3.0 version
 
-Main changes of the 3.0 are related to the code organization. In order to help the product team grow and delivery more features, we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
+Main changes of the 3.0 are related to the code organization. In order to help the product team grow and to deliver more features, we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
 
 In a nutshell, we went from
 
@@ -336,8 +336,6 @@ TODO: change the link!!
         - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
         - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
     
-    TODO: Enterprise edition
-
 6. Update your dependencies:
 
     The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
