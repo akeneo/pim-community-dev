@@ -3,6 +3,7 @@ extensions:
     Akeneo\SkipExampleExtension: ~
 
 suites:
+    ## Platform BC
     Platform:
         namespace: Akeneo\Platform
         psr4_prefix: Akeneo\Platform
@@ -10,8 +11,7 @@ suites:
         src_path: src/Akeneo/Platform
         spec_prefix: Specification
 
-    ## Automation
-
+    ## PIM BC
     Automation:
         namespace: Akeneo\Pim\Automation
         psr4_prefix: Akeneo\Pim\Automation
@@ -26,7 +26,7 @@ suites:
         src_path: src/Akeneo/Pim/Automation/SuggestData
         spec_prefix: Specification
 
-    Workflow:
+    WorkOrganization:
         namespace: Akeneo\Pim\WorkOrganization
         psr4_prefix: Akeneo\Pim\WorkOrganization
         spec_path: tests/back/Pim/WorkOrganization
@@ -40,8 +40,23 @@ suites:
         src_path: src/Akeneo/Pim/Permission
         spec_prefix: Specification
 
-    ## Asset
-    AssetBundle:
+    ## Pim extension
+    ReferenceEntityExtension:
+        namespace: Akeneo\Pim\ReferenceEntity
+        psr4_prefix: Akeneo\Pim\ReferenceEntity
+        spec_path: tests/back/Pim/ReferenceEntity
+        src_path: src/Akeneo/Pim/ReferenceEntity
+        spec_prefix: Specification
+
+    AssetExtension:
+        namespace: Akeneo\Pim\Asset
+        psr4_prefix: Akeneo\Pim\Asset
+        spec_path: tests/back/Pim/Asset
+        src_path: src/Akeneo/Pim/Asset
+        spec_prefix: Specification
+
+    ## Asset BC
+    Asset:
         namespace: Akeneo\Asset
         psr4_prefix: Akeneo\Asset
         spec_path: tests/back/Asset
@@ -86,9 +101,3 @@ suites:
         psr4_prefix: AkeneoEnterprise\Test\Acceptance
         spec_path: tests/back/Acceptance
         src_path: tests/back/Acceptance
-
-    Akeneo:
-        namespace: Akeneo
-
-    PimEnterprise:
-        namespace: PimEnterprise
