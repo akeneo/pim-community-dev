@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\AttributeOption;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeOption\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListAttributeOptionIntegration extends ApiTestCase
+class PartialUpdateListAttributeOptionEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeOptionIsUpdated()
     {

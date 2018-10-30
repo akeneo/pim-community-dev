@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\AttributeOption;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeOption\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateAttributeOptionIntegration extends ApiTestCase
+class CreateAttributeOptionEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeOptionIsCreated()
     {

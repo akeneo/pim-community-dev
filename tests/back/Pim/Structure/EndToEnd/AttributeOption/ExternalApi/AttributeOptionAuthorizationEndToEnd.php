@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Security;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeOption\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class AttributeOptionAuthorizationIntegration extends ApiTestCase
+class AttributeOptionAuthorizationEndToEnd extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {
