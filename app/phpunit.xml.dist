@@ -26,5 +26,10 @@
             <directory suffix="Integration.php">../tests</directory>
         </testsuite>
 
+        <testsuite name="End_to_End">
+            <directory suffix="EndToEnd.php">../tests/back</directory>
+            <directory suffix="EndToEnd.php">../src</directory>
+        </testsuite>
+
     </testsuites>
 </phpunit>
