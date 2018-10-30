@@ -1,4 +1,4 @@
-cd <?php
+<?php
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
