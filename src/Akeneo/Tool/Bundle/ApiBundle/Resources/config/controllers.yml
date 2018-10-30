@@ -2,7 +2,6 @@ parameters:
     pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.root_endpoint.class: Akeneo\Tool\Bundle\ApiBundle\Controller\RootEndpointController
     pim_api.controller.media_file.class: Akeneo\Tool\Bundle\ApiBundle\Controller\MediaFileController
-    pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\ApiBundle\Controller\MeasureFamilyController
 
 services:
     pim_api.controller.token:
@@ -37,11 +36,3 @@ services:
             - '@pim_catalog.saver.product_model'
             - '%pim_api.configuration%'
 
-    pim_api.controller.measure_family:
-        class: '%pim_api.controller.measure_family.class%'
-        arguments:
-            - '@pim_api.converter.measure_family'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '%akeneo_measure.measures_config%'
-            - '%pim_api.configuration%'

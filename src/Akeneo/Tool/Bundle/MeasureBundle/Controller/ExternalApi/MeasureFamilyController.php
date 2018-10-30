@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
+namespace Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
