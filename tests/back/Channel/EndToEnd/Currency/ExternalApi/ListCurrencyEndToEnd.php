@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Currency;
+namespace AkeneoTest\Channel\EndToEnd\Currency\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListCurrencyIntegration extends ApiTestCase
+class ListCurrencyEndToEnd extends ApiTestCase
 {
     public function testListCurrencies()
     {
