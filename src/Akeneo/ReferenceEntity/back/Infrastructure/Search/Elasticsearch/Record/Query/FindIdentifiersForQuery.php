@@ -112,6 +112,14 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
+        if (null !== $codeFilter && !empty($codeFilter['value']) && 'IN' === $codeFilter['operator']) {
+            $query['query']['constant_score']['filter']['bool']['must'][] = [
+                'terms' => [
+                    'code' => $codeFilter['value']
+                ]
+            ];
+        }
+
         return $query;
     }
 
