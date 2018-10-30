@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\AttributeGroup;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeGroup\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListAttributeGroupIntegration extends ApiTestCase
+class ListAttributeGroupEndToEnd extends ApiTestCase
 {
     public function testListAttributeGroups()
     {

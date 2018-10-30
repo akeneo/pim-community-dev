@@ -1,13 +1,13 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\AttributeGroup;
+namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeGroup\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListAttributeGroupIntegration extends ApiTestCase
+class PartialUpdateListAttributeGroupEndToEnd extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfAttributeGroups()
     {
