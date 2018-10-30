@@ -17,6 +17,7 @@ default:
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_record_context
                 - akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context
+                - akeneo_referenceentity.tests.back.acceptance.context.reindex_records_context
             filters:
                 tags: '@acceptance-back'
         integration:

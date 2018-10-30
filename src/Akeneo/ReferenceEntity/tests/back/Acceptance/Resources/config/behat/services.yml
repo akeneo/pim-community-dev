@@ -122,5 +122,16 @@ services:
         tags:
         - { name: fob.context_service }
 
+    akeneo_referenceentity.tests.back.acceptance.context.reindex_records_context:
+        class: Akeneo\ReferenceEntity\Acceptance\Context\ReIndexRecordsContext
+        arguments:
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.application.record.index_records'
+            - '@__symfony__.validator'
+            - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+        tags:
+          - { name: fob.context_service }
+
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\Test\Acceptance\FileStorage\InMemoryFileStorer

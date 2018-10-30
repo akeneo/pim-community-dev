@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
 {
-    /** @var \Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface */
+    /** @var RecordIndexerInterface */
     private $recordIndexer;
 
     public function __construct(RecordIndexerInterface $recordIndexer)

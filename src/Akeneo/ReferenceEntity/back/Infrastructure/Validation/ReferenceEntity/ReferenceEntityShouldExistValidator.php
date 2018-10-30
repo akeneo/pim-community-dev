@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Symfony\Component\Validator\Constraint;
@@ -40,19 +39,7 @@ class ReferenceEntityShouldExistValidator extends ConstraintValidator
     public function validate($command, Constraint $constraint): void
     {
         $this->checkConstraintType($constraint);
-        $this->checkCommandType($command);
         $this->validateCommand($command);
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    private function checkCommandType($command): void
-    {
-        if (!$command instanceof CreateReferenceEntityCommand) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                CreateReferenceEntityCommand::class, get_class($command)));
-        }
     }
 
     /**
@@ -60,7 +47,7 @@ class ReferenceEntityShouldExistValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof ReferenceEntityCodeShouldBeUnique) {
+        if (!$constraint instanceof ReferenceEntityShouldExist) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
