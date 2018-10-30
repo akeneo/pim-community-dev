@@ -9,10 +9,9 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 
 /**
@@ -30,7 +29,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const UPDATED_AT = 'updated_at';
     private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
 
-    /** @var SqlFindActivatedLocalesPerChannels */
+    /** @var FindActivatedLocalesPerChannelsInterface */
     private $findActivatedLocalesPerChannels;
 
     /** @var FindValueKeysToIndexForChannelAndLocaleInterface */
@@ -40,7 +39,7 @@ class RecordNormalizer implements RecordNormalizerInterface
     private $findSearchableRecords;
 
     public function __construct(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {

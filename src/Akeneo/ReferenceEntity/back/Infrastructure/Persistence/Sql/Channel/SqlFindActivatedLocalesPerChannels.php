@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel;
 
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindActivatedLocalesPerChannels
+class SqlFindActivatedLocalesPerChannels implements FindActivatedLocalesPerChannelsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -21,11 +22,7 @@ class SqlFindActivatedLocalesPerChannels
     }
 
     /**
-     * Returns a list of channels with associated activated locales:
-     * [
-     *      'ecommerce' => ['fr_FR', 'en_US']
-     *      'mobile' => ['en_US']
-     * ]
+     * {@inheritdoc}
      */
     public function __invoke(): array
     {

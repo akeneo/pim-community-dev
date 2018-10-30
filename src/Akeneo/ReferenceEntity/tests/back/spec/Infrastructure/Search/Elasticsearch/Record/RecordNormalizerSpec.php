@@ -11,8 +11,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +25,7 @@ use Prophecy\Argument;
 class RecordNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
@@ -38,7 +38,7 @@ class RecordNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_searchable_record_by_record_identifier(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
@@ -91,7 +91,7 @@ class RecordNormalizerSpec extends ObjectBehavior
      }
 
     function it_normalizes_a_searchable_records_by_reference_entity(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords,
         \Iterator $searchableRecordItemIterator
