@@ -19,7 +19,19 @@ Feature: Lists all records of an reference entity
   Scenario: Search records of a reference entity with no results
     Given the records "starck,dyson,coco"
     When the user search for "search"
-    Then the search result should be ""
+    Then there should be no result
+
+  @acceptance-back
+  Scenario: Search records of a reference entity by their code
+    Given the records "starck,dyson,coco"
+    When the user filters records by "code" with operator "NOT IN" and value "coco"
+    Then the search result should be "starck,dyson"
+
+  @acceptance-back
+  Scenario: Search records of a reference entity by their code
+    Given the records "starck,dyson,coco"
+    When the user filters records by "code" with operator "IN" and value "coco,dyson"
+    Then the search result should be "dyson,coco"
 
   @acceptance-front
   Scenario: List records of a reference entity
