@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Family;
+namespace AkeneoTest\Pim\Structure\EndToEnd\Family\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListFamilyIntegration extends ApiTestCase
+class ListFamilyEndToEnd extends ApiTestCase
 {
     public function testListFamilies()
     {

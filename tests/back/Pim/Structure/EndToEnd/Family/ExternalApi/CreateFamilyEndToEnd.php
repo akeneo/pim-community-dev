@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Family;
+namespace AkeneoTest\Pim\Structure\EndToEnd\Family\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateFamilyIntegration extends ApiTestCase
+class CreateFamilyEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAFamilyIsCreated()
     {
