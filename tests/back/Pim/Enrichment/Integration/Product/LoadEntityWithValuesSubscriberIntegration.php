@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Structure\Integration\Family;
+namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
