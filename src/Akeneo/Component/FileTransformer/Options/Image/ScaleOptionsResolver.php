@@ -53,7 +53,7 @@ class ScaleOptionsResolver implements TransformationOptionsResolverInterface
             throw InvalidOptionsTransformationException::chooseOneOption(['ratio', 'width', 'height'], 'scale');
         }
 
-        if (null !== $ratio && ($ratio <= 0 || $ratio >= 100)) {
+        if (null !== $ratio && ($ratio < 0 || $ratio > 100)) {
             throw InvalidOptionsTransformationException::ratio('ratio', 'scale');
         }
 

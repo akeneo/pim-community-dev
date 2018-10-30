@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7764: Allows on PAM scale transformations from 0% (included) to 100% (included).
+
 # 2.3.13 (2018-10-25)
 
 ## Bug fixes
