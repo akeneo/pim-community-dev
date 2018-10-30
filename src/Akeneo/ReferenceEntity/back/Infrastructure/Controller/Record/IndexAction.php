@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Akeneo\ReferenceEntity\Application\Record\SearchRecord\RecordQuery;
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchRecord;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +43,7 @@ class IndexAction
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
         $normalizedQuery = json_decode($request->getContent(), true);
-        $query = \Akeneo\ReferenceEntity\Application\Record\SearchRecord\RecordQuery::createFromNormalized($normalizedQuery);
+        $query = \Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery::createFromNormalized($normalizedQuery);
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
 
         if ($this->hasDesynchronizedIdentifiers($referenceEntityIdentifier, $query)) {

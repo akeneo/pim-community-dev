@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\ReferenceEntity\Application\Record\SearchRecord\RecordQuery;
-
 /**
  * Search on records for the given search query. This query function returns only record identifiers.
  *

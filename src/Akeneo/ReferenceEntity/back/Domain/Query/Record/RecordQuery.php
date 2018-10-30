@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source filters.
  */
 
-namespace Akeneo\ReferenceEntity\Application\Record\SearchRecord;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;

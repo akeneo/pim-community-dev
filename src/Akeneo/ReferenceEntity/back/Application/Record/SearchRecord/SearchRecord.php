@@ -14,6 +14,7 @@ namespace Akeneo\ReferenceEntity\Application\Record\SearchRecord;
 
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
 
 /**
