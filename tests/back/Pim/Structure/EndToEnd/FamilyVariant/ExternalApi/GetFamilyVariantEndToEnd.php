@@ -1,14 +1,13 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+namespace AkeneoTest\Pim\Structure\EndToEnd\FamilyVariant\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetFamilyVariantIntegration extends ApiTestCase
+class GetFamilyVariantEndToEnd extends ApiTestCase
 {
     protected function setUp()
     {

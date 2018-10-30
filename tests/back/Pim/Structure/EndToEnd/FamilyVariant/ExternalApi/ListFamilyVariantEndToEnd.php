@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+namespace AkeneoTest\Pim\Structure\EndToEnd\FamilyVariant\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class ListFamilyVariantIntegration extends ApiTestCase
+class ListFamilyVariantEndToEnd extends ApiTestCase
 {
     protected function setUp()
     {

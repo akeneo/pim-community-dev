@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+namespace AkeneoTest\Pim\Structure\EndToEnd\FamilyVariant\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListFamilyVariantIntegration extends ApiTestCase
+class PartialUpdateListFamilyVariantEndToEnd extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfFamilyVariants()
     {

@@ -1,13 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Security;
+namespace AkeneoTest\Pim\Structure\EndToEnd\FamilyVariant\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class FamilyVariantAuthorizationIntegration extends ApiTestCase
+class FamilyVariantAuthorizationEndToEnd extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {

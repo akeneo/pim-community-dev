@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+namespace AkeneoTest\Pim\Structure\EndToEnd\FamilyVariant\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateFamilyVariantIntegration extends ApiTestCase
+class CreateFamilyVariantEndToEnd extends ApiTestCase
 {
     public function testStandardFormatWhenAFamilyVariantIsCreated()
     {
