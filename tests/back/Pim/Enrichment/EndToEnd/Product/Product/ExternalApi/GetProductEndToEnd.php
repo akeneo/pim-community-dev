@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @group ce
  */
-class GetProductIntegration extends AbstractProductTestCase
+class GetProductEndToEnd extends AbstractProductTestCase
 {
     public function testGetACompleteProduct()
     {

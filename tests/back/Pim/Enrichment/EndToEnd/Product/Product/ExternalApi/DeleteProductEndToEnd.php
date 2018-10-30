@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteProductIntegration extends AbstractProductTestCase
+class DeleteProductEndToEnd extends AbstractProductTestCase
 {
     /**
      * {@inheritdoc}

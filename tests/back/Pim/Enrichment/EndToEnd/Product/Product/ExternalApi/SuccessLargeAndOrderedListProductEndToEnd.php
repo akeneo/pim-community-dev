@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\Integration\Configuration;
 
 /**
  * We want to test the API is capable of returning an ordered list twice the size of a cursor page
  *
  * @group ce
  */
-class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCase
+class SuccessLargeAndOrderedListProductEndToEnd extends AbstractProductTestCase
 {
     /** @var ProductInterface[] */
     private $products;

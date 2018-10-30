@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListProductIntegration extends AbstractProductTestCase
+class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
 {
     /**
      * {@inheritdoc}

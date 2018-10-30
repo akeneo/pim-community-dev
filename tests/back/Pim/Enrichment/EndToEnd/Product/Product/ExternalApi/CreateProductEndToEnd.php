@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateProductIntegration extends AbstractProductTestCase
+class CreateProductEndToEnd extends AbstractProductTestCase
 {
     /**
      * {@inheritdoc}
