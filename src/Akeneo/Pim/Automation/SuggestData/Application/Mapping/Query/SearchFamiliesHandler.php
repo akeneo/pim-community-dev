@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\FamilySearchableRepositoryInterface;
@@ -25,12 +28,19 @@ class SearchFamiliesHandler
     /** @var FamilySearchableRepositoryInterface */
     private $familyRepository;
 
+    /** @var DataProviderFactory */
+    private $dataProviderFactory;
+
     /**
      * @param FamilySearchableRepositoryInterface $familyRepository
+     * @param DataProviderFactory $dataProviderFactory
      */
-    public function __construct(FamilySearchableRepositoryInterface $familyRepository)
-    {
+    public function __construct(
+        FamilySearchableRepositoryInterface $familyRepository,
+        DataProviderFactory $dataProviderFactory
+    ) {
         $this->familyRepository = $familyRepository;
+        $this->dataProviderFactory = $dataProviderFactory;
     }
 
     /**
@@ -40,6 +50,8 @@ class SearchFamiliesHandler
      */
     public function handle(SearchFamiliesQuery $getFamiliesQuery): FamilyCollection
     {
+        $dataProvider = $this->dataProviderFactory->create();
+
         $families = $this->familyRepository->findBySearch(
             $getFamiliesQuery->getPage(),
             $getFamiliesQuery->getLimit(),
@@ -55,9 +67,39 @@ class SearchFamiliesHandler
                 $labels[$translation->getLocale()] = $translation->getLabel();
             }
 
-            $familyCollection->add(new Family($family->getCode(), $labels));
+            $attributesMappingResponse = $dataProvider->getAttributesMapping($family->getCode());
+            $familyCollection->add(
+                new Family(
+                    $family->getCode(),
+                    $labels,
+                    $this->getMappingStatus($attributesMappingResponse)
+                )
+            );
         }
 
         return $familyCollection;
+    }
+
+    /**
+     * @param AttributesMappingResponse $attributesMappingResponse
+     *
+     * @return int
+     */
+    private function getMappingStatus(AttributesMappingResponse $attributesMappingResponse): int
+    {
+        $attributeStatuses = [];
+        foreach ($attributesMappingResponse as $attributeMapping) {
+            $attributeStatuses[] = $attributeMapping->getStatus();
+        }
+
+        if (empty($attributeStatuses)) {
+            return Family::MAPPING_EMPTY;
+        }
+
+        if (in_array(AttributeMapping::ATTRIBUTE_PENDING, $attributeStatuses)) {
+            return Family::MAPPING_PENDING;
+        }
+
+        return Family::MAPPING_FULL;
     }
 }

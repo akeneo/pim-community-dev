@@ -35,8 +35,8 @@ class FamilyCollectionSpec extends ObjectBehavior
     public function it_can_add_a_family(): void
     {
         $this
-            ->add(new Family('router', []))
-            ->add(new Family('camcorders', []));
+            ->add(new Family('router', [], Family::MAPPING_EMPTY))
+            ->add(new Family('camcorders', [], Family::MAPPING_EMPTY));
         $this->getIterator()->count()->shouldReturn(2);
     }
 }

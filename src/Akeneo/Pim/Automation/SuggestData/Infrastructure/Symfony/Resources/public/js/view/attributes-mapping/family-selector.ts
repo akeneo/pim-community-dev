@@ -20,11 +20,6 @@ interface Config {
   choiceRoute: string;
 }
 
-/** Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
-const MAPPING_EMPTY: number = 0;
-const MAPPING_FULL: number = 1;
-const MAPPING_PENDING_ATTRIBUTES: number = 2;
-
 /**
  * This module allow user to select a catalog family for suggest data updating.
  * When he selects a new family, it updates the main root model with it.
@@ -32,6 +27,11 @@ const MAPPING_PENDING_ATTRIBUTES: number = 2;
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class FamilySelector extends BaseSelect {
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family */
+  private static readonly MAPPING_PENDING: number = 0;
+  private static readonly MAPPING_FULL: number = 1;
+  private static readonly MAPPING_EMPTY: number = 2;
+
   private readonly lineView = _.template(lineTemplate);
 
   constructor(config: { config: Config }) {
@@ -61,6 +61,7 @@ class FamilySelector extends BaseSelect {
     const parent = BaseSelect.prototype.getSelect2Options.apply(this, arguments);
     parent.formatResult = this.onGetResult.bind(this);
     parent.dropdownCssClass = 'select2--withIcon ' + parent.dropdownCssClass;
+
     return parent;
   }
 
@@ -81,13 +82,13 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: { status: number }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
-      case MAPPING_FULL:
+      case FamilySelector.MAPPING_FULL:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
         break;
-      case MAPPING_PENDING_ATTRIBUTES:
+      case FamilySelector.MAPPING_PENDING:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
         break;
-      case MAPPING_EMPTY:
+      case FamilySelector.MAPPING_EMPTY:
       default:
         result.className = '';
     }
