@@ -14,7 +14,6 @@ import {getConnectionStatus, ConnectionStatus} from '../../fetcher/franklin-conn
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
 const template = require('pimee/template/mass-edit/suggest-data-operation');
-const readOnlyTemplate = require('pimee/template/mass-edit/suggest-data-operation-read-only');
 const Router = require('pim/router');
 
 interface Config {
@@ -38,7 +37,6 @@ interface Config {
  */
 class SuggestDataOperation extends Operation {
   private readonly template: any = _.template(template);
-  private readonly readOnlyTemplate: any = _.template(readOnlyTemplate);
   private readonly config: Config = {
     title: '',
     label: '',
@@ -57,11 +55,7 @@ class SuggestDataOperation extends Operation {
    * {@inheritdoc}
    */
   constructor(options: { config: Config }) {
-    super({
-      ...options, ...{
-        className: 'AknButtonList AknButtonList--single',
-      },
-    });
+    super(options);
 
     this.config = {...this.config, ...options.config};
   }
@@ -71,38 +65,16 @@ class SuggestDataOperation extends Operation {
    */
   public events(): Backbone.EventsHash {
     return {
-      'click .AknButton': 'switchAction',
-      'click [data-action]': 'redirectToFranklinConnection',
+      'click .operation-type': this.switchAction,
+      'click [data-action]': SuggestDataOperation.redirectToFranklinConnection,
     };
   }
 
   /**
    * {@inheritdoc}
    */
-  public configure() {
-    // getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
-    //   if (!connectionStatus.isActive) {
-    //     this.setReadOnly(true);
-    //   }
-    // });
-
-    return Operation.prototype.configure.apply(this, arguments);
-  }
-  /**
-   * {@inheritdoc}
-   */
-  public render(): object {
-    return getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
-      if (!connectionStatus.isActive) {
-        this.$el.html(this.readOnlyTemplate({
-          subscribeLabel: __(this.config.subscribeLabel),
-          unsubscribeLabel: __(this.config.unsubscribeLabel),
-          errorMessage: __(this.config.franklinActivationConstraint),
-        }));
-
-        return this;
-      }
-
+  public render() {
+    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
       if (undefined === this.getFormData().action) {
         this.setAction('subscribe');
       }
@@ -110,17 +82,23 @@ class SuggestDataOperation extends Operation {
       this.$el.html(this.template({
         subscribeLabel: __(this.config.subscribeLabel),
         unsubscribeLabel: __(this.config.unsubscribeLabel),
+        errorMessage: __(this.config.franklinActivationConstraint),
         currentAction: this.getFormData().action,
+        isActive: connectionStatus.isActive,
       }));
 
-      return this;
+      if (!connectionStatus.isActive) {
+        this.getParent().removeNextButton();
+      }
+
+      this.delegateEvents();
     });
   }
 
   /**
    * @param event
    */
-  protected switchAction(event: any): void {
+  private switchAction(event: { target: any }): void {
     const action: string = $(event.target).attr('data-value') as string;
     const $button = $(event.target).parent().find('.AknButton--apply');
 
@@ -132,7 +110,7 @@ class SuggestDataOperation extends Operation {
   /**
    * @param {string} action
    */
-  protected setAction(action: string): void {
+  private setAction(action: string): void {
     const data = this.getFormData();
 
     data.jobInstanceCode = this.config.jobInstanceCode.replace('%s', action);
@@ -142,13 +120,13 @@ class SuggestDataOperation extends Operation {
   }
 
   /**
-   * @param event
+   *
+   * @returns {boolean}
    */
-  protected redirectToFranklinConnection(): any {
-    // const toto = Router.redirect('akeneo_suggest_data_connection_edit');
+  private static redirectToFranklinConnection(): boolean {
     Router.redirect('akeneo_suggest_data_connection_edit');
 
-    return;
+    return false;
   }
 }
 
