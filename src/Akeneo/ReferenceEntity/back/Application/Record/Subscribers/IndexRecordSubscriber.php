@@ -7,7 +7,6 @@ namespace Akeneo\ReferenceEntity\Application\Record\Subscribers;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,15 +19,15 @@ class IndexRecordSubscriber implements EventSubscriberInterface
     /** @var RecordIndexerInterface */
     private $recordIndexer;
 
-    /** @var CommandLauncher */
-    private $commandLauncher;
+    /** @var IndexByReferenceEntityInBackgroundInterface */
+    private $indexByReferenceEntityInBackground;
 
     public function __construct(
         RecordIndexerInterface $recordIndexer,
-        CommandLauncher $commandLauncher
+        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
     ) {
         $this->recordIndexer = $recordIndexer;
-        $this->commandLauncher = $commandLauncher;
+        $this->indexByReferenceEntityInBackground = $indexByReferenceEntityInBackground;
     }
 
     /**
@@ -49,12 +48,6 @@ class IndexRecordSubscriber implements EventSubscriberInterface
 
     public function whenAttributeIsDeleted(AttributeDeletedEvent $attributeDeletedEvent): void
     {
-        $cmd = sprintf(
-            '%s %s',
-            IndexRecordsCommand::INDEX_RECORDS_COMMAND_NAME,
-            (string) $attributeDeletedEvent->referenceEntityIdentifier
-        );
-
-        $this->commandLauncher->executeBackground($cmd, '/dev/null');
+        $this->indexByReferenceEntityInBackground->execute($attributeDeletedEvent->referenceEntityIdentifier);
     }
 }

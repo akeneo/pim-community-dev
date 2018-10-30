@@ -7,7 +7,7 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
-            - '@pim_catalog.command_launcher'
+            - '@akeneo_referenceentity.infrastructure.symfony.command.index_by_reference_entity_in_background'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -54,3 +54,9 @@ services:
        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords
        arguments:
            - '@database_connection'
+
+    # Commands
+    akeneo_referenceentity.infrastructure.symfony.command.index_by_reference_entity_in_background:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexByReferenceEntityInBackground
+        arguments:
+            - '@pim_catalog.command_launcher'

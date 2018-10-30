@@ -18,6 +18,7 @@ $rules = [
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Symfony\Component\EventDispatcher\EventSubscriberInterface',
     ])->in('Akeneo\ReferenceEntity\Application'),
     $builder->only([
         'Akeneo\ReferenceEntity\Application',
