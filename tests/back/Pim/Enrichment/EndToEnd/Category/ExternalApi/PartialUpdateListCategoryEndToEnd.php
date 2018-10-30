@@ -1,13 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Category;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListCategoryIntegration extends ApiTestCase
+class PartialUpdateListCategoryEndToEnd extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfCategories()
     {

@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Category;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetCategoryIntegration extends ApiTestCase
+class GetCategoryEndToEnd extends ApiTestCase
 {
     public function testGetACategory()
     {
