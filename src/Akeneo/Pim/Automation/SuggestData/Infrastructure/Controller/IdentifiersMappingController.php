@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -27,17 +28,19 @@ class IdentifiersMappingController
     /** @var ManageIdentifiersMapping */
     private $manageIdentifiersMapping;
 
-    /** @var TranslatorInterface */
-    private $translator;
+    /** @var UpdateIdentifiersMappingHandler */
+    private $updateIdentifiersMappingHandler;
 
     /**
      * @param ManageIdentifiersMapping $manageIdentifiersMapping
-     * @param TranslatorInterface $translator
+     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      */
-    public function __construct(ManageIdentifiersMapping $manageIdentifiersMapping, TranslatorInterface $translator)
-    {
+    public function __construct(
+        ManageIdentifiersMapping $manageIdentifiersMapping,
+        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+    ) {
         $this->manageIdentifiersMapping = $manageIdentifiersMapping;
-        $this->translator = $translator;
+        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
     }
 
     /**
@@ -50,7 +53,8 @@ class IdentifiersMappingController
         $identifiersMapping = json_decode($request->getContent(), true);
 
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping($identifiersMapping);
+            $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return new JsonResponse(json_encode($identifiersMapping));
         } catch (InvalidMappingException $invalidMapping) {

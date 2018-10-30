@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -26,30 +24,13 @@ use PhpSpec\ObjectBehavior;
 class ManageIdentifiersMappingSpec extends ObjectBehavior
 {
     public function let(
-        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ): void {
-        $this->beConstructedWith($updateIdentifiersMappingHandler, $identifiersMappingRepository);
+        $this->beConstructedWith($identifiersMappingRepository);
     }
 
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(ManageIdentifiersMapping::class);
-    }
-
-    public function it_updates_identifiers_mapping($updateIdentifiersMappingHandler): void
-    {
-        $identifiersMapping = [
-            'asin' => 'PIM_asin',
-            'brand' => 'PIM_brand',
-            'mpn' => 'PIM_mpn',
-            'upc' => 'PIM_upc',
-        ];
-
-        $updateIdentifiersMappingHandler
-            ->handle(new UpdateIdentifiersMappingCommand($identifiersMapping))
-            ->shouldBeCalled();
-
-        $this->updateIdentifierMapping($identifiersMapping);
     }
 }
