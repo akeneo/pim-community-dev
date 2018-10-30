@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteVariantProductIntegration extends AbstractProductTestCase
+class DeleteVariantProductEndToEnd extends AbstractProductTestCase
 {
     public function testDeleteAVariantProduct()
     {

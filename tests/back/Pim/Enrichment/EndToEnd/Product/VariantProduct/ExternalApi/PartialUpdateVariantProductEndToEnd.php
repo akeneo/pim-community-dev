@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateVariantProductIntegration extends AbstractProductTestCase
+class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
 {
     /** @var Collection */
     private $products;

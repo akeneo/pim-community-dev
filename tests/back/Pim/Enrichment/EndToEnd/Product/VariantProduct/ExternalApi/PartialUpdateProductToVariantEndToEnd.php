@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
-use Symfony\Component\HttpFoundation\Response;
 use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\Configuration;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateProductToVariantIntegration extends AbstractProductTestCase
+class PartialUpdateProductToVariantEndToEnd extends AbstractProductTestCase
 {
     public function testUpdateProductToVariant()
     {
