@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

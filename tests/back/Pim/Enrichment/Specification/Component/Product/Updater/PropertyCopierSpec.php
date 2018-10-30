@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyCopier;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;

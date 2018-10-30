@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

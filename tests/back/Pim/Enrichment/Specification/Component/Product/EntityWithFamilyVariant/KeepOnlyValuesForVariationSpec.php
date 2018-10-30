@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

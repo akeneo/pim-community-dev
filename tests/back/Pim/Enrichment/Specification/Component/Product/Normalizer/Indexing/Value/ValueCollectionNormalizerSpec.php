@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;

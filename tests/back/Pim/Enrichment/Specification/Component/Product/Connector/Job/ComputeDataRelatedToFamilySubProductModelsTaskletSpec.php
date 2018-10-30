@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

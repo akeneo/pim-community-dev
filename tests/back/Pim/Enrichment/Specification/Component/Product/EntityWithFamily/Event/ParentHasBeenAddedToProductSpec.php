@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use PhpSpec\ObjectBehavior;

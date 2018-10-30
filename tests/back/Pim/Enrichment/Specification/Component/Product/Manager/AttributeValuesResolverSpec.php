@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Manager;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Manager;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver;

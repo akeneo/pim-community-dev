@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

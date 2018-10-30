@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

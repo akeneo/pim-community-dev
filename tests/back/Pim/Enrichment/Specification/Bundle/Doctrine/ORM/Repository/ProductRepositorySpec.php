@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;

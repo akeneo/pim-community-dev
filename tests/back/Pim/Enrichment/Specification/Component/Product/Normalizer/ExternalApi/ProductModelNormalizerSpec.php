@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;

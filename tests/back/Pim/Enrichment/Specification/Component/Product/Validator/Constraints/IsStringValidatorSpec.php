@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsStringValidator;
 use PhpSpec\ObjectBehavior;

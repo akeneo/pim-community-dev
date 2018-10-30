@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use PhpSpec\ObjectBehavior;

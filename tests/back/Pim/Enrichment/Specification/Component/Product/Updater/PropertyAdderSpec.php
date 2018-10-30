@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyAdder;

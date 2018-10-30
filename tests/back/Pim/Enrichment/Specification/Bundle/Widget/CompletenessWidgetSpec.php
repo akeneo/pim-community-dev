@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Widget;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Widget;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp\GetCompletenessPerChannelAndLocale;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\ChannelCompleteness;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;

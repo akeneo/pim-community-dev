@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

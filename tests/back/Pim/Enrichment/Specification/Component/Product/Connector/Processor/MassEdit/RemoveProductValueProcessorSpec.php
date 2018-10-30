@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;

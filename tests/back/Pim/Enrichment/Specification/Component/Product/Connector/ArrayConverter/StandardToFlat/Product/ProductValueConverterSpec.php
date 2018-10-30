@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector;
 
 use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
 use Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Locale;

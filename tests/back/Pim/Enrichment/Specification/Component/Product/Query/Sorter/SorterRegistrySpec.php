@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Query\Sorter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query\Sorter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use PhpSpec\ObjectBehavior;

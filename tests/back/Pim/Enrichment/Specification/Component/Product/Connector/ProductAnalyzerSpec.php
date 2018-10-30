@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector;
 
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use PhpSpec\ObjectBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 use PhpSpec\ObjectBehavior;

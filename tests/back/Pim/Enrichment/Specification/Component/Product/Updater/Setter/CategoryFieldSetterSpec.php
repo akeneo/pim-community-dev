@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;

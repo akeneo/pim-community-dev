@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\ReferenceData;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ReferenceData;
 
 use PhpSpec\ObjectBehavior;
 

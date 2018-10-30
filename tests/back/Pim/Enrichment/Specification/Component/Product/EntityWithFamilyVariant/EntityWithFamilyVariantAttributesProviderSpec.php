@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Doctrine\Common\Collections\Collection;

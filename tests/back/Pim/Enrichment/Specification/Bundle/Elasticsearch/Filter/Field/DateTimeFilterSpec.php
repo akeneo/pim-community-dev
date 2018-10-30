@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;

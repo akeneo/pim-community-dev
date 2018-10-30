@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;

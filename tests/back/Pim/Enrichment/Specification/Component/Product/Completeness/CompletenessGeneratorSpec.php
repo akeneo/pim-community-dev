@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Completeness;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Collections\Collection;

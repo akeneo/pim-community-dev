@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Handler;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Handler;
 
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

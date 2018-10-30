@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;

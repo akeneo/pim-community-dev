@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -87,7 +87,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $objectManager->persist($variantProduct2)->shouldBeCalled();
 
         $objectManager->flush()->shouldBeCalled();
-        
+
         $bulkProductIndexer->indexAll([$variantProduct1, $variantProduct2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([$productModelsChildren]);

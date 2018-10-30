@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Builder;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;

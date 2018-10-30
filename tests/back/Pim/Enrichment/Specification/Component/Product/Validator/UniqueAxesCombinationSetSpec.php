@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;

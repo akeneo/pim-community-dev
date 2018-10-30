@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;

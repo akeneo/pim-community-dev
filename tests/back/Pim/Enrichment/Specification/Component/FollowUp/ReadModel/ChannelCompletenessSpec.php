@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel;
+namespace Specification\Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\ChannelCompleteness;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\LocaleCompleteness;

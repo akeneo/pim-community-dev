@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;

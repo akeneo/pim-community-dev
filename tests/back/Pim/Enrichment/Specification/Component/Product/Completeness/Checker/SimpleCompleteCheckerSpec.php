@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Doctrine\Common\Collections\Collection;

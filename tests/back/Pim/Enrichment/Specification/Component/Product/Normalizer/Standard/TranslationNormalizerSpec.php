@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;

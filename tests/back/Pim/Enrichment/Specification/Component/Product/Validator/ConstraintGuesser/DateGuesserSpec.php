@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\DateGuesser;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;

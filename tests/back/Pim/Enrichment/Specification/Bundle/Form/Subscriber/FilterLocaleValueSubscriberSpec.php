@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
 
 use Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleValueSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;

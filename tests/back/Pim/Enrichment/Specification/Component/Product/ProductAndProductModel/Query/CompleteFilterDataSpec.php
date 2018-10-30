@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\ProductAndProductModel\Query;
+namespace Specification\Akeneo\Pim\Enrichment\Component\ProductAndProductModel\Query;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData;

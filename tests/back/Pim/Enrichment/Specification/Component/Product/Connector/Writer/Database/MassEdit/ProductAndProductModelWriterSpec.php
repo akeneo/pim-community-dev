@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\TranslatorProxy;

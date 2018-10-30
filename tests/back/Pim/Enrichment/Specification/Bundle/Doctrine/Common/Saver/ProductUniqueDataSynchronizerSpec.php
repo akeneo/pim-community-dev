@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

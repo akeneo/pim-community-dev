@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;

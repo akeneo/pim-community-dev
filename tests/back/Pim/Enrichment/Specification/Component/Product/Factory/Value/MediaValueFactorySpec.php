@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;

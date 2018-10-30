@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use PhpSpec\ObjectBehavior;

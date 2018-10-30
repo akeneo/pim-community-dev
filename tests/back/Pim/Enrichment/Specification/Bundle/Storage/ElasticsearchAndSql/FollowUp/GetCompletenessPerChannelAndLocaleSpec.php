@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp;
 
 use Akeneo\Pim\Enrichment\Component\FollowUp\Query;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;

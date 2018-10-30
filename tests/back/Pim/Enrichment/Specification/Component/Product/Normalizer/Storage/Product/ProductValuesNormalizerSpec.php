@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Command;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;

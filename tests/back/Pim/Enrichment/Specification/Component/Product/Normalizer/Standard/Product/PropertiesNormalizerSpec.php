@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;

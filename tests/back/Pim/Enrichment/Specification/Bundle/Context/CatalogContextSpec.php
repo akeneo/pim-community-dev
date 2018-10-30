@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Context;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Context;
 
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use PhpSpec\ObjectBehavior;

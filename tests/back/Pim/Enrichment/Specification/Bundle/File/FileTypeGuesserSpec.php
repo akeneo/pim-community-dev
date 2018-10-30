@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\File;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\File;
 
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;

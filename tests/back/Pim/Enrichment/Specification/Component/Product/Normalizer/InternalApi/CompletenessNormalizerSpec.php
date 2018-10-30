@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;

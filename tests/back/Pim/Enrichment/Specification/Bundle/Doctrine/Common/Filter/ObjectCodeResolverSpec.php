@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;

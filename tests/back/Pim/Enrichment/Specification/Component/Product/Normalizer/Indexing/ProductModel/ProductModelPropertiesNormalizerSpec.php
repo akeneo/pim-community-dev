@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;

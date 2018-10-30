@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;

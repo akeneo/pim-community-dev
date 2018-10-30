@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;

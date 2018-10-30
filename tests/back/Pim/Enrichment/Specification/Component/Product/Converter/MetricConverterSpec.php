@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Converter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;

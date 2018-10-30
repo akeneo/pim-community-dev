@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

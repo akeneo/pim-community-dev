@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductReader;
 use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;

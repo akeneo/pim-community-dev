@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Usecase;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Usecase;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;

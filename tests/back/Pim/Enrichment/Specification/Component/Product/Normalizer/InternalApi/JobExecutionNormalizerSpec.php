@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\JobExecutionNormalizer;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;

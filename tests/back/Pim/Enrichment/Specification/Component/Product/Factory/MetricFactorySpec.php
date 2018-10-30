@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;

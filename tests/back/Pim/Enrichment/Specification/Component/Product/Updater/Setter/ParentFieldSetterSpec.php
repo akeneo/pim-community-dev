@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;

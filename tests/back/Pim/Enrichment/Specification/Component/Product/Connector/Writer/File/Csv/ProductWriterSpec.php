@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;

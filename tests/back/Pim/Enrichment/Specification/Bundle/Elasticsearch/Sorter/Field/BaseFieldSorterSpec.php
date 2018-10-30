@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;

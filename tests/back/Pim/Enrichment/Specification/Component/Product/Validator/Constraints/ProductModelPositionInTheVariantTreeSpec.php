@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTree;
@@ -18,7 +18,7 @@ class ProductModelPositionInTheVariantTreeSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(Constraint::class);
     }
-    
+
     function it_is_validated_by_the_variant_axes_validator()
     {
         $this->validatedBy()->shouldReturn('pim_has_a_root_product_model_as_parent');

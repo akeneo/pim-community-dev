@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;

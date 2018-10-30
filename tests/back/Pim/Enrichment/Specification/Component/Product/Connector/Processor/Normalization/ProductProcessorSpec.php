@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;

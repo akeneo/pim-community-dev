@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeConstraintGuesser;
 use PhpSpec\ObjectBehavior;

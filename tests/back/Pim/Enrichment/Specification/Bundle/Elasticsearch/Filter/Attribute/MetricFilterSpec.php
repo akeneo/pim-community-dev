@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
 use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;

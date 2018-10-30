@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Command\Cleaner;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command\Cleaner;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

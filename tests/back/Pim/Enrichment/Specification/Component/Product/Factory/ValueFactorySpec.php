@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;

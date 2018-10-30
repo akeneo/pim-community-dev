@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning;
 
 use PhpSpec\ObjectBehavior;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
 use PhpSpec\ObjectBehavior;

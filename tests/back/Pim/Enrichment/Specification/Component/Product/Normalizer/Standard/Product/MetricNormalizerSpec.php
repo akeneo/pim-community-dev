@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer;
 use PhpSpec\ObjectBehavior;

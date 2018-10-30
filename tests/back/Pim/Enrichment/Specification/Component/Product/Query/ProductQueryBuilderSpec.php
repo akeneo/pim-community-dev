@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Query;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Query;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;

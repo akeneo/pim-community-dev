@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Filter;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

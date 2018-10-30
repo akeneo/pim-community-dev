@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\FileComparator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;

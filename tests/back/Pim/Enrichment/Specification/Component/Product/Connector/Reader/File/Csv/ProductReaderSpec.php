@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader;
 use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Category;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category;
 
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

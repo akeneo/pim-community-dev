@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;

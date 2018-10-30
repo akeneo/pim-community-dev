@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;

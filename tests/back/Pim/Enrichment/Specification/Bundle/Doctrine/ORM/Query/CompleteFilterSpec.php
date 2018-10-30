@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;

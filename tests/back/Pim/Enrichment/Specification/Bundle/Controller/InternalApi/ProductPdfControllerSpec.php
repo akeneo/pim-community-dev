@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException;
 use PhpSpec\ObjectBehavior;

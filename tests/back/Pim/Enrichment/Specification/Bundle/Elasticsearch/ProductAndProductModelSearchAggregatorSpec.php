@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;

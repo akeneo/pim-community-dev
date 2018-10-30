@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
 
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;

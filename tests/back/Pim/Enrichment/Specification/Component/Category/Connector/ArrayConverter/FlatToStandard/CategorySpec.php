@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;

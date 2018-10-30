@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Job;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet;

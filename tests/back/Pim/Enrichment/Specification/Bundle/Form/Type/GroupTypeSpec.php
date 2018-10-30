@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Type;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
