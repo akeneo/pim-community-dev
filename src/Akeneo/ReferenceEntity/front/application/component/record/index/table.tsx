@@ -1,6 +1,7 @@
-import CommonView from 'akeneoreferenceentity/application/component/record/index/common';
-import ActionView from 'akeneoreferenceentity/application/component/record/index/action';
-import DetailsView from 'akeneoreferenceentity/application/component/record/index/detail';
+import CommonRows from 'akeneoreferenceentity/application/component/record/index/row/common';
+import ActionViews from 'akeneoreferenceentity/application/component/record/index/row/action';
+import DetailsView from 'akeneoreferenceentity/application/component/record/index/row/detail';
+import NoResult from 'akeneoreferenceentity/application/component/record/index/no-result';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
@@ -12,6 +13,7 @@ import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
 
 interface TableState {
   locale: string;
@@ -28,6 +30,16 @@ interface TableState {
   recordCount: number;
   referenceEntity: ReferenceEntity;
 }
+
+const columnCollectionsAreDifferent = (firstCollumnCollection: Column[], secondColumnCollection: Column[]): boolean => {
+  return !(
+    firstCollumnCollection.length === secondColumnCollection.length &&
+    firstCollumnCollection.reduce(
+      (allEqual: boolean, column: Column, index: number) => allEqual && column === secondColumnCollection[index],
+      true
+    )
+  );
+};
 
 export type RowView = React.SFC<{
   isLoading: boolean;
@@ -54,25 +66,31 @@ interface TableProps extends TableState, TableDispatch {}
  * On the second table, you will have the additional properties of the records (details.tsx)
  * On the thrid one, you have all the actions of the record.
  */
-export default class Table extends React.Component<TableProps, {nextItemToAddPosition: number}> {
-  private timer: undefined | number;
+export default class Table extends React.Component<TableProps, {columns: Column[]}> {
   private needResize = false;
-  readonly state = {
-    nextItemToAddPosition: 0,
-  };
+  private horizontalScrollContainer: React.RefObject<HTMLDivElement>;
+  private verticalScrollContainer: React.RefObject<HTMLDivElement>;
+  private detailTable: React.RefObject<HTMLTableElement>;
+  private commonTable: React.RefObject<HTMLTableElement>;
+  private actionTable: React.RefObject<HTMLTableElement>;
+  private columns: Column[] = [];
 
-  componentWillReceiveProps(nextProps: TableProps) {
-    if (this.props.grid.records.length !== nextProps.grid.records.length) {
-      this.setState({nextItemToAddPosition: this.props.grid.records.length});
-    }
+  constructor(props: TableProps) {
+    super(props);
+
+    this.horizontalScrollContainer = React.createRef();
+    this.verticalScrollContainer = React.createRef();
+    this.detailTable = React.createRef();
+    this.commonTable = React.createRef();
+    this.actionTable = React.createRef();
   }
 
   componentDidMount() {
-    const detailTable = this.refs.detailTable as any;
-    const verticalScrollContainer = this.refs.verticalScrollContainer as any;
+    const detailTable = this.detailTable.current;
+    const verticalScrollContainer = this.verticalScrollContainer.current;
     if (
-      undefined !== detailTable &&
-      undefined !== verticalScrollContainer &&
+      null !== detailTable &&
+      null !== verticalScrollContainer &&
       detailTable.offsetWidth !== verticalScrollContainer.offsetWidth
     ) {
       this.needResize = true;
@@ -84,8 +102,8 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     if (this.needResize) {
       this.resizeScrollContainer();
     }
-    const horizontalScrollContainer = this.refs.horizontalScrollContainer as any;
-    if (this.props.grid.page === 0 && undefined !== horizontalScrollContainer) {
+    const horizontalScrollContainer = this.horizontalScrollContainer.current;
+    if (this.props.grid.page === 0 && null !== horizontalScrollContainer) {
       horizontalScrollContainer.scrollTop = 0;
     }
   }
@@ -97,17 +115,17 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   resizeScrollContainer() {
-    const verticalScrollContainer = this.refs.verticalScrollContainer as any;
-    const horizontalScrollContainer = this.refs.horizontalScrollContainer as any;
-    const commonTable = this.refs.commonTable as any;
-    const detailTable = this.refs.detailTable as any;
-    const actionTable = this.refs.actionTable as any;
+    const verticalScrollContainer = this.verticalScrollContainer.current;
+    const horizontalScrollContainer = this.horizontalScrollContainer.current;
+    const commonTable = this.commonTable.current;
+    const detailTable = this.detailTable.current;
+    const actionTable = this.actionTable.current;
     if (
-      undefined !== verticalScrollContainer &&
-      undefined !== horizontalScrollContainer &&
-      undefined !== commonTable &&
-      undefined !== detailTable &&
-      undefined !== actionTable
+      null !== verticalScrollContainer &&
+      null !== horizontalScrollContainer &&
+      null !== commonTable &&
+      null !== detailTable &&
+      null !== actionTable
     ) {
       const newWidth = commonTable.offsetWidth + detailTable.offsetWidth + actionTable.offsetWidth;
       const minWidth = horizontalScrollContainer.offsetWidth;
@@ -122,126 +140,49 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   handleScroll() {
-    const verticalScrollContainer = this.refs.verticalScrollContainer as any;
-    const horizontalScrollContainer = this.refs.horizontalScrollContainer as any;
-    const scrollSize = verticalScrollContainer.offsetHeight;
-    const scrollPosition = horizontalScrollContainer.scrollTop;
-    const containerSize = horizontalScrollContainer.offsetHeight;
-    const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
-    if (remainingHeightToBottom < 5 * containerSize) {
-      this.props.onNeedMoreResults();
+    const verticalScrollContainer = this.verticalScrollContainer.current;
+    const horizontalScrollContainer = this.horizontalScrollContainer.current;
+    if (null !== verticalScrollContainer && null !== horizontalScrollContainer) {
+      const scrollSize = verticalScrollContainer.offsetHeight;
+      const scrollPosition = horizontalScrollContainer.scrollTop;
+      const containerSize = horizontalScrollContainer.offsetHeight;
+      const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
+      if (remainingHeightToBottom < scrollSize / 3) {
+        this.props.onNeedMoreResults();
+      }
     }
   }
 
-  /**
-   * This method is triggered each time the user types on the search field
-   * It dispatches events only if the user pauses for more than 100ms
-   */
-  onSearchUpdated(event: React.ChangeEvent<HTMLInputElement>) {
-    const userSearch = event.currentTarget.value;
-    if (undefined !== this.timer) {
-      clearTimeout(this.timer);
-    }
-    this.timer = setTimeout(() => {
-      this.props.onSearchUpdated(userSearch);
-    }, 250) as any;
-  }
-
-  renderItems(
-    records: NormalizedRecord[],
-    locale: string,
-    isLoading: boolean,
-    onRedirectToRecord: (record: NormalizedRecord) => void,
-    onDeleteRecord: (recordCode: RecordCode, label: string) => void,
-    View: RowView,
-    columns: Column[],
-    cellViews: CellViews,
-    recordCount: number
-  ): JSX.Element[] {
-    if (0 === records.length && isLoading) {
-      const record = {
-        identifier: '',
-        reference_entity_identifier: '',
-        code: '',
-        labels: {},
-        image: null,
-        values: [],
-      };
-
-      const placeholderCount = recordCount < 30 ? recordCount : 30;
-
-      return Array.from(Array(placeholderCount).keys()).map(key => (
-        <View
-          isLoading={isLoading}
-          key={key}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={() => {}}
-          onDeleteRecord={() => {}}
-          position={key}
-          columns={columns}
-          cellViews={cellViews}
-        />
-      ));
+  getColumnsToDisplay(columns: Column[], channel: string, locale: string) {
+    const columnsToDisplay = columns.filter((column: Column) => column.channel === channel && column.locale === locale);
+    if (columnCollectionsAreDifferent(columnsToDisplay, this.columns)) {
+      this.columns = columnsToDisplay;
     }
 
-    return records.map((record: NormalizedRecord, index: number) => {
-      const itemPosition = index - this.state.nextItemToAddPosition;
-
-      return (
-        <View
-          isLoading={false}
-          key={record.identifier}
-          record={record}
-          locale={locale}
-          onRedirectToRecord={onRedirectToRecord}
-          onDeleteRecord={onDeleteRecord}
-          position={itemPosition > 0 ? itemPosition : 0}
-          columns={columns}
-          cellViews={cellViews}
-        />
-      );
-    });
+    return this.columns;
   }
 
   render(): JSX.Element | JSX.Element[] {
     const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
-    const columnsToDisplay = grid.columns.filter(
-      (column: Column) => column.channel === channel && column.locale === locale
-    );
     const userSearch = getFilter(grid.filters, 'full_text').value;
+    const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
+
+    const noResult = 0 === grid.records.length && false === grid.isLoading;
+    const placeholder = 0 === grid.records.length && grid.isLoading;
 
     return (
       <React.Fragment>
-        <div className="AknFilterBox-searchContainer">
-          <input
-            type="text"
-            className="AknFilterBox-search"
-            placeholder={__('pim_reference_entity.record.grid.search')}
-            defaultValue={userSearch}
-            onChange={this.onSearchUpdated.bind(this)}
-          />
-        </div>
-        {0 === grid.records.length && false === grid.isLoading ? (
-          <div className="AknGridContainer-noData">
-            <div className="AknGridContainer-noDataImage" />
-            <div className="AknGridContainer-noDataTitle">
-              {__('pim_reference_entity.record.no_result.title', {
-                entityLabel: this.props.referenceEntity.getLabel(locale),
-              })}
-            </div>
-            <div className="AknGridContainer-noDataSubtitle">
-              {__('pim_reference_entity.record.no_result.subtitle')}
-            </div>
-          </div>
+        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
+        {noResult ? (
+          <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
         ) : (
           <div
             className="AknDefault-horizontalScrollContainer"
             onScroll={this.handleScroll.bind(this)}
-            ref="horizontalScrollContainer"
+            ref={this.horizontalScrollContainer}
           >
-            <div className="AknDefault-verticalScrollContainer" ref="verticalScrollContainer">
-              <table className="AknGrid AknGrid--light AknGrid--left" ref="commonTable">
+            <div className="AknDefault-verticalScrollContainer" ref={this.verticalScrollContainer}>
+              <table className="AknGrid AknGrid--light AknGrid--left" ref={this.commonTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.image')}</th>
@@ -250,20 +191,16 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
-                  {this.renderItems(
-                    grid.records,
-                    locale,
-                    grid.isLoading,
-                    onRedirectToRecord,
-                    onDeleteRecord,
-                    CommonView,
-                    [],
-                    {},
-                    recordCount
-                  )}
+                  <CommonRows
+                    records={grid.records}
+                    locale={locale}
+                    placeholder={placeholder}
+                    onRedirectToRecord={onRedirectToRecord}
+                    recordCount={recordCount}
+                  />
                 </tbody>
               </table>
-              <table className="AknGrid AknGrid--light AknGrid--center" style={{flex: 1}} ref="detailTable">
+              <table className="AknGrid AknGrid--light AknGrid--center" style={{flex: 1}} ref={this.detailTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     {0 === columnsToDisplay.length ? (
@@ -280,37 +217,32 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
-                  {this.renderItems(
-                    grid.records,
-                    locale,
-                    grid.isLoading,
-                    onRedirectToRecord,
-                    onDeleteRecord,
-                    DetailsView,
-                    columnsToDisplay,
-                    cellViews,
-                    recordCount
-                  )}
+                  <DetailsView
+                    records={grid.records}
+                    locale={locale}
+                    placeholder={placeholder}
+                    onRedirectToRecord={onRedirectToRecord}
+                    recordCount={recordCount}
+                    columns={columnsToDisplay}
+                    cellViews={cellViews}
+                  />
                 </tbody>
               </table>
-              <table className="AknGrid AknGrid--light AknGrid--right" ref="actionTable">
+              <table className="AknGrid AknGrid--light AknGrid--right" ref={this.actionTable}>
                 <thead className="AknGrid-header">
                   <tr className="AknGrid-bodyRow">
                     <th className="AknGrid-headerCell AknGrid-headerCell--action" />
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">
-                  {this.renderItems(
-                    grid.records,
-                    locale,
-                    grid.isLoading,
-                    onRedirectToRecord,
-                    onDeleteRecord,
-                    ActionView,
-                    [],
-                    {},
-                    recordCount
-                  )}
+                  <ActionViews
+                    records={grid.records}
+                    locale={locale}
+                    placeholder={placeholder}
+                    onRedirectToRecord={onRedirectToRecord}
+                    onDeleteRecord={onDeleteRecord}
+                    recordCount={recordCount}
+                  />
                 </tbody>
               </table>
             </div>

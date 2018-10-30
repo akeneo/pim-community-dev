@@ -42,12 +42,18 @@ interface DispatchProps {
 interface CreateProps extends StateProps, DispatchProps {}
 
 class Create extends React.Component<CreateProps> {
-  private labelInput: HTMLInputElement;
+  private labelInput: React.RefObject<HTMLInputElement>;
   public props: CreateProps;
 
+  constructor(props: CreateProps) {
+    super(props);
+
+    this.labelInput = React.createRef();
+  }
+
   componentDidMount() {
-    if (this.labelInput.focus()) {
-      this.labelInput.focus();
+    if (null !== this.labelInput.current) {
+      this.labelInput.current.focus();
     }
   }
 
@@ -89,9 +95,7 @@ class Create extends React.Component<CreateProps> {
                   </div>
                   <div className="AknFieldContainer-inputContainer">
                     <input
-                      ref={(input: HTMLInputElement) => {
-                        this.labelInput = input;
-                      }}
+                      ref={this.labelInput}
                       type="text"
                       className="AknTextField AknTextField--light"
                       id="pim_reference_entity.record.create.input.label"
