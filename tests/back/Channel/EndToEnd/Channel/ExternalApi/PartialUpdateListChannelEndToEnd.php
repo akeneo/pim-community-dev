@@ -1,13 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Channel;
+namespace AkeneoTest\Channel\EndToEnd\Channel\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListChannelIntegration extends ApiTestCase
+class PartialUpdateListChannelEndToEnd extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfChannels()
     {

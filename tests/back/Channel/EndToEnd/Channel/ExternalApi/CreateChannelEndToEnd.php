@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Channel;
+namespace AkeneoTest\Channel\EndToEnd\Channel\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateChannelIntegration extends ApiTestCase
+class CreateChannelEndToEnd extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAChannelIsCreated()
     {
