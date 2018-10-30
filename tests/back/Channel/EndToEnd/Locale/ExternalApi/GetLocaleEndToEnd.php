@@ -1,12 +1,11 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Locale;
+namespace AkeneoTest\Channel\EndToEnd\Locale\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetLocaleIntegration extends ApiTestCase
+class GetLocaleEndToEnd extends ApiTestCase
 {
     public function testGetAnActivatedLocale()
     {
