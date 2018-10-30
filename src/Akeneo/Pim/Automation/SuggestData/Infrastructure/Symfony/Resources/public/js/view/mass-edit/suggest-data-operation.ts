@@ -124,7 +124,7 @@ class SuggestDataOperation extends Operation {
    * @returns {boolean}
    */
   private static redirectToFranklinConnection(): boolean {
-    Router.redirect('akeneo_suggest_data_connection_edit');
+    Router.redirectToRoute('akeneo_suggest_data_connection_edit');
 
     return false;
   }
