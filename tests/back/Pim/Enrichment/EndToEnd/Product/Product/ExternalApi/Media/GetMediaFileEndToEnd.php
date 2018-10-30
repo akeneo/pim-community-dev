@@ -1,12 +1,12 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\MediaFile;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\MediaFile;
 
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media\AbstractMediaFileTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media\AbstractMediaFileTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetMediaFileIntegration extends AbstractMediaFileTestCase
+class GetMediaFileEndToEnd extends AbstractMediaFileTestCase
 {
     public function setUp()
     {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\MediaFile;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\MediaFile;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media\AbstractMediaFileTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media\AbstractMediaFileTestCase;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Symfony\Component\HttpFoundation\Response;
 
-class DownloadMediaFileIntegration extends AbstractMediaFileTestCase
+class DownloadMediaFileEndToEnd extends AbstractMediaFileTestCase
 {
     public function setUp()
     {

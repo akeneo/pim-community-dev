@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

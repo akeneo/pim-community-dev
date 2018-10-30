@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateProductMediaFileIntegration extends ApiTestCase
+class CreateProductMediaFileEndToEnd extends ApiTestCase
 {
     /** @var array */
     private $files = [];
