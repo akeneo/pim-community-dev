@@ -8,7 +8,6 @@ import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/refere
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-
 const routing = require('routing');
 
 class InvalidArgument extends Error {}

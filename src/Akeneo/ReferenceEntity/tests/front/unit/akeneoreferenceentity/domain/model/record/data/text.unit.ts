@@ -1,7 +1,7 @@
 import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/text';
 
 describe('akeneo > reference entity > domain > model > record > data --- text', () => {
-  test('I can create a new TextData with a File value', () => {
+  test('I can create a new TextData with a string', () => {
     expect(create('nice value').normalize()).toEqual('nice value');
   });
 

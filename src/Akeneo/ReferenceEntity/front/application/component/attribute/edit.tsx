@@ -55,7 +55,8 @@ const getAdditionalProperty = (
   attribute: Attribute,
   onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
-  errors: ValidationError[]
+  errors: ValidationError[],
+  locale: string
 ): JSX.Element => {
   const AttributeView = getAttributeView(attribute);
 
@@ -65,6 +66,7 @@ const getAdditionalProperty = (
       onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
       onSubmit={onSubmit}
       errors={errors}
+      locale={locale}
     />
   );
 };
@@ -244,7 +246,8 @@ class Edit extends React.Component<EditProps> {
                 this.props.attribute,
                 this.props.events.onAdditionalPropertyUpdated,
                 this.props.events.onSubmit,
-                this.props.errors
+                this.props.errors,
+                this.props.context.locale
               )}
             </div>
           </div>

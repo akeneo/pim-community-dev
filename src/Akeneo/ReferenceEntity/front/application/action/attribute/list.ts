@@ -11,6 +11,8 @@ import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/application/configuration/attribute';
+import {hasDataCellView} from 'akeneoreferenceentity/application/configuration/value';
 
 export class InvalidArgument extends Error {}
 
@@ -51,7 +53,11 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
 };
 
 export const getColumns = (attributes: Attribute[], channels: Channel[]) => {
+  const attributeTypes = getAttributeTypes()
+    .filter((attributeType: AttributeType) => hasDataCellView(attributeType.identifier))
+    .map((attributeType: AttributeType) => attributeType.identifier);
   return attributes
+    .filter((attribute: Attribute) => attributeTypes.includes(attribute.getType()))
     .sort((first: Attribute, second: Attribute) => first.order - second.order)
     .reduce((columns: Column[], attribute: Attribute) => {
       channels.forEach((channel: Channel) => {

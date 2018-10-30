@@ -1,9 +1,17 @@
 import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
+import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 
 export class InvalidArgument extends Error {}
 
 export type Denormalizer = (normalizedValue: NormalizedValue) => Value;
-export type ViewGenerator = React.SFC<{value: Value; onChange: (value: Value) => void; onSubmit: () => void}>;
+export type ViewGenerator = React.SFC<{
+  value: Value;
+  channel: ChannelReference;
+  locale: LocaleReference;
+  onChange: (value: Value) => void;
+  onSubmit: () => void;
+}>;
 export type CellView = React.SFC<{value: NormalizedValue}>;
 
 type ValueConfig = {
@@ -14,10 +22,14 @@ type ValueConfig = {
     view: {
       view: ViewGenerator;
     };
-    cell: {
+    cell?: {
       cell: CellView;
     };
   };
+};
+
+export const hasCellView = (config: ValueConfig) => (attributeType: string): boolean => {
+  return undefined !== config[attributeType] && undefined !== config[attributeType].cell;
 };
 
 export const getDenormalizer = (config: ValueConfig) => (normalizedValue: NormalizedValue): Denormalizer => {
@@ -140,3 +152,4 @@ ${moduleExample}`
 export const getDataDenormalizer = getDenormalizer(__moduleConfig as ValueConfig);
 export const getDataFieldView = getFieldView(__moduleConfig as ValueConfig);
 export const getDataCellView = getCellView(__moduleConfig as ValueConfig);
+export const hasDataCellView = hasCellView(__moduleConfig as ValueConfig);

@@ -67,6 +67,10 @@ pim_reference_entity:
         no_result:
             title: There are no result for your search
             subtitle: Try again with new search criteria.
+        selector:
+            no_value: Click here to select a record.
+        error:
+            value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
         button:
             save: Save
             create: Add new
@@ -87,7 +91,6 @@ pim_reference_entity:
                 label: Label
                 code: Code (required)
             confirm: Save
-
         delete:
             message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
             title: Record
@@ -158,6 +161,7 @@ pim_reference_entity:
                 code: Code (required)
                 label: Label
                 type: Attribute type
+                record_type: Record type
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
                 is_required: Required for completeness

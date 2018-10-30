@@ -29,4 +29,4 @@ Feature: Delete one record
     Given a valid record
     And the user has the following rights:
       | akeneo_referenceentity_record_delete | false |
-    Then the user shouldn't see the delete button
+    Then the user should not see the delete button
