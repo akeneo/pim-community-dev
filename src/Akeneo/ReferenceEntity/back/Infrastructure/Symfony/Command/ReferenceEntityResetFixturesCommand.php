@@ -161,6 +161,8 @@ SQL;
         $this->loadReferenceEntities();
         $this->loadAttributes();
         $this->loadRecords();
+        $this->loadMainColors();
+        $this->indexRecords();
     }
 
     /**
@@ -275,7 +277,6 @@ SQL;
     private function loadRecords(): void
     {
         $this->insertRecords();
-        $this->indexRecords();
     }
 
     private function generateFakeCity(): string
@@ -359,6 +360,7 @@ SQL;
     {
         $philippeStarck = $this->uploadImage('philippeStarck');
         $ronArad = $this->uploadImage('ronArad');
+        $roma = $this->uploadImage('roma')->getKey();
         $this->insertBrands();
         $this->insertColors();
 
@@ -374,13 +376,14 @@ SQL;
   ('designer_newson_3','newson','designer','{"en_US": "Marc Newson"}','9/b/5/4/9b54c493ff515b74cd61eb21db0e2dcf0adf483c_Dezeen_Marc_Newson_1.jpg','{}'),
   ('designer_vignelli_4','vignelli','designer','{"en_US": "Massimo Vignelli"}',NULL,'{}'),
   ('designer_arad_5','arad','designer','{"en_US": "Ron Arad"}', :ronArad,'{}'),
-  ('city_roma_ee07911a-cd91-426c-89f0-5525c26f7467','roma','city','{"en_US": "Roma"}','2/9/c/0/29c0e0e09f222d94efd8063f7c775abb918540e9_roma.jpg','{"region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168": {"data": "Lazio", "locale": null, "channel": null, "attribute": "region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168"}, "country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "Italia", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}, "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed": {"data": "26°C, Wind NW at 8 km/h, 34% Humidity", "locale": null, "channel": null, "attribute": "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed"}, "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d": {"data": "Central European Summer Time", "locale": null, "channel": null, "attribute": "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d"}, "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc_en_US": {"data": "Roma description", "locale": "en_US", "channel": null, "attribute": "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc"}}'),
   ('city_lisbon_6198d4cd-342f-4d75-9261-f862a9a23b18','lisbon','city','{"en_US": "Lisbon"}','f/b/9/8/fb989fb0c40b76f96815b207fb2b423f6ea1bf80_lisbon.jpg','{"region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168": {"data": "Lisbon", "locale": null, "channel": null, "attribute": "region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168"}, "country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "Portugal", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}, "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed": {"data": "28°C, Wind E at 6 km/h, 19% Humidity", "locale": null, "channel": null, "attribute": "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed"}, "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d": {"data": "Western European Summer Time", "locale": null, "channel": null, "attribute": "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d"}, "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc_en_US": {"data": "<p><strong>Want to live a charming getaway?</strong></p><p>Forget Venice and discover Lisbon! You will fall for THE trendy and romantic city trip ... Lisbon will charm you with its history, architecture, culture and people. Be enchanted by the soul of Lisbon, strolling through the steep streets with colorful facades of Alfama or Bairro Alto. Admire the sublime views of the Tagus and the Atlantic Ocean from the viewpoints accessible by yellow tram ... There is so much to discover in Lisbon and so little to do to escape the time of a weekend full of poetry . Do not wait any longer !</p>", "locale": "en_US", "channel": null, "attribute": "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc"}}'),
   ('city_cannes_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd','cannes','city','{"en_US": "Cannes"}','d/f/4/b/df4bc64ad17e891a07fc38565e1fb7a5f7e73e36_Cannes.jpg','{"country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "France", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}}'),
   ('city_paris_42b05a3c-e811-47ce-88fe-21aa03479c2f','paris','city','{"en_US": "Paris"}','a/f/c/f/afcf5634bbdd5ec34567add3cbbe93ae89906e07_Paris.jpg','{"country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "France", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}}'),
   ('country_italia_08e78e66-4764-4def-8832-8cbc3102f200','italia','country','{"en_US": "Italia"}',NULL,'{}'),
   ('country_france_bac746d0-edfe-4ae1-82e0-16ce58a8dd90','france','country','{"en_US": "France"}',NULL,'{}'),
-  ('city_new_york_b5150405-4cd6-4743-905f-641d4191d16d','new_york','city','{"en_US": "New-York"}','3/1/7/b/317bbac1566d57f4ef2e903cb755757100fe47f7_newyork.jpg','{}');
+  ('city_new_york_b5150405-4cd6-4743-905f-641d4191d16d','new_york','city','{"en_US": "New-York"}','3/1/7/b/317bbac1566d57f4ef2e903cb755757100fe47f7_newyork.jpg','{}'),
+  ('city_roma_ee07911a-cd91-426c-89f0-5525c26f7467','roma','city','{"en_US": "Roma"}','${roma}','{"region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168": {"data": "Lazio", "locale": null, "channel": null, "attribute": "region_city_d703b6ad-8a63-40a6-8771-f9b8c9567168"}, "country_city_29aea250-bc94-49b2-8259-bbc116410eb2": {"data": "Italia", "locale": null, "channel": null, "attribute": "country_city_29aea250-bc94-49b2-8259-bbc116410eb2"}, "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed": {"data": "26°C, Wind NW at 8 km/h, 34% Humidity", "locale": null, "channel": null, "attribute": "weather_city_65ccca01-fcb9-4a5c-ab63-a8a04ef6e2ed"}, "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d": {"data": "Central European Summer Time", "locale": null, "channel": null, "attribute": "timezone_city_9944f4d6-06c0-484a-8a86-6fe32eefce7d"}, "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc_en_US": {"data": "<p><strong>Looking for a getaway in the Eternal City?</strong>&nbsp;</p>\\\\n<p>Rome opens its doors. ?</p>\\\\n<p>Discover the archaeological, architectural and artistic wonders that make Rome one of the most popular cities in Europe for centuries. Between the \\\"Seven Hills\\\", from the Capitol to the Palatine, visit the must-see sights, admire the masterpieces of the past, stroll through the charming alleys, enjoy generous cuisine or a tasty Ristretto, treat yourself to a shopping break. .</p>\\\\n<img src=\\\"https://images1.bovpg.net/r/back/fr/sale/d786359a7ad0b0.jpg\\\" alt=\\\"undefined\\\" style=\\\"float:left;height: auto;width: auto\\\"/>\\\\n<p></p>\\\\n<p><strong>Adopt the Dolce Vita lifestyle!</strong></p>\\\\n", "locale": "en_US", "channel": null, "attribute": "description_city_491b2b80-474a-4254-a4ef-5f12ba30d6fc"}}')
+  ;
 SQL;
         $affectedRows = $this->dbal->executeUpdate(sprintf($baseSql, $baseRecords), [
             'philippeStarck' => $philippeStarck->getKey(),
@@ -467,6 +470,34 @@ VALUES
 	('color_redpoppy_8f383814-8fbd-4ce7-bed3-451fa20eeb26','redpoppy','color','{"en_US": "Red poppy", "fr_FR": "Rouge coquelicot "}','${rougeCoquelicot}','{"maincolor_color_e27aed6f-6db2-4cbf-ad64-d7a008a3c0ad": {"data": "Red", "locale": null, "channel": null, "attribute": "maincolor_color_e27aed6f-6db2-4cbf-ad64-d7a008a3c0ad"}}'),
 	('color_bluestorm_c090c48d-4c14-43bd-afb2-b4f2a3abc984','bluestorm','color','{"en_US": "Blue storm", "fr_FR": "Bleu tempête"}','${bleuTempete}','{"maincolor_color_e27aed6f-6db2-4cbf-ad64-d7a008a3c0ad": {"data": "Blue", "locale": null, "channel": null, "attribute": "maincolor_color_e27aed6f-6db2-4cbf-ad64-d7a008a3c0ad"}}'),
 	('color_redchilli_8c28eaa5-673b-4f9c-b5d7-0f48f84e9322','redchilli','color','{"en_US": "Red chilli", "fr_FR": "Rouge piment"}','${rougePiment}','[]')
+;
+SQL;
+
+        $affectedRows = $this->dbal->executeUpdate($sql);
+
+        if (0 === $affectedRows) {
+            throw new \LogicException('An issue occured while installing the records.');
+        }
+    }
+
+    private function loadMainColors(): void
+    {
+        $refEntityImage = $this->uploadImage('maincolor2')->getKey();
+        $blue = $this->uploadImage('mainblue')->getKey();
+        $red = $this->uploadImage('mainred')->getKey();
+        $green = $this->uploadImage('maingreen')->getKey();
+        $black = $this->uploadImage('mainblack')->getKey();
+
+        $sql = <<<SQL
+INSERT INTO `akeneo_reference_entity_reference_entity` (`identifier`, `labels`, `image`)
+VALUES ('maincolor', '{\"en_US\": \"Main Color\"}', '${refEntityImage}')
+;
+INSERT INTO `akeneo_reference_entity_record` (`identifier`, `code`, `reference_entity_identifier`, `labels`, `image`, `value_collection`)
+VALUES
+	('maincolor_blue_fa538845-ef57-4588-ad2e-7c6459383970','blue','maincolor','{"en_US": "Blue", "fr_FR": "Bleu"}','${blue}','[]'),
+	('maincolor_red_d103c7d1-da73-4d66-94e4-aa9adaaf1569','red','maincolor','{"en_US": "Red", "fr_FR": "Rouge"}','${red}','[]'),
+	('maincolor_green_173ecb1d-9440-40e3-83b8-b516720fbe23','green','maincolor','{"en_US": "Green", "fr_FR": "Vert"}','${green}','[]'),
+	('maincolor_black_b155efea-4577-4ba8-af2a-2a80966278f6','black','maincolor','{"en_US": "Black", "fr_FR": "Noir"}','${black}','[]')
 ;
 SQL;
 
