@@ -4,6 +4,16 @@ pim_title:
     akeneo_reference_entities_record_edit: Edit a record
 
 pim_reference_entity:
+    app:
+        image:
+            wide:
+                remove: Remove the image
+                download: Download the image
+                upload: Drag and drop to upload or click here
+            small:
+                remove: Remove
+                download: Download
+                upload: Drag and drop to upload
     reference_entity:
         validation:
             code:
