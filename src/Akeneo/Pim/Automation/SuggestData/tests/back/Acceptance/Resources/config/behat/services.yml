@@ -13,6 +13,7 @@ services:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\IdentifiersMappingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@__symfony__.pim_catalog.repository.attribute'
             - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping'
@@ -43,7 +44,7 @@ services:
         arguments:
             - '@__symfony__.pim_catalog.repository.product_without_permission'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.service.subscribe_product'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.subscribe_product'
             - '@akeneo_acceptance.context.suggest_data.data_fixtures'
             - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription'
             - '@__symfony__.akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
