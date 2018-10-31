@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Test\Integration\Configuration;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
