@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,9 +26,9 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
 {
     function let(
         Router $router,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        FindImageAttributeCodesInterface $findImageAttributeCodes
     ) {
-        $this->beConstructedWith($router, $findAttributesIndexedByIdentifier);
+        $this->beConstructedWith($router, $findImageAttributeCodes);
     }
 
     function it_is_initializable()
@@ -38,11 +36,9 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
         $this->shouldHaveType(AddHalDownloadLinkToImages::class);
     }
 
-    function it_adds_hal_links_to_image_values(
+    function it_adds_hal_download_links_to_images(
         $router,
-        $findAttributesIndexedByIdentifier,
-        TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        $findImageAttributeCodes
     ) {
         $normalizedRecord = [
             'code'       => 'starck',
@@ -91,13 +87,9 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findAttributesIndexedByIdentifier->__invoke($referenceEntityIdentifier)->willReturn([
-            'name_designer_fingerprint' => $textAttribute,
-            'coverphoto_designer_fingerprint' => $imageAttribute,
+        $findImageAttributeCodes->__invoke($referenceEntityIdentifier)->willReturn([
+            AttributeCode::fromString('coverphoto')
         ]);
-
-        $textAttribute->getCode()->willReturn(AttributeCode::fromString('name'));
-        $imageAttribute->getCode()->willReturn(AttributeCode::fromString('coverphoto'));
 
         $expectedNormalizedRecord = [
             'code'       => 'starck',
@@ -143,11 +135,9 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
         $this->__invoke($referenceEntityIdentifier, $normalizedRecord)->shouldReturn($expectedNormalizedRecord);
     }
 
-    function it_does_not_add_hal_links_if_there_are_no_images(
+    function it_does_not_add_hal_download_links_if_there_are_no_images(
         $router,
-        $findAttributesIndexedByIdentifier,
-        TextAttribute $textAttribute,
-        ImageAttribute $imageAttribute
+        $findImageAttributeCodes
     ) {
         $normalizedRecord = [
             'code'       => 'starck',
@@ -168,13 +158,9 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $findAttributesIndexedByIdentifier->__invoke($referenceEntityIdentifier)->willReturn([
-            'name_designer_fingerprint' => $textAttribute,
-            'coverphoto_designer_fingerprint' => $imageAttribute,
+        $findImageAttributeCodes->__invoke($referenceEntityIdentifier)->willReturn([
+            AttributeCode::fromString('coverphoto')
         ]);
-
-        $textAttribute->getCode()->willReturn(AttributeCode::fromString('name'));
-        $imageAttribute->getCode()->willReturn(AttributeCode::fromString('coverphoto'));
 
         $router->generate(Argument::any())->shouldNotBeCalled();
 

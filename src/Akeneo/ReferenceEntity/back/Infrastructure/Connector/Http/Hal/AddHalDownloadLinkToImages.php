@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
@@ -31,15 +30,15 @@ class AddHalDownloadLinkToImages
     /** @var Router */
     private $router;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    /** @var FindImageAttributeCodesInterface */
+    private $findImageAttributeCodes;
 
     public function __construct(
         Router $router,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        FindImageAttributeCodesInterface $findImageAttributeCodes
     ) {
         $this->router = $router;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
+        $this->findImageAttributeCodes = $findImageAttributeCodes;
     }
 
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
@@ -48,29 +47,18 @@ class AddHalDownloadLinkToImages
             $normalizedRecord = $this->addDownloadLinkToMainImage($normalizedRecord);
         }
 
-        $imageAttributeCodes = $this->getImageAttributeCodes($referenceEntityIdentifier);
+        $imageAttributeCodes = ($this->findImageAttributeCodes)($referenceEntityIdentifier);
 
-        foreach ($normalizedRecord['values'] as $attributeCode => $values) {
-            if (in_array($attributeCode, $imageAttributeCodes)) {
-                $normalizedRecord['values'][$attributeCode] = $this->addDownloadLinksToImageValues($values);
+        foreach ($imageAttributeCodes as $imageAttributeCode) {
+            $imageAttributeCode = (string) $imageAttributeCode;
+            if (isset($normalizedRecord['values'][$imageAttributeCode])) {
+                $normalizedRecord['values'][$imageAttributeCode] = $this->addDownloadLinksToImageValues(
+                    $normalizedRecord['values'][$imageAttributeCode]
+                );
             }
         }
 
         return $normalizedRecord;
-    }
-
-    private function getImageAttributeCodes(ReferenceEntityIdentifier $referenceEntityIdentifier): array
-    {
-        $attributes = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
-        $imageAttributeCodes = [];
-
-        foreach ($attributes as $attribute) {
-            if ($attribute instanceof ImageAttribute) {
-                $imageAttributeCodes[] = $attribute->getCode();
-            }
-        }
-
-        return $imageAttributeCodes;
     }
 
     private function addDownloadLinkToMainImage(array $normalizedRecord): array
