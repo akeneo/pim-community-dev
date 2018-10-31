@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Datagrid\Query\Sql;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Datagrid\Query\Sql;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;

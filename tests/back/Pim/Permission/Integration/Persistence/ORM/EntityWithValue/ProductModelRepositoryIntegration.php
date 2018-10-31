@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Persistence\ORM\EntityWithValue;
+namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\ORM\EntityWithValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\Configuration;
