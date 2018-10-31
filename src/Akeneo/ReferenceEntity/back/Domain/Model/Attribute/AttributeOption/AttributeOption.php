@@ -39,4 +39,9 @@ class AttributeOption
             self::LABELS      => $this->labels->normalize()
         ];
     }
+
+    public function getCode(): string
+    {
+        return (string) $this->optionCode;
+    }
 }
