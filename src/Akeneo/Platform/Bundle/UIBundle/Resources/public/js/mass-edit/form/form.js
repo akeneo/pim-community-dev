@@ -247,6 +247,13 @@ define(
 
                         break;
                 }
+            },
+
+            /**
+             * Disables the next button when the next step can not be accessed.
+             */
+            disableNextButton: function() {
+                this.$el.find('.next').addClass('AknButton--disabled').removeClass('wizard-action');
             }
         });
     }
