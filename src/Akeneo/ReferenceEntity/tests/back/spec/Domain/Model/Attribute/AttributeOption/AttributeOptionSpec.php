@@ -37,4 +37,9 @@ class AttributeOptionSpec extends ObjectBehavior
             ]
         ]);
     }
+
+    public function it_returns_its_code()
+    {
+        $this->getCode()->shouldReturn('red');
+    }
 }

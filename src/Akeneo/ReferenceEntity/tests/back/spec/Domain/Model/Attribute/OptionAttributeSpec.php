@@ -12,7 +12,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\MultipleSelectAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PhpSpec\ObjectBehavior;
@@ -21,14 +21,14 @@ use PhpSpec\ObjectBehavior;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class MultipleSelectAttributeSpec extends ObjectBehavior
+class OptionAttributeSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('designer', 'name', 'test'),
+            AttributeIdentifier::create('designer', 'color', 'test'),
             ReferenceEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('name'),
+            AttributeCode::fromString('color'),
             LabelCollection::fromArray(['fr_FR' => 'Couleur', 'en_US' => 'Color']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
@@ -37,64 +37,52 @@ class MultipleSelectAttributeSpec extends ObjectBehavior
         ]);
     }
 
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(OptionAttribute::class);
+    }
+
     function it_can_be_normalized()
     {
         $this->normalize()->shouldReturn([
-                'identifier'                  => 'name_designer_test',
+                'identifier'                  => 'color_designer_test',
                 'reference_entity_identifier' => 'designer',
-                'code'                        => 'name',
+                'code'                        => 'color',
                 'labels'                      => ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
                 'order'                       => 0,
                 'is_required'                 => true,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
-                'type'                        => 'multiple_select',
+                'type'                        => 'simple_select',
                 'attribute_options'            => [],
             ]
         );
     }
 
-    function it_is_initializable()
+    function it_can_have_an_option_set_to_it()
     {
-        $this->shouldHaveType(MultipleSelectAttribute::class);
-    }
-
-    function it_can_have_a_multiple_options_set_to_it()
-    {
-        $this->setOptions(
-            [
+        $this->setOptions([
                 AttributeOption::create(
                     OptionCode::fromString('red'),
                     LabelCollection::fromArray(['fr_FR' => 'rouge'])
                 ),
-                AttributeOption::create(
-                    OptionCode::fromString('green'),
-                    LabelCollection::fromArray(['fr_FR' => 'vert'])
-                ),
             ]
         );
-        $subject = $this->normalize();
-        $subject->shouldReturn([
-            'identifier'                  => 'name_designer_test',
+        $this->normalize()->shouldReturn([
+            'identifier'                  => 'color_designer_test',
             'reference_entity_identifier' => 'designer',
-            'code'                        => 'name',
+            'code'                        => 'color',
             'labels'                      => ['fr_FR' => 'Couleur', 'en_US' => 'Color'],
             'order'                       => 0,
             'is_required'                 => true,
             'value_per_channel'           => true,
             'value_per_locale'            => true,
-            'type'                        => 'multiple_select',
-            'attribute_options'           => [
+            'type'                        => 'simple_select',
+            'attribute_options'            => [
                 [
                     'option_code' => 'red',
                     'labels'      => [
                         'fr_FR' => 'rouge',
-                    ],
-                ],
-                [
-                    'option_code' => 'green',
-                    'labels'      => [
-                        'fr_FR' => 'vert',
                     ],
                 ],
             ],
@@ -103,7 +91,7 @@ class MultipleSelectAttributeSpec extends ObjectBehavior
 
     function it_cannot_have_more_too_options()
     {
-        for($i = 0; $i < 101; $i++) {
+        for ($i = 0; $i < 101; $i++) {
             $tooManyOptions[] = AttributeOption::create(
                 OptionCode::fromString((string) $i),
                 LabelCollection::fromArray([])

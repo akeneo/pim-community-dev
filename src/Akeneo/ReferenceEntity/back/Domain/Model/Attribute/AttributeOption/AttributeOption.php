@@ -16,14 +16,14 @@ class AttributeOption
     private const LABELS = 'labels';
 
     /** @var OptionCode */
-    private $optionCode;
+    private $code;
 
     /** @var LabelCollection */
     private $labels;
 
-    private function __construct(OptionCode $optionCode, LabelCollection $labels)
+    private function __construct(OptionCode $code, LabelCollection $labels)
     {
-        $this->optionCode = $optionCode;
+        $this->code = $code;
         $this->labels = $labels;
     }
 
@@ -35,13 +35,13 @@ class AttributeOption
     public function normalize(): array
     {
         return [
-            self::OPTION_CODE => (string) $this->optionCode,
+            self::OPTION_CODE => (string) $this->code,
             self::LABELS      => $this->labels->normalize()
         ];
     }
 
     public function getCode(): string
     {
-        return (string) $this->optionCode;
+        return (string) $this->code;
     }
 }
