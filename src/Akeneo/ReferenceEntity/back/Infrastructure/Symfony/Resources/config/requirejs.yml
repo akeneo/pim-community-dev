@@ -80,4 +80,4 @@ config:
         pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
 
         pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
-        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.ts
+        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
