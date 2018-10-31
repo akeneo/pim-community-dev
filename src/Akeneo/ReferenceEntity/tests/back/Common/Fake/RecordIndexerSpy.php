@@ -11,6 +11,8 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use PHPUnit\Framework\Assert;
 
 /**
+ * Record indexer spy used for tests to check if it has been called with the right parameters.
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */

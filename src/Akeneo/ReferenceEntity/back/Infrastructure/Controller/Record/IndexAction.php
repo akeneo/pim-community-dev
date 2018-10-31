@@ -43,7 +43,7 @@ class IndexAction
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
         $normalizedQuery = json_decode($request->getContent(), true);
-        $query = \Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery::createFromNormalized($normalizedQuery);
+        $query = RecordQuery::createFromNormalized($normalizedQuery);
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
 
         if ($this->hasDesynchronizedIdentifiers($referenceEntityIdentifier, $query)) {

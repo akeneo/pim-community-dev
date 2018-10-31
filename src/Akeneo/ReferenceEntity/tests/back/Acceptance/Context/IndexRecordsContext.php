@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntity;
 use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -24,7 +24,7 @@ class IndexRecordsContext implements Context
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
-    /** @var IndexRecordsByReferenceEntity */
+    /** @var IndexRecordsByReferenceEntityHandler */
     private $indexRecordsByReferenceEntity;
 
     /** @var RecordIndexerInterface */
@@ -38,7 +38,7 @@ class IndexRecordsContext implements Context
 
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        IndexRecordsByReferenceEntity $indexRecordsByReferenceEntity,
+        IndexRecordsByReferenceEntityHandler $indexRecordsByReferenceEntity,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
         RecordIndexerSpy $recordIndexerSpy

@@ -7,6 +7,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
 
+/**
+ * Query function that finds SearchRecordItem read models.
+ */
 interface FindSearchableRecordsInterface
 {
     public function byRecordIdentifier(RecordIdentifier $recordIdentifier): ?SearchableRecordItem;

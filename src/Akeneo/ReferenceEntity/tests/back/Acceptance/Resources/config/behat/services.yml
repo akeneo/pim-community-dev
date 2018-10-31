@@ -126,7 +126,7 @@ services:
         class: Akeneo\ReferenceEntity\Acceptance\Context\IndexRecordsContext
         arguments:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
-            - '@__symfony__.akeneo_referenceentity.application.record.index_records'
+            - '@__symfony__.akeneo_referenceentity.application.record.index_records_handler'
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
             - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'

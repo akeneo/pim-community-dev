@@ -8,10 +8,12 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\RecordIndexerInterface;
 
 /**
+ * Indexes all the records of a given reference entity
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IndexRecordsByReferenceEntity
+class IndexRecordsByReferenceEntityHandler
 {
     /** @var RecordIndexerInterface */
     private $recordIndexer;
