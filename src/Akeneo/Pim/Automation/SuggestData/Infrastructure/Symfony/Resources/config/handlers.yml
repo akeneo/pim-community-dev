@@ -48,6 +48,14 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
+    akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'

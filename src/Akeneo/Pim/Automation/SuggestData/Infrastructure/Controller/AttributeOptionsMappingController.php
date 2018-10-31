@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\OptionsMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -28,23 +34,32 @@ class AttributeOptionsMappingController
     /** @var GetAttributeOptionsMappingHandler */
     private $getAttributeOptionsMappingHandler;
 
+    /** @var SaveAttributeOptionsMappingHandler */
+    private $saveAttributeOptionsMappingHandler;
+
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
+     * @param SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
      */
     public function __construct(
-        GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
+        GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler,
+        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
     ) {
         $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
+        $this->saveAttributeOptionsMappingHandler = $saveAttributeOptionsMappingHandler;
     }
 
     /**
+     * @param string $identifier
+     * @param string $attributeCode
+     *
      * @return JsonResponse
      */
-    public function getAction(string $familyCode, string $franklinAttributeId): JsonResponse
+    public function getAction(string $identifier, string $attributeCode): JsonResponse
     {
         $query = new GetAttributeOptionsMappingQuery(
-            new FamilyCode($familyCode),
-            new FranklinAttributeId($franklinAttributeId)
+            new FamilyCode($identifier),
+            new FranklinAttributeId($attributeCode)
         );
         $attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
 
@@ -56,38 +71,77 @@ class AttributeOptionsMappingController
     }
 
     /**
-     * TODO Unmock data.
+     * @param Request $request
+     *
+     * TODO: handle the status for each option
+     *
+     * Current return from the Front :
+     * {
+     *     "family":"router",
+     *     "franklinAttributeCode":"color",
+     *     "catalogAttributeCode": "color",
+     *     "mapping":{
+     *         "color_1":{
+     *             "franklin_attribute_option_code":{"label":"Color 1"},
+     *             "catalog_attribute_option_code":"color1",
+     *             "status":0
+     *         },
+     *         "color_2":{
+     *             "franklin_attribute_option_code":{"label":"Color 2"},
+     *             "catalog_attribute_option_code":"color2",
+     *             "status":1
+     *         },
+     *         "color_3":{
+     *             "franklin_attribute_option_code":{"label":"Color 3"},
+     *             "catalog_attribute_option_code":null,
+     *             "status":2
+     *         }
+     *     }
+     * }
      *
      * @return JsonResponse
      */
-    public function updateAction()
+    public function updateAction(Request $request): JsonResponse
     {
-        /* Current return from the Front
-         * {
-         *     "family":"router",
-         *     "franklinAttributeCode":"color",
-         *     "catalogAttributeCode": "color",
-         *     "mapping":{
-         *         "color_1":{
-         *             "franklin_attribute_option_code":{"label":"Color 1"},
-         *             "catalog_attribute_option_code":"color1",
-         *             "status":0
-         *         },
-         *         "color_2":{
-         *             "franklin_attribute_option_code":{"label":"Color 2"},
-         *             "catalog_attribute_option_code":"color2",
-         *             "status":1
-         *         },
-         *         "color_3":{
-         *             "franklin_attribute_option_code":{"label":"Color 3"},
-         *             "catalog_attribute_option_code":null,
-         *             "status":2
-         *         }
-         *     }
-         * }:
-         */
-        sleep(1);
+        $requestContent = json_decode($request->getContent(), true);
 
-        return new JsonResponse(['response' => 'It\'s a temporary OK!']);
+        $this->validateAttributeOptionsMapping($requestContent);
+
+        try {
+            $command = new SaveAttributeOptionsMappingCommand(
+                new FamilyCode($requestContent['family']),
+                new AttributeCode($requestContent['catalogAttributeCode']),
+                new FranklinAttributeId($requestContent['franklinAttributeCode']),
+                new AttributeOptions($requestContent['mapping'])
+            );
+
+            $this->saveAttributeOptionsMappingHandler->handle($command);
+
+            return new JsonResponse();
+        } catch (\InvalidArgumentException $e) {
+            return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * @param array $requestContent
+     */
+    private function validateAttributeOptionsMapping(array $requestContent): void
+    {
+        $expectedKeys = [
+            'family',
+            'catalogAttributeCode',
+            'franklinAttributeCode',
+            'mapping',
+        ];
+
+        foreach ($expectedKeys as $key) {
+            if (!array_key_exists($key, $requestContent)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Missing "%s" key in save attribute options mapping request',
+                    $key
+                ));
+            }
+        }
     }
 }

@@ -21,7 +21,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -77,9 +78,16 @@ interface DataProviderInterface
     /**
      * @param FamilyCode $familyCode
      * @param FranklinAttributeId $franklinAttributeId
+     *
+     * @return ReadAttributeOptionsMapping
      */
     public function getAttributeOptionsMapping(
         FamilyCode $familyCode,
         FranklinAttributeId $franklinAttributeId
-    ): AttributeOptionsMapping;
+    ): ReadAttributeOptionsMapping;
+
+    /**
+     * @param WriteAttributeOptionsMapping $attributeOptionsMapping
+     */
+    public function saveAttributeOptionsMapping(WriteAttributeOptionsMapping $attributeOptionsMapping): void;
 }
