@@ -247,6 +247,13 @@ define(
 
                         break;
                 }
+            },
+
+            /**
+             * Removes the next button when the next step can not be accessed.
+             */
+            removeNextButton: function() {
+                this.$el.find('.next').hide();
             }
         });
     }

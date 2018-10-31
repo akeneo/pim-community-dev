@@ -14,12 +14,12 @@
         </div>
         <div>
             <% if (currentStep === 'configure') { %>
-            <span class="<%- currentStep %> AknButton AknButton--apply wizard-action" data-action-target="confirm">
+            <span class="<%- currentStep %> AknButton AknButton--apply wizard-action next" data-action-target="confirm">
                     <%- nextLabel %>
             </span>
             <% } %>
             <% if (currentStep === 'choose') { %>
-            <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
+            <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action next" data-action-target="configure">
                 <%- nextLabel %>
             </span>
             <% } %>
