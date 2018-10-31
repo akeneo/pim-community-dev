@@ -4,15 +4,15 @@ parameters:
 services:
     # Subscribers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\IndexRecordSubscriber
+        class: Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexRecordSubscriber
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
-            - '@pim_catalog.command_launcher'
+            - '@akeneo_referenceentity.infrastructure.symfony.command.index_by_reference_entity_in_background'
         tags:
             - { name: kernel.event_subscriber }
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.remove_record_from_index:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Subscriber\RemoveRecordFromIndexSubscriber
+        class: Akeneo\ReferenceEntity\Application\Record\Subscribers\RemoveRecordFromIndexSubscriber
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
         tags:
@@ -36,21 +36,27 @@ services:
 
     # Query function
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels
         arguments:
             - '@database_connection'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
-        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\FindIdentifiersForQuery
+        class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindIdentifiersForQuery
         arguments:
             - '@akeneo_referenceentity.client.record'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale:
-       class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale
+       class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale
        arguments:
            - '@database_connection'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records:
-       class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords
+       class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords
        arguments:
            - '@database_connection'
+
+    # Commands
+    akeneo_referenceentity.infrastructure.symfony.command.index_by_reference_entity_in_background:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexByReferenceEntityInBackground
+        arguments:
+            - '@pim_catalog.command_launcher'

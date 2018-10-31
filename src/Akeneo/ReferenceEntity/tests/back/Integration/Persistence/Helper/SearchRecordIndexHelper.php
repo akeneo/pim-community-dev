@@ -132,7 +132,7 @@ class SearchRecordIndexHelper
     {
         $query = [
             '_source' => '_id',
-            'sort' => ['updated_at' => 'asc'],
+            'sort' => ['updated_at' => 'desc'],
             'query' => [
                 'constant_score' => [
                     'filter' => [

@@ -31,8 +31,10 @@ class SearchRecord
     /** @var FindRecordItemsForIdentifiersInterface */
     private $findRecordItemsForIdentifiers;
 
-    public function __construct(FindIdentifiersForQueryInterface $findIdentifiersForQuery, FindRecordItemsForIdentifiersInterface $findRecordItemsForIdentifiers)
-    {
+    public function __construct(
+        FindIdentifiersForQueryInterface $findIdentifiersForQuery,
+        FindRecordItemsForIdentifiersInterface $findRecordItemsForIdentifiers
+    ) {
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
         $this->findRecordItemsForIdentifiers = $findRecordItemsForIdentifiers;
     }

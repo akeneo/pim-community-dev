@@ -1,3 +1,4 @@
+# Reference entity
 Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand:
     properties:
         labels:
@@ -34,6 +35,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             groups:
                 - akeneo_reference_entity_collection
 
+# Records
 Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
     group_sequence:
         - CreateRecordCommand
@@ -124,6 +126,14 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttribute
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
+Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand:
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldExist: ~
+
+# Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
         - CreateImageAttributeCommand

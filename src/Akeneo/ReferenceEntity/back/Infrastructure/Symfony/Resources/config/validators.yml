@@ -13,6 +13,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.code_is_unique' }
 
+    akeneo_referenceentity.infrastructure.validation.reference_entity.reference_entity_should_exist:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldExistValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.reference_entity.should_exist' }
+
     akeneo_referenceentity.infrastructure.validation.attribute.attribute_should_not_exist:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExistValidator
         arguments:

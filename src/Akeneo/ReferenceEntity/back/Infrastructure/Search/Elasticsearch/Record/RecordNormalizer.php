@@ -8,12 +8,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SearchableRecordItem;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindValueKeysToIndexForChannelAndLocale;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 
 /**
  * Generates a representation of a record for the search engine.
@@ -30,17 +29,17 @@ class RecordNormalizer implements RecordNormalizerInterface
     private const UPDATED_AT = 'updated_at';
     private const RECORD_CODE_LABEL_SEARCH = 'record_code_label_search';
 
-    /** @var SqlFindActivatedLocalesPerChannels */
+    /** @var FindActivatedLocalesPerChannelsInterface */
     private $findActivatedLocalesPerChannels;
 
-    /** @var SqlFindValueKeysToIndexForChannelAndLocale */
+    /** @var FindValueKeysToIndexForChannelAndLocaleInterface */
     private $findValueKeysToIndexForChannelAndLocale;
 
     /** @var SqlFindSearchableRecords */
     private $findSearchableRecords;
 
     public function __construct(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
@@ -66,7 +65,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
             self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
             self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
-            self::UPDATED_AT               => date_create('now')->format('Y-m-d'),
+            self::UPDATED_AT               => $this->now()
         ];
     }
 
@@ -84,7 +83,7 @@ class RecordNormalizer implements RecordNormalizerInterface
                 self::REFERENCE_ENTITY_CODE    => $searchableRecordItem->referenceEntityIdentifier,
                 self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
                 self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
-                self::UPDATED_AT               => date_create('now')->format('Y-m-d'),
+                self::UPDATED_AT               => $this->now()
             ];
         }
     }
@@ -150,5 +149,10 @@ class RecordNormalizer implements RecordNormalizerInterface
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
 
         return $cleanedData;
+    }
+
+    private function now(): int
+    {
+        return (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp();
     }
 }
