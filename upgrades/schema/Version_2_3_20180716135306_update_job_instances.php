@@ -2,7 +2,7 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
