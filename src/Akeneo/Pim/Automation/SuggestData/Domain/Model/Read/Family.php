@@ -18,6 +18,15 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Read;
  */
 class Family
 {
+    /* Some of the attributes are still pending */
+    public const MAPPING_PENDING = 0;
+
+    /** All attributes are either mapped or unmapped */
+    public const MAPPING_FULL = 1;
+
+    /** There is no attributes to be mapped */
+    public const MAPPING_EMPTY = 2;
+
     /** @var string */
     private $code;
 
@@ -30,12 +39,13 @@ class Family
     /**
      * @param string $code
      * @param array $labels
+     * @param int $mappingStatus
      */
-    public function __construct(string $code, array $labels)
+    public function __construct(string $code, array $labels, int $mappingStatus)
     {
         $this->code = $code;
         $this->labels = $labels;
-        $this->mappingStatus = 0;
+        $this->mappingStatus = $mappingStatus;
     }
 
     /**

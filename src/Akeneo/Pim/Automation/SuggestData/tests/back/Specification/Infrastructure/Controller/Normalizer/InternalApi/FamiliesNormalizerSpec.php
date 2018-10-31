@@ -32,8 +32,8 @@ class FamiliesNormalizerSpec extends ObjectBehavior
     {
         $familyCollection = new FamilyCollection();
         $familyCollection
-            ->add(new Family('router', ['en_US' => 'router', 'fr_FR' => 'routeur']))
-            ->add(new Family('camcorders', ['en_US' => 'camcorders']));
+            ->add(new Family('router', ['en_US' => 'router', 'fr_FR' => 'routeur'], Family::MAPPING_PENDING))
+            ->add(new Family('camcorders', ['en_US' => 'camcorders'], Family::MAPPING_PENDING));
 
         $expectedFamilies = [
             [

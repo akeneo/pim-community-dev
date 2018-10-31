@@ -23,10 +23,14 @@ class FamilySpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('router', [
-            'en_US' => 'router',
-            'fr_FR' => 'routeur',
-        ]);
+        $this->beConstructedWith(
+            'router',
+            [
+                'en_US' => 'router',
+                'fr_FR' => 'routeur',
+            ],
+            Family::MAPPING_EMPTY
+        );
     }
 
     public function it_is_a_family_read_model(): void
@@ -45,5 +49,10 @@ class FamilySpec extends ObjectBehavior
             'en_US' => 'router',
             'fr_FR' => 'routeur',
         ]);
+    }
+
+    public function it_gets_the_family_status(): void
+    {
+        $this->getMappingStatus()->shouldReturn(2);
     }
 }
