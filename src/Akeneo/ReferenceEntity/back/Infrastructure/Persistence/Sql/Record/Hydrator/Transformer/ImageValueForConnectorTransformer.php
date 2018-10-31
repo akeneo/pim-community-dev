@@ -27,12 +27,12 @@ class ImageValueForConnectorTransformer implements ValueForConnectorTransformerI
         return $attribute instanceof ImageAttribute;
     }
 
-    public function transform(array $rawValue): array
+    public function transform(array $normalizedValue): array
     {
         return [
-            'locale'  => $rawValue['locale'] ?? null,
-            'channel' => $rawValue['channel'] ?? null,
-            'data'    => $rawValue['data']['filePath'] ?? null,
+            'locale'  => $normalizedValue['locale'] ?? null,
+            'channel' => $normalizedValue['channel'] ?? null,
+            'data'    => $normalizedValue['data']['filePath'] ?? null,
         ];
     }
 }

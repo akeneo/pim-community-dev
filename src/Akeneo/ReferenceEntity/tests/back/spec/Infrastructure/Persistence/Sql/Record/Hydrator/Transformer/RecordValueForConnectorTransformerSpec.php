@@ -33,7 +33,7 @@ class RecordValueForConnectorTransformerSpec extends ObjectBehavior
         $this->supports($textAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_value_for_connector_from_a_raw_value_without_missing_data()
+    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_value_for_connector()
     {
         $this->transform([
             'data'      => 'france',
@@ -47,7 +47,7 @@ class RecordValueForConnectorTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_transforms_a_value_for_connector_from_a_raw_value_with_missing_data()
+    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_value_for_connector()
     {
         $this->transform([
             'attribute' => 'country_designer_fingerprint',

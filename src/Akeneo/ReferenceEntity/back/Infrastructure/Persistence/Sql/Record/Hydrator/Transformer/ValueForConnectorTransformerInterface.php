@@ -16,6 +16,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
 /**
+ * Transform a normalized record value to a normalized record value for connector.
+ *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
@@ -23,5 +25,5 @@ interface ValueForConnectorTransformerInterface
 {
     public function supports(AbstractAttribute $attribute): bool;
 
-    public function transform(array $rawValue): array;
+    public function transform(array $normalizedValue): array;
 }

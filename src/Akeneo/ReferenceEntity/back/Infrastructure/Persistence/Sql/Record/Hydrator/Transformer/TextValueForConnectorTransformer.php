@@ -27,12 +27,12 @@ class TextValueForConnectorTransformer implements ValueForConnectorTransformerIn
         return $attribute instanceof TextAttribute;
     }
 
-    public function transform(array $rawValue): array
+    public function transform(array $normalizedValue): array
     {
         return [
-            'locale'  => $rawValue['locale'] ?? null,
-            'channel' => $rawValue['channel'] ?? null,
-            'data'    => $rawValue['data'] ?? null,
+            'locale'  => $normalizedValue['locale'] ?? null,
+            'channel' => $normalizedValue['channel'] ?? null,
+            'data'    => $normalizedValue['data'] ?? null,
         ];
     }
 }

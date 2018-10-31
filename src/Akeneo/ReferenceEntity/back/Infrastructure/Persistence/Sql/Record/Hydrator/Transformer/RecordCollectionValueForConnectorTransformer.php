@@ -27,12 +27,12 @@ class RecordCollectionValueForConnectorTransformer implements ValueForConnectorT
         return $attribute instanceof RecordCollectionAttribute;
     }
 
-    public function transform(array $rawValue): array
+    public function transform(array $normalizedValue): array
     {
         return [
-            'locale'  => $rawValue['locale'] ?? null,
-            'channel' => $rawValue['channel'] ?? null,
-            'data'    => $rawValue['data'] ?? [],
+            'locale'  => $normalizedValue['locale'] ?? null,
+            'channel' => $normalizedValue['channel'] ?? null,
+            'data'    => $normalizedValue['data'] ?? [],
         ];
     }
 }

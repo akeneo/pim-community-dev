@@ -31,7 +31,7 @@ class TextValueForConnectorTransformerSpec extends ObjectBehavior
         $this->supports($imageAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_value_for_connector_from_a_raw_value_without_missing_data()
+    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_value_for_connector()
     {
         $this->transform([
             'data'      => 'Starck',
@@ -45,7 +45,7 @@ class TextValueForConnectorTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_transforms_a_value_for_connector_from_a_raw_value_with_missing_data()
+    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_value_for_connector()
     {
         $this->transform([
             'attribute' => 'name_designer_fingerprint'
