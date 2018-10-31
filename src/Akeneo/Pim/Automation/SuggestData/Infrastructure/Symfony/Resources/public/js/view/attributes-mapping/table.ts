@@ -9,13 +9,14 @@
 
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
-import BaseForm = require('pimui/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
+
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
@@ -24,18 +25,21 @@ const template = require('pimee/template/attributes-mapping/table');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
-interface NormalizedAttributeMapping {
-  mapping: {
-    [franklinAttribute: string]: {
-      pimAiAttribute: {
-        label: string,
-        type: string,
-        summary: string[],
-      },
-      attribute: string,
-      status: number,
+interface AttributesMappingForFamily {
+  [franklinAttribute: string]: {
+    pimAiAttribute: {
+      label: string,
+      type: string,
+      summary: string[],
     },
+    attribute: string,
+    status: number,
   };
+}
+
+interface NormalizedAttributesMappingForFamily {
+  code: string;
+  mapping: AttributesMappingForFamily;
 }
 
 interface NormalizedAttribute {
@@ -53,6 +57,8 @@ interface Config {
     attributeMappingStatus: string,
     valuesSummary: string,
     type: string,
+    familyMappingPending: string,
+    familyMappingFull: string,
   };
 }
 
@@ -65,10 +71,19 @@ interface Config {
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class AttributeMapping extends BaseForm {
+class AttributeMapping extends BaseView {
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family */
+  public static readonly FAMILY_MAPPING_PENDING: number = 0;
+  public static readonly FAMILY_MAPPING_FULL: number = 1;
+  public static readonly FAMILY_MAPPING_EMPTY: number = 2;
+
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
+  /** Duplicated in Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping */
   private static readonly ATTRIBUTE_PENDING: number = 0;
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
+
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
   private static readonly VALID_MAPPING: { [attributeType: string]: string[] } = {
     metric: [ 'pim_catalog_metric' ],
     select: [ 'pim_catalog_simpleselect' ],
@@ -89,10 +104,12 @@ class AttributeMapping extends BaseForm {
       attributeMappingStatus: '',
       valuesSummary: '',
       type: '',
+      familyMappingPending: '',
+      familyMappingFull: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
-  private attributeOptionsMappingForm: BaseForm | null = null;
+  private attributeOptionsMappingForm: BaseView | null = null;
   private scroll: number = 0;
 
   /**
@@ -113,18 +130,21 @@ class AttributeMapping extends BaseForm {
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
     this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
 
-    return BaseForm.prototype.configure.apply(this, arguments);
+    return BaseView.prototype.configure.apply(this, arguments);
   }
 
   /**
    * {@inheritdoc}
    */
-  public render(): BaseForm {
-    const familyMapping: NormalizedAttributeMapping = this.getFormData();
+  public render(): BaseView {
+    const familyMapping: NormalizedAttributesMappingForFamily = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
+    const familyMappingStatus = this.getFamilyMappingStatus(mapping);
+
     this.$el.html(this.template({
       __,
       mapping,
+      familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
       escapeHtml: EscapeHtml.escapeHtml,
       statuses: this.getMappingStatuses(),
       pimAiAttribute: __(this.config.labels.pimAiAttribute),
@@ -219,13 +239,63 @@ class AttributeMapping extends BaseForm {
   /**
    * @returns { [ status: number ]: string }
    */
-  private getMappingStatuses() {
+  private getMappingStatuses(): { [ status: number ]: string } {
     const statuses: { [status: number]: string } = {};
     statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
     statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
     statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
 
     return statuses;
+  }
+
+  /**
+   * @param {AttributesMappingForFamily} mapping
+   *
+   * @return {number}
+   */
+  private getFamilyMappingStatus(mapping: AttributesMappingForFamily): number {
+    const franklinAttributes = Object.keys(mapping);
+    let status = AttributeMapping.FAMILY_MAPPING_FULL;
+
+    if (0 === franklinAttributes.length) {
+      status = AttributeMapping.FAMILY_MAPPING_EMPTY;
+    }
+
+    franklinAttributes.forEach((franklinAttribute: string) => {
+      if (AttributeMapping.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
+        status = AttributeMapping.FAMILY_MAPPING_PENDING;
+      }
+    });
+
+    return status;
+  }
+
+  /**
+   * Format the message (label and style) that will be display on the view
+   * according to the status of the family mapping.
+   *
+   * @param {number} familyMappingStatus
+   *
+   * @return {object}
+   */
+  private formatFamilyMappingStatus(familyMappingStatus: number): { className: string, label: string } {
+    const formattedFamilyMappingStatus = {
+      className: '',
+      label: '',
+    };
+
+    switch (familyMappingStatus) {
+      case AttributeMapping.FAMILY_MAPPING_PENDING:
+        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--pending';
+        formattedFamilyMappingStatus.label = this.config.labels.familyMappingPending;
+        break;
+      case AttributeMapping.FAMILY_MAPPING_FULL:
+        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--full';
+        formattedFamilyMappingStatus.label = this.config.labels.familyMappingFull;
+        break;
+    }
+
+    return formattedFamilyMappingStatus;
   }
 
   /**
@@ -245,7 +315,7 @@ class AttributeMapping extends BaseForm {
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
       FetcherRegistry.getFetcher('family').fetch(familyCode),
     ).then((
-      form: BaseForm,
+      form: BaseView,
       normalizedFamily: any,
     ) => {
       this.attributeOptionsMappingModal = new BootstrapModal({

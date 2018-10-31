@@ -104,6 +104,8 @@ extensions:
                 attributeMappingStatus: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
                 valuesSummary: akeneo_suggest_data.entity.attributes_mapping.fields.values_summary
                 type: pim_common.type
+                familyMappingPending: akeneo_suggest_data.entity.attributes_mapping.module.index.family_status.pending
+                familyMappingFull: akeneo_suggest_data.entity.attributes_mapping.module.index.family_status.full
 
     pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
         module: pimee/view/common/front-search-filter
