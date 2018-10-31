@@ -68,7 +68,24 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         );
         $this->save($otherSubscription);
 
-        $this->findPendingSubscriptions()->shouldReturn([$subscription]);
+        $this->findPendingSubscriptions(10, null)->shouldReturn([$subscription]);
+    }
+
+    public function it_searches_pending_subscriptions(): void
+    {
+        $subscription1 = new ProductSubscription(new Product(), 'fake-id', ['asin' => 'ABC']);
+        $subscription1->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+        $this->save($subscription1);
+        $subscription2 = new ProductSubscription(new Product(), 'abc', ['asin' => 'ABC']);
+        $subscription2->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+        $this->save($subscription2);
+        $subscription3 = new ProductSubscription(new Product(), 'def', ['asin' => 'ABC']);
+        $subscription3->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+        $this->save($subscription3);
+
+        $this->findPendingSubscriptions(10, null)->shouldReturn([$subscription2, $subscription3, $subscription1]);
+        $this->findPendingSubscriptions(10, 'def')->shouldReturn([$subscription1]);
+        $this->findPendingSubscriptions(10, 'abc')->shouldReturn([$subscription3, $subscription1]);
     }
 
     public function it_deletes_a_product_susbcription(
@@ -77,6 +94,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(42);
         $subscription->getProduct()->willReturn($product);
+        $subscription->getSubscriptionId()->willReturn('abc-def');
 
         $this->save($subscription);
         $this->findOneByProductId(42)->shouldReturn($subscription);

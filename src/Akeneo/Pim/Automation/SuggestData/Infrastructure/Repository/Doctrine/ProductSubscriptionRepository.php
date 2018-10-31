@@ -53,12 +53,18 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findPendingSubscriptions(): array
+    public function findPendingSubscriptions(int $limit, ?string $searchAfter): array
     {
         $qb = $this->em->createQueryBuilder()->select('subscription')->from(ProductSubscription::class, 'subscription');
         $qb->where(
             $qb->expr()->isNotNull('subscription.rawSuggestedData')
         );
+        if (null !== $searchAfter) {
+            $qb->addOrderBy('subscription.subscriptionId', 'ASC')
+               ->andWhere('subscription.subscriptionId > :searchAfter')
+               ->setParameter('searchAfter', $searchAfter);
+        }
+        $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
     }
