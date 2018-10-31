@@ -189,7 +189,7 @@ const webpackConfig = {
   },
 
   watchOptions: {
-    ignored: /node_modules|app|app\/cache|vendor/,
+    ignored: /node_modules|var\/cache|vendor/,
   },
 
   // Support old loader declarations
