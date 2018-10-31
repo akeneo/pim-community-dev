@@ -162,7 +162,7 @@ stage("Test") {
                 fetcher: {
                     return pimPhpunitEndToEndFetcher(
                         paths:[
-                            "var/www/pim/tests"
+                            "/var/www/pim/tests"
                         ]
                     )
                 }
