@@ -90,14 +90,14 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
 
-        $variantProducts = $this->findVariantProducts();
-        $this->delete($variantProducts);
+        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
+        $this->delete($productsAndRootProductModels);
 
         $subProductModels = $this->findSubProductModels();
         $this->delete($subProductModels);
 
-        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
-        $this->delete($productsAndRootProductModels);
+        $variantProducts = $this->findVariantProducts();
+        $this->delete($variantProducts);
     }
 
     private function findVariantProducts(): CursorInterface
