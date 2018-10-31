@@ -14,9 +14,6 @@ const Routing = require('routing');
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-export interface ConnectionStatus {
-  isActive: boolean;
-}
 
 /**
  * Returns the current configuration used to connect to Franklin.

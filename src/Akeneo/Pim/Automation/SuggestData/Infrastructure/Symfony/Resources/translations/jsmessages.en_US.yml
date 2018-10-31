@@ -131,6 +131,9 @@ akeneo_suggest_data:
                     description: Please select the action you want to apply on the products selected on the grid
                     subscribe_label: Subscribe
                     unsubscribe_label: Unsubscribe
+                    constraint:
+                        franklin_activation: "Please <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activate</a> Franklin Insights before subscribing products."
+                        invalid_mapping: "Please map the product identifiers at Settings > Franklin Insights before subscribing products."
 
 batch_jobs:
     suggest_data_subscribe_products:

@@ -1,2 +1,15 @@
-<div class="AknButton AknButton--glued <%- ('subscribe' === currentAction) ? 'AknButton--apply' : ''%>" data-value="subscribe"><%- subscribeLabel %></div><!--
---><div class="AknButton AknButton--glued <%- ('unsubscribe' === currentAction) ? 'AknButton--apply' : ''%>" data-value="unsubscribe"><%- unsubscribeLabel %></div>
+<% if (!isActive) { %>
+    <div class="AknMessageBox AknMessageBox--warning">
+        <div class="AknMessageBox-title"><%= errorMessage %></div>
+    </div>
+<% } %>
+<div class="AknButtonList AknButtonList--single">
+    <div
+        class="operation-type AknButton AknButton--glued <%- !isActive ? 'AknButton--disabled AknButton--greyLight' : (('subscribe' === currentAction) ? 'AknButton--apply' : '') %>"
+        data-value="subscribe"
+    ><%- subscribeLabel %></div><!--
+    --><div
+        class="operation-type AknButton AknButton--glued <%- !isActive ? 'AknButton--disabled AknButton--greyLight' : (('unsubscribe' === currentAction) ? 'AknButton--apply' : '') %>"
+        data-value="unsubscribe"
+    ><%- unsubscribeLabel %></div>
+</div>

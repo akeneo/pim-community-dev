@@ -7,7 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {ConnectionStatus, getConnectionStatus} from '../fetcher/franklin-connection';
+import {getConnectionStatus} from '../fetcher/franklin-connection';
+import ConnectionStatus from '../model/connection-status';
 
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
