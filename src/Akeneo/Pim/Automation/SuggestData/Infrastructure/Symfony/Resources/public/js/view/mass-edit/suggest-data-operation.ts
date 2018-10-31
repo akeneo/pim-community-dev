@@ -28,6 +28,7 @@ interface Config {
   subscribeLabel: string;
   unsubscribeLabel: string;
   franklinActivationConstraint: string;
+  invalidMappingConstraint: string;
 }
 
 /**
@@ -49,6 +50,7 @@ class SuggestDataOperation extends Operation {
     subscribeLabel: '',
     unsubscribeLabel: '',
     franklinActivationConstraint: '',
+    invalidMappingConstraint: '',
   };
 
   /**
@@ -79,17 +81,23 @@ class SuggestDataOperation extends Operation {
         this.setAction('subscribe');
       }
 
+      let errorMessage = '';
+      if (!connectionStatus.isIdentifiersMappingValid) {
+        errorMessage = __(this.config.invalidMappingConstraint);
+        this.getParent().removeNextButton();
+      }
+      if (!connectionStatus.isActive) {
+        errorMessage = __(this.config.franklinActivationConstraint);
+        this.getParent().removeNextButton();
+      }
+
       this.$el.html(this.template({
         subscribeLabel: __(this.config.subscribeLabel),
         unsubscribeLabel: __(this.config.unsubscribeLabel),
-        errorMessage: __(this.config.franklinActivationConstraint),
+        errorMessage: errorMessage,
         currentAction: this.getFormData().action,
-        isActive: connectionStatus.isActive,
+        isActive: connectionStatus.isActive && connectionStatus.isIdentifiersMappingValid,
       }));
-
-      if (!connectionStatus.isActive) {
-        this.getParent().removeNextButton();
-      }
 
       this.delegateEvents();
     });

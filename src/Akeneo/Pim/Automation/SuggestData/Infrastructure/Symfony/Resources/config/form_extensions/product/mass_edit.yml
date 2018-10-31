@@ -16,3 +16,4 @@ extensions:
             subscribeLabel: akeneo_suggest_data.mass_edit.product.operation.suggest_data.subscribe_label
             unsubscribeLabel: akeneo_suggest_data.mass_edit.product.operation.suggest_data.unsubscribe_label
             franklinActivationConstraint: akeneo_suggest_data.mass_edit.product.operation.suggest_data.constraint.franklin_activation
+            invalidMappingConstraint: akeneo_suggest_data.mass_edit.product.operation.suggest_data.constraint.invalid_mapping
