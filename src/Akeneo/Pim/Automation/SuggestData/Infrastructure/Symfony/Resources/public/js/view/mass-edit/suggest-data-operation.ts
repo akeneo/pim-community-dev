@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2018 Akeneo SAS (http://www.akeneo.com)
@@ -37,6 +37,15 @@ interface Config {
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class SuggestDataOperation extends Operation {
+  /**
+   * @returns {boolean}
+   */
+  private static redirectToFranklinConnection(): boolean {
+    Router.redirectToRoute('akeneo_suggest_data_connection_edit');
+
+    return false;
+  }
+  
   private readonly template: any = _.template(template);
   private readonly config: Config = {
     title: '',
@@ -84,17 +93,17 @@ class SuggestDataOperation extends Operation {
       let errorMessage = '';
       if (!connectionStatus.isIdentifiersMappingValid) {
         errorMessage = __(this.config.invalidMappingConstraint);
-        this.getParent().removeNextButton();
+        this.getParent().disableNextButton();
       }
       if (!connectionStatus.isActive) {
         errorMessage = __(this.config.franklinActivationConstraint);
-        this.getParent().removeNextButton();
+        this.getParent().disableNextButton();
       }
 
       this.$el.html(this.template({
         subscribeLabel: __(this.config.subscribeLabel),
         unsubscribeLabel: __(this.config.unsubscribeLabel),
-        errorMessage: errorMessage,
+        errorMessage,
         currentAction: this.getFormData().action,
         isActive: connectionStatus.isActive && connectionStatus.isIdentifiersMappingValid,
       }));
@@ -125,15 +134,6 @@ class SuggestDataOperation extends Operation {
     data.action = action;
 
     this.setData(data);
-  }
-
-  /**
-   * @returns {boolean}
-   */
-  private static redirectToFranklinConnection(): boolean {
-    Router.redirectToRoute('akeneo_suggest_data_connection_edit');
-
-    return false;
   }
 }
 
