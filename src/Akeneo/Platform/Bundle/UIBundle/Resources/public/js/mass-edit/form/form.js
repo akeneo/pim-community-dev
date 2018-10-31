@@ -250,10 +250,10 @@ define(
             },
 
             /**
-             * Removes the next button when the next step can not be accessed.
+             * Disables the next button when the next step can not be accessed.
              */
-            removeNextButton: function() {
-                this.$el.find('.next').hide();
+            disableNextButton: function() {
+                this.$el.find('.next').addClass('AknButton--disabled').removeClass('wizard-action');
             }
         });
     }
