@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2018 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +14,6 @@ const Routing = require('routing');
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-export interface ConnectionStatus {
-  isActive: boolean;
-}
 
 /**
  * Returns the current configuration used to connect to Franklin.

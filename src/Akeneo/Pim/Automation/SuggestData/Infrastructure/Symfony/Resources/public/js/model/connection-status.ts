@@ -8,13 +8,12 @@
  */
 
 /**
- * @author Damien Carcel <damien.carcel@akeneo.com>
+ * Interface for ConnectionStatus
+ * Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/Normalizer/InternalApi/ConnectionStatusNormalizer.php
+ *
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-export default interface SubscriptionStatus {
-  isConnectionActive: boolean;
-  isSubscribed: boolean;
+export default interface ConnectionStatus {
+  isActive: boolean;
   isIdentifiersMappingValid: boolean;
-  hasFamily: boolean;
-  isMappingFilled: boolean;
-  isProductVariant: boolean;
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2018 Akeneo SAS (http://www.akeneo.com)
@@ -10,8 +10,8 @@
 import {EventsHash} from 'backbone';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
-import {ConnectionStatus, getConfiguration, getConnectionStatus} from '../../fetcher/franklin-connection';
-
+import {getConfiguration, getConnectionStatus} from '../../fetcher/franklin-connection';
+import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
 const ConnectionSaver = require('pimee/saver/franklin-connection');
 const Messenger = require('oro/messenger');

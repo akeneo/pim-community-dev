@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2018 Akeneo SAS (http://www.akeneo.com)
@@ -9,8 +9,8 @@
 
 import * as $ from 'jquery';
 import * as _ from 'underscore';
-import {getConnectionStatus, ConnectionStatus} from '../../fetcher/franklin-connection';
-
+import {getConnectionStatus} from '../../fetcher/franklin-connection';
+import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
 const template = require('pimee/template/mass-edit/suggest-data-operation');
@@ -120,7 +120,6 @@ class SuggestDataOperation extends Operation {
   }
 
   /**
-   *
    * @returns {boolean}
    */
   private static redirectToFranklinConnection(): boolean {

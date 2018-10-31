@@ -132,8 +132,7 @@ akeneo_suggest_data:
                     subscribe_label: Subscribe
                     unsubscribe_label: Unsubscribe
                     constraint:
-                        # TODO Remove Style
-                        franklin_activation: "Please <a href=\"#\" data-action=\"franklin-connection\" style=\"text-decoration: underline;\">activate</a> Franklin Insights before suscribing products."
+                        franklin_activation: "Please <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activate</a> Franklin Insights before suscribing products."
 
 batch_jobs:
     suggest_data_subscribe_products:
