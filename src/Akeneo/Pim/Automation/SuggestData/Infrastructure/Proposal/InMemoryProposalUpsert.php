@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 /**
@@ -39,12 +38,15 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ProductInterface $product, array $values, string $author): void
+    public function process(array $suggestedData, string $author): void
     {
-        $this->productUpdater->update($product, ['values' => $values]);
+        foreach ($suggestedData as $data) {
+            $product = $data->getProduct();
+            $this->productUpdater->update($product, ['values' => $data->getSuggestedValues()]);
 
-        $key = sprintf('%s-%s', $product->getIdentifier(), $author);
-        $this->drafts[$key] = $product->getValues()->toArray();
+            $key = sprintf('%s-%s', $product->getIdentifier(), $author);
+            $this->drafts[$key] = $product->getValues()->toArray();
+        }
     }
 
     /**

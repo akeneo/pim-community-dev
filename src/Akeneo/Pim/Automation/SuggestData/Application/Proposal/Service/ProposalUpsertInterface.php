@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -23,11 +23,8 @@ interface ProposalUpsertInterface
     /**
      * Creates or updates a proposal given a set of values.
      *
-     * @param ProductInterface $product
-     * @param array $values
+     * @param SuggestedData[] $suggestedData
      * @param string $author
-     *
-     * @throws \LogicException
      */
-    public function process(ProductInterface $product, array $values, string $author): void;
+    public function process(array $suggestedData, string $author): void;
 }
