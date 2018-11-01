@@ -65,7 +65,15 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             return $this;
         }
 
-        $this->checkChannelAndValue($field, $channel, $value);
+        if (!in_array(
+            $operator,
+            [
+                Operators::AT_LEAST_COMPLETE,
+                Operators::AT_LEAST_INCOMPLETE,
+            ]
+        )) {
+            $this->checkChannelAndValue($field, $channel, $value);
+        }
 
         if (in_array(
             $operator,
@@ -132,7 +140,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         $shouldClauses = [];
 
         foreach ($localeCodes as $localeCode) {
-            $field = sprintf('completeness.%s.%s', $channel, $localeCode);
+            $field = $this->getFieldWithChannelAndLocale('completeness', $channel, $localeCode);
 
             switch ($operator) {
                 case Operators::EQUALS:
@@ -233,6 +241,36 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                     ];
                     $this->searchQueryBuilder->addFilter($clause);
                     break;
+                case Operators::AT_LEAST_COMPLETE:
+                    $allIncompleteField = $this->getFieldWithChannelAndLocale('all_incomplete', $channel, $localeCode);
+
+                    $clause = [
+                        'bool' => [
+                            'should' => [
+                                ['term' => [$field => 100]],
+                                ['term' => [$allIncompleteField => 0]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ];
+
+                    $shouldClauses[] = $clause;
+                    break;
+                case Operators::AT_LEAST_INCOMPLETE:
+                    $allCompleteField = $this->getFieldWithChannelAndLocale('all_complete', $channel, $localeCode);
+
+                    $clause = [
+                        'bool' => [
+                            'should' => [
+                                ['range' => [$field => ['lt' => 100]]],
+                                ['term' => [$allCompleteField => 0]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ];
+
+                    $shouldClauses[] = $clause;
+                    break;
                 default:
                     throw InvalidOperatorException::notSupported($operator, static::class);
             }
@@ -313,5 +351,17 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         }
 
         return $channel;
+    }
+
+    /**
+     * @param string $field
+     * @param string $channel
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    private function getFieldWithChannelAndLocale($field, $channel, $localeCode): string
+    {
+        return sprintf('%s.%s.%s', $field, $channel, $localeCode);
     }
 }
