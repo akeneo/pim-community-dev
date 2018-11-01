@@ -10,6 +10,7 @@ import {getErrorsView} from 'akeneoreferenceentity/application/component/app/val
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Image from 'akeneoreferenceentity/application/component/app/image';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface FormProps {
   locale: string;
@@ -17,7 +18,7 @@ interface FormProps {
   errors: ValidationError[];
   onLabelUpdated: (value: string, locale: string) => void;
   onImageUpdated: (image: File) => void;
-  onPressEnter: () => void;
+  onSubmit: () => void;
 }
 
 export default class EditForm extends React.Component<FormProps> {
@@ -34,9 +35,7 @@ export default class EditForm extends React.Component<FormProps> {
   };
 
   keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.onPressEnter();
-    }
+    if (Key.Enter === event.key) this.props.onSubmit()
   };
 
   render() {

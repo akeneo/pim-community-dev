@@ -22,6 +22,7 @@ import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/applicat
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   context: {
@@ -109,9 +110,7 @@ class Edit extends React.Component<EditProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.events.onSubmit();
-    }
+    if (Key.Enter === event.key) this.props.events.onSubmit()
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -129,9 +128,7 @@ class Edit extends React.Component<EditProps> {
                 tabIndex={0}
                 onClick={this.props.events.onSubmit}
                 onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (' ' === event.key) {
-                    this.props.events.onSubmit();
-                  }
+                  if (Key.Space === event.key) this.props.events.onSubmit()
                 }}
               />
             </header>
@@ -255,9 +252,7 @@ class Edit extends React.Component<EditProps> {
             className="AknButton AknButton--delete"
             tabIndex={0}
             onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-              if (' ' === event.key) {
-                this.props.events.onOpenDeleteModal();
-              }
+              if (Key.Space === event.key) this.props.events.onOpenDeleteModal()
             }}
             onClick={() => this.props.events.onOpenDeleteModal()}
           >

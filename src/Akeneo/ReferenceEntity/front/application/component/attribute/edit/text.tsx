@@ -13,6 +13,7 @@ import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/typ
 import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
+import Key from 'akeneoreferenceentity/tools/key';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -35,7 +36,7 @@ const AttributeValidationRuleItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >
@@ -80,9 +81,7 @@ const TextView = ({
             name="max_length"
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if ('Enter' === event.key) {
-                onSubmit();
-              }
+              if (Key.Enter === event.key) onSubmit()
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxLength.isValid(event.currentTarget.value)) {
@@ -200,9 +199,7 @@ const TextView = ({
                 placeholder="/[a-z]+[0-9]*/"
                 value={attribute.regularExpression.stringValue()}
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if ('Enter' === event.key) {
-                    onSubmit();
-                  }
+                  if (Key.Enter === event.key) onSubmit()
                 }}
                 onChange={(event: React.FormEvent<HTMLInputElement>) =>
                   onAdditionalPropertyUpdated(

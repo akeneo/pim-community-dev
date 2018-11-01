@@ -5,6 +5,7 @@ import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoreferenceentity/application/component/app/rich-text-editor';
+import Key from 'akeneoreferenceentity/tools/key';
 
 const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Value) => void; onSubmit: () => void}) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
@@ -50,9 +51,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
             onValueChange(event.currentTarget.value);
           }}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            if ('Enter' === event.key) {
-              onSubmit();
-            }
+            if (Key.Enter === event.key) onSubmit()
           }}
         />
       )}
