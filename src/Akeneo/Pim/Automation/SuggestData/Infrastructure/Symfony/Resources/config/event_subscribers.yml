@@ -3,3 +3,10 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber\InitPimAiUserSubscriber'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    akeneo.pim.automation.suggest_data.event_subscriber.empty_suggested_data_after_proposal_creation:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\EmptySuggestedDataSubscriber'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.subscription.empty_suggested_data'
+        tags:
+            - { name: 'kernel.event_subscriber' }

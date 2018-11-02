@@ -41,7 +41,9 @@ class SuggestedDataFactorySpec extends ObjectBehavior
         ProductInterface $product
     ): void {
         $product->getCategoryCodes()->willReturn([]);
-        $this->fromSubscription(new ProductSubscription($product->getWrappedObject(), 'fake-id', []))->shouldReturn(null);
+        $this->fromSubscription(new ProductSubscription($product->getWrappedObject(), 'fake-id', []))->shouldReturn(
+            null
+        );
     }
 
     public function it_returns_null_if_suggested_data_cannot_be_normalized(
@@ -94,18 +96,20 @@ class SuggestedDataFactorySpec extends ObjectBehavior
 
         $suggestedData = new SuggestedData(['foo' => 'bar']);
         $subscription->getSuggestedData()->willReturn($suggestedData);
-        $normalizer->normalize($suggestedData)->willReturn([
-            'att_1' => [
-                'scope' => null,
-                'locale' => null,
-                'data' => 'bar',
-            ],
-            'att_2' => [
-                'scope' => null,
-                'locale' => null,
-                'data' => 'baz',
-            ],
-        ]);
+        $normalizer->normalize($suggestedData)->willReturn(
+            [
+                'att_1' => [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => 'bar',
+                ],
+                'att_2' => [
+                    'scope' => null,
+                    'locale' => null,
+                    'data' => 'baz',
+                ],
+            ]
+        );
 
         $return = $this->fromSubscription($subscription);
         $return->shouldBeAnInstanceOf(WriteSuggestedData::class);

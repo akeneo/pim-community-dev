@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert;
@@ -85,6 +86,8 @@ class ProposalUpsertSpec extends ObjectBehavior
             Argument::type(GenericEvent::class)
         )->shouldBeCalledTimes(2);
 
+        $eventDispatcher->dispatch(SubscriptionEvents::PROPOSALS_CREATED, Argument::type(GenericEvent::class))
+                        ->shouldBeCalledOnce();
         $cacheClearer->clear()->shouldBeCalledOnce();
 
         $this->process(

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
@@ -73,8 +74,14 @@ final class ProposalUpsert implements ProposalUpsertInterface
         $processed = [];
         foreach ($suggestedData as $data) {
             if (true === $this->doProcess($data->getProduct(), $data->getSuggestedValues(), $author)) {
-                $processed[] = $data->getSubscriptionId();
+                $processed[] = $data;
             }
+        }
+        if (!empty($processed)) {
+            $this->eventDispatcher->dispatch(
+                SubscriptionEvents::PROPOSALS_CREATED,
+                new GenericEvent($processed)
+            );
         }
         $this->cacheClearer->clear();
     }
