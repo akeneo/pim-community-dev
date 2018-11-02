@@ -39,6 +39,16 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
     };
   }
 
+  getSelectedRecordCode(value: null | RecordCode[] | RecordCode, multiple: boolean) {
+    if (multiple) {
+      return (value as RecordCode[]).map((recordCode: RecordCode) =>
+        recordCode.stringValue()
+      );
+    } else {
+      return null === value ? [] : [(value as RecordCode).stringValue()];
+    }
+  }
+
   componentDidMount() {
     this.el = $(ReactDOM.findDOMNode(this) as Element);
 
@@ -58,7 +68,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
           type: 'PUT',
           params: {contentType: 'application/json;charset=utf-8'},
           data: (term: string, page: number): string => {
-            return JSON.stringify({
+            const selectedRecords = this.getSelectedRecordCode(this.props.value, this.props.multiple as boolean);
+            const searchQuery = {
               channel: this.props.channel.stringValue(),
               locale: this.props.locale.stringValue(),
               size: this.PAGE_SIZE,
@@ -70,25 +81,22 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
                   value: this.props.referenceEntityIdentifier.stringValue(),
                 },
                 {
-                  field: 'search',
+                  field: 'code_label',
                   operator: '=',
                   value: term,
                 },
+                {
+                  field: 'code',
+                  operator: 'NOT IN',
+                  value: selectedRecords,
+                },
               ],
-            });
+            };
+
+            return JSON.stringify(searchQuery);
           },
           results: (result: {items: NormalizedRecord[]; total: number}) => {
-            let selectedRecords: string[];
-            if (this.props.multiple) {
-              selectedRecords = (this.props.value as RecordCode[]).map((recordCode: RecordCode) =>
-                recordCode.stringValue()
-              );
-            } else {
-              selectedRecords = null === this.props.value ? [] : [(this.props.value as RecordCode).stringValue()];
-            }
-
             const items = result.items
-              .filter((normalizedRecord: NormalizedRecord) => !selectedRecords.includes(normalizedRecord.code))
               .map(this.formatItem.bind(this));
 
             return {
@@ -100,20 +108,28 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
         initSelection: async (element: any, callback: (item: Select2Item | Select2Item[]) => void) => {
           if (this.props.multiple) {
             const initialValues = element.val().split(',');
-            const records = await Promise.all(
-              initialValues.map(
-                (recordCode: string): Promise<Record> => {
-                  return recordFetcher.fetch(
-                    this.props.referenceEntityIdentifier,
-                    RecordCode.create(recordCode)
-                  ) as Promise<Record>;
-                }
-              )
-            );
+            const initQuery = {
+              channel: this.props.channel.stringValue(),
+              locale: this.props.locale.stringValue(),
+              size: 200,
+              page: 0,
+              filters: [
+                {
+                  field: 'reference_entity',
+                  operator: '=',
+                  value: this.props.referenceEntityIdentifier.stringValue(),
+                },
+                {
+                  field: 'code',
+                  operator: 'IN',
+                  value: initialValues,
+                },
+              ],
+            }
 
-            const normalizedRecords: NormalizedRecord[] = records.map((record: Record) => record.normalize());
+            const result = await recordFetcher.search(initQuery);
 
-            callback(normalizedRecords.map(this.formatItem.bind(this)));
+            callback(result.items.map(this.formatItem.bind(this)));
           } else {
             const initialValue = element.val();
             recordFetcher
