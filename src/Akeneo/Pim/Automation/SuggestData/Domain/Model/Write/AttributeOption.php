@@ -47,4 +47,44 @@ class AttributeOption
         $this->pimOptionId = $pimOptionId;
         $this->pimOptionLabel = $pimOptionLabel;
     }
+
+    /**
+     * @return string
+     */
+    public function getFranklinOptionId(): string
+    {
+        return $this->franklinOptionId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFranklinOptionLabel(): string
+    {
+        return $this->franklinOptionLabel;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPimOptionId(): ?string
+    {
+        return $this->pimOptionId;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPimOptionLabel(): ?string
+    {
+        return $this->pimOptionLabel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMapped(): bool
+    {
+        return !empty($this->pimOptionId);
+    }
 }

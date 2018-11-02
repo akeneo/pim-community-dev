@@ -87,7 +87,13 @@ interface DataProviderInterface
     ): ReadAttributeOptionsMapping;
 
     /**
+     * @param FamilyCode $familyCode
+     * @param FranklinAttributeId $franklinAttributeId
      * @param WriteAttributeOptionsMapping $attributeOptionsMapping
      */
-    public function saveAttributeOptionsMapping(WriteAttributeOptionsMapping $attributeOptionsMapping): void;
+    public function saveAttributeOptionsMapping(
+        FamilyCode $familyCode,
+        FranklinAttributeId $franklinAttributeId,
+        WriteAttributeOptionsMapping $attributeOptionsMapping
+    ): void;
 }
