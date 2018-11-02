@@ -1,11 +1,5 @@
 @import '../base/variables';
-
-@keyframes downloadPop {
-  0%   {transform: translateY(0);}
-  25%  {transform: translateY(2px);}
-  50%  {transform: translateY(-2px);}
-  100% {transform: translateY(0);}
-}
+@import '../base/animations';
 
 .AknImage {
   @imageWidth: 140px;
@@ -53,20 +47,11 @@
     align-items: center;
     justify-content: flex-end;
     width: 100%;
+    .uploadAnimation();
 
     &Illustration {
       width: 190px;
       overflow: visible;
-
-      .arrow {
-        transform-origin: 51.2% 26%;
-        transition: transform .3s ease-in-out
-      }
-
-      .stars {
-        transform-origin: 50% 50%;
-        transition: transform .2s linear;
-      }
     }
 
     &Helper {
@@ -111,26 +96,11 @@
       align-items: end;
       color: white;
 
-      .lid {
-        transition: transform .1s linear;
-        transform-origin: 60% 90%;
-      }
-
-      .arrow {
-        animation-duration: .5s;
-        animation-iteration-count: 1;
-      }
+      .trashAnimation;
+      .downloadAnimation;
 
       &:hover {
         cursor: pointer;
-
-        .lid {
-          transform: rotate(15deg) translate(-3px, -2px);
-        }
-
-        .arrow {
-          animation-name: downloadPop;
-        }
       }
     }
 

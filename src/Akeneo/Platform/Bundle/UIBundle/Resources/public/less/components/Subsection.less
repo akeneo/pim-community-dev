@@ -20,8 +20,29 @@
       padding-top: 10px;
     }
 
+    &--light {
+      border-bottom: 1px solid @AknGrey;
+      margin: 0 20px 25px 20px;
+      font-weight: normal;
+      color: @AknLightPurple;
+    }
+
     &--blockDown {
       margin-bottom: 36px;
+    }
+  }
+
+  &-footer {
+    background: white;
+    border-top: 1px solid @AknGrey;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+
+    &--sticky {
+      position: sticky;
+      bottom: 0;
+      padding: 10px;
     }
   }
 
