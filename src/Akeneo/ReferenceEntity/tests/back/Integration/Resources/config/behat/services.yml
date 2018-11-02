@@ -6,6 +6,7 @@ services:
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: fob.context_service }
 
