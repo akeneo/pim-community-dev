@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand as AppCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -45,7 +46,9 @@ class CreateProposalsCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Handles the creation of proposals based on suggested data');
+        $this
+            ->setDescription('Handles the creation of proposals based on suggested data')
+            ->addArgument('batchSize', InputArgument::OPTIONAL, '', 100);
     }
 
     /**
@@ -53,7 +56,8 @@ class CreateProposalsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $this->handler->handle(new AppCommand());
+        $batchSize = (int) $input->getArgument('batchSize');
+        $this->handler->handle(new AppCommand($batchSize));
         $output->writeln('<info>Proposals sucessfully created</info>');
     }
 }

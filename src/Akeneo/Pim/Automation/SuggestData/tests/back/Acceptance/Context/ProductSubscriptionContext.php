@@ -155,14 +155,12 @@ class ProductSubscriptionContext implements Context
     /**
      * @Then /^([0-9]*) suggested data should have been added$/
      *
-     * @param mixed $count (could be
+     * @param int $count
      */
     public function suggestedDataHaveBeenAdded(int $count): void
     {
-        $expectedNumber = (int) $count;
-
-        $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions();
-        Assert::count($pendingSubscriptions, $expectedNumber);
+        $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions($count, null);
+        Assert::count($pendingSubscriptions, $count);
     }
 
     /**

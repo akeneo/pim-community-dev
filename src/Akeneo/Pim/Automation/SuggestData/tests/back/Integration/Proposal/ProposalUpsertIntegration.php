@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Proposal;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -94,7 +95,10 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
 
-        $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
+        $this->proposalUpsert->process(
+            [new SuggestedData('fake-subscription', $suggestedValues, $product)],
+            ProposalAuthor::USERNAME
+        );
 
         $draft = $this->getDraft($product, ProposalAuthor::USERNAME);
         Assert::assertInstanceOf(EntityWithValuesDraftInterface::class, $draft);
@@ -121,7 +125,10 @@ class ProposalUpsertIntegration extends TestCase
             ]
         );
 
-        $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
+        $this->proposalUpsert->process(
+            [new SuggestedData('fake-subscription', $suggestedValues, $product)],
+            ProposalAuthor::USERNAME
+        );
 
         Assert::assertNull($this->getDraft($product, ProposalAuthor::USERNAME));
     }
@@ -163,7 +170,10 @@ class ProposalUpsertIntegration extends TestCase
                 ],
             ],
         ];
-        $this->proposalUpsert->process($product, $newSuggestedValues, ProposalAuthor::USERNAME);
+        $this->proposalUpsert->process(
+            [new SuggestedData('fake-subscription', $newSuggestedValues, $product)],
+            ProposalAuthor::USERNAME
+        );
 
         $draft = $this->getDraft($product, ProposalAuthor::USERNAME);
         Assert::assertInstanceOf(EntityWithValuesDraftInterface::class, $draft);
@@ -187,7 +197,12 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->expectException($exceptionClass);
-        $this->proposalUpsert->process($product, $invalidValues, ProposalAuthor::USERNAME);
+        $this->proposalUpsert->process(
+            [
+                new SuggestedData('a-fake-subscription-id', $invalidValues, $product),
+            ],
+            ProposalAuthor::USERNAME
+        );
     }
 
     /**

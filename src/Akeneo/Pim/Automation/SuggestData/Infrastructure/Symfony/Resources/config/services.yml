@@ -11,3 +11,9 @@ services:
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.saver.product_draft'
             - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'
+
+    akeneo.pim.automation.suggest_data.proposal.factory.suggested_data:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\SuggestedDataFactory'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'

@@ -13,41 +13,48 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\SuggestedDataFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class CreateProposalsHandler
 {
-    /** @var SuggestedDataNormalizer */
-    private $suggestedDataNormalizer;
-
     /** @var ProposalUpsertInterface */
     private $proposalUpsert;
 
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
+    /** @var SuggestedDataFactory */
+    private $suggestedDataFactory;
+
+    /** @var ProductSubscription[] */
+    private $pendingSubscriptions = [];
+
+    /** @var string */
+    private $searchAfter;
+
+    /** @var int */
+    private $batchSize;
+
     /**
-     * @param SuggestedDataNormalizer $suggestedDataNormalizer
      * @param ProposalUpsertInterface $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+     * @param SuggestedDataFactory $suggestedDataFactory
      */
     public function __construct(
-        SuggestedDataNormalizer $suggestedDataNormalizer,
         ProposalUpsertInterface $proposalUpsert,
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
+        SuggestedDataFactory $suggestedDataFactory
     ) {
-        $this->suggestedDataNormalizer = $suggestedDataNormalizer;
         $this->proposalUpsert = $proposalUpsert;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->suggestedDataFactory = $suggestedDataFactory;
     }
 
     /**
@@ -55,69 +62,37 @@ class CreateProposalsHandler
      */
     public function handle(CreateProposalsCommand $command): void
     {
-        // TODO APAI-242 Paginate/cursorize the subscriptions
-        $subscriptions = $this->productSubscriptionRepository->findPendingSubscriptions();
+        $this->batchSize = $command->batchSize();
+        $this->fetchNextPendingSubscriptions();
 
-        foreach ($subscriptions as $subscription) {
-            $this->createProposal($subscription);
+        while (!empty($this->pendingSubscriptions)) {
+            $toProcess = [];
+            foreach ($this->pendingSubscriptions as $subscription) {
+                $data = $this->suggestedDataFactory->fromSubscription($subscription);
+                if (null !== $data) {
+                    $toProcess[] = $data;
+                }
+            }
+            if (!empty($toProcess)) {
+                $this->proposalUpsert->process($toProcess, ProposalAuthor::USERNAME);
+            }
+            $this->fetchNextPendingSubscriptions();
         }
     }
 
     /**
-     * @param ProductSubscription $subscription
+     * Fetches subscriptions with suggested data.
      */
-    private function createProposal(ProductSubscription $subscription): void
+    private function fetchNextPendingSubscriptions(): void
     {
-        $product = $subscription->getProduct();
-        if (0 === count($product->getCategoryCodes())) {
-            // TODO APAI-244: handle error
-            return;
-        }
-
-        $suggestedValues = $this->getSuggestedValues(
-            $subscription->getSuggestedData(),
-            $product->getFamily()
+        $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions(
+            $this->batchSize,
+            $this->searchAfter
         );
-
-        if (empty($suggestedValues)) {
-            // TODO APAI-244: handle error
-            return;
+        if (!empty($pendingSubscriptions)) {
+            $this->searchAfter = end($pendingSubscriptions)->getSubscriptionId();
+            reset($pendingSubscriptions);
         }
-
-        try {
-            $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
-        } catch (\LogicException $e) {
-            // TODO APAI-244: handle error
-            return;
-        }
-
-        $subscription->emptySuggestedData();
-        $this->productSubscriptionRepository->save($subscription);
-    }
-
-    /**
-     * @param SuggestedData $suggestedData
-     * @param FamilyInterface $family
-     *
-     * @return array
-     */
-    private function getSuggestedValues(SuggestedData $suggestedData, FamilyInterface $family): array
-    {
-        try {
-            $normalizedData = $this->suggestedDataNormalizer->normalize($suggestedData);
-        } catch (\InvalidArgumentException $e) {
-            // TODO APAI-244: handle error
-            return [];
-        }
-
-        $availableAttributeCodes = $family->getAttributeCodes();
-
-        return array_filter(
-            $normalizedData,
-            function ($attributeCode) use ($availableAttributeCodes) {
-                return in_array($attributeCode, $availableAttributeCodes);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
+        $this->pendingSubscriptions = $pendingSubscriptions;
     }
 }

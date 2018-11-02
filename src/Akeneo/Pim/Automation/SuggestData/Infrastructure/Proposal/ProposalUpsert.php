@@ -72,24 +72,21 @@ final class ProposalUpsert implements ProposalUpsertInterface
     {
         $processed = [];
         foreach ($suggestedData as $data) {
-            try {
-                $this->doProcess($data->getProduct(), $data->getSuggestedValues(), $author);
+            if (true === $this->doProcess($data->getProduct(), $data->getSuggestedValues(), $author)) {
                 $processed[] = $data->getSubscriptionId();
-            } catch (\LogicException $e) {
-                // TODO APAI-244: Handle errors
             }
         }
-
-        $this->eventDispatcher->dispatch(
-            new GenericEvent('suggested_data_handled', ['subscription_ids' => $processed])
-        );
         $this->cacheClearer->clear();
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProductInterface $product
+     * @param array $values
+     * @param string $author
+     *
+     * @return bool
      */
-    private function doProcess(ProductInterface $product, array $values, string $author): void
+    private function doProcess(ProductInterface $product, array $values, string $author): bool
     {
         $this->productUpdater->update(
             $product,
@@ -113,6 +110,10 @@ final class ProposalUpsert implements ProposalUpsertInterface
                 EntityWithValuesDraftEvents::POST_READY,
                 new GenericEvent($productDraft, ['comment' => null])
             );
+
+            return true;
         }
+
+        return false;
     }
 }

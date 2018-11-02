@@ -85,9 +85,6 @@ class ProposalUpsertSpec extends ObjectBehavior
             Argument::type(GenericEvent::class)
         )->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(
-            new GenericEvent('suggested_data_handled', ['subscription_ids' => ['123456', '654321']])
-        )->shouldBeCalledOnce();
         $cacheClearer->clear()->shouldBeCalledOnce();
 
         $this->process(
