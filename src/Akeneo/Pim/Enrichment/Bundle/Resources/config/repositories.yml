@@ -48,6 +48,17 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
+    pim_catalog.repository.sql_attribute:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Sql\AttributeRepository'
+        arguments:
+        - '@database_connection'
+
+    pim_catalog.repository.lru_attribute:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Sql\LruAttributeRepository'
+        arguments:
+        - '@pim_catalog.repository.sql_attribute'
+        - 10
+
     pim_catalog.repository.cached_attribute_option:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
