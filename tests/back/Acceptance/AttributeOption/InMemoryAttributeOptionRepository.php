@@ -94,7 +94,14 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
      */
     public function findCodesByIdentifiers($code, array $optionCodes)
     {
-        throw new NotImplementedException(__METHOD__);
+        $attributeOptions = [];
+        foreach ($this->attributeOptions as $attributeOption) {
+            if ($code === $attributeOption->getAttribute()->getCode() && in_array($attributeOption->getCode(), $optionCodes)) {
+                $attributeOptions[] = $attributeOption;
+            }
+        }
+
+        return $attributeOptions;
     }
 
     /**
