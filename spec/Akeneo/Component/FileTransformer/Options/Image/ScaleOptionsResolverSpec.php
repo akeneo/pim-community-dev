@@ -61,5 +61,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         $this->resolve(['width' => 100]);
         $this->resolve(['height' => 100]);
         $this->resolve(['ratio' => 33]);
+        $this->resolve(['ratio' => 0]);
+        $this->resolve(['ratio' => 100]);
     }
 }
