@@ -8,16 +8,16 @@ You may want to reproduce the build!
 
 First of all you have to set up the kubernetes client on your computer and gcloud on your computer
 
-Install the cloud SDK: `https://cloud.google.com/sdk/docs/downloads-interactive`
-Login with your google akeneo account: `$ gcloud auth login`
-Configure gcloud with docker: `$ gcloud auth configure docker`
-Install the kubernetes client: `$ gcloud components install kubectl`
-Set the project (The one you want to reproduce the CI is named akecld-saas-training) : `$ gcloud config set project akecld-saas-training`
-Get the kubernetes credentials : `$ gcloud container clusters get-credentials europe-west3-a --zone=europe-west3-a`
+- Install the cloud SDK: `https://cloud.google.com/sdk/docs/downloads-interactive`. Enter `akecld-saas-training` if the prompt ask for project.
+- Login with your google akeneo account: `$ gcloud auth login`
+- Configure gcloud with docker: `$ gcloud auth configure-docker`
+- Install the kubernetes client: `$ gcloud components install kubectl`
+- Set the project (The one you want to reproduce the CI is named akecld-saas-training) : `$ gcloud config set project akecld-saas-training`
+- Get the kubernetes credentials : `$ gcloud container clusters get-credentials europe-west3-a --zone=europe-west3-a`
 
 Here you should be able to do a `$ kubectl get all`
 
-Create a kubernetes namespace for yourself: `$ kubectl create namespace nanou for example`
+Create a kubernetes namespace for yourself: `$ kubectl create namespace nanou`
 
 ## Continuous Integration
 
@@ -29,9 +29,9 @@ You have the tab "Artefacts" at the top right corner, click on it.
 
 ### Prepare the file
 
-Download the file ending with `_job.yaml`  which contains the word selenium on it (because you will need behat most of the time) it should be the second file.
+Download the file ending with `_job.yaml` which contains the word `selenium` on it.
 
-Then, you will have to edit this file (make sure it is the one containing selenium)
+Then, you will have to edit this file.
 
 - First line, change the API from batch/v1 to v1
 - Change the second line from kind: Job to kind: Pod
