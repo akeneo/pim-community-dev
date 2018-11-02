@@ -20,15 +20,17 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function selectAttributes(array $attributes)
     {
         foreach ($attributes as $attribute) {
-            $headerInput = $this->spin(function () {
-                return $this->find('css', 'header input');
-            }, 'Cannot find header input');
+            $this->spin(function () use ($attribute) {
+                $headerInput = $this->find('css', 'header input');
 
-            if (!$headerInput->isVisible() && $headerInput->isValid()) {
-                throw new \Exception('Attribute selector header input is not visible or valid');
-            }
+                if (!$headerInput->isVisible() && $headerInput->isValid()) {
+                    return false;
+                }
 
-            $headerInput->setValue($attribute);
+                $headerInput->setValue($attribute);
+
+                return true;
+            }, 'Cannot fill the header input');
 
             $attributeItem = $this->spin(function () use ($attribute) {
                 return $this->find('css', sprintf('li[data-attribute-code="%s"]', $attribute));
