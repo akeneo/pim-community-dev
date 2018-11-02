@@ -224,4 +224,4 @@ pim_enrich:
                     type_specific: Type specific parameters
                 reference_entity:
                     identifier: Reference entity
-                    default_label: Please select an reference entity
+                    default_label: Please select a reference entity
