@@ -75,7 +75,8 @@
         "twig/extensions": "1.3.0",
         "twig/twig": "1.36.0",
         "box/spout": "2.7.2",
-        "webmozart/assert": "1.3"
+        "webmozart/assert": "1.3",
+        "lrucache/lrucache": "^0.3.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "0.3.*",
