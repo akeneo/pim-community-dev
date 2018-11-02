@@ -25,6 +25,11 @@ class LabelCollection
     private function __construct(array $translatedLabels)
     {
         foreach ($translatedLabels as $code => $label) {
+            if ('' === $label) {
+                unset($translatedLabels[$code]);
+                continue;
+            }
+
             if (!is_string($code)) {
                 throw new \InvalidArgumentException(sprintf('Expecting locale code to be a string, %s given.', $code));
             }
