@@ -76,6 +76,23 @@ class CreateActionTest extends ControllerIntegrationTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_creates_an_option_attribute(): void
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_option_ok.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_option_collection_attribute(): void
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'attribute_option_collection_ok.json');
+    }
+
+
+    /**
      * TODO: This test should be an acceptance test once we'll move the logic from the controller
      *
      * @test
