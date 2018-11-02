@@ -2,6 +2,7 @@ import * as React from 'react';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
+import Key from 'akeneoreferenceentity/tools/key';
 
 const ChannelItemView = ({
   isOpen,
@@ -23,7 +24,7 @@ const ChannelItemView = ({
       onClick={() => onClick(element)}
       tabIndex={isOpen ? 0 : -1}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
     >
       <span className="label">{element.label}</span>
@@ -38,7 +39,7 @@ const ChannelButtonView = ({selectedElement, onClick}: {selectedElement: Dropdow
     onClick={onClick}
     tabIndex={0}
     onKeyPress={event => {
-      if (' ' === event.key) onClick();
+      if (Key.Space === event.key) onClick();
     }}
   >
     {__('Channel')}

@@ -4,6 +4,7 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {toggleSidebar, updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface SidebarOwnProps {
   backButton?: () => JSX.Element;
@@ -66,9 +67,7 @@ class Sidebar extends React.Component<SidebarProps> {
                     data-tab={tab.code}
                     onClick={this.updateCurrentTab}
                     onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                      if (' ' === event.key) {
-                        this.updateCurrentTab(event);
-                      }
+                      if (Key.Space === event.key) this.updateCurrentTab(event)
                     }}
                   >
                     {__(tab.label)}

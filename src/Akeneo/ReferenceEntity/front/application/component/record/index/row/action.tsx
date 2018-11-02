@@ -2,6 +2,7 @@ import * as React from 'react';
 import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
+import Key from 'akeneoreferenceentity/tools/key';
 const router = require('pim/router');
 
 const memo = (React as any).memo;
@@ -73,9 +74,7 @@ const ActionRow = memo(
               href={path}
               onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
                 event.preventDefault();
-                if (' ' === event.key) {
-                  onRedirectToRecord(record);
-                }
+                if (Key.Space === event.key) onRedirectToRecord(record)
 
                 return false;
               }}

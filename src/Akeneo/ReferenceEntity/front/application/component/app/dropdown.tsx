@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Key from 'akeneoreferenceentity/tools/key';
 
 export interface DropdownElement {
   identifier: string;
@@ -20,7 +21,7 @@ const DefaultButtonView = ({
     data-selected={selectedElement.identifier}
     onClick={() => onClick()}
     onKeyPress={event => {
-      if (' ' === event.key) onClick();
+      if (Key.Space === event.key) onClick();
     }}
     aria-label={selectedElement.label}
   >
@@ -48,7 +49,7 @@ const DefaultItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >

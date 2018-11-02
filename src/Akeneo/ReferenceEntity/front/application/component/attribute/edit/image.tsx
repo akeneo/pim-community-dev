@@ -9,6 +9,7 @@ import {
   AllowedExtensions,
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
 import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
+import Key from 'akeneoreferenceentity/tools/key';
 
 const ImageView = ({
   attribute,
@@ -37,9 +38,7 @@ const ImageView = ({
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if ('Enter' === event.key) {
-                onSubmit();
-              }
+              if (Key.Enter === event.key) onSubmit()
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxFileSize.isValid(event.currentTarget.value)) {

@@ -16,6 +16,7 @@ import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/compone
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
+import Key from 'akeneoreferenceentity/tools/key';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -160,7 +161,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknIconButton AknIconButton--edit"
             onClick={() => onAttributeEdit(attribute.getIdentifier())}
             onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (' ' === event.key) onAttributeEdit(attribute.getIdentifier());
+              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
             }}
           />
         </div>

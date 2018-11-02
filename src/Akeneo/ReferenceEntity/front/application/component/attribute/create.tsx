@@ -23,6 +23,7 @@ import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {isRecordAttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   context: {
@@ -77,7 +78,7 @@ const AttributeTypeItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element)
       }}
       tabIndex={isOpen ? 0 : -1}
     >
@@ -108,7 +109,7 @@ const RecordTypeItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >
@@ -150,9 +151,7 @@ class Create extends React.Component<CreateProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.events.onSubmit();
-    }
+    if (Key.Enter === event.key) this.props.events.onSubmit()
   };
 
   private getTypeOptions = (): DropdownElement[] => {
@@ -335,9 +334,7 @@ class Create extends React.Component<CreateProps> {
             onClick={this.props.events.onCancel}
             tabIndex={0}
             onKeyPress={event => {
-              if (' ' === event.key) {
-                this.props.events.onCancel();
-              }
+              if (Key.Space === event.key) this.props.events.onCancel()
             }}
           >
             {__('pim_reference_entity.attribute.create.cancel')}
