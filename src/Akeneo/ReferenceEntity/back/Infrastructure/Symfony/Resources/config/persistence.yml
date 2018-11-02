@@ -154,6 +154,20 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.option_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.option_collection_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
     # Record value hydrators
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.data_hydrator_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry

@@ -23,12 +23,16 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -174,6 +178,69 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
         $this->assertAttribute($expectedAttribute, $actualAttribute);
     }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_option_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('favorite_color');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+
+        $expectedOption = OptionAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            $attributeCode,
+            LabelCollection::fromArray(['en_US' => 'Favorite Color', 'fr_FR' => 'Couleur favorite']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+        $expectedOption->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
+        ]);
+
+        $this->attributeRepository->create($expectedOption);
+
+        $actualOption = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedOption, $actualOption);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_option_collection_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('colors');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+
+        $expectedOption = OptionCollectionAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('colors'),
+            LabelCollection::fromArray(['en_US' => 'Colors', 'fr_FR' => 'Couleurs']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+        $expectedOption->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
+        ]);
+
+        $this->attributeRepository->create($expectedOption);
+
+        $actualOption = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedOption, $actualOption);
+    }
+
 
     /**
      * @test
@@ -349,7 +416,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $actual = $actualAttribute->normalize();
         sort($expected['labels']);
         sort($actual['labels']);
-        $this->assertSame($expected, $actual);
+        $this->assertEquals($expected, $actual);
     }
 
     private function resetDB(): void
