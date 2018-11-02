@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordForConnectorByReferenceEntityAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -33,12 +34,17 @@ class GetRecordForConnectorAction
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
+    /** @var AddHalDownloadLinkToImages */
+    private $addHalLinksToImageValues;
+
     public function __construct(
         FindRecordForConnectorByReferenceEntityAndCodeInterface $findRecordForConnectorQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists
+        ReferenceEntityExistsInterface $referenceEntityExists,
+        AddHalDownloadLinkToImages $addHalLinksToImageValues
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->findRecordForConnectorQuery = $findRecordForConnectorQuery;
+        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
     }
 
     /**
@@ -65,6 +71,7 @@ class GetRecordForConnectorAction
         }
 
         $normalizedRecord = $record->normalize();
+        $normalizedRecord = ($this->addHalLinksToImageValues)($referenceEntityIdentifier, $normalizedRecord);
 
         return new JsonResponse($normalizedRecord);
     }

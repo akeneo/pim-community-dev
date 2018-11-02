@@ -91,6 +91,11 @@ services:
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindImageAttributeCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
     # Third party services
     oro_security.security_facade:
         class: Akeneo\ReferenceEntity\Common\Fake\SecurityFacadeStub
