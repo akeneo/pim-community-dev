@@ -51,3 +51,8 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.association.class%'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindActivatedCurrencies
+        arguments:
+            - '@doctrine.orm.entity_manager'

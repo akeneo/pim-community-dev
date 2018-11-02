@@ -30,7 +30,7 @@ class ProductSaverIntegration extends TestCase
         $expectedRawValues = $this->getStorageValuesWithAllAttributes();
         NormalizedProductCleaner::cleanOnlyValues($expectedRawValues);
 
-        $this->assertSame($expectedRawValues, $rawValues);
+        $this->assertEquals($expectedRawValues, $rawValues);
     }
 
     public function testRawValuesForVariantProduct()
@@ -479,14 +479,12 @@ class ProductSaverIntegration extends TestCase
             'a_scopable_price' => [
                 'ecommerce' => [
                     '<all_locales>' => [
-                        ['amount' => '15.00', 'currency' => 'EUR'],
                         ['amount' => '20.00', 'currency' => 'USD'],
                     ],
                 ],
                 'tablet' => [
                     '<all_locales>' => [
                         ['amount' => '17.00', 'currency' => 'EUR'],
-                        ['amount' => '24.00', 'currency' => 'USD'],
                     ],
                 ],
             ],

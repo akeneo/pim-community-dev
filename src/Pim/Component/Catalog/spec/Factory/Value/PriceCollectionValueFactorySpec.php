@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Channel\Query\FindActivatedCurrenciesInterface;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -14,9 +15,9 @@ use Prophecy\Argument;
 
 class PriceCollectionValueFactorySpec extends ObjectBehavior
 {
-    function let(PriceFactory $priceFactory)
+    function let(PriceFactory $priceFactory, FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
-        $this->beConstructedWith($priceFactory, ScalarValue::class, 'pim_catalog_price_collection', $priceFactory);
+        $this->beConstructedWith($priceFactory, ScalarValue::class, 'pim_catalog_price_collection', $findActivatedCurrencies);
     }
 
     function it_is_initializable()
@@ -32,7 +33,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_empty_price_collection_product_value(
         $priceFactory,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -40,6 +42,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
 
         $priceFactory->createPrice(Argument::cetera())->shouldNotBeCalled();
 
@@ -59,7 +63,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
     function it_creates_a_localizable_and_scopable_empty_price_collection_product_value(
         $priceFactory,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -67,6 +72,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $findActivatedCurrencies->forChannel('ecommerce')->willReturn(['EUR', 'USD']);
 
         $priceFactory->createPrice(Argument::cetera())->shouldNotBeCalled();
 
@@ -90,7 +97,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceFactory,
         AttributeInterface $attribute,
         ProductPriceInterface $priceEUR,
-        ProductPriceInterface $priceUSD
+        ProductPriceInterface $priceUSD,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -101,6 +109,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
         $priceFactory->createPrice(42, 'EUR')->willReturn($priceEUR);
         $priceFactory->createPrice(63, 'USD')->willReturn($priceUSD);
+
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD', 'AFA']);
 
         $productValue = $this->create(
             $attribute,
@@ -120,7 +130,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceFactory,
         AttributeInterface $attribute,
         ProductPriceInterface $priceEUR,
-        ProductPriceInterface $priceUSD
+        ProductPriceInterface $priceUSD,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -128,6 +139,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD', 'AFA']);
 
         $priceFactory->createPrice(42, 'EUR')->shouldNotBeCalled();
         $priceFactory->createPrice(null, 'EUR')->shouldBeCalled()->willReturn($priceEUR);
@@ -157,7 +170,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $priceFactory,
         AttributeInterface $attribute,
         ProductPriceInterface $priceEUR,
-        ProductPriceInterface $priceUSD
+        ProductPriceInterface $priceUSD,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -165,6 +179,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_price_collection');
         $attribute->getBackendType()->willReturn('prices');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $findActivatedCurrencies->forChannel('ecommerce')->willReturn(['EUR', 'USD', 'AFA']);
 
         $priceFactory->createPrice(42, 'EUR')->willReturn($priceEUR);
         $priceFactory->createPrice(63, 'USD')->willReturn($priceUSD);
@@ -174,6 +190,73 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
             'ecommerce',
             'en_US',
             [['amount' => 42, 'currency' => 'EUR'], ['amount' => 63, 'currency' => 'USD']]
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldHaveAttribute('price_collection_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldHavePrices();
+    }
+
+    function it_does_not_create_prices_for_non_activated_currencies(
+        $priceFactory,
+        AttributeInterface $attribute,
+        ProductPriceInterface $priceUSD,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $findActivatedCurrencies->forAllChannels()->willReturn(['USD']);
+
+        $priceFactory->createPrice(42, 'EUR')->shouldNotBeCalled();
+        $priceFactory->createPrice(63, 'USD')->willReturn($priceUSD);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            'en_US',
+            [['amount' => 42, 'currency' => 'EUR'], ['amount' => 63, 'currency' => 'USD'], ['amount' => 12, 'currency' => 'AFA']]
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldHaveAttribute('price_collection_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHavePrices();
+    }
+
+    function it_does_not_create_prices_for_non_activated_currencies_for_the_channel(
+        $priceFactory,
+        AttributeInterface $attribute,
+        ProductPriceInterface $priceUSD,
+        FindActivatedCurrenciesInterface $findActivatedCurrencies
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $findActivatedCurrencies->forChannel('ecommerce')->willReturn(['USD']);
+
+        $priceFactory->createPrice(42, 'EUR')->shouldNotBeCalled();
+        $priceFactory->createPrice(63, 'USD')->willReturn($priceUSD);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            [['amount' => 42, 'currency' => 'EUR'], ['amount' => 63, 'currency' => 'USD'], ['amount' => 12, 'currency' => 'AFA']]
         );
 
         $productValue->shouldReturnAnInstanceOf(ScalarValue::class);

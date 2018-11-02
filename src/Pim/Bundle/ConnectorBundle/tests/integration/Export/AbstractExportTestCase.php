@@ -204,7 +204,7 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $csv = $this->jobLauncher->launchExport('csv_product_export', null, $config);
 
-        $this->assertSame($expectedCsv, $csv);
+        $this->assertEquals($expectedCsv, $csv);
     }
 
     /**

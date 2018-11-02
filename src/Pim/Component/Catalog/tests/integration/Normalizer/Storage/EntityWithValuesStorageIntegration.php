@@ -172,14 +172,12 @@ class EntityWithValuesStorageIntegration extends TestCase
             'a_scopable_price' => [
                 'ecommerce' => [
                     '<all_locales>' => [
-                        ['amount' => '15.00', 'currency' => 'EUR'],
                         ['amount' => '20.00', 'currency' => 'USD'],
                     ],
                 ],
                 'tablet' => [
                     '<all_locales>' => [
                         ['amount' => '17.00', 'currency' => 'EUR'],
-                        ['amount' => '24.00', 'currency' => 'USD'],
                     ],
                 ],
             ],
@@ -235,6 +233,6 @@ class EntityWithValuesStorageIntegration extends TestCase
         NormalizedProductCleaner::cleanOnlyValues($expected);
         NormalizedProductCleaner::cleanOnlyValues($result);
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 }
