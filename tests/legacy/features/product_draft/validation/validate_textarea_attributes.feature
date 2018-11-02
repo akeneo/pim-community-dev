@@ -25,14 +25,14 @@ Feature: Validate textarea attributes of a draft
     Given I change the Info to "information"
     And I save the product
     Then I should see validation error "This value is too long. It should have 5 characters or less."
-    And there should be 1 error in the "Product information" tab
+    And there should be 2 errors in the "Product information" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute
     Given I visit the "Marketing" group
     And I change the Description for scope mobile to "information"
     And I save the product
     Then I should see validation error "This value is too long. It should have 5 characters or less."
-    And there should be 1 error in the "Marketing" tab
+    And there should be 2 errors in the "Marketing" tab
 
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
     Given I change the Longinfo to "information"
