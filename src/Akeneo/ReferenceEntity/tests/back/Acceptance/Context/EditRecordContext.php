@@ -1460,6 +1460,22 @@ final class EditRecordContext implements Context
     }
 
     /**
+     * @When /^the user empties the french label$/
+     */
+    public function theUserEmptiesTheLabel()
+    {
+        $editLabelCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [
+                'fr_FR' => ''
+            ],
+            'values'                     => [],
+        ]);
+        $this->executeCommand($editLabelCommand);
+    }
+
+    /**
      * @Then /^the record should have the french label "([^"]*)"$/
      */
     public function theRecordShouldHaveTheLabel(string $expectedLabel)
@@ -1469,6 +1485,18 @@ final class EditRecordContext implements Context
             RecordCode::fromString(self::RECORD_CODE)
         );
         Assert::assertEquals($expectedLabel, $record->getLabel('fr_FR'), 'Labels are not equal');
+    }
+
+    /**
+     * @Then /^the record should not have a french label$/
+     */
+    public function theRecordShouldNotHaveLabel()
+    {
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        Assert::assertNull($record->getLabel('fr_FR'), 'French label is not null');
     }
 
     /**
