@@ -23,6 +23,7 @@ import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
 import Key from 'akeneoreferenceentity/tools/key';
+import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 
 interface StateProps {
   context: {
@@ -120,19 +121,10 @@ class Edit extends React.Component<EditProps> {
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
-            <header className="AknSubsection-title AknSubsection-title--sticky">
-              {__('pim_reference_entity.attribute.edit.common.title')}
-              <span
-                title={__('pim_reference_entity.attribute.edit.save')}
-                className="AknButtonList-item AknButton-squareIcon AknButton-squareIcon--small AknButton-squareIcon--validate"
-                tabIndex={0}
-                onClick={this.props.events.onSubmit}
-                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (Key.Space === event.key) this.props.events.onSubmit()
-                }}
-              />
+            <header className="AknSubsection-title AknSubsection-title--sticky  AknSubsection-title--light">
+              {__('pim_reference_entity.attribute.edit.title', {code: this.props.attribute.getCode().stringValue()})}
             </header>
-            <div className="AknFormContainer AknFormContainer--expanded">
+            <div className="AknFormContainer AknFormContainer--expanded AknFormContainer--withSmallPadding">
               <div className="AknFieldContainer" data-code="label">
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.label">
@@ -159,24 +151,6 @@ class Edit extends React.Component<EditProps> {
                   />
                 </div>
                 {getErrorsView(this.props.errors, 'labels')}
-              </div>
-              <div className="AknFieldContainer" data-code="code">
-                <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                  <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.code">
-                    {__('pim_reference_entity.attribute.edit.input.code')}
-                  </label>
-                </div>
-                <div className="AknFieldContainer-inputContainer">
-                  <input
-                    type="text"
-                    className="AknTextField AknTextField--light AknTextField--disabled"
-                    id="pim_reference_entity.attribute.edit.input.code"
-                    name="code"
-                    value={this.props.attribute.code.stringValue()}
-                    readOnly
-                    tabIndex={-1}
-                  />
-                </div>
               </div>
               <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
                 <div className="AknFieldContainer-header">
@@ -232,13 +206,6 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
-            </div>
-          </div>
-          <div className="AknSubsection">
-            <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: 0, paddingTop: '10px'}}>
-              {__('pim_reference_entity.attribute.edit.additional.title')}
-            </header>
-            <div className="AknFormContainer AknFormContainer--expanded">
               {getAdditionalProperty(
                 this.props.attribute,
                 this.props.events.onAdditionalPropertyUpdated,
@@ -247,16 +214,42 @@ class Edit extends React.Component<EditProps> {
                 this.props.context.locale
               )}
             </div>
-          </div>
-          <div
-            className="AknButton AknButton--delete"
-            tabIndex={0}
-            onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-              if (Key.Space === event.key) this.props.events.onOpenDeleteModal()
-            }}
-            onClick={() => this.props.events.onOpenDeleteModal()}
-          >
-            {__('pim_reference_entity.attribute.edit.delete')}
+            <footer className="AknSubsection-footer AknSubsection-footer--sticky">
+              <span
+                className="AknButton AknButton--delete"
+                tabIndex={0}
+                onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                  if (Key.Space === event.key) this.props.events.onOpenDeleteModal()
+                }}
+                onClick={() => this.props.events.onOpenDeleteModal()}
+                style={{flex: 1}}
+              >
+                <Trash color="#D4604F" className="AknButton-animatedIcon"/>
+                {__('pim_reference_entity.attribute.edit.delete')}
+              </span>
+              <span
+                title={__('pim_reference_entity.attribute.edit.cancel')}
+                className="AknButton AknButton--small AknButton--grey AknButton--spaced"
+                tabIndex={0}
+                onClick={this.props.events.onCancel}
+                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                  if (Key.Space === event.key) this.props.events.onCancel()
+                }}
+              >
+                {__('pim_reference_entity.attribute.edit.cancel')}
+              </span>
+              <span
+                title={__('pim_reference_entity.attribute.edit.save')}
+                className="AknButton AknButton--small AknButton--apply AknButton--spaced"
+                tabIndex={0}
+                onClick={this.props.events.onSubmit}
+                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                  if (Key.Space === event.key) this.props.events.onSubmit()
+                }}
+              >
+                {__('pim_reference_entity.attribute.edit.save')}
+              </span>
+            </footer>
           </div>
         </div>
         {this.props.confirmDelete.isActive && (

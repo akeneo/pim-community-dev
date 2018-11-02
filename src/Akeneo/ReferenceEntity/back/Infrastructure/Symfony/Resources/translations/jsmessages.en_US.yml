@@ -165,8 +165,9 @@ pim_reference_entity:
             confirm: Save
         edit:
             delete: Delete the attribute
-            common.title: Common parameters
-            additional.title: Additional parameters
+            title: Edit attribute {{ code }}
+            save: Save
+            cancel: Cancel
             input:
                 code: Code (required)
                 label: Label
