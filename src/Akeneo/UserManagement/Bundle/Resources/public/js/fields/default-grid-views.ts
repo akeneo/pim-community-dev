@@ -1,5 +1,5 @@
 import * as $ from "jquery";
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import DefaultProductGridView = require('pimuser/js/fields/default-product-grid-view');
 const Routing = require('routing');
 

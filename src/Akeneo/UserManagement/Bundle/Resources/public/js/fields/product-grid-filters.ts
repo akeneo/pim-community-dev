@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import * as i18n from 'pimenrich/js/i18n';
+import * as i18n from 'pimui/js/i18n';
 import * as _ from "underscore";
 
 const __ = require('oro/translator');
