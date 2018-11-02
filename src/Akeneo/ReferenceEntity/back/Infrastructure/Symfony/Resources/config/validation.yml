@@ -312,3 +312,8 @@ Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIs
     properties:
         isRichTextEditor:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditOptionsCommand:
+    properties:
+        options:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeOptions: ~
