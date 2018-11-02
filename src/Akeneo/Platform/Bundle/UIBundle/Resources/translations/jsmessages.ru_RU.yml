@@ -103,3 +103,164 @@ oro_config:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Ваши локальные изменения будут потеряны. Вы действительно хотите обновить страницу?"
 "navigation.message.content.outdated": "Содержание страницы {{ title }} устарело, пожалуйста, <a href='#' data-action='page-refresh'> обновите страницу</a>"
 "Content of pinned page is outdated": "Содержание закрепленной страницы устарело"
+pim_common:
+  actions: Действия
+  add: Добавить
+  add_attributes: Добавить атрибуты
+  all: Все
+  and: и
+  apply: Применить
+  cancel: Отмена
+  code: Код
+  confirm: Подтверждение
+  confirm_deletion: Подтвердить удаление
+  create: Создать
+  created: Создано
+  delete: Удалить
+  done: Готово
+  edit: Редактировать
+  entity_updated: Имеются несохраненные изменения.
+  from: С
+  general_properties: Общие свойства
+  history: Журнал
+  label: Метка
+  label_translations: Переводы меток
+  less_than: Менее чем
+  loading: Загрузка...
+  more_than: Более чем
+  next: Следующая
+  "no": "Нет"
+  none: Нет
+  not_available: Н/Д
+  now: Сейчас
+  ok: Подтвердить
+  permissions: Права доступа
+  previous: Предыдущая
+  properties: Свойства
+  required_label: (требуется)
+  save: Сохранить
+  select2:
+    search: Поиск...
+    no_match: Совпадений не найдено
+    load_more: Загрузка дополнительных результатов...
+  status: Статус
+  to: до
+  type: Тип
+  update: Обновить
+  "yes": "Да"
+  operator: Оператор
+  operators:
+    "=": Равно
+    "!=": Не равно
+    ">=": Больше или равно
+    ">": Больше
+    "<=": Меньше или равно
+    "<": Меньше
+    EMPTY: Пусто
+    NOT EMPTY: Не является пустым
+    CONTAINS: Содержит
+    DOES NOT CONTAIN: Не содержит
+    STARTS WITH: Начинается с
+    ENDS WITH: Заканчивается на
+error:
+  exception: Ах, нет! Произошла ошибка {{ status_code }}...
+  forbidden: Запрещено. У вас нет доступа к этой странице
+alert:
+  attribute_option:
+    error_occured_during_submission: Во время отправки формы на сервер произошла ошибка
+    save_before_edit_other: Пожалуйста зафиксируйте ваши изменения на других строках перед редактированием этой
+  session_storage:
+    not_available: Ваш веб-браузер кажется не совместим с sessionStorage. Обратитесь к администратору
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Произошла ошибка
+    update:
+      fail: Не удалось обновить
+      success: Обновление завершено
+    delete:
+      fail: Не удается удалить этот элемент
+      success: Элемент успешно удален
+  module:
+    delete:
+      title: Удалить {{ itemName }}
+      alternative_title: Подтвердите удаление
+      item: Вы уверены, что хотите удалить этот элемент?
+    edit:
+      leave: Вы уверены, что хотите покинуть эту страницу?
+      discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
+pim_enrich.entity.job_execution:
+  module:
+    download:
+      invalid_xlsx: Скачать некорректные данные
+      invalid_csv: Скачать некорректные данные
+pim_title:
+  oro_default: Панель управления
+  pim_enrich_attributegroup_index: Группы атрибутов
+  pim_enrich_attributegroup_create: Группы атрибутов | Создать
+  pim_enrich_catalog_volume_index: Мониторинг объема каталога
+  pim_enrich_categorytree_index: Деревья категории
+  pim_enrich_categorytree_create: Деревья категорий | Создать
+  pim_enrich_categorytree_create_tree: Деревья категорий | Создать
+  pim_enrich_attribute_index: Атрибуты
+  pim_enrich_attribute_create: Атрибуты | Создать
+  pim_enrich_product_index: Продукты
+  pim_enrich_family_index: Семейства
+  pim_enrich_channel_index: Каналы
+  pim_enrich_channel_create: Каналы | Создать
+  pim_enrich_currency_index: Валюты
+  pim_enrich_locale_index: Локали
+  pim_enrich_group_index: Группы
+  pim_enrich_group_edit: Группа {{ group.label }} | Редактирование
+  pim_enrich_associationtype_index: Типы ассоциаций
+  pim_enrich_grouptype_index: Типы групп
+  pim_enrich_mass_edit_action_choose: Массовое редактирование | Выбрать
+  pim_enrich_mass_edit_action_configure: Массовое редактирование | Настройка
+  pim_enrich_job_tracker_index: Трекер процессов
+  pim_enrich_job_tracker_show: Трекер процессов | Показать задание
+  pim_enrich_mass_edit_action: Массовое редактирование
+  pim_analytics_system_info_index: Информация о системе
+pim_menu:
+  tab:
+    activity: Активность
+    imports: Импорты
+    exports: Экспорты
+    settings: Настройки
+    system: Система
+    help:
+      title: Помощь
+      helper: Справочный центр Akeneo
+  item:
+    association_type: Типы ассоциаций
+    attribute_group: Группы атрибутов
+    channel: Каналы
+    currency: Валюты
+    dashboard: Панель управления
+    family: Семейства
+    group: Группы
+    group_type: Типы групп
+    export_history: История экспорта
+    export_profile: Профили экспорта
+    import_history: История импорта
+    import_profile: Профили импорта
+    configuration: Настройки
+    user_management: Управление пользователями
+    user: Пользователи
+    user_group: Группы пользователя
+    user_role: Роли
+    info: Информация о системе
+    job_tracker: Трекер процессов
+    catalog_volume: Мониторинг объема каталога
+  navigation:
+    activity: Меню раздела Активность
+    system: Меню раздела Система
+    user: Меню раздела Управление пользователями
+    settings: Меню раздела Настройки
+  user:
+    logout: Выйти
+    user_account: Мой аккаунт
+pim_notification:
+  types:
+    import: Импорт
+    export: Экспорт
+    quick_export: Быстрый экспорт
+    mass_edit: Массовое редактирование

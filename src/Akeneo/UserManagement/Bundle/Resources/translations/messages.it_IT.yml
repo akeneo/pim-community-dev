@@ -9,6 +9,7 @@ pim_user:
       middle_name: Secondo nome
       last_name: Cognome
       name_suffix: Suffisso del nome
+      phone: Telefono
       date_of_birth: Data di nascita
       avatar: Avatar
       timezone: Fuso orario
@@ -42,9 +43,12 @@ pim_user:
     tabs:
       general:
         title: Generale
+        basic_information: Informazioni di base
         contact_information: Informazioni di contatto
       additional:
         title: Aggiuntive
+      additional_data:
+        title: Informazioni aggiuntive
       interfaces:
         title: Interfacce
       group_and_role.title: Gruppi e Ruoli
@@ -59,7 +63,9 @@ pim_user:
       log_in: Accedi
       forgot_password: Password Dimenticata
       request: Richiesta
+      password_reset: Reimposta password
       reset: Azzera
+      password_reset_email_sent: E' stata inviata una email all'utente. Contiene il link per reimpostare la password.
       homepage: Vai alla Homepage
   group:
     tab:

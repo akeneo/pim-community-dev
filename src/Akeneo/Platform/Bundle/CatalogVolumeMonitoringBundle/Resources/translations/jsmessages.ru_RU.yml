@@ -1,10 +1,24 @@
 pim_catalog_volume:
+  section:
+    product_values:
+      title: Измерения, использующие количество значений продуктов
+    catalog_structure:
+      hint: Вы можете убедиться, что хорошая структура каталога действительно важна и является условием эффективного обогащения данных. Ниже приведены различные основы для мониторинга структуры вашего каталога.
+      title: Измерения, связанные со структурой каталога
+    variant_modelling:
+      hint: Если вы используете моделирование разновидностей, то эти измерения помогут вам в дальнейшем мониторинге.
+      title: Измерения по вариациям моделей
   axis:
     count_products: Продукты
+    average_max_attributes_per_family: Количество атрибутов на семейство
     count_channels: Каналы
+    count_locales: Локали (действующие)
     count_scopable_attributes: Видимые атрибуты
     count_localizable_and_scopable_attributes: Локализуемые и видимые атрибуты
+    count_localizable_attributes: Локализуемые атрибуты
     count_families: Семейства
     count_attributes: Атрибуты
+    average_max_options_per_attribute: Опции по атрибуту
     count_categories: Категории
     count_category_trees: Деревья категории
+    warning: Ух ты! Вы побили рекорд по этому измерению! Не стесняйтесь обращаться к нам, если вам нужна помощь.

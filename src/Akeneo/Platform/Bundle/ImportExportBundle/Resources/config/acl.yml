@@ -109,3 +109,9 @@ pim_importexport_import_execution_download_files:
     type: action
     label: pim_importexport.acl.import_execution.dl_files
     group_name: pim_importexport.acl_group.import
+
+# Job
+pim_enrich_job_tracker_index:
+    type: action
+    label: pim_enrich.acl.job_tracker.index
+    group_name: pim_enrich.acl_group.job_tracker

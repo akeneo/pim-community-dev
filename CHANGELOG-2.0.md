@@ -1,5 +1,11 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7655: Fix issue with Attribute Groups order when ordering manually and on import
+
+# 2.0.39 (2018-10-08)
+
 # 2.0.38 (2018-09-13)
 
 - PIM-7645: Fix media field drop zone access

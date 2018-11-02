@@ -1,0 +1,35 @@
+pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Paràmetres
+      value.title: Valors
+      history.title: Històric
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
+  group_type:
+    tab:
+      property.title: Propietats
+  mass_edit_action:
+    family:
+      page_title: Famílies
+      page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
+      title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar a les %count% famílies seleccionades
+      confirm: Esteu a punt d'actualitzar una família amb la següent informació, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% famílies amb la següent informació, confirmeu-ho si us plau.
+      steps:
+        first: Triar famílies
+        second: Trieu l'operació
+        third: Configurar
+        fourth: Confirmar
+pim_enrich_attribute_form:
+  code: Codi
+  type: Tipus d'atribut
+  reference_data_name: Nom de dades de referència
+  scopable: Valor per canal
+  localizable: Valor per local
+  unique: Valor únic
+  availableLocales: Configuracions regionals disponibles
+  locale_specific: Configuració regional específica
+  group: Grup d'atributs
+  useableAsGridFilter: Utilitzable en quadrícula

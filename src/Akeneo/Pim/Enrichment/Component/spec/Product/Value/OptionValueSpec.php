@@ -35,6 +35,22 @@ class OptionValueSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('[red]');
     }
 
+    function it_can_be_formatted_as_string_when_there_is_no_value(
+        AttributeInterface $attribute,
+        AttributeOptionInterface $option,
+        AttributeOptionValueInterface $value
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
+
+        $option->getOptionValue()->willReturn($value);
+        $value->getValue()->willReturn(null);
+        $option->getCode()->willReturn('red');
+
+        $this->__toString()->shouldReturn('[red]');
+    }
+
     function it_can_be_formatted_as_string_when_there_is_a_translation(
         AttributeInterface $attribute,
         AttributeOptionInterface $option,

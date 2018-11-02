@@ -88,6 +88,11 @@
   &-bodyCell {
     cursor: pointer;
 
+    &--flex {
+      display: flex;
+      align-items: center;
+    }
+
     &--full {
       padding: 10px 20px;
       background: white;
@@ -95,9 +100,10 @@
     }
 
     &--actions,
-    &:first-child&--checkbox {
+    &:first-child&--checkbox,
+    .AknGrid-onHoverElement {
       opacity: 0;
-      transition: opacity 0.2s ease-in;
+      transition: opacity 0.1s ease-in;
     }
 
     &--actions {
@@ -126,6 +132,7 @@
 
   &-bodyRow:hover &-bodyCell--actions,
   &-bodyRow:hover &-bodyCell--checkbox,
+  &-bodyRow:hover &-onHoverElement,
   &-bodyRow&-bodyRow--selected &-bodyCell--checkbox,
   &-bodyRow &-bodyCell--checked {
     opacity: 1;
@@ -507,11 +514,13 @@
     position: sticky;
     right: 0;
     width: 0;
-    background: linear-gradient(to left, RGBa(255,255,255,1) 0%, RGBa(255,255,255,.9) 90%, RGBa(255,255,255,0) 100%);
 
-    & .AknGrid-bodyCell--action {
-      min-width: 0;
+    & .AknGrid-bodyCell {
       background: none;
+    }
+
+    & .AknGrid-bodyRow {
+      background: linear-gradient(to left, RGBa(255,255,255,1) 0%, RGBa(255,255,255,.9) 90%, RGBa(255,255,255,0) 100%);
     }
   }
 

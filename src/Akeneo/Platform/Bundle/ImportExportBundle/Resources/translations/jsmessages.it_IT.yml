@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Selezione categorie
+        label: "{0}Tutti i prodotti!{1}Una categoria selezionata|]1,Inf[{{ count }} categoria selezionate"
         title: Seleziona categorie
     locales:
       validation:
@@ -27,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Profilo di importazione creato correttamente
+      page_title:
+        index: "]-Inf, 1] {{ count }} Profilo di importazione|]1, Inf [{{ count }} Profili di importazione"
       module:
         create:
           button: Crea un profilo di importazione
@@ -35,6 +38,8 @@ pim_import_export:
       flash:
         create:
           success: Profilo di esportazione creato correttamente
+      page_title:
+        index: "]-Inf, 1] {{ count }} profilo di esportazione|]1, Inf [{{ count }} profili di esportazione"
       module:
         create:
           button: Crea un profilo di esportazione

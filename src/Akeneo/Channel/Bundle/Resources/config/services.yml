@@ -168,6 +168,13 @@ services:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     ### Currency
+    pim_enrich.form.currency:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'form.factory:createNamed'
+        arguments:
+            - 'pim_enrich_currency_form'
+            - 'Akeneo\Platform\Bundle\UIBundle\Form\Type\CurrencyType'
+
     pim_catalog.repository.currency:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository'
         factory: 'doctrine.orm.entity_manager:getRepository'

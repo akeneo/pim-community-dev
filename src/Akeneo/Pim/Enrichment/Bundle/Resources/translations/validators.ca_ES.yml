@@ -80,4 +80,6 @@ pim_catalog:
     303: Aquest camp espera un format vàlid d'associació.
     pim_immutable_product_validator: L'identificador ja està utilitzat per un altre producte
     pim_immutable_product_model_validator: El codi ja està utilitzat per un altre model de producte.
-
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Hi ha errors en el formulari d'atributs

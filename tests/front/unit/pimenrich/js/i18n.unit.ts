@@ -1,4 +1,4 @@
-import * as i18n from 'pimenrich/js/i18n';
+import * as i18n from 'pimui/js/i18n';
 
 describe('>>>TOOLS --- i18n', () => {
   test('get label for existing translation', () => {

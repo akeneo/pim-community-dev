@@ -10,3 +10,7 @@ pim_localization_locale_index:
 form_extensions_internal_api:
     resource: '@PimUIBundle/Resources/config/routing/internal_api/form_extensions.yml'
     prefix: /form
+
+measures:
+    resource: '@PimUIBundle/Resources/config/routing/internal_api/measures.yml'
+    prefix: /configuration/measures

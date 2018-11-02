@@ -1,0 +1,209 @@
+pim_enrich.entity.family:
+  label: ファミリー
+  uppercase_label: ファミリー
+  plural_label: ファミリー
+  flash:
+    update:
+      success: ファミリーを更新しました。
+      fail: ファミリーの更新中にエラーが発生しました
+      cant_remove_attribute_as_label: ラベルとして使用される属性は削除できません
+      cant_remove_attribute_as_image: メイン画像として使用される属性を削除できません。
+      cant_remove_attribute_used_as_axis: ファミリーバリアントで使われるバリアント軸である属性は削除できません
+    create:
+      success: ファミリーを作成しました
+    delete:
+      success: ファミリーを削除しました
+      fail: このファミリーを削除できません
+  property:
+    attribute_as_label: ラベルとして使用する属性
+    attribute_as_image: メイン画像として使用される属性
+    empty_attribute_as_image: 選択されていません
+  module:
+    attributes:
+      not_required_label: 任意
+      required_label: 必須
+    create:
+      button: ファミリーを作成
+    delete:
+      confirm: このファミリーを削除してもよろしいですか。
+pim_enrich.entity.family_variant:
+  short_plural_label: 種類
+  short_label: バリアント
+  flash:
+    update:
+      success: 家族のバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
+    create:
+      success: ファミリーバリアントを作成しました
+  module:
+    edit:
+      common_attributes: 共通の属性
+      no_common_attributes: 共通の属性はありません。
+      variant_axis_label: バリアントの軸
+      level_1: バリアント属性レベル 1
+      level_2: バリアント属性レベル 2
+      description: '。バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。'
+      confirm_attribute_removal_title: 属性の削除を確認します。
+      confirm_attribute_removal_message: これらの属性を削除することで、ファミリーバリ円との共通属性に戻すことになり、バリアント製品から削除することになる
+    create:
+      label: バリエーションを追加
+      title: 新しいファミリーバリアントを作成
+      description: ファミリーバリアントでは、バリエーションを含む製品の構造を定義できます。管理するバリアントのレベル、各レベルのバリアントの軸として使用される属性の数を選択し、属性を分散する方法を定義します。
+      variant_levels: 様々 なレベル
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: オプション
+  flash:
+    create:
+      success: 属性オプションを作成しました
+      fail: 属性オプションの作成中にエラーが発生しました
+    update:
+      fail: 属性オプションを保存できません
+    delete:
+      fail: 属性オプションの削除中にエラーが発生しました
+  module:
+    edit:
+      cancel_title: 変更をキャンセル
+pim_enrich.entity.association_type:
+  label: 関連タイプ
+  flash:
+    update:
+      success: 関連タイプが正常に更新されました。
+      fail: 関連タイプを更新できませんでした。
+      fields_not_ready: "この連合タイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    create:
+      success: 関連タイプを削除しました
+    delete:
+      success: 関連タイプを削除しました
+      fail: この関連付けタイプを削除することはできません
+  module:
+    create:
+      button: 関連タイプ作成
+    delete:
+      confirm: この関連付けタイプを削除してもよろしいですか。
+pim_enrich.entity.group_type:
+  label: グループタイプ
+  flash:
+    update:
+      success: グループタイプを更新しました。
+      fail: グループタイプを更新できませんでした。
+      fields_not_ready: "このグループタイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
+    create:
+      success: グループタイプを作成しました
+    delete:
+      success: グループタイプを削除しました
+      fail: このグループタイプは削除できません
+  module:
+    create:
+      button: グループタイプ作成
+    delete:
+      confirm: このグループタイプを削除してもよろしいですか。
+pim_enrich.entity.attribute:
+  label: 属性
+  plural_label: 属性
+  flash:
+    update:
+      success: 属性を更新しました
+      fail: 属性を更新できませんでした。
+    delete:
+      success: 属性を削除しました
+      fail: この属性は削除できません
+  property:
+    allowed_extensions: 利用できる拡張子
+    auto_option_sorting: アルファベット順のオプションを自動的に並べ替える
+    available_locales: 使用可能なロケール
+    date_max: 最大日
+    date_min: 最小日
+    decimals_allowed: 10 進数の値が使用できます
+    default_metric_unit:
+      label: 既定のメトリック単位
+      choose: 単位を選択
+    group:
+      label: 属性グループ
+      choose: 属性グループを選択
+    is_locale_specific: ロケール固有
+    localizable: ロケールごとの値
+    max_characters: 最大文字数
+    max_file_size: 最大ファイル サイズ (MB)
+    metric_family:
+      label: メトリックファミリー
+      choose: ファミリーを選択してください
+    minimum_input_length: オートコンプリートの最小長
+    name: 名前
+    negative_allowed: 負の値を許可
+    number_max: 最大数
+    number_min: 最小数
+    reference_data_name:
+      label: 参照データタイプ
+      choose: 参照データタイプを選ぶ
+    scopable: チャンネルごとの値
+    type:
+      choose: 属性の種類を選択
+      pim_catalog_identifier: 識別子
+      pim_catalog_text: テキスト
+      pim_catalog_textarea: テキスト エリア
+      pim_catalog_number: 数値
+      pim_catalog_price_collection: 価格
+      pim_catalog_multiselect: 複数選択
+      pim_catalog_simpleselect: 単純選択
+      pim_catalog_file: ファイル
+      pim_catalog_image: イメージ
+      pim_catalog_boolean: "Yes/No"
+      pim_catalog_date: 日付
+      pim_catalog_metric: メトリック
+      pim_reference_data_simpleselect: データの単純な選択を参照
+      pim_reference_data_multiselect: データの複数の選択を参照
+    unique: ユニーク値
+    useable_as_grid_filter: グリッドで使用可能
+    validation_regexp: 正規表現
+    validation_rule:
+      label: 値チェックルール
+      email: 電子メール
+      regexp: 正規表現
+      url: URL
+    wysiwyg_enabled: リッチ テキスト エディターを有効
+  module:
+    add_attribute:
+      no_available_attributes: これ以上追加する属性はありません
+      attributes_selected: "{{ itemsCount }} 属性の選択"
+    create:
+      button: 属性を作成
+    edit:
+      common: 全般パラメータ
+      type_specific: タイプ固有のパラメーター
+      validation: パラメータによる値チェック
+    delete:
+      confirm: この属性を削除してもよろしいですか。
+      confirm_from_group: 属性 {{ attribute }} をこの属性グループから削除してもよろしいですか。
+      confirm_from_product: 商品からこの属性を削除してもよろしいですか？
+pim_enrich.entity.attribute_group:
+  label: 属性グループ
+  uppercase_label: 属性グループ
+  plural_label: 属性グループ
+  flash:
+    update:
+      success: 属性グループを作成しました
+      fail: 属性グループを更新できませんでした。
+    delete:
+      success: 属性グループを削除しました
+  module:
+    add_attribute_group:
+      label: グループによる追加
+      attributes_groups_selected: '{{ itemsCount }} グループの選択'
+    delete:
+      confirm: この属性グループを削除してもよろしいですか？
+pim_enrich.mass_edit.family:
+  title: ファミリー一括操作
+  step:
+    select:
+      label: ファミリーを選択
+    choose:
+      title: ファミリー一括操作
+    configure:
+      label: 構成
+    confirm:
+      label: 確認
+    launched:
+      label: '"{{ operation }}" 一括操作が開始されています。終了後に通知されます。'
+  operation:
+    set_requirements:
+      label: 属性の要件を設定
+      description: 以下の属性要件が選択したファミリーに適用されます

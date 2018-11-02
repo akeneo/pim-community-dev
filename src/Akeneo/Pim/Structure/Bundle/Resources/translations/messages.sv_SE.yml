@@ -1,0 +1,30 @@
+pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Parametrar
+      value.title: Värden
+      history.title: Historik
+  group_type:
+    tab:
+      property.title: Egenskaper
+  mass_edit_action:
+    family:
+      page_title: Familjer
+      page_subtitle: Massredigera (1 familj) | Massredigera (%count% familjer)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda familjen | Välj den funktion som du vill utföra på de valda %count% familjerna
+      confirm: Du håller på att uppdatera en familj med följande information, bekräfta. | Du håller på att uppdatera %count% familjer med följande information, bekräfta.
+      steps:
+        first: Välj familjer
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+pim_enrich_attribute_form:
+  code: Kod
+  type: Attribut typ
+  reference_data_name: Data Referensnamn
+  unique: Unikt värde
+  availableLocales: Tillgängliga språk
+  locale_specific: Specifik språk
+  group: Attributgrupp
+  useableAsGridFilter: Användbara i rutnät

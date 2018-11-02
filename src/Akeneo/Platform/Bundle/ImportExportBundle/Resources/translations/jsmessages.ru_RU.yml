@@ -13,8 +13,26 @@ pim_connector:
       validation:
         not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
 pim_import_export:
+  entity:
+    import_profile:
+      uppercase_label: Профиль импорта
+      flash:
+        create:
+          success: Профиль импорта успешно создан
+      module:
+        create:
+          button: Создать профиль импорта
+    export_profile:
+      uppercase_label: Профиль экспорта
+      flash:
+        create:
+          success: Профиль экспорта успешно создан
+      module:
+        create:
+          button: Создать профиль экспорта
   form:
     job_execution:
+      title.details: Подробности выполнения
       refreshBtn.title: Обновить
       button:
         show_profile.title: Показать профиль
@@ -35,6 +53,8 @@ pim_import_export:
       meta:
         job: Работа
         connector: Соединитель
+      subsection:
+        last_executions: Последние запуски
       tab:
         content:
           title: Содержание

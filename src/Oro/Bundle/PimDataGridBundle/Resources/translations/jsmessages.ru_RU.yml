@@ -34,6 +34,8 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Объект
 oro.datagrid.noentities: Записи не найдены
+oro.datagrid.noresults: "Поиск не дал результатов."
+oro.datagrid.noresults_subTitle: "Попробовать еще раз по другому критерию поиска."
 oro.datagrid.nocolumns: Ни один столбец не настроен для этой сетки
 oro.datagrid.pagination.label: "Страница"
 oro.datagrid.pagination.totalPages: "из {{ totalPages }}"
@@ -49,9 +51,14 @@ pim.grid.ajax_choice_filter.label_not_empty: не является пустым
 pim:
   grid:
     choice_filter:
+      label_contains: содержит
+      label_does_not_contain: не содержит
+      label_equal: равно
+      label_start_with: начинается с
       label_empty: пусто
       label_not_empty: не является пустым
       label_in_list: в списке
+      operator: Оператор
     price_filter:
       label: Валюта
     category_filter:
@@ -62,6 +69,7 @@ datagrid_view.columns.min_message: Вы должны выбрать по кра�
 pim_datagrid:
   column_configurator:
     label: Столбцы
+    title: Настройка столбцов
     all_groups: Все группы
     search: Поиск
     clear: Очистить
@@ -69,6 +77,7 @@ pim_datagrid:
     apply: Применить
     cancel: Отмена
     remove_column: Удалить
+    description: Выберите информацию, которую вы хотите отобразить в столбце
     attribute_groups: Группы атрибутов
   mass_action:
     delete:
@@ -95,5 +104,15 @@ grid.view_selector:
   placeholder: Название нового представления
   choose_label: Выберите ярлык для представления
   confirmation:
+    remove: Вы действительно хотите удалить это представление?
     delete: Подтвердить удаление
 grid.view_selector.flash.updated: Представление табличных данных успешно обновлено
+grid.display_selector:
+  label: Показать
+  gallery: Галерея
+  list: Список
+Client ID: ID клиента
+grid.empty_results:
+  associated_product:
+    hint: Нет связанных продуктов
+    subHint: 'Нажмите на кнопку "Добавить ассоциации" чтобы добавить связи к этому продукту'

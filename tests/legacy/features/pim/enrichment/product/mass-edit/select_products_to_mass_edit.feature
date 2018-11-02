@@ -60,6 +60,7 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | sandals   | weight                   | 500 GRAM                |
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
+    And I type "descr" in the manage filter input
     And I show the filter "description"
     And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"

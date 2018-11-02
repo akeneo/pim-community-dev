@@ -78,4 +78,6 @@ pim_catalog:
     303: このフィールドは、有効な関連付け形式を期待しています。
     pim_immutable_product_validator: 同じ識別子が、既に別の製品に設定してあります
     pim_immutable_product_model_validator: 同じコードが、既に別の製品モデルに設定してあります。
-
+mass_edit:
+  edit_common_attributes:
+    invalid_values: フォームの属性にエラーがあります。

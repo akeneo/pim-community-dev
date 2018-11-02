@@ -183,7 +183,9 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getIdentifierCode()
     {
-        throw new NotImplementedException(__METHOD__);
+        $identifierAttribute = $this->getIdentifier();
+
+        return null !== $identifierAttribute ? $identifierAttribute->getCode() : null;
     }
 
     /**

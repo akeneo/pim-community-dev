@@ -18,6 +18,7 @@ TODO Add BC
 
 ## BC breaks
 
+- Remove `Pim\Bundle\EnrichBundle\PimEnrichBundle`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController` to `Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController` to `Akeneo\UserManagement\Bundle\Controller\ApiClientController`
 - Move `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner`
@@ -583,8 +584,9 @@ TODO Add BC
 - Remove `Oro\Bundle\UserBundle\Form\Type\ChangePasswordType`
 - Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Remove `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet`\
-  Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\
-  Remove 2 job steps `pim_connector.step.csv_family.compute_data_related_to_family_variants` and `pim_connector.step.xlsx_family.compute_data_related_to_family_variants`
+- Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\
+- Remove 2 job steps `pim_connector.step.csv_family.compute_data_related_to_family_variants` and `pim_connector.step.xlsx_family.compute_data_related_to_family_variants`
+- Remove service definition `pim_enrich.mass_edit_action.operation_job_launcher`
 
 - Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
 - Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
@@ -1137,3 +1139,5 @@ TODO Add BC
 - Move `Pim\Component\Enrich\Query\AscendantCategoriesInterface` to `Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface`
 - Move `Pim\Component\Enrich\Model\AvailableAttributes` to `Akeneo\Pim\Structure\Component\Model\AvailableAttributes`
 - Move `Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface`
+- Change method `create` of `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface` To add a boolean parameter to determine if a unknown element of a collection must be ignored or not.
+- Move `Akeneo\Pim\Enrichment\Component\Product\Query\Escaper\QueryString` to `Akeneo\Tool\Component\Elasticsearch\QueryString`
