@@ -360,4 +360,172 @@ class CreateAttributeContext implements Context
             ($this->handler)($command);
         }
     }
+
+    /**
+     * @When /^the user creates an option attribute "([^"]*)"$/
+     */
+    public function theUserCreatesAnOptionAttribute(string $attributeCode, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = 'option';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
+        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @When /^the user creates an option collection attribute "([^"]*)"$/
+     */
+    public function theUserCreatesAnOptionCollectionAttribute(string $attributeCode, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = 'option_collection';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
+        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @When /^the user creates an option attribute "([^"]*)" with:$/
+     */
+    public function theUserCreatesAnOptionAttributeLinkedToTheReferenceEntityWith(
+        string $attributeCode,
+        TableNode $attributeData
+    ): void {
+        $attributeData = current($attributeData->getHash());
+        $attributeData['type'] = 'option';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
+        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is an option attribute "([^"]*)" with:$/
+     */
+    public function thereIsAnOptionAttributeWith(string $attributeCode, TableNode $attributeData): void
+    {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString($attributeCode)
+        );
+        $expected = current($attributeData->getHash());
+        $expected['code'] = $attributeCode;
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['reference_entity_identifier'] = 'designer';
+        $expected['labels'] = json_decode($expected['labels'], true);
+        $expected['order'] = (int) $expected['order'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
+        $expected['attribute_options'] = [];
+        ksort($expected);
+
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $actual = $attribute->normalize();
+        ksort($actual);
+
+        Assert::assertEquals($expected, $actual);
+    }
+
+    /**
+     * @When /^the user creates an option collection attribute "([^"]*)" with:$/
+     */
+    public function theUserCreatesAnOptionCollectionAttributeWith(string $attributeCode, TableNode $attributeData): void
+    {
+        $attributeData = current($attributeData->getHash());
+        $attributeData['type'] = 'option_collection';
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = 'designer';
+        $attributeData['reference_entity_identifier'] = 'designer';
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = json_decode($attributeData['is_required']);
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there is an option collection attribute "([^"]*)" with:$/
+     */
+    public function thereIsAnOptionCollectionAttributeWith(string $attributeCode, TableNode $attributeData): void
+    {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString($attributeCode)
+        );
+        $expected = current($attributeData->getHash());
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['reference_entity_identifier'] = 'designer';
+        $expected['labels'] = json_decode($expected['labels'], true);
+        $expected['order'] = (int) $expected['order'];
+        $expected['is_required'] = json_decode($expected['is_required']);
+        $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
+        $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
+        $expected['attribute_options'] = [];
+        $expected['code'] = $attributeCode;
+        ksort($expected);
+
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
+        $actual = $attribute->normalize();
+        ksort($actual);
+
+        Assert::assertEquals($expected, $actual);
+    }
 }
