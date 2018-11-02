@@ -72,18 +72,18 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
         ];
 
         $router->generate(
-            'akeneo_reference_entities_file_rest_connector_download',
+            'akeneo_reference_entities_media_file_rest_connector_get',
             ['fileCode' => 'philippeStarck.jpg'],
             UrlGeneratorInterface::ABSOLUTE_URL
         )
-            ->willReturn('http://localhost/api/rest/v1/reference-entities-files/philippeStarck.jpg/download');
+            ->willReturn('http://localhost/api/rest/v1/reference-entities-media-files/philippeStarck.jpg');
 
         $router->generate(
-            'akeneo_reference_entities_file_rest_connector_download',
+            'akeneo_reference_entities_media_file_rest_connector_get',
             ['fileCode' => 'starck-cover.jpg'],
             UrlGeneratorInterface::ABSOLUTE_URL
         )
-            ->willReturn('http://localhost/api/rest/v1/reference-entities-files/starck-cover.jpg/download');
+            ->willReturn('http://localhost/api/rest/v1/reference-entities-media-files/starck-cover.jpg');
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
@@ -118,7 +118,7 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
                         'data'    => 'starck-cover.jpg',
                         '_links'  => [
                             'download' => [
-                                'href' => 'http://localhost/api/rest/v1/reference-entities-files/starck-cover.jpg/download'
+                                'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/starck-cover.jpg'
                             ]
                         ]
                     ],
@@ -127,7 +127,7 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
             'main_image' => 'philippeStarck.jpg',
             '_links'     => [
                 'main_image_download' => [
-                    'href' => 'http://localhost/api/rest/v1/reference-entities-files/philippeStarck.jpg/download'
+                    'href' => 'http://localhost/api/rest/v1/reference-entities-media-files/philippeStarck.jpg'
                 ]
             ]
         ];

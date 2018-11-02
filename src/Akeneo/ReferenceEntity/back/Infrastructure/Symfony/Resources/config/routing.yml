@@ -89,8 +89,8 @@ akeneo_reference_entities_record_rest_connector_get:
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.get }
     methods: [GET]
 
-akeneo_reference_entities_file_rest_connector_download:
-    path: '/api/rest/v1/reference-entities-files/{fileCode}/download'
+akeneo_reference_entities_media_file_rest_connector_get:
+    path: '/api/rest/v1/reference-entities-media-files/{fileCode}'
     methods: [GET]
     requirements:
         fileCode: ([a-zA-Z0-9_./]+)
