@@ -138,3 +138,37 @@ Feature: Create an attribute linked to an reference entity
       | code   | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type |
       | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
     Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this reference entity'
+
+  @acceptance-back
+  Scenario: Create a option attribute
+    When the user creates an option attribute "color" with:
+      | labels             | is_required | order | value_per_channel | value_per_locale |
+      | {"en_US": "Color"} | false       | 0     | false             | false            |
+    Then there is an option attribute "color" with:
+      | labels             | is_required | order | value_per_channel | value_per_locale | type   |
+      | {"en_US": "Color"} | false       | 0     | false             | false            | option |
+
+  @acceptance-back
+  Scenario: Create a option collection attribute
+    When the user creates an option collection attribute "favorite_colors" with:
+      | labels                       | is_required | order | value_per_channel | value_per_locale |
+      | {"en_US": "Favorite colors"} | true        | 0     | false             | false            |
+    Then there is an option collection attribute "favorite_colors" with:
+      | labels                       | is_required | order | value_per_channel | value_per_locale | type              |
+      | {"en_US": "Favorite colors"} | true        | 0     | false             | false            | option_collection |
+
+  @acceptance-back
+  Scenario: Cannot create more option attributes than the limit
+    Given 100 random attributes for a reference entity
+    When the user creates an option attribute "favorite_color"
+      | labels                                 | is_required | order | value_per_channel | value_per_locale | record_type |
+      | {"en_US": "Mentor", "fr_FR": "Mentor"} | false       | 0     | false             | false            | designer    |
+    Then there should be a validation error with message 'You cannot create the attribute "Mentor" because you have reached the limit of 100 attributes for this reference entity'
+
+  @acceptance-back
+  Scenario: Cannot create more option collection attributes than the limit
+    Given 100 random attributes for a reference entity
+    When the user creates an option collection attribute "favorite_colors"
+      | labels                                  | is_required | order | value_per_channel | value_per_locale | record_type |
+      | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       |
+    Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this reference entity'
