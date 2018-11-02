@@ -22,7 +22,7 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ReferenceEntityProvider implements FieldProviderInterface, EmptyValueProviderInterface
+class ReferenceEntityCollectionProvider implements FieldProviderInterface, EmptyValueProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class ReferenceEntityProvider implements FieldProviderInterface, EmptyValueProvi
      */
     public function getField($attribute): string
     {
-        return 'akeneo-reference-entity-field';
+        return 'akeneo-reference-entity-collection-field';
     }
 
     /**

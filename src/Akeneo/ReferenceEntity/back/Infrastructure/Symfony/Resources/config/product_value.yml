@@ -6,8 +6,8 @@ services:
         tags:
             - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity_collection, entity: '%pim_catalog.entity.product.class%' }
 
-    akeneo_referenceentity.enrich.provider.reference_entity_provider:
-        class: Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityProvider
+    akeneo_referenceentity.enrich.provider.reference_entity_collection_provider:
+        class: Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityCollectionProvider
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }

@@ -79,5 +79,5 @@ config:
         pim/controller/reference-entity/edit: akeneoreferenceentity/infrastructure/controller/reference-entity/edit.tsx
         pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
 
-        pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
-        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
+        pim/attribute-edit-form/properties/reference-entity-collection: akeneoreferenceentity/infrastructure/attribute/reference-entity-collection-field.ts
+        pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx

@@ -2,18 +2,18 @@
 
 namespace Specification\Akeneo\Pim\ReferenceEntity\Component\Provider;
 
-use Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityProvider;
+use Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityCollectionProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityProviderSpec extends ObjectBehavior {
+class ReferenceEntityCollectionProviderSpec extends ObjectBehavior {
     function it_is_initializable()
     {
         $this->shouldHaveType(FieldProviderInterface::class);
         $this->shouldHaveType(EmptyValueProviderInterface::class);
-        $this->shouldHaveType(ReferenceEntityProvider::class);
+        $this->shouldHaveType(ReferenceEntityCollectionProvider::class);
     }
 
     function it_provides_an_empty_value(AttributeInterface $designer)
@@ -23,7 +23,7 @@ class ReferenceEntityProviderSpec extends ObjectBehavior {
 
     function it_provides_a_field(AttributeInterface $designer)
     {
-        $this->getField($designer)->shouldReturn('akeneo-reference-entity-field');
+        $this->getField($designer)->shouldReturn('akeneo-reference-entity-collection-field');
     }
 
     function it_supports_an_reference_entity_attribute(AttributeInterface $designer, AttributeInterface $sku)

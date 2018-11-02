@@ -17,11 +17,11 @@ const UserContext = require('pim/user-context');
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityField extends (Field as { new(config: any): any }) {
+class ReferenceEntityCollectionField extends (Field as { new(config: any): any }) {
   constructor(config: any) {
     super(config);
 
-    this.fieldType = 'akeneo-reference-entity-field';
+    this.fieldType = 'akeneo-reference-entity-collection-field';
   }
 
   renderInput(templateContext: any) {
@@ -49,4 +49,4 @@ class ReferenceEntityField extends (Field as { new(config: any): any }) {
   }
 }
 
-module.exports = ReferenceEntityField;
+module.exports = ReferenceEntityCollectionField;
