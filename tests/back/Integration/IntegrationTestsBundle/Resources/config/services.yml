@@ -42,12 +42,12 @@ services:
             - '@service_container'
 
     akeneo_integration_tests.catalog.fixture.build_entity:
-        class: 'Akeneo\Pim\Enrichment\Bundle\tests\fixture\EntityBuilder'
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder'
         arguments:
             - '@service_container'
 
     akeneo_integration_tests.catalog.fixture.completeness_filter:
-        class: 'Akeneo\Pim\Enrichment\Bundle\tests\fixture\CompletenessFilter'
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\CompletenessFilter'
         arguments:
             - '@akeneo_integration_tests.catalog.fixture.build_entity'
 

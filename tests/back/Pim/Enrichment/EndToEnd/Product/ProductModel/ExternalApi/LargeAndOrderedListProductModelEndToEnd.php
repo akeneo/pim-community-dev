@@ -3,7 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use AkeneoTest\Pim\Enrichment\EndToEnd\Product\ExternalApi\AbstractProductTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 
 class LargeAndOrderedListProductModelEndToEnd extends AbstractProductTestCase
 {
