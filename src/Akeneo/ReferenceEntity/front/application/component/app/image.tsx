@@ -7,6 +7,7 @@ import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Download from 'akeneoreferenceentity/application/component/app/icon/download';
 import Import from 'akeneoreferenceentity/application/component/app/illustration/import';
+import Key from 'akeneoreferenceentity/tools/key';
 
 class Image extends React.Component<
   {
@@ -49,11 +50,8 @@ class Image extends React.Component<
   };
 
   private remove = (event: React.MouseEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
-    if (event instanceof KeyboardEvent && ' ' !== event.key) {
-      return;
-    }
-
-    if ((event instanceof MouseEvent || (event instanceof KeyboardEvent && ' ' !== event.key)) && !this.props.image.isEmpty()) {
+    const removeEvent = (event as React.KeyboardEvent<HTMLInputElement>);
+    if ((undefined === removeEvent.key || Key.Space === removeEvent.key) && !this.props.image.isEmpty()) {
       this.stopEvent(event);
       this.setState({dropping: false});
       if (undefined !== this.props.onImageChange) {
