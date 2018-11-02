@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
 class OptionAttribute extends AbstractAttribute
 {
     private const MAX_OPTIONS = 100;
-    private const ATTRIBUTE_TYPE = 'simple_select';
+    private const ATTRIBUTE_TYPE = 'option';
 
     /** @var AttributeOption[] */
     private $attributeOptions = [];

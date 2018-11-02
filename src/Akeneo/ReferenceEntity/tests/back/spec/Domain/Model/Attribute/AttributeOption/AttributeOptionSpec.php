@@ -30,7 +30,7 @@ class AttributeOptionSpec extends ObjectBehavior
     public function it_can_normalize_itself()
     {
         $this->normalize()->shouldReturn([
-            'option_code' => 'red',
+            'code' => 'red',
             'labels' => [
                 'fr_FR' => 'Rouge',
                 'en_US' => 'Red'
@@ -40,6 +40,6 @@ class AttributeOptionSpec extends ObjectBehavior
 
     public function it_returns_its_code()
     {
-        $this->getCode()->shouldReturn('red');
+        $this->getCode()->__toString()->shouldReturn('red');
     }
 }

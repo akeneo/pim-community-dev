@@ -53,7 +53,7 @@ class OptionAttributeSpec extends ObjectBehavior
                 'is_required'                 => true,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
-                'type'                        => 'simple_select',
+                'type'                        => 'option',
                 'attribute_options'            => [],
             ]
         );
@@ -77,10 +77,10 @@ class OptionAttributeSpec extends ObjectBehavior
             'is_required'                 => true,
             'value_per_channel'           => true,
             'value_per_locale'            => true,
-            'type'                        => 'simple_select',
+            'type'                        => 'option',
             'attribute_options'            => [
                 [
-                    'option_code' => 'red',
+                    'code' => 'red',
                     'labels'      => [
                         'fr_FR' => 'rouge',
                     ],

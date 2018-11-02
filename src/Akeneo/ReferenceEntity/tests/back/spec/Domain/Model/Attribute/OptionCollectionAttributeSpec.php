@@ -48,7 +48,7 @@ class OptionCollectionAttributeSpec extends ObjectBehavior
                 'is_required'                 => true,
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
-                'type'                        => 'multiple_select',
+                'type'                        => 'option_collection',
                 'attribute_options'            => [],
             ]
         );
@@ -83,16 +83,16 @@ class OptionCollectionAttributeSpec extends ObjectBehavior
             'is_required'                 => true,
             'value_per_channel'           => true,
             'value_per_locale'            => true,
-            'type'                        => 'multiple_select',
+            'type'                        => 'option_collection',
             'attribute_options'           => [
                 [
-                    'option_code' => 'red',
+                    'code' => 'red',
                     'labels'      => [
                         'fr_FR' => 'rouge',
                     ],
                 ],
                 [
-                    'option_code' => 'green',
+                    'code' => 'green',
                     'labels'      => [
                         'fr_FR' => 'vert',
                     ],

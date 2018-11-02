@@ -12,7 +12,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
  */
 class AttributeOption
 {
-    private const OPTION_CODE = 'option_code';
+    private const OPTION_CODE = 'code';
     private const LABELS = 'labels';
 
     /** @var OptionCode */
@@ -40,8 +40,8 @@ class AttributeOption
         ];
     }
 
-    public function getCode(): string
+    public function getCode(): OptionCode
     {
-        return (string) $this->code;
+        return $this->code;
     }
 }
