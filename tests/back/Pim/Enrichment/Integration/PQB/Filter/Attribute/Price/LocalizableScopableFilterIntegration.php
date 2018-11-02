@@ -2,9 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
-use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
