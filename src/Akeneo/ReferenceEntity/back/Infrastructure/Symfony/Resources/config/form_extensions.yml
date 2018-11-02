@@ -61,7 +61,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-reference-entity-collection-type-specific-params-ref-data-name:
-        module: pim/attribute-edit-form/properties/reference-entity
+        module: pim/attribute-edit-form/properties/reference-entity-collection
         parent: pim-attribute-form-reference-entity-collection-type-specific-params
         targetZone: content
         position: 100
@@ -70,4 +70,4 @@ extensions:
             label: pim_enrich.entity.attribute.property.reference_entity.identifier
 
 attribute_fields:
-    akeneo-reference-entity-field: pim/reference-entity-field
+    akeneo-reference-entity-collection-field: pim/reference-entity-collection-field
