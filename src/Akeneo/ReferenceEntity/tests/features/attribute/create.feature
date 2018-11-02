@@ -140,7 +140,7 @@ Feature: Create an attribute linked to an reference entity
     Then there should be a validation error with message 'You cannot create the attribute "Brands" because you have reached the limit of 100 attributes for this reference entity'
 
   @acceptance-back
-  Scenario: Create a option attribute
+  Scenario: Create an option attribute
     When the user creates an option attribute "color" with:
       | labels             | is_required | order | value_per_channel | value_per_locale |
       | {"en_US": "Color"} | false       | 0     | false             | false            |
@@ -149,7 +149,7 @@ Feature: Create an attribute linked to an reference entity
       | {"en_US": "Color"} | false       | 0     | false             | false            | option |
 
   @acceptance-back
-  Scenario: Create a option collection attribute
+  Scenario: Create an option collection attribute
     When the user creates an option collection attribute "favorite_colors" with:
       | labels                       | is_required | order | value_per_channel | value_per_locale |
       | {"en_US": "Favorite colors"} | true        | 0     | false             | false            |
