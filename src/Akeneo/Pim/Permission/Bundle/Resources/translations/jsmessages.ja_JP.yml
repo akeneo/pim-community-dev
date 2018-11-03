@@ -1,0 +1,47 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: 読み取り専用
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>される
+      revoke: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>されない
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>される
+      revoke: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>されません
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>される
+      revoke: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>されない
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: グループ {{ group }} は、{{ permission }} 属性のグループが許可されます
+      view: 属性の表示を許可
+      edit: 属性の編集を許可
+      removed: グループ {{ group }} は、{{ permission }} 属性のグループが許可されません
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されます。
+      execute: ジョブプロファイルの実行を許可
+      edit: ジョブプロファイルの編集を許可
+      removed: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されません
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: 許可チェック＆ルール適用による製品価値の追加
+    perform.label: 製品の値を追加
+  update_product_value_with_permission_and_rules:
+    label: 許可チェック＆ルール適用による製品価値の更新
+    perform.label: 製品の値を更新
+  remove_product_value_with_permission_and_rules:
+    label: 許可チェック＆ルール適用による製品価値の削除
+    perform.label: 製品の値を削除
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: 属性を編集
+    cleaner.label: 一時ファイルを削除

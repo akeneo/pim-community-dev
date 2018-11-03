@@ -78,6 +78,10 @@ pim_dashboard:
         mass_upload: Carregar en massa
 pim_title:
   pimee_product_asset_mass_upload: Carregar recursos
+  pimee_product_asset_index: Recursos
+  pimee_product_asset_edit: Recurs {{ asset.label }} | Editar
+  pimee_asset_categorytree_index: Categories
+  pimee_asset_categorytree_edit: Categoria {{ category.label }} | Editar
 batch_jobs:
   apply_assets_mass_upload:
     label: Carregar recursos en massa
@@ -86,6 +90,7 @@ batch_jobs:
     label: Pujar en massa recursos i afegir al producte
     perform.label: Pujar en massa recursos i afegir al producte
   yml_asset_channel_configuration_import:
+    import.label: Importar configuració de recursos per canal
     label: Importació de configuració de recurs de canal en Yaml
     import_asset.label: Importació de configuració de recurs de canal en Yaml
   yml_asset_channel_configuration_export:
@@ -146,3 +151,78 @@ asset_grid:
   label: Recursos de producte
 create_asset:
   title: Crear un recurs
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Editar en massa els recursos
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformacions de recursos
+      not_found: No s'ha trobat cap transformació
+      transformation: Transformació
+      options: Opcions
+      colorspace:
+        title: Espai de color
+        options:
+          colorspace: 'Espai de color %value%'
+      resize:
+        title: Redimensiona
+        options:
+          width: '% value%px d''amplada'
+          height: '% value%px d''alçada'
+      resolution:
+        title: Resolució
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Escala
+        options:
+          width: '% value%px d''amplada'
+          height: '% value%px d''alçada'
+          ratio: '%value%% proporció'
+      thumbnail:
+        title: Miniatura
+        options:
+          width: '% value%px d''amplada'
+          height: '% value%px d''alçada'
+pimee_enrich.mass_edit.asset:
+  title: Acció en massa dels recursos
+  confirm: "{1}Esteu a punt d'actualitzar un recurs amb la informació següent, confirmeu-ho si us plau.|]1, Inf[Esteu a punt d'actualitzar {{ itemsCount }} recursos amb la informació següent, confirmeu-ho si us plau."
+  step:
+    select:
+      label: Triar recursos
+    choose:
+      title: Accións en massa dels recursos
+      label_count: "]0, Inf[Selecciona l'acció"
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar
+  operation:
+    add_tag:
+      label: Afegir etiquetes als recursos
+      description: S'afegiran les etiquetes als actius.
+      label_count: "{1}Afegir etiquetes a <span class=\"AknFullPage-title--highlight\">1 recurs</span>|]1, Inf[Afegir etiquetes a<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos</span>"
+      field: Etiquetes
+      empty_selection: Escull les etiquetes, si us plau
+    add_to_category:
+      label: Classificar els recursos en categories
+      description: Els recursos es posicionaran a dins les següents categories, es perdrà la posició actual.
+      label_count: "{1}Classificar <span class=\"AknFullPage-title--highlight\">1 recurs</span> a categories|]1, Inf[Classificar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos</span> a categories"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Eixos dels recursos
+      hint: Pot seguir la relació del volum de recursos aquí
+  axis:
+    count_assets: Recursos
+    count_asset_categories: Categories de recursos
+    count_asset_category_trees: Arbres de categoria de recursos
+pim_menu:
+  tab:
+    asset: Recursos
+  item:
+    asset_category: Categories de recursos
+    upload_asset: Penjar recursos

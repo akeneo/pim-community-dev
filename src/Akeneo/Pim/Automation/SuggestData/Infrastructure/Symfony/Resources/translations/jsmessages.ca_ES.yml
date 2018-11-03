@@ -41,26 +41,25 @@ akeneo_suggest_data:
           pending: Pendent
           mapped: Actiu
           unmapped: Inactiu
+        values_summary: "Resum de valors: {{ label }}"
       module:
-        subscribe:
-          subscribe: 'Família subscrita a PIM.ai'
-          subscribed: 'Subscrit a PIM.ai'
         index:
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
+        missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
         invalid_attribute_type_mapping: 'El tipus d''atribut extern "{{ targetType }}" no es pot fer el mapatge al tipus d''atribut PIM "{{ pimType }}"'
     product_subscription:
-      flash:
-        create:
-          success: 'Producte subscrit correctament a PIM.ai'
-          fail: 'Impossible subscriure el producte a PIM.ai'
-        delete:
-          success: 'S''ha cancel·lat correctament la subscripció del producte del PIM.ai'
-          fail: 'Impossible cancel·lar la subscripció del producte del PIM.ai'
+      constraint:
+        insufficient_credits: "Ho sentim, no ha pogut subscriure el producte a les estadístiques de Franklin. No té prou crèdit."
     attribute_options_mapping:
+      fields:
+        franklin_attribute_option: Opció d'atribut de Franklin
+        catalog_attribute_option: Opcions d'atribut del catàleg
+        attribute_option_status: Estatus d'opcions de Franklin
       module:
         edit:
+          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opcions d''atribut'
           sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
   product:
     edit:
@@ -90,7 +89,6 @@ akeneo_suggest_data:
         sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
       inactive_connection:
         title: Ho sentim, no hi ha res que mostrar ara mateix
-        sub_title: Si us plau, activa el compte en el Sistema > Connexió PIM.ai torna de nou.
   mass_edit:
     product:
       operation:

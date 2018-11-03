@@ -55,3 +55,8 @@ batch_jobs:
     import.label: Tuotteiden tuonti
   xlsx_product_model_import_with_rules:
     label: Tuotemallien ja sääntöjen tuonti XLSX-muodossa
+pim_menu:
+  item:
+    rule: Säännöt
+pim_title:
+  pimee_catalog_rule_rule_index: Säännöt

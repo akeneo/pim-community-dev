@@ -79,13 +79,25 @@ pimee_workflow:
         second: Välj åtgärd
         third: Konfigurera
         fourth: Bekräfta
-btn.publish: Publicera
-btn.unpublish: Avpublicera
+btn:
+  publish: Publicera
+  unpublish: Avpublicera
+  save working copy: Spara arbetskopian
+  save draft: Spara utkast
+  save working copy and next: Spara arbetskopian och nästa
+  save draft and next: Spara utkast och nästa
+  save working copy and finish: Spara arbetskopian och avsluta
+  save draft and finish: Spara utkast och finish
+  send for approval: Skicka för godkännande
+  sent for approval: Skickat för godkännande
+  editworkingcopy: Redigera arbetskopian
 flash:
   product:
+    updated: Produkten arbetskopia har uppdaterats
     published: Produkten har publicerats.
     unpublished: Produkten har inte publicerats.
   product_draft:
+    updated: Utkastet har sparats
     approve:
       success: Förslaget har tillämpats framgångsrikt.
       error: Förslaget kan inte tillämpas på grund av följande fel. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Publicerade produkter
     proposal: Förslag
-btn.editworkingcopy: Redigera arbetskopian
 confirmation:
   product:
     publish: Är du säker du vill publicera denna produkt?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Produkt
       review: Granska
       empty: Inga produktutkast att granska
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publicera
+      description: Publicera de utvalda produkterna, aktuella publicerade data kommer att raderas av nuvarande arbetskopian.
+      success_flash: Utvalda produkter har publicerats framgångsrikt.
+      launched_flash: Jobbet publicera produkt(er) körs för närvarande.
+      message:
+        info: '%nbProducts% utvalda produkter kommer att publiceras.'
+    unpublish:
+      label: Avpublicera
+      description: Avpublicera de utvalda produkterna, aktuella publicerade data kommer att raderas.
+      success_flash: Utvalda produkter har publicerats framgångsrikt.
+      launched_flash: Jobbet avpublicera produkt(er) körs för närvarande.
+      message:
+        info: '%nbProducts% utvalda produkter kommer att avpubliceras.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Förslag

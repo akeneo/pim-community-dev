@@ -79,13 +79,25 @@ pimee_workflow:
         second: Выберите операцию
         third: Настройка
         fourth: Подтверждение
-btn.publish: Опубликовать
-btn.unpublish: Снять с публикации
+btn:
+  publish: Опубликовать
+  unpublish: Снять с публикации
+  save working copy: Сохранить рабочую копию
+  save draft: Сохранить черновик
+  save working copy and next: Сохранить рабочую копию и перейти к следующему
+  save draft and next: Сохранить черновик и перейти к следующему
+  save working copy and finish: Сохранить рабочую копию и закончить
+  save draft and finish: Сохранить черновик и закончить
+  send for approval: Отправить на утверждение
+  sent for approval: Отправлено на утверждение
+  editworkingcopy: Редактировать рабочую копию
 flash:
   product:
+    updated: Рабочая копия продукта была обновлена
     published: Продукт был успешно опубликован.
     unpublished: Продукт был успешно снят с публикации.
   product_draft:
+    updated: Черновик был успешно сохранен
     approve:
       success: Предложение было успешно применено.
       error: Это предложение нельзя применить из-за следующей ошибки. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Опубликованные продукты
     proposal: Предложения
-btn.editworkingcopy: Редактировать рабочую копию
 confirmation:
   product:
     publish: Вы уверены, что хотите опубликовать этот продукт?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Продукт
       review: Обзор
       empty: Нет черновиков для рассмотрения
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Опубликовать
+      description: Опубликовать выбранные продукты, при этом текущие опубликованные данные будут перезаписаны текущей рабочей копией.
+      success_flash: Выбранные продукты были успешно опубликованы.
+      launched_flash: Процесс публикации товара(ов) выполняется в данный момент.
+      message:
+        info: '%nbProducts% выбранных продуктов будет опубликовано.'
+    unpublish:
+      label: Снять с публикации
+      description: Снять выбранные продукты с публикации, текущий опубликованные данные будут удалены.
+      success_flash: Выбранные продукты были успешно сняты с публикации.
+      launched_flash: Процесс снятия товара(ов) с публикации выполняется в данный момент.
+      message:
+        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Предложения

@@ -72,6 +72,8 @@ pim_dashboard:
         mass_upload: Массовая загрузка
 pim_title:
   pimee_product_asset_mass_upload: Загрузить медиафайлы
+  pimee_product_asset_index: Медиафайлы
+  pimee_asset_categorytree_index: Категории
 batch_jobs:
   apply_assets_mass_upload:
     label: Масс загрузка медиафайлов
@@ -135,3 +137,61 @@ asset_grid:
   label: Медиафайлы продуктов
 create_asset:
   title: Создать медиафайл
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Преобразования активов
+      not_found: Преобразования не найдены
+      transformation: Преобразование
+      options: Параметры
+      colorspace:
+        title: Цветовое пространство
+        options:
+          colorspace: '%value% цветовое пространство'
+      resize:
+        title: Изменение размера
+        options:
+          width: 'Ширина %value%px '
+          height: 'Высота %value%px'
+      resolution:
+        title: Разрешение
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Маштабирование
+        options:
+          width: 'Ширина %value%px '
+          height: 'Высота %value%px'
+          ratio: '%value%% соотношение'
+      thumbnail:
+        title: Миниатюра изображения
+        options:
+          width: 'Ширина %value%px '
+          height: 'Высота %value%px'
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: Выбор медиафайлов
+    configure:
+      label: Настройка
+    confirm:
+      label: Подтверждение
+  operation:
+    add_tag:
+      label: Добавление тегов к медиафайлам
+      field: Теги
+pim_catalog_volume:
+  section:
+    assets:
+      title: Измерения по медиафайлам
+      hint: Вы можете отслеживать объемы медиафайлов прямо здесь
+  axis:
+    count_assets: Медиафайлы
+    count_asset_categories: Категории медиафайлов
+    count_asset_category_trees: Деревья категорий медиафайлов
+pim_menu:
+  tab:
+    asset: Медиафайлы
+  item:
+    asset_category: Категории медиафайлов

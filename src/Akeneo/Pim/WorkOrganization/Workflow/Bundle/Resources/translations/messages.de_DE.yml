@@ -79,13 +79,25 @@ pimee_workflow:
         second: Aktion auswählen
         third: Konfigurieren
         fourth: Bestätigen
-btn.publish: Veröffentlichen
-btn.unpublish: Veröffentlichung entziehen
+btn:
+  publish: Veröffentlichen
+  unpublish: Veröffentlichung entziehen
+  save working copy: Arbeitskopie speichern
+  save draft: Entwurf speichern
+  save working copy and next: Arbeitskopie speichern und weiter
+  save draft and next: Entwurf speichern und weiter
+  save working copy and finish: Arbeitskopie speichern und fertigstellen
+  save draft and finish: Entwurf speichern und fertigstellen
+  send for approval: Zur Freigabe senden
+  sent for approval: Zur Freigabe gesendet
+  editworkingcopy: Arbeitskopie bearbeiten
 flash:
   product:
+    updated: Die Arbeitskopie des Produktes wurde aktualisiert
     published: Das Produkt wurde erfolgreich veröffentlicht.
     unpublished: Die Veröffentlichung des Produktes wurde erfolgreich entzogen.
   product_draft:
+    updated: Entwurf erfolgreich gespeichert
     approve:
       success: Der Vorschlag wurde erfolgreich freigegeben.
       error: Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Veröffentlichte Produkte
     proposal: Vorschläge
-btn.editworkingcopy: Arbeitskopie bearbeiten
 confirmation:
   product:
     publish: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Produkt
       review: Überprüfung
       empty: Keine Produktentwürfe zu überprüfen
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Veröffentlichen
+      description: Die ausgewählten Produkte veröffentlichen, dabei werden die aktuell veröffentlichten Daten von der aktuellen Arbeitskopie überschrieben.
+      success_flash: Die ausgewählten Produkte wurden erfolgreich veröffentlicht.
+      launched_flash: Der Produkt/e-Veröffentlichen Job läuft im Moment.
+      message:
+        info: Die %nbProducts% ausgewählten Produkte werden veröffentlicht.
+    unpublish:
+      label: Veröffentlichung entziehen
+      description: Die Veröffentlichung den ausgewählten Produkten entziehen, die aktuell veröffentlichten Daten werden gelöscht.
+      success_flash: Die Veröffentlichung der ausgewählten Produkte wurde erfolgreich entzogen.
+      launched_flash: Das Entziehen der Produktveröffentlichung wird derzeit ausgeführt.
+      message:
+        info: Den %nbProducts% ausgewählten Produkten wird die Veröffentlichung entzogen.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Vorschläge

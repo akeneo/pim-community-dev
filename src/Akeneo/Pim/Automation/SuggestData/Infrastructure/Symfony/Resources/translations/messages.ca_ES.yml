@@ -2,8 +2,6 @@ akeneo_suggest_data:
   acl:
     suggest_data:
       index: Suggerència de dades
-    pim_ai:
-      title: Gestionar la connexió a PIM.ai
     settings.mapping: Estructura del mapa entre el teu catàleg i el PIM.ai
   mapping_identifier:
     success: El mapatge s'ha guardat correctament

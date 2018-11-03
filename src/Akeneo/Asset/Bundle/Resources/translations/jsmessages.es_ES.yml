@@ -77,6 +77,10 @@ pim_dashboard:
         mass_upload: Carga masiva
 pim_title:
   pimee_product_asset_mass_upload: Cargar recursos
+  pimee_product_asset_index: Recursos
+  pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
+  pimee_asset_categorytree_index: Categorías
+  pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
 batch_jobs:
   apply_assets_mass_upload:
     label: Carga masiva de recursos
@@ -85,6 +89,7 @@ batch_jobs:
     label: Subir en masa los recursos y añadir al producto
     perform.label: Subir en masa recursos y añadir al producto
   yml_asset_channel_configuration_import:
+    import.label: Importar configuración de recursos por canal
     label: Importar configuraciones de recursos por canal en Yaml
     import_asset.label: Importar configuraciones de recursos por canal en Yaml
   yml_asset_channel_configuration_export:
@@ -145,3 +150,74 @@ asset_grid:
   label: Recursos de productos
 create_asset:
   title: Crear un recurso
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Edición en masa los activos
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformaciones de recursos
+      not_found: Ninguna transformación encontrada
+      transformation: Transformación
+      options: Opciones
+      colorspace:
+        title: Espacio de color
+        options:
+          colorspace: 'Espacio de color %value%'
+      resize:
+        title: Redimensionar
+        options:
+          width: 'Px ancho %value%'
+          height: 'Alto px %value%'
+      resolution:
+        title: Resolución
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Escala
+        options:
+          width: 'Px ancho %value%'
+          height: 'Alto px %value%'
+          ratio: 'Ratio %value%%'
+      thumbnail:
+        title: Miniatura
+        options:
+          width: 'Px ancho %value%'
+          height: 'Alto px %value%'
+pimee_enrich.mass_edit.asset:
+  title: Acción en masa de recursos
+  step:
+    select:
+      label: Elegir recurso
+    choose:
+      title: Acciones en masa de recursos
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar
+  operation:
+    add_tag:
+      label: Añadir etiquetas a los recursos
+      description: Las etiquetas serán agregadas a los activos
+      field: Etiquetas
+      empty_selection: Por favor, seleccione las etiquetas
+    add_to_category:
+      label: Clasificar los activos en categorías
+      description: Los recursos serán posicionados en las siguientes categorías, las posiciones actuales serán perdidas.
+pim_catalog_volume:
+  section:
+    assets:
+      title: Ejes en los recursos
+      hint: Puede seguir el volumen respecto a los recursos aquí
+  axis:
+    count_assets: Recursos
+    count_asset_categories: Categorías de recursos
+    count_asset_category_trees: Árboles de categorías de recursos
+pim_menu:
+  tab:
+    asset: Recursos
+  item:
+    asset_category: Categorías de recursos
+    upload_asset: Subir activos

@@ -197,3 +197,37 @@ pim_api:
   acl_group:
     asset_category: Categories de recursos
     asset: Recursos
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Transformacions de recursos
+  asset_transformation:
+    not_found: No s'ha trobat cap transformació
+    title:
+      transformation: Transformació
+      options: Opcions
+    colorspace:
+      title: Espai de color
+      options:
+        colorspace: 'Espai de color %value%'
+    resize:
+      title: Redimensiona
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+    resolution:
+      title: Resolució
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Escala
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'
+        ratio: '%value%% proporció'
+    thumbnail:
+      title: Miniatura
+      options:
+        width: '% value%px d''amplada'
+        height: '% value%px d''alçada'

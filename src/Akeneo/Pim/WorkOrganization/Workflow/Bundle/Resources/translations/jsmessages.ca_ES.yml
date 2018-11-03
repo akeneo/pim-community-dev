@@ -65,6 +65,20 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importació en XLSX del producte proposat
     import.label: Importació en XLSX del producte proposat
+  csv_published_product_quick_export:
+    export.label: Exportació ràpida dels productes publicats en Csv
+    perform.label: Exportació ràpida dels productes publicats en Csv
+  csv_published_product_grid_context_quick_export:
+    export.label: Exportació ràpida de la quadrícula de context de productes publicats en Csv
+    perform.label: Exportació ràpida de la quadrícula de context de productes publicats en Csv
+  xlsx_published_product_quick_export:
+    export.label: Exportació ràpida dels productes publicats en Xlsx
+    perform.label: Exportació ràpida dels productes publicats en Xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
+    perform.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
+  publish_product:
+    perform.label: Publicar productes
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nova proposta
@@ -83,3 +97,105 @@ pimee_dashboard:
       product: Producte
       review: Revisar
       empty: No hi ha propostes per revisar
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publicat
+      revert: Restaurar
+    attribute:
+      can_be_updated_by_a_rule: "Aquest atribut pot ser actualitzat per una regla: {{ rule }}"
+      value_updated: Aquest valor s'actualitzarà pel projecte actual
+    meta:
+      published_version: Versió publicada
+      owner_groups: Grups de propietaris
+      draft_status: Estat del projecte
+      draft:
+        in_progress: En procés
+        sent_for_approval: En espera d'aprovació
+        working_copy: Còpia de treball
+    revert:
+      title: Restaurar la confirmació
+      content: Esteu segur que voleu restaurar el producte a aquesta versió?
+    publish:
+      title: Publicar aquest producte
+      content: Esteu segur que voleu publicar aquest producte?
+    unpublish:
+      title: Despublicar aquest producte
+      content: Esteu segur que voleu despublicar aquest producte?
+    copy:
+      working_copy: Còpia de treball
+      draft: El meu projecte
+      draft_of: "projecte de {{ author }}"
+    approval:
+      send: Enviar per a la seva aprovació
+      sent: Enviat per a la seva aprovació
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Producte publicat amb èxit
+      fail: No s'ha pogut publicar aquest producte
+    unpublish:
+      success: Producte despublicat amb èxit
+      fail: No s'ha pogut despublicar aquest producte
+    revert:
+      success: Producte restaurat amb èxit
+  page_title:
+    index: "]-Inf, 1]{{ count }} producte publicat|]1, Inf[{{ count }} productes publicats"
+  module:
+    publish:
+      label: Publicar
+      publish_this_version: Publicar aquesta versió
+    unpublish:
+      label: Despublicar
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: La proposta s'ha aplicat amb èxit.
+      fail: "La proposta no es pot aplicar a causa de l'error següent: {{ error }}"
+    reject:
+      success: La proposta ha estat rebutjada.
+    remove:
+      success: La proposta ha estat eliminada.
+    update:
+      success: El projecte de producte s'ha desat correctament
+      fail: El projecte de producte no s'ha pogut actualitzar
+    create:
+      success: Projecte de producte enviat per la seva aprovació
+      fail: No podeu enviar aquest projecte per a la seva aprovació
+  module:
+    create:
+      label: Desar l'esborrany
+    proposal:
+      accept: Acceptar la proposta
+      accept_selected: Acceptar la proposta seleccionada|Acceptar les propostes seleccionades
+      reject: Rebutjar la proposta
+      reject_selected: Rebutjar la proposta seleccionada|Rebutjar les propostes seleccionades
+      remove: Eliminar proposta
+      comment_title: Comenteu la seva proposta (opcional - 255 caràcters màx.)
+      comment_chars: caràcters
+      confirm: Enviar
+    edit:
+      discard_changes: Esteu segur que voleu enviar el seu projecte a aprovació sense canvis no desats? Aquests canvis es perdran.
+      discard_changes_title: Esteu segur que voleu enviar aquest projecte?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publicar
+      label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+      description: Els productes es publicaran
+      warning: Els productes {{ itemsCount }} seleccionats seran publicats.
+    unpublish:
+      label: Despublicar
+      label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+      description: Els productes no es publicaran
+      warning: Els productes {{ itemsCount }} seleccionats no seran publicats.
+pim_menu:
+  navigation:
+    published_products: Productes publicats
+  item:
+    proposal: Propostes
+    published_product: Productes publicats
+pim_title:
+  pimee_workflow_proposal_index: Propostes
+  pimee_workflow_published_product_index: Productes publicats
+  pimee_workflow_published_product_view: Producte publicat {{ product.label }} | Veure

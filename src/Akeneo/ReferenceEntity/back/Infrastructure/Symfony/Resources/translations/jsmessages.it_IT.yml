@@ -41,7 +41,6 @@ pim_reference_entity:
         code: Codice (richiesto)
       confirm: Salva
     delete:
-      message: Sei sicuro di voler eliminare "{{ referenceEntityLabel }}"?
       title: Attributo
     notification:
       save:
@@ -85,7 +84,6 @@ pim_reference_entity:
         code: Codice (richiesto)
       confirm: Salva
     delete:
-      message: Sei sicuro di voler eliminare "{{ recordLabel }}"? Se è collegata a prodotti, i collegamenti ai prodotti saranno rimossi.
       title: Record
     delete_all:
       confirm: Sei sicuro di voler eliminare tutti i record di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
@@ -165,7 +163,6 @@ pim_reference_entity:
             regular_expression: Espressione regolare
             url: URL
     delete:
-      message: Sei sicuro di voler cancellare "{{ attributeLabel }}"?
       title: Attributo
     notification:
       save:

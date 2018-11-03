@@ -191,3 +191,37 @@ pim_api:
   acl_group:
     asset_category: Tillgångskategorier
     asset: Tillgångar
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Tillgångs transformationer
+  asset_transformation:
+    not_found: Ingen transformation hittades
+    title:
+      transformation: Omvandling
+      options: Inställningar
+    colorspace:
+      title: Färgrymd
+      options:
+        colorspace: '%value% färgrymd'
+    resize:
+      title: Ändra storlek
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+    resolution:
+      title: Upplösning
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+        ratio: 'baserat på %value%%'
+    thumbnail:
+      title: Miniatyrbild
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'

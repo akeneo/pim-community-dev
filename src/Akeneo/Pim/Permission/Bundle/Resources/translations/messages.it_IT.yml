@@ -4,6 +4,12 @@ pimee_enrich.acl.attribute_group.edit_permissions: Gestisci i permessi del grupp
 pimee_importexport.acl.export_profile.edit_permissions: Gestire i permessi del profilo di esportazione
 pimee_importexport.acl.import_profile.edit_permissions: Gestire i permessi del profilo di importazione
 pimee_enrich.groups.label: Gruppi del proprietario
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modificare gli attributi
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con l'autorizzazione
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Aggiorna il valore del prodotto con l'autorizzazione
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Rimuovi il valore del prodotto con l'autorizzazione
+edit_common_attributes_with_permission: Modifica gli attributi con permesso
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Modifica gli attributi con permesso
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Numero di accessi alle impostazioni internazionali personalizzate
@@ -12,3 +18,83 @@ pim_analytics:
 job_profile.permissions:
   execute.label: Permetti l'esecuzione del profilo del job
   edit.label: Consentito modificare il profilo del job
+pim_title.locale:
+  edit: "Impostazioni locali %locale.code% | Modifica"
+attribute group.permissions:
+  view.label: Consentita la visualizzazione degli attributi
+  view.help: Consenti di visualizzare i prodotti in questo gruppo di attributi
+  edit.label: Consentita la modifica degli attributi
+  edit.help: Consenti di modificare i prodotti in questo gruppo di attributi
+  no_access_to_attributes: Non hai accesso a nessuno degli attributi di questo prodotto. Si prega di contattare l'amministratore.
+category.permissions:
+  view.label: Consentita la visualizzazione dei prodotti
+  view.help: Consenti di visualizzare i prodotti in questa categoria
+  edit.label: Consentita la modifica dei prodotti
+  edit.help: Consenti di modificare i prodotti in questa categoria (implica il permesso Visualizza)
+  own.label: Consentita la ownership dei prodotti
+  own.help: Consentito di revisionare, pubblicare, annullare la pubblicazione, classificare, associare prodotti in questa categoria (implica il permesso di modifica)
+  no_access_to_products: Non hai accesso ai prodotti in nessuna struttura ad albero. Si prega di contattare l'amministratore
+  apply_on_children.label: Applica le modifiche sui figli
+  apply_on_children.help: Copiare le modifiche ai permessi su tutti i figli, i permessi esistenti sui figli vengono mantenuti
+locale.permissions:
+  view.label: Consentita la visualizzazione delle informazioni di prodotto
+  view.help: Consentita la visualizzazione delle informazioni dl prodotto in questa lingua
+  edit.label: Consentita la modifica delle informazioni di prodotto
+  edit.help: Consenti di modificare le informazioni di prodotto in questa lingua (implica il permesso Visualizza)
+  no_access_to_products: Non hai accesso ai dati di prodotto in nessuna delle lingue attivate. Si prega di contattare l'amministratore
+flash.locale.updated: Le lingua e i permessi sono stati aggiornati
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
+      page_title: Articoli
+      page_subtitle: Modifica di massa (1 prodotto) | Modifica di massa (%count% prodotti)
+      title: Scegli l'operazione
+      subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
+      confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
+      steps:
+        first: Scegli gli articoli
+        second: Scegli l'operazione
+        third: Configura
+        fourth: Conferma
+    publish:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi pubblicarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi pubblicare i prodotti "%notGranted%".
+      not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
+    unpublish:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi ritirarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi ritirare i prodotti "%notGranted%".
+        info: I %nbProducts% prodotti selezionati saranno ritirati.
+      not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
+    classify:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi classificarlo.
+        warning: Non sei il proprietario di tutti i prodotti selezionati. Non puoi classificare i prodotti "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Non sei il proprietario del prodotto, non puoi modificarlo.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Autorizzazioni
+  acl.product_ownership.title: Proprietà
+  attributes:
+    empty: nessuno
+  category:
+    tab:
+      permission:
+        title: Autorizzazioni
+  groups:
+    label: gruppi del proprietario
+    empty: nessuno
+add_product_value_with_permission_and_rules:
+  steps.perform: Aggiungi un valore di prodotto
+update_product_value_with_permission_and_rules:
+  steps.perform: Modifica un valore di prodotto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Modificare gli attributi
+  steps.edit_common_attributes_processor.title: Modificare gli attributi
+pim_enrich_attribute_form:
+  isReadOnly: Sola lettura

@@ -79,13 +79,25 @@ pimee_workflow:
         second: Vælg handling
         third: Konfigurér
         fourth: Bekræft
-btn.publish: Publicér
-btn.unpublish: Afpublisér
+btn:
+  publish: Publicér
+  unpublish: Afpublisér
+  save working copy: Gem arbejdskopi
+  save draft: Gem kladde
+  save working copy and next: Gem arbejdskopi og næste
+  save draft and next: Gem kladde og næste
+  save working copy and finish: Gem arbejdskopi og afslut
+  save draft and finish: Gem kladde og afslut
+  send for approval: Send til godkendelse
+  sent for approval: Sendt til godkendelse
+  editworkingcopy: Rediger arbejdskopi
 flash:
   product:
+    updated: Produktets arbejdskopi er blevet opdateret
     published: Produktet er nu publiceret.
     unpublished: Produktet er nu afpubliceret.
   product_draft:
+    updated: Udkastet er blevet gemt
     approve:
       success: Forslaget er blevet anvendt.
       error: Dette forslag kan ikke anvendes på grund af følgende fejl. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Offentliggjorte produkter
     proposal: Forslag
-btn.editworkingcopy: Rediger arbejdskopi
 confirmation:
   product:
     publish: Er du sikker på at du vil publicere dette produkt ?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Produkt
       review: Gennemgang
       empty: Ingen produkt kladder til gennemgang
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publicér
+      description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
+      success_flash: Udvalgte produkter har været publiceret.
+      launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
+      message:
+        info: '%nbProducts% udvalgte produkter vil blive offentliggjort.'
+    unpublish:
+      label: Afpublisér
+      description: Af publicer de valgte produkter, de nuværende offentliggjorte data vil blive slettet.
+      success_flash: De udvalgte produkter er ikke længere synlige.
+      launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
+      message:
+        info: '%nbProducts% udvalgte produkter vil blive af publiceret.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Forslag

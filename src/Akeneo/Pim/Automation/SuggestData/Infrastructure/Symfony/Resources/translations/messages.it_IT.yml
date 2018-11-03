@@ -2,8 +2,6 @@ akeneo_suggest_data:
   acl:
     suggest_data:
       index: Suggerisci dati
-    pim_ai:
-      title: Gestisci connessione a PIM.ai
     settings.mapping: Mappa struttura tra il tuo catalogo e PIM.ai
   mapping_identifier:
     success: La mappatura è stata salvata con successo

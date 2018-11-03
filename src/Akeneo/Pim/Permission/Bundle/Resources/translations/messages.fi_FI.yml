@@ -4,6 +4,87 @@ pimee_enrich.acl.attribute_group.edit_permissions: Hallinnoi attribuuttiryhmien 
 pimee_importexport.acl.export_profile.edit_permissions: Hallinnoi profiilin järjestelmästäviennin käyttöoikeuksia
 pimee_importexport.acl.import_profile.edit_permissions: Hallinnoi profiilin järjestelmääntuonnin käyttöoikeuksia
 pimee_enrich.groups.label: Omistajaryhmät
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
 job_profile.permissions:
   execute.label: Työprofiilin suorittaminen sallittu
   edit.label: Työprofiilin muokkaaminen sallittu
+pim_title.locale:
+  edit: "Alueelliset asetukset %locale.code% | Muokkaa"
+attribute group.permissions:
+  view.label: Attribuuttien katselu sallittu
+  view.help: Salli tuotteiden katselu tässä attribuuttiryhmässä
+  edit.label: Attribuuttien muokkaaminen sallittu
+  edit.help: Salli tuotteiden muokkaaminen tässä attribuuttiryhmässä
+  no_access_to_attributes: Sinulla ei ole pääsyä mihinkään tämän tuotteen attribuuttiin. Ole hyvä ja ota yhteyttä järjestelmänvalvojaasi.
+category.permissions:
+  view.label: Tuotteiden katselu sallittu
+  view.help: Salli tässä kategoriassa olevien tuotteiden katselu
+  edit.label: Tuotteiden muokkaaminen sallittu
+  edit.help: Salli tässä kategoriassa olevien tuotteiden katselu (tarkoittaa katseluoikeuksia)
+  own.label: Tuotteiden omistaminen sallittu
+  own.help: Saa tarkistaa, julkaista, peruuttaa julkaisun, luokitella, liittää tuoteryhmän (edellyttää Muokkaa-käyttöoikeus)
+  no_access_to_products: Sinulla ei ole käyttöoikeuksia minkään puun tuotteisiin, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
+  apply_on_children.label: Tee muutokset myös alatasolle
+  apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
+locale.permissions:
+  view.label: Voivat tarkastella tuotetietoja
+  view.help: Salli tuotetietojen katselu tällä alueella
+  edit.label: Tuoteinformaation muokkaus sallittu
+  edit.help: Salli tuotetietojen muokkaaminen tällä alueella (edellyttää Katseluoikeutta)
+  no_access_to_products: Sinulla ei ole pääsyä tuotedataan millään aktivoidulla alueella, ole hyvä ja ota yhteyttä järjestelmänvalvojaasi
+flash.locale.updated: Alueen asetukset ja käyttöoikeudet on päivitetty
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
+      page_title: Tuotteet
+      page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
+      title: Valitse toiminto
+      subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille
+      confirm: Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
+      steps:
+        first: Valitse tuotteet
+        second: Valitse toiminto
+        third: Konfiguroi
+        fourth: Vahvista
+    publish:
+      message:
+        error: Sinä et omista tätä tuotetta, joten et voi julkaista sitä.
+        warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi julkaista tuotteita "%notGranted%".
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
+    unpublish:
+      message:
+        error: Sinä et omista tätä tuotetta, joten et voi peruuttaa sen julkaisua.
+        warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi peruuttaa tuotteiden "%notGranted%" julkaisua.
+        info: '%nbProducts% valittujen tuotteiden julkaisu peruutetaan.'
+      not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
+    classify:
+      message:
+        error: Et ole tuotteen omistaja, et voi luokitella sitä.
+        warning: Sinä et ole kaikkien valittujen tuotteiden omistaja. Et voi luokitella tuotteita "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Et ole tuotteen omistaja, et voi muokata sitä.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Käyttöoikeudet
+  acl.product_ownership.title: Omistajuus
+  attributes:
+    empty: ei mitään
+  category:
+    tab:
+      permission:
+        title: Käyttöoikeudet
+  groups:
+    label: omistajaryhmät
+    empty: ei mitään
+add_product_value_with_permission_and_rules:
+  steps.perform: Lisää tuotteen arvo
+update_product_value_with_permission_and_rules:
+  steps.perform: Päivitä tuotteen arvo
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Muokkaa attribuutteja
+  steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
