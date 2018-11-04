@@ -1207,7 +1207,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user adds the same option twice \'([^\']*)\'$/
+     * @When /^the user adds the \'([^\']*)\' option twice$/
      */
     public function theUserAddsTheSameOptionTwice(string $duplicateOptionCode)
     {
@@ -1231,6 +1231,73 @@ class EditAttributeContext implements Context
         $this->updateAttribute([
             'identifier' => (string) $identifier,
             'attribute_options' => $duplicates
+        ]);
+    }
+
+    /**
+     * @When /^the user sets the \'([^\']*)\' option$/
+     */
+    public function theUserSetsTheOption(string $optionCode)
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code'   => json_decode($optionCode, true),
+                    'labels' => [],
+                ],
+            ]
+        ]);
+    }
+
+    /**
+     * @When /^the user sets an option with a code too long$/
+     */
+    public function theUserSetsAnOptionWithACodeTooLong()
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code'   => str_repeat('a', 256),
+                    'labels' => [],
+                ],
+            ]
+        ]);
+    }
+
+    /**
+     * @When /^the user sets an option with a label \'([^\']*)\'$/
+     */
+    public function theUserSetsAnOptionWithALabel($invalidLabel)
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $json_decode = json_decode($invalidLabel, true);
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code'   => 'option_with_label_too_long',
+                    'labels' => [ 'fr_FR' => $json_decode],
+                ],
+            ]
         ]);
     }
 }

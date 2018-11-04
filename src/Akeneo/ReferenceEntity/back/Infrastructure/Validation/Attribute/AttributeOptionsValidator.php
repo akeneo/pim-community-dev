@@ -82,12 +82,11 @@ class AttributeOptionsValidator extends ConstraintValidator
         foreach ($attributeOptions as $attributeOption) {
             $violations->addAll($validator->validate($attributeOption['code'], new AttributeOptionCode()));
             $violations->addAll($validator->validate($attributeOption['labels'], new LabelCollection()));
-
         }
 
         $this->addViolationsIfAny($violations);
 
-        return 0 !== $violations;
+        return 0 !== $violations->count();
     }
 
     private function checkDuplicates($attributeOptions): void
@@ -96,16 +95,14 @@ class AttributeOptionsValidator extends ConstraintValidator
             return $attributeOption['code'];
         }, $attributeOptions);
 
-        $validator = Validation::createValidator();
-        $violations = new ConstraintViolationList();
-        foreach ($attributeOptions as $attributeOption) {
-            $violations->addAll($validator->validate($attributeOption['code'], new AttributeOptionCode()));
-            $violations->addAll($validator->validate($attributeOption['labels'], new LabelCollection()));
-
+        $frequencies = array_count_values($optionCodes);
+        foreach ($frequencies as $optionCode => $frequency) {
+            if ($frequency > 1) {
+                $this->context->buildViolation(AttributeOptions::MESSAGE_OPTION_DUPLICATED)
+                    ->setParameter('%option_code%', $optionCode)
+                    ->atPath($optionCode)
+                    ->addViolation();
+            }
         }
-
-        $this->addViolationsIfAny($violations);
-
-        return 0 !== $violations;
     }
 }

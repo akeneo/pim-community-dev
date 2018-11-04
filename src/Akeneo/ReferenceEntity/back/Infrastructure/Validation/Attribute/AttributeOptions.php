@@ -12,5 +12,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeOptions extends Constraint
 {
-    const MESSAGE_TOO_MANY_OPTIONS = 'pim_reference_entity.attribute.validation.attribute_option.too_many';
+    const MESSAGE_TOO_MANY_OPTIONS = 'pim_reference_entity.attribute.validation.attribute_options.too_many';
+    const MESSAGE_OPTION_DUPLICATED = 'pim_reference_entity.attribute.validation.attribute_options.duplicated';
 }

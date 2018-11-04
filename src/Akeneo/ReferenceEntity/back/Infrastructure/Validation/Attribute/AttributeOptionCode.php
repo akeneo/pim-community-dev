@@ -12,5 +12,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeOptionCode extends Constraint
 {
-    public const MESSAGE_WRONG_PATTERN = 'pim_reference_entity.attribute.validation.attribute_option.code.pattern';
+    public const MESSAGE_WRONG_PATTERN = 'pim_reference_entity.attribute.validation.attribute_options.code.pattern';
 }
