@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.14 (2018-11-05)
+
 ## Bug fixes
 
 PIM-7810: Fix to mass delete products and product models
