@@ -45,6 +45,7 @@ abstract class TestCase extends KernelTestCase
             $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
             $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
             $fixturesLoader->load();
+            $this->get('doctrine.orm.default_entity_manager')->clear();
         }
     }
 
