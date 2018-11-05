@@ -4,9 +4,7 @@ Feature: Edit a reference entity
   I want see the details of a reference entity and update them
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
 
 #  @acceptance-front
   Scenario: Display confirmation dialog when the user reload the page and accept it

@@ -1,6 +1,7 @@
 const ReferenceEntityBuilder = require('../../../../common/builder/reference-entity.js');
 const Grid = require('../../decorators/reference-entity/index/grid.decorator');
 const path = require('path');
+const {getRequestContract, listenRequest} = require('../../tools');
 
 const {
   decorators: {createElementDecorator},
@@ -35,6 +36,7 @@ module.exports = async function(cucumber) {
       } else {
         referenceEntityBuilder.withImage(null);
       }
+      referenceEntityBuilder.withAttributes([]);
 
       return referenceEntityBuilder.build();
     });
@@ -58,9 +60,23 @@ module.exports = async function(cucumber) {
       }
     });
   };
+
+  const givenValidReferenceEntity = async function() {
+    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
+
+    await listenRequest(this.page, requestContract);
+  };
+
+  const givenValidBrandReferenceEntity = async function() {
+    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/brand_ok.json');
+
+    await listenRequest(this.page, requestContract);
+  };
+
   Given('the following reference entities to list:', givenReferenceEntities);
   Given('the following reference entities to show:', givenReferenceEntities);
-  Given('the following reference entity:', givenReferenceEntities);
+  Given('a valid reference entity', givenValidReferenceEntity);
+  Given('a valid brand reference entity', givenValidBrandReferenceEntity);
   When('the user asks for the reference entity list', async function() {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/reference-entity/list');

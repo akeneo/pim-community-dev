@@ -50,7 +50,7 @@ module.exports = async function(cucumber) {
       }
 
       if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'GET' === request.method()) {
-        answerJson(request, {...convertItemTable(updates)[0], record_count: 123}, 200);
+        answerJson(request, {...convertItemTable(updates)[0], record_count: 123, attributes: []}, 200);
       }
     });
   };

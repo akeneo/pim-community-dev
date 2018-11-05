@@ -4,10 +4,7 @@ Feature: Delete a reference entity
   I want to delete a reference entity
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
-
+    Given a valid reference entity
   @acceptance-back
   Scenario: Delete a reference entity
     When the user deletes the reference entity "designer"

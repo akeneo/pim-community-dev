@@ -11,14 +11,70 @@
         "body": {
             "identifier": "designer",
             "labels": {
-                "en_US": "Designer"
+                "en_US": "Designer",
+                "fr_FR": "Conceptor"
             },
             "image": {
                 "filePath": "5/6/a/5/56a5955ca1fbdf74d8d18ca6e5f62bc74b867a5d_designer.jpg",
                 "originalFilename": "designer.jpg"
             },
             "record_count": 123,
-            "attributes": []
+            "attributes": [
+                {
+                    "identifier": "designer_name_123456",
+                    "reference_entity_identifier": "designer",
+                    "code": "name",
+                    "is_required": false,
+                    "order": 0,
+                    "value_per_locale": true,
+                    "value_per_channel": false,
+                    "type": "text",
+                    "labels": {
+                        "en_US": "Name",
+                        "fr_FR": "Nom"
+                    },
+                    "max_length": 255,
+                    "is_textarea": false,
+                    "is_rich_text_editor": false,
+                    "validation_rule": "none",
+                    "regular_expression": null
+                },
+                {
+                    "identifier": "designer_bio_123456",
+                    "reference_entity_identifier": "designer",
+                    "code": "bio",
+                    "is_required": false,
+                    "order": 0,
+                    "value_per_locale": true,
+                    "value_per_channel": false,
+                    "type": "text",
+                    "labels": {
+                        "en_US": "Bio",
+                        "fr_FR": "Biographie"
+                    },
+                    "max_length": 255,
+                    "is_textarea": false,
+                    "is_rich_text_editor": false,
+                    "validation_rule": "none",
+                    "regular_expression": null
+                },
+                {
+                    "identifier": "designer_portrait_123456",
+                    "reference_entity_identifier": "designer",
+                    "code": "portrait",
+                    "is_required": false,
+                    "order": 0,
+                    "value_per_locale": true,
+                    "value_per_channel": false,
+                    "type": "image",
+                    "labels": {
+                        "en_US": "Portrait",
+                        "fr_FR": "Image"
+                    },
+                    "max_file_size": "124.12",
+                    "allowed_extensions": ["png", "jpg"]
+                }
+            ]
         }
     }
 }

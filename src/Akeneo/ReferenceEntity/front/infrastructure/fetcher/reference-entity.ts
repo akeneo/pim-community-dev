@@ -38,9 +38,9 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
     return {
       referenceEntity: this.hydrator(backendReferenceEntity),
       recordCount: backendReferenceEntity.record_count,
-      attributes: backendReferenceEntity.attributes.map((normalizedAttribute: NormalizedAttribute) => {
-        return this.attributeHydrator(normalizedAttribute);
-      }),
+      attributes: backendReferenceEntity.attributes.map((normalizedAttribute: NormalizedAttribute) =>
+        this.attributeHydrator(normalizedAttribute)
+      ),
     };
   }
 

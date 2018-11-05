@@ -6,6 +6,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityDetailsSpec extends ObjectBehavior
@@ -15,7 +16,7 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
         $this->shouldHaveType(ReferenceEntityDetails::class);
     }
 
-    function it_normalizes_a_read_model(Image $image)
+    function it_normalizes_a_read_model(Image $image, AttributeDetails $name)
     {
         $image->normalize()->willReturn([
             'filePath'         => '/path/image.jpg',
@@ -29,7 +30,11 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
         ]);
         $this->image = $image;
         $this->recordCount = 123;
-        $this->attributes = [];
+        $this->attributes = [
+            $name
+        ];
+
+        $name->normalize()->willReturn(['code' => 'name']);
 
         $this->normalize()->shouldReturn(
             [
@@ -43,7 +48,11 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
                     'originalFilename' => 'image.jpg'
                 ],
                 'record_count' => 123,
-                'attributes' => []
+                'attributes' => [
+                    [
+                        'code' => 'name'
+                    ]
+                ]
             ]
         );
     }
