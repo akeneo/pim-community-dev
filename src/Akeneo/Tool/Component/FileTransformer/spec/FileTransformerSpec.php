@@ -12,27 +12,27 @@ use Prophecy\Argument;
 // TODO: Find a way to spec getOutputFile()
 class FileTransformerSpec extends ObjectBehavior
 {
-    public function let(TransformationRegistry $registry): void
+    function let(TransformationRegistry $registry)
     {
         $this->beConstructedWith($registry);
     }
 
-    public function it_is_initializable(): void
+    function it_is_initializable()
     {
         $this->shouldHaveType('\Akeneo\Tool\Component\FileTransformer\FileTransformer');
     }
 
-    public function it_is_a_file_transformer(): void
+    function it_is_a_file_transformer()
     {
         $this->shouldImplement('\Akeneo\Tool\Component\FileTransformer\FileTransformerInterface');
     }
 
-    public function it_transforms_a_file_with_the_following_options(
+    function it_transforms_a_file_with_the_following_options(
         $registry,
         \SplFileInfo $inputFile,
         TransformationInterface $thumbnailTransformation,
         TransformationInterface $colorSpaceTransformation
-    ): void {
+    ) {
         $rawTransformations = [
             'thumbnail' => ['width' => 100, 'height' => 100],
             'colorspace' => ['colorspace' => 'gray'],
@@ -51,12 +51,12 @@ class FileTransformerSpec extends ObjectBehavior
         $this->transform($inputFile, $rawTransformations)->shouldReturn($inputFile);
     }
 
-    public function it_transforms_a_file_with_the_following_options_and_save_it_to_a_different_output(
+    function it_transforms_a_file_with_the_following_options_and_save_it_to_a_different_output(
         $registry,
         \SplFileInfo $inputFile,
         TransformationInterface $thumbnailTransformation,
         TransformationInterface $colorSpaceTransformation
-    ): void {
+    ) {
         $outputFilename = uniqid();
 
         $rawTransformations = [
@@ -81,11 +81,11 @@ class FileTransformerSpec extends ObjectBehavior
         unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $outputFilename);
     }
 
-    public function it_skips_a_transformation_if_the_mime_type_is_not_supported(
+    function it_skips_a_transformation_if_the_mime_type_is_not_supported(
         $registry,
         \SplFileInfo $inputFile,
         TransformationInterface $colorSpaceTransformation
-    ): void {
+    ) {
         $outputFilename = uniqid();
 
         $rawTransformations = [
@@ -109,7 +109,7 @@ class FileTransformerSpec extends ObjectBehavior
         unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $outputFilename);
     }
 
-    public function it_returns_nothing_if_no_transformation_has_been_applied($registry): void
+    function it_returns_nothing_if_no_transformation_has_been_applied($registry)
     {
         $inputFile = new \SplFileInfo(__FILE__);
 

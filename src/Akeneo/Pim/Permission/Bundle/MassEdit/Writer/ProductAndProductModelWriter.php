@@ -37,14 +37,14 @@ class ProductAndProductModelWriter extends BaseWriter
     private $authorizationChecker;
 
     /**
-     * @param BulkSaverInterface $productSaver
-     * @param BulkSaverInterface $productModelSaver
-     * @param VersionManager $versionManager
-     * @param TokenStorageInterface $tokenStorage
-     * @param JobLauncherInterface $jobLauncher
+     * @param BulkSaverInterface                    $productSaver
+     * @param BulkSaverInterface                    $productModelSaver
+     * @param VersionManager                        $versionManager
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param JobLauncherInterface                  $jobLauncher
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param string $jobName
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param string                                $jobName
      */
     public function __construct(
         BulkSaverInterface $productSaver,

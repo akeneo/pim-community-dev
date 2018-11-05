@@ -194,8 +194,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      *      this_is_my_source_file-ecommerce.txt.
      *
      * @param FileInfoInterface $sourceFileInfo
-     * @param ChannelInterface $channel
-     * @param LocaleInterface $locale
+     * @param ChannelInterface  $channel
+     * @param LocaleInterface   $locale
      *
      * @return string
      */

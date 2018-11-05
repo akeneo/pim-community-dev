@@ -27,7 +27,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 {
     public const STORAGE_FS = 'my_storage';
 
-    public function let(
+    function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
         FilesystemProvider $filesystemProvider,
         SaverInterface $metadataSaver,
@@ -43,7 +43,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         Filesystem $filesystem,
         LocaleInterface $en_US,
         VariationInterface $variation
-    ): void {
+    ) {
         $channelConfigurationRepository->findOneBy(Argument::any())->willReturn($channelConfiguration);
         $ecommerce->getId()->willReturn(12);
         $ecommerce->getCode()->willReturn('ecommerce');
@@ -72,7 +72,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_generates_the_variation(
+    function it_generates_the_variation(
         $fileFetcher,
         $filesystem,
         $channelConfiguration,
@@ -87,7 +87,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         FileInfoInterface $variationFile,
         FileMetadataInterface $fileMetadata,
         MetadataBuilderInterface $metadataBuilder
-    ): void {
+    ) {
         $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
         touch($referencePathname);
 
@@ -113,11 +113,11 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $this->generate($variation);
     }
 
-    public function it_throws_an_exception_if_the_channel_variation_configuration_can_not_be_retrieved(
+    function it_throws_an_exception_if_the_channel_variation_configuration_can_not_be_retrieved(
         VariationInterface $variation,
         ChannelInterface $channel,
         $channelConfigurationRepository
-    ): void {
+    ) {
         $channel->getId()->willReturn(12);
         $channel->getCode()->willReturn('ecommerce');
 
@@ -128,7 +128,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         )->during('generate', [$variation]);
     }
 
-    public function it_throws_an_exception_if_the_variation_has_no_source_file($variation): void
+    function it_throws_an_exception_if_the_variation_has_no_source_file($variation)
     {
         $variation->getSourceFileInfo()->willReturn(null);
 
@@ -137,7 +137,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         )->during('generate', [$variation]);
     }
 
-    public function it_throws_an_exception_if_the_source_file_is_not_on_the_filesystem($variation, $filesystem): void
+    function it_throws_an_exception_if_the_source_file_is_not_on_the_filesystem($variation, $filesystem)
     {
         $filesystem->has('path/to/my_original_file.txt')->willReturn(false);
 
@@ -146,7 +146,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         )->during('generate', [$variation]);
     }
 
-    public function it_does_not_generate_variation_file_if_no_transformation_has_been_applied(
+    function it_does_not_generate_variation_file_if_no_transformation_has_been_applied(
         $fileFetcher,
         $filesystem,
         $channelConfiguration,
@@ -156,7 +156,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $variation,
         $variationSaver,
         \SplFileInfo $inputFileInfo
-    ): void {
+    ) {
         $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
         $fileFetcher->fetch($filesystem, 'path/to/my_original_file.txt')->willReturn($inputFileInfo);
 

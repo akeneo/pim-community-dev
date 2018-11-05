@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 
 class ScaleOptionsResolverSpec extends ObjectBehavior
 {
-    public function it_throws_an_exception_when_options_are_wrong(): void
+    function it_throws_an_exception_when_options_are_wrong()
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -18,7 +18,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [['wrong']]);
     }
 
-    public function it_throws_an_exception_when_options_are_not_of_the_good_type(): void
+    function it_throws_an_exception_when_options_are_not_of_the_good_type()
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -39,7 +39,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [['width' => '100 px']]);
     }
 
-    public function it_throws_an_exception_when_ratio_width_and_height_are_null(): void
+    function it_throws_an_exception_when_ratio_width_and_height_are_null()
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -48,7 +48,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [[]]);
     }
 
-    public function it_throws_an_exception_when_ratio_is_not_a_percentage(): void
+    function it_throws_an_exception_when_ratio_is_not_a_percentage()
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -57,7 +57,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [['ratio' => 1036]]);
     }
 
-    public function it_resolves_valid_options(): void
+    function it_resolves_valid_options()
     {
         $this->resolve(['width' => 100]);
         $this->resolve(['height' => 100]);

@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductAndProductModelWriterSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
@@ -34,7 +34,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
-    ): void {
+    ) {
         $this->beConstructedWith(
             $productSaver,
             $productModelSaver,
@@ -48,22 +48,22 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    public function it_is_initializable(): void
+    function it_is_initializable()
     {
         $this->shouldHaveType(ProductAndProductModelWriter::class);
     }
 
-    public function it_is_an_item_writer(): void
+    function it_is_an_item_writer()
     {
         $this->shouldHaveType(ItemWriterInterface::class);
     }
 
-    public function it_is_step_execution_aware(): void
+    function it_is_step_execution_aware()
     {
         $this->shouldHaveType(StepExecutionAwareInterface::class);
     }
 
-    public function it_saves_items(
+    function it_saves_items(
         $productSaver,
         $productModelSaver,
         $stepExecution,
@@ -79,7 +79,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         JobInstance $jobInstance
-    ): void {
+    ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
 
@@ -124,7 +124,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $this->write($items);
     }
 
-    public function it_increments_summary_info_with_permission(
+    function it_increments_summary_info_with_permission(
         $authorizationChecker,
         $stepExecution,
         $tokenStorage,
@@ -140,7 +140,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         JobInstance $jobInstance
-    ): void {
+    ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
 
