@@ -30,10 +30,10 @@ akeneo_suggest_data:
                     active: Active
                     inactive: Inactive
             constraint:
-                duplicate_attribute_code: "An attribute cannot be used more than once. Attribute \"{{ attributeCode }}\" has been used {{ frequency }} times."
+                duplicate_attribute_code: "One mapping allowed per catalog attribute"
                 missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
                 attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
-                mandatory_attribute_mapping: "This attribute is mandatory"
+                mandatory_attribute_mapping: "Brand & MPN mapping required"
                 attribute_type: "The type of this attribute can not be set as identifier"
         attributes_mapping:
             label: Attributes mapping

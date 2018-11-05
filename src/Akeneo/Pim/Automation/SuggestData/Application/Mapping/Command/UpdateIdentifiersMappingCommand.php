@@ -83,8 +83,6 @@ class UpdateIdentifiersMappingCommand
         foreach ($values as $attributeCode => $frequency) {
             if ($frequency > 1) {
                 throw InvalidMappingException::duplicateAttributeCode(
-                    $frequency,
-                    $attributeCode,
                     static::class,
                     array_search($attributeCode, $filteredMapping)
                 );
