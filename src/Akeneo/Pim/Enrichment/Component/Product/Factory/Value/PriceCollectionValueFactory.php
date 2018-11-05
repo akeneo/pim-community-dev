@@ -43,7 +43,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         PriceFactory $priceFactory,
         $productValueClass,
         $supportedAttributeType,
-        ?FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel = null
+        FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel
     ) {
         $this->priceFactory = $priceFactory;
         $this->productValueClass = $productValueClass;
@@ -149,10 +149,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         $prices = new PriceCollection();
 
         $filteredData = $this->filterByCurrency($data);
-        // TODO: To remove / pull-up
-        if (null !== $this->findActivatedCurrenciesForChannel) {
-            $filteredData = $this->filterByActivatedCurrencies($channelCode, $filteredData);
-        }
+        $filteredData = $this->filterByActivatedCurrencies($channelCode, $filteredData);
         $sortedData = $this->sortByCurrency($filteredData);
         foreach ($sortedData as $price) {
             try {
