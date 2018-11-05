@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributeOptionsMapping
+class AttributeOptionsMapping implements \IteratorAggregate
 {
     /** @var array */
     private $attributeOptions;
@@ -36,5 +36,13 @@ class AttributeOptionsMapping
         $this->attributeOptions[] = $attributeOption;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator(): \Iterator
+    {
+        return new \ArrayIterator($this->attributeOptions);
     }
 }

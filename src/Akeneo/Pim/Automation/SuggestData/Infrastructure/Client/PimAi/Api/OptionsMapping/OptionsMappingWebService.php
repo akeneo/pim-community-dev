@@ -80,4 +80,18 @@ class OptionsMappingWebService implements OptionsMappingInterface
             );
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function update(string $familyCode, string $franklinAttributeId, array $attributeOptionsMapping): void
+    {
+        $route = $this->uriGenerator->generate(
+            sprintf('/api/mapping/%s/attributes/%s/options', $familyCode, $franklinAttributeId)
+        );
+
+        $this->httpClient->request('PUT', $route, [
+            'form_params' => $attributeOptionsMapping,
+        ]);
+    }
 }
