@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 
 /**
@@ -20,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\At
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-interface AttributesMappingApiInterface
+interface AttributesMappingApiInterface extends AuthenticatedApi
 {
     /**
      * @param string $familyCode

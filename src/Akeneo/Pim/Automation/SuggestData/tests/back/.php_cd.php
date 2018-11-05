@@ -42,10 +42,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
 
-            // TODO: Should be remove APAI-179
-            'Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration',
-            'Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface',
-
             // External dependencies
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',

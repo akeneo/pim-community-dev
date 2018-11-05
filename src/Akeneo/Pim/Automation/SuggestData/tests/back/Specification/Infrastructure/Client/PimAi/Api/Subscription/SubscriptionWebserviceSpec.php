@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice;
@@ -43,6 +44,11 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
     public function it_is_a_subscription_web_service(): void
     {
         $this->shouldBeAnInstanceOf(SubscriptionWebservice::class);
+    }
+
+    public function it_is_an_authenticated_webservice(): void
+    {
+        $this->shouldImplement(AuthenticatedApi::class);
     }
 
     public function it_is_a_subscription_api(): void

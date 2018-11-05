@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping;
 
 /**
@@ -20,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Op
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface OptionsMappingInterface
+interface OptionsMappingInterface extends AuthenticatedApi
 {
     /**
      * Fetches options mapping from family and attribute.
