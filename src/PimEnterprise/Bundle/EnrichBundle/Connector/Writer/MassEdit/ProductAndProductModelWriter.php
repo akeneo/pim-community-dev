@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter as BaseWriter;
