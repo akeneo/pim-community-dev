@@ -72,11 +72,16 @@ pim_dashboard:
         mass_upload: 大量アップロード
 pim_title:
   pimee_product_asset_mass_upload: アセットをアップロードする
+  pimee_product_asset_index: アセット
+  pimee_product_asset_edit: アセット {{ asset.label }} |編集
+  pimee_asset_categorytree_index: カテゴリ
+  pimee_asset_categorytree_edit: カテゴリ {{ category.label }} |編集
 batch_jobs:
   apply_assets_mass_upload:
     label: アセットの大量アップロード
     perform.label: 大量アップロード
   yml_asset_channel_configuration_import:
+    import.label: アセットチャネル構成をインポート
     label: Yaml においてアセットチャネル構成のインポート
     import_asset.label: Yaml においてアセットチャネル構成のインポート
   yml_asset_channel_configuration_export:
@@ -133,3 +138,66 @@ asset_grid:
   label: 製品のアセット
 create_asset:
   title: アセットを作成
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: アセット一括編集
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: アセット変換
+      not_found: 変換を発見できませんでした
+      transformation: 変換
+      options: オプション
+      colorspace:
+        title: カラースペース
+        options:
+          colorspace: '%value% カラー スペース'
+      resize:
+        title: サイズを変更
+        options:
+          width: '幅 %value%px'
+          height: '高さ %value%px'
+      resolution:
+        title: 解決策
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: スケール
+        options:
+          width: '幅 %value%px'
+          height: '高さ %value%px'
+          ratio: '率 %value%%'
+      thumbnail:
+        title: サムネイル
+        options:
+          width: '幅 %value%px'
+          height: '高さ %value%px'
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: アセットを選択する
+    choose:
+      title: アセット一括操作
+    configure:
+      label: 構成
+    confirm:
+      label: 確認
+  operation:
+    add_tag:
+      label: タグをアセットに追加
+      description: タグはアセットに追加されます。
+      field: タグ
+    add_to_category:
+      label: アセットをカテゴリに分類
+pim_catalog_volume:
+  axis:
+    count_assets: アセット
+    count_asset_categories: アセットカテゴリー
+pim_menu:
+  tab:
+    asset: アセット
+  item:
+    asset_category: アセットカテゴリー
+    upload_asset: アセットをアップロードする

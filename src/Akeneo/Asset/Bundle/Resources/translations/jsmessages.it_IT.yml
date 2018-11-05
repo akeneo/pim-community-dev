@@ -78,6 +78,10 @@ pim_dashboard:
         mass_upload: Caricamento di massa
 pim_title:
   pimee_product_asset_mass_upload: Caricamento di asset
+  pimee_product_asset_index: Asset
+  pimee_product_asset_edit: Asset {{ asset.label }} | Modifica
+  pimee_asset_categorytree_index: Categorie
+  pimee_asset_categorytree_edit: Categoria {{ category.label }} | Modifica
 batch_jobs:
   apply_assets_mass_upload:
     label: Caricamento di massa di asset
@@ -86,6 +90,7 @@ batch_jobs:
     label: Caricamento in massa degli asset e aggiunta al prodotto
     perform.label: Caricamento in massa degli asset e aggiunta al prodotto
   yml_asset_channel_configuration_import:
+    import.label: Importazione della configurazione del canale asset
     label: Importazione in Yaml della configurazione del canale asset
     import_asset.label: Importazione in Yaml della configurazione del canale asset
   yml_asset_channel_configuration_export:
@@ -146,3 +151,78 @@ asset_grid:
   label: Asset di prodotto
 create_asset:
   title: Crea un asset
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Modifica di massa per gli asset
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Trasformazioni di asset
+      not_found: Nessuna trasformazione trovata
+      transformation: Trasformazione
+      options: Opzioni
+      colorspace:
+        title: Spazio colori
+        options:
+          colorspace: '%value% spazio colore'
+      resize:
+        title: Ridimensiona
+        options:
+          width: '%value%px di larghezza'
+          height: '% value%px di altezza'
+      resolution:
+        title: Risoluzione
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Scala
+        options:
+          width: '%value%px di larghezza'
+          height: '% value%px di altezza'
+          ratio: '%value% % di rapporto'
+      thumbnail:
+        title: Thumbnail
+        options:
+          width: '%value%px di larghezza'
+          height: '% value%px di altezza'
+pimee_enrich.mass_edit.asset:
+  title: Azione in massa per gli asset
+  confirm: "{1}Stai per aggiornare un asset con le informazioni seguenti, conferma.|]1, Inf[Stai per aggiornare {{ itemsCount }} asset con le informazioni seguenti, conferma."
+  step:
+    select:
+      label: Scegli gli asset
+    choose:
+      title: Azioni in massa per gli asset
+      label_count: "]0, Inf[Seleziona azione"
+    configure:
+      label: Configura
+    confirm:
+      label: Conferma
+  operation:
+    add_tag:
+      label: Aggiungi tag agli asset
+      description: I tag saranno aggiunti all'asset.
+      label_count: "{1}Aggiungi tag a <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Aggiungi tag a <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} asset</span>"
+      field: Tag
+      empty_selection: Scegli i tag
+    add_to_category:
+      label: Classificare gli asset in categorie
+      description: Gli asset saranno posizionati all'interno delle categorie seguenti, il posizionamento esistente andrà perso.
+      label_count: "{1}Classifica <span class=\"AknFullPage-title--highlight\">1 asset</span> nelle categorie|]1, Inf[Classifica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} asset</span> nelle categorie"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Assi su asset
+      hint: Puoi seguire qui il volume relativamente agli asset
+  axis:
+    count_assets: Asset
+    count_asset_categories: Categorie degli asset
+    count_asset_category_trees: Alberi di categoria degli assi
+pim_menu:
+  tab:
+    asset: Asset
+  item:
+    asset_category: Categorie degli asset
+    upload_asset: Carica asset

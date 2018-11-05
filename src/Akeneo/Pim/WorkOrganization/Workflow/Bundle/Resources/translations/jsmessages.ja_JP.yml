@@ -62,6 +62,20 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: 製品提案をXLSX形式でインポート
     import.label: 製品提案をXLSX形式でインポート
+  csv_published_product_quick_export:
+    export.label: Csvの公開済み製品のクイックエクスポート
+    perform.label: Csvの公開済み製品のクイックエクスポート
+  csv_published_product_grid_context_quick_export:
+    export.label: Csvの公開済み製品のグリッドコンテキストのクイックエクスポート
+    perform.label: Csvの公開済み製品のグリッドコンテキストのクイックエクスポート
+  xlsx_published_product_quick_export:
+    export.label: Xlsxの公開済み製品のクイックエクスポート
+    perform.label: Xlsxの公開済み製品のクイックエクスポート
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
+    perform.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
+  publish_product:
+    perform.label: 公開製品
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: 新しい提案
@@ -80,3 +94,98 @@ pimee_dashboard:
       product: 製品
       review: レビュー
       empty: レビューに対する提案はありません
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: 公開済み
+      revert: 復元
+    meta:
+      published_version: 公開バージョン
+      owner_groups: 所有者グループ
+      draft_status: 下書き状態
+      draft:
+        in_progress: 処理中
+        sent_for_approval: 承認待ち
+        working_copy: 作業コピー
+    revert:
+      title: 復元の確認
+      content: 本当にこのバージョンに製品を復元しますか？
+    publish:
+      title: この製品を公開する
+      content: この製品を公開してもよろしいですか？
+    unpublish:
+      title: 製品の取り下げ
+      content: この製品を非公開にしてもよろしいですか？
+    copy:
+      working_copy: 作業コピー
+      draft: 自分の下書き
+      draft_of: "{{ author }} の下書き"
+    approval:
+      send: 承認のために送信
+      sent: 承認のために送信
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: 製品を公開しました
+      fail: この製品を公開できませんでした
+    unpublish:
+      success: 製品を非公開にしました
+      fail: この製品を非公開にできませんでした
+    revert:
+      success: 製品を復元しました
+  module:
+    publish:
+      label: 公開する
+      publish_this_version: このバージョンを公開する
+    unpublish:
+      label: 非公開
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: 提案が正常に適用されました。
+      fail: "この提案は、次のエラーのため適用できません。エラー：{{ error }}"
+    reject:
+      success: 提案は拒否されました。
+    remove:
+      success: 提案は削除されました。
+    update:
+      success: 製品の下書きは正常に保存されました
+      fail: 製品の下書きを更新できませんでした。
+    create:
+      success: 製品下書き承認のため送信
+      fail: 承認を得るためにこの下書きは送信できません。
+  module:
+    create:
+      label: 下書きを保存
+    proposal:
+      accept: 提案を受け入れる
+      accept_selected: 選択した提案を受け入れる
+      reject: 提案を拒否
+      reject_selected: 選択した提案を拒否
+      remove: 提案を削除する
+      comment_title: あなたの提案のコメント (オプション - 最大 255 文字)
+      comment_chars: 文字数。
+      confirm: 送信
+    edit:
+      discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
+      discard_changes_title: この下書きを送信してもよろしいですか？
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: 公開する
+      description: 製品を公開予定
+      warning: 選択した {{ itemsCount }} の製品を公開予定です。
+    unpublish:
+      label: 非公開
+      description: この製品は未公開予定
+      warning: 選択した {{ itemsCount }} の製品を未公開予定です。
+pim_menu:
+  navigation:
+    published_products: 公開済み製品
+  item:
+    proposal: 提案
+    published_product: 公開済み製品
+pim_title:
+  pimee_workflow_proposal_index: 提案
+  pimee_workflow_published_product_index: 公開済み製品
+  pimee_workflow_published_product_view: 公開製品 {{ product.label }} | ビュー

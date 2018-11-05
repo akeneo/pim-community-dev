@@ -43,9 +43,6 @@ akeneo_suggest_data:
           mapped: Actif
           unmapped: Inactif
       module:
-        subscribe:
-          subscribe: 'Abonner la famille à PIM.ai'
-          subscribed: 'Abonnée à PIM.ai'
         index:
           error: "Vous devez créer une famille dans votre catalogue pour accéder à cette page."
       constraint:
@@ -53,13 +50,6 @@ akeneo_suggest_data:
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
         invalid_attribute_type_mapping: 'L''attribut de type "{{ targetType }}" ne peut pas être mappé à l''attribut PIM de type "{{ pimType }}"'
     product_subscription:
-      flash:
-        create:
-          success: 'Produit souscrit avec succès à Franklin'
-          fail: 'Impossible de souscrire le produit à Franklin'
-        delete:
-          success: 'Produit abonné avec succès à Franklin'
-          fail: 'Impossible d''abonner le produit à Franklin'
       constraint:
         invalid_token: 'Désolé, impossible d''abonner des produits à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous.'
         family_required: 'Désolé, un produit doit appartenir à une famille pour pouvoir s''abonner à Franklin Insights.'
@@ -102,7 +92,6 @@ akeneo_suggest_data:
           second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
         title: Désolé, rien à afficher pour le moment
-        sub_title: Veuillez activer votre compte dans Système > Connexion PIM.ai puis revenez sur cette page.
   mass_edit:
     product:
       operation:

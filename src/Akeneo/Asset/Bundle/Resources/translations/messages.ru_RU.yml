@@ -193,3 +193,37 @@ pim_api:
   acl_group:
     asset_category: Категории медиафайлов
     asset: Медиафайлы
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Преобразования активов
+  asset_transformation:
+    not_found: Преобразования не найдены
+    title:
+      transformation: Преобразование
+      options: Параметры
+    colorspace:
+      title: Цветовое пространство
+      options:
+        colorspace: '%value% цветовое пространство'
+    resize:
+      title: Изменение размера
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+    resolution:
+      title: Разрешение
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Маштабирование
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+        ratio: '%value%% соотношение'
+    thumbnail:
+      title: Миниатюра изображения
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'

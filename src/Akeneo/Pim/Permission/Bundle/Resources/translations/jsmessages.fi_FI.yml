@@ -1,0 +1,36 @@
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa
+      revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella
+      revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
+      revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} attribuuttiryhmää
+      view: Attribuuttien katselu sallittu
+      edit: Attribuuttien muokkaaminen sallittu
+      removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} attribuuttiryhmää
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      execute: Työprofiilin suorittaminen sallittu
+      edit: Työprofiilin muokkaaminen sallittu
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    perform.label: Lisää tuotteen arvo
+  update_product_value_with_permission_and_rules:
+    perform.label: Päivitä tuotteen arvo
+  remove_product_value_with_permission_and_rules:
+    perform.label: Poista tuotteen arvo
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Muokkaa attribuutteja

@@ -4,6 +4,90 @@ pimee_enrich.acl.attribute_group.edit_permissions: Управление разр
 pimee_importexport.acl.export_profile.edit_permissions: Управление правами профиля экспорта
 pimee_importexport.acl.import_profile.edit_permissions: Управление привами профиля импорта
 pimee_enrich.groups.label: Группы владельцы
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Редактировать атрибуты
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Удалить значение продукта с правами доступа
 job_profile.permissions:
   execute.label: Разрешено выполнение заданий профиля
   edit.label: Разрешено изменение заданий профиля
+pim_title.locale:
+  edit: "Локали %locale.code% | Изменить"
+attribute group.permissions:
+  view.label: Разрешено просматривать атрибуты
+  view.help: Разрешить просмотр продуктов в этой группе атрибутов
+  edit.label: Разрешено изменение атрибутов
+  edit.help: Разрешить редактирование атрибутов в данной группе атрибутов
+  no_access_to_attributes: Вы не имеете прав доступа к атрибутам этого продукта. Пожалуйста, обратитесь к администратору.
+category.permissions:
+  view.label: Разрешено просматривать товары
+  view.help: Разрешить просмотр продуктов в этой категории
+  edit.label: Разрешено редактирование товаров
+  edit.help: Разрешить редактирование продуктов в этой категории (подразумевает права на просмотр)
+  own.label: Разрешено владеть продуктами
+  own.help: Разрешено публиковать, снимать с публикации, классифицировать, ассоциировать и писать обзоры на продукты в этой категории (подразумевает права на изменение)
+  no_access_to_products: Вы не имеете прав доступа к продуктам в деревьях категорий. Пожалуйста, обратитесь к вашему администратору
+  apply_on_children.label: Применить изменения на дочерние элементы
+  apply_on_children.help: Копирование изменений прав доступа на все дочерние элементы, при этом существующие права сохраняются
+locale.permissions:
+  view.label: Разрешено просматривать информацию о продукте
+  view.help: Разрешить просмотр сведений о продукте в этой локали
+  edit.label: Разрешено редактировать информацию о продукте
+  edit.help: Разрешить редактирование сведений о продукте в этой локали (подразумевает права на просмотр)
+  no_access_to_products: Вы не имеете прав доступа к данным продукта ни в одной локали. Пожалуйста, обратитесь к вашему администратору
+flash.locale.updated: Локаль и права доступа были обновлены
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Вы не имеете прав на изменение продуктов "%identifiers%".
+      page_title: Продукты
+      page_subtitle: Массовое редактирование (1 продукт)|Массовое редактирование (%count% продуктов)
+      title: Выберите операцию
+      subtitle: Выберите операцию, которую вы хотите применить для выбранного продукта|Выберите операцию, которую вы хотите применить для %count% выбранных продуктов
+      confirm: Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.
+      steps:
+        first: Выберите продукты
+        second: Выберите операцию
+        third: Настройка
+        fourth: Подтверждение
+    publish:
+      message:
+        error: Вы не владелец продукта, вы не можете его опубликовать.
+        warning: Вы не являетесь владельцем всех выбранных продуктов. Вы не можете опубликовать продукты "%notGranted%".
+      not_editable: Вы не имеете прав на изменение продуктов "%identifiers%".
+    unpublish:
+      message:
+        error: Вы не владелец продукта, вы не можете снять его с публикации.
+        warning: Вы не являетесь владельцем всех выбранных продуктов. Вы не можете снять продукты "%notGranted%" с публикации.
+        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+      not_editable: Вы не имеете прав на изменение продуктов "%identifiers%".
+    classify:
+      message:
+        error: Вы не владелец продукта, вы не можете классифицировать его.
+        warning: Вы не являетесь владельцем всех выбранных продуктов. Вы не можете классифицировать продукты "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Вы не владелец продукта, вы не можете редактировать его.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Права доступа
+  acl.product_ownership.title: Владение
+  attributes:
+    empty: Пусто
+  category:
+    tab:
+      permission:
+        title: Права доступа
+  groups:
+    label: Группы владельцы
+    empty: Пусто
+add_product_value_with_permission_and_rules:
+  steps.perform: Добавить значение продукта
+update_product_value_with_permission_and_rules:
+  steps.perform: Обновить значение продукта
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Редактировать атрибуты
+  steps.edit_common_attributes_processor.title: Редактировать атрибуты
+pim_enrich_attribute_form:
+  isReadOnly: Только для чтения

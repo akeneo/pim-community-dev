@@ -79,13 +79,25 @@ pimee_workflow:
         second: Elegir operación
         third: Configurar
         fourth: Confirmar
-btn.publish: Publicar
-btn.unpublish: Despublicar
+btn:
+  publish: Publicar
+  unpublish: Despublicar
+  save working copy: Guardar copia de trabajo
+  save draft: Guardar borrador
+  save working copy and next: Guardar copia de trabajo y avanzar
+  save draft and next: Guardar borrador y avanzar
+  save working copy and finish: Guardar copia de trabajo y finalizar
+  save draft and finish: Guardar borrador y finalizar
+  send for approval: Enviar a aprobar
+  sent for approval: Enviado a aprobar
+  editworkingcopy: Editar copia de trabajo
 flash:
   product:
+    updated: La copia de trabajo del producto ha sido actualizada
     published: El producto ha sido publicado exitosamente.
     unpublished: Se ha removido la publicación del producto exitosamente.
   product_draft:
+    updated: El borrador ha sido guardado con éxito
     approve:
       success: La propuesta ha sido aplicada exitosamente.
       error: La propuesta no puede ser aplicada debido al siguiente error. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Productos publicados
     proposal: Propuestas
-btn.editworkingcopy: Editar copia de trabajo
 confirmation:
   product:
     publish: '¿Está seguro que desea publicar este producto?'
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Producto
       review: Revisar 	
       empty: No hay borradores de producto para revisar
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publicar
+      description: Publicar los productos seleccionados, la presente información publicada será eliminada por la copia de trabajo actual.
+      success_flash: Productos seleccionados han sido publicados con éxito.
+      launched_flash: El trabajo de publicación de productos está ejecutándose.
+      message:
+        info: Los productos %nbProducts% seleccionados serán publicados.
+    unpublish:
+      label: Despublicar
+      description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.
+      success_flash: Se ha quitado la publicación de los productos seleccionados.
+      launched_flash: El trabajo de quitar la publicación de productos está actualmente en ejecución.
+      message:
+        info: Los %nbProducts% productos seleccionados serán quitados de la publicación.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Propuestas

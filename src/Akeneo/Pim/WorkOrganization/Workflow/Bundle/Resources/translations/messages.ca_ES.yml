@@ -79,13 +79,25 @@ pimee_workflow:
         second: Trieu l'operació
         third: Configurar
         fourth: Confirmar
-btn.publish: Publicar
-btn.unpublish: Despublicar
+btn:
+  publish: Publicar
+  unpublish: Despublicar
+  save working copy: Desa una còpia de treball
+  save draft: Desar l'esborrany
+  save working copy and next: Desar una còpia de treball i continuar
+  save draft and next: Desar esborrany i continuar
+  save working copy and finish: Desar una còpia de treball i finalitzar
+  save draft and finish: Desar l'esborrany i finalitzar
+  send for approval: Enviar per a la seva aprovació
+  sent for approval: Enviat per a la seva aprovació
+  editworkingcopy: Editar la còpia de treball
 flash:
   product:
+    updated: La còpia de treball del producte s'ha actualitzat
     published: El producte ha estat publicat amb èxit.
     unpublished: El producte ha estat despublicat amb èxit.
   product_draft:
+    updated: El projecte s'ha desat correctament
     approve:
       success: La proposta s'ha aplicat amb èxit.
       error: La proposta no es pot aplicar a causa de l'error següent. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Productes publicats
     proposal: Propostes
-btn.editworkingcopy: Editar la còpia de treball
 confirmation:
   product:
     publish: Esteu segur que voleu publicar aquest producte ?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Producte
       review: Revisar
       empty: No hi ha cap esborrany de producte per revisar
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publicar
+      description: Publicar els productes seleccionats, les dades actuals seran esborrades per l'actual còpia de treball.
+      success_flash: Els productes seleccionats s'han publicat amb èxit.
+      launched_flash: El treball de publicació del(s) producte(s) s'està executant.
+      message:
+        info: Els productes %nbProducts% seleccionats seran publicats.
+    unpublish:
+      label: Despublicar
+      description: Anul·lar la publicació dels productes seleccionats. S'esborraran les dades publicades actualment.
+      success_flash: Els productes seleccionats s'han despublicat amb èxit.
+      launched_flash: El treball de despublicació del(s) producte(s) està en marxa.
+      message:
+        info: Els productes %nbProducts% seleccionats seran despublicats.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Propostes

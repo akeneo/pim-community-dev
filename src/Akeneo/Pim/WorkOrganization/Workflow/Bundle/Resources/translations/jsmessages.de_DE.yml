@@ -62,6 +62,20 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Produktvorschlag-Import aus XLSX
     import.label: Produktvorschlag-Import aus XLSX
+  csv_published_product_quick_export:
+    export.label: Schnellexport veröffentlichter Produkte als CSV
+    perform.label: Schnellexport veröffentlichter Produkte als CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
+    perform.label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
+  xlsx_published_product_quick_export:
+    export.label: Schnellexport veröffentlichter Produkte als XLSX
+    perform.label: Schnellexport veröffentlichter Produkte als XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
+    perform.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
+  publish_product:
+    perform.label: Produkte veröffentlichen
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Neuer Vorschlag
@@ -80,3 +94,97 @@ pimee_dashboard:
       product: Produkt
       review: Überprüfung
       empty: Keine zu überprüfende Vorschläge
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Veröffentlicht
+      revert: Wiederherstellen
+    meta:
+      published_version: Veröffentlichte Version
+      owner_groups: Eigentümer-Gruppen
+      draft_status: Entwurfsstatus
+      draft:
+        in_progress: In Arbeit
+        sent_for_approval: Auf Genehmigung warten
+        working_copy: Arbeitskopie
+    revert:
+      title: Wiederherstellen der Bestätigung
+      content: Sind Sie sicher, dass Sie das Produkt auf diese Version zurücksetzen möchten?
+    publish:
+      title: Dieses Produkt veröffentlichen
+      content: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
+    unpublish:
+      title: Die Veröffentlichung des Produktes entziehen
+      content: Sind Sie sicher, dass Sie diesem Produkt die Veröffentlichung entziehen möchten?
+    copy:
+      working_copy: Arbeitskopie
+      draft: Mein Entwurf
+      draft_of: "Entwurf von {{ author }}"
+    approval:
+      send: Zur Freigabe senden
+      sent: Zur Freigabe gesendet
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produkt erfolgreich veröffentlicht
+      fail: Fehler beim Veröffentlichen des Produkts
+    unpublish:
+      success: Veröffentlichung für das Produkt erfolgreich entzogen
+      fail: Fehler beim Entziehen der Veröffentlichung für dieses Produkt
+    revert:
+      success: Produkt erfolgreich wiederhergestellt
+  module:
+    publish:
+      label: Veröffentlichen
+      publish_this_version: Diese Version veröffentlichen
+    unpublish:
+      label: Veröffentlichung entziehen
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Der Vorschlag wurde erfolgreich freigegeben.
+      fail: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden: {{ error }}"
+    reject:
+      success: Der Vorschlag wurde abgelehnt.
+    remove:
+      success: Der Vorschlag wurde entfernt.
+    update:
+      success: Produktentwurf wurde erfolgreich gespeichert
+      fail: Produktentwurf konnte nicht aktualisiert werden
+    create:
+      success: Produktentwurf zur Freigabe gesendet
+      fail: Sie können diesen Produktentwurf nicht zur Freigabe senden
+  module:
+    create:
+      label: Entwurf speichern
+    proposal:
+      accept: Vorschlag akzeptieren
+      accept_selected: Ausgewählte Vorschläge akzeptieren
+      reject: Vorschlag ablehnen
+      reject_selected: Ausgewählte Vorschläge ablehnen
+      remove: Vorschlag entfernen
+      comment_title: Kommentar zu Ihrem Vorschlag (optional - max. 255 Zeichen)
+      comment_chars: Zeichen.
+      confirm: Senden
+    edit:
+      discard_changes: Ungespeicherte Änderungen gehen verloren. Sind Sie sicher, dass Sie den Produktentwurf mit den ungespeicherten Anpassungen zur Freigabe senden möchten?
+      discard_changes_title: Sind Sie sicher, dass Sie diesen Produktentwurf absenden möchten?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Veröffentlichen
+      description: Die Produkte werden veröffentlicht
+      warning: '{{ itemsCount }} gewählte Produkte werden veröffentlicht.'
+    unpublish:
+      label: Veröffentlichung entziehen
+      description: Die Veröffentlichung der Produkte wird entzogen
+      warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
+pim_menu:
+  navigation:
+    published_products: Veröffentlichte Produkte
+  item:
+    proposal: Vorschläge
+    published_product: Veröffentlichte Produkte
+pim_title:
+  pimee_workflow_proposal_index: Vorschläge
+  pimee_workflow_published_product_index: Veröffentlichte Produkte

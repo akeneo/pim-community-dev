@@ -45,6 +45,8 @@ batch_jobs:
     perform.label: Hylkää ehdotus
   xlsx_published_product_export:
     export.label: Julkaistun tuotteen vienti
+  publish_product:
+    perform.label: Julkaise tuotteet
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
@@ -61,3 +63,98 @@ pimee_dashboard:
       product: Tuote
       review: Tarkastus
       empty: Ei ehdotuksia tarkastettavaksi
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Julkaistu
+      revert: Palauta
+    meta:
+      published_version: Julkaistu versio
+      owner_groups: Omistajaryhmät
+      draft_status: Luonnoksen tila
+      draft:
+        in_progress: Toiminto käynnissä
+        sent_for_approval: Odottaa hyväksyntää
+        working_copy: Työkopio
+    revert:
+      title: Palauta vahvistus
+      content: Oletko varma, että haluat palauttaa tuotteen tähän versioon?
+    publish:
+      title: Julkaise tämä tuote
+      content: Oletko varma että haluat julkaista tämän tuotteen?
+    unpublish:
+      title: Peruuta tuotteen julkaisu
+      content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
+    copy:
+      working_copy: Työkopio
+      draft: Luonnokseni
+      draft_of: "{{ author }}: n luonnos"
+    approval:
+      send: Lähetä hyväksyttäväksi
+      sent: Lähetetty hyväksyttäväksi
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Tuote julkaistu onnistuneesti
+      fail: Tuotteen julkaisu epäonnistui
+    unpublish:
+      success: Tuotteen julkaisu peruutettu onnistuneesti
+      fail: Tuotteen julkaisun peruuttaminen epäonnistui
+    revert:
+      success: Tuote palautettu onnistuneesti
+  module:
+    publish:
+      label: Julkaise
+      publish_this_version: Julkaise tämä versio
+    unpublish:
+      label: Peruuta julkaisu
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Ehdotus on otettu käyttöön onnistuneesti.
+      fail: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
+    reject:
+      success: Ehdotus on hylätty.
+    remove:
+      success: Ehdotus on poistettu.
+    update:
+      success: Tuotteen luonnos tallennettu onnistuneesti
+      fail: Tuotteen luonnosta ei voitu päivittää
+    create:
+      success: Tuotteen luonnos lähetetty hyväksyttäväksi
+      fail: Et voi lähettää tätä luonnosta hyväksyttäväksi
+  module:
+    create:
+      label: Tallenna luonnos
+    proposal:
+      accept: Hyväksy ehdotus
+      accept_selected: Hyävksy valittu ehdotus / ehdotukset
+      reject: Hylkää ehdotus
+      reject_selected: Hylkää valittu ehdotus / ehdotukset
+      remove: Poista ehdotus
+      comment_title: Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)
+      comment_chars: merkkiä
+      confirm: Lähetä
+    edit:
+      discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
+      discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Julkaise
+      description: Tuotteet julkaistaan
+      warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
+    unpublish:
+      label: Peruuta julkaisu
+      description: Tuotteen julkaisu perutaan
+      warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
+pim_menu:
+  navigation:
+    published_products: Julkaistut tuotteet
+  item:
+    proposal: Ehdotukset
+    published_product: Julkaistut tuotteet
+pim_title:
+  pimee_workflow_proposal_index: Ehdotukset
+  pimee_workflow_published_product_index: Julkaistut tuotteet
+  pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä

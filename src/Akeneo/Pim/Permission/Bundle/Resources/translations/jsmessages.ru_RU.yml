@@ -1,0 +1,43 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Только для чтения
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой категории
+      revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой категории
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой локали
+      revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой локали
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Группа <strong>{{ group }} будет {{ permission }}</strong> в этой группе атрибутов
+      revoke: Группа <strong>{{ group }} не будет {{ permission }}</strong> в этой группе атрибутов
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      view: Разрешено просматривать атрибуты
+      edit: Разрешено изменение атрибутов
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      execute: Разрешено выполнение заданий профиля
+      edit: Разрешено изменение заданий профиля
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Добавить значение продукта с проверкой прав доступа & применением правил
+    perform.label: Добавить значение продукта
+  update_product_value_with_permission_and_rules:
+    label: Обновить значение продукта с проверкой прав доступа & применением правил
+    perform.label: Обновить значение продукта
+  remove_product_value_with_permission_and_rules:
+    label: Удалить значение продукта с проверкой прав доступа & применением правил
+    perform.label: Удалить значение продукта
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Редактировать атрибуты
+    cleaner.label: Очистить временные файлы

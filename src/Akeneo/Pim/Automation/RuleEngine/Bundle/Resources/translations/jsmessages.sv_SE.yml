@@ -60,6 +60,8 @@ flash:
     executed: Regelkörning har lanserats. Du meddelas när det är gjort.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler inställningar
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Regler utförande
   default_steps:
     execute_rules: Regler utförande
   yml_rule_import:
@@ -80,3 +82,8 @@ batch_jobs:
 pim_notification:
   types:
     rule: Regler inställningar
+pim_menu:
+  item:
+    rule: Regler
+pim_title:
+  pimee_catalog_rule_rule_index: Regler

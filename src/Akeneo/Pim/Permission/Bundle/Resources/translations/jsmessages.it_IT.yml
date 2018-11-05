@@ -1,0 +1,50 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Sola lettura
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa categoria
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa categoria
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> di questo attributo di gruppo
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> per questo attributo di gruppo
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} sul gruppo attributi
+      view: Consentita la visualizzazione degli attributi
+      edit: Consentita la modifica degli attributi
+      removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} sul gruppo attributi
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} per il profilo del job
+      execute: Permetti l'esecuzione del profilo del job
+      edit: Consentito modificare il profilo del job
+      removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} per il profilo del job
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Aggiungi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Aggiungi un valore di prodotto
+  update_product_value_with_permission_and_rules:
+    label: Aggiorna il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Modifica un valore di prodotto
+  remove_product_value_with_permission_and_rules:
+    label: Rimuovi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Rimuovi un valore di prodotto
+  edit_common_attributes_with_permission_and_rules:
+    label: Modifica gli attributi con controllo dei permessi e con l'applicazione delle regole
+    perform.label: Modificare gli attributi
+    cleaner.label: Elimina file temporanei
+pim_title:
+  pimee_enrich_locale_edit: Impostazioni locali | Modifica

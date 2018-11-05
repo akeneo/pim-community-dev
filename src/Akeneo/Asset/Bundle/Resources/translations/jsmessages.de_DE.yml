@@ -74,6 +74,8 @@ pim_dashboard:
         mass_upload: Massenupload
 pim_title:
   pimee_product_asset_mass_upload: Assets hochladen
+  pimee_product_asset_index: Assets
+  pimee_asset_categorytree_index: Kategorien
 batch_jobs:
   apply_assets_mass_upload:
     label: Massenupload von Assets
@@ -82,6 +84,7 @@ batch_jobs:
     label: Assets Massenupload und hinzufügen zum Produkt
     perform.label: Assets Massenupload und hinzufügen zum Produkt
   yml_asset_channel_configuration_import:
+    import.label: Asset-Ausgabekanal-Konfiguration-Import
     label: Assets Channel-Konfiguration in Yaml importieren
     import_asset.label: Assets Channel-Konfiguration in Yaml importieren
   yml_asset_channel_configuration_export:
@@ -138,3 +141,71 @@ asset_grid:
   label: Produktassets
 create_asset:
   title: Asset erstellen
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Massenbearbeitung Assets
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Assetumwandlungen
+      not_found: Keine Umwandlung gefunden
+      transformation: Umwandlung
+      options: Optionen
+      colorspace:
+        title: Farbraum
+        options:
+          colorspace: '%value% Farbraum'
+      resize:
+        title: Größe anpassen
+        options:
+          width: '%value%px Breite'
+          height: '%value%px Höhe'
+      resolution:
+        title: Auflösung
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skalierung
+        options:
+          width: '%value%px Breite'
+          height: '%value%px Höhe'
+          ratio: 'Verhältnis %value%%'
+      thumbnail:
+        title: Miniaturansicht
+        options:
+          width: '%value%px Breite'
+          height: '%value%px Höhe'
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: Asset auswählen
+    choose:
+      title: Massenbearbeitung Assets
+    configure:
+      label: Konfigurieren
+    confirm:
+      label: Bestätigen
+  operation:
+    add_tag:
+      label: Stichworte zu Assets hinzufügen
+      description: Tags werden den Assets hinzugefügt.
+      field: Stichworte
+    add_to_category:
+      label: Zuordnung von Assets in Kategorien
+pim_catalog_volume:
+  section:
+    assets:
+      title: Achsen auf Assets
+      hint: Sie können den Umfang bezüglich der Assets genau hier verfolgen
+  axis:
+    count_assets: Assets
+    count_asset_categories: Assetkategorien
+    count_asset_category_trees: Assetkategoriebaum
+pim_menu:
+  tab:
+    asset: Assets
+  item:
+    asset_category: Assetkategorien
+    upload_asset: Assets hochladen

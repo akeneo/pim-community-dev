@@ -62,6 +62,20 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Produkt forslag import som CSV
     import.label: Produkt forslag import som CSV
+  csv_published_product_quick_export:
+    export.label: CSV offentliggjort produkter hurtig eksport
+    perform.label: CSV offentliggjort produkter hurtig eksport
+  csv_published_product_grid_context_quick_export:
+    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+  xlsx_published_product_quick_export:
+    export.label: CSV offentliggjort produkter hurtig eksport
+    perform.label: CSV offentliggjort produkter hurtig eksport
+  xlsx_published_product_grid_context_quick_export:
+    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+  publish_product:
+    perform.label: Udgiv produkter
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Ny forslag
@@ -80,3 +94,98 @@ pimee_dashboard:
       product: Produkt
       review: Gennemgang
       empty: Ingen forslag til gennemgang
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publiceret
+      revert: Gendan
+    meta:
+      published_version: Publiceret version
+      owner_groups: Ejer grupper
+      draft_status: Kladdestatus
+      draft:
+        in_progress: Igangværende
+        sent_for_approval: Venter på godkendelse
+        working_copy: Arbejds kopi
+    revert:
+      title: Gendanne bekræftelse
+      content: Er du sikker på at du vil gendanne produktet til denne version?
+    publish:
+      title: Offentliggøre dette produkt
+      content: Er du sikker på du vil offentliggøre dette produkt?
+    unpublish:
+      title: Afpublicer produktet
+      content: Er du sikker på du vil afpublicere dette produkt ?
+    copy:
+      working_copy: Arbejds kopi
+      draft: Mit udkast
+      draft_of: "{{ author }}'s udkast til"
+    approval:
+      send: Send til godkendelse
+      sent: Sendt til godkendelse
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produkt blev publiseret
+      fail: Fejl ved publisering af dette produkt
+    unpublish:
+      success: Produkt blev afpubliseret
+      fail: Fejl ved publisering af dette produkt
+    revert:
+      success: Produkt blev gendannet
+  module:
+    publish:
+      label: Publicér
+      publish_this_version: Offentliggøre denne version
+    unpublish:
+      label: Afpublisér
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Forslaget er blevet anvendt.
+      fail: "Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}"
+    reject:
+      success: Forslaget er blevet afvist.
+    remove:
+      success: Forslaget er blevet fjernet.
+    update:
+      success: Produkt udkast er blevet gemt
+      fail: Produkt kladde kunne ikke opdateres
+    create:
+      success: Produkt udkast sendes til godkendelse
+      fail: Du kan ikke sende dette udkast til godkendelse
+  module:
+    create:
+      label: Gem kladde
+    proposal:
+      accept: Acceptere forslag
+      accept_selected: Acceptere valgte forslag(ene)
+      reject: Afvis forslag
+      reject_selected: Afvis valgte forslag(ene)
+      remove: Fjern forslag
+      comment_title: Kommentere dine forslag (valgfri - maks. 255 tegn)
+      comment_chars: tegn.
+      confirm: Afsend
+    edit:
+      discard_changes: Ikke-gemte ændringer vil gå tabt. Er du sikker på du vil sende din udkast til godkendelse uden at gemme dine ændringer?
+      discard_changes_title: Er du sikker på du vil sende dette udkast?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publicér
+      description: Produkterne vil blive offentliggjort
+      warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
+    unpublish:
+      label: Afpublisér
+      description: Produkterne vil blive afpubliseret
+      warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
+pim_menu:
+  navigation:
+    published_products: Offentliggjorte produkter
+  item:
+    proposal: Forslag
+    published_product: Offentliggjorte produkter
+pim_title:
+  pimee_workflow_proposal_index: Forslag
+  pimee_workflow_published_product_index: Offentliggjorte produkter
+  pimee_workflow_published_product_view: Offentliggjorte produkter {{ product.label }} | Vis
