@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
@@ -31,12 +32,13 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
     /** @var Connection */
     private $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
+    /** @var FindAttributesDetailsInterface */
+    private $findAttributesDetails;
+
+    public function __construct(Connection $sqlConnection, FindAttributesDetailsInterface $findAttributesDetails)
     {
         $this->sqlConnection = $sqlConnection;
+        $this->findAttributesDetails = $findAttributesDetails;
     }
 
     /**
@@ -52,12 +54,16 @@ class SqlFindReferenceEntityDetails implements FindReferenceEntityDetailsInterfa
             return null;
         }
 
+        $attributesDetails = ($this->findAttributesDetails)($identifier);
+
         return $this->hydrateReferenceEntityDetails(
             $result['identifier'],
             $result['labels'],
             $result['record_count'],
             $result['file_key'],
-            $result['original_filename']);
+            $result['original_filename'],
+            $attributesDetails
+        );
     }
 
     private function fetchResult(ReferenceEntityIdentifier $identifier): array
@@ -94,7 +100,8 @@ SQL;
         string $normalizedLabels,
         string $recordCount,
         ?string $fileKey,
-        ?string $originalFilename
+        ?string $originalFilename,
+        array $attributesDetails
     ): ReferenceEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -115,6 +122,7 @@ SQL;
         $referenceEntityItem->labels = LabelCollection::fromArray($labels);
         $referenceEntityItem->image = $entityImage;
         $referenceEntityItem->recordCount = $recordCount;
+        $referenceEntityItem->attributes = $attributesDetails;
 
         return $referenceEntityItem;
     }

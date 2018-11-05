@@ -9,4 +9,5 @@ export const denormalizeAttribute = (
   return denormalizer(normalizedAttribute);
 };
 
-export default denormalizeAttribute(getAttributeDenormalizer);
+export default (normalizedAttribute: NormalizedAttribute) =>
+  denormalizeAttribute(getAttributeDenormalizer)(normalizedAttribute);

@@ -17,13 +17,13 @@ import {
 import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
 import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
-import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
 import {updateFilter} from 'akeneoreferenceentity/application/event/search';
 import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import {attributeListUpdated} from 'akeneoreferenceentity/domain/event/attribute/list';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -45,15 +45,7 @@ class ReferenceEntityEditController extends BaseController {
       .then(async (referenceEntityResult: ReferenceEntityResult) => {
         this.store = createStore(true)(referenceEntityReducer);
         const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
-        const userSearch: any =
-          null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
-            ? getFilter(
-                JSON.parse(sessionStorage.getItem(
-                  `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
-                ) as string),
-                'full_text'
-              ).value
-            : '';
+        const userSearch = this.getUserSearch(referenceEntityIdentifier);
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
@@ -67,7 +59,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(updateRecordResults());
-        this.store.dispatch(updateAttributeList() as any);
+        this.store.dispatch(attributeListUpdated(referenceEntityResult.attributes) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
@@ -91,6 +83,17 @@ class ReferenceEntityEditController extends BaseController {
       });
 
     return promise.promise();
+  }
+
+  getUserSearch = (referenceEntityIdentifier: string): string => {
+    return null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
+      ? getFilter(
+          JSON.parse(sessionStorage.getItem(
+            `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
+          ) as string),
+          'full_text'
+        ).value
+      : '';
   }
 
   beforeUnload = () => {
