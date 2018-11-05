@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Component\Channel\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -28,16 +29,25 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
     /** @var string */
     protected $supportedAttributeType;
 
+    /** @var FindActivatedCurrenciesInterface */
+    protected $findActivatedCurrenciesForChannel;
+
     /**
-     * @param PriceFactory $priceFactory
-     * @param string       $productValueClass
-     * @param string       $supportedAttributeType
+     * @param PriceFactory                     $priceFactory
+     * @param string                           $productValueClass
+     * @param string                           $supportedAttributeType
+     * @param FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel
      */
-    public function __construct(PriceFactory $priceFactory, $productValueClass, $supportedAttributeType)
-    {
+    public function __construct(
+        PriceFactory $priceFactory,
+        $productValueClass,
+        $supportedAttributeType,
+        ?FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel = null
+    ) {
         $this->priceFactory = $priceFactory;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
+        $this->findActivatedCurrenciesForChannel = $findActivatedCurrenciesForChannel;
     }
 
     /**
@@ -52,7 +62,10 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         }
 
         $value = new $this->productValueClass(
-            $attribute, $channelCode, $localeCode, $this->getPrices($attribute, $data)
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->getPrices($attribute, $data, $channelCode)
         );
 
         return $value;
@@ -125,11 +138,15 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      *
      * @return PriceCollection
      */
-    protected function getPrices(AttributeInterface $attribute, array $data)
+    protected function getPrices(AttributeInterface $attribute, array $data, ?string $channelCode)
     {
         $prices = new PriceCollection();
 
         $filteredData = $this->filterByCurrency($data);
+        // TODO: To remove / pull-up
+        if (null !== $this->findActivatedCurrenciesForChannel) {
+            $filteredData = $this->filterByActivatedCurrencies($channelCode, $filteredData);
+        }
         $sortedData = $this->sortByCurrency($filteredData);
         foreach ($sortedData as $price) {
             try {
@@ -222,5 +239,41 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         }
 
         return $filteredData;
+    }
+
+    /**
+     * filters out the currencies
+     *
+     * @param null|string $channelCode
+     * @param array       $data
+     *
+     * @return array
+     */
+    private function filterByActivatedCurrencies(?string $channelCode, array $data): array
+    {
+        $activatedCurrencies = $this->getActivatedCurrencies($channelCode);
+
+        return array_values(
+            array_filter(
+                $data,
+                function (array $price) use ($activatedCurrencies) {
+                    return in_array($price['currency'], $activatedCurrencies);
+                }
+            )
+        );
+    }
+
+    /**
+     * @param null|string $channelCode
+     *
+     * @return array
+     */
+    private function getActivatedCurrencies(?string $channelCode): array
+    {
+        if (null === $channelCode) {
+            return $this->findActivatedCurrenciesForChannel->forAllChannels();
+        }
+
+        return $this->findActivatedCurrenciesForChannel->forChannel($channelCode);
     }
 }

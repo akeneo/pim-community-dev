@@ -62,10 +62,8 @@ class ProductIntegration extends TestCase
             'a_price_without_decimal-USD' => '-45.00',
             'a_ref_data_multi_select' => 'fabricA,fabricB',
             'a_ref_data_simple_select' => 'colorB',
-            'a_scopable_price-ecommerce-EUR' => '15.00',
             'a_scopable_price-ecommerce-USD' => '20.00',
             'a_scopable_price-tablet-EUR' => '17.00',
-            'a_scopable_price-tablet-USD' => '24.00',
             'a_simple_select' => 'optionB',
             'a_text' => 'this is a text',
             'a_text_area' => 'this is a very very very very very long  text',
@@ -73,12 +71,12 @@ class ProductIntegration extends TestCase
             'an_image' => '1/5/7/5/15757827125efa686c1c0f1e7930ca0c528f1c2c_imageA.jpg',
             'sku' => 'foo',
             '123' => 'a text for an attribute with numerical code',
-            'enabled' => 1,
+            'enabled' => 1
         ];
 
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
-        $this->assertSame($flatProduct, $expected);
+        $this->assertEquals($expected, $flatProduct);
     }
 
     /**
