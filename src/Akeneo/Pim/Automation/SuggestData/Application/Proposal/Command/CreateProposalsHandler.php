@@ -39,9 +39,6 @@ class CreateProposalsHandler
     /** @var string */
     private $searchAfter;
 
-    /** @var int */
-    private $batchSize;
-
     /**
      * @param ProposalUpsertInterface $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
@@ -62,8 +59,8 @@ class CreateProposalsHandler
      */
     public function handle(CreateProposalsCommand $command): void
     {
-        $this->batchSize = $command->batchSize();
-        $this->fetchNextPendingSubscriptions();
+        $batchSize = $command->batchSize();
+        $this->fetchNextPendingSubscriptions($batchSize);
 
         while (!empty($this->pendingSubscriptions)) {
             $toProcess = [];
@@ -76,17 +73,17 @@ class CreateProposalsHandler
             if (!empty($toProcess)) {
                 $this->proposalUpsert->process($toProcess, ProposalAuthor::USERNAME);
             }
-            $this->fetchNextPendingSubscriptions();
+            $this->fetchNextPendingSubscriptions($batchSize);
         }
     }
 
     /**
-     * Fetches subscriptions with suggested data.
+     * @param int $batchSize
      */
-    private function fetchNextPendingSubscriptions(): void
+    private function fetchNextPendingSubscriptions(int $batchSize): void
     {
         $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions(
-            $this->batchSize,
+            $batchSize,
             $this->searchAfter
         );
         if (!empty($pendingSubscriptions)) {

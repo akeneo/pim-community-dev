@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\EmptySuggestedDataSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\FranklinProposalsCreationSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Query\Subscription\EmptySuggestedDataQueryInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class EmptySuggestedDataSubscriberSpec extends ObjectBehavior
+class FranklinProposalsCreationSubscriberSpec extends ObjectBehavior
 {
     public function let(EmptySuggestedDataQueryInterface $query): void
     {
@@ -37,14 +37,14 @@ class EmptySuggestedDataSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    public function it_is_an_empty_suggested_data_subscriber(): void
+    public function it_is_an_franklin_proposals_creation_subscriber(): void
     {
-        $this->shouldHaveType(EmptySuggestedDataSubscriber::class);
+        $this->shouldHaveType(FranklinProposalsCreationSubscriber::class);
     }
 
     public function it_subscribes_to_proposals_created_event(): void
     {
-        $this::getSubscribedEvents()->shouldHaveKey(SubscriptionEvents::PROPOSALS_CREATED);
+        $this::getSubscribedEvents()->shouldHaveKey(SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED);
     }
 
     public function it_empties_suggested_data_from_subscriptions($query): void
@@ -54,6 +54,6 @@ class EmptySuggestedDataSubscriberSpec extends ObjectBehavior
 
         $query->execute(['a-fake-subscription', 'another-fake-subscription'])->shouldBeCalled();
 
-        $this->onProposalCreated(new GenericEvent([$suggestedData, $otherSuggestedData]));
+        $this->emptySuggestedData(new GenericEvent([$suggestedData, $otherSuggestedData]));
     }
 }

@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class EmptySuggestedDataSubscriber implements EventSubscriberInterface
+class FranklinProposalsCreationSubscriber implements EventSubscriberInterface
 {
     /** @var EmptySuggestedDataQueryInterface */
     private $emptySuggestedDataQuery;
@@ -41,22 +41,33 @@ class EmptySuggestedDataSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            SubscriptionEvents::PROPOSALS_CREATED => 'onProposalCreated',
+            SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED => 'emptySuggestedData',
         ];
     }
 
     /**
      * @param GenericEvent $event
      */
-    public function onProposalCreated(GenericEvent $event): void
+    public function emptySuggestedData(GenericEvent $event): void
     {
         $suggestedData = $event->getSubject();
         if (!is_array($suggestedData)) {
             throw new \InvalidArgumentException('Event\'s subject must be an array');
         }
-        $subscriptionIds = array_map(function (SuggestedData $data) {
-            return $data->getSubscriptionId();
-        }, $suggestedData);
+        foreach ($suggestedData as $data) {
+            if (!$data instanceof SuggestedData) {
+                throw new \InvalidArgumentException(
+                    sprintf('Event\'s subject must be an array of %s', SuggestedData::class)
+                );
+            }
+        }
+
+        $subscriptionIds = array_map(
+            function (SuggestedData $data) {
+                return $data->getSubscriptionId();
+            },
+            $suggestedData
+        );
 
         $this->emptySuggestedDataQuery->execute($subscriptionIds);
     }

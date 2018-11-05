@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Query\Subscription;
 
+/**
+ * @author Mathias Métayer <mathias.metayer@akeneo.com>
+ */
 interface EmptySuggestedDataQueryInterface
 {
     /**

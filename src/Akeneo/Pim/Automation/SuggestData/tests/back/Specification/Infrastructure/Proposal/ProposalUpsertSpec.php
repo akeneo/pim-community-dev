@@ -86,7 +86,7 @@ class ProposalUpsertSpec extends ObjectBehavior
             Argument::type(GenericEvent::class)
         )->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(SubscriptionEvents::PROPOSALS_CREATED, Argument::type(GenericEvent::class))
+        $eventDispatcher->dispatch(SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED, Argument::type(GenericEvent::class))
                         ->shouldBeCalledOnce();
         $cacheClearer->clear()->shouldBeCalledOnce();
 

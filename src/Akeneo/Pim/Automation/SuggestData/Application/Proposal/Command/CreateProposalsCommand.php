@@ -26,7 +26,7 @@ class CreateProposalsCommand
      */
     public function __construct(int $batchSize)
     {
-        if (0 >= $batchSize) {
+        if ($batchSize <= 0) {
             throw new \InvalidArgumentException('Batch size must be positive');
         }
         $this->batchSize = $batchSize;

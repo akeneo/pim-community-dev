@@ -18,5 +18,5 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event;
  */
 final class SubscriptionEvents
 {
-    public const PROPOSALS_CREATED = 'suggested_data.proposals.created';
+    public const FRANKLIN_PROPOSALS_CREATED = 'franklin.proposals.created';
 }

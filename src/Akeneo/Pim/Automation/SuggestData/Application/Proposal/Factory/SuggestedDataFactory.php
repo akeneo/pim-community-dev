@@ -35,6 +35,11 @@ class SuggestedDataFactory
         $this->normalizer = $normalizer;
     }
 
+    /**
+     * @param ProductSubscription $subscription
+     *
+     * @return WriteSuggestedData|null
+     */
     public function fromSubscription(ProductSubscription $subscription): ?WriteSuggestedData
     {
         $product = $subscription->getProduct();

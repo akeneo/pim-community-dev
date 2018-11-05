@@ -38,6 +38,10 @@ class EmptySuggestedDataQuery implements EmptySuggestedDataQueryInterface
      */
     public function execute(array $subscriptionIds): void
     {
+        if (empty($subscriptionIds)) {
+            return;
+        }
+
         $sql = <<<SQL
 UPDATE pim_suggest_data_product_subscription
 SET raw_suggested_data = NULL

@@ -79,7 +79,7 @@ final class ProposalUpsert implements ProposalUpsertInterface
         }
         if (!empty($processed)) {
             $this->eventDispatcher->dispatch(
-                SubscriptionEvents::PROPOSALS_CREATED,
+                SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
                 new GenericEvent($processed)
             );
         }
