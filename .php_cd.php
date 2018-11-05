@@ -64,7 +64,8 @@ $cAkeneoRules = [
     new Rule(
         'Akeneo\Tool\Component\Localization',
             array_merge($cDeps, [
-                'Symfony\Component\Translation', // to translate units of the metric attribute types
+                'Symfony\Component\Translation', // to translate units of the metric attribute types,
+                'Akeneo\Channel\Component\Model\LocaleInterface' //TODO Maybe locale should belong to Localization and segregate Locale from channel and local
             ]),
             RuleInterface::TYPE_ONLY
     ),

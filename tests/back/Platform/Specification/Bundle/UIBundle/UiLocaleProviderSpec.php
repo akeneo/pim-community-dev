@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Platform\Bundle\UIBundle;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -11,13 +13,14 @@ use Symfony\Component\Translation\Translator;
 class UiLocaleProviderSpec extends ObjectBehavior
 {
     function let(
+        LocaleRepositoryInterface $localeRepository,
         Translator $translator,
         MessageCatalogueInterface $messageCatalogueAll,
         MessageCatalogueInterface $messageCatalogue_fr_FR,
         MessageCatalogueInterface $messageCatalogue_en_US,
         MessageCatalogueInterface $messageCatalogue_de_DE
     ) {
-        $this->beConstructedWith($translator, 0.7, ['en_US', 'fr_FR', 'de_DE']);
+        $this->beConstructedWith($translator, $localeRepository, 0.7, ['en_US', 'fr_FR', 'de_DE']);
         $translator->getFallbackLocales()->willReturn(['en_US']);
         $translator->getCatalogue(Argument::any())->willReturn($messageCatalogueAll);
         $messageCatalogueAll->all()->willReturn([]);
@@ -46,18 +49,9 @@ class UiLocaleProviderSpec extends ObjectBehavior
         $this->shouldHaveType(UiLocaleProvider::class);
     }
 
-    function it_should_return_default_locale()
+    function it_should_return_default_locale_and_locales_translated_more_than_70_percent($localeRepository, LocaleInterface $enUs, LocaleInterface $frFr)
     {
-        $this->getLocales()->shouldHaveKey('en_US');
-    }
-
-    function it_should_return_locales_translated_more_than_70_percent()
-    {
-        $this->getLocales()->shouldHaveKey('fr_FR');
-    }
-
-    function it_should_not_return_locales_translated_less_than_70_percent()
-    {
-        $this->getLocales()->shouldNotHaveKey('de_DE');
+        $localeRepository->findBy(['code' => ['en_US', 'fr_FR']])->willReturn([$enUs, $frFr]);
+        $this->getLocales()->shouldReturn([$enUs, $frFr]);
     }
 }

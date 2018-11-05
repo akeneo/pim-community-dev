@@ -3,8 +3,8 @@
 namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
