@@ -2,8 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\ProductQueryBuilder\Sorter;
 
-use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>

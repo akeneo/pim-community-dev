@@ -1,4 +1,5 @@
 @import '../../base/variables';
+@import '../../base/animations';
 
 .AknButton {
   @darken: 10%;
@@ -43,29 +44,27 @@
   &--delete {
     background-color: transparent;
     color: @AknRed;
-    height: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize - 2px;
-    font-size: @AknFontSizeBig;
-    min-width: @AknDefaultButtonSize;
     display: inline-block;
-    border-radius: 0;
     border: none;
     cursor: pointer;
-    text-align: center;
     white-space: nowrap;
     transition:
-      background 0.1s ease,
-      color 0.1s ease,
-      border-color 0.1s ease;
-    position: relative;
+      color 0.1s ease;
     text-transform: none;
-    display: block;
-    margin-bottom: 10px;
+    height: auto;
+
+    font-size: @AknFontSizeSmall;
+
+    .trashAnimation();
 
     &:hover {
       background-color: transparent;
       color: darken(@AknRed, @darken);
     }
+  }
+
+  &--spaced {
+    margin-left: 10px;
   }
 
   // Apply color
@@ -86,6 +85,14 @@
     background-color: lighten(@AknGreen, @lighten);
     border-color: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
+  }
+
+  &-animatedIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
   }
 
   // Grey color

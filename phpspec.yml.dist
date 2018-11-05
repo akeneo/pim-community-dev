@@ -21,15 +21,11 @@ suites:
 
     ## Enrichment context
     Enrichment:
-        namespace: Akeneo\Pim\Enrichment\Component
-        psr4_prefix: Akeneo\Pim\Enrichment\Component
-        spec_path: src/Akeneo/Pim/Enrichment/Component
-        src_path: src/Akeneo/Pim/Enrichment/Component
-    EnrichmentBundle:
-        namespace: Akeneo\Pim\Enrichment\Bundle
-        psr4_prefix: Akeneo\Pim\Enrichment\Bundle
-        spec_path: src/Akeneo/Pim/Enrichment/Bundle
-        src_path: src/Akeneo/Pim/Enrichment/Bundle
+        namespace: Akeneo\Pim\Enrichment
+        psr4_prefix: Akeneo\Pim\Enrichment
+        src_path: src/Akeneo/Pim/Enrichment
+        spec_path: tests/back/Pim/Enrichment
+        spec_prefix: Specification
 
     ## Platform context
     Platform:

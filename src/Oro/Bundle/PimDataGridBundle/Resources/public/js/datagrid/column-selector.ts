@@ -123,7 +123,7 @@ class ColumnSelector extends BaseView {
     mediator.once('datagrid_collection_set_after', (datagridCollection: any, datagridElement: any) => {
       this.datagridCollection = datagridCollection;
       this.datagridElement = datagridElement;
-      this.hideButton = (false === this.datagridElement.data('metadata').options.manageColumns)
+      this.hideButton = false === this.datagridElement.data('metadata').options.manageColumns;
       this.locale = this.getLocale();
       this.renderColumnSelector();
     });
@@ -317,12 +317,12 @@ class ColumnSelector extends BaseView {
     this.setValidation();
     this.listenToListScroll();
 
-    const scrollColumn = this.modal.$el.find('[data-columns]')
+    const scrollColumn = this.modal.$el.find('[data-columns]');
     const scrollHeight = scrollColumn.get(0).scrollHeight;
     const columnHeight = scrollColumn.outerHeight();
 
     if (scrollHeight === columnHeight) {
-      this.fetchNextColumns(true)
+      this.fetchNextColumns(true);
     }
   }
 
@@ -345,7 +345,6 @@ class ColumnSelector extends BaseView {
       .removeClass('more')
       .off('scroll')
       .unbind();
-
   }
 
   /**
