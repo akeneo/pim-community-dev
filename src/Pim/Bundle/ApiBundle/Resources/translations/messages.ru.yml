@@ -1,6 +1,7 @@
 pim_api:
   acl:
     attribute:
+      edit: Создание и изменение атрибутов
       list: Список атрибутов
     attribute_group:
       list: Перечислить группы атрибутов
