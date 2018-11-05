@@ -52,39 +52,50 @@ class AttributeOptionsValidator extends ConstraintValidator
     private function isNotArray(array $attributeOptions): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($attributeOptions, [
-            new Assert\Type('array'),
-        ]);
-
-        $notValid = $violations->count() > 0;
+        $violations = $validator->validate($attributeOptions, [new Assert\Type('array')]);
         $this->addViolationsIfAny($violations);
 
-        return $notValid;
+        return $violations->count() > 0;
     }
 
     private function hasTooManyOptions($attributeOptions): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($attributeOptions, [
-            new Assert\Count(['max' => self::MAX_OPTIONS_COUNT, 'maxMessage' => AttributeOptions::MESSAGE_TOO_MANY_OPTIONS, 'min' => 0])
-        ]);
-
-        $notValid = $violations->count() > 0;
+        $violations = $validator->validate(
+            $attributeOptions,
+            [
+                new Assert\Count([
+                    'max'        => self::MAX_OPTIONS_COUNT,
+                    'maxMessage' => AttributeOptions::MESSAGE_TOO_MANY_OPTIONS,
+                    'min'        => 0,
+                ]),
+            ]
+        );
         $this->addViolationsIfAny($violations);
 
-        return $notValid;
+        return $violations->count() > 0;
     }
 
     private function checkOptionsAreValid(array $attributeOptions): bool
     {
         $validator = Validation::createValidator();
         $violations = new ConstraintViolationList();
+
         foreach ($attributeOptions as $attributeOption) {
             $violations->addAll($validator->validate($attributeOption['code'], new AttributeOptionCode()));
             $violations->addAll($validator->validate($attributeOption['labels'], new LabelCollection()));
-        }
 
-        $this->addViolationsIfAny($violations);
+            foreach ($violations as $violation) {
+                $path = $attributeOption['code'] ?? '';
+                $this->context->buildViolation($violation->getMessage())
+                    ->setParameters($violation->getParameters())
+                    ->atPath((string) $path)
+                    ->setCode($violation->getCode())
+                    ->setPlural($violation->getPlural())
+                    ->setInvalidValue($violation->getInvalidValue())
+                    ->addViolation();
+            }
+        }
 
         return 0 !== $violations->count();
     }

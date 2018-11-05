@@ -26,25 +26,25 @@ Feature: Edit the options of a list attribute
   Scenario Outline: Set an option with an invalid code
     Given a reference entity with an option attribute
     When the user sets the '<invalid_option_code>' option
-    Then there should be a validation error on the property 'options' with message '<message>'
+    Then there should be a validation error on the property '<property_path>' with message '<message>'
 
     Examples:
-      | invalid_option_code | message                                                       |
-      | null                | This value should not be blank.                               |
-      | 255                 | This value should be of type string.                          |
-      | "gre-en"            | This field may only contain letters, numbers and underscores. |
+      | invalid_option_code | property_path  | message                                                       |
+      | null                | options        | This value should not be blank.                               |
+      | 255                 | options.255    | This value should be of type string.                          |
+      | "gre-en"            | options.gre-en | This field may only contain letters, numbers and underscores. |
 
   @acceptance-back
   Scenario: Set an option with a code too long
     Given a reference entity with an option attribute
     When the user sets an option with a code too long
-    Then there should be a validation error on the property 'options' with message 'This value is too long. It should have 255 characters or less.'
+    Then there should be a validation error on the property 'options.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' with message 'This value is too long. It should have 255 characters or less.'
 
   @acceptance-back
   Scenario Outline: Set an option with an invalid label
     Given a reference entity with an option attribute
     When the user sets an option with a label '<invalid_option_label>'
-    Then there should be a validation error on the property 'options' with message '<message>'
+    Then there should be a validation error on the property 'options.option_code' with message '<message>'
 
     Examples:
       | invalid_option_label | message                                                                                  |

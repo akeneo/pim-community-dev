@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -1128,17 +1129,16 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^the option attribute should have an option \'([^\']*)\' with label \'([^\']*)\' for the locale \'([^\']*)\'$/
+     * @Then /^the option( collection)? attribute should have an option \'([^\']*)\' with label \'([^\']*)\' for the locale \'([^\']*)\'$/
      */
-    public function theOptionAttributeShouldHaveAnOptionWithLabelForTheLocale($optionCode, $label, $locale)
+    public function theOptionAttributeShouldHaveAnOptionWithLabelForTheLocale($isCollection, $optionCode, $label, $locale)
     {
         $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         Assert::assertNotEmpty($attribute->normalize()['attribute_options']);
-        Assert::assertEquals(
-            [
+        Assert::assertEquals([
                 [
                     'code'   => $optionCode,
                     'labels' => [$locale => $label],
@@ -1237,7 +1237,7 @@ class EditAttributeContext implements Context
     /**
      * @When /^the user sets the \'([^\']*)\' option$/
      */
-    public function theUserSetsTheOption(string $optionCode)
+    public function theUserSetsTheOption($optionCode)
     {
         if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
             $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
@@ -1294,10 +1294,35 @@ class EditAttributeContext implements Context
             'identifier' => (string) $identifier,
             'attribute_options' => [
                 [
-                    'code'   => 'option_with_label_too_long',
+                    'code'   => 'option_code',
                     'labels' => [ 'fr_FR' => $json_decode],
                 ],
             ]
         ]);
+    }
+
+    /**
+     * @Given /^a reference entity with an option collection attribute with some options$/
+     */
+    public function aReferenceEntityWithAnOptionCollectionAttributeWithSomeOptions()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
+        ]);
+        $this->attributeRepository->create($optionAttribute);
     }
 }
