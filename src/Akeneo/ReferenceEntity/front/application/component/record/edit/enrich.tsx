@@ -12,6 +12,7 @@ import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-r
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   form: EditionFormState;
@@ -26,7 +27,7 @@ interface DispatchProps {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
       onValueChange: (value: Value) => void;
-      onFieldSubmit: () => void;
+      onSubmit: () => void;
     };
   };
 }
@@ -46,9 +47,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
   };
 
   keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.events.form.onFieldSubmit();
-    }
+    if (Key.Enter === event.key) this.props.events.form.onSubmit()
   };
 
   render() {
@@ -90,7 +89,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
             createLocaleReference(this.props.context.locale),
             this.props.form.errors,
             this.props.events.form.onValueChange,
-            this.props.events.form.onFieldSubmit
+            this.props.events.form.onSubmit
           )}
         </div>
       </div>
@@ -122,7 +121,7 @@ export default connect(
           onValueChange: (value: Value) => {
             dispatch(recordValueUpdated(value));
           },
-          onFieldSubmit: () => {
+          onSubmit: () => {
             dispatch(saveRecord());
           },
         },

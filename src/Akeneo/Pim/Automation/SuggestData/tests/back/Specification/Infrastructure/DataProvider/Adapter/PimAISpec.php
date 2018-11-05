@@ -15,18 +15,24 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
+    as FranklinAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
@@ -50,6 +56,7 @@ class PimAISpec extends ObjectBehavior
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
+        OptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
         FamilyNormalizer $familyNormalizer
@@ -60,6 +67,7 @@ class PimAISpec extends ObjectBehavior
             $identifiersMappingRepository,
             $identifiersMappingApi,
             $attributesMappingApi,
+            $attributeOptionsMappingApi,
             $identifiersMappingNormalizer,
             $attributesMappingNormalizer,
             $familyNormalizer
@@ -216,18 +224,18 @@ class PimAISpec extends ObjectBehavior
                     'label' => [
                         'en_us' => 'Product Weight',
                     ],
+                    'type' => 'metric',
                 ],
                 'to' => null,
-                'type' => 'metric',
                 'summary' => ['23kg',  '12kg'],
                 'status' => 'pending',
             ],
             [
                 'from' => [
                     'id' => 'color',
+                    'type' => 'multiselect',
                 ],
                 'to' => ['id' => 'color'],
-                'type' => 'multiselect',
                 'status' => 'pending',
                 'summary' => ['blue',  'red'],
             ],
@@ -266,6 +274,23 @@ class PimAISpec extends ObjectBehavior
         $attributesMappingApi->update($familyCode, $normalizedMapping)->shouldBeCalled();
 
         $this->updateAttributesMapping($familyCode, $attributesMapping);
+    }
+
+    public function it_retrieves_attribute_options_mapping($attributeOptionsMappingApi): void
+    {
+        $fakeDirectory = realpath(__DIR__ . '/../../../../Resources/fake/franklin-api/attribute-options-mapping');
+        $filename = 'get_family_router_attribute_color.json';
+        $mappingData = json_decode(file_get_contents(sprintf('%s/%s', $fakeDirectory, $filename)), true);
+
+        $strFamilyCode = 'family_code';
+        $strFranklinAttrId = 'franklin_attr_id';
+        $attributeOptionsMappingApi
+            ->fetchByFamilyAndAttribute($strFamilyCode, $strFranklinAttrId)
+            ->willReturn(new FranklinAttributeOptionsMapping($mappingData));
+
+        $this
+            ->getAttributeOptionsMapping(new FamilyCode($strFamilyCode), new FranklinAttributeId($strFranklinAttrId))
+            ->shouldReturnAnInstanceOf(AttributeOptionsMapping::class);
     }
 
     /**

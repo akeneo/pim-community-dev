@@ -26,5 +26,6 @@ class AkeneoPimAssetExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('comparators.yml');
         $loader->load('updaters.yml');
+        $loader->load('controllers.yml');
     }
 }

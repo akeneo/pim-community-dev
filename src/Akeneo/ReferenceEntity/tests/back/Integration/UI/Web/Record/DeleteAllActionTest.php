@@ -119,10 +119,6 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
         $recordItem = $this->createRecord($entityIdentifier, $recordCode, $recordIdentifier);
         $recordRepository->create($recordItem);
 
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
-
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_referenceentity_records_delete_all', true);
     }

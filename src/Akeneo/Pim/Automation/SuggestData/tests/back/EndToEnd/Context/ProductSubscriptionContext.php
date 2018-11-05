@@ -53,16 +53,16 @@ class ProductSubscriptionContext extends PimContext
     }
 
     /**
-     * @When I subscribe the product :identifier to PIM.ai
+     * @When I subscribe the product :identifier to Franklin
      *
      * @param string $identifier
      *
      * @throws TimeoutException
      */
-    public function iSubscribeTheProductToPimAi(string $identifier): void
+    public function iSubscribeTheProductToFranklin(string $identifier): void
     {
         $this->loginAsAdmin();
-        $this->subscribeProductToPimAi($identifier);
+        $this->subscribeProductToFranklin($identifier);
     }
 
     /**
@@ -72,10 +72,10 @@ class ProductSubscriptionContext extends PimContext
      *
      * @throws TimeoutException
      */
-    public function iUnsubscribeTheProductToPimAi(string $identifier): void
+    public function iUnsubscribeTheProductToFranklin(string $identifier): void
     {
         $this->loginAsAdmin();
-        $this->unsubscribeProductFromPimAi($identifier);
+        $this->unsubscribeProductFromFranklin($identifier);
     }
 
     /**
@@ -114,7 +114,7 @@ class ProductSubscriptionContext extends PimContext
      *
      * @throws TimeoutException
      */
-    private function subscribeProductToPimAi(string $identifier): void
+    private function subscribeProductToFranklin(string $identifier): void
     {
         $dropdown = $this->getActivationDropDown($identifier);
 
@@ -127,7 +127,7 @@ class ProductSubscriptionContext extends PimContext
             $button->click();
 
             return true;
-        }, sprintf('Cannot subscribe product "%s" to PIM.ai.', $identifier));
+        }, sprintf('Cannot subscribe product "%s" to Franklin.', $identifier));
     }
 
     /**
@@ -135,7 +135,7 @@ class ProductSubscriptionContext extends PimContext
      *
      * @throws TimeoutException
      */
-    private function unsubscribeProductFromPimAi(string $identifier): void
+    private function unsubscribeProductFromFranklin(string $identifier): void
     {
         $dropdown = $this->getActivationDropDown($identifier);
 
@@ -148,7 +148,7 @@ class ProductSubscriptionContext extends PimContext
             $button->click();
 
             return true;
-        }, sprintf('Cannot unsubscribe product "%s" from PIM.ai.', $identifier));
+        }, sprintf('Cannot unsubscribe product "%s" from Franklin.', $identifier));
     }
 
     /**
@@ -174,7 +174,7 @@ class ProductSubscriptionContext extends PimContext
             }
 
             return $dropdown;
-        }, sprintf('Cannot find PIM.ai subscription drop-down for product "%s".', $identifier));
+        }, sprintf('Cannot find Franklin subscription drop-down for product "%s".', $identifier));
     }
 
     /**

@@ -26,3 +26,16 @@ services:
         class: '%pimee_workflow.provider.owner_groups.class%'
         arguments:
             - '@pimee_security.repository.category_access'
+
+    pimee_workflow.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                csv_product_proposal_import: pim-job-instance-csv-product-import
+                csv_product_model_proposal_import: pim-job-instance-csv-product-model-import
+                csv_published_product_export: pim-job-instance-csv-product-export
+                xlsx_published_product_export: pim-job-instance-xlsx-product-export
+                xlsx_product_proposal_import: pim-job-instance-xlsx-product-import
+                xlsx_product_model_proposal_import: pim-job-instance-xlsx-product-model-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

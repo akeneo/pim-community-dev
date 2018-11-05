@@ -1,11 +1,22 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import * as $ from 'jquery';
 import * as _ from 'underscore';
-
+import {getConnectionStatus} from '../../fetcher/franklin-connection';
+import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
 const template = require('pimee/template/mass-edit/suggest-data-operation');
+const Router = require('pim/router');
 
-interface SuggestDataOperationConfig {
+interface Config {
   title: string;
   label: string;
   subLabel: string;
@@ -16,6 +27,8 @@ interface SuggestDataOperationConfig {
   illustration: string;
   subscribeLabel: string;
   unsubscribeLabel: string;
+  franklinActivationConstraint: string;
+  invalidMappingConstraint: string;
 }
 
 /**
@@ -24,8 +37,17 @@ interface SuggestDataOperationConfig {
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class SuggestDataOperation extends Operation {
+  /**
+   * @returns {boolean}
+   */
+  private static redirectToFranklinConnection(): boolean {
+    Router.redirectToRoute('akeneo_suggest_data_connection_edit');
+
+    return false;
+  }
+
   private readonly template: any = _.template(template);
-  private readonly config: SuggestDataOperationConfig = {
+  private readonly config: Config = {
     title: '',
     label: '',
     subLabel: '',
@@ -36,17 +58,15 @@ class SuggestDataOperation extends Operation {
     illustration: '',
     subscribeLabel: '',
     unsubscribeLabel: '',
+    franklinActivationConstraint: '',
+    invalidMappingConstraint: '',
   };
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: SuggestDataOperationConfig }) {
-    super({
-      ...options, ...{
-        className: 'AknButtonList AknButtonList--single',
-      },
-    });
+  constructor(options: { config: Config }) {
+    super(options);
 
     this.config = {...this.config, ...options.config};
   }
@@ -56,31 +76,46 @@ class SuggestDataOperation extends Operation {
    */
   public events(): Backbone.EventsHash {
     return {
-      'click .AknButton': 'switchAction',
+      'click .operation-type': this.switchAction,
+      'click [data-action]': SuggestDataOperation.redirectToFranklinConnection,
     };
   }
 
   /**
    * {@inheritdoc}
    */
-  public render(): object {
-    if (undefined === this.getFormData().action) {
-      this.setAction('subscribe');
-    }
+  public render() {
+    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
+      if (undefined === this.getFormData().action) {
+        this.setAction('subscribe');
+      }
 
-    this.$el.html(this.template({
-      subscribeLabel: __(this.config.subscribeLabel),
-      unsubscribeLabel: __(this.config.unsubscribeLabel),
-      currentAction: this.getFormData().action,
-    }));
+      let errorMessage = '';
+      if (!connectionStatus.isIdentifiersMappingValid) {
+        errorMessage = __(this.config.invalidMappingConstraint);
+        this.getParent().disableNextButton();
+      }
+      if (!connectionStatus.isActive) {
+        errorMessage = __(this.config.franklinActivationConstraint);
+        this.getParent().disableNextButton();
+      }
 
-    return this;
+      this.$el.html(this.template({
+        subscribeLabel: __(this.config.subscribeLabel),
+        unsubscribeLabel: __(this.config.unsubscribeLabel),
+        errorMessage,
+        currentAction: this.getFormData().action,
+        isActive: connectionStatus.isActive && connectionStatus.isIdentifiersMappingValid,
+      }));
+
+      this.delegateEvents();
+    });
   }
 
   /**
    * @param event
    */
-  protected switchAction(event: any): void {
+  private switchAction(event: { target: any }): void {
     const action: string = $(event.target).attr('data-value') as string;
     const $button = $(event.target).parent().find('.AknButton--apply');
 
@@ -92,7 +127,7 @@ class SuggestDataOperation extends Operation {
   /**
    * @param {string} action
    */
-  protected setAction(action: string): void {
+  private setAction(action: string): void {
     const data = this.getFormData();
 
     data.jobInstanceCode = this.config.jobInstanceCode.replace('%s', action);

@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionExcept
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -40,19 +41,25 @@ class SubscribeProductHandler
     /** @var DataProviderFactory */
     private $dataProviderFactory;
 
+    /** @var IdentifiersMappingRepositoryInterface */
+    private $identifiersMappingRepository;
+
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param DataProviderFactory $dataProviderFactory
+     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        DataProviderFactory $dataProviderFactory
+        DataProviderFactory $dataProviderFactory,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->dataProviderFactory = $dataProviderFactory;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
     /**
@@ -75,8 +82,17 @@ class SubscribeProductHandler
         $subscriptionRequest = new ProductSubscriptionRequest($product);
         $dataProvider = $this->dataProviderFactory->create();
 
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+        if ($identifiersMapping->isEmpty()) {
+            throw new ProductSubscriptionException('No mapping defined');
+        }
+
         $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
-        $subscription = new ProductSubscription($product, $subscriptionResponse->getSubscriptionId());
+        $subscription = new ProductSubscription(
+            $product,
+            $subscriptionResponse->getSubscriptionId(),
+            $subscriptionRequest->getMappedValues($identifiersMapping)
+        );
         $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
         $subscription->setSuggestedData($suggestedData);
         $subscription->markAsMissingMapping($subscriptionResponse->isMappingMissing());

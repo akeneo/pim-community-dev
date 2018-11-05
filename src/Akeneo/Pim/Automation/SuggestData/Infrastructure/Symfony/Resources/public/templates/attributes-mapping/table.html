@@ -1,30 +1,39 @@
+<div class="AknFieldContainer AknFieldContainer-familyAttributeMapping <%- familyMappingStatus.className %>">
+    <%- __(familyMappingStatus.label) %>
+</div>
 <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
 <table class="AknGrid AknGrid--unclickable">
     <tr class="AknGrid-header">
-        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pim_ai_attribute %></th>
-        <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
-        <th class="AknGrid-headerCell"></th>
-        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- suggest_data %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pimAiAttribute %></th>
+        <th class="AknGrid-headerCell"><%- catalogAttribute %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeMappingStatus %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
-        <tr
-                class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
-                data-pim_ai_attribute="<%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>"
-                data-status="<%- mapping[pim_ai_attribute_code].status %>"
+        <tr class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row line"
+            data-pim-ai-attribute="<%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>"
+            data-status="<%- mapping[pim_ai_attribute_code].status %>"
         >
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
-                <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
-            </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- pim_ai_attribute_code %>"></td>
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
-                <div class="AknButtonList AknButtonList--right">
-                    <div
-                            class="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item option-mapping"
-                            data-franklin-attribute-code="<%- pim_ai_attribute_code %>"
-                            title="<%- edit %>"
-                            style="display: none;"
-                    ></div>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--flex AknGrid-bodyCell--highlight searchable-value">
+                <%- mapping[pim_ai_attribute_code].pimAiAttribute.label %>
+                <div class="AknDropdown">
+                    <div class="AknIconButton AknIconButton--value AknGrid-onHoverElement summary-button" data-toggle="dropdown"></div>
+                    <div class="AknDropdown-menu AknDropdown-menu--offset">
+                        <div class="AknDropdown-menuTitle">
+                            <%= __(valuesSummaryKey, {
+                                label: '<span class="AknDropdown-menuTitle--soft">' + escapeHtml(mapping[pim_ai_attribute_code].pimAiAttribute.label) + '</span>'
+                            }) %>
+                        </div>
+                        <div class="AknColumn-block AknDropdown-menuSection">
+                            <div class="AknColumn-subtitle"><%- type %></div>
+                            <div class="AknColumn-value"><%- mapping[pim_ai_attribute_code].pimAiAttribute.type %></div>
+                        </div>
+                        <% mapping[pim_ai_attribute_code].pimAiAttribute.summary.forEach((summaryItem) => { %>
+                            <div class="AknDropdown-menuLink AknDropdown-menuLink--inactive"><%- summaryItem %></div>
+                        <% }) %>
+                    </div>
                 </div>
+            </td>
+            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- pim_ai_attribute_code %>">
             </td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
                 <%- statuses[mapping[pim_ai_attribute_code].status] %>

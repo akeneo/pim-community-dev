@@ -215,7 +215,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(error, expectedError);
   });
 
-  Then('the user shouldn\'t see the delete button', async function() {
+  Then('the user should not see the delete button', async function() {
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
       currentRequestContract.request.query.referenceEntityIdentifier,

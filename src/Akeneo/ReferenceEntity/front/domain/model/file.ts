@@ -47,6 +47,10 @@ export default class File {
     return this.originalFilename;
   }
 
+  public isInStorage(): boolean {
+    return undefined !== this.filePath && -1 === this.filePath.indexOf('/tmp/');
+  }
+
   public getSize(): number {
     if (undefined === this.size) {
       throw new InvalidCallError('You cannot get the size on an uploaded or empty file');

@@ -4,3 +4,6 @@ pimee_enrich.acl.attribute_group.edit_permissions: Управление разр
 pimee_importexport.acl.export_profile.edit_permissions: Управление правами профиля экспорта
 pimee_importexport.acl.import_profile.edit_permissions: Управление привами профиля импорта
 pimee_enrich.groups.label: Группы владельцы
+job_profile.permissions:
+  execute.label: Разрешено выполнение заданий профиля
+  edit.label: Разрешено изменение заданий профиля

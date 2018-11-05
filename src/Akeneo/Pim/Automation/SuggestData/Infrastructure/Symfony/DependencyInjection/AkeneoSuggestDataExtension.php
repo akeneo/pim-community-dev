@@ -41,9 +41,11 @@ class AkeneoSuggestDataExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('normalizers.yml');
         $loader->load('processors.yml');
+        $loader->load('queries.yml');
         $loader->load('repositories.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
+        $loader->load('subscribers.yml');
         $loader->load('validators.yml');
         $loader->load('writers.yml');
     }

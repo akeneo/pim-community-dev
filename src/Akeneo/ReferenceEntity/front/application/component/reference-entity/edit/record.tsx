@@ -22,7 +22,7 @@ const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {getDataCellView, CellView} from 'akeneoreferenceentity/application/configuration/value';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 
 interface StateProps {
   context: {
@@ -36,6 +36,7 @@ interface StateProps {
     total: number;
     isLoading: boolean;
     page: number;
+    filters: Filter[];
   };
   recordCount: number;
   acls: {
@@ -91,7 +92,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
     if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
       return {
         cellViews: props.grid.columns.reduce((cellViews: CellViews, column: Column): CellViews => {
-          cellViews[column.key] = getDataCellView(column.type as AttributeType);
+          cellViews[column.key] = getDataCellView(column.type);
 
           return cellViews;
         }, {}),
@@ -197,6 +198,7 @@ export default connect(
       undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
     const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const page = undefined === state.grid || undefined === state.grid.query.page ? 0 : state.grid.query.page;
+    const filters = undefined === state.grid || undefined === state.grid.query.filters ? [] : state.grid.query.filters;
     const columns =
       undefined === state.grid || undefined === state.grid.query || undefined === state.grid.query.columns
         ? []
@@ -216,6 +218,7 @@ export default connect(
         columns,
         isLoading: state.grid.isFetching,
         page,
+        filters,
       },
       recordCount: state.recordCount,
       acls: {

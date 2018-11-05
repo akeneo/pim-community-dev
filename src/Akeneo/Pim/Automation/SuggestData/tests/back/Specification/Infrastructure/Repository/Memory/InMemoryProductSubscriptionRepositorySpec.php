@@ -40,7 +40,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     {
         $product = new Product();
         $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription');
+        $subscription = new ProductSubscription($product, 'a-fake-subscription', ['sku' => '72527273070']);
         $this->save($subscription);
 
         $this->findOneByProductId(42)->shouldReturn($subscription);
@@ -55,13 +55,17 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     {
         $product = new Product();
         $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription');
+        $subscription = new ProductSubscription($product, 'a-fake-subscription', ['sku' => '72527273070']);
         $subscription->setSuggestedData(new SuggestedData(['foo' => 'bar']));
         $this->save($subscription);
 
         $otherProduct = new Product();
         $otherProduct->setId(44);
-        $otherSubscription = new ProductSubscription($otherProduct, 'another-fake-subscription');
+        $otherSubscription = new ProductSubscription(
+            $otherProduct,
+            'another-fake-subscription',
+            ['sku' => '72527273070']
+        );
         $this->save($otherSubscription);
 
         $this->findPendingSubscriptions()->shouldReturn([$subscription]);

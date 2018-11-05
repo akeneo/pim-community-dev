@@ -99,9 +99,13 @@ extensions:
                 pending: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending
                 mapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped
                 unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
-                pim_ai_attribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
-                catalog_attribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
-                suggest_data: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
+                pimAiAttribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
+                catalogAttribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
+                attributeMappingStatus: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
+                valuesSummary: akeneo_suggest_data.entity.attributes_mapping.fields.values_summary
+                type: pim_common.type
+                familyMappingPending: akeneo_suggest_data.entity.attributes_mapping.module.index.family_status.pending
+                familyMappingFull: akeneo_suggest_data.entity.attributes_mapping.module.index.family_status.full
 
     pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
         module: pimee/view/common/front-search-filter
@@ -109,7 +113,7 @@ extensions:
         position: 10
         targetZone: filters
         config:
-            fieldName: 'pim_ai_attribute'
+            fieldName: 'pimAiAttribute'
 
     pim-suggest-data-settings-attributes-mapping-index-status-filter:
         module: pimee/view/common/status-filter

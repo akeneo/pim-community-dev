@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
 
 /**
- * Encapsulates a raw subscription from a raw API response returned by PIM.ai.
+ * Encapsulates a raw subscription from a raw API response returned by Franklin.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */

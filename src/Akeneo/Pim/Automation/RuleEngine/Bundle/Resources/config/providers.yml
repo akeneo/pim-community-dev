@@ -1,0 +1,13 @@
+services:
+    pimee_rule.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                yml_rule_import: pim-job-instance-yml-base-import
+                yml_rule_export: pim-job-instance-yml-base-export
+                csv_product_import_with_rules: pim-job-instance-csv-product-import
+                csv_product_model_import_with_rules: pim-job-instance-csv-product-model-import
+                xlsx_product_import_with_rules: pim-job-instance-xlsx-product-import
+                xlsx_product_model_import_with_rules: pim-job-instance-xlsx-product-model-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

@@ -47,7 +47,8 @@ class SqlFindRecordItemsForIdentifiers implements FindRecordItemsForIdentifiersI
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
         ) AS fi ON fi.file_key = ee.image
-        WHERE identifier IN (:identifiers);
+        WHERE identifier IN (:identifiers)
+        ORDER BY FIELD(identifier, :identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($sqlQuery, [

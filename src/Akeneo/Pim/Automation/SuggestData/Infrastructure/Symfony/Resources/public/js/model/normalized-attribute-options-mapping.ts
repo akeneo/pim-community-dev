@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2018 Akeneo SAS (http://www.akeneo.com)
@@ -22,13 +22,14 @@ export enum AttributeOptionStatus {
 
 export interface NormalizedAttributeOptionsMapping {
   family: string;
-  franklin_attribute_code: string;
+  franklinAttributeCode: string;
+  catalogAttributeCode: string;
   mapping: {
     [pimAiAttributeOptionCode: string]: {
-      franklin_attribute_option_code: {
+      franklinAttributeOptionCode: {
         label: string;
       },
-      catalog_attribute_option_code: string;
+      catalogAttributeOptionCode: string;
       status: number;
     },
   };

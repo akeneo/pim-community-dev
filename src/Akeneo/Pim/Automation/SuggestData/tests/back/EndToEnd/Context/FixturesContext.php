@@ -126,13 +126,13 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @Given the product ":identifier" is subscribed to PIM.ai
+     * @Given the product ":identifier" is subscribed to Franklin
      *
      * @param string $identifier
      *
      * @throws InvalidMappingException
      */
-    public function theProductIsSubscribedToPimAi(string $identifier): void
+    public function theProductIsSubscribedToFranklin(string $identifier): void
     {
         $this->updateIdentifiersMapping(['asin' => 'asin']);
 

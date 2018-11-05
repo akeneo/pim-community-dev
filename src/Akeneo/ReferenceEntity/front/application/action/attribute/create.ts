@@ -1,4 +1,3 @@
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
   attributeCreationSucceeded,
@@ -9,9 +8,13 @@ import {EditState} from 'akeneoreferenceentity/application/reducer/reference-ent
 import {
   notifyAttributeWellCreated,
   notifyAttributeCreateFailed,
+  notifyAttributeCreateValidationError,
 } from 'akeneoreferenceentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
-import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {
+  denormalizeMinimalAttribute,
+  MinimalNormalizedAttribute,
+} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {attributeEditionStartByCode} from 'akeneoreferenceentity/application/action/attribute/edit';
 
 export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
@@ -20,7 +23,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
   const normalizedAttribute = {
     ...formData,
     reference_entity_identifier: referenceEntity.identifier,
-  } as NormalizedAttribute;
+  } as MinimalNormalizedAttribute;
   const attribute = denormalizeMinimalAttribute(normalizedAttribute);
 
   try {
@@ -29,7 +32,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
       dispatch(attributeCreationErrorOccured(validationErrors));
-      dispatch(notifyAttributeCreateFailed());
+      dispatch(notifyAttributeCreateValidationError());
 
       return;
     }

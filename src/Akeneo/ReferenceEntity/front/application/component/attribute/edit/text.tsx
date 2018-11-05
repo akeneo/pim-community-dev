@@ -2,9 +2,8 @@ import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import {AdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
-import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {TextAttribute, TextAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {RegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
 import {
   ValidationRuleOption,
@@ -14,6 +13,7 @@ import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/typ
 import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
+import Key from 'akeneoreferenceentity/tools/key';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -36,7 +36,7 @@ const AttributeValidationRuleItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >
@@ -54,14 +54,14 @@ const getValidationRuleOptions = (): DropdownElement[] => {
   });
 };
 
-export default ({
+const TextView = ({
   attribute,
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
 }: {
   attribute: TextAttribute;
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+  onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
 }) => {
@@ -81,9 +81,7 @@ export default ({
             name="max_length"
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if ('Enter' === event.key) {
-                onSubmit();
-              }
+              if (Key.Enter === event.key) onSubmit()
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxLength.isValid(event.currentTarget.value)) {
@@ -201,9 +199,7 @@ export default ({
                 placeholder="/[a-z]+[0-9]*/"
                 value={attribute.regularExpression.stringValue()}
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if ('Enter' === event.key) {
-                    onSubmit();
-                  }
+                  if (Key.Enter === event.key) onSubmit()
                 }}
                 onChange={(event: React.FormEvent<HTMLInputElement>) =>
                   onAdditionalPropertyUpdated(
@@ -219,3 +215,5 @@ export default ({
     </React.Fragment>
   );
 };
+
+export const view = TextView;

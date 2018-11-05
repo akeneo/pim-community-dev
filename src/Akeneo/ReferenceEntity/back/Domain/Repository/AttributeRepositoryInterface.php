@@ -27,7 +27,7 @@ interface AttributeRepositoryInterface
     /**
      * @throws AttributeNotFoundException
      */
-    public function deleteByIdentifier(AttributeIdentifier $identifier): void;
+    public function deleteByIdentifier(AttributeIdentifier $attributeIdentifier): void;
 
     /**
      * @throws AttributeNotFoundException
@@ -40,6 +40,11 @@ interface AttributeRepositoryInterface
      * @return AbstractAttribute[]
      */
     public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
+
+    /**
+     * Count attributes for a given reference entity
+     */
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int;
 
     public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
 }

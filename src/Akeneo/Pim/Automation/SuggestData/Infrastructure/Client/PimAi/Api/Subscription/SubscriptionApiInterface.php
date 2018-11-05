@@ -15,9 +15,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -30,7 +30,7 @@ interface SubscriptionApiInterface
      * @throws BadRequestException
      * @throws InsufficientCreditsException
      * @throws InvalidTokenException
-     * @throws PimAiServerException
+     * @throws FranklinServerException
      *
      * @return ApiResponse
      */
@@ -44,7 +44,7 @@ interface SubscriptionApiInterface
      * @throws BadRequestException
      * @throws InsufficientCreditsException
      * @throws InvalidTokenException
-     * @throws PimAiServerException
+     * @throws FranklinServerException
      *
      * @return SubscriptionsCollection
      */
@@ -55,7 +55,7 @@ interface SubscriptionApiInterface
      *
      * @throws BadRequestException
      * @throws InvalidTokenException
-     * @throws PimAiServerException
+     * @throws FranklinServerException
      */
     public function unsubscribeProduct(string $subscriptionId): void;
 }

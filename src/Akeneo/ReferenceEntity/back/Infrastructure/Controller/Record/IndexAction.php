@@ -32,9 +32,8 @@ class IndexAction
     /** @var SearchRecord */
     private $searchRecord;
 
-    public function __construct(
-        SearchRecord $searchRecord
-    ) {
+    public function __construct(SearchRecord $searchRecord)
+    {
         $this->searchRecord = $searchRecord;
     }
 

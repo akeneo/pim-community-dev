@@ -1,0 +1,67 @@
+{
+  "_links": {
+    "subscription": [
+      {
+        "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c"
+      }
+    ]
+  },
+  "_embedded": {
+    "subscription": [
+      {
+        "id": "73b62382-f528-46c7-998e-bea9adb3d15c",
+        "identifiers": {
+          "upc": null,
+          "asin": "B00EYZY6AC",
+          "mpn_brand": null
+        },
+        "attributes": [],
+        "extra": {
+          "family": {
+            "code": "hairstyling",
+            "label": {
+              "en_US": "Hair styling"
+            }
+          },
+          "tracker_id": "50"
+        },
+        "created_at": "2018-10-23T14:54:33+00:00",
+        "refreshed_at": null,
+        "valid_until": "2019-10-23T14:54:33+00:00",
+        "is_cancelled": false,
+        "message": "",
+        "_links": {
+          "self": {
+            "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c"
+          },
+          "cancel": {
+            "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c",
+            "type": "application/prs.hal-forms+json"
+          }
+        },
+        "_embedded": {
+          "cancel": {
+            "_links": {
+              "self": {
+                "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "cancel",
+                "description": "cancel a subscription",
+                "method": "DELETE",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": []
+              }
+            }
+          }
+        },
+        "mapped_identifiers": [],
+        "mapped_attributes": [],
+        "misses_mapping": false
+      }
+    ],
+    "warnings": []
+  }
+}

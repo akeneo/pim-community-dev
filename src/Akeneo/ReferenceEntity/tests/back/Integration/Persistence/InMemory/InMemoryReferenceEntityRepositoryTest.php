@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryReferenceEntityRepositoryTest extends TestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
+    /** @var InMemoryReferenceEntityRepository */
     private $referenceEntityRepository;
 
     public function setup()
@@ -99,8 +99,8 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
         $anotherIdentifier = ReferenceEntityIdentifier::fromString('another_identifier');
         $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $this->referenceEntityRepository->create(ReferenceEntity::create($identifier, [], Image::createEmpty()));
-        Assert::assertTrue($this->referenceEntityRepository->hasRecord($identifier));
-        Assert::assertFalse($this->referenceEntityRepository->hasRecord($anotherIdentifier));
+        Assert::assertTrue($this->referenceEntityRepository->hasReferenceEntity($identifier));
+        Assert::assertFalse($this->referenceEntityRepository->hasReferenceEntity($anotherIdentifier));
     }
 
     /**
@@ -158,5 +158,21 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
 
         $this->expectException(ReferenceEntityNotFoundException::class);
         $this->referenceEntityRepository->deleteByIdentifier($identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_total_of_reference_entities()
+    {
+        $this->assertEquals(0, $this->referenceEntityRepository->count());
+
+        $refOne = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('one'), ['en_US' => 'one'], Image::createEmpty());
+        $refTwo = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('two'), ['en_US' => 'two'], Image::createEmpty());
+        $refThree = ReferenceEntity::create(ReferenceEntityIdentifier::fromString('three'), ['en_US' => 'three'], Image::createEmpty());
+        $this->referenceEntityRepository->create($refOne);
+        $this->referenceEntityRepository->create($refTwo);
+        $this->referenceEntityRepository->create($refThree);
+        $this->assertEquals(3, $this->referenceEntityRepository->count());
     }
 }

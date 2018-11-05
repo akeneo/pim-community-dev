@@ -104,3 +104,16 @@ services:
         arguments:
             - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
             - '@oro_security.security_facade'
+
+    akeneo_referenceentity.infrastructure.connector.action.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordForConnectorAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_images'
+
+    akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_images:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages
+        arguments:
+            - '@router'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes'

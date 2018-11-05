@@ -15,7 +15,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
@@ -33,7 +33,7 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     }
 
     /**
-     * @return AbstractAttributeDetails[]
+     * @return AttributeDetails[]
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {

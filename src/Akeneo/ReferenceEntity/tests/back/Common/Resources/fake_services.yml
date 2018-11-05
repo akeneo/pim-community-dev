@@ -22,6 +22,14 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindExistingRecordCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordForConnectorByReferenceEntityAndCode
+
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:
@@ -55,6 +63,11 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_reference_entity_attribute:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttribute
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindValueKeyCollection
 
@@ -72,7 +85,16 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindIdentifiersForQuery
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
+
+    # Indexers
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
+        class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindImageAttributeCodes
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     # Third party services
     oro_security.security_facade:
@@ -82,6 +104,15 @@ services:
             - '@oro_security.acl.annotation_provider'
             - '@oro_security.acl.object_identity_factory'
             - '@logger'
+
+    fos_oauth_server.security.authentication.listener:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
+
+    security.access_listener:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\NullListener
+
+    cache.adapter.array:
+        class: Symfony\Component\Cache\Adapter\ArrayAdapter
 
     # Subscribers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.subscriber.index_record:

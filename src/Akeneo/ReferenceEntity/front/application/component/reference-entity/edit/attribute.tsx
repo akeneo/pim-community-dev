@@ -5,7 +5,6 @@ import {attributeCreationStart} from 'akeneoreferenceentity/domain/event/attribu
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
-import {denormalizeAttribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
@@ -14,6 +13,10 @@ import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/applicati
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
+import Key from 'akeneoreferenceentity/tools/key';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -124,6 +127,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
   render() {
     const {onAttributeEdit, locale} = this.props;
     const attribute = denormalizeAttribute(this.props.attribute);
+    const icon = getAttributeIcon(attribute.getType());
 
     return (
       <div
@@ -137,10 +141,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
             htmlFor={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
           >
-            <img
-              className="AknFieldContainer-labelImage"
-              src={`bundles/pimui/images/attribute/icon-${attribute.type}.svg`}
-            />
+            <img className="AknFieldContainer-labelImage" src={icon} />
             <span>
               {__(`pim_reference_entity.attribute.type.${attribute.type}`)}{' '}
               {attribute.isRequired ? `(${__('pim_reference_entity.attribute.is_required')})` : ''}
@@ -160,7 +161,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknIconButton AknIconButton--edit"
             onClick={() => onAttributeEdit(attribute.getIdentifier())}
             onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (' ' === event.key) onAttributeEdit(attribute.getIdentifier());
+              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
             }}
           />
         </div>

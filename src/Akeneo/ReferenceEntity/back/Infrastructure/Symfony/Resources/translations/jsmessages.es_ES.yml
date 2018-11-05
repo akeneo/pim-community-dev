@@ -27,7 +27,11 @@ pim_reference_entity:
         label: Etiqueta
         code: Código (requerido)
       confirm: Guardar
+    delete:
+      title: Atributo
   record:
+    no_result:
+      subtitle: Pruebe con nuevos criterios de búsqueda.
     button:
       save: Guardar
       create: Añadir nuevo
@@ -49,6 +53,7 @@ pim_reference_entity:
         code: Código
         image: Imagen
         label: Etiqueta
+        action: Acciones
     tab:
       enrich: Enriquecer
     notification:
@@ -96,6 +101,8 @@ pim_reference_entity:
             email: Correo electrónico
             regular_expression: Expresión regular
             url: URL
+    delete:
+      title: Atributo
     notification:
       save:
         success: Atributo exitosamente actualizado.
@@ -103,6 +110,12 @@ pim_reference_entity:
         success: Atributo creado exitosamente.
       delete:
         success: Atributo exitosamente borrado.
+  modal:
+    delete:
+      subtitle: Confirmar la eliminación
+      button:
+        cancel: Cancelar
+        confirm: Eliminar
 pim_enrich:
   confirmation:
     discard_changes: 'Perderá los cambios realizados sobre "{{ entity }}" la entidad si abandona esta página.'

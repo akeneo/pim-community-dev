@@ -24,9 +24,9 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     nextItemToAddPosition: 0,
   };
 
-  componentWillReceiveProps(nextProps: TableProps) {
-    if (this.props.referenceEntities.length !== nextProps.referenceEntities.length) {
-      this.setState({nextItemToAddPosition: this.props.referenceEntities.length});
+  componentDidUpdate(previousProps: TableProps) {
+    if (this.props.referenceEntities.length !== previousProps.referenceEntities.length) {
+      this.setState({nextItemToAddPosition: previousProps.referenceEntities.length});
     }
   }
 

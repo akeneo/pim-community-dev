@@ -1,3 +1,10 @@
+pim_title:
+  akeneo_suggest_data_connection_edit: 'Connexió de les estadístiques de Franklin'
+  akeneo_suggest_data_identifiers_mapping_edit: 'Configuració de les estadístiques de Franklin'
+  akeneo_suggest_data_attributes_mapping_edit: 'Configuració de les estadístiques de Franklin'
+pim_menu:
+  item:
+    pim_ai: Estadístiques de Franklin
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -8,12 +15,14 @@ akeneo_suggest_data:
           fail: 'El mapatge dels identificadors no s''ha guardat a causa d''un error.'
       fields:
         identifier_label:
+          label: Identificador de Franklin
           values:
             brand: Marca
             asin: ASIN
             mpn: MPN
             upc: Preu per unitat
         catalog_attribute: Atribut de catàleg
+        suggest_data: Estatus d'identificador de Franklin
         status:
           active: Actiu
           inactive: Inactiu
@@ -26,7 +35,9 @@ akeneo_suggest_data:
     attributes_mapping:
       label: Mapatge dels atributs
       fields:
+        pim_ai_attribute: 'Atribut de Franklin'
         suggest_data:
+          label: Estatus d'atribut de Franklin
           pending: Pendent
           mapped: Actiu
           unmapped: Inactiu
@@ -38,7 +49,6 @@ akeneo_suggest_data:
           error: "Necessita crear una família en el catàleg per accedir a aquesta pàgina."
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
-        missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{targetKey }}"'
         invalid_attribute_type_mapping: 'El tipus d''atribut extern "{{ targetType }}" no es pot fer el mapatge al tipus d''atribut PIM "{{ pimType }}"'
     product_subscription:
       flash:
@@ -48,10 +58,16 @@ akeneo_suggest_data:
         delete:
           success: 'S''ha cancel·lat correctament la subscripció del producte del PIM.ai'
           fail: 'Impossible cancel·lar la subscripció del producte del PIM.ai'
+    attribute_options_mapping:
+      module:
+        edit:
+          sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
   product:
     edit:
       btn.push: Suggerència de dades
+      subscription_status_title: 'Subscripció a Franklin'
   connection:
+    page_title: 'Connexió de les estadístiques de Franklin'
     flash:
       invalid: El codi d'activació no és vàlid, ho sento. Intenteu-ho de nou amb un vàlid, si us plau.
       error: Ho sentim, ha sorgit un error.
@@ -62,12 +78,16 @@ akeneo_suggest_data:
           first_step: 'El primer pas en la connexió de l''assistent és configurar l''API token.'
           second_step: 'El següent pas en el procés de connexió és aparellar els <a href="#" class="AknDescriptionHeader-link">identificadors del catàleg de producte</a> a els identificadors de l''assistent&#8217;.'
       activation:
+        label: 'Connector Franklin'
         activation_code: 'Codi d''activació'
         paste_activation_code: 'Enganxa el codi d''activació'
         activated: 'Activat'
         activate: 'Activat'
   settings:
+    page_title: 'Configuració de les estadístiques de Franklin'
     module:
+      title:
+        sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
       inactive_connection:
         title: Ho sentim, no hi ha res que mostrar ara mateix
         sub_title: Si us plau, activa el compte en el Sistema > Connexió PIM.ai torna de nou.
@@ -75,11 +95,15 @@ akeneo_suggest_data:
     product:
       operation:
         suggest_data:
+          label: 'Subscripcions a les estadístiques Franklin'
+          label_count: "{1}Gestionar les subscripcions de les estadístiques de Franklin per <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Subscriure's a les estadístiques de Franklin per <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
           description: Si us plau, seleccioneu l'acció que voleu aplicar en els productes seleccionats a la quadrícula
           subscribe_label: Subscriure’s
           unsubscribe_label: Desubscriviu-vos
 batch_jobs:
   suggest_data_subscribe_products:
+    validate_configuration.label: Validar la configuració de les estadístiques de Franklin
     subscribe_products.label: Subscriu-te a productes
   suggest_data_unsubscribe_products:
+    validate_configuration.label: Validar la configuració de les estadístiques de Franklin
     unsubscribe_products.label: Anul·lar la subscripció de productes

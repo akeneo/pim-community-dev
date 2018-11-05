@@ -38,7 +38,7 @@ interface DispatchProps {
   events: {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
-      onPressEnter: () => void;
+      onSubmit: () => void;
       onImageUpdated: (image: File) => void;
     };
     onDelete: (referenceEntity: ReferenceEntity) => void;
@@ -103,7 +103,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             <Form
               onLabelUpdated={this.props.events.form.onLabelUpdated}
               onImageUpdated={this.props.events.form.onImageUpdated}
-              onPressEnter={this.props.events.form.onPressEnter}
+              onSubmit={this.props.events.form.onSubmit}
               locale={this.props.context.locale}
               data={this.props.form.data}
               errors={this.props.form.errors}
@@ -149,7 +149,7 @@ export default connect(
           onLabelUpdated: (value: string, locale: string) => {
             dispatch(referenceEntityLabelUpdated(value, locale));
           },
-          onPressEnter: () => {
+          onSubmit: () => {
             dispatch(saveReferenceEntity());
           },
           onImageUpdated: (image: File) => {

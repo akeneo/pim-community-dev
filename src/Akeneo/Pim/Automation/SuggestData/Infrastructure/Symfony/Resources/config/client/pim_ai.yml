@@ -33,7 +33,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator'
         public: false
         arguments:
-            - 'https://pim-ai.cloud2.akeneo.com'
+            - 'https://pim-ai.dev.cloud.akeneo.com'
 
     akeneo.pim.automation.suggest_data.pimai_client.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice'
@@ -55,6 +55,12 @@ services:
 
     akeneo.pim.automation.suggest_data.pimai_client.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingWebService'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
+
+    akeneo.pim.automation.suggest_data.pimai_client.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingWebService'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'

@@ -54,25 +54,16 @@ class EditReferenceEntityHandler
                 $existingImage->isEmpty() ||
                 $existingImage->getKey() !== $editReferenceEntityCommand->image['filePath']
             ) {
-                $storedFile = $this->storeFile($editReferenceEntityCommand->image);
+                $image = $editReferenceEntityCommand->image;
+                $rawFile = new \SplFileInfo($image['filePath']);
+                $storedFile = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
                 $image = Image::fromFileInfo($storedFile);
                 $referenceEntity->updateImage($image);
             }
+        } else {
+            $referenceEntity->updateImage(Image::createEmpty());
         }
 
         $this->referenceEntityRepository->update($referenceEntity);
-    }
-
-    private function storeFile(array $image): FileInfoInterface
-    {
-        $rawFile = new \SplFileInfo($image['filePath']);
-        // TODO: Need to rework this part
-//        try {
-        $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-//        } catch (FileTransferException | FileRemovalException $e) {
-//            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-//        }
-
-        return $file;
     }
 }

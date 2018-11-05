@@ -12,21 +12,17 @@ import {
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
-import Attribute, {
-  AdditionalProperty,
-  denormalizeAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {saveAttribute} from 'akeneoreferenceentity/application/action/attribute/edit';
-import TextPropertyView from 'akeneoreferenceentity/application/component/attribute/edit/text';
-import ImagePropertyView from 'akeneoreferenceentity/application/component/attribute/edit/image';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   context: {
@@ -45,7 +41,7 @@ interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
     onIsRequiredUpdated: (isRequired: boolean) => void;
-    onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+    onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
@@ -56,38 +52,24 @@ interface DispatchProps {
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class InvalidAttributeTypeError extends Error {}
-
 const getAdditionalProperty = (
   attribute: Attribute,
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void,
+  onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
-  errors: ValidationError[]
+  errors: ValidationError[],
+  locale: string
 ): JSX.Element => {
-  switch (attribute.type) {
-    case AttributeType.Text:
-      return (
-        <TextPropertyView
-          attribute={attribute as TextAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    case AttributeType.Image:
-      return (
-        <ImagePropertyView
-          attribute={attribute as ImageAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    default:
-      throw new InvalidAttributeTypeError(
-        `There is no view capable of rendering attribute of type "${attribute.type}"`
-      );
-  }
+  const AttributeView = getAttributeView(attribute);
+
+  return (
+    <AttributeView
+      attribute={attribute as TextAttribute}
+      onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+      onSubmit={onSubmit}
+      errors={errors}
+      locale={locale}
+    />
+  );
 };
 
 class Edit extends React.Component<EditProps> {
@@ -128,9 +110,7 @@ class Edit extends React.Component<EditProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.events.onSubmit();
-    }
+    if (Key.Enter === event.key) this.props.events.onSubmit()
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -148,9 +128,7 @@ class Edit extends React.Component<EditProps> {
                 tabIndex={0}
                 onClick={this.props.events.onSubmit}
                 onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (' ' === event.key) {
-                    this.props.events.onSubmit();
-                  }
+                  if (Key.Space === event.key) this.props.events.onSubmit()
                 }}
               />
             </header>
@@ -265,7 +243,8 @@ class Edit extends React.Component<EditProps> {
                 this.props.attribute,
                 this.props.events.onAdditionalPropertyUpdated,
                 this.props.events.onSubmit,
-                this.props.errors
+                this.props.errors,
+                this.props.context.locale
               )}
             </div>
           </div>
@@ -273,9 +252,7 @@ class Edit extends React.Component<EditProps> {
             className="AknButton AknButton--delete"
             tabIndex={0}
             onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-              if (' ' === event.key) {
-                this.props.events.onOpenDeleteModal();
-              }
+              if (Key.Space === event.key) this.props.events.onOpenDeleteModal()
             }}
             onClick={() => this.props.events.onOpenDeleteModal()}
           >
@@ -322,7 +299,7 @@ export default connect(
         onIsRequiredUpdated: (isRequired: boolean) => {
           dispatch(attributeEditionIsRequiredUpdated(isRequired));
         },
-        onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => {
+        onAdditionalPropertyUpdated: (property: string, value: any) => {
           dispatch(attributeEditionAdditionalPropertyUpdated(property, value));
         },
         onCancel: () => {

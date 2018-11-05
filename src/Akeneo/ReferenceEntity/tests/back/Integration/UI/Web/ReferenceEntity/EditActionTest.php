@@ -146,10 +146,6 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $referenceEntityRepository->create($entityItem);
 
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
-
         $fr = new Locale();
         $fr->setId(1);
         $fr->setCode('fr_FR');

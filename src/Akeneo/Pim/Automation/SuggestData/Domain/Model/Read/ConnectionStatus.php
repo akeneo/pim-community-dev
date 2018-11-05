@@ -21,12 +21,17 @@ final class ConnectionStatus
     /** @var bool */
     private $isActive;
 
+    /** @var bool */
+    private $isIdentifiersMappingValid;
+
     /**
      * @param bool $isActive
+     * @param bool $isIdentifiersMappingValid
      */
-    public function __construct(bool $isActive)
+    public function __construct(bool $isActive, bool $isIdentifiersMappingValid)
     {
         $this->isActive = $isActive;
+        $this->isIdentifiersMappingValid = $isIdentifiersMappingValid;
     }
 
     /**
@@ -35,5 +40,10 @@ final class ConnectionStatus
     public function isActive(): bool
     {
         return $this->isActive;
+    }
+
+    public function isIdentifiersMappingValid(): bool
+    {
+        return $this->isIdentifiersMappingValid;
     }
 }

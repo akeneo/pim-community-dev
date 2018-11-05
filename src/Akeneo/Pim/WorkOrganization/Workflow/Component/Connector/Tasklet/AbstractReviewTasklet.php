@@ -19,10 +19,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDr
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Basic implementation of draft mass review tasklet
@@ -58,35 +55,33 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var EntityWithValuesDraftManager */
     protected $productModelDraftManager;
 
-    /** @var  UserProviderInterface */
-    protected $userProvider;
-
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $tokenStorage;
 
     /** @var ProductDraftChangesPermissionHelper */
     protected $permissionHelper;
 
+    /**
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftManager             $productDraftManager
+     * @param EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
+     * @param EntityWithValuesDraftManager             $productModelDraftManager
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param ProductDraftChangesPermissionHelper      $permissionHelper
+     */
     public function __construct(
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         EntityWithValuesDraftManager $productDraftManager,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         EntityWithValuesDraftManager $productModelDraftManager,
-        UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
         ProductDraftChangesPermissionHelper $permissionHelper
     ) {
         $this->productDraftRepository = $productDraftRepository;
         $this->productDraftManager = $productDraftManager;
         $this->productModelDraftRepository = $productModelDraftRepository;
         $this->productModelDraftManager = $productModelDraftManager;
-        $this->userProvider = $userProvider;
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
         $this->permissionHelper = $permissionHelper;
     }
 
@@ -98,15 +93,6 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
 
         return $this;
-    }
-
-    protected function initSecurityContext(StepExecution $stepExecution): void
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userProvider->loadUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
     }
 
     /**

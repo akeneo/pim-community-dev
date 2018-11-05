@@ -195,6 +195,18 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
+     * @When /^the user updates the reference entity \'([^\']*)\' with an empty image$/
+     */
+    public function theUserUpdatesTheReferenceEntityWithAnEmptyImage(string $identifier)
+    {
+        $editReferenceEntityCommand = new EditReferenceEntityCommand();
+        $editReferenceEntityCommand->identifier = $identifier;
+        $editReferenceEntityCommand->labels = [];
+        $editReferenceEntityCommand->image = null;
+        $this->editReferenceEntity($editReferenceEntityCommand);
+    }
+
+    /**
      * @Then /^the image of the reference entity \'([^\']*)\' should be \'([^\']*)\'$/
      */
     public function theImageOfTheReferenceEntityShouldBe(string $identifier, string $filePath)
@@ -207,6 +219,19 @@ final class EditReferenceEntityContext implements Context
             ->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
 
         Assert::assertEquals($referenceEntity->getImage()->getKey(), $filePath);
+    }
+
+    /**
+     * @Then /^the reference entity \'([^\']*)\' should have an empty image$/
+     */
+    public function theReferenceEntityShouldHaveAnEmptyImage(string $identifier)
+    {
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
+
+        $referenceEntityImage = $referenceEntity->getImage();
+        Assert::assertTrue($referenceEntityImage->isEmpty());
     }
 
     private function editReferenceEntity(EditReferenceEntityCommand $editReferenceEntityCommand): void

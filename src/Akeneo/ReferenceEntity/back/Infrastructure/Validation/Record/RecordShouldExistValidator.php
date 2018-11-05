@@ -32,12 +32,12 @@ class RecordShouldExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $attributeExists = $this->recordExists->withReferenceEntityAndCode(
+        $recordExist = $this->recordExists->withReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
             RecordCode::fromString($command->recordCode)
         );
 
-        if (!$attributeExists) {
+        if (!$recordExist) {
             $this->context->buildViolation(RecordShouldExist::ERROR_MESSAGE)
                 ->atPath('code')
                 ->addViolation();

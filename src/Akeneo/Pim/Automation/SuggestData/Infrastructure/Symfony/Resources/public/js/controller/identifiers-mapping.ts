@@ -1,6 +1,22 @@
-import {ConnectionStatus, getConnectionStatus} from '../fetcher/franklin-connection';
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+import {getConnectionStatus} from '../fetcher/franklin-connection';
+import ConnectionStatus from '../model/connection-status';
+
 const BaseController = require('pim/controller/front');
 const FormBuilder = require('pim/form-builder');
+
+interface Config {
+  connectionCode: string;
+  entity: string;
+}
 
 /**
  * Mapping controller. Allows to show an empty page if connection is not activated.
@@ -11,7 +27,7 @@ class MappingController extends BaseController {
   /**
    * {@inheritdoc}
    */
-  public initialize(options: { config: { connectionCode: string, entity: string } }) {
+  public initialize(options: { config: Config }) {
     BaseController.prototype.initialize.apply(this, arguments);
     this.options = options;
   }
@@ -24,7 +40,7 @@ class MappingController extends BaseController {
       .then((connectionStatus: ConnectionStatus) => {
         const entity = this.options.config.entity;
         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';
-        if (connectionStatus.is_active) {
+        if (connectionStatus.isActive) {
           formToBuild = 'pimee-' + entity + '-index';
         }
 

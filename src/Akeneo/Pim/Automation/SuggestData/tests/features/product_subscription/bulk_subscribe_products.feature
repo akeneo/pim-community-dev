@@ -1,8 +1,8 @@
 @acceptance-back
-Feature: Bulk subscribes products to PIM.ai
+Feature: Bulk subscribes products to Franklin
   In order to automatically enrich my products
   As Julia
-  I want to bulk subscribe products to PIM.ai
+  I want to bulk subscribe products to Franklin
 
   #Scenario: Successfully mass subscribe 3 valid products
   #Then 10 products should be subscribed
@@ -11,9 +11,9 @@ Feature: Bulk subscribes products to PIM.ai
   #Then 3 products should be subcribed
   #And 2 errors thrown
 
-  #Scenario: Successfully mass subscribe a product to PIM.ai that does not exist on PIM.ai
+  #Scenario: Successfully mass subscribe a product to Franklin that does not exist on Franklin
   # Tried with UPC 606449099813
-  # Error 500 thrown by PIM.ai
+  # Error 500 thrown by Franklin
 
   #Scenario: Fail to mass subscribe a product without family
 
@@ -25,7 +25,7 @@ Feature: Bulk subscribes products to PIM.ai
   #Scenario: Fail to mass subscribe a product that has an incorrect UPC
   # wrong UPC format
 
-  #Scenario: Fail to mass subscribe a product that is already subscribed to PIM.ai
+  #Scenario: Fail to mass subscribe a product that is already subscribed to Franklin
 
   #Scenario: Fail to mass subscribe a product that does not have any values on mapped identifiers
 
@@ -33,9 +33,9 @@ Feature: Bulk subscribes products to PIM.ai
   # Check with MPN + Brand with Brand not filled
 
   #Scenario: Fail to mass subscribe a product with an invalid identifiers mapping
-  # No request to PIM.ai
+  # No request to Franklin
 
-  #Scenario: mass Subscribe a product without enough money on PIM.ai account
+  #Scenario: mass Subscribe a product without enough money on Franklin account
   # Should return a 402
 
-  #Scenario: Handle a mass subscribe bad request to PIM.ai
+  #Scenario: Handle a mass subscribe bad request to Franklin

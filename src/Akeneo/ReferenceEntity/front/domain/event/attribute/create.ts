@@ -16,6 +16,10 @@ export const attributeCreationTypeUpdated = (attributeType: string) => {
   return {type: 'ATTRIBUTE_CREATION_TYPE_UPDATED', attribute_type: attributeType};
 };
 
+export const attributeCreationRecordTypeUpdated = (recordType: string) => {
+  return {type: 'ATTRIBUTE_CREATION_RECORD_TYPE_UPDATED', record_type: recordType};
+};
+
 export const attributeCreationValuePerLocaleUpdated = (valuePerLocale: boolean) => {
   return {type: 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED', value_per_locale: valuePerLocale};
 };

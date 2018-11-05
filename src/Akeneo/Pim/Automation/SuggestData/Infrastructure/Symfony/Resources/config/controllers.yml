@@ -2,9 +2,10 @@ services:
     akeneo.pim.automation.suggest_data.controller.product_subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\ProductSubscriptionController'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.service.subscribe_product'
+            - '@akeneo.pim.automation.suggest_data.handler.subscribe_product'
             - '@akeneo.pim.automation.suggest_data.handler.get_product_subscription_status'
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.suggest_data.normalizer.product_subscription_status'
 
     akeneo.pim.automation.suggest_data.controller.pim_ai:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\PimAiConnectionController'
@@ -13,13 +14,12 @@ services:
             - '@akeneo.pim.automation.suggest_data.application.configuration.query.get_configuration_handler'
             - '@akeneo.pim.automation.suggest_data.application.configuration.query.get_connection_status_handler'
             - '@akeneo.pim.automation.suggest_data.normalizer.connection_status'
-            - '@translator'
 
     akeneo.pim.automation.suggest_data.controller.identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\IdentifiersMappingController'
         arguments:
            - '@akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
-           - '@translator'
+           - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.controller.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeMappingController'
@@ -32,3 +32,6 @@ services:
 
     akeneo.pim.automation.suggest_data.controller.attribute_options_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeOptionsMappingController'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.get_attribute_options_mapping_by_family_and_attribute'
+            - '@akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping'

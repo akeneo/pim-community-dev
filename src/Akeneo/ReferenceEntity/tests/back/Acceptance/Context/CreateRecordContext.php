@@ -21,6 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -38,14 +39,24 @@ final class CreateRecordContext implements Context
     /** @var ExceptionContext */
     private $exceptionContext;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var ConstraintViolationsContext */
+    private $violationsContext;
+
     public function __construct(
         RecordRepositoryInterface $recordRepository,
         CreateRecordHandler $createRecordHandler,
-        ExceptionContext $exceptionContext
+        ValidatorInterface $validator,
+        ExceptionContext $exceptionContext,
+        ConstraintViolationsContext $violationsContext
     ) {
         $this->createRecordHandler = $createRecordHandler;
         $this->recordRepository = $recordRepository;
+        $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
+        $this->violationsContext = $violationsContext;
     }
 
     /**
@@ -61,6 +72,9 @@ final class CreateRecordContext implements Context
         $command->code = $code;
         $command->referenceEntityIdentifier = $referenceEntityIdentifier;
         $command->labels = json_decode($updates['labels'], true);
+
+        $this->violationsContext->addViolations($this->validator->validate($command));
+
         try {
             ($this->createRecordHandler)($command);
         } catch (\Exception $e) {
@@ -113,5 +127,22 @@ final class CreateRecordContext implements Context
             $referenceEntityCount,
             sprintf('Expected to have 0 reference entity. %d found.', $referenceEntityCount)
         );
+    }
+
+    /**
+     * @Given /^(\d+) random records for a reference entity$/
+     */
+    public function randomRecordsForAReferenceEntity(int $number)
+    {
+        for ($i = 0; $i < $number; $i++) {
+            $command = new CreateRecordCommand();
+            $command->code = uniqid('record_');
+            $command->referenceEntityIdentifier = 'designer';
+            $command->labels = [];
+
+            $this->violationsContext->addViolations($this->validator->validate($command));
+
+            ($this->createRecordHandler)($command);
+        }
     }
 }

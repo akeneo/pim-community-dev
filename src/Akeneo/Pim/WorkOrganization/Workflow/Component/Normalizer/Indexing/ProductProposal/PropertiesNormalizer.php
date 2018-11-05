@@ -68,8 +68,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
                 ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
             ) : [];
 
-        $attributeAsLabelCode = null !== $product->getFamily() ?
-            $product->getFamily()->getAttributeAsLabel()->getCode() : null;
+        $attributeAsLabel = null !== $product->getFamily() ? $product->getFamily()->getAttributeAsLabel() : null;
+        $attributeAsLabelCode = null !== $attributeAsLabel ? $attributeAsLabel->getCode() : null;
 
         $productLabel = [];
         if (null !== $attributeAsLabelCode) {
@@ -95,7 +95,12 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             return [];
         }
 
-        $valuePath = sprintf('%s-text', $product->getFamily()->getAttributeAsLabel()->getCode());
+        $labelAttribute = $product->getFamily()->getAttributeAsLabel();
+        if (null === $labelAttribute) {
+            return [];
+        }
+
+        $valuePath = sprintf('%s-text', $labelAttribute->getCode());
         if (!isset($values[$valuePath])) {
             return [];
         }

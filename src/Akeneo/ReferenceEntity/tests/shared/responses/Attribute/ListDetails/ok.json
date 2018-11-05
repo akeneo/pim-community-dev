@@ -10,6 +10,7 @@
     "status": 200,
     "body": [
       {
+        "type": "text",
         "identifier": "name_designer_52609e00b7ee307e79eb100099b9a8bf",
         "reference_entity_identifier": "designer",
         "code": "name",
@@ -21,34 +22,34 @@
         "value_per_locale": true,
         "value_per_channel": true,
         "max_length": 155,
-        "type": "text",
         "is_textarea": true,
         "is_rich_text_editor": true,
         "validation_rule": "none",
         "regular_expression": null
       },
       {
+        "type": "text",
         "identifier": "email_designer_52609e00b7ee307e79eb100099b9a8bf",
         "reference_entity_identifier": "designer",
         "code": "email",
         "labels": {
-          "en_US": "Name"
+          "en_US": "Email"
         },
         "is_required": true,
         "order": 0,
         "value_per_locale": true,
         "value_per_channel": true,
         "max_length": 155,
-        "type": "text",
         "is_textarea": false,
         "is_rich_text_editor": false,
         "validation_rule": "email",
         "regular_expression": null
       },
       {
+        "type": "image",
         "identifier": "image_designer_52609e00b7ee307e79eb100099b9a8bf",
         "reference_entity_identifier": "designer",
-        "code": "name",
+        "code": "image",
         "labels": {
           "en_US": "Portrait"
         },
@@ -59,8 +60,7 @@
         "max_file_size": "1000",
         "allowed_extensions": [
           "pdf"
-        ],
-        "type": "image"
+        ]
       }
     ]
   }

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptio
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 
 /**
- * Exception thrown when an invalid token is used during any request to PIM.ai.
+ * Exception thrown when an invalid token is used during any request to Franklin.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */

@@ -26,12 +26,8 @@ class ListAttributesUseableInProductGrid implements ListAttributesUseableInProdu
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $page, string $searchOnLabel = '', int $userId = null): array
+    public function fetch(string $locale, int $page, string $searchOnLabel, int $userId): array
     {
-        if (null === $userId) {
-            throw new \InvalidArgumentException('$userId must not be null');
-        }
-
         $page = max($page, 1);
         $offset = ($page - 1) * ListAttributesUseableInProductGridQuery::ATTRIBUTES_PER_PAGE;
         $limit = ListAttributesUseableInProductGridQuery::ATTRIBUTES_PER_PAGE;

@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake;
@@ -37,8 +38,8 @@ class ProductSubscriptionContext implements Context
     /** @var InMemoryProductSubscriptionRepository */
     private $productSubscriptionRepository;
 
-    /** @var SubscribeProduct */
-    private $subscribeProduct;
+    /** @var SubscribeProductHandler */
+    private $subscribeProductHandler;
 
     /** @var DataFixturesContext */
     private $dataFixturesContext;
@@ -52,7 +53,7 @@ class ProductSubscriptionContext implements Context
     /**
      * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
-     * @param SubscribeProduct $subscribeProduct
+     * @param SubscribeProductHandler $subscribeProductHandler
      * @param DataFixturesContext $dataFixturesContext
      * @param SubscriptionFake $subscriptionApi
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
@@ -60,27 +61,27 @@ class ProductSubscriptionContext implements Context
     public function __construct(
         InMemoryProductRepository $productRepository,
         InMemoryProductSubscriptionRepository $productSubscriptionRepository,
-        SubscribeProduct $subscribeProduct,
+        SubscribeProductHandler $subscribeProductHandler,
         DataFixturesContext $dataFixturesContext,
         SubscriptionFake $subscriptionApi,
         UnsubscribeProductHandler $unsubscribeProductHandler
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
-        $this->subscribeProduct = $subscribeProduct;
+        $this->subscribeProductHandler = $subscribeProductHandler;
         $this->dataFixturesContext = $dataFixturesContext;
         $this->subscriptionApi = $subscriptionApi;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
     }
 
     /**
-     * @When I subscribe the product :identifier to PIM.ai
+     * @When I subscribe the product :identifier to Franklin
      *
      * @param string $identifier
      */
-    public function iSubscribeTheProductToPimAi(string $identifier): void
+    public function iSubscribeTheProductToFranklin(string $identifier): void
     {
-        $this->subscribeProductToPimAi($identifier, false);
+        $this->subscribeProductToFranklin($identifier, false);
     }
 
     /**
@@ -103,16 +104,16 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Given the following product subscribed to pim.ai:
+     * @Given the following product subscribed to Franklin:
      *
      * @param TableNode $table
      */
-    public function theFollowingProductSubscribedToPimAi(TableNode $table): void
+    public function theFollowingProductSubscribedToFranklin(TableNode $table): void
     {
         $this->dataFixturesContext->theFollowingProduct($table);
 
         foreach ($table->getHash() as $productRow) {
-            $this->subscribeProductToPimAi($productRow['identifier'], true);
+            $this->subscribeProductToFranklin($productRow['identifier'], true);
         }
     }
 
@@ -136,7 +137,7 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Given the PIM.ai token is expired
+     * @Given the Franklin token is expired
      */
     public function theTokenIsExpired(): void
     {
@@ -144,7 +145,7 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Given there are no more credits on my PIM.ai account
+     * @Given there are no more credits on my Franklin account
      */
     public function thereAreNoMoreCreditsOnMyAccount(): void
     {
@@ -168,11 +169,12 @@ class ProductSubscriptionContext implements Context
      * @param string $identifier
      * @param bool $throwExceptions
      */
-    private function subscribeProductToPimAi(string $identifier, bool $throwExceptions = false): void
+    private function subscribeProductToFranklin(string $identifier, bool $throwExceptions = false): void
     {
         $product = $this->findProduct($identifier);
         try {
-            $this->subscribeProduct->subscribe($product->getId());
+            $command = new SubscribeProductCommand($product->getId());
+            $this->subscribeProductHandler->handle($command);
         } catch (ProductSubscriptionException $e) {
             if (true === $throwExceptions) {
                 throw $e;

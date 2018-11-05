@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepos
 /**
  * Handles a FetchProducts command.
  *
- * It fetches ProductSubscription from PIM.ai
+ * It fetches ProductSubscription from Franklin
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

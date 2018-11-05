@@ -30,8 +30,8 @@ class InMemoryReferenceEntityExists implements ReferenceEntityExistsInterface
         $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
-    public function withIdentifier(ReferenceEntityIdentifier $recordIdentifier): bool
+    public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool
     {
-        return $this->referenceEntityRepository->hasRecord($recordIdentifier);
+        return $this->referenceEntityRepository->hasReferenceEntity($referenceEntityIdentifier);
     }
 }

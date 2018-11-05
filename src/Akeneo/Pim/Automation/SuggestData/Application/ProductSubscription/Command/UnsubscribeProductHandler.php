@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Comm
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
@@ -52,9 +52,7 @@ class UnsubscribeProductHandler
     {
         $subscription = $this->subscriptionRepository->findOneByProductId($command->getProductId());
         if (null === $subscription) {
-            throw new ProductSubscriptionException(
-                sprintf('The product with id "%d" is not subscribed', $command->getProductId())
-            );
+            throw ProductNotSubscribedException::notSubscribed($command->getProductId());
         }
 
         $this->dataProvider->unsubscribe($subscription->getSubscriptionId());

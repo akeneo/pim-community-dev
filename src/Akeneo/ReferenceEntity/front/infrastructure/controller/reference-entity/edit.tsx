@@ -23,6 +23,7 @@ import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar'
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
 import {updateFilter} from 'akeneoreferenceentity/application/event/search';
+import {getFilter} from 'akeneoreferenceentity/tools/filter';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -43,6 +44,16 @@ class ReferenceEntityEditController extends BaseController {
       .fetch(createIdentifier(route.params.identifier))
       .then(async (referenceEntityResult: ReferenceEntityResult) => {
         this.store = createStore(true)(referenceEntityReducer);
+        const referenceEntityIdentifier = referenceEntityResult.referenceEntity.getIdentifier().stringValue();
+        const userSearch: any =
+          null !== sessionStorage.getItem(`pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`)
+            ? getFilter(
+                JSON.parse(sessionStorage.getItem(
+                  `pim_reference_entity.record.grid.search.${referenceEntityIdentifier}`
+                ) as string),
+                'full_text'
+              ).value
+            : '';
 
         // Not idea, maybe we should discuss about it
         await this.store.dispatch(updateChannels() as any);
@@ -54,7 +65,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
-        this.store.dispatch(updateFilter('search', '=', ''));
+        this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(updateRecordResults());
         this.store.dispatch(updateAttributeList() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
@@ -75,6 +86,8 @@ class ReferenceEntityEditController extends BaseController {
         if (error.request) {
           promise.reject(error.request);
         }
+
+        throw error;
       });
 
     return promise.promise();

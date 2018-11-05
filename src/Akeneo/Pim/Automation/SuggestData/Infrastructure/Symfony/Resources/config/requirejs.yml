@@ -4,7 +4,7 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_suggest_data_connection_edit:
-                    module: pimee/view/attributes-mapping/index
+                    module: pimee/controller/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: pim-ai-connection
@@ -54,6 +54,7 @@ config:
         pimee/common/filterable: akeneosuggestdata/js/common/filterable.ts
 
         # Controller
+        pimee/controller/index: akeneosuggestdata/js/controller/index.ts
         pimee/controller/identifiers-mapping: akeneosuggestdata/js/controller/identifiers-mapping.ts
         pimee/controller/attributes-mapping-index: akeneosuggestdata/js/controller/attributes-mapping-index.ts
         pimee/controller/attributes-mapping-edit: akeneosuggestdata/js/controller/attributes-mapping-edit.ts
@@ -70,7 +71,6 @@ config:
         pimee/view/attributes-mapping/state: akeneosuggestdata/js/view/attributes-mapping/state.ts
         pimee/view/attributes-mapping/family-selector: akeneosuggestdata/js/view/attributes-mapping/family-selector.ts
         pimee/view/attributes-mapping/table: akeneosuggestdata/js/view/attributes-mapping/table.ts
-        pimee/view/attributes-mapping/index: akeneosuggestdata/js/view/attributes-mapping/index.ts
         pimee/view/common/front-search-filter: akeneosuggestdata/js/view/common/front-search-filter.ts
         pimee/view/common/simple-select-attribute: akeneosuggestdata/js/view/common/simple-select-attribute.ts
         pimee/view/common/status-filter: akeneosuggestdata/js/view/common/status-filter.ts
@@ -83,7 +83,7 @@ config:
         # Templates
         pimee/template/attribute-options-mapping/edit: akeneosuggestdata/templates/attribute-options-mapping/edit.html
         pimee/template/attribute-options-mapping/modal: akeneosuggestdata/templates/attribute-options-mapping/modal.html
-        pimee/template/attributes-mapping/attributes-mapping: akeneosuggestdata/templates/attributes-mapping/table.html
+        pimee/template/attributes-mapping/table: akeneosuggestdata/templates/attributes-mapping/table.html
         pimee/template/attributes-mapping/family-mapping: akeneosuggestdata/templates/attributes-mapping/family-mapping.html
         pimee/template/attributes-mapping/family-line: akeneosuggestdata/templates/attributes-mapping/family-line.html
         pimee/template/common/status-filter: akeneosuggestdata/templates/common/status-filter.html
@@ -93,3 +93,4 @@ config:
         pimee/template/identifiers-mapping/table: akeneosuggestdata/templates/identifiers-mapping/table.html
         pimee/template/mass-edit/suggest-data-operation: akeneosuggestdata/templates/mass-edit/suggest-data-operation.html
         pimee/template/product-edit-form/subscription-status-switcher: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher.html
+        pimee/template/product-edit-form/subscription-status-switcher-read-only: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher-read-only.html

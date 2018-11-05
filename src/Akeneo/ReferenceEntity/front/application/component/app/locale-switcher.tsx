@@ -3,6 +3,7 @@ import Locale from 'akeneoreferenceentity/domain/model/locale';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
+import Key from 'akeneoreferenceentity/tools/key';
 
 const LocaleItemView = ({
   isOpen,
@@ -24,7 +25,7 @@ const LocaleItemView = ({
       onClick={() => onClick(element)}
       tabIndex={isOpen ? 0 : -1}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element)
       }}
     >
       <span className="label">
@@ -41,7 +42,7 @@ const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: Dropdown
     onClick={onClick}
     tabIndex={0}
     onKeyPress={event => {
-      if (' ' === event.key) onClick();
+      if (Key.Space === event.key) onClick()
     }}
   >
     {__('Locale')}

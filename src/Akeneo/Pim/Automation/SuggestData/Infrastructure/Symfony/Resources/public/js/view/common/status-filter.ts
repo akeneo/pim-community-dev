@@ -1,9 +1,24 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import {EventsHash} from 'backbone';
-import BaseForm = require('pimenrich/js/view/base');
+import BaseForm = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
+
 const __ = require('oro/translator');
 const template = require('pimee/template/common/status-filter');
+
+interface FilterLabel {
+  value: number | string;
+  label: string;
+}
 
 /**
  * This module will display a filter for the attributes-mapping grid.
@@ -11,12 +26,6 @@ const template = require('pimee/template/common/status-filter');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-
-interface FilterLabel {
-  value: number|string;
-  label: string;
-}
-
 class StatusFilter extends BaseForm {
   /**
    * Returns the available filters
@@ -25,20 +34,22 @@ class StatusFilter extends BaseForm {
    */
   private static getFilters(): FilterLabel[] {
     return [
-      { value: '', label: __('pim_common.all') },
-      { value: 0, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending') },
-      { value: 1, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped') },
-      { value: 2, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped') },
+      {value: '', label: __('pim_common.all')},
+      {value: 0, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending')},
+      {value: 1, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped')},
+      {value: 2, label: __('akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped')},
     ];
   }
+
   public readonly template = _.template(template);
 
   /**
    * {@inheritdoc}
    */
   constructor(options: { config: object }) {
-    super({...options, ...{ className: 'AknDropdown AknFilterBox-filterContainer' }});
+    super({...options, ...{className: 'AknDropdown AknFilterBox-filterContainer'}});
   }
+
   /**
    * {@inheritdoc}
    */

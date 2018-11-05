@@ -25,6 +25,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\PimAiConnectionController;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,7 +41,8 @@ class PimAiConnectionControllerSpec extends ObjectBehavior
     public function let(
         ActivateConnectionHandler $activateConnectionHandler,
         GetConfigurationHandler $getConfigurationHandler,
-        GetConnectionStatusHandler $getConnectionStatusHandler
+        GetConnectionStatusHandler $getConnectionStatusHandler,
+        ProductRepositoryInterface $productRepository
     ): void {
         $connectionStatusNormalizer = new ConnectionStatusNormalizer();
 
@@ -48,7 +50,8 @@ class PimAiConnectionControllerSpec extends ObjectBehavior
             $activateConnectionHandler,
             $getConfigurationHandler,
             $getConnectionStatusHandler,
-            $connectionStatusNormalizer
+            $connectionStatusNormalizer,
+            $productRepository
         );
     }
 
@@ -100,19 +103,27 @@ class PimAiConnectionControllerSpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_the_connection_status($getConnectionStatusHandler): void
-    {
-        $connectionStatus = new ConnectionStatus(true);
+    public function it_returns_the_connection_status(
+        Request $request,
+        $productRepository,
+        $getConnectionStatusHandler
+    ): void {
+        $request->get('identifier')->willReturn(null);
+        $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+        $connectionStatus = new ConnectionStatus(true, true);
         $getConnectionStatusHandler
             ->handle(Argument::type(GetConnectionStatusQuery::class))
             ->willReturn($connectionStatus);
 
-        $response = $this->isActiveAction(Argument::type(Request::class));
+        $response = $this->isActiveAction($request);
         $response->shouldBeAnInstanceOf(JsonResponse::class);
         $response->isOk()->shouldReturn(true);
 
         Assert::eq(
-            ['is_active' => true],
+            [
+                'isActive' => true,
+                'isIdentifiersMappingValid' => true,
+            ],
             json_decode($response->getContent()->getWrappedObject(), true)
         );
     }

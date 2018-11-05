@@ -17,7 +17,7 @@ class RecordAttributeFactorySpec extends ObjectBehavior
         $this->shouldHaveType(RecordAttributeFactory::class);
     }
 
-    function it_only_supports_create_text_commands()
+    function it_only_supports_create_record_attribute_commands()
     {
         $this->supports(new CreateRecordAttributeCommand())->shouldReturn(true);
         $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);

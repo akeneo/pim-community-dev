@@ -32,6 +32,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -43,6 +45,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
@@ -82,6 +86,9 @@ final class EditRecordContext implements Context
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
     private const IMAGE_ATTRIBUTE_CODE = 'primary_picture';
     private const IMAGE_ATTRIBUTE_IDENTIFIER = 'primary_picture_designer_fingerprint';
+    private const RECORD_TYPE = 'brand';
+    private const RECORD_ATTRIBUTE_CODE = 'brand_linked';
+    private const RECORD_ATTRIBUTE_IDENTIFIER = 'brand_linked_designer_fingerprint';
     private const DUMMY_ORIGINAL_VALUE = 'Une valeur naïve';
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
 
@@ -153,7 +160,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute$/
+     * @Given /^a reference entity with a text attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttribute()
@@ -245,7 +252,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with an image attribute$/
+     * @Given /^a reference entity with an image attribute$/
      */
     public function anReferenceEntityWithAImageAttribute()
     {
@@ -415,7 +422,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with max length (\d+)$/
+     * @Given /^a reference entity with a text attribute with max length (\d+)$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithMaxLength(int $maxLength)
@@ -442,7 +449,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with an email validation rule$/
+     * @Given /^a reference entity with a text attribute with an email validation rule$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithAnEmailValidationRule()
@@ -469,7 +476,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
+     * @Given /^a reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithARegularExpressionValidationRuleLike(
@@ -522,7 +529,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a text attribute with an url validation rule$/
+     * @Given /^a reference entity with a text attribute with an url validation rule$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithAnUrlValidationRule()
@@ -595,7 +602,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a localizable attribute$/
+     * @Given /^a reference entity with a localizable attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithALocalizableAttribute()
@@ -724,7 +731,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a scopable attribute$/
+     * @Given /^a reference entity with a scopable attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithAScopableAttribute()
@@ -815,7 +822,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with a scopable and localizable attribute$/
+     * @Given /^a reference entity with a scopable and localizable attribute$/
      */
     public function anReferenceEntityWithAScopableAndLocalizableAttribute()
     {
@@ -1225,7 +1232,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with an image attribute having a max file size of 15ko$/
+     * @Given /^a reference entity with an image attribute having a max file size of 15ko$/
      */
     public function anReferenceEntityWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
@@ -1325,7 +1332,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an reference entity with an image attribute allowing only files with extension png$/
+     * @Given /^a reference entity with an image attribute allowing only files with extension png$/
      */
     public function anReferenceEntityWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
@@ -1512,5 +1519,321 @@ final class EditRecordContext implements Context
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
+    }
+
+    /**
+     * @Given /^a reference entity with a record attribute$/
+     */
+    public function anReferenceEntityWithARecordAttribute()
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            RecordAttribute::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::RECORD_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::RECORD_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString(self::RECORD_TYPE)
+            )
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this reference entity with a value of "([^"]*)" for the record attribute$/
+     */
+    public function aRecordBelongingToThisReferenceEntityWithAValueOfForTheRecordAttribute($recordCode)
+    {
+        $this->createRecordLinked($recordCode);
+
+        $recordValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::RECORD_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            RecordData::createFromNormalize($recordCode)
+        );
+        $this->createRecord($recordValue);
+    }
+
+    /**
+     * @When /^the user updates the record attribute of the record to "([^"]*)"$/
+     */
+    public function theUserUpdatesTheRecordAttributeOfTheRecordTo($recordCode)
+    {
+        $this->createRecordLinked($recordCode);
+
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => $recordCode,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user tries to update the record attribute of the record with an unknown value$/
+     */
+    public function theUserTriesToUpdateTheRecordAttributeOfTheRecordWithAnUnknownValue()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => 'unknown_brand',
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Then /^the record should have the record value "([^"]*)" for this attribute$/
+     */
+    public function theRecordShouldHaveTheRecordValueForThisAttribute($expectedValue)
+    {
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::RECORD_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        );
+
+        Assert::assertNotNull($value);
+        Assert::assertEquals($expectedValue, $value->getData()->normalize());
+    }
+
+    /**
+     * @When /^the user updates the record attribute of the record to an invalid record value$/
+     */
+    public function theUserUpdatesTheRecordAttributeOfTheRecordToAnInvalidRecordValue()
+    {
+        try {
+            $editCommand = $this->editRecordCommandFactory->create([
+                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+                'code'                       => self::RECORD_CODE,
+                'labels'                     => [],
+                'values'                     => [
+                    [
+                        'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                        'channel'   => null,
+                        'locale'    => null,
+                        'data'      => 1,
+                    ],
+                ],
+            ]);
+            $this->executeCommand($editCommand);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property record attribute with message "(.*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyRecordAttributeWithMessage($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::RECORD_ATTRIBUTE_CODE,
+            $expectedMessage
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this reference entity with values of "([^"]*)" for the record collection attribute$/
+     */
+    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheRecordCollectionAttribute($recordCodeCollection)
+    {
+        $recordCodeCollection = explode(',', $recordCodeCollection);
+        foreach ($recordCodeCollection as $recordCode) {
+            $this->createRecordLinked(trim($recordCode));
+        }
+
+        $recordValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::RECORD_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            RecordCollectionData::createFromNormalize($recordCodeCollection)
+        );
+        $this->createRecord($recordValue);
+    }
+
+    /**
+     * @When /^the user updates the record collection attribute of the record to "([^"]*)"$/
+     */
+    public function theUserUpdatesTheRecordCollectionAttributeOfTheRecordTo($recordCodeCollection)
+    {
+        $recordCodeCollection = explode(',', $recordCodeCollection);
+        foreach ($recordCodeCollection as $recordCode) {
+            $this->createRecordLinked(trim($recordCode));
+        }
+
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => array_map(function ($newData) {
+                        return trim($newData);
+                    }, $recordCodeCollection),
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the record collection attribute of the record with unknown values$/
+     */
+    public function theUserUpdatesTheRecordCollectionAttributeOfTheRecordWithUnknownValues()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'unknown_brand',
+                        'wrong_brand'
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Then /^the record should have the record collection value "([^"]*)" for this attribute$/
+     */
+    public function theRecordShouldHaveTheRecordCollectionValueForThisAttribute($expectedValue)
+    {
+        $expectedValue = explode(',', $expectedValue);
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::RECORD_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        );
+
+        Assert::assertNotNull($value);
+        Assert::assertSame($expectedValue, $value->getData()->normalize());
+    }
+
+    private function createRecordLinked($recordCode)
+    {
+        $this->recordRepository->create(
+            Record::create(
+                RecordIdentifier::create(self::RECORD_TYPE, $recordCode, self::FINGERPRINT),
+                ReferenceEntityIdentifier::fromString(self::RECORD_TYPE),
+                RecordCode::fromString($recordCode),
+                [],
+                Image::createEmpty(),
+                ValueCollection::fromValues([])
+            )
+        );
+    }
+
+    /**
+     * @When /^the user updates the record collection attribute of the record to an invalid record value$/
+     */
+    public function theUserUpdatesTheRecordCollectionAttributeOfTheRecordToAnInvalidRecordValue()
+    {
+        try {
+            $editCommand = $this->editRecordCommandFactory->create([
+                'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+                'code'                       => self::RECORD_CODE,
+                'labels'                     => [],
+                'values'                     => [
+                    [
+                        'attribute' => self::RECORD_ATTRIBUTE_IDENTIFIER,
+                        'channel'   => null,
+                        'locale'    => null,
+                        'data'      => 'invalid_record_collection',
+                    ],
+                ],
+            ]);
+            $this->executeCommand($editCommand);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
+    }
+
+    /**
+     * @Given /^a reference entity with a record collection attribute$/
+     */
+    public function anReferenceEntityWithARecordCollectionAttribute()
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            RecordCollectionAttribute::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::RECORD_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::RECORD_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                ReferenceEntityIdentifier::fromString(self::RECORD_TYPE)
+            )
+        );
     }
 }

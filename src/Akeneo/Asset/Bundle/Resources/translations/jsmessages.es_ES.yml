@@ -38,6 +38,7 @@ pimee_product_asset:
       imported: Archivos importados para el procesamiento de recursos
       canceled: Carga cancelada con éxito
       deleted: Fichero cargado eliminado con éxito
+      need_refresh: <b>Se ha lanzado el importe de recursos</b><br> Para ver los recursos importados en la forma del producto, por favor, actualice la página del producto cuando reciba la notificación del importe.
     error:
       list: Imposible de leer los ficheros ya cargados
       upload: Un error ha ocurrido al intentar cargar
@@ -80,6 +81,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Carga masiva de recursos
     perform.label: Carga masiva
+  apply_assets_mass_upload_into_asset_collection:
+    label: Subir en masa los recursos y añadir al producto
+    perform.label: Subir en masa recursos y añadir al producto
   yml_asset_channel_configuration_import:
     label: Importar configuraciones de recursos por canal en Yaml
     import_asset.label: Importar configuraciones de recursos por canal en Yaml

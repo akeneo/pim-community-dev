@@ -4,10 +4,14 @@ pim_reference_entity:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'An reference entity already exists with code "%reference_entity_identifier%"'
+                limit_reached: 'You cannot create the reference entity "%reference_entity_label%" because you have reached the limit of %limit% reference entities'
             records:
                 should_have_no_record: 'You cannot delete this entity because records exist for this entity'
+            reference_entity_attributes:
+                should_not_be_linked: 'You can not delete this entity because reference entity attributes are related to this entity'
             product_attributes:
                 should_not_be_linked: 'You can not delete this entity because product attributes are related to this entity'
+            should_exist: 'The reference entity "%reference_entity_code%" was not found.'
     record:
         validation:
             code:
@@ -19,6 +23,11 @@ pim_reference_entity:
             file:
                 extension_not_allowed: '"%file_extension%" files are not allowed for this attribute. Allowed extensions are: %allowed_file_extensions%'
                 file_size_exceeded: 'The file exceeds the max file size set for the attribute.'
+            record:
+                should_exist: 'The record "%record_code%" was not found.'
+            record_collection:
+                should_exist: 'The records "%record_codes%" were not found.'
+            limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'
     attribute:
         validation:
             max_length:
@@ -32,7 +41,9 @@ pim_reference_entity:
                 should_exist: 'The attribute was not found'
             regular_expression:
                 invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
+                should_not_be_empty: 'The regular expression cannot be empty.'
             should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
             should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
             cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
+            limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this reference entity'

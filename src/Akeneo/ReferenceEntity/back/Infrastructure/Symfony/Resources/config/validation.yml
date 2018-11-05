@@ -1,3 +1,4 @@
+# Reference entity
 Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand:
     properties:
         labels:
@@ -16,6 +17,7 @@ Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateR
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ThereShouldBeLessReferenceEntityThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand:
     group_sequence:
@@ -25,6 +27,7 @@ Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteR
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldHaveNoRecord: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyReferenceEntityAttribute: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
@@ -32,6 +35,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             groups:
                 - akeneo_reference_entity_collection
 
+# Records
 Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
     group_sequence:
         - CreateRecordCommand
@@ -45,6 +49,7 @@ Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\ThereShouldBeLessRecordsThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
     properties:
@@ -73,6 +78,16 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditStoredFi
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditStoredFileValueCommand: ~
+
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommand: ~
+
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCollectionValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordCollectionValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
     constraints:
@@ -109,7 +124,16 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttribute
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
+Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityCommand:
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldExist: ~
+
+# Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
         - CreateImageAttributeCommand
@@ -135,6 +159,103 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttribut
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttributeCommand:
+    group_sequence:
+        - CreateRecordAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        order:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        recordType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand:
+    group_sequence:
+        - CreateRecordCollectionAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        order:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        recordType:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand:
+    group_sequence:
+        - CreateOptionAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        order:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
+
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionCollectionAttributeCommand:
+    group_sequence:
+        - CreateOptionCollectionAttributeCommand
+        - other_constraints
+    properties:
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
+        code:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
+        order:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
+        isRequired:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+        valuePerChannel:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:

@@ -8,12 +8,20 @@ export const notifyAttributeSaveFailed = () => {
   return notify('error', 'pim_reference_entity.attribute.notification.save.fail');
 };
 
+export const notifyAttributeSaveValidationError = () => {
+  return notify('error', 'pim_reference_entity.attribute.notification.save.validation_error');
+};
+
 export const notifyAttributeWellCreated = () => {
   return notify('success', 'pim_reference_entity.attribute.notification.create.success');
 };
 
 export const notifyAttributeCreateFailed = () => {
   return notify('error', 'pim_reference_entity.attribute.notification.create.fail');
+};
+
+export const notifyAttributeCreateValidationError = () => {
+  return notify('error', 'pim_reference_entity.attribute.notification.create.validation_error');
 };
 
 export const notifyAttributeListUpdateFailed = () => {

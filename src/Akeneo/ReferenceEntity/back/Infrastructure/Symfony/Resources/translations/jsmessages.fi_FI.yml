@@ -16,7 +16,11 @@ pim_reference_entity:
       input:
         label: Nimike
       confirm: Tallenna
+    delete:
+      title: Attribuutti
   record:
+    no_result:
+      subtitle: Yritä uudelleen uusilla hakuehdoilla.
     button:
       save: Tallenna
       create: Luo uusi
@@ -35,6 +39,7 @@ pim_reference_entity:
         code: Koodi
         image: Kuva
         label: Nimike
+        action: Toiminnot
     tab:
       enrich: Rikastuta
   attribute:
@@ -72,6 +77,8 @@ pim_reference_entity:
             email: Sähköposti
             regular_expression: Tavallinen virke
             url: URL-osoite
+    delete:
+      title: Attribuutti
     notification:
       save:
         success: Attribuutin päivittäminen onnistui.
@@ -79,6 +86,12 @@ pim_reference_entity:
         success: Attribuutin luominen onnistui.
       delete:
         success: Attribuutin poistaminen onnistui.
+  modal:
+    delete:
+      subtitle: Vahvista poisto
+      button:
+        cancel: Peruuta
+        confirm: Poista
 pim_enrich:
   entity:
     attribute:

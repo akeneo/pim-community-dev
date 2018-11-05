@@ -10,8 +10,8 @@ Feature: Validate textarea attributes of a draft
       | code             | label-en_US     | type                 | scopable | max_characters | wysiwyg_enabled | group     |
       | info             | Info            | pim_catalog_textarea | 0        | 5              | 0               | info      |
       | old_description  | Description     | pim_catalog_textarea | 1        | 5              | 0               | marketing |
-      | long_info        | Longinfo        | pim_catalog_textarea | 0        | 10             | 1               | info      |
-      | long_description | Longdescription | pim_catalog_textarea | 1        | 10             | 1               | marketing |
+      | long_info        | Longinfo        | pim_catalog_textarea | 0        | 15             | 1               | info      |
+      | long_description | Longdescription | pim_catalog_textarea | 1        | 15             | 1               | marketing |
     And the following family:
       | code | label-en_US | attributes                                          |
       | baz  | Baz         | sku,info,long_info,old_description,long_description |
@@ -35,14 +35,14 @@ Feature: Validate textarea attributes of a draft
     And there should be 1 error in the "Marketing" tab
 
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
-    Given I change the Longinfo to "information"
+    Given I change the Longinfo to "Long information"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 10 characters or less."
+    Then I should see validation error "This value is too long. It should have 15 characters or less."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
     Given I visit the "Marketing" group
-    And I change the Longdescription for scope mobile to "information"
+    And I change the Longdescription for scope mobile to "Long information"
     And I save the product
-    Then I should see validation error "This value is too long. It should have 10 characters or less."
+    Then I should see validation error "This value is too long. It should have 15 characters or less."
     And there should be 1 error in the "Marketing" tab

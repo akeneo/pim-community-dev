@@ -20,13 +20,10 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnect
  */
 class GetConnectionStatusQuerySpec
 {
-    public function let(): void
-    {
-        $this->beConstructedWith();
-    }
-
     public function it_is_a_get_connection_status_query(): void
     {
+        $this->beConstructedWith();
+
         $this->shouldHaveType(GetConnectionStatusQuery::class);
     }
 }

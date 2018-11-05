@@ -100,3 +100,15 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.tasklet.impacted_product_count'
+
+    # Execute Rules steps ---------------------------------------------------------------------------------------------
+    pimee_enrich.step.execute_rules:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pimee_catalog_rule.processor.product_loader'
+            - '@pimee_catalog_rule.executor.rules'
+            - '%pim_job_product_batch_size%'

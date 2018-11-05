@@ -6,15 +6,11 @@ import LabelCollection, {
   createLabelCollection,
 } from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-
-export enum AttributeType {
-  Text = 'text',
-  Image = 'image',
-}
+import {RecordType, NormalizedRecordType} from 'akeneoreferenceentity/domain/model/attribute/type/record/record-type';
 
 export interface MinimalNormalizedAttribute {
   reference_entity_identifier: string;
-  type: 'text' | 'image';
+  type: string;
   code: string;
   labels: NormalizedLabelCollection;
   value_per_locale: boolean;
@@ -25,12 +21,12 @@ export default interface MinimalAttribute {
   referenceEntityIdentifier: ReferenceEntityIdentifier;
   code: AttributeCode;
   labelCollection: LabelCollection;
-  type: AttributeType;
+  type: string;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
   getCode: () => AttributeCode;
   getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
-  getType(): AttributeType;
+  getType(): string;
   getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   normalize(): MinimalNormalizedAttribute;
@@ -38,12 +34,16 @@ export default interface MinimalAttribute {
 
 class InvalidArgumentError extends Error {}
 
+export const isRecordAttributeType = (attributeType: string) => {
+  return ['record', 'record_collection'].includes(attributeType);
+};
+
 export class MinimalConcreteAttribute implements MinimalAttribute {
   protected constructor(
     readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
     readonly code: AttributeCode,
     readonly labelCollection: LabelCollection,
-    readonly type: AttributeType,
+    readonly type: string,
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean
   ) {
@@ -56,10 +56,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Attribute expect a LabelCollection argument');
     }
-    if (typeof type !== 'string' && !Object.values(AttributeType).includes(type)) {
-      throw new InvalidArgumentError(
-        `Attribute expect valid attribute type (${Object.values(AttributeType).join(', ')})`
-      );
+    if (typeof type !== 'string') {
+      throw new InvalidArgumentError('Attribute expect a string as attribute type');
     }
     if (typeof valuePerLocale !== 'boolean') {
       throw new InvalidArgumentError('Attribute expect a boolean as valuePerLocale');
@@ -74,7 +72,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
       createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
-      minimalNormalizedAttribute.type as AttributeType,
+      minimalNormalizedAttribute.type,
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel
     );
@@ -88,7 +86,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     return this.code;
   }
 
-  public getType(): AttributeType {
+  public getType(): string {
     return this.type;
   }
 
@@ -116,6 +114,55 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
   }
 }
 
+export interface MinimalRecordNormalizedAttribute extends MinimalNormalizedAttribute {
+  record_type: NormalizedRecordType;
+}
+
+export class MinimalRecordConcreteAttribute extends MinimalConcreteAttribute {
+  protected constructor(
+    readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
+    readonly code: AttributeCode,
+    readonly labelCollection: LabelCollection,
+    readonly type: string,
+    readonly valuePerLocale: boolean,
+    readonly valuePerChannel: boolean,
+    readonly recordType: RecordType
+  ) {
+    super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
+
+    if (!isRecordAttributeType(type)) {
+      throw new InvalidArgumentError('MinimalRecordAttribute type needs to be "record" or "record_collection"');
+    }
+
+    if (!(recordType instanceof RecordType)) {
+      throw new InvalidArgumentError('Attribute expect a RecordType argument');
+    }
+  }
+
+  public static createFromNormalized(minimalNormalizedAttribute: MinimalRecordNormalizedAttribute) {
+    return new MinimalRecordConcreteAttribute(
+      createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
+      createCode(minimalNormalizedAttribute.code),
+      createLabelCollection(minimalNormalizedAttribute.labels),
+      minimalNormalizedAttribute.type,
+      minimalNormalizedAttribute.value_per_locale,
+      minimalNormalizedAttribute.value_per_channel,
+      RecordType.createFromNormalized(minimalNormalizedAttribute.record_type)
+    );
+  }
+
+  public normalize(): MinimalRecordNormalizedAttribute {
+    return {
+      ...super.normalize(),
+      record_type: this.recordType.normalize(),
+    };
+  }
+}
+
 export const denormalizeMinimalAttribute = (normalizedAttribute: MinimalNormalizedAttribute) => {
+  if (isRecordAttributeType(normalizedAttribute.type)) {
+    return MinimalRecordConcreteAttribute.createFromNormalized(normalizedAttribute as MinimalRecordNormalizedAttribute);
+  }
+
   return MinimalConcreteAttribute.createFromNormalized(normalizedAttribute);
 };

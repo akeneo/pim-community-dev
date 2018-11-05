@@ -27,8 +27,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         PropertyAdderInterface $propertyAdder,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         CheckAttributeEditable $checkAttributeEditable,
-        UserManager $userManager,
-        TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
@@ -38,8 +36,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             $attributeRepository,
             $checkAttributeEditable,
             ['pim_catalog_multiselect', 'pim_reference_data_multiselect'],
-            $userManager,
-            $tokenStorage,
             $authorizationChecker
         );
     }
@@ -49,15 +45,13 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         $propertyAdder,
         $attributeRepository,
         $checkAttributeEditable,
-        $userManager,
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
         AttributeInterface $colorsAttribute,
-        AttributeInterface $suppliersAttribute,
-        UserInterface $owner
+        AttributeInterface $suppliersAttribute
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -111,10 +105,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             ['scope' => null,'locale' => null]
         )->shouldBeCalled();
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $this->process($product);
@@ -125,15 +115,13 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         $propertyAdder,
         $attributeRepository,
         $checkAttributeEditable,
-        $userManager,
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
         AttributeInterface $colorsAttribute,
-        AttributeInterface $suppliersAttribute,
-        UserInterface $owner
+        AttributeInterface $suppliersAttribute
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -187,10 +175,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             ['scope' => null,'locale' => null]
         )->shouldBeCalled();
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
@@ -202,15 +186,13 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
         $propertyAdder,
         $attributeRepository,
         $checkAttributeEditable,
-        $userManager,
         $authorizationChecker,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobParameters $jobParameters,
         AttributeInterface $colorsAttribute,
-        AttributeInterface $suppliersAttribute,
-        UserInterface $owner
+        AttributeInterface $suppliersAttribute
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -264,10 +246,6 @@ class AddAttributeValueProcessorSpec extends ObjectBehavior
             ['scope' => null,'locale' => null]
         )->shouldNotBeCalled();
 
-        $jobExecution->getUser()->willReturn('owner');
-        $userManager->findUserByUsername('owner')->willReturn($owner);
-        $owner->getRoles()->willReturn([]);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
 

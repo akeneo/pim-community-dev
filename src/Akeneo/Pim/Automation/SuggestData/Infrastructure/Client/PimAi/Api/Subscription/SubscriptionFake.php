@@ -51,7 +51,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
                 break;
         }
 
-        $filename = sprintf('subscribe-%s-%s.json', key($identifiers), current($identifiers));
+        $filename = sprintf('subscriptions/post/%s-%s.json', key($identifiers), current($identifiers));
 
         return new ApiResponse(
             200,
@@ -79,7 +79,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
                 break;
         }
 
-        $filename = sprintf('fetch-%s.json', $this->lastFetchDate);
+        $filename = sprintf('subscriptions/updated-since/%s.json', $this->lastFetchDate);
 
         return new SubscriptionsCollection(
             $this,

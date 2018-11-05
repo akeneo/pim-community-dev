@@ -69,9 +69,9 @@ class AttributeMapping
     /**
      * @return string
      */
-    public function getType(): string
+    public function getTargetAttributeType(): string
     {
-        return $this->attributeData['type'];
+        return $this->attributeData['from']['type'];
     }
 
     /**
@@ -135,7 +135,6 @@ class AttributeMapping
         $mandatoryKeys = [
             'from',
             'to',
-            'type',
             'status',
         ];
 

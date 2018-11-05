@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
@@ -26,33 +23,16 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingReposi
  */
 class ManageIdentifiersMapping
 {
-    /** @var UpdateIdentifiersMappingHandler */
-    private $updateIdentifiersMappingHandler;
-
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
     /**
-     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
-        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
-        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
-    }
-
-    /**
-     * @param array $identifiers
-     *
-     * @throws InvalidMappingException
-     */
-    public function updateIdentifierMapping(array $identifiers): void
-    {
-        $updateIdentifierCommand = new UpdateIdentifiersMappingCommand($identifiers);
-        $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
     }
 
     /**

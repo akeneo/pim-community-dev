@@ -1,10 +1,25 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
+
 const __ = require('oro/translator');
 const Router = require('pim/router');
 const template = require('pimee/template/common/tabs');
+
+interface Config {
+  tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;
+  selected: number | null;
+}
 
 /**
  * This module will display tabs. Contrary to the other 'tabs' module, this one does not load
@@ -12,11 +27,6 @@ const template = require('pimee/template/common/tabs');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-interface Config {
-  tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;
-  selected: number|null;
-}
-
 class Tabs extends BaseView {
   private readonly template = _.template(template);
   private readonly config: Config = {
@@ -28,7 +38,7 @@ class Tabs extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: Config}) {
+  constructor(options: { config: Config }) {
     super(options);
     this.stateFullAllowed = [];
 
@@ -60,7 +70,7 @@ class Tabs extends BaseView {
       this.listenTo(
         this.getRoot(),
         'pim_enrich:form:entity:post_save',
-        () => {
+        () => {
           this.stateFullAllowed = [];
           this.render();
         },

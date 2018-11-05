@@ -12,7 +12,7 @@
             "page": 0,
             "filters": [
                 {
-                    "field": "search",
+                    "field": "full_text",
                     "operator": "=",
                     "value": "",
                     "context": {}

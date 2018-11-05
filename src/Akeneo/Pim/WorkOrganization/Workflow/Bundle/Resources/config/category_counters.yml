@@ -1,6 +1,6 @@
 services:
     pimee_product_asset.doctrine.counter.category_published_product:
-        class: '%pimee_enrich.doctrine.counter.granted_category_products.class%'
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter'
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pim_catalog.repository.category'

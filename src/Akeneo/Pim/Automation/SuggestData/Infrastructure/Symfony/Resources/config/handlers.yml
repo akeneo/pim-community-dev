@@ -20,6 +20,7 @@ services:
             - '@pim_catalog.repository.product_without_permission'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler'
@@ -47,14 +48,31 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
+    akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.application.configuration.query.get_connection_status_handler'
+            - '@pim_catalog.repository.product_without_permission'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@pim_catalog.repository.family'
+
+    akeneo.pim.automation.suggest_data.handler.get_attribute_options_mapping_by_family_and_attribute:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
             - '@pim_catalog.repository.family'
@@ -63,12 +81,14 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.search_family'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
     akeneo.pim.automation.suggest_data.application.configuration.query.get_connection_status_handler:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.application.configuration.query.get_configuration_handler:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler'

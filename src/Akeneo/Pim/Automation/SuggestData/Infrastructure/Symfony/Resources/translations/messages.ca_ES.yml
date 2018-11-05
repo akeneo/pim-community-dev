@@ -9,5 +9,6 @@ akeneo_suggest_data:
     success: El mapatge s'ha guardat correctament
     error: S'ha produït un error durant el guardat del mapatge
 job_execution.summary:
+  configuration_validation: Configuració de les estadístiques de Franklin
   subscribed: subscrit
   unsubscribed: subscripció cancel·lada

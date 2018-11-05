@@ -9,7 +9,22 @@ MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
-
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Twig\\AttributeExtension/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Twig\\AttributeExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Normalizer\\ProductModelNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Asset\\Bundle\\Doctrine\\ORM\\Query\\GrantedCategoryItemsCounter/Akeneo\\Pim\\Permission\\Bundle\\Persistence\\ORM\\Category\\Query\\GrantedCategoryItemsCounter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Form\\Type\\LocaleType/Akeneo\\Pim\\Permission\\Bundle\\Form\\Type\\LocaleType/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Doctrine\\ORM\\Repository\\JobExecutionRepository/Akeneo\\Pim\\Permission\\Bundle\\Entity\\Repository\\JobExecutionRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Doctrine\\ORM\\Repository\\JobInstanceRepository/Akeneo\\Pim\\Permission\\Bundle\\Entity\\Repository\\JobInstanceRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Repository\\AttributeRepositoryInterface/Akeneo\\Pim\\Permission\\Bundle\\Entity\\Repository\\AttributeRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Repository\\AttributeSearchableRepository/Akeneo\\Pim\\Permission\\Bundle\\Entity\\Repository\\AttributeSearchableRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Doctrine\\ORM\\Repository\\AttributeRepository/Akeneo\\Pim\\Permission\\Bundle\\Entity\\Repository\\AttributeRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Controller\\ProductController/Akeneo\\Pim\\Permission\\Bundle\\Controller\\Ui\\ProductController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Controller\\ProductModelController/Akeneo\\Pim\\Permission\\Bundle\\Controller\\Ui\\ProductModelController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Controller\\LocaleController/Akeneo\\Pim\\Permission\\Bundle\\Controller\\Ui\\LocaleController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Controller\\CategoryTreeController/Akeneo\\Pim\\Permission\\Bundle\\Controller\\Ui\\CategoryTreeController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Normalizer\\RuleRelationNormalizer/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\Normalizer\\RuleRelationNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Controller\\RuleRelationController/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\Controller\\InternalApi\\RuleRelationController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Normalizer\\ImageNormalizer/Akeneo\\Asset\\Component\\Normalizer\\InternalApi\\ImageNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Manager\\AttributeValuesResolver/Akeneo\\Pim\\Permission\\Component\\Manager\\AttributeValuesResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\ProductModel\\Filter\\GrantedProductAttributeFilter/Akeneo\\Pim\\Permission\\Component\\Filter\\GrantedProductAttributeFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Updater\\Adder\\AssetCollectionAdder/Akeneo\\Pim\\Asset\\Component\\Updater\\Adder\\AssetCollectionAdder/g'

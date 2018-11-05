@@ -17,15 +17,25 @@ default:
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_attribute_context
                 - akeneo_referenceentity.tests.back.acceptance.context.edit_record_context
                 - akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context
+                - akeneo_referenceentity.tests.back.acceptance.context.index_records_context
             filters:
                 tags: '@acceptance-back'
+        integration:
+            paths:
+                - '%paths.base%/../features'
+            contexts_services:
+                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_record_for_connector_context
+            filters:
+                tags: '@integration-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
                - 'Acceptance/Resources/config/behat/services.yml'
+               - 'Integration/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 env: test_fake
+                debug: false
     formatters:
         pretty: true

@@ -44,6 +44,7 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
     {
         $publishedProductRepository = $this->getContainer()->get('pimee_workflow.repository.published_product');
         $publishedProductIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.published_product_indexer');
+        $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
 
         $bulkSize = $input->getOption('page-size') ?? self::DEFAULT_PAGE_SIZE;
 
@@ -62,6 +63,7 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
             ));
 
             $publishedProductIndexer->indexAll($publishedProducts, ['index_refresh' => Refresh::disable()]);
+            $cacheClearer->clear();
 
             $lastProduct = end($publishedProducts);
             $progress += count($publishedProducts);

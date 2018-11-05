@@ -33,4 +33,6 @@ interface ReferenceEntityRepositoryInterface
      * @throws ReferenceEntityNotFoundException
      */
     public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void;
+
+    public function count(): int;
 }

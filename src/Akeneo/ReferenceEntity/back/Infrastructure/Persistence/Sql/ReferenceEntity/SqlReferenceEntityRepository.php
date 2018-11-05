@@ -80,7 +80,7 @@ SQL;
             [
                 'identifier' => (string) $referenceEntity->getIdentifier(),
                 'labels' => $serializedLabels,
-                'image' => (null !== $referenceEntity->getImage()) ? $referenceEntity->getImage()->getKey() : null
+                'image' => $referenceEntity->getImage()->isEmpty() ? null : $referenceEntity->getImage()->getKey()
             ]
         );
 
@@ -152,6 +152,18 @@ SQL;
         if (1 !== $affectedRows) {
             throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
+    }
+
+    public function count(): int
+    {
+        $query = <<<SQL
+        SELECT COUNT(*) as total
+        FROM akeneo_reference_entity_reference_entity
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query);
+        $result = $statement->fetch();
+
+        return intval($result['total']);
     }
 
     private function hydrateReferenceEntity(

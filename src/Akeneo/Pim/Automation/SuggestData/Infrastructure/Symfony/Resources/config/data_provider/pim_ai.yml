@@ -7,6 +7,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.pimai_client.attributes_mapping'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.attribute_options_mapping'
             - '@akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.attributes_mapping'
             - '@akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.family'

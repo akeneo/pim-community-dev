@@ -7,8 +7,10 @@ Refuse selected: Respingi il selezionato
 pim_datagrid:
   no_entities:
     proposal: Non ci sono proposte da revisionare.
+    product_draft: Non c'è nessuna bozza di prodotto da revisionare.
   no_results:
     proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
+    product_draft: Non c'è nessuna bozza di prodotto da revisionare. Prova a modificare i criteri di ricerca.
 pimee_datagrid:
   cells:
     expand:
@@ -22,6 +24,7 @@ pimee_workflow:
     proposal:
       modal.title: Lascia un commento (facoltativo - 255 caratteri max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} proposte"
     selected: proposte selezionate
     mass_action_group:
       review:

@@ -1,0 +1,34 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_record_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "Brand",
+      "recordCode": "Kartell"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "code": "Kartell",
+      "labels": {
+        "fr_FR": "A label"
+      },
+      "values": {
+        "name": [
+          {
+            "channel": "ecommerce",
+            "locale": null,
+            "data": "My Name"
+          },
+          {
+            "channel": "tablet",
+            "locale": null,
+            "data": "My Tablet Name"
+          }
+        ]
+      },
+      "main_image": null
+    }
+  }
+}

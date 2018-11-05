@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
+use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -27,6 +29,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -42,11 +46,17 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var EventDispatcherMock */
+    private $eventDispatcherMock;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $this->eventDispatcherMock = $this->get('event_dispatcher');
+        $this->eventDispatcherMock->reset();
+
         $this->resetDB();
         $this->insertReferenceEntity();
     }
@@ -112,6 +122,62 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_creates_an_attribute_of_type_record_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('mentor');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+
+        $expectedAttribute = RecordAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('mentor'),
+            LabelCollection::fromArray(['en_US' => 'Mentor', 'fr_FR' => 'Mentor']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            $referenceEntityIdentifier
+        );
+
+        $this->attributeRepository->create($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_record_collection_and_returns_it()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('brands');
+        $identifier = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+
+        $expectedAttribute = RecordCollectionAttribute::create(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('brands'),
+            LabelCollection::fromArray(['en_US' => 'Brands', 'fr_FR' => 'Marques']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            ReferenceEntityIdentifier::fromString('brand')
+        );
+
+        $this->attributeRepository->create($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
@@ -163,6 +229,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
         $this->attributeRepository->deleteByIdentifier($identifier);
 
+        $this->eventDispatcherMock->assertEventDispatched(AttributeDeletedEvent::class);
         $this->expectException(AttributeNotFoundException::class);
         $this->attributeRepository->getByIdentifier($identifier);
     }
@@ -225,6 +292,53 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
         $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
         $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_all_reference_entity_attributes()
+    {
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $this->assertEquals(0, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($expectedAttribute);
+
+        $this->assertEquals(1, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
+
+        $identifier = AttributeIdentifier::create('designer', 'name2', 'test');
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString('name2'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($expectedAttribute);
+
+        $this->assertEquals(2, $this->attributeRepository->countByReferenceEntity($designerIdentifier));
     }
 
     private function assertAttribute(

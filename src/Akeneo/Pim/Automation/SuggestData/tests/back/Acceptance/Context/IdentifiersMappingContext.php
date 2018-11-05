@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
@@ -40,19 +42,25 @@ class IdentifiersMappingContext implements Context
     /** @var IdentifiersMappingApiFake */
     private $identifiersMappingApiFake;
 
+    /** @var UpdateIdentifiersMappingHandler */
+    private $updateIdentifiersMappingHandler;
+
     /**
      * @param ManageIdentifiersMapping $manageIdentifiersMapping
+     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingApiFake $identifiersMappingApiFake
      */
     public function __construct(
         ManageIdentifiersMapping $manageIdentifiersMapping,
+        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingApiFake $identifiersMappingApiFake
     ) {
         $this->manageIdentifiersMapping = $manageIdentifiersMapping;
+        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingApiFake = $identifiersMappingApiFake;
@@ -80,8 +88,12 @@ class IdentifiersMappingContext implements Context
 
         $tmp = array_fill_keys($identifiers, null);
         $tmp = array_merge($tmp, $mapped);
+        $tmp = array_map(function ($value) {
+            return '' !== $value ? $value : null;
+        }, $tmp);
 
-        $this->manageIdentifiersMapping->updateIdentifierMapping($tmp);
+        $command = new UpdateIdentifiersMappingCommand($tmp);
+        $this->updateIdentifiersMappingHandler->handle($command);
     }
 
     /**
@@ -94,9 +106,10 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersAreMappedWithValidValues(TableNode $table): bool
     {
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping(
+            $command = new UpdateIdentifiersMappingCommand(
                 $this->extractIdentifiersMappingFromTable($table)
             );
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return true;
         } catch (\Exception $e) {
@@ -114,9 +127,10 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
     {
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping(
+            $command = new UpdateIdentifiersMappingCommand(
                 $this->getTableNodeAsArrayWithoutHeaders($table)
             );
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return false;
         } catch (\Exception $e) {
@@ -132,7 +146,8 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersMappingIsSavedWithEmptyValues(): bool
     {
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping([]);
+            $command = new UpdateIdentifiersMappingCommand([]);
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return false;
         } catch (\Exception $e) {
@@ -210,6 +225,7 @@ class IdentifiersMappingContext implements Context
      * [
      *     [
      *         'from' => ['id' => 'brand'], (pim_ai_code)
+     *         'status' => 'active',
      *         'to' => [
      *             'id' => 'brand', (attribute_code)
      *             'label' => [
@@ -243,16 +259,20 @@ class IdentifiersMappingContext implements Context
                 }
             }
 
-            $mappings[] = [
+            $mappings[$rawMapping['pim_ai_code']] = [
                 'from' => ['id' => $rawMapping['pim_ai_code']],
-                'to' => [
+                'status' => empty($rawMapping['attribute_code']) ? 'inactive' : 'active',
+            ];
+
+            if (!empty($rawMapping['attribute_code'])) {
+                $mappings[$rawMapping['pim_ai_code']]['to'] = [
                     'id' => $rawMapping['attribute_code'],
                     'label' => $labels,
-                ],
-            ];
+                ];
+            }
         }
 
-        return $mappings;
+        return array_values($mappings);
     }
 
     /**

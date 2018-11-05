@@ -13,28 +13,35 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\ProductSubscriptionController;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductSubscriptionControllerSpec extends ObjectBehavior
 {
     public function let(
-        SubscribeProduct $subscribeProduct,
+        SubscribeProductHandler $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
-        UnsubscribeProductHandler $unsubscribeProductHandler
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
     ): void {
         $this->beConstructedWith(
             $subscribeProduct,
             $getProductSubscriptionStatusHandler,
-            $unsubscribeProductHandler
+            $unsubscribeProductHandler,
+            $productSubscriptionStatusNormalizer
         );
     }
 
@@ -51,5 +58,33 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         $unsubscribeProductHandler->handle($command)->shouldBeCalled();
 
         $this->unsubscribeAction(42)->shouldReturnAnInstanceOf(JsonResponse::class);
+    }
+
+    public function it_gets_a_product_subscription_status(
+        $getProductSubscriptionStatusHandler,
+        $productSubscriptionStatusNormalizer
+    ): void {
+        $connectionStatus = new ConnectionStatus(true, true);
+        $productSubscriptionStatus = new ProductSubscriptionStatus(
+            $connectionStatus,
+            true,
+            true,
+            true,
+            false
+        );
+        $getProductSubscriptionStatusHandler
+            ->handle(Argument::type(GetProductSubscriptionStatusQuery::class))
+            ->willReturn($productSubscriptionStatus);
+
+        $productSubscriptionStatusNormalizer->normalize($productSubscriptionStatus)->willReturn([
+            'isConnectionActive' => true,
+            'isIdentifiersMappingValid' => true,
+            'isSubscribed' => true,
+            'hasFamily' => true,
+            'isMappingFilled' => true,
+            'isProductVariant' => false,
+        ]);
+
+        $this->getProductSubscriptionStatusAction(42)->shouldReturnAnInstanceOf(JsonResponse::class);
     }
 }
