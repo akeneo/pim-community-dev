@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -30,7 +31,7 @@ class AttributeOptionCodeValidator extends ConstraintValidator
                 new Constraints\Type(['type' => 'string']),
                 new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
-                        'pattern' => '/^[a-zA-Z0-9_]+$/',
+                        'pattern' => OptionCode::REGULAR_EXPRESSION,
                         'message' => AttributeOptionCode::MESSAGE_WRONG_PATTERN,
                     ]
                 ),

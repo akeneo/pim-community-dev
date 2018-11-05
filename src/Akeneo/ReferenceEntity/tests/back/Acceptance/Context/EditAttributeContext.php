@@ -1289,13 +1289,12 @@ class EditAttributeContext implements Context
             $identifier = 'unknown';
         }
 
-        $json_decode = json_decode($invalidLabel, true);
         $this->updateAttribute([
             'identifier' => (string) $identifier,
             'attribute_options' => [
                 [
                     'code'   => 'option_code',
-                    'labels' => [ 'fr_FR' => $json_decode],
+                    'labels' => [ 'fr_FR' => json_decode($invalidLabel, true)],
                 ],
             ]
         ]);
