@@ -105,7 +105,7 @@ akeneo_suggest_data:
                 sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
-                    second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
+                    second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link link">catalog product identifiers</a> to the assistant''s identifiers.'
             activation:
                 label: 'Franklin Connector'
                 activation_code: 'Activation code'
