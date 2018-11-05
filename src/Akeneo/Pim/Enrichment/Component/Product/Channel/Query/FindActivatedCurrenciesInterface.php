@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Channel\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\Channel\Query;
 
 interface FindActivatedCurrenciesInterface
 {

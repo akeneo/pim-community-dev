@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Validator\Constraints\ActivatedLocale;
-use Pim\Component\Catalog\Validator\Constraints\ActivatedLocaleValidator;
+use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocaleValidator;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

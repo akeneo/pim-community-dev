@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Channel\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -12,7 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 /**
  * Factory that creates price collection product values.
  *
- * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
+ * @internal  Please, do not use this class directly.
+ * You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -53,8 +54,13 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
-    {
+    public function create(
+        AttributeInterface $attribute,
+        $channelCode,
+        $localeCode,
+        $data,
+        bool $ignoreUnknownData = false
+    ) {
         $this->checkData($attribute, $data);
 
         if (null === $data) {

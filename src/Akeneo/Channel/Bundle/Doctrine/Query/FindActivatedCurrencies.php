@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Bundle\Doctrine\Query;
 
-use Akeneo\Pim\Enrichment\Component\Channel\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 

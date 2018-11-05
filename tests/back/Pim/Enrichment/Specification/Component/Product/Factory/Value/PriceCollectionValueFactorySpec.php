@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Channel\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
@@ -17,7 +17,12 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 {
     function let(PriceFactory $priceFactory, FindActivatedCurrenciesInterface $findActivatedCurrencies)
     {
-        $this->beConstructedWith($priceFactory, ScalarValue::class, 'pim_catalog_price_collection', $findActivatedCurrencies);
+        $this->beConstructedWith(
+            $priceFactory,
+            ScalarValue::class,
+            'pim_catalog_price_collection',
+            $findActivatedCurrencies
+        );
     }
 
     function it_is_initializable()
@@ -128,6 +133,7 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
     function it_sorts_the_prices_collection_by_currency(
         $priceFactory,
+        $findActivatedCurrencies,
         AttributeInterface $attribute,
         ProductPriceInterface $priceEUR,
         ProductPriceInterface $priceUSD
@@ -141,6 +147,8 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
 
         $priceFactory->createPrice(42, 'EUR')->willReturn($priceEUR);
         $priceFactory->createPrice(63, 'USD')->willReturn($priceUSD);
+
+        $findActivatedCurrencies->forAllChannels()->willReturn(['EUR', 'USD']);
 
         $productValue = $this->create(
             $attribute,
