@@ -28,7 +28,7 @@ Feature: Validate price attributes of a draft
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the decimals allowed constraint of scopable price attribute
-    Given I change the Price to "4.9 USD"
+    Given I change the Price to "4.9 EUR"
     And I save the product
     Then I should see validation error "This value should not be a decimal."
     And there should be 1 error in the "Product information" tab
@@ -40,7 +40,7 @@ Feature: Validate price attributes of a draft
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number min constraint of scopable price attribute
-    Given I change the Customs to "9.9 USD"
+    Given I change the Customs to "9.9 EUR"
     And I save the product
     Then I should see validation error "This value should be 10 or more."
     And there should be 1 error in the "Product information" tab
@@ -52,7 +52,7 @@ Feature: Validate price attributes of a draft
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of scopable price attribute
-    Given I change the Customs to "222.2 USD"
+    Given I change the Customs to "222.2 EUR"
     And I save the product
     Then I should see validation error "This value should be 100 or less."
     And there should be 1 error in the "Product information" tab

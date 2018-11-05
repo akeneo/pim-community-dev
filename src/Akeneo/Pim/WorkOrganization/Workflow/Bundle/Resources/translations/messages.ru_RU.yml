@@ -114,7 +114,7 @@ confirmation:
     publish: Вы уверены, что хотите опубликовать этот продукт?
     unpublish: Вы уверены, что хотите снять этот продукт с публикации?
 Attributes.title: Атрибуты
-Completeness.title: Завершенность
+Completeness.title: Степень заполненности
 publish_product.steps.publish_product_tasklet.title: Опубликовать продукт
 unpublish_product.steps.unpublish_product_tasklet.title: Снять продукт с публикации
 approve_product_draft.steps.approve.title: Принять предложение

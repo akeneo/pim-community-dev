@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Permission\Bundle\MassEdit\Writer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -11,10 +17,6 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -23,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProductAndProductModelWriterSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
@@ -32,7 +34,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
-    ) {
+    ): void {
         $this->beConstructedWith(
             $productSaver,
             $productModelSaver,
@@ -40,28 +42,28 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
             $tokenStorage,
             $jobLauncher,
             $jobInstanceRepository,
-            'compute_product_model_descendant',
-            $authorizationChecker
+            $authorizationChecker,
+            'compute_product_model_descendant'
         );
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ProductAndProductModelWriter::class);
     }
 
-    function it_is_an_item_writer()
+    public function it_is_an_item_writer(): void
     {
         $this->shouldHaveType(ItemWriterInterface::class);
     }
 
-    function it_is_step_execution_aware()
+    public function it_is_step_execution_aware(): void
     {
         $this->shouldHaveType(StepExecutionAwareInterface::class);
     }
 
-    function it_saves_items(
+    public function it_saves_items(
         $productSaver,
         $productModelSaver,
         $stepExecution,
@@ -77,7 +79,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         JobInstance $jobInstance
-    ) {
+    ): void {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
 
@@ -105,14 +107,24 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $jobInstanceRepository->findOneByIdentifier('compute_product_model_descendant')->willReturn($jobInstance);
 
-        $jobLauncher->launch($jobInstance, $user, [
-            'product_model_codes' => [1 => 'product_model_1', 3 => 'product_model_2']
-        ])->shouldBeCalled();
+        $productModel1->getCode()->willReturn('code1');
+        $productModel2->getCode()->willReturn('code2');
+
+        $jobLauncher->launch(
+            $jobInstance,
+            $user,
+            [
+                'product_model_codes' => [
+                    1 => 'code1',
+                    3 => 'code2',
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->write($items);
     }
 
-    function it_increments_summary_info_with_permission(
+    public function it_increments_summary_info_with_permission(
         $authorizationChecker,
         $stepExecution,
         $tokenStorage,
@@ -128,7 +140,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         TokenInterface $token,
         UserInterface $user,
         JobInstance $jobInstance
-    ) {
+    ): void {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('realTimeVersioning')->willReturn(true);
 
@@ -151,7 +163,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $jobInstanceRepository->findOneByIdentifier('compute_product_model_descendant')->willReturn($jobInstance);
 
         $jobLauncher->launch($jobInstance, $user, [
-            'product_model_codes' => [2 => 'product_model_2', 5 => 'product_model_1']
+            'product_model_codes' => [2 => 'product_model_2', 5 => 'product_model_1'],
         ])->shouldBeCalled();
 
         $this->write([$product1, $product2, $productModel2, $product3, $product4, $productModel1]);

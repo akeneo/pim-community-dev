@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\PublishedProduct;
 
 use Doctrine\Common\Collections\Collection;
@@ -12,86 +14,84 @@ class SuccessListPublishedProductEndToEnd extends AbstractPublishedProductTestCa
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         // no locale, no scope, 1 category
         $product1 = $this->createProduct('simple', [
             'categories' => ['master'],
-            'values'     => [
+            'values' => [
                 'a_metric' => [
-                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
+                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null],
                 ],
                 'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ]
+                    ['data' => 'Text', 'locale' => null, 'scope' => null],
+                ],
+            ],
         ]);
 
         // localizable, categorized in 1 tree (master)
         $product2 = $this->createProduct('localizable', [
             'categories' => ['categoryB'],
-            'values'     => [
+            'values' => [
                 'a_localizable_image' => [
                     ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
                     ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null]
-                ]
-            ]
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null],
+                ],
+            ],
         ]);
 
         // scopable, categorized in 1 tree (master)
         $product3 = $this->createProduct('scopable', [
             'categories' => ['categoryA1', 'categoryA2'],
-            'values'     => [
+            'values' => [
                 'a_scopable_price' => [
                     [
                         'locale' => null,
-                        'scope'  => 'ecommerce',
-                        'data'   => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
+                        'scope' => 'ecommerce',
+                        'data' => [
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
+                        ],
                     ],
                     [
                         'locale' => null,
-                        'scope'  => 'tablet',
-                        'data'   => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
+                        'scope' => 'tablet',
+                        'data' => [
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         // localizable & scopable, categorized in 2 trees (master and master_china)
         $product4 = $this->createProduct('localizable_and_scopable', [
             'categories' => ['categoryA', 'master_china'],
-            'values'     => [
+            'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                     ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
                     ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
                     ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                     ['data' => 'China description', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $product5 = $this->createProduct('product_china', [
-            'categories' => ['master_china']
+            'categories' => ['master_china'],
         ]);
 
         $product6 = $this->createProduct('product_without_category2', [
             'values' => [
                 'a_yes_no' => [
-                    ['data' => true, 'locale' => null, 'scope' => null]
-                ]
-            ]
+                    ['data' => true, 'locale' => null, 'scope' => null],
+                ],
+            ],
         ]);
 
         $this->publishProduct($product1);
@@ -107,7 +107,7 @@ class SuccessListPublishedProductEndToEnd extends AbstractPublishedProductTestCa
     /**
      * Get all published products, whatever locale, scope, category with the default pagination type that is with an offset.
      */
-    public function testDefaultPaginationListPublishedProductsWithoutParameter()
+    public function testDefaultPaginationListPublishedProductsWithoutParameter(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -136,7 +136,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testDefaultPaginationFirstPageListPublishedProductsWithCount()
+    public function testDefaultPaginationFirstPageListPublishedProductsWithCount(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -164,7 +164,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testDefaultPaginationLastPageListPublishedProductsWithCount()
+    public function testDefaultPaginationLastPageListPublishedProductsWithCount(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -198,9 +198,9 @@ JSON;
      * So PV are returned only if:
      *    - scope = "ecommerce"
      *    - locale = "en_US" or null
-     * Then only published products in "master" tree are returned
+     * Then only published products in "master" tree are returned.
      */
-    public function testOffsetPaginationListPublishedProductsWithEcommerceChannel()
+    public function testOffsetPaginationListPublishedProductsWithEcommerceChannel(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -258,7 +258,6 @@ JSON;
                             "locale" : null,
                             "scope"  : "ecommerce",
                             "data"   : [
-                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"}
                             ]
@@ -300,9 +299,9 @@ JSON;
      * So PV are returned only if:
      *     - scope = "tablet"
      *     - locale = "en_US", "fr_FR" or null
-     * Then only published products in "master" tree are returned
+     * Then only published products in "master" tree are returned.
      */
-    public function testOffsetPaginationListPublishedProductsWithTabletChannel()
+    public function testOffsetPaginationListPublishedProductsWithTabletChannel(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -334,7 +333,6 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
-                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"}
                             ]
@@ -377,9 +375,9 @@ JSON;
      * So PV are returned only if:
      *     - scope = "tablet"
      *     - locale = "fr_FR" or null
-     * Then only products in "master" tree are returned
+     * Then only products in "master" tree are returned.
      */
-    public function testOffsetPaginationListProductsWithTabletChannelAndFRLocale()
+    public function testOffsetPaginationListProductsWithTabletChannelAndFRLocale(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -437,7 +435,6 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
-                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"}
                             ]
@@ -479,9 +476,9 @@ JSON;
      * So PV are returned only if:
      *     - scope = "ecommerce_china"
      *     - locale = "en_US", "zh_CN" or null
-     * Then only published products in "master_china" tree are returned
+     * Then only published products in "master_china" tree are returned.
      */
-    public function testOffsetPaginationListPublishedProductsWithEcommerceChinaChannel()
+    public function testOffsetPaginationListPublishedProductsWithEcommerceChinaChannel(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -539,9 +536,9 @@ JSON;
      * Filter on locales "en_US" and "zh_CN"
      * So PV are returned only if:
      *     - locale = "en_US", "zh_CN" or null
-     * Then we return all products (whatever the categories)
+     * Then we return all products (whatever the categories).
      */
-    public function testOffsetPaginationListProductsWithENAndCNLocales()
+    public function testOffsetPaginationListProductsWithENAndCNLocales(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
@@ -572,7 +569,6 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
-                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"}
                             ]
@@ -581,7 +577,6 @@ JSON;
                             "locale" : null,
                             "scope"  : "ecommerce",
                             "data"   : [
-                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"}
                             ]
@@ -622,7 +617,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testOffsetPaginationListProductsWithFilteredAttributes()
+    public function testOffsetPaginationListProductsWithFilteredAttributes(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -736,7 +731,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams()
+    public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -804,7 +799,6 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
-                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
                                 {"amount" : "11.50", "currency" : "USD"}
                             ]
@@ -841,7 +835,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testTheSecondPageOfTheListOfProductsWithOffsetPaginationWithoutCount()
+    public function testTheSecondPageOfTheListOfProductsWithOffsetPaginationWithoutCount(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -893,7 +887,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testOutOfRangeProductsList()
+    public function testOutOfRangeProductsList(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -916,7 +910,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testOffsetPaginationListProductsWithSearch()
+    public function testOffsetPaginationListProductsWithSearch(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -972,7 +966,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testOffsetPaginationListProductsWithMultiplePQBFilters()
+    public function testOffsetPaginationListProductsWithMultiplePQBFilters(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -995,7 +989,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testListProductsWithCompletenessPQBFilters()
+    public function testListProductsWithCompletenessPQBFilters(): void
     {
         $client = $this->createAuthenticatedClient();
 
@@ -1019,9 +1013,9 @@ JSON;
     }
 
     /**
-     * Get all products, whatever locale, scope, category with a search after pagination
+     * Get all products, whatever locale, scope, category with a search after pagination.
      */
-    public function testSearchAfterPaginationListProductsWithoutParameter()
+    public function testSearchAfterPaginationListProductsWithoutParameter(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -1049,14 +1043,14 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testSearchAfterPaginationListProductsWithNextLink()
+    public function testSearchAfterPaginationListProductsWithNextLink(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
         $id = [
-            'simple'                   => rawurlencode($this->getEncryptedId('simple')),
-            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
+            'simple' => rawurlencode($this->getEncryptedId('simple')),
+            'localizable' => rawurlencode($this->getEncryptedId('localizable')),
             'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
         ];
 
@@ -1081,14 +1075,14 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testSearchAfterPaginationLastPageOfTheListOfProducts()
+    public function testSearchAfterPaginationLastPageOfTheListOfProducts(): void
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
         $scopableEncryptedId = rawurlencode($this->getEncryptedId('scopable'));
 
-        $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
+        $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=%s', $scopableEncryptedId));
         $expected = <<<JSON
 {
     "_links": {
@@ -1111,7 +1105,7 @@ JSON;
     /**
      * @return array
      */
-    protected function getStandardizedPublishedProducts() : array
+    protected function getStandardizedPublishedProducts(): array
     {
         $standardizedPublishedProducts['simple'] = <<<JSON
 {
@@ -1211,9 +1205,6 @@ JSON;
             "locale": null,
             "scope": "tablet",
             "data": [{
-                "amount": "78.77",
-                "currency": "CNY"
-            }, {
                 "amount": "10.50",
                 "currency": "EUR"
             }, {
@@ -1224,9 +1215,6 @@ JSON;
             "locale": null,
             "scope": "ecommerce",
             "data": [{
-                "amount": "78.77",
-                "currency": "CNY"
-            }, {
                 "amount": "10.50",
                 "currency": "EUR"
             }, {

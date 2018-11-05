@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -32,7 +34,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *      - extract the metadata from the variation file
  *      - store the variation file in STORAGE
  *      - set the variation file to the variation and save the variation to the database
- *      - remove generated files (variation & source) from /tmp
+ *      - remove generated files (variation & source) from /tmp.
  *
  * Where STORAGE is the virtual filesystem where files are stored.
  *
@@ -69,14 +71,14 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
     /**
      * @param ChannelConfigurationRepositoryInterface $configurationRepository
-     * @param FilesystemProvider                      $filesystemProvider
-     * @param SaverInterface                          $metadataSaver
-     * @param SaverInterface                          $variationSaver
-     * @param FileTransformerInterface                $fileTransformer
-     * @param FileStorerInterface                     $fileStorer
-     * @param FileFetcherInterface                    $fileFetcher
-     * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
-     * @param string                                  $filesystemAlias
+     * @param FilesystemProvider $filesystemProvider
+     * @param SaverInterface $metadataSaver
+     * @param SaverInterface $variationSaver
+     * @param FileTransformerInterface $fileTransformer
+     * @param FileStorerInterface $fileStorer
+     * @param FileFetcherInterface $fileFetcher
+     * @param MetadataBuilderRegistry $metadaBuilderRegistry
+     * @param string $filesystemAlias
      */
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
@@ -103,7 +105,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(VariationInterface $variation)
+    public function generate(VariationInterface $variation): void
     {
         $locale = $variation->getReference()->getLocale();
         $channel = $variation->getChannel();
@@ -118,6 +120,13 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             $rawTransformations,
             $outputFilename
         );
+
+        if (null === $variationFileInfo) {
+            $this->deleteFile($sourceFileInfo);
+
+            return;
+        }
+
         $variationMetadata = $this->extractMetadata($variationFileInfo);
         $variationFile = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias, true);
 
@@ -150,7 +159,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * Retrieve the source file info of the variation and checks it's really present on the STORAGE virtual filesystem
+     * Retrieve the source file info of the variation and checks it's really present on the STORAGE virtual filesystem.
      *
      * @param VariationInterface $variation
      *
@@ -182,11 +191,11 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * With a file called this_is_my_source_file.txt, it will return
      *      this_is_my_source_file-en_US-ecommerce.txt or
-     *      this_is_my_source_file-ecommerce.txt
+     *      this_is_my_source_file-ecommerce.txt.
      *
      * @param FileInfoInterface $sourceFileInfo
-     * @param ChannelInterface  $channel
-     * @param LocaleInterface   $locale
+     * @param ChannelInterface $channel
+     * @param LocaleInterface $locale
      *
      * @return string
      */
@@ -220,7 +229,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * @param \SplFileInfo $file
      */
-    protected function deleteFile(\SplFileInfo $file)
+    protected function deleteFile(\SplFileInfo $file): void
     {
         $fs = new Filesystem();
         $fs->remove($file->getPathname());

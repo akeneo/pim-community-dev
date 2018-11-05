@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Akeneo\Tool\Component\FileTransformer\Options\Image;
 
 use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ScaleOptionsResolverSpec extends ObjectBehavior
 {
-    function it_throws_an_exception_when_options_are_wrong()
+    public function it_throws_an_exception_when_options_are_wrong(): void
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -17,7 +18,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [['wrong']]);
     }
 
-    function it_throws_an_exception_when_options_are_not_of_the_good_type()
+    public function it_throws_an_exception_when_options_are_not_of_the_good_type(): void
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -38,7 +39,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [['width' => '100 px']]);
     }
 
-    function it_throws_an_exception_when_ratio_width_and_height_are_null()
+    public function it_throws_an_exception_when_ratio_width_and_height_are_null(): void
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
@@ -47,19 +48,21 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         )->during('resolve', [[]]);
     }
 
-    function it_throws_an_exception_when_ratio_is_not_a_percentage()
+    public function it_throws_an_exception_when_ratio_is_not_a_percentage(): void
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
                 'The option "ratio" of the "scale" transformation should be between 0 and 100.'
             )
-        )->during('resolve', [['ratio' => 1036 ]]);
+        )->during('resolve', [['ratio' => 1036]]);
     }
 
-    function it_resolves_valid_options()
+    public function it_resolves_valid_options(): void
     {
         $this->resolve(['width' => 100]);
         $this->resolve(['height' => 100]);
         $this->resolve(['ratio' => 33]);
+        $this->resolve(['ratio' => 0]);
+        $this->resolve(['ratio' => 100]);
     }
 }
