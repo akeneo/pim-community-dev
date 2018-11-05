@@ -6,7 +6,7 @@ import LabelCollection, {
 import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
 
 export type NormalizedOption = {
-  code: NormalizedOption,
+  code: string,
   labelCollection: NormalizedLabelCollection
 }
 

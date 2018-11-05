@@ -9,22 +9,22 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 
-export interface NormalizedOptionAttribute extends NormalizedAttribute {
-  type: 'option';
+export interface NormalizedOptionCollectionAttribute extends NormalizedAttribute {
+  type: 'option_collection';
   options: NormalizedOption[];
 }
 
-export type NormalizedOptionAdditionalProperty = NormalizedOption;
-export type OptionAdditionalProperty = Option;
+export type NormalizedOptionCollectionAdditionalProperty = NormalizedOption;
+export type OptionCollectionAdditionalProperty = Option;
 
-export interface OptionAttribute extends Attribute {
+export interface OptionCollectionAttribute extends Attribute {
   options: Option[];
-  normalize(): NormalizedOptionAttribute;
+  normalize(): NormalizedOptionCollectionAttribute;
 }
 
 export class InvalidArgumentError extends Error {}
 
-export class ConcreteOptionAttribute extends ConcreteAttribute implements OptionAttribute {
+export class ConcreteOptionCollectionAttribute extends ConcreteAttribute implements OptionCollectionAttribute {
   private constructor(
     identifier: Identifier,
     referenceEntityIdentifier: ReferenceEntityIdentifier,
@@ -57,27 +57,27 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
     Object.freeze(this);
   }
 
-  public static createFromNormalized(normalizedOptionAttribute: NormalizedOptionAttribute) {
-    return new ConcreteOptionAttribute(
-      createIdentifier(normalizedOptionAttribute.identifier),
-      createReferenceEntityIdentifier(normalizedOptionAttribute.reference_entity_identifier),
-      createCode(normalizedOptionAttribute.code),
-      createLabelCollection(normalizedOptionAttribute.labels),
-      normalizedOptionAttribute.value_per_locale,
-      normalizedOptionAttribute.value_per_channel,
-      normalizedOptionAttribute.order,
-      normalizedOptionAttribute.is_required,
-      normalizedOptionAttribute.options.map(Option.createFromNormalized)
+  public static createFromNormalized(normalizedOptionCollectionAttribute: NormalizedOptionCollectionAttribute) {
+    return new ConcreteOptionCollectionAttribute(
+      createIdentifier(normalizedOptionCollectionAttribute.identifier),
+      createReferenceEntityIdentifier(normalizedOptionCollectionAttribute.reference_entity_identifier),
+      createCode(normalizedOptionCollectionAttribute.code),
+      createLabelCollection(normalizedOptionCollectionAttribute.labels),
+      normalizedOptionCollectionAttribute.value_per_locale,
+      normalizedOptionCollectionAttribute.value_per_channel,
+      normalizedOptionCollectionAttribute.order,
+      normalizedOptionCollectionAttribute.is_required,
+      normalizedOptionCollectionAttribute.options.map(Option.createFromNormalized)
     );
   }
 
-  public normalize(): NormalizedOptionAttribute {
+  public normalize(): NormalizedOptionCollectionAttribute {
     return {
       ...super.normalize(),
-      type: 'option',
+      type: 'option_collection',
       options: this.options.map((option:Option) => option.normalize())
     };
   }
 }
 
-export const denormalize = ConcreteOptionAttribute.createFromNormalized;
+export const denormalize = ConcreteOptionCollectionAttribute.createFromNormalized;
