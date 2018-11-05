@@ -71,14 +71,14 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
     /**
      * @param ChannelConfigurationRepositoryInterface $configurationRepository
-     * @param FilesystemProvider $filesystemProvider
-     * @param SaverInterface $metadataSaver
-     * @param SaverInterface $variationSaver
-     * @param FileTransformerInterface $fileTransformer
-     * @param FileStorerInterface $fileStorer
-     * @param FileFetcherInterface $fileFetcher
-     * @param MetadataBuilderRegistry $metadaBuilderRegistry
-     * @param string $filesystemAlias
+     * @param FilesystemProvider                      $filesystemProvider
+     * @param SaverInterface                          $metadataSaver
+     * @param SaverInterface                          $variationSaver
+     * @param FileTransformerInterface                $fileTransformer
+     * @param FileStorerInterface                     $fileStorer
+     * @param FileFetcherInterface                    $fileFetcher
+     * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
+     * @param                                         $filesystemAlias
      */
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
