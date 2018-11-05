@@ -68,8 +68,10 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface
      */
     private function fetchActivatedCurrenciesForAllChannels(): array
     {
+        $this->entityManager->getConnection()->exec('SET SESSION group_concat_max_len = 1000000');
+
         $sql = <<<SQL
-SELECT ch.code as channel_code, JSON_ARRAYAGG(cu.code) as activated_currencies
+SELECT ch.code as channel_code, GROUP_CONCAT(cu.code) as activated_currencies
 FROM pim_catalog_channel ch
   INNER JOIN pim_catalog_channel_currency chcu on ch.id = chcu.channel_id
   INNER JOIN pim_catalog_currency cu on chcu.currency_id = cu.id
@@ -81,7 +83,7 @@ SQL;
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $currenciesIndexedByChannel = [];
         foreach ($results as $result) {
-            $currenciesIndexedByChannel[$result['channel_code']] = json_decode($result['activated_currencies'], false);
+            $currenciesIndexedByChannel[$result['channel_code']] = explode(',', $result['activated_currencies']);
         }
 
         return $currenciesIndexedByChannel;
