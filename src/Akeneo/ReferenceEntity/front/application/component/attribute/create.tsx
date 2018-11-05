@@ -78,7 +78,7 @@ const AttributeTypeItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (Key.Space === event.key) onClick(element)
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >
@@ -151,7 +151,7 @@ class Create extends React.Component<CreateProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.onSubmit()
+    if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
   private getTypeOptions = (): DropdownElement[] => {
@@ -334,7 +334,7 @@ class Create extends React.Component<CreateProps> {
             onClick={this.props.events.onCancel}
             tabIndex={0}
             onKeyPress={event => {
-              if (Key.Space === event.key) this.props.events.onCancel()
+              if (Key.Space === event.key) this.props.events.onCancel();
             }}
           >
             {__('pim_reference_entity.attribute.create.cancel')}

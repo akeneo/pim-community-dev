@@ -25,7 +25,7 @@ const LocaleItemView = ({
       onClick={() => onClick(element)}
       tabIndex={isOpen ? 0 : -1}
       onKeyPress={event => {
-        if (Key.Space === event.key) onClick(element)
+        if (Key.Space === event.key) onClick(element);
       }}
     >
       <span className="label">
@@ -42,7 +42,7 @@ const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: Dropdown
     onClick={onClick}
     tabIndex={0}
     onKeyPress={event => {
-      if (Key.Space === event.key) onClick()
+      if (Key.Space === event.key) onClick();
     }}
   >
     {__('Locale')}

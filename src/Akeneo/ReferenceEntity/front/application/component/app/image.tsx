@@ -50,7 +50,7 @@ class Image extends React.Component<
   };
 
   private remove = (event: React.MouseEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
-    const removeEvent = (event as React.KeyboardEvent<HTMLInputElement>);
+    const removeEvent = event as React.KeyboardEvent<HTMLInputElement>;
     if ((undefined === removeEvent.key || Key.Space === removeEvent.key) && !this.props.image.isEmpty()) {
       this.stopEvent(event);
       this.setState({dropping: false});
@@ -181,7 +181,9 @@ class Image extends React.Component<
         {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (
           <div className="AknImage-uploader">
             <Import className="AknImage-uploaderIllustration" />
-            <span className="AknImage-uploaderHelper">{__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}</span>
+            <span className="AknImage-uploaderHelper">
+              {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}
+            </span>
           </div>
         ) : null}
       </div>

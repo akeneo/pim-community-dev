@@ -53,6 +53,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
             filePath: '/path/sofa.jpg',
             originalFilename: 'sofa.jpg',
           })
+          .withAttributes([])
           .build();
 
         interceptedRequest.respond({
@@ -71,6 +72,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
     });
 
     expect(response).toEqual({
+      attributes: [],
       recordCount: 123,
       referenceEntity: {
         identifier: {

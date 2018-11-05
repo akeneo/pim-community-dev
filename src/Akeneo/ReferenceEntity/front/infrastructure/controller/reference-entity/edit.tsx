@@ -94,7 +94,7 @@ class ReferenceEntityEditController extends BaseController {
           'full_text'
         ).value
       : '';
-  }
+  };
 
   beforeUnload = () => {
     if (this.isDirty()) {

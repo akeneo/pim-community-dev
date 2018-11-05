@@ -46,6 +46,21 @@ describe('akeneo > reference entity > domain > model --- file', () => {
     ).toBe('my_filename.png');
   });
 
+  test('I can test if the file is stored', () => {
+    expect(
+      denormalizeFile({
+        originalFilename: 'my_filename.png',
+        filePath: 'file/path.png',
+      }).isInStorage()
+    ).toBe(true);
+    expect(
+      denormalizeFile({
+        originalFilename: 'my_filename.png',
+        filePath: '/tmp/file/path.png',
+      }).isInStorage()
+    ).toBe(false);
+  });
+
   test('I can get the file information for an stored file', () => {
     expect(
       denormalizeFile({

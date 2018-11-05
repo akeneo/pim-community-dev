@@ -12,6 +12,7 @@ class ReferenceEntityBuilder {
       identifier: '',
       labels: {},
       image: null,
+      attributes: [],
       record_count: 123,
     };
   }
@@ -30,6 +31,12 @@ class ReferenceEntityBuilder {
 
   withImage(image) {
     this.referenceEntity.image = image;
+
+    return this;
+  }
+
+  withAttributes(attributes) {
+    this.referenceEntity.attributes = attributes;
 
     return this;
   }

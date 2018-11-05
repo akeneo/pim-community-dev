@@ -29,6 +29,7 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
         ]);
         $this->image = $image;
         $this->recordCount = 123;
+        $this->attributes = [];
 
         $this->normalize()->shouldReturn(
             [
@@ -41,7 +42,8 @@ class ReferenceEntityDetailsSpec extends ObjectBehavior
                     'filePath'         => '/path/image.jpg',
                     'originalFilename' => 'image.jpg'
                 ],
-                'record_count' => 123
+                'record_count' => 123,
+                'attributes' => []
             ]
         );
     }

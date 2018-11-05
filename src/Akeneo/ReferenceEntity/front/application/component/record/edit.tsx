@@ -78,7 +78,7 @@ class RecordEditView extends React.Component<EditProps> {
       className="AknColumn-navigationLink"
       onClick={this.props.events.backToReferenceEntity}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (Key.Space === event.key) this.props.events.backToReferenceEntity()
+        if (Key.Space === event.key) this.props.events.backToReferenceEntity();
       }}
     >
       {__('pim_reference_entity.record.button.back')}

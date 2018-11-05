@@ -51,7 +51,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
             onValueChange(event.currentTarget.value);
           }}
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (Key.Enter === event.key) onSubmit()
+            if (Key.Enter === event.key) onSubmit();
           }}
         />
       )}
