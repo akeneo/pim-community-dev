@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -82,8 +83,9 @@ class EditActionTest extends ControllerIntegrationTestCase
      * @test
      * @dataProvider getUnsynchronisedIdentifiersRequests
      */
-    public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_one_in_the_body(string $requestFile)
-    {
+    public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_one_in_the_body(
+        string $requestFile
+    ) {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . $requestFile);
     }
 
@@ -100,7 +102,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             self::EDIT_ATTRIBUTE_ROUTE,
             [
                 'referenceEntityIdentifier' => 'designer',
-                'attributeIdentifier'      => $attributeIdentifier,
+                'attributeIdentifier'       => $attributeIdentifier,
             ],
             'POST'
         );
@@ -157,8 +159,20 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeMaxFileSize::fromString('200.10'),
             AttributeAllowedExtensions::fromList(['png'])
         );
+
+        $favoriteColor = OptionAttribute::create(
+            AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint')),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray(['fr_FR' => 'Couleur favorite', 'en_US' => 'Favorite color']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
         $attributeRepository->create($name);
         $attributeRepository->create($portrait);
+        $attributeRepository->create($favoriteColor);
     }
 
     private function revokeEditRights(): void
@@ -170,15 +184,18 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function getValidationErrorsRequests(): array
     {
         return [
-            'Invalid allowed extension' => ['allowed_extensions_is_invalid.json'],
-            'Max file size is invalid'  => ['max_file_size_is_invalid.json'],
+            'Invalid allowed extension'               => ['allowed_extensions_is_invalid.json'],
+            'Max file size is invalid'                => ['max_file_size_is_invalid.json'],
+            'Invalid option codes regular expression' => ['invalid_option_code_regular_expression.json'],
+            'Option code is blank'                    => ['invalid_option_code_blank.json'],
+            'Some options are duplicated'             => ['options_duplicated.json'],
         ];
     }
 
     public function getUnsynchronisedIdentifiersRequests()
     {
         return [
-            'Unsynchronised attribute identifier'       => ['unsynchronised_attribute_identifier.json'],
+            'Unsynchronised attribute identifier'        => ['unsynchronised_attribute_identifier.json'],
             'Unsynchronised reference entity identifier' => ['unsynchronised_reference_entity_identifier.json'],
         ];
     }
