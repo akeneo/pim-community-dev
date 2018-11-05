@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;

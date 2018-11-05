@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
