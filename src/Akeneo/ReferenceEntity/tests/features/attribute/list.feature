@@ -1,10 +1,10 @@
-Feature: Lists all attributes related to an reference entity
-  In order to see the structure of an reference entity
+Feature: Lists all attributes related to a reference entity
+  In order to see the structure of a reference entity
   As a user
   I want to list all of its attributes
 
   @acceptance-front
-  Scenario: List all attributes of an reference entity
+  Scenario: List all attributes of a reference entity
     Given the following reference entity:
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |

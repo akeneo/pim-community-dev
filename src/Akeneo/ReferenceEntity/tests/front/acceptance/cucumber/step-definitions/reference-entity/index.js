@@ -84,7 +84,7 @@ module.exports = async function(cucumber) {
     assert.equal(title.trim(), `${total} result${total > 1 ? 's' : ''}`);
   });
 
-  Then('the user gets an reference entity {string}', async function(identifier) {
+  Then('the user gets a reference entity {string}', async function(identifier) {
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
   });

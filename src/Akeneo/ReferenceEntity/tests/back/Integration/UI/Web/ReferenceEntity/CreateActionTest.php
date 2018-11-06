@@ -44,7 +44,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_reference_entity(): void
+    public function it_creates_a_reference_entity(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -69,7 +69,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_reference_entity_with_no_labels(): void
+    public function it_creates_a_reference_entity_with_no_labels(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,

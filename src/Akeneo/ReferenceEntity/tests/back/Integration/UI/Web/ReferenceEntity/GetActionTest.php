@@ -47,7 +47,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_reference_entity_details(): void
+    public function it_returns_a_reference_entity_details(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,

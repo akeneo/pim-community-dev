@@ -9,7 +9,7 @@ class AttributeIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('create', ['an_reference_entity_identifier', 'description', 'test']);
+        $this->beConstructedThrough('create', ['a_reference_entity_identifier', 'description', 'test']);
     }
 
     public function it_is_initializable()
@@ -62,7 +62,7 @@ class AttributeIdentifierSpec extends ObjectBehavior
     public function it_is_possible_to_compare_it()
     {
         $sameIdentifier = AttributeIdentifier::create(
-            'an_reference_entity_identifier',
+            'a_reference_entity_identifier',
             'description',
             'test'
         );
@@ -93,6 +93,6 @@ class AttributeIdentifierSpec extends ObjectBehavior
 
     public function it_normalize_itself()
     {
-        $this->normalize()->shouldReturn('description_an_reference_entity__test');
+        $this->normalize()->shouldReturn('description_a_reference_entity_i_test');
     }
 }

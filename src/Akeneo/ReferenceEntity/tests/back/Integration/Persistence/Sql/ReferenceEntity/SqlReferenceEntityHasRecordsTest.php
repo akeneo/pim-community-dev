@@ -43,7 +43,7 @@ class SqlReferenceEntityHasRecordsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_tells_if_an_reference_entity_has_records()
+    public function it_tells_if_a_reference_entity_has_records()
     {
         $identifier = ReferenceEntityIdentifier::fromString('designer');
         $hasRecords = ($this->referenceEntityHasRecords)($identifier);

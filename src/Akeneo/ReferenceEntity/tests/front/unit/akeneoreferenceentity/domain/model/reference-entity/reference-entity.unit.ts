@@ -65,7 +65,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
     );
   });
 
-  test('I can normalize an reference entity', () => {
+  test('I can normalize a reference entity', () => {
     const michelReferenceEntity = createReferenceEntity(michelIdentifier, michelLabels, createEmptyFile());
 
     expect(michelReferenceEntity.normalize()).toEqual({
@@ -76,7 +76,7 @@ describe('akeneo > reference entity > domain > model --- reference entity', () =
     });
   });
 
-  test('I can normalize an reference entity', () => {
+  test('I can normalize a reference entity', () => {
     const michelReferenceEntity = denormalizeReferenceEntity({
       identifier: 'michel',
       labels: {

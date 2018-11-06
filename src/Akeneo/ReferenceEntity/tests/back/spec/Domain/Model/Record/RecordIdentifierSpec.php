@@ -20,7 +20,7 @@ class RecordIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('create', ['an_reference_entity_identifier', 'a_record_identifier', 'fingerprint']);
+        $this->beConstructedThrough('create', ['a_reference_entity_identifier', 'a_record_identifier', 'fingerprint']);
     }
 
     public function it_is_initializable()
@@ -80,7 +80,7 @@ class RecordIdentifierSpec extends ObjectBehavior
     public function it_is_possible_to_compare_it()
     {
         $sameIdentifier = RecordIdentifier::create(
-            'an_reference_entity_identifier',
+            'a_reference_entity_identifier',
             'a_record_identifier',
             'fingerprint'
         );
@@ -95,11 +95,11 @@ class RecordIdentifierSpec extends ObjectBehavior
 
     public function it_normalize_itself()
     {
-        $this->normalize()->shouldReturn('an_reference_entity__a_record_identifier_fingerprint');
+        $this->normalize()->shouldReturn('a_reference_entity_i_a_record_identifier_fingerprint');
     }
 
     public function it_can_be_transformed_into_a_string()
     {
-        $this->__toString()->shouldReturn('an_reference_entity__a_record_identifier_fingerprint');
+        $this->__toString()->shouldReturn('a_reference_entity_i_a_record_identifier_fingerprint');
     }
 }
