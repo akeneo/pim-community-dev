@@ -26,7 +26,7 @@ class ReferenceEntityCollectionProviderSpec extends ObjectBehavior {
         $this->getField($designer)->shouldReturn('akeneo-reference-entity-collection-field');
     }
 
-    function it_supports_an_reference_entity_attribute(AttributeInterface $designer, AttributeInterface $sku)
+    function it_supports_a_reference_entity_attribute(AttributeInterface $designer, AttributeInterface $sku)
     {
         $designer->getType()->willReturn('akeneo_reference_entity_collection');
         $sku->getType()->willReturn('pim_catalog_identifier');

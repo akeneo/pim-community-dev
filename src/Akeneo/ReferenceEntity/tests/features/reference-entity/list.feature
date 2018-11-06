@@ -11,8 +11,8 @@ Feature: List reference entities
       | sofa       |
     When the user asks for the reference entity list
     Then the user gets a selection of 2 items out of 2 items in total
-    And the user gets an reference entity "designer"
-    And the user gets an reference entity "sofa"
+    And the user gets a reference entity "designer"
+    And the user gets a reference entity "sofa"
 
   @acceptance-front
   Scenario: Shows an empty list if there is no reference entity

@@ -48,7 +48,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneReferenceEntityAttributeTest extends
     /**
      * @test
      */
-    public function it_tells_if_an_reference_entity_is_linked_to_at_least_one_reference_entity_attribute()
+    public function it_tells_if_a_reference_entity_is_linked_to_at_least_one_reference_entity_attribute()
     {
         $identifier = ReferenceEntityIdentifier::fromString('designer');
         $isLinked = ($this->query)($identifier);

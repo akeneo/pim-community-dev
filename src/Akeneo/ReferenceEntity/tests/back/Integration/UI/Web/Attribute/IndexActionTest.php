@@ -46,7 +46,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_lists_all_attributes_for_an_reference_entity(): void
+    public function it_lists_all_attributes_for_a_reference_entity(): void
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
     }

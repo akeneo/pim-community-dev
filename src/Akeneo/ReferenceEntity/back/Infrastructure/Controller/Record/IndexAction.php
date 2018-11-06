@@ -38,7 +38,7 @@ class IndexAction
     }
 
     /**
-     * Get all records belonging to an reference entity.
+     * Get all records belonging to a reference entity.
      */
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {

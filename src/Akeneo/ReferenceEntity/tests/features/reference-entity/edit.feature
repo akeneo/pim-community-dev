@@ -1,10 +1,10 @@
-Feature: Edit an reference entity
-  In order to update the information of an reference entity
+Feature: Edit a reference entity
+  In order to update the information of a reference entity
   As a user
-  I want see the details of an reference entity and update them
+  I want see the details of a reference entity and update them
 
   @acceptance-back @acceptance-front
-  Scenario: Updating an reference entity labels
+  Scenario: Updating a reference entity labels
     Given the following reference entity:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
@@ -22,13 +22,13 @@ Feature: Edit an reference entity
 
   @acceptance-back
   Scenario: Updating when the reference entity has already an image
-    Given an image on an reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
+    Given an image on a reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
     When the user updates the image of the reference entity 'designer' with path '"/path/image2.jpg"' and filename '"image2.jpg"'
     Then the image of the reference entity 'designer' should be '"/path/image2.jpg"'
 
   @acceptance-back
   Scenario: Updating a reference entity with an empty image
-    Given an image on an reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
+    Given an image on a reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
     When the user updates the reference entity 'designer' with an empty image
     Then the reference entity 'designer' should have an empty image
 
@@ -48,7 +48,7 @@ Feature: Edit an reference entity
       | "/path/image.jpg" | 150            | This value should be of type string. |
 
   @acceptance-front
-  Scenario: Updating an reference entity with unexpected backend answer
+  Scenario: Updating a reference entity with unexpected backend answer
     Given the following reference entity:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
@@ -65,7 +65,7 @@ Feature: Edit an reference entity
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
 
   @acceptance-front
-  Scenario: Updating an reference entity when the backend answer an error
+  Scenario: Updating a reference entity when the backend answer an error
     Given the following reference entity:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |

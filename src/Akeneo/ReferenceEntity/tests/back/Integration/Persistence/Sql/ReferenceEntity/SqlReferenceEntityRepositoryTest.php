@@ -91,7 +91,7 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_when_creating_an_reference_entity_with_the_same_identifier()
+    public function it_throws_when_creating_a_reference_entity_with_the_same_identifier()
     {
         $identifier = ReferenceEntityIdentifier::fromString('identifier');
         $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
@@ -104,7 +104,7 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_updates_an_reference_entity_and_returns_it()
+    public function it_updates_a_reference_entity_and_returns_it()
     {
         $identifier = ReferenceEntityIdentifier::fromString('identifier');
         $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
@@ -134,7 +134,7 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_an_reference_entity_given_an_identifier()
+    public function it_deletes_a_reference_entity_given_an_identifier()
     {
         $identifier = ReferenceEntityIdentifier::fromString('identifier');
         $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
@@ -149,7 +149,7 @@ class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_an_reference_entity_given_an_identifier_even_if_it_has_attributes()
+    public function it_deletes_a_reference_entity_given_an_identifier_even_if_it_has_attributes()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $referenceEntity = ReferenceEntity::create($referenceEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());

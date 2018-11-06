@@ -1,5 +1,5 @@
-Feature: Lists all records of an reference entity
-  In order to see the records of an reference entity
+Feature: Lists all records of a reference entity
+  In order to see the records of a reference entity
   As a user
   I want to list all of its records
 

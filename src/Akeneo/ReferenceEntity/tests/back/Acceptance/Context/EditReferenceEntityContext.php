@@ -142,7 +142,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^an image on an reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @Given /^an image on a reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
     public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {

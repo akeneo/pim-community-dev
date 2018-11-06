@@ -1,7 +1,7 @@
-Feature: Delete an attribute linked to an reference entity
-  In order to modify an reference entity
+Feature: Delete an attribute linked to a reference entity
+  In order to modify a reference entity
   As a user
-  I want delete an attribute linked to an reference entity
+  I want delete an attribute linked to a reference entity
 
   Background:
     Given the following reference entity:
@@ -9,7 +9,7 @@ Feature: Delete an attribute linked to an reference entity
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
   @acceptance-back
-  Scenario: Delete a text attribute linked to an reference entity
+  Scenario: Delete a text attribute linked to a reference entity
     Given the following text attributes:
       | entity_identifier | code | labels                                    | required | order | value_per_channel | value_per_locale | max_length |
       | designer          | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true     | 0     | true              | false            | 44         |
@@ -17,7 +17,7 @@ Feature: Delete an attribute linked to an reference entity
     Then there is no attribute "name" for the reference entity "designer"
 
   @acceptance-front
-  Scenario: Delete a text attribute linked to an reference entity
+  Scenario: Delete a text attribute linked to a reference entity
     Given the following attributes for the reference entity "designer":
       | code     | type  | labels                                  |
       | name     | text  | {"en_US": "Name", "fr_FR": "Name"}      |
@@ -34,7 +34,7 @@ Feature: Delete an attribute linked to an reference entity
       | name     | text  |
 
   @acceptance-front
-  Scenario: Cannot delete a text attribute linked to an reference entity
+  Scenario: Cannot delete a text attribute linked to a reference entity
     Given the following attributes for the reference entity "designer":
       | code     | type  | labels                                  |
       | name     | text  | {"en_US": "Name", "fr_FR": "Name"}      |
