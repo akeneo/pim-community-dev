@@ -25,11 +25,11 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
 class InMemoryFindRecordsForConnectorByReferenceEntity implements FindRecordsForConnectorByReferenceEntityInterface
 {
     /** @var RecordForConnector[] */
-    private $recordsByEntity;
+    private $recordsByReferenceEntity;
 
     public function __construct()
     {
-        $this->recordsByEntity = [];
+        $this->recordsByReferenceEntity = [];
     }
 
     public function save(
@@ -37,7 +37,7 @@ class InMemoryFindRecordsForConnectorByReferenceEntity implements FindRecordsFor
         RecordCode $recordCode,
         RecordForConnector $recordForConnector
     ): void {
-        $this->recordsByEntity[(string) $referenceEntityIdentifier][(string) $recordCode] = $recordForConnector;
+        $this->recordsByReferenceEntity[(string) $referenceEntityIdentifier][(string) $recordCode] = $recordForConnector;
     }
 
     public function __invoke(
@@ -45,7 +45,7 @@ class InMemoryFindRecordsForConnectorByReferenceEntity implements FindRecordsFor
         ?RecordCode $searchAfterCode,
         int $limit
     ): array {
-        $entityRecords = $this->recordsByEntity[(string) $referenceEntityIdentifier] ?? [];
+        $entityRecords = $this->recordsByReferenceEntity[(string) $referenceEntityIdentifier] ?? [];
 
         if (null !== $searchAfterCode) {
             $searchAfterCode = (string) $searchAfterCode;

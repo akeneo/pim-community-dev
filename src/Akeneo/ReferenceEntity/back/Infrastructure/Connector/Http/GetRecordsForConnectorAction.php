@@ -51,14 +51,18 @@ class GetRecordsForConnectorAction
         $this->limit = $limit;
     }
 
+    /**
+     * @throws UnprocessableEntityHttpException
+     * @throws NotFoundHttpException
+     */
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
         try {
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-        } catch (\Exception $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage());
+        } catch (\Exception $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
         if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {

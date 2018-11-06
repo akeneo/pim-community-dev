@@ -17,14 +17,19 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find the paginated list of the records of a given reference entity identifier.
- * The pagination is managed by giving the code of the record to search after and the maximum number of records to return.
+ * Find the list of the records for a given reference entity identifier.
+ * It allows to return a list for records with a code superior to the given one in the search after parameter.
+ *
+ * This search after method is recommended to handle big volume of data.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 interface FindRecordsForConnectorByReferenceEntityInterface
 {
+    /**
+     * @return RecordForConnector[]
+     */
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,

@@ -18,7 +18,6 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_reference_entity'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
-            - '%__symfony__.reference_entity_record_limit_per_page_for_connector%'
         tags:
             - { name: fob.context_service }
 

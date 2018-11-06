@@ -54,16 +54,12 @@ class GetRecordsForConnectorContext implements Context
     /** @var array */
     private $recordPages;
 
-    /** @var int */
-    private $numberOfRecordsPerPage;
-
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindRecordsForConnectorByReferenceEntity $findRecordsForConnector,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        int $numberOfRecordsPerPage
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -71,9 +67,6 @@ class GetRecordsForConnectorContext implements Context
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
         $this->recordPages = [];
-
-        Assert::greaterThan($numberOfRecordsPerPage, 0);
-        $this->numberOfRecordsPerPage = $numberOfRecordsPerPage;
     }
 
     /**

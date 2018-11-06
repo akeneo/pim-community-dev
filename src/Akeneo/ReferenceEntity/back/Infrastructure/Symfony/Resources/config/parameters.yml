@@ -8,4 +8,4 @@ parameters:
     # Maximum number of option for a single list attribute of a reference entity
     reference_entity_option_limit_per_list_attribute: 100
     # Number of records per page for the connector
-    reference_entity_record_limit_per_page_for_connector: 100
+    reference_entity_records_for_connector_limit_per_page: 100
