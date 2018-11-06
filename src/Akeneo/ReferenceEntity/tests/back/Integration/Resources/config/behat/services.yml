@@ -21,3 +21,11 @@ services:
             - '%__symfony__.reference_entity_record_limit_per_page_for_connector%'
         tags:
             - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.integration.connector.distribution.not_found_reference_entity_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\NotFoundReferenceEntityContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+        tags:
+            - { name: fob.context_service }
