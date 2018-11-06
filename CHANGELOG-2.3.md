@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7771: Fix refresh versioning command about duplicate version's rule
+
 # 2.3.15 (2018-11-06)
 
 ## Bug fixes

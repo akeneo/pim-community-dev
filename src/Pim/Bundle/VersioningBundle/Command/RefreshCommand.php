@@ -117,10 +117,12 @@ class RefreshCommand extends ContainerAwareCommand
 
         if ($version->getChangeset()) {
             $this->getObjectManager()->persist($version);
+            $this->getObjectManager()->flush($version);
 
             return $version;
         } else {
             $this->getObjectManager()->remove($version);
+            $this->getObjectManager()->flush($version);
         }
     }
 
