@@ -16,6 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 
@@ -27,16 +29,24 @@ class SuggestedDataNormalizer
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var AttributeOptionRepositoryInterface */
+    private $attributeOptionRepository;
+
     /** @var MeasureConverter */
     private $measureConverter;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
      * @param MeasureConverter $measureConverter
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository, MeasureConverter $measureConverter)
-    {
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository,
+        MeasureConverter $measureConverter
+    ) {
         $this->attributeRepository = $attributeRepository;
+        $this->attributeOptionRepository = $attributeOptionRepository;
         $this->measureConverter = $measureConverter;
     }
 
@@ -53,25 +63,59 @@ class SuggestedDataNormalizer
         $suggestedValues = $suggestedData->getValues();
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($suggestedValues));
 
-        foreach ($suggestedValues as $attrCode => $value) {
-            if (!isset($attributeTypes[$attrCode])) {
-                throw new \InvalidArgumentException(sprintf('Attribute with code "%s" does not exist', $attrCode));
+        foreach ($suggestedValues as $attributeCode => $value) {
+            if (!isset($attributeTypes[$attributeCode])) {
+                continue;
+            }
+            $attributeType = $attributeTypes[$attributeCode];
+            if (AttributeTypes::OPTION_SIMPLE_SELECT === $attributeType ||
+                AttributeTypes::OPTION_MULTI_SELECT === $attributeType
+            ) {
+                $value = $this->filterOptions($attributeCode, $value);
+                if (null === $value) {
+                    continue;
+                }
             }
 
-            $normalized[$attrCode] = $this->normalizeValue($attributeTypes[$attrCode], $value, $attrCode);
+            $normalized[$attributeCode] = $this->normalizeValue($attributeType, $attributeCode, $value);
         }
 
         return $normalized;
     }
 
     /**
+     * Filters attribute options that are not in the PIM.
+     *
+     * @param string $attributeCode
+     * @param mixed $value
+     *
+     * @return null|string
+     */
+    private function filterOptions(string $attributeCode, $value): ?string
+    {
+        $codes = array_filter(explode(',', $value));
+        $options = $this->attributeOptionRepository->findCodesByIdentifiers($attributeCode, $codes);
+
+        if (empty($options)) {
+            return null;
+        }
+        if (count($codes) === count($options)) {
+            return $value;
+        }
+
+        return implode(',', array_map(function (AttributeOptionInterface $option) {
+            return $option->getCode();
+        }, $options));
+    }
+
+    /**
      * @param string $attributeType
-     * @param $value
-     * @param string $attrCode
+     * @param string $attributeCode
+     * @param mixed $value
      *
      * @return array
      */
-    private function normalizeValue(string $attributeType, $value, string $attrCode): array
+    private function normalizeValue(string $attributeType, string $attributeCode, $value): array
     {
         $data = null;
 
@@ -91,9 +135,8 @@ class SuggestedDataNormalizer
                 $data = $this->handleMultiSelect($value);
                 break;
             case AttributeTypes::METRIC:
-                $attribute = $this->getAttribute($attrCode);
-                $data = $this->handleMetric($value, $attribute);
-                $data = $this->convertMetric($data, $attribute);
+                $data = $this->handleMetric($value);
+                $data = $this->convertMetric($data, $attributeCode);
                 break;
             default:
                 throw new \InvalidArgumentException(
@@ -149,11 +192,10 @@ class SuggestedDataNormalizer
      * TODO: ensure the metric unit exists if the conversion step is removed.
      *
      * @param string $value
-     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    private function handleMetric(string $value, AttributeInterface $attribute): array
+    private function handleMetric(string $value): array
     {
         preg_match("~^(?'value'[0-9.])[[:space:]](?'unit'[a-zA-Z_]+)$~", $value, $matches);
 
@@ -169,12 +211,13 @@ class SuggestedDataNormalizer
 
     /**
      * @param array $standardFormat
-     * @param AttributeInterface $attribute
+     * @param string $attributeCode
      *
      * @return array
      */
-    private function convertMetric(array $standardFormat, AttributeInterface $attribute): array
+    private function convertMetric(array $standardFormat, string $attributeCode): array
     {
+        $attribute = $this->getAttribute($attributeCode);
         $this->measureConverter->setFamily($attribute->getMetricFamily());
 
         $convertedValue = $this->measureConverter->convert(
@@ -190,18 +233,18 @@ class SuggestedDataNormalizer
     }
 
     /**
-     * @param string $attrCode
+     * @param string $attributeCode
      *
      * @return AttributeInterface
      */
-    private function getAttribute(string $attrCode): AttributeInterface
+    private function getAttribute(string $attributeCode): AttributeInterface
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($attrCode);
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
         if (null === $attribute) {
             throw new \InvalidArgumentException(sprintf(
                 'Cannot find the attribute "%s" to get its metric standard unit',
-                $attrCode
+                $attributeCode
             ));
         }
 
