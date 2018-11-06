@@ -99,7 +99,9 @@ define(
                 if (_.isEmpty(completenesses)) {
                     return [];
                 }
-                var sortedCompleteness = [_.findWhere(completenesses, {channel: UserContext.get('catalog_default_scope')})];
+                var sortedCompleteness = [
+                    _.findWhere(completenesses, {channel: UserContext.get('catalog_default_scope')})
+                ];
 
                 return _.union(sortedCompleteness, completenesses);
             },

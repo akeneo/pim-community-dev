@@ -8,8 +8,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/form', 'pim/user-context', 'pim/i18n'],
-    function (BaseForm, UserContext, i18n) {
+    ['pim/form', 'pim/user-context', 'pim/i18n', 'underscore'],
+    function (BaseForm, UserContext, i18n, _) {
         return BaseForm.extend({
             tagName: 'h1',
             className: 'AknTitleContainer-title',

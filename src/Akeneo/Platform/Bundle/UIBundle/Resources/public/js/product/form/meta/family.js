@@ -53,8 +53,11 @@ define(
                     this.$el.html(
                         this.template({
                             familyLabel: family ?
-                                i18n.getLabel(family.labels, UserContext.get('catalog_default_locale'), product.family) :
-                                _.__('pim_common.none')
+                                i18n.getLabel(
+                                    family.labels,
+                                    UserContext.get('catalog_default_locale'),
+                                    product.family
+                                ) : _.__('pim_common.none')
                         })
                     );
 

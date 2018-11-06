@@ -23,7 +23,9 @@ define(
                             return;
                         }
 
-                        PageTitle.set({ 'product.label': product.meta.label[UserContext.get('catalog_default_locale')] });
+                        PageTitle.set(
+                            { 'product.label': product.meta.label[UserContext.get('catalog_default_locale')] }
+                        );
 
                         return FormBuilder.build(product.meta.form)
                             .then((form) => {

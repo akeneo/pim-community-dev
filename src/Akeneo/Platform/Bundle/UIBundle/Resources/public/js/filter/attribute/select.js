@@ -103,7 +103,11 @@ define([
                         }
 
                         return {
-                            label: i18n.getLabel(attribute.labels, UserContext.get('user_default_locale'), attribute.code),
+                            label: i18n.getLabel(
+                                attribute.labels,
+                                UserContext.get('user_default_locale'),
+                                attribute.code
+                            ),
                             select2Options: this.getSelect2Options(attribute),
                             removable: this.isRemovable(),
                             editable: this.isEditable()

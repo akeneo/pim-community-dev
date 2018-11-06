@@ -127,7 +127,11 @@ define(
                     this.config.description,
                     {
                         locale: _.findWhere(this.locales, {code: UserContext.get('catalog_default_locale')}).label,
-                        scope: i18n.getLabel(this.channel.labels, UserContext.get('catalog_default_locale'), this.channel.code)
+                        scope: i18n.getLabel(
+                            this.channel.labels,
+                            UserContext.get('catalog_default_locale'),
+                            this.channel.code
+                        )
                     }
                 );
             },

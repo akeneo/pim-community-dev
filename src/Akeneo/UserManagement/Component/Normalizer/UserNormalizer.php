@@ -36,6 +36,13 @@ class UserNormalizer implements NormalizerInterface
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
 
+    /**
+     * @param DateTimeNormalizer $dateTimeNormalizer
+     * @param NormalizerInterface $fileNormalizer
+     * @param SecurityFacade $securityFacade
+     * @param TokenStorageInterface $tokenStorage
+     * @param DatagridViewRepositoryInterface $datagridViewRepo
+     */
     public function __construct(
         DateTimeNormalizer $dateTimeNormalizer,
         NormalizerInterface $fileNormalizer,
