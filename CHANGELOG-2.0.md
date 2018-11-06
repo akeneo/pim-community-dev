@@ -4,10 +4,6 @@
 
 - PIM-7757: Fix the risk of inserting duplicate completenesses.
 
-## BC Breaks
-
-- Methods `setRatio()`, `setMissingCount()` and `setRequiredCount()` have been added to `Pim\Component\Catalog\Model\CompletenessInterface`.
-
 # 2.0.41 (2018-10-23)
 
 ## Bug fixes

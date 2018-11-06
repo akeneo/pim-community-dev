@@ -53,7 +53,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForProducts(ChannelInterface $channel, array $filters)
     {
@@ -66,7 +67,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -79,7 +81,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated to remove as it is not used
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissing()
     {
@@ -103,12 +106,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     ) {
         $defaultFilters = [
             ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
-            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null],
         ];
 
-        $options = [
-            'filters' => $filters ?? $defaultFilters
-        ];
+        $options = ['filters' => $filters ?? $defaultFilters];
 
         if (null !== $channel) {
             $options['default_scope'] = $channel->getCode();
@@ -122,8 +123,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * Calculates current product completenesses.
-     *
-     * Completenesses are updated for the existing ones, others are added / removed.
+     * Completenesses are updated for the existing ones, others are added/removed.
      *
      * @param ProductInterface $product
      */
@@ -138,13 +138,13 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $currentLocalesChannels = [];
         foreach ($completenessCollection as $currentCompleteness) {
             $currentLocalesChannels[] =
-                $currentCompleteness->getLocale()->getId() . '/' . $currentCompleteness->getChannel()->getId();
+                $currentCompleteness->getLocale()->getId().'/'.$currentCompleteness->getChannel()->getId();
         }
 
         $newLocalesChannels = [];
         foreach ($newCompletenesses as $newCompleteness) {
             $newLocalesChannels[] =
-                $newCompleteness->getLocale()->getId() . '/' . $newCompleteness->getChannel()->getId();
+                $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
         }
 
         $completenessesToAdd = array_diff($newLocalesChannels, $currentLocalesChannels);
@@ -155,8 +155,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * @param Collection $completenessCollection
-     * @param []CompletenessInterface $newCompletenesses
+     * @param Collection              $completenessCollection
+     * @param CompletenessInterface[] $newCompletenesses
      */
     private function updateExistingCompletenesses(Collection $completenessCollection, array $newCompletenesses)
     {
@@ -174,9 +174,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * @param Collection $completenessCollection
-     * @param []CompletenessInterface $newCompletenesses
-     * @param []string $completenessesToAdd
+     * @param Collection              $completenessCollection
+     * @param CompletenessInterface[] $newCompletenesses
+     * @param string[]                $completenessesToAdd
      */
     private function addNewCompletenesses(
         Collection $completenessCollection,
@@ -187,8 +187,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             list($localeId, $channelId) = explode('/', $completenessToAdd);
 
             foreach ($newCompletenesses as $newCompleteness) {
-                if ($newCompleteness->getLocale()->getId() === (int) $localeId &&
-                    $newCompleteness->getChannel()->getId() === (int) $channelId
+                if ($newCompleteness->getLocale()->getId() === (int)$localeId
+                    && $newCompleteness->getChannel()->getId() === (int)$channelId
                 ) {
                     $completenessCollection->add($newCompleteness);
                 }
@@ -197,8 +197,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * @param Collection $completenessCollection
-     * @param []CompletenessInterface $newCompletenesses
+     * @param Collection              $completenessCollection
+     * @param CompletenessInterface[] $completenessesToRemove
      */
     private function removeOutdatedCompletenesses(Collection $completenessCollection, array $completenessesToRemove)
     {
@@ -206,8 +206,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             list($localeId, $channelId) = explode('/', $completenessToRemove);
 
             foreach ($completenessCollection as $currentCompleteness) {
-                if ($currentCompleteness->getLocale()->getId() === (int) $localeId &&
-                    $currentCompleteness->getChannel()->getId() === (int) $channelId
+                if ($currentCompleteness->getLocale()->getId() === (int)$localeId
+                    && $currentCompleteness->getChannel()->getId() === (int)$channelId
                 ) {
                     $completenessCollection->removeElement($currentCompleteness);
                 }

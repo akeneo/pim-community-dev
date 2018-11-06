@@ -56,7 +56,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $calculator->calculate($product)->willReturn([$newCompleteness1, $newCompleteness2]);
 
         $this->generateMissingForProduct($product);
-;
+
         Assert::count($completenesses, 2);
     }
 
