@@ -71,3 +71,4 @@ extensions:
 
 attribute_fields:
     akeneo-reference-entity-collection-field: pim/reference-entity-collection-field
+    akeneo-reference-entity-field: pim/reference-entity-field
