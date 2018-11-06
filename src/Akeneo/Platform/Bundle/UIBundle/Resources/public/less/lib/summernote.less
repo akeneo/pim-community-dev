@@ -1,9 +1,11 @@
 @import '../base/variables';
 
 .note-editor {
-  width: 100%;
+  width: ~"calc(100% - 4px)";
   border-color: @AknBorderColor;
   border-radius: 2px;
+  background: white;
+  margin-bottom: 4px;
 
   .note-editable {
     ol {
@@ -51,6 +53,7 @@
     width: @AknLittleButtonSize;
     cursor: pointer;
     color: @AknDefaultFontColor;
+    padding: 0;
 
     &:hover {
       background: @AknDefaultHoverBackground;
