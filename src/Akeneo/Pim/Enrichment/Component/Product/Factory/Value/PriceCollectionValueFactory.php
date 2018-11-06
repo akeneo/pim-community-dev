@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
+use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -11,7 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 /**
  * Factory that creates price collection product values.
  *
- * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
+ * @internal  Please, do not use this class directly.
+ * You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -28,23 +30,37 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
     /** @var string */
     protected $supportedAttributeType;
 
+    /** @var FindActivatedCurrenciesInterface */
+    protected $findActivatedCurrenciesForChannel;
+
     /**
-     * @param PriceFactory $priceFactory
-     * @param string       $productValueClass
-     * @param string       $supportedAttributeType
+     * @param PriceFactory                     $priceFactory
+     * @param string                           $productValueClass
+     * @param string                           $supportedAttributeType
+     * @param FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel
      */
-    public function __construct(PriceFactory $priceFactory, $productValueClass, $supportedAttributeType)
-    {
+    public function __construct(
+        PriceFactory $priceFactory,
+        $productValueClass,
+        $supportedAttributeType,
+        FindActivatedCurrenciesInterface $findActivatedCurrenciesForChannel
+    ) {
         $this->priceFactory = $priceFactory;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
+        $this->findActivatedCurrenciesForChannel = $findActivatedCurrenciesForChannel;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
-    {
+    public function create(
+        AttributeInterface $attribute,
+        $channelCode,
+        $localeCode,
+        $data,
+        bool $ignoreUnknownData = false
+    ) {
         $this->checkData($attribute, $data);
 
         if (null === $data) {
@@ -52,7 +68,10 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         }
 
         $value = new $this->productValueClass(
-            $attribute, $channelCode, $localeCode, $this->getPrices($attribute, $data)
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->getPrices($attribute, $data, $channelCode)
         );
 
         return $value;
@@ -125,11 +144,12 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      *
      * @return PriceCollection
      */
-    protected function getPrices(AttributeInterface $attribute, array $data)
+    protected function getPrices(AttributeInterface $attribute, array $data, ?string $channelCode)
     {
         $prices = new PriceCollection();
 
         $filteredData = $this->filterByCurrency($data);
+        $filteredData = $this->filterByActivatedCurrencies($channelCode, $filteredData);
         $sortedData = $this->sortByCurrency($filteredData);
         foreach ($sortedData as $price) {
             try {
@@ -222,5 +242,41 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         }
 
         return $filteredData;
+    }
+
+    /**
+     * filters out the currencies
+     *
+     * @param null|string $channelCode
+     * @param array       $data
+     *
+     * @return array
+     */
+    private function filterByActivatedCurrencies(?string $channelCode, array $data): array
+    {
+        $activatedCurrencies = $this->getActivatedCurrencies($channelCode);
+
+        return array_values(
+            array_filter(
+                $data,
+                function (array $price) use ($activatedCurrencies) {
+                    return in_array($price['currency'], $activatedCurrencies);
+                }
+            )
+        );
+    }
+
+    /**
+     * @param null|string $channelCode
+     *
+     * @return array
+     */
+    private function getActivatedCurrencies(?string $channelCode): array
+    {
+        if (null === $channelCode) {
+            return $this->findActivatedCurrenciesForChannel->forAllChannels();
+        }
+
+        return $this->findActivatedCurrenciesForChannel->forChannel($channelCode);
     }
 }

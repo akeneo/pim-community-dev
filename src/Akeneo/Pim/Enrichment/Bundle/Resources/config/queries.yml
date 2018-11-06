@@ -62,3 +62,8 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.query.product_query_builder_factory'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
+        arguments:
+            - '@doctrine.orm.entity_manager'

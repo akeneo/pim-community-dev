@@ -10,7 +10,7 @@ String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
 String composer_command = "update"
-String runInEnterpriseEdition = "yes"
+String runInEnterpriseEdition = "no"
 String launchPhpUnitEndToEndTests = "yes"
 
 stage("Build") {
