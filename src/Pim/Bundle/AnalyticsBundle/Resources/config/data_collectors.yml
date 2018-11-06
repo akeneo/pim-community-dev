@@ -70,6 +70,7 @@ services:
             - '@pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family'
             - '@pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family'
             - '@pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family'
+            - '@pim_volume_monitoring.persistence.query.average_max_attributes_per_family'
         tags:
             - { name: pim_analytics.data_collector, type: system_info_report }
 

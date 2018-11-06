@@ -24,7 +24,8 @@ class AttributeDataCollectorSpec extends ObjectBehavior
         CountQuery $useableAsGridFilterAttributeCountQuery,
         AverageMaxQuery $localizableAttributePerFamilyAverageMaxQuery,
         AverageMaxQuery $scopableAttributePerFamilyAverageMaxQuery,
-        AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery
+        AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery,
+        AverageMaxQuery $attributePerFamilyAverageMaxQuery
     ) {
         $this->beConstructedWith(
             $attributeCountQuery,
@@ -34,7 +35,8 @@ class AttributeDataCollectorSpec extends ObjectBehavior
             $useableAsGridFilterAttributeCountQuery,
             $localizableAttributePerFamilyAverageMaxQuery,
             $scopableAttributePerFamilyAverageMaxQuery,
-            $localizableAndScopableAttributePerFamilyAverageMaxQuery
+            $localizableAndScopableAttributePerFamilyAverageMaxQuery,
+            $attributePerFamilyAverageMaxQuery
         );
     }
 
@@ -56,7 +58,8 @@ class AttributeDataCollectorSpec extends ObjectBehavior
         $useableAsGridFilterAttributeCountQuery,
         $localizableAttributePerFamilyAverageMaxQuery,
         $scopableAttributePerFamilyAverageMaxQuery,
-        $localizableAndScopableAttributePerFamilyAverageMaxQuery
+        $localizableAndScopableAttributePerFamilyAverageMaxQuery,
+        $attributePerFamilyAverageMaxQuery
     ) {
         $attributeCountQuery->fetch()->willReturn(new CountVolume(1000, -1, 'count_attributes'));
         $localizableAttributeCountQuery->fetch()->willReturn(new CountVolume(33, -1, 'count_localizable_attributes'));
@@ -67,6 +70,7 @@ class AttributeDataCollectorSpec extends ObjectBehavior
         $localizableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12, 7, -1, 'average_max_localizable_attributes_per_family'));
         $scopableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(13, 9, -1, 'average_max_scopable_attributes_per_family'));
         $localizableAndScopableAttributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(10, 7, -1, 'average_max_localizable_and_scopable_attributes_per_family'));
+        $attributePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(20, 15, -1, 'avg_number_attributes_per_family'));
 
         $this->collect()->shouldReturn([
             'nb_attributes' => 1000,
@@ -76,7 +80,8 @@ class AttributeDataCollectorSpec extends ObjectBehavior
             'nb_useable_as_grid_filter_attributes' => 12,
             'avg_percentage_scopable_attributes_per_family' => 9,
             'avg_percentage_localizable_attributes_per_family' => 7,
-            'avg_percentage_scopable_localizable_attributes_per_family' => 7
+            'avg_percentage_scopable_localizable_attributes_per_family' => 7,
+            'avg_number_attributes_per_family' => 15
         ]);
     }
 }
