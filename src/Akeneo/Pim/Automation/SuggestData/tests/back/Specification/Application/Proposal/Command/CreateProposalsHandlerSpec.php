@@ -26,12 +26,30 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SuggestedDataFactory $suggestedDataFactory
     ): void {
-        $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory);
+        $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory, 2);
     }
 
     public function it_is_a_create_proposal_handler(): void
     {
         $this->shouldHaveType(CreateProposalsHandler::class);
+    }
+
+    public function it_throws_an_exception_if_batch_size_is_zero(
+        ProposalUpsertInterface $proposalUpsert,
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        SuggestedDataFactory $suggestedDataFactory
+    ): void {
+        $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory, 0);
+        $this->shouldThrow(new \InvalidArgumentException('Batch size must be positive'))->duringInstantiation();
+    }
+
+    public function it_throws_an_exception_if_batch_size_is_negative(
+        ProposalUpsertInterface $proposalUpsert,
+        ProductSubscriptionRepositoryInterface $subscriptionRepository,
+        SuggestedDataFactory $suggestedDataFactory
+    ): void {
+        $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory, -5);
+        $this->shouldThrow(new \InvalidArgumentException('Batch size must be positive'))->duringInstantiation();
     }
 
     public function it_does_not_process_invalid_subscriptions(
@@ -46,7 +64,7 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         $suggestedDataFactory->fromSubscription($subscription)->willReturn(null);
 
         $proposalUpsert->process(Argument::any(), Argument::any())->shouldNotBeCalled();
-        $this->handle(new CreateProposalsCommand(2));
+        $this->handle(new CreateProposalsCommand());
     }
 
     public function it_paginates_proposals_creation(
@@ -76,6 +94,6 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
 
         $proposalUpsert->process(Argument::type('array'), ProposalAuthor::USERNAME)->shouldBeCalledTimes(2);
 
-        $this->handle(new CreateProposalsCommand(2));
+        $this->handle(new CreateProposalsCommand());
     }
 }

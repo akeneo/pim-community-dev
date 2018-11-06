@@ -33,6 +33,9 @@ class CreateProposalsHandler
     /** @var SuggestedDataFactory */
     private $suggestedDataFactory;
 
+    /** @var int */
+    private $batchSize;
+
     /** @var ProductSubscription[] */
     private $pendingSubscriptions = [];
 
@@ -43,15 +46,22 @@ class CreateProposalsHandler
      * @param ProposalUpsertInterface $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param SuggestedDataFactory $suggestedDataFactory
+     * @param int $batchSize
      */
     public function __construct(
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        SuggestedDataFactory $suggestedDataFactory
+        SuggestedDataFactory $suggestedDataFactory,
+        int $batchSize
     ) {
+        if ($batchSize <= 0) {
+            throw new \InvalidArgumentException('Batch size must be positive');
+        }
+
         $this->proposalUpsert = $proposalUpsert;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->suggestedDataFactory = $suggestedDataFactory;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -59,8 +69,7 @@ class CreateProposalsHandler
      */
     public function handle(CreateProposalsCommand $command): void
     {
-        $batchSize = $command->batchSize();
-        $this->fetchNextPendingSubscriptions($batchSize);
+        $this->fetchNextPendingSubscriptions();
 
         while (!empty($this->pendingSubscriptions)) {
             $toProcess = [];
@@ -73,17 +82,17 @@ class CreateProposalsHandler
             if (!empty($toProcess)) {
                 $this->proposalUpsert->process($toProcess, ProposalAuthor::USERNAME);
             }
-            $this->fetchNextPendingSubscriptions($batchSize);
+            $this->fetchNextPendingSubscriptions();
         }
     }
 
     /**
-     * @param int $batchSize
+     * Fetches the next $batchSize subscriptions which have suggested data.
      */
-    private function fetchNextPendingSubscriptions(int $batchSize): void
+    private function fetchNextPendingSubscriptions(): void
     {
         $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions(
-            $batchSize,
+            $this->batchSize,
             $this->searchAfter
         );
         if (!empty($pendingSubscriptions)) {

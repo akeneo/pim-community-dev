@@ -18,25 +18,4 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
  */
 class CreateProposalsCommand
 {
-    /** @var int */
-    private $batchSize;
-
-    /**
-     * @param int $batchSize
-     */
-    public function __construct(int $batchSize)
-    {
-        if ($batchSize <= 0) {
-            throw new \InvalidArgumentException('Batch size must be positive');
-        }
-        $this->batchSize = $batchSize;
-    }
-
-    /**
-     * @return int
-     */
-    public function batchSize(): int
-    {
-        return $this->batchSize;
-    }
 }

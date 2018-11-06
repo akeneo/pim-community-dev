@@ -164,6 +164,19 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
+     * @Then the suggested data for the subscription of product :identifier should be empty
+     *
+     * @param string $identifier
+     */
+    public function theSuggestedDataForTheSubscriptionOfProductShouldBeEmpty(string $identifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+
+        Assert::isEmpty($subscription->getSuggestedData()->getValues());
+    }
+
+    /**
      * @param string $identifier
      * @param bool $throwExceptions
      */
