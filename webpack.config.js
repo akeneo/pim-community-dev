@@ -36,12 +36,20 @@ const babelPresets = [
 ];
 
 if (isProd) {
-  babelPresets.push('babel-preset-minify');
+  babelPresets.push([
+    'babel-preset-minify',
+    {
+      builtIns: false,
+      evaluate: false,
+      mangle: false,
+    },
+  ]);
 }
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 const webpackConfig = {
+  mode: isProd ? 'production' : 'development',
   stats: {
     hash: false,
     maxModules: 5,
@@ -179,6 +187,7 @@ const webpackConfig = {
             loader: path.resolve(__dirname, 'webpack/config-loader'),
             options: {
               configMap: config,
+              aliases: _.mapKeys(aliases, (path, key) => `${key}$`),
             },
           },
         ],
@@ -195,6 +204,12 @@ const webpackConfig = {
   // Support old loader declarations
   resolveLoader: {
     moduleExtensions: ['-loader'],
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
 
   plugins: [
@@ -216,18 +231,18 @@ const webpackConfig = {
     new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
 
     // Split the app into chunks for performance
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'lib',
-      minChunks: module => module.context && module.context.indexOf('lib') !== -1,
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
-    }),
+    // new config.optimization.splitChunks({
+    //   name: 'lib',
+    //   minChunks: module => module.context && module.context.indexOf('lib') !== -1,
+    // }),
+    // new config.optimization.splitChunks({
+    //   name: 'vendor',
+    //   minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
+    // }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
     }),
-    new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
+    // new config.optimization.splitChunks({name: 'manifest'}),
   ],
 };
 
