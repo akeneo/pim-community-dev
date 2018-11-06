@@ -68,8 +68,8 @@ config:
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
                 akeneo_reference_entity_collection:
-                    create: pim-attribute-form-reference-entity-collection
-                    edit:   pim-attribute-form-reference-entity-collection
+                    create: pim-attribute-form-reference-entity
+                    edit:   pim-attribute-form-reference-entity
         pim/form/common/attributes/create-button:
             attribute_icons:
                 akeneo_reference_entity_collection: reference-entity
@@ -79,5 +79,5 @@ config:
         pim/controller/reference-entity/edit: akeneoreferenceentity/infrastructure/controller/reference-entity/edit.tsx
         pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
 
-        pim/attribute-edit-form/properties/reference-entity-collection: akeneoreferenceentity/infrastructure/attribute/reference-entity-collection-field.ts
+        pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
         pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx
