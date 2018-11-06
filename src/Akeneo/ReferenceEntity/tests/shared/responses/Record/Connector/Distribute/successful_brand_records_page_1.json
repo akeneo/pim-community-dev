@@ -1,0 +1,248 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_embedded": {
+                "_items": [
+                    {
+                        "code": "brand_10",
+                        "labels": {
+                            "en_US": "Brand number 10"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 10"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_10_image.jpg"
+                    },
+                    {
+                        "code": "brand_11",
+                        "labels": {
+                            "en_US": "Brand number 11"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 11"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_11_image.jpg"
+                    },
+                    {
+                        "code": "brand_12",
+                        "labels": {
+                            "en_US": "Brand number 12"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 12"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_12_image.jpg"
+                    },
+                    {
+                        "code": "brand_13",
+                        "labels": {
+                            "en_US": "Brand number 13"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 13"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_13_image.jpg"
+                    },
+                    {
+                        "code": "brand_14",
+                        "labels": {
+                            "en_US": "Brand number 14"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 14"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_14_image.jpg"
+                    },
+                    {
+                        "code": "brand_15",
+                        "labels": {
+                            "en_US": "Brand number 15"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 15"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_15_image.jpg"
+                    },
+                    {
+                        "code": "brand_16",
+                        "labels": {
+                            "en_US": "Brand number 16"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 16"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_16_image.jpg"
+                    },
+                    {
+                        "code": "brand_17",
+                        "labels": {
+                            "en_US": "Brand number 17"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 17"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_17_image.jpg"
+                    },
+                    {
+                        "code": "brand_18",
+                        "labels": {
+                            "en_US": "Brand number 18"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 18"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_18_image.jpg"
+                    },
+                    {
+                        "code": "brand_19",
+                        "labels": {
+                            "en_US": "Brand number 19"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 19"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_19_image.jpg"
+                    }
+                ]
+            }
+        }
+    }
+}

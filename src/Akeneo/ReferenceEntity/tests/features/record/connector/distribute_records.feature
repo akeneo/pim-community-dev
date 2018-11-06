@@ -20,3 +20,9 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given some reference entities with some records
     When the connector requests for a record for a non-existent reference entity
     Then the PIM notifies the connector about an error indicating that the reference entity does not exist
+
+  @integration-back
+  Scenario: Get all the records of a given reference entity
+    Given 22 records for the Brand reference entity
+    When the connector requests all records of the Brand reference entity
+    Then the PIM returns the 22 records of the Brand reference entity

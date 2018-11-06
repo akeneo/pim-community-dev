@@ -1,3 +1,6 @@
+parameters:
+    reference_entity_record_limit_per_page_for_connector: 10
+
 services:
     # Repositories
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
@@ -29,6 +32,9 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code:
         class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordForConnectorByReferenceEntityAndCode
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_reference_entity:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordsForConnectorByReferenceEntity
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists

@@ -1,0 +1,65 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "search_after": "brand_29"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_embedded": {
+                "_items": [
+                    {
+                        "code": "brand_30",
+                        "labels": {
+                            "en_US": "Brand number 30"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 30"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_30_image.jpg"
+                    },
+                    {
+                        "code": "brand_31",
+                        "labels": {
+                            "en_US": "Brand number 31"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 31"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_31_image.jpg"
+                    }
+                ]
+            }
+        }
+    }
+}

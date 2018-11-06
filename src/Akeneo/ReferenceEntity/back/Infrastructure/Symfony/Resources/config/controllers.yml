@@ -105,7 +105,7 @@ services:
             - '@akeneo_referenceentity.application.record.delete_all_reference_entity_records_handler'
             - '@oro_security.security_facade'
 
-    akeneo_referenceentity.infrastructure.connector.action.get:
+    akeneo_referenceentity.infrastructure.connector.action.record.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordForConnectorAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code'
@@ -117,3 +117,10 @@ services:
         arguments:
             - '@router'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes'
+
+    akeneo_referenceentity.infrastructure.connector.action.records.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordsForConnectorAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_reference_entity'
+            - '%reference_entity_record_limit_per_page_for_connector%'

@@ -10,3 +10,14 @@ services:
         tags:
             - { name: fob.context_service }
 
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_records_for_connector_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetRecordsForConnectorContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '%__symfony__.reference_entity_record_limit_per_page_for_connector%'
+        tags:
+            - { name: fob.context_service }
