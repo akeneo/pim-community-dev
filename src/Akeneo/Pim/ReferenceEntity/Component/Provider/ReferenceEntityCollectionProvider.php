@@ -18,7 +18,7 @@ use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterf
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 
 /**
- * Field provider for reference entity
+ * Field provider for reference entity collection
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */

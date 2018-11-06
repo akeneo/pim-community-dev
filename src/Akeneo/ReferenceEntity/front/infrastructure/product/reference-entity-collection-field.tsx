@@ -12,7 +12,7 @@ const Field = require('pim/field');
 const UserContext = require('pim/user-context');
 
 /**
- * Reference entity field for attribute form
+ * Reference entity collection field for attribute form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
