@@ -23,9 +23,9 @@ Feature: Connection to e-commerce platforms and marketplaces
 
   @integration-back
   Scenario: Get all the records of a given reference entity
-    Given 22 records for the Brand reference entity
+    Given 7 records for the Brand reference entity
     When the connector requests all records of the Brand reference entity
-    Then the PIM returns the 22 records of the Brand reference entity
+    Then the PIM returns the 7 records of the Brand reference entity
 
   @integration-back
   Scenario: Notify an error when getting all the records of a non-existent reference entity

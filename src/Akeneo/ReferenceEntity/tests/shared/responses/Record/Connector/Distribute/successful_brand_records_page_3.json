@@ -4,7 +4,7 @@
         "route": "akeneo_reference_entities_records_rest_connector_get",
         "query": {
             "referenceEntityIdentifier": "brand",
-            "search_after": "brand_29"
+            "search_after": "brand_6"
         }
     },
     "response": {
@@ -13,16 +13,16 @@
             "_embedded": {
                 "_items": [
                     {
-                        "code": "brand_30",
+                        "code": "brand_7",
                         "labels": {
-                            "en_US": "Brand number 30"
+                            "en_US": "Brand number 7"
                         },
                         "values": {
                             "description": [
                                 {
                                     "locale": "en_US",
                                     "channel": null,
-                                    "data": "Brand example 30"
+                                    "data": "Brand example 7"
                                 }
                             ],
                             "country": [
@@ -33,30 +33,7 @@
                                 }
                             ]
                         },
-                        "main_image": "test/brand_30_image.jpg"
-                    },
-                    {
-                        "code": "brand_31",
-                        "labels": {
-                            "en_US": "Brand number 31"
-                        },
-                        "values": {
-                            "description": [
-                                {
-                                    "locale": "en_US",
-                                    "channel": null,
-                                    "data": "Brand example 31"
-                                }
-                            ],
-                            "country": [
-                                {
-                                    "locale": null,
-                                    "channel": null,
-                                    "data": "italy"
-                                }
-                            ]
-                        },
-                        "main_image": "test/brand_31_image.jpg"
+                        "main_image": "test/brand_7_image.jpg"
                     }
                 ]
             }

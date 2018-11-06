@@ -1,5 +1,5 @@
 parameters:
-    reference_entity_record_limit_per_page_for_connector: 10
+    reference_entity_record_limit_per_page_for_connector: 3
 
 services:
     # Repositories

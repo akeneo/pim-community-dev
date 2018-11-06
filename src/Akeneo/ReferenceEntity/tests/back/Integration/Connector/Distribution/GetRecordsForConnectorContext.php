@@ -83,9 +83,8 @@ class GetRecordsForConnectorContext implements Context
     {
         $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
 
-        for ($i = 0; $i < $numberOfRecords; $i++) {
-            $recordNumber = $i + 10; // To facilitate sorting
-            $recordCode = sprintf('%s_%d', $referenceEntityIdentifier, $recordNumber);
+        for ($i = 1; $i <= $numberOfRecords; $i++) {
+            $recordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
             $mainImageInfo = new FileInfo();
             $mainImageInfo
                 ->setOriginalFilename(sprintf('%s_image.jpg', $recordCode))
@@ -94,7 +93,7 @@ class GetRecordsForConnectorContext implements Context
             $record = new RecordForConnector(
                 RecordCode::fromString($recordCode),
                 LabelCollection::fromArray([
-                    'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $recordNumber)
+                    'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i)
                 ]),
                 Image::fromFileInfo($mainImageInfo),
                 [
@@ -102,7 +101,7 @@ class GetRecordsForConnectorContext implements Context
                         [
                             'locale' => 'en_US',
                             'channel' => null,
-                            'data' => sprintf('%s example %d', ucfirst($referenceEntityIdentifier), $recordNumber)
+                            'data' => sprintf('%s example %d', ucfirst($referenceEntityIdentifier), $i)
                         ]
                     ],
                     'country' => [
@@ -138,7 +137,7 @@ class GetRecordsForConnectorContext implements Context
         $client = $this->clientFactory->logIn('julia');
         $this->recordPages = [];
 
-        for ($page = 1; $page <= 3; $page++) {
+        for ($page = 1; $page <= 4; $page++) {
             $this->recordPages[$page] = $this->webClientHelper->requestFromFile(
                 $client,
                 self::REQUEST_CONTRACT_DIR . sprintf(
@@ -151,15 +150,11 @@ class GetRecordsForConnectorContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the ([\d]+) records of the ([\S]+) reference entity$/
+     * @Then /^the PIM returns the [\d]+ records of the ([\S]+) reference entity$/
      */
-    public function thePimReturnsTheRecordsOfTheReferenceEntity(
-        int $numberOfRecords,
-        string $referenceEntityIdentifier
-    ): void {
-        $pageMax = (int) ceil($numberOfRecords / $this->numberOfRecordsPerPage);
-
-        for ($page = 1; $page <= $pageMax; $page++) {
+    public function thePimReturnsTheRecordsOfTheReferenceEntity(string $referenceEntityIdentifier): void
+    {
+        for ($page = 1; $page <= 4; $page++) {
             Assert::keyExists($this->recordPages, $page, sprintf('The page %d has not been loaded', $page));
             $this->webClientHelper->assertJsonFromFile(
                 $this->recordPages[$page],
