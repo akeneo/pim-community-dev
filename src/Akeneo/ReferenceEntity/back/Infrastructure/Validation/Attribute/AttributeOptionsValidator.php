@@ -19,7 +19,13 @@ use Symfony\Component\Validator\Validation;
  */
 class AttributeOptionsValidator extends ConstraintValidator
 {
-    private const MAX_OPTIONS_COUNT = 100;
+    /** @var int */
+    private $optionsLimit;
+
+    public function __construct(int $optionsLimit)
+    {
+        $this->optionsLimit = $optionsLimit;
+    }
 
     public function validate($attributeOptions, Constraint $constraint)
     {
@@ -65,7 +71,7 @@ class AttributeOptionsValidator extends ConstraintValidator
             $attributeOptions,
             [
                 new Assert\Count([
-                    'max'        => self::MAX_OPTIONS_COUNT,
+                    'max'        => $this->optionsLimit,
                     'maxMessage' => AttributeOptions::MESSAGE_TOO_MANY_OPTIONS,
                     'min'        => 0,
                 ]),
