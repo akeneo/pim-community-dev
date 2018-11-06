@@ -42,4 +42,23 @@ class OptionsMappingFake implements OptionsMappingInterface
             json_decode(file_get_contents($filepath), true)
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function update(string $familyCode, string $franklinAttributeId, array $attributeOptionsMapping): void
+    {
+        $this->mappings[$familyCode][$franklinAttributeId] = $attributeOptionsMapping;
+    }
+
+    /**
+     * @param string $familyCode
+     * @param string $franklinAttributeId
+     *
+     * @return array|null
+     */
+    public function getMappingByFamilyAndFranklinAttributeId(string $familyCode, string $franklinAttributeId): ?array
+    {
+        return $this->mappings[$familyCode][$franklinAttributeId] ?? $this->mappings[$familyCode][$franklinAttributeId];
+    }
 }

@@ -39,6 +39,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\Inva
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
@@ -244,8 +245,18 @@ class PimAI implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAttributeOptionsMapping(WriteAttributeOptionsMapping $attributeOptionsMapping): void
-    {
+    public function saveAttributeOptionsMapping(
+        FamilyCode $familyCode,
+        FranklinAttributeId $franklinAttributeId,
+        WriteAttributeOptionsMapping $attributeOptionsMapping
+    ): void {
+        $attributeOptionsMappingNormalize = new AttributeOptionsMappingNormalizer();
+
+        $this->attributeOptionsMappingApi->update(
+            (string) $familyCode,
+            (string) $franklinAttributeId,
+            $attributeOptionsMappingNormalize->normalize($attributeOptionsMapping)
+        );
     }
 
     /**

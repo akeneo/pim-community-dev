@@ -13,12 +13,16 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -1054,5 +1058,270 @@ class EditAttributeContext implements Context
                 ReferenceEntityIdentifier::fromString($attribute['record_type'])
             ));
         }
+    }
+
+    /**
+     * @Given /^a reference entity with an option attribute with no available options$/
+     */
+    public function aReferenceEntityWithAnOptionAttributeWithNoAvailableOptions()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
+
+        $this->attributeRepository->create(
+            OptionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true)
+        ));
+    }
+
+    /**
+     * @Given /^a reference entity with an option attribute with some options$/
+     */
+    public function aReferenceEntityWithAnOptionAttributeWithSomeOptions()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
+
+        $optionAttribute = OptionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
+        ]);
+        $this->attributeRepository->create($optionAttribute);
+    }
+
+    /**
+     * @When /^the user adds the option \'([^\']*)\' with label \'([^\']*)\' for locale \'([^\']*)\' to this attribute$/
+     */
+    public function theUserAddsTheOptionWithLabelForLocaleToThisAttribute(string $optionCode, string $label, string $locale): void
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code' => $optionCode,
+                    'labels' => [ $locale => $label ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * @Then /^the option( collection)? attribute should have an option \'([^\']*)\' with label \'([^\']*)\' for the locale \'([^\']*)\'$/
+     */
+    public function theOptionAttributeShouldHaveAnOptionWithLabelForTheLocale($isCollection, $optionCode, $label, $locale)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertNotEmpty($attribute->normalize()['attribute_options']);
+        Assert::assertEquals([
+                [
+                    'code'   => $optionCode,
+                    'labels' => [$locale => $label],
+                ],
+            ],
+            $attribute->normalize()['attribute_options']
+        );
+    }
+
+    /**
+     * @Given /^the option attribute has (\d+) option$/
+     */
+    public function theOptionAttributeHasOption(int $optionsCount)
+    {
+        $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+
+        $this->constraintViolationsContext->assertThereIsNoViolations();
+        $attribute = $this->attributeRepository->getByIdentifier($identifier);
+        Assert::assertCount($optionsCount, $attribute->normalize()['attribute_options']);
+    }
+
+    /**
+     * @Given /^a reference entity with an option attribute$/
+     */
+    public function aReferenceEntityWithAnOptionAttribute()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
+
+        $optionAttribute = OptionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+        $this->attributeRepository->create($optionAttribute);
+    }
+
+    /**
+     * @When /^the user adds (\d+) options to this attribute$/
+     */
+    public function theUserAddsOptionsToThisAttribute(int $optionsCount)
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $tooManyOptions = [];
+        for ($i = 0; $i < $optionsCount; $i++) {
+            $tooManyOptions[] = [
+                'code' => (string) $i,
+                'labels' => []
+            ];
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => $tooManyOptions
+        ]);
+    }
+
+    /**
+     * @When /^the user adds the \'([^\']*)\' option twice$/
+     */
+    public function theUserAddsTheSameOptionTwice(string $duplicateOptionCode)
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $duplicates = [
+            [
+                'code'   => $duplicateOptionCode,
+                'labels' => [],
+            ],
+            [
+                'code'   => $duplicateOptionCode,
+                'labels' => [],
+            ],
+        ];
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => $duplicates
+        ]);
+    }
+
+    /**
+     * @When /^the user sets the \'([^\']*)\' option$/
+     */
+    public function theUserSetsTheOption($optionCode)
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code'   => json_decode($optionCode, true),
+                    'labels' => [],
+                ],
+            ]
+        ]);
+    }
+
+    /**
+     * @When /^the user sets an option with a code too long$/
+     */
+    public function theUserSetsAnOptionWithACodeTooLong()
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code'   => str_repeat('a', 256),
+                    'labels' => [],
+                ],
+            ]
+        ]);
+    }
+
+    /**
+     * @When /^the user sets an option with a label \'([^\']*)\'$/
+     */
+    public function theUserSetsAnOptionWithALabel($invalidLabel)
+    {
+        if (isset($this->attributeIdentifiers['dummy_identifier']['favorite_color'])) {
+            $identifier = $this->attributeIdentifiers['dummy_identifier']['favorite_color'];
+        } else {
+            $identifier = 'unknown';
+        }
+
+        $this->updateAttribute([
+            'identifier' => (string) $identifier,
+            'attribute_options' => [
+                [
+                    'code'   => 'option_code',
+                    'labels' => [ 'fr_FR' => json_decode($invalidLabel, true)],
+                ],
+            ]
+        ]);
+    }
+
+    /**
+     * @Given /^a reference entity with an option collection attribute with some options$/
+     */
+    public function aReferenceEntityWithAnOptionCollectionAttributeWithSomeOptions()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            $identifier,
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+        $optionAttribute->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray(['en_US' => 'Red'])),
+            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray(['en_US' => 'Green']))
+        ]);
+        $this->attributeRepository->create($optionAttribute);
     }
 }

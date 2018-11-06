@@ -25,4 +25,9 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(AttributeOptionsMapping::class);
     }
+
+    public function it_is_iterable(): void
+    {
+        $this->shouldImplement(\IteratorAggregate::class);
+    }
 }

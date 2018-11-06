@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -40,13 +45,30 @@ class AttributeOptionsMappingContext implements Context
     /** @var string */
     private $franklinAttributeId;
 
+    /** @var SaveAttributeOptionsMappingHandler */
+    private $saveAttributeOptionsMappingHandler;
+
+    /** @var OptionsMappingInterface */
+    private $optionsMappingApi;
+
+    /** @var array */
+    private $savedAttributeOptionsMapping;
+
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
+     * @param SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
+     * @param OptionsMappingInterface $optionsMappingApi
      */
     public function __construct(
-        GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
+        GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler,
+        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler,
+        OptionsMappingInterface $optionsMappingApi
     ) {
         $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
+        $this->saveAttributeOptionsMappingHandler = $saveAttributeOptionsMappingHandler;
+        $this->optionsMappingApi = $optionsMappingApi;
+
+        $this->savedAttributeOptionsMapping = [];
     }
 
     /**
@@ -71,6 +93,45 @@ class AttributeOptionsMappingContext implements Context
     }
 
     /**
+     * @When the Franklin :attrId options are mapped to the PIM :attrCode options for the family :family as follows:
+     *
+     * @param $attrId
+     * @param $attrCode
+     * @param $family
+     * @param TableNode $optionsMapping
+     */
+    public function theAttributeOptionsAreMappedAsFollows(
+        $attrId,
+        $attrCode,
+        $family,
+        TableNode $optionsMapping
+    ): void {
+        $attributeOptions = [];
+        foreach ($optionsMapping->getHash() as $option) {
+            $attributeOptions[$option['franklin_attribute_option_id']] = [
+                'franklinAttributeOptionCode' => [
+                    'label' => $option['franklin_attribute_option_label'],
+                ],
+                'catalogAttributeOptionCode' => $option['catalog_attribute_option_code'],
+                'status' => 'active' == $option['status'] ? 1 : 0,
+            ];
+        }
+
+        $command = new SaveAttributeOptionsMappingCommand(
+            new FamilyCode($family),
+            new AttributeCode($attrCode),
+            new FranklinAttributeId($attrId),
+            new AttributeOptions($attributeOptions)
+        );
+        $this->saveAttributeOptionsMappingHandler->handle($command);
+
+        $this->savedAttributeOptionsMapping = $this->optionsMappingApi->getMappingByFamilyAndFranklinAttributeId(
+            $family,
+            $attrCode
+        );
+    }
+
+    /**
      * @Then the retrieved attribute options mapping should be:
      */
     public function theRetrievedAttributeOptionsMappingShouldBe(TableNode $expectedMappingTable): void
@@ -89,6 +150,37 @@ class AttributeOptionsMappingContext implements Context
             Assert::eq($attributeOptionMapping->catalogAttributeCode(), $expectedRow['catalog_attribute_code']);
             $this->assertStatus($expectedRow['status'], $attributeOptionMapping->status());
         }
+    }
+
+    /**
+     * @Then the attribute options mapping should be:
+     *
+     * @param TableNode $optionsMapping
+     */
+    public function theAttributeOptionsMappingShouldBe(TableNode $optionsMapping): void
+    {
+        $expectedSavedAttributeOptions = [];
+        foreach ($optionsMapping->getHash() as $option) {
+            $to = null;
+            if (!empty($option['catalog_attribute_option_code'])) {
+                $to = [
+                    'id' => $option['catalog_attribute_option_code'],
+                    'label' => null,
+                ];
+            }
+
+            $expectedSavedAttributeOptions[] = [
+                'from' => [
+                    'id' => $option['franklin_attribute_option_id'],
+                    'label' => [
+                        'en_US' => $option['franklin_attribute_option_label'],
+                    ],
+                ],
+                'to' => $to,
+            ];
+        }
+
+        Assert::eq($expectedSavedAttributeOptions, $this->savedAttributeOptionsMapping);
     }
 
     /**
