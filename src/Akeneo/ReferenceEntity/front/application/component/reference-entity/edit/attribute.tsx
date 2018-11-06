@@ -5,6 +5,7 @@ import {attributeCreationStart} from 'akeneoreferenceentity/domain/event/attribu
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
+import ManageOptionsView from 'akeneoreferenceentity/application/component/attribute/edit/option';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
@@ -18,6 +19,7 @@ import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/
 import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
 import Key from 'akeneoreferenceentity/tools/key';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
+import {EditOptionState} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
 
 const securityContext = require('pim/security-context');
 
@@ -31,6 +33,7 @@ interface StateProps {
   };
   referenceEntity: ReferenceEntity;
   createAttribute: CreateState;
+  options: EditOptionState;
   attributes: NormalizedAttribute[];
   firstLoading: boolean;
 }
@@ -265,6 +268,7 @@ class AttributesView extends React.Component<CreateProps> {
             </React.Fragment>
           )}
           {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
+          {this.props.options.isActive ? <ManageOptionsView /> : null}
         </div>
       </React.Fragment>
     );
@@ -286,6 +290,7 @@ export default connect(
       },
       referenceEntity,
       createAttribute: state.createAttribute,
+      options: state.options,
       firstLoading: null === state.attributes.attributes,
       attributes: null !== state.attributes.attributes ? state.attributes.attributes : [],
     };

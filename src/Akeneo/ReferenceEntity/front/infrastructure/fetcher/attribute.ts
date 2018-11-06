@@ -9,10 +9,6 @@ import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute'
 const routing = require('routing');
 
 export class AttributeFetcherImplementation implements AttributeFetcher {
-  constructor(private hydrator: (backendAttribute: any) => Attribute) {
-    Object.freeze(this);
-  }
-
   async fetchAll(referenceEntityIdentifier: ReferenceEntityIdentifier): Promise<Attribute[]> {
     const backendAttributes = await getJSON(
       routing.generate('akeneo_reference_entities_attribute_index_rest', {
@@ -20,8 +16,8 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
       })
     ).catch(errorHandler);
 
-    return hydrateAll<Attribute>(this.hydrator)(backendAttributes);
+    return hydrateAll<Attribute>(hydrator)(backendAttributes);
   }
 }
 
-export default new AttributeFetcherImplementation(hydrator);
+export default new AttributeFetcherImplementation();

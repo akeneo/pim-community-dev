@@ -6,7 +6,12 @@ import ReferenceEntityView from 'akeneoreferenceentity/application/component/ref
 import createStore from 'akeneoreferenceentity/infrastructure/store';
 import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/reference-entity/index';
 import {updateReferenceEntityResults} from 'akeneoreferenceentity/application/action/reference-entity/search';
-import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
+import {
+  defaultCatalogLocaleChanged,
+  catalogLocaleChanged,
+  catalogChannelChanged,
+  uiLocaleChanged,
+} from 'akeneoreferenceentity/domain/event/user';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -21,6 +26,7 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
 class ReferenceEntityListController extends BaseController {
   renderRoute() {
     const store = createStore(true)(referenceEntityReducer);
+    store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
     store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));

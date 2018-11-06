@@ -19,9 +19,13 @@ export interface NormalizedOptionAttribute extends NormalizedAttribute {
 
 export type NormalizedOptionAdditionalProperty = NormalizedOption;
 export type OptionAdditionalProperty = Option;
-
-export interface OptionAttribute extends Attribute {
+export interface AttributeWithOptions {
   options: Option[];
+  getOptions(): Option[];
+  setOptions(options: Option[]): AttributeWithOptions;
+}
+
+export interface OptionAttribute extends Attribute, AttributeWithOptions {
   normalize(): NormalizedOptionAttribute;
   hasOption(optionCode: OptionCode): boolean;
 }
@@ -34,8 +38,8 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
     referenceEntityIdentifier: ReferenceEntityIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
-    valuePerLocale: boolean,
     valuePerChannel: boolean,
+    valuePerLocale: boolean,
     order: number,
     is_required: boolean,
     readonly options: Option[]
@@ -67,8 +71,8 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       createReferenceEntityIdentifier(normalizedOptionAttribute.reference_entity_identifier),
       createCode(normalizedOptionAttribute.code),
       createLabelCollection(normalizedOptionAttribute.labels),
-      normalizedOptionAttribute.value_per_locale,
       normalizedOptionAttribute.value_per_channel,
+      normalizedOptionAttribute.value_per_locale,
       normalizedOptionAttribute.order,
       normalizedOptionAttribute.is_required,
       normalizedOptionAttribute.options.map(Option.createFromNormalized)
@@ -85,6 +89,24 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       type: 'option',
       options: this.options.map((option: Option) => option.normalize()),
     };
+  }
+
+  public setOptions(options: Option[]) {
+    return new ConcreteOptionAttribute(
+      this.identifier,
+      this.referenceEntityIdentifier,
+      this.code,
+      this.labelCollection,
+      this.valuePerChannel,
+      this.valuePerLocale,
+      this.order,
+      this.isRequired,
+      options
+    );
+  }
+
+  public getOptions(): Option[] {
+    return this.options;
   }
 }
 

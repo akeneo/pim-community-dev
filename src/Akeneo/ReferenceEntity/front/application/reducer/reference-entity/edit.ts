@@ -10,6 +10,10 @@ import createAttribute, {
 import structure, {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
 import attributes, {ListState} from 'akeneoreferenceentity/application/reducer/attribute/list';
 import attribute, {EditState as EditAttributeState} from 'akeneoreferenceentity/application/reducer/attribute/edit';
+import {
+  editOptionsReducer as options,
+  EditOptionState,
+} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
 import confirmDelete, {ConfirmDeleteState} from 'akeneoreferenceentity/application/reducer/confirmDelete';
 
 export interface EditState {
@@ -20,6 +24,7 @@ export interface EditState {
   createAttribute: CreateAttributeState;
   attributes: ListState;
   attribute: EditAttributeState;
+  options: EditOptionState;
   form: EditionFormState;
   recordCount: number;
   structure: StructureState;
@@ -35,6 +40,7 @@ export default {
   attributes,
   attribute,
   structure,
+  options,
   form,
   recordCount: (state: number = 0, action: {type: string; recordCount: number}) => {
     return 'REFERENCE_ENTITY_EDITION_RECORD_COUNT_UPDATED' === action.type ? action.recordCount : state;

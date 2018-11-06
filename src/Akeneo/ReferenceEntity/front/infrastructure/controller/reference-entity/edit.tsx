@@ -14,7 +14,12 @@ import {
   referenceEntityEditionReceived,
   referenceEntityRecordCountUpdated,
 } from 'akeneoreferenceentity/domain/event/reference-entity/edit';
-import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
+import {
+  defaultCatalogLocaleChanged,
+  catalogLocaleChanged,
+  catalogChannelChanged,
+  uiLocaleChanged,
+} from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
 import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
@@ -52,6 +57,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateActivatedLocales() as any);
         this.store.dispatch(referenceEntityEditionReceived(referenceEntityResult.referenceEntity.normalize()));
         this.store.dispatch(referenceEntityRecordCountUpdated(referenceEntityResult.recordCount));
+        this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
@@ -119,7 +125,7 @@ class ReferenceEntityEditController extends BaseController {
 
     const state = this.store.getState();
 
-    return state.form.state.isDirty || state.attribute.isDirty;
+    return state.form.state.isDirty || state.attribute.isDirty || state.options.isDirty;
   }
 }
 

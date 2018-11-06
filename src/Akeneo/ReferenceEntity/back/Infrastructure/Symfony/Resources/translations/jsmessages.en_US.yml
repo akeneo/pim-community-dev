@@ -148,8 +148,8 @@ pim_reference_entity:
             image: Image
             record: Reference entity simple link
             record_collection: Reference entity multiple link
-            option: Option
-            option_collection: Option collection
+            option: Single option
+            option_collection: Multiple options
         is_required: required for completeness
         no_data:
             title: There are no custom attributes for {{ entityLabel }}
@@ -189,6 +189,14 @@ pim_reference_entity:
                 allowed_extensions: Allowed extensions
                 validation_rule: Validation rule
                 regular_expression: Regular expression
+                manage_options:
+                    confirmation:
+                        discard_changes: You will lose changes made to the list of options if you leave the page
+                    quick_edit:
+                        label: Manage options
+                    option:
+                        label:
+                            placeholder: Write you new option label here
                 options:
                     validation_rule:
                         none: None
@@ -215,6 +223,9 @@ pim_reference_entity:
         options:
             title: Manage options
             no_value: Click here to select an option.
+            sub_title: Reference Entities
+            helper:
+                title: Label translations
     modal:
         delete:
             subtitle: Confirm deletion

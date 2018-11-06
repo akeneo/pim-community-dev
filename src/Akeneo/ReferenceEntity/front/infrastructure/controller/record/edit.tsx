@@ -10,7 +10,12 @@ import createStore from 'akeneoreferenceentity/infrastructure/store';
 import recordReducer from 'akeneoreferenceentity/application/reducer/record/edit';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import {recordEditionReceived} from 'akeneoreferenceentity/domain/event/record/edit';
-import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
+import {
+  defaultCatalogLocaleChanged,
+  catalogLocaleChanged,
+  catalogChannelChanged,
+  uiLocaleChanged,
+} from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
@@ -42,6 +47,7 @@ class RecordEditController extends BaseController {
       .then((record: Record) => {
         this.store = createStore(true)(recordReducer);
         this.store.dispatch(recordEditionReceived(record));
+        this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));

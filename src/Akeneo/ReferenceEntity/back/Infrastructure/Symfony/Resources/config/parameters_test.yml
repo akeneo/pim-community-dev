@@ -1,0 +1,11 @@
+parameters:
+    # Maximum number of reference entities
+    reference_entity_limit: 100
+    # Maximum number of attributes per reference entities
+    reference_entity_maximum_attribute: 100
+    # Maximum number of records for single reference entity
+    reference_entity_record_limit_per_reference_entity: 1000000
+    # Maximum number of option for a single list attribute of a reference entity
+    reference_entity_option_limit_per_list_attribute: 1
+    # Number of records per page for the connector
+    reference_entity_records_for_connector_limit_per_page: 100

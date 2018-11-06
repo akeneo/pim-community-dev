@@ -122,7 +122,10 @@ class Edit extends React.Component<EditProps> {
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
-            <header className="AknSubsection-title AknSubsection-title--sticky  AknSubsection-title--light">
+            <header
+              style={{margin: '0 20px 25px 20px'}}
+              className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light"
+            >
               {__('pim_reference_entity.attribute.edit.title', {code: this.props.attribute.getCode().stringValue()})}
             </header>
             <div className="AknFormContainer AknFormContainer--expanded AknFormContainer--withSmallPadding">

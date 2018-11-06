@@ -11,7 +11,11 @@ export default (
     type,
     attributes,
     deletedAttributeIdentifier,
-  }: {type: string; attributes: NormalizedAttribute[]; deletedAttributeIdentifier: NormalizedAttributeIdentifier}
+  }: {
+    type: string;
+    attributes: NormalizedAttribute[];
+    deletedAttributeIdentifier: NormalizedAttributeIdentifier;
+  }
 ) => {
   switch (type) {
     case 'ATTRIBUTE_LIST_UPDATED':

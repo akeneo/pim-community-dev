@@ -18,6 +18,7 @@ describe('akeneo > reference entity > domain > model --- label collection', () =
     const rawLabels = {en_US: 'michel'};
     expect(createLabelCollection(rawLabels).hasLabel('en_US')).toBe(true);
     expect(createLabelCollection(rawLabels).hasLabel('fr_FR')).toBe(false);
+    expect(createLabelCollection({123: 'michel'}).hasLabel('fr_FR')).toBe(false);
   });
 
   test('I can get a label for the given locale', () => {

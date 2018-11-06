@@ -53,7 +53,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createFavoriteColorAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createColorsAttribute());
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_email_portrait.json');
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/designer.json');
     }
 
     /**

@@ -23,6 +23,10 @@ export class Option implements NormalizableAdditionalProperty {
     return new Option(optionCode, labels);
   }
 
+  public static createEmpty() {
+    return new Option(OptionCode.create(''), createLabelCollection({}));
+  }
+
   public getLabel(locale: string, defaultValue: boolean = true) {
     if (!this.labels.hasLabel(locale)) {
       return defaultValue ? `[${this.code.stringValue()}]` : '';
