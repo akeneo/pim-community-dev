@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
+import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
-import * as $ from "jquery";
 
 const FetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');

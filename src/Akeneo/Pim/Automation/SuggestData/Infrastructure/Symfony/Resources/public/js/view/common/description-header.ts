@@ -1,4 +1,4 @@
-import {EventsHash} from "backbone";
+import {EventsHash} from 'backbone';
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
