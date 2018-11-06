@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\PublishedProduct;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\PublishedProduct;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 

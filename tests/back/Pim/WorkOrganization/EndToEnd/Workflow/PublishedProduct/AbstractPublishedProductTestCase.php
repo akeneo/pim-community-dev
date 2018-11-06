@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\PublishedProduct;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\PublishedProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;

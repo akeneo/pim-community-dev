@@ -1,7 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Asset\Component;
 
+use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
+use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Model\FileMetadataInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -10,20 +21,11 @@ use Akeneo\Tool\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
-use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
-use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
-use Akeneo\Asset\Component\Model\FileMetadataInterface;
-use Akeneo\Asset\Component\Model\ReferenceInterface;
-use Akeneo\Asset\Component\Model\VariationInterface;
-use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior
 {
-    const STORAGE_FS = 'my_storage';
+    public const STORAGE_FS = 'my_storage';
 
     function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
@@ -142,5 +144,33 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $this->shouldThrow(
             new \LogicException('The source file "path/to/my_original_file.txt" is not present on the filesystem "my_storage".')
         )->during('generate', [$variation]);
+    }
+
+    function it_does_not_generate_variation_file_if_no_transformation_has_been_applied(
+        $fileFetcher,
+        $filesystem,
+        $channelConfiguration,
+        $fileTransformer,
+        $fileStorer,
+        $metadataSaver,
+        $variation,
+        $variationSaver,
+        \SplFileInfo $inputFileInfo
+    ) {
+        $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
+        $fileFetcher->fetch($filesystem, 'path/to/my_original_file.txt')->willReturn($inputFileInfo);
+
+        $fileTransformer->transform(
+            $inputFileInfo,
+            ['t1', 't2'],
+            'my_original_file--ecommerce.txt'
+        )->willReturn(null);
+
+        $fileStorer->store(Argument::cetera())->shouldNotBeCalled();
+        $metadataSaver->save(Argument::cetera())->shouldNotBeCalled();
+        $variation->setFileInfo(Argument::cetera())->shouldNotBeCalled();
+        $variationSaver->save(Argument::cetera())->shouldNotBeCalled();
+
+        $this->generate($variation);
     }
 }

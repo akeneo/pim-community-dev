@@ -50,16 +50,3 @@ Feature: Compare fields and only see what I want
     Then I should not see the comparison field "Manufacturer"
     And I should see the comparison field "Name"
     And I should see the comparison field "Description"
-
-  Scenario: See ocalizable and scopable fields if I compare the working copy with a draft
-    Given I am logged in as "Julia"
-    And I edit the "tshirt" product
-    And I open the comparison panel
-    And I switch the comparison source to "draft_of_Mary"
-    Then I should see the comparison field "Manufacturer"
-    And I should not see the comparison field "SKU"
-    And I should not see the comparison field "Name"
-    Given I switch the comparison source to "draft_of_Sandra"
-    Then I should not see the comparison field "Manufacturer"
-    And I should see the comparison field "SKU"
-    And I should not see the comparison field "Name"

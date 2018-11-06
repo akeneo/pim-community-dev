@@ -1,5 +1,17 @@
 # 2.3.x
 
+# 2.3.14 (2018-11-05)
+
+## Bug fixes
+
+- PIM-7764: Allows on PAM scale transformations from 0% (included) to 100% (included).
+
+# 2.3.13 (2018-10-25)
+
+## Bug fixes
+
+- PIM-7756: Don't generate asset variation if no transformation supports the reference file type for a channel
+
 # 2.3.12 (2018-10-17)
 
 ## Bug fixes

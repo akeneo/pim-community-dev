@@ -5,7 +5,7 @@ parameters:
     pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class:    Akeneo\Pim\Permission\Bundle\MassEdit\Processor\AddProductValueWithPermissionProcessor
     pimee_enrich.connector.processor.mass_edit.product.update_value_with_permissions.class: Akeneo\Pim\Permission\Bundle\MassEdit\Processor\UpdateProductValueWithPermissionProcessor
     pimee_enrich.connector.processor.mass_edit.product.remove_value_with_permissions.class: Akeneo\Pim\Permission\Bundle\MassEdit\Processor\RemoveProductValueWithPermissionProcessor
-    pimee_security.connector.writer.mass_edit.product_and_product_model.class: Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter
+    pimee_security.connector.writer.mass_edit.product_and_product_model.class:              Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter
 
 services:
     # overriden processor from CE
@@ -70,5 +70,5 @@ services:
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
-            - '%pim_catalog.compute_product_models_descendants.job_name%'
             - '@security.authorization_checker'
+            - '%pim_catalog.compute_product_models_descendants.job_name%'
