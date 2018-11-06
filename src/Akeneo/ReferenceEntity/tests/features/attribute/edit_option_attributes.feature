@@ -51,3 +51,8 @@ Feature: Edit the options of a list attribute
       | null                 | invalid label for locale code "fr_FR": This value should not be null., "" given          |
       | 255                  | invalid label for locale code "fr_FR": This value should be of type string., "255" given |
 
+  @acceptance-front
+  Scenario: Create a simple valid image attribute
+    When the user creates a valid image attribute
+    And the user saves the valid image attribute
+    Then the user should not see any validation error
