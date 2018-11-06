@@ -50,3 +50,4 @@ Feature: Edit the options of a list attribute
       | invalid_option_label | message                                                                                  |
       | null                 | invalid label for locale code "fr_FR": This value should not be null., "" given          |
       | 255                  | invalid label for locale code "fr_FR": This value should be of type string., "255" given |
+
