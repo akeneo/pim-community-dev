@@ -148,6 +148,8 @@ pim_reference_entity:
             image: Image
             record: Reference entity simple link
             record_collection: Reference entity multiple link
+            option: Option
+            option_collection: Option collection
         is_required: required for completeness
         no_data:
             title: There are no custom attributes for {{ entityLabel }}
