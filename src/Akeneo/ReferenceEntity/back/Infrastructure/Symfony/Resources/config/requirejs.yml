@@ -46,6 +46,16 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
                 reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
                 view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
+            option:
+                icon: bundles/pimui/images/attribute/icon-select.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+            option_collection:
+                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option-collection'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
 
         akeneoreferenceentity/application/configuration/sidebar:
             akeneo_reference_entities_reference_entity_edit:

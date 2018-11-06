@@ -41,7 +41,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       referenceEntityIdentifier,
       code,
       labelCollection,
-      'option',
+      'option_collection',
       valuePerLocale,
       valuePerChannel,
       order,

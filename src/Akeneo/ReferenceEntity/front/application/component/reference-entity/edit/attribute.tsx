@@ -6,9 +6,7 @@ import {EditState} from 'akeneoreferenceentity/application/reducer/reference-ent
 import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {denormalizeReferenceEntity,} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
@@ -17,6 +15,8 @@ import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
 import Key from 'akeneoreferenceentity/tools/key';
+import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
+
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -211,12 +211,14 @@ class AttributesView extends React.Component<CreateProps> {
                 ) : (
                   <React.Fragment>
                     {this.props.attributes.map((attribute: NormalizedAttribute) => (
-                      <AttributeView
-                        key={attribute.identifier}
-                        attribute={attribute}
-                        onAttributeEdit={this.props.events.onAttributeEdit}
-                        locale={this.props.context.locale}
-                      />
+                      <ErrorBoundary errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_list')}>
+                        <AttributeView
+                          key={attribute.identifier}
+                          attribute={attribute}
+                          onAttributeEdit={this.props.events.onAttributeEdit}
+                          locale={this.props.context.locale}
+                        />
+                      </ErrorBoundary>
                     ))}
                     <button
                       className="AknButton AknButton--action"

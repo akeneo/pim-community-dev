@@ -7,10 +7,10 @@ import {getErrorsView} from 'akeneoreferenceentity/application/component/app/val
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import {
-  attributeEditionLabelUpdated,
-  attributeEditionIsRequiredUpdated,
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
+  attributeEditionIsRequiredUpdated,
+  attributeEditionLabelUpdated,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
 import {saveAttribute} from 'akeneoreferenceentity/application/action/attribute/edit';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
@@ -18,12 +18,13 @@ import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/t
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
 import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
+import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
 interface StateProps {
   context: {
@@ -206,13 +207,15 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
-              {getAdditionalProperty(
-                this.props.attribute,
-                this.props.events.onAdditionalPropertyUpdated,
-                this.props.events.onSubmit,
-                this.props.errors,
-                this.props.context.locale
-              )}
+              <ErrorBoundary errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_edit')}>
+                {getAdditionalProperty(
+                  this.props.attribute,
+                  this.props.events.onAdditionalPropertyUpdated,
+                  this.props.events.onSubmit,
+                  this.props.errors,
+                  this.props.context.locale
+                )}
+              </ErrorBoundary>
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
               <span

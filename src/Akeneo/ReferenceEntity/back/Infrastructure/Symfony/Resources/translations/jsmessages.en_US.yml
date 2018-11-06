@@ -36,6 +36,10 @@ pim_reference_entity:
             image: Image
         attribute:
             title: Record attributes
+            attribute:
+                error:
+                    render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
+                    render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
         module:
             delete:
                 button: Delete entity

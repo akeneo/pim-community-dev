@@ -12,7 +12,7 @@ class EditOptionsCommandFactory implements EditAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {
-        return array_key_exists('attribute_options', $normalizedCommand)
+        return array_key_exists('options', $normalizedCommand)
             && array_key_exists('identifier', $normalizedCommand);
     }
 
@@ -23,7 +23,7 @@ class EditOptionsCommandFactory implements EditAttributeCommandFactoryInterface
         }
         $command = new EditOptionsCommand();
         $command->identifier = $normalizedCommand['identifier'];
-        $command->options = $normalizedCommand['attribute_options'];
+        $command->options = $normalizedCommand['options'];
 
         return $command;
     }
