@@ -221,6 +221,7 @@ pim_enrich:
             property:
                 type:
                     akeneo_reference_entity_collection: Reference entity collection
+                    akeneo_reference_entity: Reference entity
                 section:
                     type_specific: Type specific parameters
                 reference_entity:

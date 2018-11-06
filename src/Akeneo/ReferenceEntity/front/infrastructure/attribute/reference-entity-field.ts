@@ -13,7 +13,7 @@ const template = _.template(require('pim/template/form/common/fields/select'));
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityCollectionField extends (BaseField as {new (config: any): any}) {
+class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
@@ -81,4 +81,4 @@ class ReferenceEntityCollectionField extends (BaseField as {new (config: any): a
   }
 }
 
-export = ReferenceEntityCollectionField;
+export = ReferenceEntityField;

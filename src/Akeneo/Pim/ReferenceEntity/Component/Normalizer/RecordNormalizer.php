@@ -24,9 +24,14 @@ class RecordNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($record, $format = null, array $context = []): string
+    public function normalize($record, $format = null, array $context = [])
     {
-        return $record->getCode()->__toString();
+        $code = $record->getCode()->__toString();
+        if (key_exists('field_name', $context)) {
+            return [$context['field_name'] => $code];
+        }
+
+        return $code;
     }
 
     /**

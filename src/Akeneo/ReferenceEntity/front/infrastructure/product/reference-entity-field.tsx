@@ -12,30 +12,32 @@ const Field = require('pim/field');
 const UserContext = require('pim/user-context');
 
 /**
- * Reference entity collection field for attribute form
+ * Reference entity field for attribute form
  *
- * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityCollectionField extends (Field as { new(config: any): any }) {
+class ReferenceEntityField extends (Field as { new(config: any): any }) {
   constructor(config: any) {
     super(config);
 
-    this.fieldType = 'akeneo-reference-entity-collection-field';
+    this.fieldType = 'akeneo-reference-entity-field';
   }
 
   renderInput(templateContext: any) {
     const container = document.createElement('div');
+    const valueData = (null === templateContext.value.data) ? '' : templateContext.value.data;
+
     ReactDOM.render((<RecordSelector
       referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
-      value={templateContext.value.data.map((recordCode: string) => createRecordCode(recordCode))}
+      value={createRecordCode(valueData)}
       locale={LocaleReference.create(UserContext.get('catalogLocale'))}
       channel={ChannelReference.create(UserContext.get('catalogScope'))}
-      multiple={true}
+      multiple={false}
       placeholder={__('pim_reference_entity.record.selector.no_value')}
-      onChange={(recordCodes: RecordCode[]) => {
+      onChange={(recordCode: RecordCode) => {
         this.errors = [];
-        this.setCurrentValue(recordCodes.map((recordCode: RecordCode) => recordCode.stringValue()));
+        this.setCurrentValue(recordCode.stringValue());
         this.render();
       }}
     />), container);
@@ -45,8 +47,8 @@ class ReferenceEntityCollectionField extends (Field as { new(config: any): any }
   getFieldValue(field: any) {
     const value = $(field).val();
 
-    return null === value ? [] : value;
+    return null === value ? '' : value;
   }
 }
 
-module.exports = ReferenceEntityCollectionField;
+module.exports = ReferenceEntityField;

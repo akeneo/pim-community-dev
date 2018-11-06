@@ -16,12 +16,20 @@ class RecordNormalizerSpec extends ObjectBehavior {
         $this->shouldHaveType(RecordNormalizer::class);
     }
 
-    function it_normalize_a_record(Record $starck, RecordCode $starckCode)
+    function it_normalizes_a_record(Record $starck, RecordCode $starckCode)
     {
         $starck->getCode()->willReturn($starckCode);
         $starckCode->__toString()->willReturn('starck');
 
         $this->normalize($starck, 'standard')->shouldReturn('starck');
+    }
+
+    function it_normalizes_a_record_with_the_field_name(Record $starck, RecordCode $starckCode)
+    {
+        $starck->getCode()->willReturn($starckCode);
+        $starckCode->__toString()->willReturn('starck');
+
+        $this->normalize($starck, 'standard', ['field_name' => 'designer'])->shouldReturn(['designer' => 'starck']);
     }
 
     function it_supports_a_record(Record $starck)

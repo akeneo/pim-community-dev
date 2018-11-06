@@ -12,17 +12,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\ReferenceEntity\Component\Provider;
 
-use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 
 /**
- * Field provider for reference entity collection
+ * Field provider for reference entity
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityCollectionProvider implements FieldProviderInterface, EmptyValueProviderInterface
+class ReferenceEntityProvider implements FieldProviderInterface, EmptyValueProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -37,7 +38,7 @@ class ReferenceEntityCollectionProvider implements FieldProviderInterface, Empty
      */
     public function getField($attribute): string
     {
-        return 'akeneo-reference-entity-collection-field';
+        return 'akeneo-reference-entity-field';
     }
 
     /**
@@ -45,7 +46,6 @@ class ReferenceEntityCollectionProvider implements FieldProviderInterface, Empty
      */
     public function supports($element): bool
     {
-        return $element instanceof AttributeInterface &&
-            ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION === $element->getType();
+        return $element instanceof AttributeInterface && ReferenceEntityType::REFERENCE_ENTITY === $element->getType();
     }
 }
