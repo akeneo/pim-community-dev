@@ -20,7 +20,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
@@ -52,6 +51,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createFavoriteColorAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createColorsAttribute());
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_email_portrait.json');
     }
 
@@ -62,7 +63,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createFavoriteColorAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createColorsAttribute());
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_portrait.json');
     }
 
@@ -164,5 +168,73 @@ class IndexActionTest extends ControllerIntegrationTestCase
         ];
 
         return $portraitAttribute;
+    }
+
+    private function createFavoriteColorAttribute(): AttributeDetails
+    {
+        $optionAttribute = new AttributeDetails();
+        $optionAttribute->identifier = sprintf('favorite_color_designer_%s', md5('fingerprint'));
+        $optionAttribute->referenceEntityIdentifier = 'designer';
+        $optionAttribute->type = 'option';
+        $optionAttribute->code = 'favorite_color';
+        $optionAttribute->labels = ['en_US' => 'Favorite color'];
+        $optionAttribute->order = 2;
+        $optionAttribute->isRequired = true;
+        $optionAttribute->valuePerChannel = true;
+        $optionAttribute->valuePerLocale = true;
+        $optionAttribute->additionalProperties = [
+            'options' => [
+                [
+                    'code'   => 'red',
+                    'labels' => [
+                        'en_US' => 'Red',
+                        'fr_FR' => 'Rouge',
+                    ],
+                ],
+                [
+                    'code'   => 'green',
+                    'labels' => [
+                        'en_US' => 'Green',
+                        'fr_FR' => 'Vert',
+                    ],
+                ],
+            ],
+        ];
+
+        return $optionAttribute;
+    }
+
+    private function createColorsAttribute(): AttributeDetails
+    {
+        $optionCollectionAttribute = new AttributeDetails();
+        $optionCollectionAttribute->identifier = sprintf('colors_designer_%s', md5('fingerprint'));
+        $optionCollectionAttribute->referenceEntityIdentifier = 'designer';
+        $optionCollectionAttribute->type = 'option_collection';
+        $optionCollectionAttribute->code = 'colors';
+        $optionCollectionAttribute->labels = ['en_US' => 'Colors'];
+        $optionCollectionAttribute->order = 3;
+        $optionCollectionAttribute->isRequired = true;
+        $optionCollectionAttribute->valuePerChannel = true;
+        $optionCollectionAttribute->valuePerLocale = true;
+        $optionCollectionAttribute->additionalProperties = [
+            'options' => [
+                [
+                    'code'   => 'red',
+                    'labels' => [
+                        'en_US' => 'Red',
+                        'fr_FR' => 'Rouge',
+                    ],
+                ],
+                [
+                    'code'   => 'blue',
+                    'labels' => [
+                        'en_US' => 'Blue',
+                        'fr_FR' => 'Bleu',
+                    ],
+                ],
+            ],
+        ];
+
+        return $optionCollectionAttribute;
     }
 }

@@ -15,7 +15,7 @@ class EditOptionsCommandFactorySpec extends ObjectBehavior
 
     function it_only_supports_attribute_option_edits()
     {
-        $this->supports(['identifier' => ['some_identifier'], 'attribute_options' => 'some_options'])->shouldReturn(true);
+        $this->supports(['identifier' => ['some_identifier'], 'options' => 'some_options'])->shouldReturn(true);
         $this->supports(['dummy' => 10])->shouldReturn(false);
     }
 
@@ -26,7 +26,7 @@ class EditOptionsCommandFactorySpec extends ObjectBehavior
                 'identifier'                 => 'favorite_color',
                 'reference_entity_identifier' => 'designer',
             ],
-            'attribute_options' => ['some_options'],
+            'options' => ['some_options'],
         ]);
         $command->shouldBeAnInstanceOf(EditOptionsCommand::class);
         $command->identifier->shouldBeEqualTo([
