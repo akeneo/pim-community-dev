@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.15 (2018-11-06)
+
 ## Bug fixes
 
 - PIM-7765: Replace `JSON_ARRAYAGG` by `GROUP_CONCAT`
