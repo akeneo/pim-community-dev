@@ -1,10 +1,9 @@
 pim_catalog_volume:
-    link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
-    product_values: "You have <span class=\"AknDescriptionHeader-title--highlight\">{{values}}</span> product values in your PIM! On average, it's <span class=\"AknDescriptionHeader-title--highlight\">{{average}}</span> product values per product! 💪"
-    product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="#" class="AknDescriptionHeader-link">here</a>'
+    product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+    product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
     section:
         product_values:
-            hint: Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{}}" target="_blank">browse this article</a>.
+            hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
             title: Axes that leverage the number of product values
         catalog_structure:
             hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
@@ -28,3 +27,5 @@ pim_catalog_volume:
         count_variant_products: Variant products
         count_product_models: Product models
         warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+    mean: 'Mean:'
+    max: 'Max:'

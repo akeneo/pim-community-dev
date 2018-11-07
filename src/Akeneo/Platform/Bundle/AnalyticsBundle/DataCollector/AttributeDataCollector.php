@@ -43,15 +43,20 @@ class AttributeDataCollector implements DataCollectorInterface
     /** @var AverageMaxQuery */
     private $localizableAndScopableAttributePerFamilyAverageMaxQuery;
 
+    /** @var AverageMaxQuery */
+    private $attributePerFamilyAverageMaxQuery;
+
     /**
-     * @param CountQuery      $attributeCountQuery
-     * @param CountQuery      $localizableAttributeCountQuery
-     * @param CountQuery      $scopableAttributeCountQuery
-     * @param CountQuery      $localizableAndScopableAttributeCountQuery
-     * @param CountQuery      $useableAsGridFilterAttributeCountQuery
-     * @param AverageMaxQuery $localizableAttributePerFamilyAverageMaxQuery
-     * @param AverageMaxQuery $scopableAttributePerFamilyAverageMaxQuery
-     * @param AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery
+     * @param CountQuery        $attributeCountQuery
+     * @param CountQuery        $localizableAttributeCountQuery
+     * @param CountQuery        $scopableAttributeCountQuery
+     * @param CountQuery        $localizableAndScopableAttributeCountQuery
+     * @param CountQuery        $useableAsGridFilterAttributeCountQuery
+     * @param AverageMaxQuery   $localizableAttributePerFamilyAverageMaxQuery
+     * @param AverageMaxQuery   $scopableAttributePerFamilyAverageMaxQuery
+     * @param AverageMaxQuery   $localizableAndScopableAttributePerFamilyAverageMaxQuery
+     * @param AverageMaxQuery   $attributePerFamilyAverageMaxQuery
+     *
      */
     public function __construct(
         CountQuery $attributeCountQuery,
@@ -61,7 +66,8 @@ class AttributeDataCollector implements DataCollectorInterface
         CountQuery $useableAsGridFilterAttributeCountQuery,
         AverageMaxQuery $localizableAttributePerFamilyAverageMaxQuery,
         AverageMaxQuery $scopableAttributePerFamilyAverageMaxQuery,
-        AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery
+        AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery,
+        AverageMaxQuery $attributePerFamilyAverageMaxQuery
     ) {
         $this->attributeCountQuery = $attributeCountQuery;
         $this->localizableAttributeCountQuery = $localizableAttributeCountQuery;
@@ -72,6 +78,7 @@ class AttributeDataCollector implements DataCollectorInterface
         $this->localizableAttributePerFamilyAverageMaxQuery = $localizableAttributePerFamilyAverageMaxQuery;
         $this->scopableAttributePerFamilyAverageMaxQuery = $scopableAttributePerFamilyAverageMaxQuery;
         $this->localizableAndScopableAttributePerFamilyAverageMaxQuery = $localizableAndScopableAttributePerFamilyAverageMaxQuery;
+        $this->attributePerFamilyAverageMaxQuery = $attributePerFamilyAverageMaxQuery;
     }
 
     /**
@@ -88,6 +95,7 @@ class AttributeDataCollector implements DataCollectorInterface
             'avg_percentage_scopable_attributes_per_family' => $this->scopableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
             'avg_percentage_localizable_attributes_per_family' => $this->localizableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
             'avg_percentage_scopable_localizable_attributes_per_family' => $this->localizableAndScopableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
+            'avg_number_attributes_per_family' => $this->attributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
         ];
 
         return $data;

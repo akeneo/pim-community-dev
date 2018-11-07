@@ -178,8 +178,6 @@ class ProductModelDescendantsSaver implements SaverInterface
      */
     private function computeCompletenesses(array $products): void
     {
-        $this->completenessManager->bulkSchedule($products);
-
         foreach ($products as $product) {
             $this->completenessManager->generateMissingForProduct($product);
             $this->objectManager->persist($product);
