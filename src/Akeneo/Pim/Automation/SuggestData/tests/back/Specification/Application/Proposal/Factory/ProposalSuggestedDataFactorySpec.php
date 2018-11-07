@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\SuggestedDataFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData as WriteSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData as WriteSuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +25,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SuggestedDataFactorySpec extends ObjectBehavior
+class ProposalSuggestedDataFactorySpec extends ObjectBehavior
 {
     public function let(SuggestedDataNormalizer $normalizer): void
     {
@@ -34,7 +34,7 @@ class SuggestedDataFactorySpec extends ObjectBehavior
 
     public function it_is_a_suggested_data_factory(): void
     {
-        $this->shouldHaveType(SuggestedDataFactory::class);
+        $this->shouldHaveType(ProposalSuggestedDataFactory::class);
     }
 
     public function it_returns_null_if_product_is_not_categorized(

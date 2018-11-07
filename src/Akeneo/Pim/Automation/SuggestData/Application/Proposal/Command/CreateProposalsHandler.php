@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\SuggestedDataFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
@@ -30,7 +30,7 @@ class CreateProposalsHandler
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
-    /** @var SuggestedDataFactory */
+    /** @var ProposalSuggestedDataFactory */
     private $suggestedDataFactory;
 
     /** @var int */
@@ -45,13 +45,13 @@ class CreateProposalsHandler
     /**
      * @param ProposalUpsertInterface $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param SuggestedDataFactory $suggestedDataFactory
+     * @param ProposalSuggestedDataFactory $suggestedDataFactory
      * @param int $batchSize
      */
     public function __construct(
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        SuggestedDataFactory $suggestedDataFactory,
+        ProposalSuggestedDataFactory $suggestedDataFactory,
         int $batchSize
     ) {
         if ($batchSize <= 0) {

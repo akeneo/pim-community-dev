@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-final class SuggestedData
+final class ProposalSuggestedData
 {
     /** @var array */
     private $suggestedValues;

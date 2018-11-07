@@ -14,6 +14,6 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
 
     akeneo.pim.automation.suggest_data.proposal.factory.suggested_data:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\SuggestedDataFactory'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
         arguments:
             - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'

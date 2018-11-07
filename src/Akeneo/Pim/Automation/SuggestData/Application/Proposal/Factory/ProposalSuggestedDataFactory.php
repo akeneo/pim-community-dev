@@ -15,14 +15,14 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData as WriteSuggestedData;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SuggestedDataFactory
+class ProposalSuggestedDataFactory
 {
     /** @var SuggestedDataNormalizer */
     private $normalizer;
@@ -38,9 +38,9 @@ class SuggestedDataFactory
     /**
      * @param ProductSubscription $subscription
      *
-     * @return WriteSuggestedData|null
+     * @return ProposalSuggestedData|null
      */
-    public function fromSubscription(ProductSubscription $subscription): ?WriteSuggestedData
+    public function fromSubscription(ProductSubscription $subscription): ?ProposalSuggestedData
     {
         $product = $subscription->getProduct();
         if (0 === count($product->getCategoryCodes())) {
@@ -57,7 +57,7 @@ class SuggestedDataFactory
             return null;
         }
 
-        return new WriteSuggestedData(
+        return new ProposalSuggestedData(
             $suggestedValues,
             $product
         );

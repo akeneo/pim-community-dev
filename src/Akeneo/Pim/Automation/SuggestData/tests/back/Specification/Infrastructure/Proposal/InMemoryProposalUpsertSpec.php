@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposa
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
@@ -43,13 +43,13 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('test');
         $product->getId()->willReturn(343);
         $product->getValues()->willReturn($values);
-        $suggestedData = new SuggestedData(['foo' => 'bar'], $product->getWrappedObject());
+        $suggestedData = new ProposalSuggestedData(['foo' => 'bar'], $product->getWrappedObject());
 
         $values2->toArray()->willReturn(['test' => 0]);
         $product2->getIdentifier()->willReturn('test2');
         $product2->getId()->willReturn(1556);
         $product2->getValues()->willReturn($values2);
-        $suggestedData2 = new SuggestedData(['test' => 42], $product2->getWrappedObject());
+        $suggestedData2 = new ProposalSuggestedData(['test' => 42], $product2->getWrappedObject());
 
         $productUpdater->update($product, ['values' => ['foo' => 'bar']])->shouldBeCalled();
         $productUpdater->update($product2, ['values' => ['test' => 42]])->shouldBeCalled();

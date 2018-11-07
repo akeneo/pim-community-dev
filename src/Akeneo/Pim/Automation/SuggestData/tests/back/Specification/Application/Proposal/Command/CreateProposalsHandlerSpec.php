@@ -6,11 +6,11 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\C
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\SuggestedDataFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
@@ -24,7 +24,7 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
     public function let(
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SuggestedDataFactory $suggestedDataFactory
+        ProposalSuggestedDataFactory $suggestedDataFactory
     ): void {
         $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory, 2);
     }
@@ -37,7 +37,7 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_batch_size_is_zero(
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SuggestedDataFactory $suggestedDataFactory
+        ProposalSuggestedDataFactory $suggestedDataFactory
     ): void {
         $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory, 0);
         $this->shouldThrow(new \InvalidArgumentException('Batch size must be positive'))->duringInstantiation();
@@ -46,7 +46,7 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_batch_size_is_negative(
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SuggestedDataFactory $suggestedDataFactory
+        ProposalSuggestedDataFactory $suggestedDataFactory
     ): void {
         $this->beConstructedWith($proposalUpsert, $subscriptionRepository, $suggestedDataFactory, -5);
         $this->shouldThrow(new \InvalidArgumentException('Batch size must be positive'))->duringInstantiation();
@@ -77,15 +77,15 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
     ): void {
         $subscription1->getSubscriptionId()->shouldNotBeCalled();
         $suggestedDataFactory->fromSubscription($subscription1)->willReturn(
-            new SuggestedData(['foo' => 'bar'], new Product())
+            new ProposalSuggestedData(['foo' => 'bar'], new Product())
         );
         $subscription2->getSubscriptionId()->willReturn('abc');
         $suggestedDataFactory->fromSubscription($subscription2)->willReturn(
-            new SuggestedData(['bar' => 'baz'], new Product())
+            new ProposalSuggestedData(['bar' => 'baz'], new Product())
         );
         $subscription3->getSubscriptionId()->willReturn('def');
         $suggestedDataFactory->fromSubscription($subscription3)->willReturn(
-            new SuggestedData(['test' => 42], new Product())
+            new ProposalSuggestedData(['test' => 42], new Product())
         );
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);

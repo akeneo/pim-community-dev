@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -23,7 +23,7 @@ interface ProposalUpsertInterface
     /**
      * Creates or updates a proposal given a set of values.
      *
-     * @param SuggestedData[] $suggestedData
+     * @param ProposalSuggestedData[] $suggestedData
      * @param string $author
      */
     public function process(array $suggestedData, string $author): void;

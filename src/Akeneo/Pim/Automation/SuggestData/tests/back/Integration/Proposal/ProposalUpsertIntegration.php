@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Proposal;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -96,7 +96,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
 
         $this->proposalUpsert->process(
-            [new SuggestedData($suggestedValues, $product)],
+            [new ProposalSuggestedData($suggestedValues, $product)],
             ProposalAuthor::USERNAME
         );
 
@@ -126,7 +126,7 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->proposalUpsert->process(
-            [new SuggestedData($suggestedValues, $product)],
+            [new ProposalSuggestedData($suggestedValues, $product)],
             ProposalAuthor::USERNAME
         );
 
@@ -171,7 +171,7 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
         $this->proposalUpsert->process(
-            [new SuggestedData($newSuggestedValues, $product)],
+            [new ProposalSuggestedData($newSuggestedValues, $product)],
             ProposalAuthor::USERNAME
         );
 
@@ -199,7 +199,7 @@ class ProposalUpsertIntegration extends TestCase
         $this->expectException($exceptionClass);
         $this->proposalUpsert->process(
             [
-                new SuggestedData($invalidValues, $product),
+                new ProposalSuggestedData($invalidValues, $product),
             ],
             ProposalAuthor::USERNAME
         );
