@@ -9,7 +9,6 @@ MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
-
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\Filter\\FilterExtension/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\Extension\\Filter\\FilterExtension/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Event\\MassActionEvents/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Datagrid\\MassActionEvents/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Adapter\\OroToPimGridFilterAdapter/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Datagrid\\OroToPimGridFilterAdapter/g'
