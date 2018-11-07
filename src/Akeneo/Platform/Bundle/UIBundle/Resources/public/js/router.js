@@ -96,7 +96,7 @@ define(
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.hideLoadingMask();
 
-                        return this.displayErrorPage(__('error.exception.forbidden'), '403');
+                        return this.displayErrorPage(__('error.forbidden'), '403');
                     }
 
                     controller.el = $view;
