@@ -19,7 +19,7 @@ class ReferenceEntityProviderSpec extends ObjectBehavior
 
     function it_provides_an_empty_value(AttributeInterface $designer)
     {
-        $this->getEmptyValue($designer)->shouldReturn('');
+        $this->getEmptyValue($designer)->shouldReturn(null);
     }
 
     function it_provides_a_field(AttributeInterface $designer)
