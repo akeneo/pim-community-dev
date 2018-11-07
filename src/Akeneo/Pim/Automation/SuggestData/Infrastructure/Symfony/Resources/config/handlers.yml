@@ -1,3 +1,6 @@
+parameters:
+    akeneo.pim.automation.suggest_data.application.create_proposals.batch_size: 10
+
 services:
 
     # Command Handlers
@@ -37,9 +40,10 @@ services:
     akeneo.pim.automation.suggest_data.handler.create_proposals:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
             - '@akeneo.pim.automation.suggest_data.proposal.create_proposal'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.proposal.factory.suggested_data'
+            - '%akeneo.pim.automation.suggest_data.application.create_proposals.batch_size%'
 
     akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler'

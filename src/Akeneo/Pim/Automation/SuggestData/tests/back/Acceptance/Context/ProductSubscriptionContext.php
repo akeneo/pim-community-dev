@@ -155,14 +155,25 @@ class ProductSubscriptionContext implements Context
     /**
      * @Then /^([0-9]*) suggested data should have been added$/
      *
-     * @param mixed $count (could be
+     * @param int $count
      */
     public function suggestedDataHaveBeenAdded(int $count): void
     {
-        $expectedNumber = (int) $count;
+        $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions($count, null);
+        Assert::count($pendingSubscriptions, $count);
+    }
 
-        $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions();
-        Assert::count($pendingSubscriptions, $expectedNumber);
+    /**
+     * @Then the suggested data for the subscription of product :identifier should be empty
+     *
+     * @param string $identifier
+     */
+    public function theSuggestedDataForTheSubscriptionOfProductShouldBeEmpty(string $identifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+
+        Assert::isEmpty($subscription->getSuggestedData()->getValues());
     }
 
     /**

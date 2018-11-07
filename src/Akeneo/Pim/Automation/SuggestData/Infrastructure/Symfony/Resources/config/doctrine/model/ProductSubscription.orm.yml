@@ -6,7 +6,6 @@ Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription:
         suggest_data_subscription_idx:
             columns:
                 - subscription_id
-                - product_id
     fields:
         id:
             type: integer
