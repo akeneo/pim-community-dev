@@ -28,9 +28,9 @@ class ReferenceEntityProvider implements FieldProviderInterface, EmptyValueProvi
     /**
      * {@inheritdoc}
      */
-    public function getEmptyValue($attribute): array
+    public function getEmptyValue($attribute): string
     {
-        return [];
+        return '';
     }
 
     /**
