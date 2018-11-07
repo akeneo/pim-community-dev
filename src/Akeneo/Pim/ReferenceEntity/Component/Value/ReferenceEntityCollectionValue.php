@@ -43,7 +43,7 @@ class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceE
     }
 
     /**
-     * {@inheritdoc}
+     * @return Record[]
      */
     public function getData(): array
     {
