@@ -2,7 +2,9 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -51,7 +53,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForProducts(ChannelInterface $channel, array $filters)
     {
@@ -64,7 +67,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -77,7 +81,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated to remove as it is not used
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissing()
     {
@@ -101,12 +106,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     ) {
         $defaultFilters = [
             ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
-            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null],
         ];
 
-        $options = [
-            'filters' => $filters ?? $defaultFilters
-        ];
+        $options = ['filters' => $filters ?? $defaultFilters];
 
         if (null !== $channel) {
             $options['default_scope'] = $channel->getCode();
@@ -120,8 +123,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * Calculates current product completenesses.
-     *
-     * The current completenesses collection is first cleared, then newly calculated ones are set to the product.
+     * Completenesses are updated for the existing ones, others are added/removed.
      *
      * @param ProductInterface $product
      */
@@ -129,13 +131,99 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $completenessCollection = $product->getCompletenesses();
 
-        if (!$completenessCollection->isEmpty()) {
-            $completenessCollection->clear();
+        $newCompletenesses = $this->completenessCalculator->calculate($product);
+
+        $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
+
+        $completenessLocaleAndChannelCodes = [];
+        foreach ($completenessCollection as $updatedCompleteness) {
+            $completenessLocaleAndChannelCodes[] =
+                $updatedCompleteness->getLocale()->getId().'/'.$updatedCompleteness->getChannel()->getId();
         }
 
-        $newCompletenesses = $this->completenessCalculator->calculate($product);
-        foreach ($newCompletenesses as $completeness) {
-            $completenessCollection->add($completeness);
+        $newLocalesChannels = [];
+        foreach ($newCompletenesses as $newCompleteness) {
+            $newLocalesChannels[] =
+                $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
+        }
+
+        $localeAndChannelCodesOfCompletenessesToAdd = array_diff(
+            $newLocalesChannels,
+            $completenessLocaleAndChannelCodes
+        );
+        $this->addNewCompletenesses(
+            $completenessCollection,
+            $newCompletenesses,
+            $localeAndChannelCodesOfCompletenessesToAdd
+        );
+
+        $localeAndChannelCodesOfCompletenessesToRemove = array_diff(
+            $completenessLocaleAndChannelCodes,
+            $newLocalesChannels
+        );
+        $this->removeOutdatedCompletenesses($completenessCollection, $localeAndChannelCodesOfCompletenessesToRemove);
+    }
+
+    /**
+     * @param Collection              $completenessCollection
+     * @param CompletenessInterface[] $newCompletenesses
+     */
+    private function updateExistingCompletenesses(Collection $completenessCollection, array $newCompletenesses)
+    {
+        foreach ($completenessCollection as $currentCompleteness) {
+            foreach ($newCompletenesses as $newCompleteness) {
+                if ($newCompleteness->getLocale()->getId() === $currentCompleteness->getLocale()->getId() &&
+                    $newCompleteness->getChannel()->getId() === $currentCompleteness->getChannel()->getId()
+                ) {
+                    $currentCompleteness->setRatio($newCompleteness->getRatio());
+                    $currentCompleteness->setMissingCount($newCompleteness->getMissingCount());
+                    $currentCompleteness->setRequiredCount($newCompleteness->getRequiredCount());
+                }
+            }
+        }
+    }
+
+    /**
+     * @param Collection              $completenessCollection
+     * @param CompletenessInterface[] $newCompletenesses
+     * @param string[]                $localeAndChannelCodesOfCompletenessesToAdd
+     */
+    private function addNewCompletenesses(
+        Collection $completenessCollection,
+        array $newCompletenesses,
+        array $localeAndChannelCodesOfCompletenessesToAdd
+    ) {
+        foreach ($localeAndChannelCodesOfCompletenessesToAdd as $completenessLocaleAndChannel) {
+            [$localeCode, $channelCode] = explode('/', $completenessLocaleAndChannel);
+
+            foreach ($newCompletenesses as $newCompleteness) {
+                if ($newCompleteness->getLocale()->getId() === (int) $localeCode
+                    && $newCompleteness->getChannel()->getId() === (int) $channelCode
+                ) {
+                    $completenessCollection->add($newCompleteness);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param Collection              $completenessCollection
+     * @param CompletenessInterface[] $localeAndChannelCodesOfCompletenessesToRemove
+     */
+    private function removeOutdatedCompletenesses(
+        Collection $completenessCollection,
+        array $localeAndChannelCodesOfCompletenessesToRemove
+    ) {
+        foreach ($localeAndChannelCodesOfCompletenessesToRemove as $completenessLocaleAndChannel) {
+            [$localeCode, $channelCode] = explode('/', $completenessLocaleAndChannel);
+
+            foreach ($completenessCollection as $currentCompleteness) {
+                if ($currentCompleteness->getLocale()->getId() === (int) $localeCode
+                    && $currentCompleteness->getChannel()->getId() === (int) $channelCode
+                ) {
+                    $completenessCollection->removeElement($currentCompleteness);
+                }
+            }
         }
     }
 }

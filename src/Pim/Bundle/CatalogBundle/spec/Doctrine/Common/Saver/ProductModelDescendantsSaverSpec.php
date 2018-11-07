@@ -77,8 +77,6 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $cursor->current()->willReturn($variantProduct1, $variantProduct2, $variantProduct1, $variantProduct2);
         $cursor->next()->shouldBeCalled();
 
-        $completenessManager->bulkSchedule([$variantProduct1, $variantProduct2])->shouldBeCalled();
-
         $completenessManager->generateMissingForProduct($variantProduct1)->shouldBeCalled();
         $objectManager->persist($variantProduct1)->shouldBeCalled();
 
@@ -117,7 +115,6 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $pqb->addFilter('identifier', Operators::IN_LIST, [])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
-        $completenessManager->schedule(Argument::cetera())->shouldNotBeCalled();
         $completenessManager->generateMissingForProduct(Argument::cetera())->shouldNotBeCalled();
 
         $objectManager->persist(Argument::cetera())->shouldNotBeCalled();

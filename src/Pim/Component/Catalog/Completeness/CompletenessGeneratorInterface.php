@@ -34,14 +34,16 @@ interface CompletenessGeneratorInterface
      *
      * @param ChannelInterface $channel
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForChannel(ChannelInterface $channel);
 
     /**
      * Generate missing completenesses
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissing();
 }
