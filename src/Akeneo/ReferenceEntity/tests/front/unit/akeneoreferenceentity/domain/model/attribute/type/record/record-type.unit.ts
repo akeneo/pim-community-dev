@@ -24,4 +24,11 @@ describe('akeneo > attribute > domain > model > attribute > type > record --- re
     expect(RecordType.createFromString('brand').getReferenceEntityIdentifier()).toEqual(createIdentifier('brand'));
     expect(() => RecordType.createFromNormalized(null).getReferenceEntityIdentifier()).toThrow();
   });
+
+  test('I can tedst if a record type is equal to another one', () => {
+    expect(RecordType.createFromString('brand').equals(RecordType.createFromString('brand'))).toBe(true);
+    expect(RecordType.createFromString('brand').equals(RecordType.createFromString('designer'))).toBe(false);
+    expect(RecordType.createFromNormalized(null).equals(RecordType.createFromString('designer'))).toBe(false);
+    expect(RecordType.createFromNormalized(null).equals(RecordType.createFromNormalized(null))).toBe(true);
+  });
 });

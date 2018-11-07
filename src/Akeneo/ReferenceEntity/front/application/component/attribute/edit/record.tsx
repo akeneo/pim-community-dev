@@ -6,16 +6,25 @@ import {RecordAttribute} from 'akeneoreferenceentity/domain/model/attribute/type
 import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 
-class RecordView extends React.Component<
-  {
-    attribute: RecordAttribute;
-    errors: ValidationError[];
-    locale: string;
-  },
-  {referenceEntity: ReferenceEntity | null}
-> {
+type Props = {
+  attribute: RecordAttribute;
+  errors: ValidationError[];
+  locale: string;
+};
+
+class RecordView extends React.Component<Props, {referenceEntity: ReferenceEntity | null}> {
   state = {referenceEntity: null};
   async componentDidMount() {
+    this.updateReferenceEntity();
+  }
+
+  async componentDidUpdate(prevProps: Props) {
+    if (!this.props.attribute.getRecordType().equals(prevProps.attribute.getRecordType())) {
+      this.updateReferenceEntity();
+    }
+  }
+
+  async updateReferenceEntity() {
     const referenceEntityResult = await referenceEntityFetcher.fetch(
       this.props.attribute.recordType.getReferenceEntityIdentifier()
     );

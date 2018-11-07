@@ -45,6 +45,15 @@ export class RecordType implements NormalizableAdditionalProperty {
     return undefined === this.recordType ? '' : this.recordType.stringValue();
   }
 
+  public equals(recordType: RecordType) {
+    return (
+      (undefined === this.recordType && undefined === recordType.recordType) ||
+      (undefined !== this.recordType &&
+        undefined !== recordType.recordType &&
+        this.recordType.equals(recordType.recordType))
+    );
+  }
+
   public getReferenceEntityIdentifier(): ReferenceEntityIdentifier {
     if (undefined === this.recordType) {
       throw new InvalidCallError('The reference entity identifier is undefined');

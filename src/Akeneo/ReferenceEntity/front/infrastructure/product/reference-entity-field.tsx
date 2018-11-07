@@ -17,7 +17,7 @@ const UserContext = require('pim/user-context');
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityField extends (Field as { new(config: any): any }) {
+class ReferenceEntityField extends (Field as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
@@ -26,21 +26,24 @@ class ReferenceEntityField extends (Field as { new(config: any): any }) {
 
   renderInput(templateContext: any) {
     const container = document.createElement('div');
-    const valueData = (null === templateContext.value.data) ? '' : templateContext.value.data;
+    const valueData = null === templateContext.value.data ? '' : templateContext.value.data;
 
-    ReactDOM.render((<RecordSelector
-      referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
-      value={createRecordCode(valueData)}
-      locale={LocaleReference.create(UserContext.get('catalogLocale'))}
-      channel={ChannelReference.create(UserContext.get('catalogScope'))}
-      multiple={false}
-      placeholder={__('pim_reference_entity.record.selector.no_value')}
-      onChange={(recordCode: RecordCode) => {
-        this.errors = [];
-        this.setCurrentValue(recordCode.stringValue());
-        this.render();
-      }}
-    />), container);
+    ReactDOM.render(
+      <RecordSelector
+        referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
+        value={createRecordCode(valueData)}
+        locale={LocaleReference.create(UserContext.get('catalogLocale'))}
+        channel={ChannelReference.create(UserContext.get('catalogScope'))}
+        multiple={false}
+        placeholder={__('pim_reference_entity.record.selector.no_value')}
+        onChange={(recordCode: RecordCode) => {
+          this.errors = [];
+          this.setCurrentValue(recordCode.stringValue());
+          this.render();
+        }}
+      />,
+      container
+    );
     return container;
   }
 
