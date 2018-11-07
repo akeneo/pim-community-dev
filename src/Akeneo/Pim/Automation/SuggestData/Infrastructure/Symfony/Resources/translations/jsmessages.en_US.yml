@@ -30,10 +30,10 @@ akeneo_suggest_data:
                     active: Active
                     inactive: Inactive
             constraint:
-                duplicate_attribute_code: "An attribute cannot be used more than once. Attribute \"{{ attributeCode }}\" has been used {{ frequency }} times."
+                duplicate_attribute_code: "One mapping allowed per catalog attribute"
                 missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
                 attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
-                mandatory_attribute_mapping: "This attribute is mandatory"
+                mandatory_attribute_mapping: "Brand & MPN mapping required"
                 attribute_type: "The type of this attribute can not be set as identifier"
         attributes_mapping:
             label: Attributes mapping
@@ -105,7 +105,7 @@ akeneo_suggest_data:
                 sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
-                    second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
+                    second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link link">catalog product identifiers</a> to the assistant''s identifiers.'
             activation:
                 label: 'Franklin Connector'
                 activation_code: 'Activation code'
@@ -123,7 +123,7 @@ akeneo_suggest_data:
                     second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
             inactive_connection:
                 title: Sorry, nothing to show here yet
-                sub_title: Please activate your account on System > Franklin connection an come back.
+                sub_title: Please activate your account on System > Franklin connection and come back.
 
     mass_edit:
         product:

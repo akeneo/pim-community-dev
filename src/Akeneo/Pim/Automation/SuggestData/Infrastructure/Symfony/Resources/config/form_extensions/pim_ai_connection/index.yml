@@ -28,7 +28,7 @@ extensions:
             title: akeneo_suggest_data.connection.page_title
 
     pimee-pim-ai-connection-index-description-header:
-        module: pim/common/simple-view
+        module: pimee/view/common/description-header
         parent: pim-pim-ai-connection-index
         targetZone: content
         position: 10

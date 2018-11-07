@@ -107,7 +107,6 @@ class FixturesContext extends PimContext
      */
     public function theProductOfTheFamily(string $identifier, string $familyCode): void
     {
-        $this->loadDefaultCatalog();
         $this->loadProduct($identifier, $familyCode);
     }
 
