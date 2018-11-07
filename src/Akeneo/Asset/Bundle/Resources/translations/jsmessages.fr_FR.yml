@@ -78,6 +78,10 @@ pim_dashboard:
         mass_upload: Téléchargement massif
 pim_title:
   pimee_product_asset_mass_upload: Télécharger les ressources
+  pimee_product_asset_index: Ressources
+  pimee_product_asset_edit: Ressource {{ asset.label }} | Édition
+  pimee_asset_categorytree_index: Catégories
+  pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Édition
 batch_jobs:
   apply_assets_mass_upload:
     label: Téléchargement massif de ressources
@@ -86,6 +90,7 @@ batch_jobs:
     label: Envoi en masse de ressources et ajout au produit
     perform.label: Envoi en masse de ressources et ajout au produit
   yml_asset_channel_configuration_import:
+    import.label: Import des configurations des transformations pour les canaux
     label: Import des configurations de transformations de ressources en Yaml
     import_asset.label: Import des configurations de transformations de ressources en Yaml
   yml_asset_channel_configuration_export:
@@ -146,3 +151,78 @@ asset_grid:
   label: Ressources du produit
 create_asset:
   title: Créer une ressource
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Edition de masse des ressources
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformations de la ressource
+      not_found: Aucune transformation trouvée
+      transformation: Transformation
+      options: Options
+      colorspace:
+        title: Espace colorimétrique
+        options:
+          colorspace: 'espace colorimétrique %value%'
+      resize:
+        title: Redimensionner
+        options:
+          width: '%value%px de largeur'
+          height: '%value%px de hauteur'
+      resolution:
+        title: Résolution 
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Mise à l'échelle
+        options:
+          width: '%value%px de largeur'
+          height: '%value%px de hauteur'
+          ratio: 'ratio %value%%'
+      thumbnail:
+        title: Miniature
+        options:
+          width: '%value%px de largeur'
+          height: '%value%px de hauteur'
+pimee_enrich.mass_edit.asset:
+  title: Action de masse sur les ressources
+  confirm: "{1}Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} ressources avec les renseignements suivants, merci de confirmer."
+  step:
+    select:
+      label: Choisir les ressources
+    choose:
+      title: Actions de masse sur les ressources
+      label_count: "]0, Inf[Sélectionnez votre action"
+    configure:
+      label: Configurer
+    confirm:
+      label: Confirmer
+  operation:
+    add_tag:
+      label: Ajouter des mots clés aux ressources
+      description: Les mots clés seront ajoutés aux ressources.
+      label_count: "{1}Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+      field: Mots clés
+      empty_selection: Choisissez des mots clés
+    add_to_category:
+      label: Classifier les ressources dans des catégories
+      description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+      label_count: "{1}Classer <span class=\"AknFullPage-title--highlight\">1 resources</span> dans des catégories|]1, Inf[Classer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ressources</span> dans des categories"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Axes sur les ressources
+      hint: Vous pouvez suivre votre volumétrie en rapport avec les ressources ici
+  axis:
+    count_assets: Ressources
+    count_asset_categories: Catégories de ressources
+    count_asset_category_trees: Arbres de catégories de ressources
+pim_menu:
+  tab:
+    asset: Ressources
+  item:
+    asset_category: Catégories de ressources
+    upload_asset: Télécharger les ressources

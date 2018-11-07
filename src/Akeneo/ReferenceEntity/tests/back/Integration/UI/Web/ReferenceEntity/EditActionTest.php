@@ -49,7 +49,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_edits_an_reference_entity_details(): void
+    public function it_edits_a_reference_entity_details(): void
     {
         $postContent = [
             'identifier' => 'designer',

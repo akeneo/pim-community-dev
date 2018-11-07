@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -8,6 +10,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Tool\Component\FileTransformer\Options\Image;
 
 use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
@@ -15,7 +18,7 @@ use Akeneo\Tool\Component\FileTransformer\Options\TransformationOptionsResolverI
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Option resolver for Scale transformation
+ * Option resolver for Scale transformation.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -53,7 +56,7 @@ class ScaleOptionsResolver implements TransformationOptionsResolverInterface
             throw InvalidOptionsTransformationException::chooseOneOption(['ratio', 'width', 'height'], 'scale');
         }
 
-        if (null !== $ratio && ($ratio <= 0 || $ratio >= 100)) {
+        if (null !== $ratio && ($ratio < 0 || $ratio > 100)) {
             throw InvalidOptionsTransformationException::ratio('ratio', 'scale');
         }
 

@@ -77,7 +77,11 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             $attributeOption2,
         ]);
 
-        $dataProvider->saveAttributeOptionsMapping(Argument::type(AttributeOptionsMapping::class))->shouldBeCalled();
+        $dataProvider->saveAttributeOptionsMapping(
+            Argument::type(FamilyCode::class),
+            Argument::type(FranklinAttributeId::class),
+            Argument::type(AttributeOptionsMapping::class)
+        )->shouldBeCalled();
 
         $command = new SaveAttributeOptionsMappingCommand(
             $familyCode,

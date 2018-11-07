@@ -12,6 +12,8 @@ use Webmozart\Assert\Assert;
  */
 class OptionCode
 {
+    public const REGULAR_EXPRESSION = '/^[a-zA-Z0-9_]+$/';
+
     /** @var string */
     private $code;
 
@@ -25,7 +27,7 @@ class OptionCode
         );
         Assert::regex(
             $code,
-            '/^[a-zA-Z0-9_]+$/',
+            self::REGULAR_EXPRESSION,
             sprintf('Option code may contain only letters, numbers and underscores. "%s" given', $code)
         );
 

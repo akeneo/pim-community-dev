@@ -15,7 +15,6 @@ use Webmozart\Assert\Assert;
  */
 class OptionAttribute extends AbstractAttribute
 {
-    private const MAX_OPTIONS = 100;
     private const ATTRIBUTE_TYPE = 'option';
 
     /** @var AttributeOption[] */
@@ -45,15 +44,6 @@ class OptionAttribute extends AbstractAttribute
 
     public function setOptions(array $attributeOptions): void
     {
-        Assert::maxCount(
-            $attributeOptions,
-            self::MAX_OPTIONS,
-            sprintf(
-                'A multiselect attribute can have a maximum of %d options, %d given',
-                self::MAX_OPTIONS,
-                \count($attributeOptions)
-            )
-        );
         $this->assertNoDuplicates($attributeOptions);
 
         $this->attributeOptions = $attributeOptions;

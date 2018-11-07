@@ -25,7 +25,7 @@
 
 DONE:
 
-- rename "I get an reference entity" acceptance step [DONE]
+- rename "I get a reference entity" acceptance step [DONE]
 - manage breadcrumb [DONE]
 - add loading placeholder [DONE]
 - rename hidrate -> hydrate [DONE]

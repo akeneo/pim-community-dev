@@ -77,7 +77,7 @@ module.exports = async function (cucumber) {
     });
   };
 
-  When('the user creates an reference entity {string} with:', async function (identifier, updates) {
+  When('the user creates a reference entity {string} with:', async function (identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
     await this.page.evaluate(async () => {
@@ -102,7 +102,7 @@ module.exports = async function (cucumber) {
     await modal.save();
   });
 
-  Then('there is an reference entity {string} with:', async function (identifier, updates) {
+  Then('there is a reference entity {string} with:', async function (identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
     listReferenceEntityUpdated(this.page, identifier, referenceEntity.labels);
@@ -130,7 +130,7 @@ module.exports = async function (cucumber) {
     assert.strictEqual(expectedMessage, actualMesssage);
   });
 
-  Then('the user should not be able to create an reference entity', async function () {
+  Then('the user should not be able to create a reference entity', async function () {
     const header = await await getElement(this.page, 'Header');
     assert.strictEqual(false, await header.isCreateButtonVisible());
   });

@@ -3,7 +3,7 @@
 namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\ProductDraft;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;

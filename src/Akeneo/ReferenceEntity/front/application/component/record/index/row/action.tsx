@@ -74,7 +74,7 @@ const ActionRow = memo(
               href={path}
               onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
                 event.preventDefault();
-                if (Key.Space === event.key) onRedirectToRecord(record)
+                if (Key.Space === event.key) onRedirectToRecord(record);
 
                 return false;
               }}

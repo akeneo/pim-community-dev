@@ -1,8 +1,8 @@
 import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
-import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import denormalize from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 
-export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute) => (
+export const hydrator = (denormalize: (normalizedAttribute: NormalizedAttribute) => Attribute) => (
   normalizedAttribute: any
 ): Attribute => {
   const expectedKeys = [
@@ -17,7 +17,9 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
   ];
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
 
-  return denormalizeAttribute(normalizedAttribute);
+  return denormalize(normalizedAttribute);
 };
 
-export default hydrator(denormalizeAttribute);
+const hydrateAttribute = hydrator(denormalize);
+
+export default hydrateAttribute;

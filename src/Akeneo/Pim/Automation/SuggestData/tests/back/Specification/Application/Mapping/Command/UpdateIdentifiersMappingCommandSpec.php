@@ -94,7 +94,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         ]);
 
         $this->shouldThrow(
-            InvalidMappingException::duplicateAttributeCode(2, 'ean', UpdateIdentifiersMappingCommand::class)
+            InvalidMappingException::duplicateAttributeCode(UpdateIdentifiersMappingCommand::class)
         )->duringInstantiation();
     }
 }

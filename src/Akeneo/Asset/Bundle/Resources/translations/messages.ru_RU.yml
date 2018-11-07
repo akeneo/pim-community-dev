@@ -24,7 +24,7 @@ pimee_product_asset:
       upload: Загрузить
       delete: Удалить
       download: Скачать
-      generate_from_reference: Создание из образца
+      generate_from_reference: Генерация на основе ссылки
       reset_variations: Сбросить вариации
     confirmation.subTitle: Медиафайлы
     grid:
@@ -34,7 +34,7 @@ pimee_product_asset:
       code: Код
       description: Описание
       end_of_use: Конец использования
-      reference: Образец
+      reference: Ссылка
       filename: Имя файла
       width: Ширина
       height: Высота
@@ -45,7 +45,7 @@ pimee_product_asset:
       actions: Действия
       download: Скачать
       tag: Теги
-      no_reference: Файл образца не был загружен еще.
+      no_reference: Файл по ссылке не был загружен еще.
       no_variation: Не был создан еще ни один файл вариации.
     flash:
       update:
@@ -59,8 +59,8 @@ pimee_product_asset:
   enrich_reference:
     flash:
       delete:
-        success: Файл образца был удален.
-        error: Файл образца не был удален. Произошла ошибка.
+        success: Файл по ссылке был удален.
+        error: Файл по ссылке не был удален. Произошла ошибка.
   enrich_variation:
     flash:
       transformation:
@@ -193,3 +193,37 @@ pim_api:
   acl_group:
     asset_category: Категории медиафайлов
     asset: Медиафайлы
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Преобразования активов
+  asset_transformation:
+    not_found: Преобразования не найдены
+    title:
+      transformation: Преобразование
+      options: Параметры
+    colorspace:
+      title: Цветовое пространство
+      options:
+        colorspace: '%value% цветовое пространство'
+    resize:
+      title: Изменение размера
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+    resolution:
+      title: Разрешение
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Маштабирование
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+        ratio: '%value%% соотношение'
+    thumbnail:
+      title: Миниатюра изображения
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'

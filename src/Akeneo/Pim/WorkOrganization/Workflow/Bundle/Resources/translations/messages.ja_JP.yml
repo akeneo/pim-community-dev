@@ -79,13 +79,25 @@ pimee_workflow:
         second: 操作を選択
         third: 構成
         fourth: 確認
-btn.publish: 公開する
-btn.unpublish: 非公開
+btn:
+  publish: 公開する
+  unpublish: 非公開
+  save working copy: 作業コピーを保存
+  save draft: 下書きを保存
+  save working copy and next: 作業用コピーを保存して、次へ
+  save draft and next: 下書きを保存して、次へ
+  save working copy and finish: 作業用コピーを保存して終了する
+  save draft and finish: 下書きを保存して、終了する
+  send for approval: 承認のために送信
+  sent for approval: 承認のために送信
+  editworkingcopy: 作業コピーを編集します。
 flash:
   product:
+    updated: 製品の作業コピーが更新されました
     published: 製品は、正常に公開されています
     unpublished: 製品は、正常に非公開になりました
   product_draft:
+    updated: 下書きは、正常に保存されました
     approve:
       success: 提案が正常に適用されました。
       error: この提案は、次のエラーのため適用できません。%error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: 公開済み製品
     proposal: 提案
-btn.editworkingcopy: 作業コピーを編集します。
 confirmation:
   product:
     publish: この製品を公開してもよろしいですか？
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: 製品
       review: レビュー
       empty: 製品の下書きはありません
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: 公開する
+      description: 選択した製品を公開し、現在公開されているデータは、現在の作業コピーによって消去されます。
+      success_flash: 選択した製品は、正常に公開されています
+      launched_flash: 製品を公開するジョブが現在実行されています。
+      message:
+        info: 選択した %nbProducts% の製品を公開予定です。
+    unpublish:
+      label: 非公開
+      description: 選択した製品を非公開すると、現在公開されているデータは消去されます。
+      success_flash: 選択した製品は、正常に非公開になりました
+      launched_flash: 製品を非公開にするジョブが現在実行されています。
+      message:
+        info: 選択した %nbProducts% の製品を非公開予定です。
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: 提案

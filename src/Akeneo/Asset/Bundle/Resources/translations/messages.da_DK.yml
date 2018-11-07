@@ -192,3 +192,37 @@ pim_api:
   acl_group:
     asset_category: Aktiver kategorier
     asset: Aktiver
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Aktiv transformationer
+  asset_transformation:
+    not_found: Ingen transformation fundet
+    title:
+      transformation: Transformation
+      options: Muligheder
+    colorspace:
+      title: Farverum
+      options:
+        colorspace: '%value% farverum'
+    resize:
+      title: Skalér
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+    resolution:
+      title: Opløsning
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skaler
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+        ratio: '%value%% forhold'
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'

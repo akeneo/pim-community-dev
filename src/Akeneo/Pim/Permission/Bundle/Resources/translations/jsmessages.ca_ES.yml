@@ -1,0 +1,50 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Només de lectura
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: El grup <strong>{{ group }} serà {{ permission }}</strong> en aquesta categoria
+      revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong> en aquesta categoria
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: El grup <strong>{{ group }} serà {{ permission }}</strong> en aquesta configuració regional
+      revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong> en aquesta configuració regional
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: El grup <strong>{{ group }} serà {{ permission }}</strong> en aquest grup d'atributs
+      revoke: El grup <strong>{{ group }} no serà {{ permission }}</strong> en aquest grup d'atributs
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: El grup {{ group }} s'autoritzarà a {{ permission }} grup d'atributs
+      view: Permet veure els atributs
+      edit: Permet editar els atributs
+      removed: El grup {{ group }} no s'autoritzarà a {{ permission }} grup d'atributs
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: El grup {{ group }} s'autoritzarà a {{ permission }} perfil de treball
+      execute: Autoritzat per executar el perfil d'aquesta tasca
+      edit: Autoritzat per editar el perfil d'aquesta tasca
+      removed: El grup {{ group }} no s'autoritzarà a {{ permission }} perfil de treball
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Afegir valor producte amb comprovació de permisos i aplicació de regles
+    perform.label: Afegir valor de producte
+  update_product_value_with_permission_and_rules:
+    label: Actualitzar el valor de producte amb comprovació de permisos i aplicació de regles
+    perform.label: Actualitzar el valor del producte
+  remove_product_value_with_permission_and_rules:
+    label: Eliminar el valor de producte amb comprovació de permisos i aplicació de regles
+    perform.label: Treure el valor del producte
+  edit_common_attributes_with_permission_and_rules:
+    label: Editar atributs amb permisos de verificació i aplicació de regles
+    perform.label: Editar atributs
+    cleaner.label: Netejar arxius temporals
+pim_title:
+  pimee_enrich_locale_edit: Local | Editar

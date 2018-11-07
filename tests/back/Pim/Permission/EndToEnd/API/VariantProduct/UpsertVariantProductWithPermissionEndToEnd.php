@@ -5,7 +5,7 @@ namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\VariantProduct;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 

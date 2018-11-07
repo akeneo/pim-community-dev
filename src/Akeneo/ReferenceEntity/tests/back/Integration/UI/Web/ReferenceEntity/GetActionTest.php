@@ -47,7 +47,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_reference_entity_details(): void
+    public function it_returns_a_reference_entity_details(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -65,7 +65,8 @@ class GetActionTest extends ControllerIntegrationTestCase
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'record_count' => null
+            'record_count' => null,
+            'attributes' => []
         ]);
         $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
@@ -99,6 +100,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             'fr_FR' => 'Concepteur',
         ]);
         $entityItem->image = Image::fromFileInfo($file);
+        $entityItem->attributes = [];
         $queryHandler->save($entityItem);
 
         $user = new User();

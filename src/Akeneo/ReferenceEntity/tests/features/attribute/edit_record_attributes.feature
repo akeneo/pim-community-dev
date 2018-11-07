@@ -1,7 +1,7 @@
-Feature: Edit an attribute of an reference entity
-  In order to edit an attribute of an reference entity
+Feature: Edit an attribute of a reference entity
+  In order to edit an attribute of a reference entity
   As a user
-  I want to edit an attribute of an reference entity
+  I want to edit an attribute of a reference entity
 
   @acceptance-back
   Scenario: Updating the label

@@ -31,4 +31,11 @@ interface OptionsMappingInterface
      * @return OptionsMapping
      */
     public function fetchByFamilyAndAttribute(string $familyCode, string $franklinAttributeId): OptionsMapping;
+
+    /**
+     * @param string $familyCode
+     * @param string $franklinAttributeId
+     * @param array $attributeOptionsMapping
+     */
+    public function update(string $familyCode, string $franklinAttributeId, array $attributeOptionsMapping): void;
 }

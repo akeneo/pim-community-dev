@@ -1,15 +1,12 @@
-Feature: Delete an reference entity
+Feature: Delete a reference entity
   In order to keep my reference entities up to date
   As a user
-  I want to delete an reference entity
+  I want to delete a reference entity
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
-
+    Given a valid reference entity
   @acceptance-back
-  Scenario: Delete an reference entity
+  Scenario: Delete a reference entity
     When the user deletes the reference entity "designer"
     Then there should be no reference entity "designer"
 
@@ -20,12 +17,12 @@ Feature: Delete an reference entity
       | designer          | mentor | {"en_US": "Mentor", "fr_FR": "Mentor"} | false    | 1     | false             | false            | designer    |
     When the user deletes the reference entity "designer"
     Then there should be a validation error on the property '' with message 'You can not delete this entity because reference entity attributes are related to this entity'
-    And there is an reference entity "designer" with:
+    And there is a reference entity "designer" with:
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
   @acceptance-front
-  Scenario: Delete an reference entity from the edit view
+  Scenario: Delete a reference entity from the edit view
     Given the user has the following rights:
       | akeneo_referenceentity_reference_entity_delete | true |
     And the user asks for the reference entity "designer"
@@ -33,7 +30,7 @@ Feature: Delete an reference entity
     Then the user should see the deleted notification
 
   @acceptance-front
-  Scenario: Dismiss the deletion of an reference entity from the edit view
+  Scenario: Dismiss the deletion of a reference entity from the edit view
     Given the user has the following rights:
       | akeneo_referenceentity_reference_entity_delete | true |
     And the user asks for the reference entity "designer"

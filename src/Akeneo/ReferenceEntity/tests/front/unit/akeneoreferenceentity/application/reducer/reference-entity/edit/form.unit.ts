@@ -36,7 +36,7 @@ describe('akeneo > reference entity > application > reducer > reference-entity -
     expect(newState).toEqual(initialState);
   });
 
-  test('I can receive an reference entity', () => {
+  test('I can receive a reference entity', () => {
     const state = {};
     const normalizedReferenceEntity = {
       identifier: 'designer',

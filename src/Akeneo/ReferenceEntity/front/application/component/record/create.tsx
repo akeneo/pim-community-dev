@@ -67,7 +67,7 @@ class Create extends React.Component<CreateProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.onSubmit()
+    if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
   render(): JSX.Element | JSX.Element[] | null {

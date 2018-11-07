@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -8,13 +10,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Tool\Component\FileTransformer;
 
 use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationRegistry;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
- * File transformer implementation
+ * File transformer implementation.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -38,17 +41,25 @@ class FileTransformer implements FileTransformerInterface
     {
         $mimeType = MimeTypeGuesser::getInstance()->guess($inputFile->getPathname());
 
+        $supportedTransformations = array_filter(
+            $rawTransformations,
+            function (string $transformationName) use ($mimeType) {
+                return $this->registry->has($transformationName, $mimeType);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        if (count($supportedTransformations) < 1) {
+            return null;
+        }
+
         if (null !== $outputFilename) {
             $outputFile = $this->createOutputFile($inputFile, $outputFilename);
         } else {
             $outputFile = $inputFile;
         }
 
-        foreach ($rawTransformations as $name => $options) {
-            if (!$this->registry->has($name, $mimeType)) {
-                continue;
-            }
-
+        foreach ($supportedTransformations as $name => $options) {
             $transformation = $this->registry->get($name, $mimeType);
             $transformation->transform($outputFile, $options);
         }
@@ -58,10 +69,10 @@ class FileTransformer implements FileTransformerInterface
 
     /**
      * TODO: should be wrapped with FlySystem
-     * Copies the given file naming it with the output file name parameter and returns it
+     * Copies the given file naming it with the output file name parameter and returns it.
      *
      * @param \SplFileInfo $file
-     * @param string       $outputFileName
+     * @param string $outputFileName
      *
      * @throws \LogicException
      *

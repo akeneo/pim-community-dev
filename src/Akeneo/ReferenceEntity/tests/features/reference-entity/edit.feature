@@ -1,13 +1,11 @@
-Feature: Edit an reference entity
-  In order to update the information of an reference entity
+Feature: Edit a reference entity
+  In order to update the information of a reference entity
   As a user
-  I want see the details of an reference entity and update them
+  I want see the details of a reference entity and update them
 
   @acceptance-back @acceptance-front
-  Scenario: Updating an reference entity labels
-    Given the following reference entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+  Scenario: Updating a reference entity labels
+    Given a valid reference entity
     When the user updates the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the reference entity "designer" should be:
@@ -22,21 +20,19 @@ Feature: Edit an reference entity
 
   @acceptance-back
   Scenario: Updating when the reference entity has already an image
-    Given an image on an reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
+    Given an image on a reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
     When the user updates the image of the reference entity 'designer' with path '"/path/image2.jpg"' and filename '"image2.jpg"'
     Then the image of the reference entity 'designer' should be '"/path/image2.jpg"'
 
   @acceptance-back
   Scenario: Updating a reference entity with an empty image
-    Given an image on an reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
+    Given an image on a reference entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
     When the user updates the reference entity 'designer' with an empty image
     Then the reference entity 'designer' should have an empty image
 
   @acceptance-back
   Scenario Outline: Updating with an invalid image
-    Given the following reference entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+    Given a valid reference entity
     When the user updates the image of the reference entity 'designer' with path '<wrong_path>' and filename '<wrong_filename>'
     Then there should be a validation error on the property 'image' with message '<message>'
 
@@ -48,10 +44,8 @@ Feature: Edit an reference entity
       | "/path/image.jpg" | 150            | This value should be of type string. |
 
   @acceptance-front
-  Scenario: Updating an reference entity with unexpected backend answer
-    Given the following reference entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+  Scenario: Updating a reference entity with unexpected backend answer
+    Given a valid reference entity
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the saved reference entity "designer" will be:
@@ -65,10 +59,8 @@ Feature: Edit an reference entity
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
 
   @acceptance-front
-  Scenario: Updating an reference entity when the backend answer an error
-    Given the following reference entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+  Scenario: Updating a reference entity when the backend answer an error
+    Given a valid reference entity
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the reference entity "designer" save will fail
@@ -77,9 +69,7 @@ Feature: Edit an reference entity
 
   @acceptance-front
   Scenario: Display updated edit form message
-    Given the following reference entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+    Given a valid reference entity
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the user should be notified that modification have been made

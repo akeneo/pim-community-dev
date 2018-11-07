@@ -4,9 +4,7 @@ Feature: Create a record
   I want to create a record
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
 
   @acceptance-back
   Scenario: Creating a record

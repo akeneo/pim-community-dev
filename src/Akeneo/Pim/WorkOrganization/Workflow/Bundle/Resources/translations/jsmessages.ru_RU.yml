@@ -61,6 +61,20 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Импорт предложений из XLSX
     import.label: Импорт предложений из XLSX
+  csv_published_product_quick_export:
+    export.label: Быстрый экспорт опубликованных товаров в CSV
+    perform.label: Быстрый экспорт опубликованных товаров в CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
+    perform.label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
+  xlsx_published_product_quick_export:
+    export.label: Быстрый экспорт опубликованных товаров в XLSX
+    perform.label: Быстрый экспорт опубликованных товаров в XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
+    perform.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
+  publish_product:
+    perform.label: Опубликовать продукты
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Новое предложение
@@ -79,3 +93,92 @@ pimee_dashboard:
       product: Продукт
       review: Обзор
       empty: Нет предложений для обзора
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Опубликован
+      revert: Восстановить
+    meta:
+      published_version: Опубликованная версия
+      owner_groups: Группы владельцы
+      draft_status: Статус черновика
+      draft:
+        in_progress: В процессе
+        sent_for_approval: В ожидании утверждения
+        working_copy: Рабочая копия
+    revert:
+      title: Подтверждение восстановления
+      content: Вы уверены, что хотите вернуться к этой версии продукта?
+    publish:
+      title: Опубликовать этот продукт
+      content: Вы действительно хотите опубликовать этот продукт?
+    unpublish:
+      title: Снять продукт с публикации
+      content: Вы действительно хотите снять этот продукт с публикации?
+    copy:
+      working_copy: Рабочая копия
+      draft: Мои черновики
+      draft_of: "Черновики пользователя {{ author }}"
+    approval:
+      send: Отправить на утверждение
+      sent: Отправлено на утверждение
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Продукт успешно опубликован
+      fail: Не удалось опубликовать этот продукт
+    unpublish:
+      success: Продукт успешно снят с публикации
+      fail: Не удалось снять с публикации этот продукт
+    revert:
+      success: Продукт успешно восстановлен
+  module:
+    publish:
+      label: Опубликовать
+      publish_this_version: Опубликовать эту версию
+    unpublish:
+      label: Снять с публикации
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Предложение было успешно применено.
+    reject:
+      success: Это предложение было отклонено.
+    remove:
+      success: Предложение было удалено.
+    update:
+      success: Черновик продукта успешно сохранен
+      fail: Черновик продукта не обновлен
+    create:
+      success: Черновик продукта отправлен на утверждение
+      fail: Невозможно отправить черновик на утверждение
+  module:
+    create:
+      label: Сохранить черновик
+    proposal:
+      accept: Принять предложение
+      accept_selected: Принять выбранные предложения
+      reject: Отклонить предложение
+      reject_selected: Отклонить выбранные предложения
+      remove: Удалить предложение
+      comment_title: Комментировать ваше предложение (необязательно - 255 символов макс.)
+      comment_chars: знаков
+      confirm: Отправить
+    edit:
+      discard_changes: Несохраненные изменения будут потеряны. Вы уверены, что хотите отправить черновик для утверждения без несохраненных изменений?
+      discard_changes_title: Вы уверены, что вы хотите отправить этот черновик?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Опубликовать
+    unpublish:
+      label: Снять с публикации
+pim_menu:
+  navigation:
+    published_products: Опубликованные продукты
+  item:
+    proposal: Предложения
+    published_product: Опубликованные продукты
+pim_title:
+  pimee_workflow_proposal_index: Предложения
+  pimee_workflow_published_product_index: Опубликованные продукты

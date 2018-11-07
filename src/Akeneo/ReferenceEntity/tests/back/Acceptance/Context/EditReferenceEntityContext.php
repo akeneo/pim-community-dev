@@ -66,19 +66,20 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^the following reference entity:$/
+     * @Given /^a valid reference entity$/
      */
-    public function theFollowingReferenceEntity(TableNode $referenceEntitiesTable)
+    public function theFollowingReferenceEntity()
     {
-        foreach ($referenceEntitiesTable->getHash() as $referenceEntity) {
-            $this->referenceEntityRepository->create(
-                ReferenceEntity::create(
-                    ReferenceEntityIdentifier::fromString($referenceEntity['identifier']),
-                    json_decode($referenceEntity['labels'], true),
-                    Image::createEmpty()
-                )
-            );
-        }
+        $this->referenceEntityRepository->create(
+            ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString('designer'),
+                [
+                    'en_US' => 'Designer',
+                    'fr_FR' => 'Concepteur'
+                ],
+                Image::createEmpty()
+            )
+        );
     }
 
     /**
@@ -142,7 +143,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^an image on an reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @Given /^an image on a reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
     public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {

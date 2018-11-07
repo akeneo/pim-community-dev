@@ -54,7 +54,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
           htmlFor={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
         >
           <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-${type}.svg`} />
-          <span>{__(`pim_reference_entity.attribute.type.${type}`)}</span>
+          <span>{identifier}</span>
         </label>
       </div>
       <div className="AknFieldContainer-inputContainer">
@@ -81,7 +81,7 @@ const renderSystemAttributes = () => {
   );
 };
 
-const renderAttributesPlaceholder = () => {
+const renderAttributePlaceholders = () => {
   return Array(8)
     .fill('placeholder')
     .map((attributeIdentifier, key) => (
@@ -143,7 +143,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
           >
             <img className="AknFieldContainer-labelImage" src={icon} />
             <span>
-              {__(`pim_reference_entity.attribute.type.${attribute.type}`)}{' '}
+              {attribute.getCode().stringValue()}{' '}
               {attribute.isRequired ? `(${__('pim_reference_entity.attribute.is_required')})` : ''}
             </span>
           </label>
@@ -207,7 +207,7 @@ class AttributesView extends React.Component<CreateProps> {
               <div className="AknFormContainer AknFormContainer--withPadding">
                 {renderSystemAttributes()}
                 {this.props.firstLoading ? (
-                  renderAttributesPlaceholder()
+                  renderAttributePlaceholders()
                 ) : (
                   <React.Fragment>
                     {this.props.attributes.map((attribute: NormalizedAttribute) => (

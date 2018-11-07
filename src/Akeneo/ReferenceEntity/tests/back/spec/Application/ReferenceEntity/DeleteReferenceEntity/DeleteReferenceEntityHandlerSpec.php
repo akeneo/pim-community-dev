@@ -23,7 +23,7 @@ class DeleteReferenceEntityHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteReferenceEntityHandler::class);
     }
 
-    function it_deletes_an_reference_entity(
+    function it_deletes_a_reference_entity(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         DeleteReferenceEntityCommand $command
     ) {

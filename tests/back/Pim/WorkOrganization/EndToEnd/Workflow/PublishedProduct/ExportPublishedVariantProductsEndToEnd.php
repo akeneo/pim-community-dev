@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\PublishedProduct;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\PublishedProduct;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Test\Integration\TestCase;

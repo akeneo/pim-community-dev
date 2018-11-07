@@ -7,7 +7,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     await page.reload();
   }, timeout);
 
-  it('It saves an reference entity', async () => {
+  it('It saves a reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&
@@ -41,7 +41,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     expect(response).toEqual(undefined);
   });
 
-  it('It creates an reference entity', async () => {
+  it('It creates a reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&

@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
@@ -53,8 +54,8 @@ class EditIdentifiersMappingView extends BaseView {
     attributeLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute'),
     suggestDataLabel: __('akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data'),
   };
-
   private identifiersStatuses: { [franklinIdentifier: string]: string } = {};
+  private scroll: number = 0;
 
   /**
    * {@inheritdoc}
@@ -74,18 +75,20 @@ class EditIdentifiersMappingView extends BaseView {
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
+    this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
+    this.listenTo(
+      this.getRoot(),
+      'pim_enrich:form:entity:post_save',
+      this.triggerUpdateIdentifierStatuses.bind(this),
+    );
+
     return $.when(
       FetcherRegistry.getFetcher('identifiers-mapping')
         .fetchAll()
         .then((identifiersMapping: { [franklinIdentifier: string]: (string | null) }) => {
           this.setData(identifiersMapping);
           this.updateIdentifierStatuses();
-
-          this.listenTo(
-            this.getRoot(),
-            'pim_enrich:form:entity:post_save',
-            this.triggerUpdateIdentifierStatuses.bind(this),
-          );
         }),
     );
   }
@@ -105,6 +108,7 @@ class EditIdentifiersMappingView extends BaseView {
     }));
 
     this.renderAttributeSelectors(identifiersMapping);
+    this.setScroll();
 
     return this;
   }
@@ -153,6 +157,20 @@ class EditIdentifiersMappingView extends BaseView {
         ? this.identifiersStatuses[pimAiAttributeCode] = 'inactive'
         : this.identifiersStatuses[pimAiAttributeCode] = 'active';
     });
+  }
+
+  /**
+   * Saves the scroll top position before the page re-rendering
+   */
+  private saveScroll(): void {
+    this.scroll = $('.edit-form').scrollTop() as number;
+  }
+
+  /**
+   * Puts back the scroll top position after the render.
+   */
+  private setScroll(): void {
+    $('.edit-form').scrollTop(this.scroll);
   }
 }
 

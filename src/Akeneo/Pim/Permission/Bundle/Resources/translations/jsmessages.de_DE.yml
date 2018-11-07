@@ -1,0 +1,47 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Nur Lesezugriff
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie <strong>{{ permission }}</strong> sein
+      revoke: Die Gruppe <strong>{{ group }}</strong> wird in dieser Kategorie nicht <strong>{{ permission }}</strong> sein
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema <strong>{{ permission }}</strong> sein
+      revoke: Die Gruppe <strong>{{ group }}</strong> wird in diesem Gebietsschema nicht <strong>{{ permission }}</strong> sein
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein
+      revoke: Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> innerhalb dieser Attributgruppe sein
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Die Gruppe {{ group }} wird das Recht haben Attributgruppen zu {{ permission }}
+      view: Berechtigt Attribute anzuzeigen
+      edit: Berechtigt Attribute zu bearbeiten
+      removed: Die Gruppe {{ group }} wird nicht das Recht haben Attributgruppen zu {{ permission }}
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Die Gruppe {{ group }} wird das Recht haben Job-Profile zu {{ permission }}
+      execute: Berechtigt Job-Profil auszuführen
+      edit: Berechtigt Job-Profil zu bearbeiten
+      removed: Die Gruppe {{ group }} wird nicht das Recht haben Job-Profile zu {{ permission }}
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Hinzufügen von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Produktwert hinzufügen
+  update_product_value_with_permission_and_rules:
+    label: Aktualisieren von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Wert des Produkts aktualisieren
+  remove_product_value_with_permission_and_rules:
+    label: Entfernen von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Produktwert entfernen
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Attribute bearbeiten
+    cleaner.label: Lösche temporäre Dateien

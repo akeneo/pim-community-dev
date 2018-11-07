@@ -43,9 +43,6 @@ akeneo_suggest_data:
           mapped: Attivo
           unmapped: Inattivo
       module:
-        subscribe:
-          subscribe: 'Iscrivi la famiglia a PIM.ai'
-          subscribed: 'Iscritto a PIM.ai'
         index:
           error: "E' necessario creare una famiglia nel tuo catalogo per accedere a questa pagina."
       constraint:
@@ -53,13 +50,6 @@ akeneo_suggest_data:
         missing_attribute_key: 'Chiave {{ expectedKey }} per la mappatura mancante con chiave di destinazione "{{ targetKey }}"'
         invalid_attribute_type_mapping: 'Il tipo di attributo esterno "{{ targetType }}" non può essere mappato al tipo di attributo PIM "{{ pimType }}"'
     product_subscription:
-      flash:
-        create:
-          success: 'Prodotto iscritto correttamente a PIM.ai'
-          fail: 'Impossibile iscrivere il prodotto a PIM.ai'
-        delete:
-          success: 'Iscrizione del prodotto a PIM.ai annullata correttamente'
-          fail: 'Impossibile annullare l''iscrizione del prodotto a PIM.ai'
       constraint:
         invalid_token: 'L''iscrizione dei prodotti a Franklin Insights non è andata a buon fine, il token non è valido. Inserisci un token valido o contattaci se hai bisogno di aiuto.'
         family_required: 'Una famiglia prodotto è obbligatoria per iscrivere il prodotto a Franklin Insights.'
@@ -102,7 +92,6 @@ akeneo_suggest_data:
           second_step: 'Durante la mappatura dei tuoi identificatori, ricorda che Brand e MPN vanno insieme. <a href="#" class="AknDescriptionHeader-link">Maggiori informazioni</a>'
       inactive_connection:
         title: Niente da visualizzare ancora
-        sub_title: Attiva il tuo account in Sistema > Connessione PIM.ai e poi torna indietro.
   mass_edit:
     product:
       operation:

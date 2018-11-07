@@ -12,12 +12,12 @@ const Field = require('pim/field');
 const UserContext = require('pim/user-context');
 
 /**
- * Reference entity field for attribute form
+ * Reference entity collection field for attribute form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityCollectionField extends (Field as { new(config: any): any }) {
+class ReferenceEntityCollectionField extends (Field as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
@@ -26,19 +26,22 @@ class ReferenceEntityCollectionField extends (Field as { new(config: any): any }
 
   renderInput(templateContext: any) {
     const container = document.createElement('div');
-    ReactDOM.render((<RecordSelector
-      referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
-      value={templateContext.value.data.map((recordCode: string) => createRecordCode(recordCode))}
-      locale={LocaleReference.create(UserContext.get('catalogLocale'))}
-      channel={ChannelReference.create(UserContext.get('catalogScope'))}
-      multiple={true}
-      placeholder={__('pim_reference_entity.record.selector.no_value')}
-      onChange={(recordCodes: RecordCode[]) => {
-        this.errors = [];
-        this.setCurrentValue(recordCodes.map((recordCode: RecordCode) => recordCode.stringValue()));
-        this.render();
-      }}
-    />), container);
+    ReactDOM.render(
+      <RecordSelector
+        referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
+        value={templateContext.value.data.map((recordCode: string) => createRecordCode(recordCode))}
+        locale={LocaleReference.create(UserContext.get('catalogLocale'))}
+        channel={ChannelReference.create(UserContext.get('catalogScope'))}
+        multiple={true}
+        placeholder={__('pim_reference_entity.record.selector.no_value')}
+        onChange={(recordCodes: RecordCode[]) => {
+          this.errors = [];
+          this.setCurrentValue(recordCodes.map((recordCode: RecordCode) => recordCode.stringValue()));
+          this.render();
+        }}
+      />,
+      container
+    );
     return container;
   }
 

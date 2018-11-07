@@ -75,7 +75,11 @@ class SaveAttributeOptionsMappingHandler
         }
 
         $dataProvider = $this->dataProviderFactory->create();
-        $dataProvider->saveAttributeOptionsMapping($attributeOptionsMapping);
+        $dataProvider->saveAttributeOptionsMapping(
+            $command->familyCode(),
+            $command->franklinAttributeId(),
+            $attributeOptionsMapping
+        );
     }
 
     /**
@@ -121,6 +125,7 @@ class SaveAttributeOptionsMappingHandler
      */
     private function ensureOptionsExistAndBelongToTheAttribute(string $attributeCode, array $optionCodes): void
     {
+        $optionCodes = array_filter($optionCodes);
         $options = $this->attributeOptionRepository->findCodesByIdentifiers($attributeCode, $optionCodes);
 
         if (count($options) !== count($optionCodes)) {

@@ -24,13 +24,8 @@ class DeleteModal extends React.Component<Props> {
     }
   }
 
-  render () {
-    const {
-      message,
-      title,
-      onConfirm,
-      onCancel,
-    } = this.props;
+  render() {
+    const {message, title, onConfirm, onCancel} = this.props;
 
     return (
       <div className="modal modal--fullPage in" aria-hidden="false" style={{zIndex: 1041}}>
@@ -48,7 +43,7 @@ class DeleteModal extends React.Component<Props> {
                   ref={this.cancelButton}
                   className="AknButtonList-item AknButton AknButton--grey cancel"
                   onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-                    if (Key.Space === event.key) onCancel()
+                    if (Key.Space === event.key) onCancel();
                   }}
                   onClick={onCancel}
                 >

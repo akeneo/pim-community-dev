@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Akeneo\Tool\Component\FileTransformer\Options\Image;
 
 use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ScaleOptionsResolverSpec extends ObjectBehavior
 {
@@ -53,7 +54,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
             new InvalidOptionsTransformationException(
                 'The option "ratio" of the "scale" transformation should be between 0 and 100.'
             )
-        )->during('resolve', [['ratio' => 1036 ]]);
+        )->during('resolve', [['ratio' => 1036]]);
     }
 
     function it_resolves_valid_options()
@@ -61,5 +62,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
         $this->resolve(['width' => 100]);
         $this->resolve(['height' => 100]);
         $this->resolve(['ratio' => 33]);
+        $this->resolve(['ratio' => 0]);
+        $this->resolve(['ratio' => 100]);
     }
 }

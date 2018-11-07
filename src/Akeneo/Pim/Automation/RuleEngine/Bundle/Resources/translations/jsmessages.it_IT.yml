@@ -68,6 +68,8 @@ flash:
     executed: L'esecuzione della regola è stata lanciata. Sarai avvisato quando finisce.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Impostazioni delle regole
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Esecuzione regole
   default_steps:
     execute_rules: Esecuzione regole
   yml_rule_import:
@@ -92,3 +94,8 @@ batch_jobs:
 pim_notification:
   types:
     rule: Impostazioni delle Regole
+pim_menu:
+  item:
+    rule: Regole
+pim_title:
+  pimee_catalog_rule_rule_index: Regole

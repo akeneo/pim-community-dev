@@ -4,6 +4,10 @@ pimee_enrich.acl.attribute_group.edit_permissions: Hantera attributet behörighe
 pimee_importexport.acl.export_profile.edit_permissions: Hantera behörigheter för export profil
 pimee_importexport.acl.import_profile.edit_permissions: Hantera behörigheter för export profil
 pimee_enrich.groups.label: Ägargrupper
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Redigera Attribut
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lägg till produktvärde med tillstånd
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Uppdatera produktens värde med tillstånd
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ta bort produktvärde med tillstånd
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Antal anpassade språk åtkomster
@@ -12,3 +16,83 @@ pim_analytics:
 job_profile.permissions:
   execute.label: Tillåt att köra jobbprofil
   edit.label: Tillåt att redigera jobbprofil
+pim_title.locale:
+  edit: "Språk %locale.code% | Redigera"
+attribute group.permissions:
+  view.label: Tillåtet för att visa attribut
+  view.help: Tillåt för att Visa produkterna i detta attributgrupp
+  edit.label: Får redigera attribut
+  edit.help: Tillåt för att Visa produkterna i detta attributgrupp
+  no_access_to_attributes: Du har inte tillgång till några attribut av denna produkt. Kontakta din administratör.
+category.permissions:
+  view.label: Tillåtet för att Visa produkter
+  view.help: Tillåt för att Visa produkter i denna kategori
+  edit.label: Får redigera produkter
+  edit.help: Tillåt för att redigera produkter i denna kategori (innebär behörigheten Visa)
+  own.label: Tillåtet att äga produkter
+  own.help: Tillåtet att granska, publicera, avpublicera, klassificera, associera produkter i denna kategori (innebär behörigheten redigera)
+  no_access_to_products: Du har inte tillgång till produkter i något träd, kontakta administratören
+  apply_on_children.label: Tillämpa ändringar på elementen
+  apply_on_children.help: Kopiera behörigheter ändringarna på alla elementen, befintliga behörigheter för element hålls
+locale.permissions:
+  view.label: Tillåtet att Visa produktinformation
+  view.help: Tillåt för att se produktinformationen i detta språk
+  edit.label: Får redigera produktinformation
+  edit.help: Tillåt för att redigera produktinformationen i detta locale (innebär behörigheten Visa)
+  no_access_to_products: Du har inte tillgång till produktdata i någon av de aktiverade språk, kontakta administratören
+flash.locale.updated: De nationella inställningar och behörigheter har uppdaterats
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
+      page_title: Products
+      page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
+      confirm: Du håller på att uppdatera en produkt med följande information, bekräfta. | Du håller på att uppdatera %count% produkter med följande information, bekräfta.
+      steps:
+        first: Välj produkter
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    publish:
+      message:
+        error: Du är inte ägaren av produkten, du kan inte publicera den.
+        warning: Du inte är ägare till alla valda produkter. Du kan inte publicera produkterna "%notGranted%".
+      not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
+    unpublish:
+      message:
+        error: Du är inte ägaren av produkten, du kan inte avpublicera den.
+        warning: Du inte är ägare till alla valda produkter. Du kan inte publicera produkterna "%notGranted%".
+        info: '%nbProducts% utvalda produkter kommer att avpubliceras.'
+      not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
+    classify:
+      message:
+        error: Du är inte ägaren av produkten, du kan inte klassificera det.
+        warning: Du inte är ägare till alla valda produkter. Du kan inte publicera produkterna "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Du är inte ägaren av produkten, du kan inte redigera den.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Behörigheter
+  acl.product_ownership.title: Ägande
+  attributes:
+    empty: ingen
+  category:
+    tab:
+      permission:
+        title: Behörigheter
+  groups:
+    label: Ägargrupper
+    empty: ingen
+add_product_value_with_permission_and_rules:
+  steps.perform: Lägga till produktens värde
+update_product_value_with_permission_and_rules:
+  steps.perform: Uppdatera produktens värde
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Redigera Attribut
+  steps.edit_common_attributes_processor.title: Redigera Attribut
+pim_enrich_attribute_form:
+  isReadOnly: Endast läsning

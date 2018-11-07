@@ -36,6 +36,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindReferenceEntityDetails
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiers
@@ -149,6 +150,20 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.record_collection_attribute_hydrator:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\RecordCollectionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.option_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionAttributeHydrator
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: akeneo_referenceentity.attribute_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.hydrator.attribute.option_collection_attribute_hydrator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\OptionCollectionAttributeHydrator
         arguments:
             - '@database_connection'
         tags:

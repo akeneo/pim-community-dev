@@ -1,6 +1,7 @@
 const path = require('path');
 const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
 const Attributes = require('../../decorators/reference-entity/edit/attributes.decorator');
+const {getRequestContract, listenRequest} = require('../../tools');
 
 const {
   decorators: {createElementDecorator},
@@ -161,6 +162,10 @@ module.exports = async function(cucumber) {
 
       return request;
     });
+
+    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_portrait.json');
+
+    await listenRequest(this.page, requestContract);
 
     await attributes.remove(attributeIdentifier);
   });

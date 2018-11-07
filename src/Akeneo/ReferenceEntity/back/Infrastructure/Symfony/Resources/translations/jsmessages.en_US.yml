@@ -1,6 +1,6 @@
 pim_title:
     akeneo_reference_entities_reference_entity_index: Create a new entity
-    akeneo_reference_entities_reference_entity_edit: Edit an reference entity
+    akeneo_reference_entities_reference_entity_edit: Edit a reference entity
     akeneo_reference_entities_record_edit: Edit a record
 
 pim_reference_entity:
@@ -165,8 +165,9 @@ pim_reference_entity:
             confirm: Save
         edit:
             delete: Delete the attribute
-            common.title: Common parameters
-            additional.title: Additional parameters
+            title: Edit attribute {{ code }}
+            save: Save
+            cancel: Cancel
             input:
                 code: Code (required)
                 label: Label
@@ -220,6 +221,7 @@ pim_enrich:
             property:
                 type:
                     akeneo_reference_entity_collection: Reference entity collection
+                    akeneo_reference_entity: Reference entity
                 section:
                     type_specific: Type specific parameters
                 reference_entity:

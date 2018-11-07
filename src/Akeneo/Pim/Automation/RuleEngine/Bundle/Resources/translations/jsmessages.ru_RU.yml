@@ -60,6 +60,8 @@ flash:
     executed: Начато выполнение правила. Вы будете уведомлены, когда это будет сделано.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Настройки правил
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Выполнение правил
   default_steps:
     execute_rules: Выполнение правил
   yml_rule_import:
@@ -84,3 +86,8 @@ batch_jobs:
 pim_notification:
   types:
     rule: Настройки правил
+pim_menu:
+  item:
+    rule: Правила
+pim_title:
+  pimee_catalog_rule_rule_index: Правила

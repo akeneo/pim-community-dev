@@ -87,7 +87,7 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_an_reference_entity_collection_product_value(
+    function it_creates_a_reference_entity_collection_product_value(
         $recordRepository,
         AttributeInterface $attribute,
         Record $starck,

@@ -46,9 +46,24 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_lists_all_attributes_for_an_reference_entity(): void
+    public function it_lists_all_attributes_for_a_reference_entity(): void
     {
-        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
+        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
+        $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_email_portrait.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_lists_another_set_of_attributes_for_a_reference_entity(): void
+    {
+        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
+        $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_portrait.json');
     }
 
     /**
@@ -83,11 +98,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
             [],
             Image::createEmpty()
         ));
-
-        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
-        $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
-        $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
-        $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
     }
 
     private function createNameAttribute(): AttributeDetails
@@ -138,21 +148,21 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
     private function createPortraitAttribute(): AttributeDetails
     {
-        $imageAttribute = new AttributeDetails();
-        $imageAttribute->identifier = sprintf('image_designer_%s', md5('fingerprint'));
-        $imageAttribute->referenceEntityIdentifier = 'designer';
-        $imageAttribute->type = 'image';
-        $imageAttribute->code = 'image';
-        $imageAttribute->labels = ['en_US' => 'Portrait'];
-        $imageAttribute->order = 1;
-        $imageAttribute->isRequired = true;
-        $imageAttribute->valuePerChannel = true;
-        $imageAttribute->valuePerLocale = true;
-        $imageAttribute->additionalProperties = [
+        $portraitAttribute = new AttributeDetails();
+        $portraitAttribute->identifier = sprintf('portrait_designer_%s', md5('fingerprint'));
+        $portraitAttribute->referenceEntityIdentifier = 'designer';
+        $portraitAttribute->type = 'image';
+        $portraitAttribute->code = 'portrait';
+        $portraitAttribute->labels = ['en_US' => 'Portrait'];
+        $portraitAttribute->order = 1;
+        $portraitAttribute->isRequired = true;
+        $portraitAttribute->valuePerChannel = true;
+        $portraitAttribute->valuePerLocale = true;
+        $portraitAttribute->additionalProperties = [
             'max_file_size' => '1000',
             'allowed_extensions' => ['pdf'],
         ];
 
-        return $imageAttribute;
+        return $portraitAttribute;
     }
 }

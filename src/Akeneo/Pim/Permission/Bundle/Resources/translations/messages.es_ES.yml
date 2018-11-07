@@ -4,6 +4,12 @@ pimee_enrich.acl.attribute_group.edit_permissions: Administrar permisos de atrib
 pimee_importexport.acl.export_profile.edit_permissions: Administrar permisos de perfiles de exportación
 pimee_importexport.acl.import_profile.edit_permissions: Administrar permisos de perfil de importación
 pimee_enrich.groups.label: Grupos de propietario
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributos
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Quitar el valor del producto con permisos
+edit_common_attributes_with_permission: Editar atributos con permiso
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar atributos con permiso
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Número de locales con accesos personalizados
@@ -12,3 +18,83 @@ pim_analytics:
 job_profile.permissions:
   execute.label: Autorizado a ejecutar el perfil de trabajo
   edit.label: Autorizado a editar el perfil de trabajo
+pim_title.locale:
+  edit: "Locales %locale.code% | Editar"
+attribute group.permissions:
+  view.label: Autorizado a ver los atributos
+  view.help: Autorizar a ver los productos en este grupo de atributos
+  edit.label: Autorizado a editar los atributos
+  edit.help: Autorizar a editar los producto en este grupo de atributos
+  no_access_to_attributes: Usted no tiene acceso a los atributos de este producto. Por favor contacte a su administrador.
+category.permissions:
+  view.label: Autorizado a ver los productos
+  view.help: Autorizar a ver los productos en esta categoría
+  edit.label: Autorizado a editar los productos
+  edit.help: Autorizar a editar los producto en esta categoría (permiso de lectura implícito)
+  own.label: Autorizado a administrar productos
+  own.help: Autorizado a revisar, publicar, quitar publicación, clasificar y asociar productos en esta categoría (permiso de edición implícito)
+  no_access_to_products: Usted no tiene acceso a productos en ningún árbol. Por favor contacte a su administrador
+  apply_on_children.label: Aplicar cambios a la sub-categoría
+  apply_on_children.help: Copiar los cambios de permisos en todas las sub-categorías, los permisos existentes en sub-categorías son mantenidos
+locale.permissions:
+  view.label: Autorizado a ver la información del producto
+  view.help: Autorizar a ver la información del producto in este locale
+  edit.label: Autorizado a editar la información del producto
+  edit.help: Autorizar a editar la información del producto en este locale (permiso de lectura implícito)
+  no_access_to_products: Usted no tiene acceso a la información del producto en ningún local activo. Por favor contacte a su administrador.
+flash.locale.updated: El local y los permisos han sido actualizados
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Usted no tiene el permiso para editar los productos "%identifiers%".
+      page_title: Productos
+      page_subtitle: Edición masiva (1 producto) |Edición masiva (%count% productos)
+      title: Elegir operación
+      subtitle: Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados
+      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
+      steps:
+        first: Elegir productos
+        second: Elegir operación
+        third: Configurar
+        fourth: Confirmar
+    publish:
+      message:
+        error: Usted no es el dueño de este producto, no puede publicarlo.
+        warning: Usted no es el dueño de los productos seleccionados. No puede publicar los productos "%notGranted%".
+      not_editable: Usted no tiene el permiso para editar los productos "%identifiers%".
+    unpublish:
+      message:
+        error: Usted no es el dueño del producto, no puede publicarlo.
+        warning: Usted no es el dueño de los productos seleccionados. No puede quitar la publicación de los productos "%notGranted%".
+        info: Los %nbProducts% productos seleccionados serán quitados de la publicación.
+      not_editable: Usted no tiene el permiso para editar los productos "%identifiers%".
+    classify:
+      message:
+        error: Usted no es el dueño del producto, no puede clasificarlo.
+        warning: Usted no es el dueño de estos productos seleccionados. No puede clasificar los productos "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Usted no es el dueño del producto, no puede editarlo.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Permisos
+  acl.product_ownership.title: Propietario
+  attributes:
+    empty: ninguno
+  category:
+    tab:
+      permission:
+        title: Permisos
+  groups:
+    label: grupo de propietarios
+    empty: ninguno
+add_product_value_with_permission_and_rules:
+  steps.perform: Agregar un valor de producto
+update_product_value_with_permission_and_rules:
+  steps.perform: Actualizar el valor del producto
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Editar atributos
+  steps.edit_common_attributes_processor.title: Editar atributos
+pim_enrich_attribute_form:
+  isReadOnly: Sólo lectura

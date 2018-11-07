@@ -79,13 +79,25 @@ pimee_workflow:
         second: Choisir une opération
         third: Configurer
         fourth: Confirmer
-btn.publish: Publier
-btn.unpublish: Dépublier
+btn:
+  publish: Publier
+  unpublish: Dépublier
+  save working copy: Enregistrer la version de travail
+  save draft: Enregistrer le brouillon
+  save working copy and next: Enregistrer la copie de travail et poursuivre
+  save draft and next: Enregistrer le brouillon et continuer
+  save working copy and finish: Enregistrer la copie de travail et terminer
+  save draft and finish: Enregistrer le brouillon et terminer
+  send for approval: Soumettre pour validation
+  sent for approval: Soumis à la validation
+  editworkingcopy: Editer la copie de travail
 flash:
   product:
+    updated: La copie de travail a bien été mise à jour
     published: Le produit a été publié avec succès.
     unpublished: Le produit a été depublié avec succès.
   product_draft:
+    updated: Le brouillon a bien été enregistré
     approve:
       success: La proposition a été soumise avec succès.
       error: La proposition ne peut être soumise en raison de l'erreur suivante. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Produits publiés
     proposal: Propositions
-btn.editworkingcopy: Editer la copie de travail
 confirmation:
   product:
     publish: Êtes-vous sûr de vouloir publier ce produit ?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Produit
       review: Relire
       empty: Il n'y a aucun brouillon de produit à relire
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publier
+      description: Publie les produits sélectionnés, les données produits déjà publiées seront écrasées par celles des copies de travail actuelles.
+      success_flash: Les produits sélectionnés ont bien été publiés.
+      launched_flash: Le processus de publication de produits est en cours d'exécution.
+      message:
+        info: Les %nbProducts% produits sélectionnés vont être publiés.
+    unpublish:
+      label: Dépublier
+      description: Dépublier les produits sélectionnés, les données actuellement publiées seront supprimées.
+      success_flash: Les produits sélectionnés ont bien été dépubliés.
+      launched_flash: Le processus de dépublication de produits est en cours d'exécution.
+      message:
+        info: Les %nbProducts% produits sélectionnés vont être dépubliés.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Propositions

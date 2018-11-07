@@ -26,7 +26,7 @@ class EditReferenceEntityHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(EditReferenceEntityHandler::class);
     }
 
-    function it_edits_an_reference_entity(
+    function it_edits_a_reference_entity(
         ReferenceEntityRepositoryInterface $repository,
         ReferenceEntity $referenceEntity,
         EditReferenceEntityCommand $editReferenceEntityCommand,

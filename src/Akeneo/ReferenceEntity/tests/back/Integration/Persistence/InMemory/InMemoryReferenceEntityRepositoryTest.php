@@ -36,7 +36,7 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_an_reference_entity_and_returns_it()
+    public function it_creates_a_reference_entity_and_returns_it()
     {
         $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
@@ -50,7 +50,7 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_creating_an_reference_entity_with_the_same_identifier()
+    public function it_throws_when_creating_a_reference_entity_with_the_same_identifier()
     {
         $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
@@ -63,7 +63,7 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_an_reference_entity_and_returns_it()
+    public function it_updates_a_reference_entity_and_returns_it()
     {
         $identifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $referenceEntity = ReferenceEntity::create($identifier, [], Image::createEmpty());
@@ -133,7 +133,7 @@ class InMemoryReferenceEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_an_reference_entity_given_an_identifier()
+    public function it_deletes_a_reference_entity_given_an_identifier()
     {
         $identifier = ReferenceEntityIdentifier::fromString('identifier');
         $referenceEntity = ReferenceEntity::create(

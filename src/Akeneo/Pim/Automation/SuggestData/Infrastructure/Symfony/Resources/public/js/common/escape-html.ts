@@ -13,7 +13,6 @@
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 export class EscapeHtml {
-
   /**
    * Simple escape for HTML codes
    *
@@ -21,8 +20,9 @@ export class EscapeHtml {
    * @return { string }
    */
   public static escapeHtml(source: string) {
-    return String(source).replace(/[&<>"'\/]/g, (s) => this.entityMap[s]);
+    return String(source).replace(/[&<>"'\/]/g, (s) => EscapeHtml.entityMap[s]);
   }
+
   private static entityMap: { [key: string]: string } = {
     '&': '&amp;',
     '<': '&lt;',

@@ -60,7 +60,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user creates an reference entity "([^"]+)" with:$/
+     * @When /^the user creates a reference entity "([^"]+)" with:$/
      */
     public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
     {
@@ -79,7 +79,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^there is an reference entity "([^"]+)" with:$/
+     * @Then /^there is a reference entity "([^"]+)" with:$/
      */
     public function thereIsAnReferenceEntityWith(string $code, TableNode $referenceEntityTable)
     {

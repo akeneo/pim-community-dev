@@ -8,10 +8,12 @@ pim_reference_entity:
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
+        limit_reached: 'Vostè no pot crear l''entitat de referència "{{ %reference_entity_label% }}" perquè vostè ha arribat al límit d''entitats de referència {{ %limit% }}'
     button:
       save: Desar
       create: Crear
     title: Entitats
+    img: La imatge principal de l'entitat de referència designada "{{ label }}"
     tab:
       records: Registres
       attribute: Atributs
@@ -60,6 +62,7 @@ pim_reference_entity:
       title: No hi ha cap registre per {{ entityLabel }}
       subtitle: Feu clic al botó "Afegir nou" per crear el primer registre
     no_result:
+      title: No hi ha cap resultat de la cerca
       subtitle: Provi amb nous criteris de cerca.
     button:
       save: Desar
@@ -81,6 +84,8 @@ pim_reference_entity:
         label: Etiqueta
         code: Codi (requerit)
       confirm: Desar
+    delete:
+      title: Registre
     delete_all:
       confirm: Esteu segur que voleu suprimir tots els registres "{{ entityIdentifier }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
     grid:
@@ -112,6 +117,8 @@ pim_reference_entity:
     type:
       text: Texte
       image: Imatge
+      record: Enllaç simple de l'entitat de referència
+      record_collection: Enllaç múltiple d'entitat de referència
     is_required: necessaris per a la integritat
     no_data:
       title: No hi ha atributs personalitzats per {{ entityLabel }}
@@ -157,6 +164,8 @@ pim_reference_entity:
     delete:
       title: Atribut
     notification:
+      list:
+        fail: S'ha produït un error durant l'actualització de la llista d'atributs
       save:
         success: Atribut actualitzat correctament.
         fail: S'ha produït un error durant el guardat de l'atribut

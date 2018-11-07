@@ -1,15 +1,13 @@
-Feature: Create an attribute linked to an reference entity
-  In order to create an attribute linked to an reference entity
+Feature: Create an attribute linked to a reference entity
+  In order to create an attribute linked to a reference entity
   As a user
-  I want create an attribute linked to an reference entity
+  I want create an attribute linked to a reference entity
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
 
   @acceptance-back
-  Scenario: Create an image attribute linked to an reference entity
+  Scenario: Create an image attribute linked to a reference entity
     When the user creates an image attribute "image" linked to the reference entity "designer" with:
       | code  | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
       | image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
@@ -18,7 +16,7 @@ Feature: Create an attribute linked to an reference entity
       | image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     | image |
 
   @acceptance-back
-  Scenario: Create a text attribute linked to an reference entity
+  Scenario: Create a text attribute linked to a reference entity
     When the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
@@ -45,7 +43,7 @@ Feature: Create an attribute linked to an reference entity
       | brands | {"en_US": "Brands", "fr_FR": "Marques"} | true        | 0     | false             | false            | brand       | record_collection |
 
   @acceptance-back
-  Scenario: Cannot create an attribute for an reference entity if it already exists
+  Scenario: Cannot create an attribute for a reference entity if it already exists
     Given the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
@@ -55,7 +53,7 @@ Feature: Create an attribute linked to an reference entity
     Then an exception is thrown
 
   @acceptance-back
-  Scenario: Cannot create an attribute with the same order for an reference entity
+  Scenario: Cannot create an attribute with the same order for a reference entity
     When the user creates a text attribute "name" linked to the reference entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |

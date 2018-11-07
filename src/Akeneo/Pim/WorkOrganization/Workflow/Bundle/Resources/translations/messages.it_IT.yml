@@ -79,13 +79,25 @@ pimee_workflow:
         second: Scegli l'operazione
         third: Configura
         fourth: Conferma
-btn.publish: Pubblica
-btn.unpublish: Ritira
+btn:
+  publish: Pubblica
+  unpublish: Ritira
+  save working copy: Salvare la copia di lavoro
+  save draft: Salva bozza
+  save working copy and next: Salva la copia di lavoro e vai avanti
+  save draft and next: Salva la bozza e vai avanti
+  save working copy and finish: Salva la copia di lavoro e termina
+  save draft and finish: Salva la bozza e termina
+  send for approval: Invia per approvazione
+  sent for approval: Inviato per approvazione
+  editworkingcopy: Modifica la copia di lavoro
 flash:
   product:
+    updated: La copia di lavoro del prodotto è stata aggiornata
     published: Il prodotto è stato pubblicato con successo.
     unpublished: Il prodotto è stato ritirato con successo.
   product_draft:
+    updated: La bozza è stata salvata con successo
     approve:
       success: La proposta è stata applicata con successo.
       error: La proposta non può essere applicata a causa del seguente errore. %error%
@@ -97,7 +109,6 @@ pim_menu:
   item:
     published_product: Prodotti pubblicati
     proposal: Proposte
-btn.editworkingcopy: Modifica la copia di lavoro
 confirmation:
   product:
     publish: Sei sicuro di voler pubblicare questo prodotto?
@@ -132,3 +143,23 @@ pimee_dashboard:
       product: Prodotto
       review: Da rivedere
       empty: Nessuna bozza da revisionare
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Pubblica
+      description: Pubblica i prodotti selezionati, i dati correnti pubblicati verranno cancellati dalla attuale copia di lavoro.
+      success_flash: I prodotti selezionati sono stati pubblicati con successo.
+      launched_flash: Il job di pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
+      message:
+        info: I %nbProducts% prodotti selezionati saranno pubblicati.
+    unpublish:
+      label: Ritira
+      description: 'Annulla la pubblicazione dei prodotti selezionati: i dati pubblicati correnti verranno cancellati.'
+      success_flash: I prodotti selezionati sono stati ritirati con successo.
+      launched_flash: Il job di annullamento della pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
+      message:
+        info: I %nbProducts% prodotti selezionati saranno ritirati.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Proposte

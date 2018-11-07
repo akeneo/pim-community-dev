@@ -89,17 +89,6 @@ class OptionAttributeSpec extends ObjectBehavior
         ]);
     }
 
-    function it_cannot_have_more_too_options()
-    {
-        for ($i = 0; $i < 101; $i++) {
-            $tooManyOptions[] = AttributeOption::create(
-                OptionCode::fromString((string) $i),
-                LabelCollection::fromArray([])
-            );
-        }
-        $this->shouldThrow(\InvalidArgumentException::class)->during('setOptions', [$tooManyOptions]);
-    }
-
     function it_cannot_have_options_with_the_same_code()
     {
         $duplicates = [

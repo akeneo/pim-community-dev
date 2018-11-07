@@ -12,6 +12,14 @@ Feature: Edit an record
     And the record should have the french label "My updated label"
 
   @acceptance-back
+  Scenario: Emptying a record label
+    Given a reference entity and a record with french label "My label"
+    When the user empties the french label
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should not have a french label
+
+  @acceptance-back
   Scenario: Updating a record default image
     Given a referenceEntity and a record with an image
     When the user updates the record default image with a valid file

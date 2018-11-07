@@ -1,4 +1,0 @@
-- [Draft] Extract test about draft from `PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\Product\ImportProductsWithCategoriesIntegration`
-- [Draft] Extract test about draft from `PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\Product\ImportProducsWithValuesIntegration`
-- [Draft] Extract test about draft from `\PimEnterprise\Component\Catalog\Security\Updater\GrantedProductUpdater`
-- [Enrich] how manage src/PimEnterprise/Bundle/EnrichBundle/Resources/config/providers.yml:37 ?

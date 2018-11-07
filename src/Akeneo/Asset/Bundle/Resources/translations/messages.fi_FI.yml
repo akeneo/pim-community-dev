@@ -184,3 +184,37 @@ pim_api:
   acl_group:
     asset_category: Assettikategoriat
     asset: Resurssit
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Resurssien muunnokset
+  asset_transformation:
+    not_found: Ei muunnosta löydettävissä
+    title:
+      transformation: Muunnos
+      options: Vaihtoehdot
+    colorspace:
+      title: Väriavaruus
+      options:
+        colorspace: '%value% väriavaruus'
+    resize:
+      title: Muokkaa kokoa
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+    resolution:
+      title: Resoluutio
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Asteikko
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
+        ratio: '%value%% suhde'
+    thumbnail:
+      title: Pikkukuva
+      options:
+        width: '%value%px leveys'
+        height: '%value%px korkeus'
