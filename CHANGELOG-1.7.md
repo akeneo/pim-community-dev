@@ -1,5 +1,15 @@
 # 1.7.x
 
+## Bug fixes
+
+PIM-7581: Fix unselect category when its code is numeric
+
+# 1.7.33 (2018-10-10)
+
+## Bug fixes
+
+- PIM-7718: Fix attribute requirements update for a newly created channel
+
 # 1.7.32 (2018-09-07)
 
 ## Improvements

@@ -78,7 +78,8 @@ class CompletenessManager
      * @param ChannelInterface $channel
      * @param array            $filters
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForProducts(ChannelInterface $channel, array $filters)
     {
@@ -89,7 +90,8 @@ class CompletenessManager
      *
      * @param ChannelInterface $channel
      *
-     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
+     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
+     *             Will be removed in 3.0.
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -97,6 +99,9 @@ class CompletenessManager
 
     /**
      * Insert missing completenesses
+     *
+     * @deprecated Not used anymore.
+     *             Will be removed in 3.0.
      */
     public function generateMissing()
     {
@@ -107,6 +112,9 @@ class CompletenessManager
      * Schedule recalculation of completenesses for a product
      *
      * @param ProductInterface $product
+     *
+     * @deprecated Do not use anymore, will be removed in 3.0.
+     *             Use directly the "generateMissingXXX" methods.
      */
     public function schedule(ProductInterface $product)
     {
@@ -132,6 +140,8 @@ class CompletenessManager
      * of a family
      *
      * @param FamilyInterface $family
+     *
+     * @deprecated Not used anymore, will be removed in 3.0.
      */
     public function scheduleForFamily(FamilyInterface $family)
     {
