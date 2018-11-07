@@ -1,4 +1,4 @@
-akeneo_suggest_data_product_index:
+akeneo_suggest_data_product_subscription:
     type: action
     label: akeneo_suggest_data.acl.suggest_data.index
     group_name: pim_enrich.acl_group.product
