@@ -1,0 +1,87 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_embedded": {
+                "_items": [
+                    {
+                        "code": "brand_1",
+                        "labels": {
+                            "en_US": "Brand number 1"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 1"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_1_image.jpg"
+                    },
+                    {
+                        "code": "brand_2",
+                        "labels": {
+                            "en_US": "Brand number 2"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 2"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_2_image.jpg"
+                    },
+                    {
+                        "code": "brand_3",
+                        "labels": {
+                            "en_US": "Brand number 3"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Brand example 3"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": null,
+                                    "channel": null,
+                                    "data": "italy"
+                                }
+                            ]
+                        },
+                        "main_image": "test/brand_3_image.jpg"
+                    }
+                ]
+            }
+        }
+    }
+}
