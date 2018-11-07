@@ -44,6 +44,8 @@ class CalculateCompletenessCommandIntegration extends AbstractCompletenessTestCa
         $this->assertSame(0, $exitCode);
         $this->assertSame(0, $this->getCountRowCompleteness());
 
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
         $exitCode = $commandLauncher->execute('pim:completeness:calculate');
         $this->assertSame(0, $exitCode);
         $this->assertSame(1, $this->getCountRowCompleteness());
