@@ -48,7 +48,7 @@ class ProposalContext implements Context
      */
     public function theSystemCreatesProposalsForSuggestedData(): void
     {
-        $this->createProposalsHandler->handle(new CreateProposalsCommand(100));
+        $this->createProposalsHandler->handle(new CreateProposalsCommand());
     }
 
     /**

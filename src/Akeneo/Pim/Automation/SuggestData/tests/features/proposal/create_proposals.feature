@@ -10,6 +10,7 @@ Feature: Create proposals
     And the product "B00EYZY6AC" has category "hitech"
     When the system creates proposals for suggested data
     Then there should be a proposal for product "B00EYZY6AC"
+    And the suggested data for the subscription of product "B00EYZY6AC" should be empty
 
   Scenario: Do not create a proposal if the product is not categorized
     Given the product "B00EYZY6AC" of the family "router"
@@ -20,6 +21,7 @@ Feature: Create proposals
     When the system creates proposals for suggested data
     Then there should not be a proposal for product "B00EYZY6AC"
     But there should be a proposal for product "606449099812"
+    And the suggested data for the subscription of product "606449099812" should be empty
 
   Scenario: Do not create a proposal if suggested data is empty
     Given the product "B00EYZY6AC" of the family "router"
@@ -29,4 +31,5 @@ Feature: Create proposals
     And there is suggested data for subscribed product "B00EYZY6AC"
     When the system creates proposals for suggested data
     Then there should be a proposal for product "B00EYZY6AC"
+    And the suggested data for the subscription of product "B00EYZY6AC" should be empty
     But there should not be a proposal for product "606449099812"
