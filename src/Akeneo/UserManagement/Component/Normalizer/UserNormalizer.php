@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -127,13 +128,9 @@ class UserNormalizer implements NormalizerInterface
      */
     private function getRoleNames(UserInterface $user): array
     {
-        $roles = $user->getRolesCollection();
-        $result = [];
-        foreach ($roles as $role) {
-            $result[] = $role->getRole();
-        }
-
-        return $result;
+        return $user->getRolesCollection()->map(function (Role $role) {
+            return $role->getRole();
+        })->toArray();
     }
 
     /**
