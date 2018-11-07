@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetP
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,6 +63,8 @@ class ProductSubscriptionController
     /**
      * @param int $productId
      *
+     * @AclAncestor("akeneo_suggest_data_product_subscription")
+     *
      * @return Response
      */
     public function subscribeAction(int $productId): Response
@@ -91,6 +94,8 @@ class ProductSubscriptionController
 
     /**
      * @param int $productId
+     *
+     * @AclAncestor("akeneo_suggest_data_product_subscription")
      *
      * @return Response
      */

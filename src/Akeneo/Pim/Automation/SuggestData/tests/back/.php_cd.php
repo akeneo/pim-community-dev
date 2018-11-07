@@ -77,6 +77,7 @@ $rules = [
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
             'Symfony\Component\Translation',
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller'),
 
