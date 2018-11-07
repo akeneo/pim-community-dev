@@ -89,7 +89,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($filteredProduct)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($filteredProduct)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($filteredProduct)->shouldBeCalled();
 
@@ -111,7 +110,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $tokenStorage->getToken()->willReturn($token);
         $filteredProduct->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
@@ -137,12 +136,11 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         ProductInterface $filteredProduct
     ) {
         $mergeDataOnProduct->merge($filteredProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(null);
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($filteredProduct)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($filteredProduct)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
@@ -168,7 +166,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $filteredProduct->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
@@ -210,7 +208,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $filteredProduct->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
@@ -251,7 +249,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
@@ -291,7 +289,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
@@ -342,7 +340,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $fullOwnedProduct->getId()->willReturn(42);
         $filteredOwnedProduct->getId()->willReturn(42);
-        $completenessManager->generateMissingForProduct($fullOwnedProduct)->shouldBeCalled();
         $authorizationChecker->isGranted(Attributes::OWN, $fullOwnedProduct)
             ->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $fullOwnedProduct)
@@ -352,7 +349,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
 
         $objectManager->persist($fullOwnedProduct)->shouldBeCalled();
-        $completenessManager->schedule($fullOwnedProduct)->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
 
         $fullNotOwnedProduct->getId()->willReturn(43);
