@@ -4,9 +4,7 @@ Feature: Create an attribute linked to a reference entity
   I want create an attribute linked to a reference entity
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
 
   @acceptance-back
   Scenario: Create an image attribute linked to a reference entity

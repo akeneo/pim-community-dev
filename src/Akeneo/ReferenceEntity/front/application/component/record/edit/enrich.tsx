@@ -47,7 +47,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
   };
 
   keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.form.onSubmit()
+    if (Key.Enter === event.key) this.props.events.form.onSubmit();
   };
 
   render() {

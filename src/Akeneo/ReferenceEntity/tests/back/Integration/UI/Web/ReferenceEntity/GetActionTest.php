@@ -65,7 +65,8 @@ class GetActionTest extends ControllerIntegrationTestCase
                 'filePath'         => '/path/image.jpg',
                 'originalFilename' => 'image.jpg'
             ],
-            'record_count' => null
+            'record_count' => null,
+            'attributes' => []
         ]);
         $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
@@ -99,6 +100,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             'fr_FR' => 'Concepteur',
         ]);
         $entityItem->image = Image::fromFileInfo($file);
+        $entityItem->attributes = [];
         $queryHandler->save($entityItem);
 
         $user = new User();

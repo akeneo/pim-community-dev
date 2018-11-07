@@ -111,7 +111,7 @@ class Edit extends React.Component<EditProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.onSubmit()
+    if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -219,12 +219,12 @@ class Edit extends React.Component<EditProps> {
                 className="AknButton AknButton--delete"
                 tabIndex={0}
                 onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                  if (Key.Space === event.key) this.props.events.onOpenDeleteModal()
+                  if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
                 }}
                 onClick={() => this.props.events.onOpenDeleteModal()}
                 style={{flex: 1}}
               >
-                <Trash color="#D4604F" className="AknButton-animatedIcon"/>
+                <Trash color="#D4604F" className="AknButton-animatedIcon" />
                 {__('pim_reference_entity.attribute.edit.delete')}
               </span>
               <span
@@ -233,7 +233,7 @@ class Edit extends React.Component<EditProps> {
                 tabIndex={0}
                 onClick={this.props.events.onCancel}
                 onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (Key.Space === event.key) this.props.events.onCancel()
+                  if (Key.Space === event.key) this.props.events.onCancel();
                 }}
               >
                 {__('pim_reference_entity.attribute.edit.cancel')}
@@ -244,7 +244,7 @@ class Edit extends React.Component<EditProps> {
                 tabIndex={0}
                 onClick={this.props.events.onSubmit}
                 onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (Key.Space === event.key) this.props.events.onSubmit()
+                  if (Key.Space === event.key) this.props.events.onSubmit();
                 }}
               >
                 {__('pim_reference_entity.attribute.edit.save')}

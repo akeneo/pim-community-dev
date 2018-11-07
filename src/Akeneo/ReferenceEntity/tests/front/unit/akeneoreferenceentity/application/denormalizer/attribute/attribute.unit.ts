@@ -1,4 +1,4 @@
-import {denormalizeAttribute} from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import denormalize, {denormalizeAttribute} from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 
 const normalizedDescription = {
@@ -23,5 +23,9 @@ describe('akeneo > reference entity > application > denormalizer > attribute ---
     expect(denormalizeAttribute(() => denormalizeTextAttribute)(normalizedDescription).normalize()).toEqual(
       normalizedDescription
     );
+  });
+
+  test('I can execute the denormalizer', () => {
+    expect(() => denormalize(normalizedDescription).normalize()).toThrow();
   });
 });

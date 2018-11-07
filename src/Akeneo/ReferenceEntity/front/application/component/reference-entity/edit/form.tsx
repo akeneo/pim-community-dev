@@ -35,7 +35,7 @@ export default class EditForm extends React.Component<FormProps> {
   };
 
   keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.onSubmit()
+    if (Key.Enter === event.key) this.props.onSubmit();
   };
 
   render() {

@@ -81,7 +81,7 @@ const TextView = ({
             name="max_length"
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if (Key.Enter === event.key) onSubmit()
+              if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxLength.isValid(event.currentTarget.value)) {
@@ -199,7 +199,7 @@ const TextView = ({
                 placeholder="/[a-z]+[0-9]*/"
                 value={attribute.regularExpression.stringValue()}
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (Key.Enter === event.key) onSubmit()
+                  if (Key.Enter === event.key) onSubmit();
                 }}
                 onChange={(event: React.FormEvent<HTMLInputElement>) =>
                   onAdditionalPropertyUpdated(

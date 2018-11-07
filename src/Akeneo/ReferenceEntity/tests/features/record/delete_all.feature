@@ -18,9 +18,7 @@ Feature: Delete all reference entity record
 
   @acceptance-front
   Scenario: Delete all reference entity records
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
     And the following records for the reference entity "designer":
       | identifier        | code   | labels                        |
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
@@ -33,9 +31,7 @@ Feature: Delete all reference entity record
 
   @acceptance-front
   Scenario: Error while deleting all reference entity records
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
     And the following records for the reference entity "designer":
       | identifier        | code   | labels                        |
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |
@@ -48,9 +44,7 @@ Feature: Delete all reference entity record
 
   @acceptance-front
   Scenario: Cannot delete all reference entity records without rights
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
     And the following records for the reference entity "designer":
       | identifier        | code   | labels                        |
       | designer_starck_1 | starck | {"en_US": "Philippe Starck" } |

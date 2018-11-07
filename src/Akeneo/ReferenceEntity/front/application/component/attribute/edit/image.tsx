@@ -38,7 +38,7 @@ const ImageView = ({
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if (Key.Enter === event.key) onSubmit()
+              if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxFileSize.isValid(event.currentTarget.value)) {

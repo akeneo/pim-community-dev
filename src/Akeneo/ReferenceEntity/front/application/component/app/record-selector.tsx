@@ -41,9 +41,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
 
   getSelectedRecordCode(value: null | RecordCode[] | RecordCode, multiple: boolean) {
     if (multiple) {
-      return (value as RecordCode[]).map((recordCode: RecordCode) =>
-        recordCode.stringValue()
-      );
+      return (value as RecordCode[]).map((recordCode: RecordCode) => recordCode.stringValue());
     } else {
       return null === value ? [] : [(value as RecordCode).stringValue()];
     }
@@ -96,8 +94,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
             return JSON.stringify(searchQuery);
           },
           results: (result: {items: NormalizedRecord[]; total: number}) => {
-            const items = result.items
-              .map(this.formatItem.bind(this));
+            const items = result.items.map(this.formatItem.bind(this));
 
             return {
               more: this.PAGE_SIZE === items.length,
@@ -125,7 +122,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
                   value: initialValues,
                 },
               ],
-            }
+            };
 
             const result = await recordFetcher.search(initQuery);
 
