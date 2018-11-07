@@ -4,7 +4,6 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter'

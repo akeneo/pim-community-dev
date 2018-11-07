@@ -30,17 +30,15 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 5"
-    And there should be 3 products
+    Then I should see the text "skipped 3"
+    And there should be 5 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "SKU-002" should have the following value:
       | price | 50.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"invalid\" given."
     And I should see the text "This value should be a valid number.: gruik EUR"
-    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   Scenario: Skip new products with invalid prices during an import
     Given the following CSV file to import:
@@ -54,9 +52,8 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 2"
+    Then I should see the text "skipped 1"
     And I should see the text "This value should be a valid number.: EUR"
-    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"mouette\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
@@ -87,27 +84,25 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 5"
+    Then I should see the text "skipped 3"
     And there should be 8 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
     And the product "SKU-002" should have the following value:
       | price | 50.00 EUR |
     And the product "SKU-003" should have the following value:
-      | price | 12.00 EUR |
+      | price | |
     And the product "SKU-004" should have the following value:
       | price | 98.00 EUR |
     And the product "SKU-005" should have the following value:
-      | price | 32.00 USD |
+      | price | 25.00 EUR |
     And the product "SKU-006" should have the following value:
       | price | 77.00 USD |
     And the product "SKU-007" should have the following value:
       | price | 8.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"invalid\" given."
     And I should see the text "This value should be a valid number.: gruik EUR"
-    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid metrics during an import
@@ -390,8 +385,8 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 2"
-    And there should be 1 products
+    Then I should see the text "skipped 1"
+    And there should be 2 products
     And the product "renault-kangoo" should have the following value:
       | publicPrice | 20000.00 EUR |
 
@@ -412,8 +407,8 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "skipped 3"
-    And there should be 1 products
+    Then I should see the text "skipped 2"
+    And there should be 2 products
     And the product "renault-kangoo" should have the following value:
       | publicPrice | 20000.00 EUR |
     And I should see the text "This value should be a valid number.: gruik EUR"

@@ -216,7 +216,6 @@ class ProductStandardIntegration extends TestCase
                             'locale' => null,
                             'scope'  => 'ecommerce',
                             'data'   => [
-                                ['amount' => '15.00', 'currency' => 'EUR'],
                                 ['amount' => '20.00', 'currency' => 'USD'],
                             ],
                         ],
@@ -225,7 +224,6 @@ class ProductStandardIntegration extends TestCase
                             'scope'  => 'tablet',
                             'data'   => [
                                 ['amount' => '17.00', 'currency' => 'EUR'],
-                                ['amount' => '24.00', 'currency' => 'USD'],
                             ],
                         ],
                     ],
@@ -280,7 +278,7 @@ class ProductStandardIntegration extends TestCase
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
 
-        $this->assertSame($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 
     /**

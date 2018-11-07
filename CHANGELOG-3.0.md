@@ -1141,3 +1141,5 @@ TODO Add BC
 - Move `Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface`
 - Change method `create` of `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface` To add a boolean parameter to determine if a unknown element of a collection must be ignored or not.
 - Move `Akeneo\Pim\Enrichment\Component\Product\Query\Escaper\QueryString` to `Akeneo\Tool\Component\Elasticsearch\QueryString`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory`, add `Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface` argument
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter`, remove last argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`

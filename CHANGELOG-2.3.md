@@ -1,5 +1,19 @@
 # 2.3.x
 
+# 2.3.14 (2018-11-05)
+
+## Bug fixes
+
+PIM-7810: Fix to mass delete products and product models
+
+# 2.3.13 (2018-10-25)
+
+## Bug fixes
+
+- PIM-7759: Date range grid filters should be ignored when no value is set
+- PIM-7758: Fix the product and product model deletion from the grid
+- PIM-7765: Fix the loading of price values for disabled currencies
+
 # 2.3.12 (2018-10-17)
 
 ## Bug fixes

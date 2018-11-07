@@ -67,12 +67,12 @@ pim_importexport:
       content_show: Näytä vientiprofiilin sisältö
     import_profile:
       index: Näytä tuontiprofiilien lista
-      create: Vientiprofiilin luonti
+      create: Tuontiprofiilin luonti
       show: Näytä vientiprofiili
-      edit: Editoi vientiprofiilia
-      remove: Poista vientiprofiili
-      launch: Käynnistä vientiprofiili
-      history: Näytä vientiprofiilin historia
+      edit: Editoi tuontiprofiilia
+      remove: Poista tuontiprofiili
+      launch: Käynnistä tuontiprofiili
+      history: Näytä tuontiprofiilin historia
     export_execution:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
@@ -96,7 +96,7 @@ export now: Vie nyt
 confirmation:
   remove:
     export profile: Oletko varma, että haluat poistaa vientiprofiilin %name%?
-    import profile: Oletko varma, että haluat poistaa vientiprofiilin %name%?
+    import profile: Oletko varma, että haluat poistaa tuontiprofiilin %name%?
 flash:
   export:
     created: Vienti onnistui

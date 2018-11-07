@@ -112,6 +112,7 @@ grid.display_selector:
   gallery: Галерея
   list: Список
 Client ID: ID клиента
+Secret: Секрет
 grid.empty_results:
   associated_product:
     hint: Нет связанных продуктов

@@ -474,14 +474,12 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'a_scopable_price-prices'                        => [
                     'ecommerce' => [
                         '<all_locales>' => [
-                            'EUR' => '15.00',
                             'USD' => '20.00',
                         ],
                     ],
                     'tablet'    => [
                         '<all_locales>' => [
                             'EUR' => '17.00',
-                            'USD' => '24.00',
                         ],
                     ],
                 ],
@@ -610,6 +608,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         NormalizedProductCleaner::clean($actual);
         NormalizedProductCleaner::clean($expected);
 
-        $this->assertSame($expected, $actual);
+        $this->assertEquals($expected, $actual);
     }
 }

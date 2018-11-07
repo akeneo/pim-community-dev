@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
@@ -15,10 +14,9 @@ class ProductWriterSpec extends ObjectBehavior
     function let(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($versionManager, $productSaver, $cacheClearer);
+        $this->beConstructedWith($versionManager, $productSaver);
         $this->setStepExecution($stepExecution);
     }
 
