@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryP
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -101,5 +102,19 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
         $this->delete($subscription);
         $this->findOneByProductId(42)->shouldReturn(null);
+    }
+
+    public function it_empties_suggested_data_for_specified_subscriptions(
+        ProductInterface $product
+    ): void {
+        $product->getId()->willReturn(42);
+        $subscription = new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id', []);
+        $subscription->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+
+        $this->save($subscription);
+        Assert::notEmpty($subscription->getSuggestedData()->getValues());
+
+        $this->emptySuggestedData(['fake-subscription-id']);
+        Assert::isEmpty($subscription->getSuggestedData()->getValues());
     }
 }

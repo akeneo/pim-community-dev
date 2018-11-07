@@ -15,9 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\E
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\FranklinProposalsCreationSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Query\Subscription\EmptySuggestedDataQueryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,9 +25,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class FranklinProposalsCreationSubscriberSpec extends ObjectBehavior
 {
-    public function let(EmptySuggestedDataQueryInterface $query): void
+    public function let(ProductSubscriptionRepositoryInterface $subscriptionrepository): void
     {
-        $this->beConstructedWith($query);
+        $this->beConstructedWith($subscriptionrepository);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -47,13 +45,12 @@ class FranklinProposalsCreationSubscriberSpec extends ObjectBehavior
         $this::getSubscribedEvents()->shouldHaveKey(SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED);
     }
 
-    public function it_empties_suggested_data_from_subscriptions($query): void
+    public function it_empties_suggested_data_from_subscriptions($subscriptionrepository): void
     {
-        $suggestedData = new SuggestedData('a-fake-subscription', ['foo' => 'bar'], new Product());
-        $otherSuggestedData = new SuggestedData('another-fake-subscription', ['bar' => 'baz'], new Product());
+        $subscriptionrepository
+            ->emptySuggestedData(['a-fake-subscription-id', 'another-fake-subscription-id'])
+            ->shouldBeCalled();
 
-        $query->execute(['a-fake-subscription', 'another-fake-subscription'])->shouldBeCalled();
-
-        $this->emptySuggestedData(new GenericEvent([$suggestedData, $otherSuggestedData]));
+        $this->emptySuggestedData(new GenericEvent(['a-fake-subscription-id', 'another-fake-subscription-id']));
     }
 }

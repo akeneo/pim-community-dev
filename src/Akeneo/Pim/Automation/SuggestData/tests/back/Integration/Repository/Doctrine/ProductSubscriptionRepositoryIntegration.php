@@ -189,6 +189,20 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertNull($subscription);
     }
 
+    public function test_it_empties_suggested_data_for_specified_ids(): void
+    {
+        $product1 = $this->createProduct('product_1');
+        $this->insertSubscription($product1->getId(), 'subscription_to_empty', ['foo' => 'bar']);
+        $product2 = $this->createProduct('product_2');
+        $this->insertSubscription($product2->getId(), 'other-subscription', ['bar' => 'baz']);
+
+        $repo = $this->getRepository();
+        $repo->emptySuggestedData(['subscription_to_empty']);
+
+        Assert::assertEmpty($repo->findOneByProductId($product1->getId())->getSuggestedData()->getValues());
+        Assert::assertNotEmpty($repo->findOneByProductId($product2->getId())->getSuggestedData()->getValues());
+    }
+
     /**
      * {@inheritdoc}
      */

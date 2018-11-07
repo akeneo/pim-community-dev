@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -70,11 +71,36 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     }
 
     /**
-     * @param ProductSubscription $subscription
+     * {@inheritdoc}
      */
     public function delete(ProductSubscription $subscription): void
     {
         $this->em->remove($subscription);
         $this->em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function emptySuggestedData(array $subscriptionIds): void
+    {
+        if (empty($subscriptionIds)) {
+            return;
+        }
+
+        /** @var QueryBuilder $qb */
+        $qb = $this->em->createQueryBuilder();
+        $qb->update(ProductSubscription::class, 'subscription')
+           ->set('subscription.rawSuggestedData', ':rawSuggestedData')
+           ->where(
+               $qb->expr()->in(
+                   'subscription.subscriptionId',
+                   ':subscriptionIds'
+               )
+           )
+           ->setParameter('rawSuggestedData', null)
+           ->setParameter('subscriptionIds', $subscriptionIds);
+
+        $qb->getQuery()->execute();
     }
 }

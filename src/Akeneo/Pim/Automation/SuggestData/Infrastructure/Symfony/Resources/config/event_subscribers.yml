@@ -7,6 +7,6 @@ services:
     akeneo.pim.automation.suggest_data.event_subscriber.franklin_proposals_creation:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\FranklinProposalsCreationSubscriber'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.subscription.empty_suggested_data'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
         tags:
             - { name: 'kernel.event_subscriber' }

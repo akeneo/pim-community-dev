@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Query\Subscription\EmptySuggestedDataQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -24,15 +23,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class FranklinProposalsCreationSubscriber implements EventSubscriberInterface
 {
-    /** @var EmptySuggestedDataQueryInterface */
-    private $emptySuggestedDataQuery;
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $subscriptionrepository;
 
     /**
-     * @param EmptySuggestedDataQueryInterface $emptySuggestedDataQuery
+     * @param ProductSubscriptionRepositoryInterface $subscriptionrepository
      */
-    public function __construct(EmptySuggestedDataQueryInterface $emptySuggestedDataQuery)
+    public function __construct(ProductSubscriptionRepositoryInterface $subscriptionrepository)
     {
-        $this->emptySuggestedDataQuery = $emptySuggestedDataQuery;
+        $this->subscriptionrepository = $subscriptionrepository;
     }
 
     /**
@@ -50,25 +49,11 @@ class FranklinProposalsCreationSubscriber implements EventSubscriberInterface
      */
     public function emptySuggestedData(GenericEvent $event): void
     {
-        $suggestedData = $event->getSubject();
-        if (!is_array($suggestedData)) {
+        $subscriptionIds = $event->getSubject();
+        if (!is_array($subscriptionIds)) {
             throw new \InvalidArgumentException('Event\'s subject must be an array');
         }
-        foreach ($suggestedData as $data) {
-            if (!$data instanceof SuggestedData) {
-                throw new \InvalidArgumentException(
-                    sprintf('Event\'s subject must be an array of %s', SuggestedData::class)
-                );
-            }
-        }
 
-        $subscriptionIds = array_map(
-            function (SuggestedData $data) {
-                return $data->getSubscriptionId();
-            },
-            $suggestedData
-        );
-
-        $this->emptySuggestedDataQuery->execute($subscriptionIds);
+        $this->subscriptionrepository->emptySuggestedData($subscriptionIds);
     }
 }

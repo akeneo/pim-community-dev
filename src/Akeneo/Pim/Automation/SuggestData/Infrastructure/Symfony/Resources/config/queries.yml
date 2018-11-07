@@ -3,8 +3,3 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery'
         arguments:
             - '@doctrine.orm.entity_manager'
-
-    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.subscription.empty_suggested_data:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Subscription\EmptySuggestedDataQuery'
-        arguments:
-            - '@doctrine.orm.entity_manager'

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
@@ -75,5 +76,17 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     public function delete(ProductSubscription $subscription): void
     {
         unset($this->subscriptions[$subscription->getSubscriptionId()]);
+    }
+
+    /**
+     * @param int[] $subscriptionIds
+     */
+    public function emptySuggestedData($subscriptionIds): void
+    {
+        foreach ($this->subscriptions as $subscription) {
+            if (in_array($subscription->getSubscriptionId(), $subscriptionIds)) {
+                $subscription->setSuggestedData(new SuggestedData(null));
+            }
+        }
     }
 }
