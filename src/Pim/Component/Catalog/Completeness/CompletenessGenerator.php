@@ -135,10 +135,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $this->updateExistingCompletenesses($completenessCollection, $newCompletenesses);
 
-        $currentLocalesChannels = [];
-        foreach ($completenessCollection as $currentCompleteness) {
-            $currentLocalesChannels[] =
-                $currentCompleteness->getLocale()->getId().'/'.$currentCompleteness->getChannel()->getId();
+        $completenessLocaleAndChannelCodes = [];
+        foreach ($completenessCollection as $updatedCompleteness) {
+            $completenessLocaleAndChannelCodes[] =
+                $updatedCompleteness->getLocale()->getId().'/'.$updatedCompleteness->getChannel()->getId();
         }
 
         $newLocalesChannels = [];
@@ -147,11 +147,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $newCompleteness->getLocale()->getId().'/'.$newCompleteness->getChannel()->getId();
         }
 
-        $completenessesToAdd = array_diff($newLocalesChannels, $currentLocalesChannels);
-        $this->addNewCompletenesses($completenessCollection, $newCompletenesses, $completenessesToAdd);
+        $localeAndChannelCodesOfCompletenessesToAdd = array_diff(
+            $newLocalesChannels,
+            $completenessLocaleAndChannelCodes
+        );
+        $this->addNewCompletenesses(
+            $completenessCollection,
+            $newCompletenesses,
+            $localeAndChannelCodesOfCompletenessesToAdd
+        );
 
-        $completenessesToRemove = array_diff($currentLocalesChannels, $newLocalesChannels);
-        $this->removeOutdatedCompletenesses($completenessCollection, $completenessesToRemove);
+        $localeAndChannelCodesOfCompletenessesToRemove = array_diff(
+            $completenessLocaleAndChannelCodes,
+            $newLocalesChannels
+        );
+        $this->removeOutdatedCompletenesses($completenessCollection, $localeAndChannelCodesOfCompletenessesToRemove);
     }
 
     /**
@@ -176,19 +186,19 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * @param Collection              $completenessCollection
      * @param CompletenessInterface[] $newCompletenesses
-     * @param string[]                $completenessesToAdd
+     * @param string[]                $localeAndChannelCodesOfCompletenessesToAdd
      */
     private function addNewCompletenesses(
         Collection $completenessCollection,
         array $newCompletenesses,
-        array $completenessesToAdd
+        array $localeAndChannelCodesOfCompletenessesToAdd
     ) {
-        foreach ($completenessesToAdd as $completenessToAdd) {
-            list($localeId, $channelId) = explode('/', $completenessToAdd);
+        foreach ($localeAndChannelCodesOfCompletenessesToAdd as $completenessLocaleAndChannel) {
+            [$localeCode, $channelCode] = explode('/', $completenessLocaleAndChannel);
 
             foreach ($newCompletenesses as $newCompleteness) {
-                if ($newCompleteness->getLocale()->getId() === (int)$localeId
-                    && $newCompleteness->getChannel()->getId() === (int)$channelId
+                if ($newCompleteness->getLocale()->getId() === (int) $localeCode
+                    && $newCompleteness->getChannel()->getId() === (int) $channelCode
                 ) {
                     $completenessCollection->add($newCompleteness);
                 }
@@ -198,16 +208,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * @param Collection              $completenessCollection
-     * @param CompletenessInterface[] $completenessesToRemove
+     * @param CompletenessInterface[] $localeAndChannelCodesOfCompletenessesToRemove
      */
-    private function removeOutdatedCompletenesses(Collection $completenessCollection, array $completenessesToRemove)
-    {
-        foreach ($completenessesToRemove as $completenessToRemove) {
-            list($localeId, $channelId) = explode('/', $completenessToRemove);
+    private function removeOutdatedCompletenesses(
+        Collection $completenessCollection,
+        array $localeAndChannelCodesOfCompletenessesToRemove
+    ) {
+        foreach ($localeAndChannelCodesOfCompletenessesToRemove as $completenessLocaleAndChannel) {
+            [$localeCode, $channelCode] = explode('/', $completenessLocaleAndChannel);
 
             foreach ($completenessCollection as $currentCompleteness) {
-                if ($currentCompleteness->getLocale()->getId() === (int)$localeId
-                    && $currentCompleteness->getChannel()->getId() === (int)$channelId
+                if ($currentCompleteness->getLocale()->getId() === (int) $localeCode
+                    && $currentCompleteness->getChannel()->getId() === (int) $channelCode
                 ) {
                     $completenessCollection->removeElement($currentCompleteness);
                 }
