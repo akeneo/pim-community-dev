@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordsForConnectorByReferenceEntityInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
 
@@ -43,7 +44,7 @@ class InMemoryFindRecordsForConnectorByReferenceEntity implements FindRecordsFor
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,
-        int $limit
+        Limit $limit
     ): array {
         $entityRecords = $this->recordsByReferenceEntity[(string) $referenceEntityIdentifier] ?? [];
 
@@ -54,6 +55,6 @@ class InMemoryFindRecordsForConnectorByReferenceEntity implements FindRecordsFor
             }, ARRAY_FILTER_USE_KEY);
         }
 
-        return array_slice(array_values($entityRecords), 0, $limit);
+        return array_slice(array_values($entityRecords), 0, $limit->intValue());
     }
 }
