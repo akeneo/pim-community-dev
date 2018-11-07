@@ -225,5 +225,5 @@ pim_enrich:
                 section:
                     type_specific: Type specific parameters
                 reference_entity:
-                    identifier: Related reference entity linked
+                    identifier: Related reference entity
                     default_label: Please select a reference entity
