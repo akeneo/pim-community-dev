@@ -48,9 +48,9 @@ class FranklinProposalsCreationSubscriberSpec extends ObjectBehavior
     public function it_empties_suggested_data_from_subscriptions($subscriptionrepository): void
     {
         $subscriptionrepository
-            ->emptySuggestedData(['a-fake-subscription-id', 'another-fake-subscription-id'])
+            ->emptySuggestedData([72, 355])
             ->shouldBeCalled();
 
-        $this->emptySuggestedData(new GenericEvent(['a-fake-subscription-id', 'another-fake-subscription-id']));
+        $this->emptySuggestedData(new GenericEvent([72, 355]));
     }
 }

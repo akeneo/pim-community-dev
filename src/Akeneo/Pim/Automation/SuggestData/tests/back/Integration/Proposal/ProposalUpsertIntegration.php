@@ -96,7 +96,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
 
         $this->proposalUpsert->process(
-            [new SuggestedData('fake-subscription', $suggestedValues, $product)],
+            [new SuggestedData($suggestedValues, $product)],
             ProposalAuthor::USERNAME
         );
 
@@ -126,7 +126,7 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->proposalUpsert->process(
-            [new SuggestedData('fake-subscription', $suggestedValues, $product)],
+            [new SuggestedData($suggestedValues, $product)],
             ProposalAuthor::USERNAME
         );
 
@@ -171,7 +171,7 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
         $this->proposalUpsert->process(
-            [new SuggestedData('fake-subscription', $newSuggestedValues, $product)],
+            [new SuggestedData($newSuggestedValues, $product)],
             ProposalAuthor::USERNAME
         );
 
@@ -199,7 +199,7 @@ class ProposalUpsertIntegration extends TestCase
         $this->expectException($exceptionClass);
         $this->proposalUpsert->process(
             [
-                new SuggestedData('a-fake-subscription-id', $invalidValues, $product),
+                new SuggestedData($invalidValues, $product),
             ],
             ProposalAuthor::USERNAME
         );

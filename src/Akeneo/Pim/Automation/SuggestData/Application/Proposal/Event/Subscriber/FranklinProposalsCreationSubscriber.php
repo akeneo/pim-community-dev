@@ -49,11 +49,11 @@ class FranklinProposalsCreationSubscriber implements EventSubscriberInterface
      */
     public function emptySuggestedData(GenericEvent $event): void
     {
-        $subscriptionIds = $event->getSubject();
-        if (!is_array($subscriptionIds)) {
+        $productIds = $event->getSubject();
+        if (!is_array($productIds)) {
             throw new \InvalidArgumentException('Event\'s subject must be an array');
         }
 
-        $this->subscriptionrepository->emptySuggestedData($subscriptionIds);
+        $this->subscriptionrepository->emptySuggestedData($productIds);
     }
 }

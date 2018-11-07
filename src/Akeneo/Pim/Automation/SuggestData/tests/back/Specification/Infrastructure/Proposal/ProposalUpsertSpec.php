@@ -61,9 +61,11 @@ class ProposalUpsertSpec extends ObjectBehavior
         EntityWithValuesDraftInterface $productDraft,
         EntityWithValuesDraftInterface $otherProductDraft
     ): void {
+        $product->getId()->willReturn(42);
         $suggestedData = ['foo' => 'bar'];
         $draftBuilder->build($product, 'PIM.ai')->willReturn($productDraft);
 
+        $otherProduct->getId()->willReturn(56);
         $otherSuggestedData = ['test' => 42];
         $draftBuilder->build($otherProduct, 'PIM.ai')->willReturn($otherProductDraft);
 
@@ -86,14 +88,16 @@ class ProposalUpsertSpec extends ObjectBehavior
             Argument::type(GenericEvent::class)
         )->shouldBeCalledTimes(2);
 
-        $eventDispatcher->dispatch(SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED, Argument::type(GenericEvent::class))
-                        ->shouldBeCalledOnce();
+        $eventDispatcher->dispatch(
+            SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
+            new GenericEvent([42, 56])
+        )->shouldBeCalledOnce();
         $cacheClearer->clear()->shouldBeCalledOnce();
 
         $this->process(
             [
-                new SuggestedData('123456', $suggestedData, $product->getWrappedObject()),
-                new SuggestedData('654321', $otherSuggestedData, $otherProduct->getWrappedObject()),
+                new SuggestedData($suggestedData, $product->getWrappedObject()),
+                new SuggestedData($otherSuggestedData, $otherProduct->getWrappedObject()),
             ],
             'PIM.ai'
         )->shouldReturn(null);

@@ -77,15 +77,15 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
     ): void {
         $subscription1->getSubscriptionId()->shouldNotBeCalled();
         $suggestedDataFactory->fromSubscription($subscription1)->willReturn(
-            new SuggestedData('123', ['foo' => 'bar'], new Product())
+            new SuggestedData(['foo' => 'bar'], new Product())
         );
         $subscription2->getSubscriptionId()->willReturn('abc');
         $suggestedDataFactory->fromSubscription($subscription2)->willReturn(
-            new SuggestedData('abc', ['bar' => 'baz'], new Product())
+            new SuggestedData(['bar' => 'baz'], new Product())
         );
         $subscription3->getSubscriptionId()->willReturn('def');
         $suggestedDataFactory->fromSubscription($subscription3)->willReturn(
-            new SuggestedData('def', ['test' => 42], new Product())
+            new SuggestedData(['test' => 42], new Product())
         );
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);

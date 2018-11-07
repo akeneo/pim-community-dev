@@ -20,9 +20,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 final class SuggestedData
 {
-    /** @var string */
-    private $subscriptionId;
-
     /** @var array */
     private $suggestedValues;
 
@@ -30,26 +27,15 @@ final class SuggestedData
     private $product;
 
     /**
-     * @param string $subscriptionId
      * @param array $suggestedValues
      * @param ProductInterface $product
      */
     public function __construct(
-        string $subscriptionId,
         array $suggestedValues,
         ProductInterface $product
     ) {
-        $this->subscriptionId = $subscriptionId;
         $this->suggestedValues = $suggestedValues;
         $this->product = $product;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubscriptionId(): string
-    {
-        return $this->subscriptionId;
     }
 
     /**

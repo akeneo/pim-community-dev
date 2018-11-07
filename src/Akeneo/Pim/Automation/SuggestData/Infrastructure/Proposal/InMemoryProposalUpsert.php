@@ -55,7 +55,7 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
 
             $key = sprintf('%s-%s', $product->getIdentifier(), $author);
             $this->drafts[$key] = $product->getValues()->toArray();
-            $processed[] = $data->getSubscriptionId();
+            $processed[] = $data->getProduct()->getId();
         }
         $this->eventDispatcher->dispatch(
             SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,

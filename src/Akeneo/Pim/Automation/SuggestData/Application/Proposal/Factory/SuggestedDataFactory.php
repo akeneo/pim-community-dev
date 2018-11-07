@@ -58,7 +58,6 @@ class SuggestedDataFactory
         }
 
         return new WriteSuggestedData(
-            $subscription->getSubscriptionId(),
             $suggestedValues,
             $product
         );

@@ -25,14 +25,13 @@ class SuggestedDataSpec extends ObjectBehavior
 {
     public function it_is_a_write_model_for_suggested_data(): void
     {
-        $this->beConstructedWith('abc', ['abc' => 'def'], new Product());
+        $this->beConstructedWith(['abc' => 'def'], new Product());
         $this->shouldBeAnInstanceOf(SuggestedData::class);
     }
 
     public function it_exposes_its_properties(ProductInterface $product): void
     {
-        $this->beConstructedWith('abc-def', ['foo' => 'bar'], $product);
-        $this->getSubscriptionId()->shouldReturn('abc-def');
+        $this->beConstructedWith(['foo' => 'bar'], $product);
         $this->getProduct()->shouldReturn($product);
         $this->getSuggestedValues()->shouldReturn(['foo' => 'bar']);
     }

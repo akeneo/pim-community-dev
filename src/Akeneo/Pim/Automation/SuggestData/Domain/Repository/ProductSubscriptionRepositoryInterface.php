@@ -46,7 +46,7 @@ interface ProductSubscriptionRepositoryInterface
     public function delete(ProductSubscription $subscription): void;
 
     /**
-     * @param int[] $subscriptionIds
+     * @param int[] $productIds
      */
-    public function emptySuggestedData(array $subscriptionIds): void;
+    public function emptySuggestedData(array $productIds): void;
 }

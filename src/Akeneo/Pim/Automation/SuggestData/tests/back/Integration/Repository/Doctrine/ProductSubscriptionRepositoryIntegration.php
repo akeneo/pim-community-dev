@@ -197,7 +197,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $this->insertSubscription($product2->getId(), 'other-subscription', ['bar' => 'baz']);
 
         $repo = $this->getRepository();
-        $repo->emptySuggestedData(['subscription_to_empty']);
+        $repo->emptySuggestedData([$product1->getId()]);
 
         Assert::assertEmpty($repo->findOneByProductId($product1->getId())->getSuggestedData()->getValues());
         Assert::assertNotEmpty($repo->findOneByProductId($product2->getId())->getSuggestedData()->getValues());

@@ -104,7 +104,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findOneByProductId(42)->shouldReturn(null);
     }
 
-    public function it_empties_suggested_data_for_specified_subscriptions(
+    public function it_empties_suggested_data_for_specified_ids(
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
@@ -114,7 +114,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->save($subscription);
         Assert::notEmpty($subscription->getSuggestedData()->getValues());
 
-        $this->emptySuggestedData(['fake-subscription-id']);
+        $this->emptySuggestedData([42]);
         Assert::isEmpty($subscription->getSuggestedData()->getValues());
     }
 }

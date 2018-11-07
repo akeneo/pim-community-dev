@@ -41,20 +41,22 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
     ): void {
         $values->toArray()->willReturn(['foo' => 'bar', 'bar' => 'baz']);
         $product->getIdentifier()->willReturn('test');
+        $product->getId()->willReturn(343);
         $product->getValues()->willReturn($values);
-        $suggestedData = new SuggestedData('subscription-1', ['foo' => 'bar'], $product->getWrappedObject());
+        $suggestedData = new SuggestedData(['foo' => 'bar'], $product->getWrappedObject());
 
         $values2->toArray()->willReturn(['test' => 0]);
         $product2->getIdentifier()->willReturn('test2');
+        $product2->getId()->willReturn(1556);
         $product2->getValues()->willReturn($values2);
-        $suggestedData2 = new SuggestedData('subscription-2', ['test' => 42], $product2->getWrappedObject());
+        $suggestedData2 = new SuggestedData(['test' => 42], $product2->getWrappedObject());
 
         $productUpdater->update($product, ['values' => ['foo' => 'bar']])->shouldBeCalled();
         $productUpdater->update($product2, ['values' => ['test' => 42]])->shouldBeCalled();
 
         $eventDispatcher->dispatch(
             SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
-            new GenericEvent(['subscription-1', 'subscription-2'])
+            new GenericEvent([343, 1556])
         )->shouldBeCalled();
 
         $this->process([$suggestedData, $suggestedData2], 'an_author')->shouldReturn(null);
