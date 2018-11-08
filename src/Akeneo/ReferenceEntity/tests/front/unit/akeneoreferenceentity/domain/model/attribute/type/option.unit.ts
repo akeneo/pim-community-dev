@@ -1,6 +1,6 @@
 import {ConcreteOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import {createIdentifier as createReferenceEntityIdentifier,} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
@@ -18,19 +18,22 @@ const normalizedFavoriteColor = {
   options: [
     {
       code: 'red',
-      labelCollection: {en_US: 'Red'},
+      labels: {en_US: 'Red'},
     },
     {
       code: 'green',
-      labelCollection: {en_US: 'Green'},
-    }
+      labels: {en_US: 'Green'},
+    },
   ],
 };
 
 describe('akeneo > attribute > domain > model > attribute > type --- OptionAttribute', () => {
   test('I can create a ConcreteOptionAttribute from normalized', () => {
-    expect(ConcreteOptionAttribute.createFromNormalized(normalizedFavoriteColor).normalize()).toEqual(normalizedFavoriteColor);
+    expect(ConcreteOptionAttribute.createFromNormalized(normalizedFavoriteColor).normalize()).toEqual(
+      normalizedFavoriteColor
+    );
   });
+
   test('I cannot create an invalid ConcreteOptionAttribute', () => {
     expect(() => {
       new ConcreteOptionAttribute(

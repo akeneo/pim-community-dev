@@ -6,10 +6,16 @@ import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minima
 
 const normalizedColors = {
   code: 'red',
-  labelCollection: {en_US: 'Red'},
+  labels: {en_US: 'Red'},
 };
 
 describe('akeneo > attribute > domain > model > attribute > type > option --- Option', () => {
+  test('I can create an Option', () => {
+    expect(Option.create(createCode('red'), createLabelCollection({en_US: 'Red'})).normalize()).toEqual(
+      normalizedColors
+    );
+  });
+
   test('I can create an Option from normalized', () => {
     expect(Option.createFromNormalized(normalizedColors).normalize()).toEqual(normalizedColors);
   });
