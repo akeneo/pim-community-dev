@@ -220,10 +220,10 @@ pim_enrich:
         attribute:
             property:
                 type:
-                    akeneo_reference_entity_collection: Reference entity collection
-                    akeneo_reference_entity: Reference entity
+                    akeneo_reference_entity_collection: Reference entity multiple link
+                    akeneo_reference_entity: Reference entity simple link
                 section:
                     type_specific: Type specific parameters
                 reference_entity:
-                    identifier: Reference entity
+                    identifier: Related reference entity
                     default_label: Please select a reference entity
