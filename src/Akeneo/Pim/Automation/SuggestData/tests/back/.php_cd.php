@@ -29,6 +29,7 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\Enrichment\Component',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
 
             // Events
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',

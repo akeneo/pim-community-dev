@@ -6,7 +6,9 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,9 +16,11 @@ use PhpSpec\ObjectBehavior;
  */
 class SuggestedDataNormalizerSpec extends ObjectBehavior
 {
-    public function let(AttributeRepositoryInterface $attributeRepository): void
-    {
-        $this->beConstructedWith($attributeRepository);
+    public function let(
+        AttributeRepositoryInterface $attributeRepository,
+        MeasureConverter $measureConverter
+    ): void {
+        $this->beConstructedWith($attributeRepository, $measureConverter);
     }
 
     public function it_is_a_suggested_data_normalizer(): void
@@ -57,20 +61,32 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
              ->during('normalize', [new SuggestedData($suggestedData)]);
     }
 
-    public function it_normalizes_suggested_data($attributeRepository): void
-    {
+    public function it_normalizes_suggested_data(
+        AttributeInterface $attribute,
+        $attributeRepository,
+        $measureConverter
+    ): void {
         $suggestedData = [
             'foo' => 'bar',
             'bar' => '0',
             'baz' => 'option1,option2',
+            'processor' => '1 GIGAHERTZ',
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz', 'processor'])->willReturn(
             [
                 'foo' => 'pim_catalog_text',
                 'bar' => 'pim_catalog_boolean',
                 'baz' => 'pim_catalog_multiselect',
+                'processor' => 'pim_catalog_metric',
             ]
         );
+
+        $attribute->getMetricFamily()->willReturn('Frequency');
+        $attribute->getDefaultMetricUnit()->willReturn('MEGAHERTZ');
+        $attributeRepository->findOneByIdentifier('processor')->willReturn($attribute);
+
+        $measureConverter->setFamily('Frequency')->shouldBeCalled();
+        $measureConverter->convert('GIGAHERTZ', 'MEGAHERTZ', 1)->willReturn('1000');
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -93,6 +109,16 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                         'scope' => null,
                         'locale' => null,
                         'data' => ['option1', 'option2'],
+                    ],
+                ],
+                'processor' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => [
+                            'amount' => '1000',
+                            'unit' => 'MEGAHERTZ',
+                        ],
                     ],
                 ],
             ]
