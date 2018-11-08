@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
@@ -113,7 +114,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
 
         foreach ($processedAssets as $asset) {
             $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
-            $this->getCompletenessGenerator()->scheduleForAsset($asset);
+            $this->getCompletenessRemover()->removeForAsset($asset);
         }
 
         $output->writeln('<info>Done!</info>');
@@ -130,10 +131,21 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
+     * @deprecated will be remove in 3.0
+     *
      * @return CompletenessGeneratorInterface
      */
     protected function getCompletenessGenerator()
     {
         return $this->getContainer()->get('pim_catalog.completeness.generator');
+    }
+
+    /**
+     *
+     * @return CompletenessRemoverInterface
+     */
+    protected function getCompletenessRemover()
+    {
+        return $this->getContainer()->get('pimee_product_asset.remover.completeness');
     }
 }
