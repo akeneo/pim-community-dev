@@ -63,10 +63,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
-        $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
-        $inMemoryFindAttributesDetailsQuery->save($this->createFavoriteColorAttribute());
-        $inMemoryFindAttributesDetailsQuery->save($this->createColorsAttribute());
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok/name_portrait.json');
     }
 
