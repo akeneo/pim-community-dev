@@ -23,7 +23,7 @@ import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-ent
 import {updateChannels} from 'akeneoreferenceentity/application/action/channel';
 import {updateFilter} from 'akeneoreferenceentity/application/event/search';
 import {getFilter} from 'akeneoreferenceentity/tools/filter';
-import {attributeListUpdated} from 'akeneoreferenceentity/domain/event/attribute/list';
+import {attributeListGotUpdated} from 'akeneoreferenceentity/application/action/attribute/list';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -59,7 +59,7 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateFilter('full_text', '=', userSearch));
         this.store.dispatch(updateRecordResults());
-        this.store.dispatch(attributeListUpdated(referenceEntityResult.attributes) as any);
+        this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
