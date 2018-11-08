@@ -57,7 +57,7 @@ class OptionsUpdaterSpec extends ObjectBehavior
         $this->__invoke($optionAttribute, $optionsEditCommand)->shouldReturn($optionAttribute);
     }
 
-    function it_empties_the_attribute_options(OptionAttribute $optionAttribute)
+    function it_empties_the_options(OptionAttribute $optionAttribute)
     {
         $editMaxLength = new EditOptionsCommand();
         $editMaxLength->options = [];

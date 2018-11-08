@@ -20,6 +20,10 @@ export default class Code {
   public stringValue(): string {
     return this.code;
   }
+
+  public normalize(): string {
+    return this.code;
+  }
 }
 
 export const createCode = Code.create;

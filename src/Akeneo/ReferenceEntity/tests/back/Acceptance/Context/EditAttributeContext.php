@@ -1119,7 +1119,7 @@ class EditAttributeContext implements Context
 
         $this->updateAttribute([
             'identifier' => (string) $identifier,
-            'attribute_options' => [
+            'options' => [
                 [
                     'code' => $optionCode,
                     'labels' => [ $locale => $label ]
@@ -1137,14 +1137,14 @@ class EditAttributeContext implements Context
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
-        Assert::assertNotEmpty($attribute->normalize()['attribute_options']);
+        Assert::assertNotEmpty($attribute->normalize()['options']);
         Assert::assertEquals([
                 [
                     'code'   => $optionCode,
                     'labels' => [$locale => $label],
                 ],
             ],
-            $attribute->normalize()['attribute_options']
+            $attribute->normalize()['options']
         );
     }
 
@@ -1157,7 +1157,7 @@ class EditAttributeContext implements Context
 
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
-        Assert::assertCount($optionsCount, $attribute->normalize()['attribute_options']);
+        Assert::assertCount($optionsCount, $attribute->normalize()['options']);
     }
 
     /**
@@ -1202,7 +1202,7 @@ class EditAttributeContext implements Context
 
         $this->updateAttribute([
             'identifier' => (string) $identifier,
-            'attribute_options' => $tooManyOptions
+            'options' => $tooManyOptions
         ]);
     }
 
@@ -1230,7 +1230,7 @@ class EditAttributeContext implements Context
 
         $this->updateAttribute([
             'identifier' => (string) $identifier,
-            'attribute_options' => $duplicates
+            'options' => $duplicates
         ]);
     }
 
@@ -1247,7 +1247,7 @@ class EditAttributeContext implements Context
 
         $this->updateAttribute([
             'identifier' => (string) $identifier,
-            'attribute_options' => [
+            'options' => [
                 [
                     'code'   => json_decode($optionCode, true),
                     'labels' => [],
@@ -1269,7 +1269,7 @@ class EditAttributeContext implements Context
 
         $this->updateAttribute([
             'identifier' => (string) $identifier,
-            'attribute_options' => [
+            'options' => [
                 [
                     'code'   => str_repeat('a', 256),
                     'labels' => [],
@@ -1291,7 +1291,7 @@ class EditAttributeContext implements Context
 
         $this->updateAttribute([
             'identifier' => (string) $identifier,
-            'attribute_options' => [
+            'options' => [
                 [
                     'code'   => 'option_code',
                     'labels' => [ 'fr_FR' => json_decode($invalidLabel, true)],

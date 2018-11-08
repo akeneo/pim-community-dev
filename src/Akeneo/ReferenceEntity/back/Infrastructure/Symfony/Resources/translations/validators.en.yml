@@ -30,7 +30,7 @@ pim_reference_entity:
             limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'
     attribute:
         validation:
-            attribute_options:
+            options:
                 duplicated: 'The option "%option_code%" already exists'
                 too_many: 'Expected to have {{ limit }} at most, found {{ count }}'
                 code:

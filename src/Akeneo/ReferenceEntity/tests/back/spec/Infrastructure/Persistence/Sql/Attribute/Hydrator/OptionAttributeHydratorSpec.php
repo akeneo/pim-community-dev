@@ -48,7 +48,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'additional_properties' => json_encode([
-                'attribute_options' => [],
+                'options' => [],
             ]),
         ]);
         $optionAttribute->shouldBeAnInstanceOf(OptionAttribute::class);
@@ -62,7 +62,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'option',
-            'attribute_options' => []
+            'options' => []
         ]);
     }
 
@@ -79,7 +79,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'additional_properties' => json_encode([
-                'attribute_options' => [
+                'options' => [
                     [
                         'code' => 'red',
                         'labels' => [
@@ -106,7 +106,7 @@ class OptionAttributeHydratorSpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => true,
             'type' => 'option',
-            'attribute_options' => [
+            'options' => [
                 [
                     'code' => 'red',
                     'labels' => [
