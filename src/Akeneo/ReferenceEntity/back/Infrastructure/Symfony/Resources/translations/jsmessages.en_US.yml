@@ -172,7 +172,7 @@ pim_reference_entity:
                 code: Code (required)
                 label: Label
                 type: Attribute type
-                record_type: Record type
+                record_type: Related reference entity
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
                 is_required: Required for completeness

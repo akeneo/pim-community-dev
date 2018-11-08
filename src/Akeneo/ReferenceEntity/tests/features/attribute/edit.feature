@@ -30,11 +30,6 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: List all attributes of a reference entity
     Given a valid reference entity
-    And the following attributes for the reference entity "designer":
-      | code     | type  | labels                                  |
-      | name     | text  | {"en_US": "Name", "fr_FR": "Name"}      |
-      | bio      | text  | {"en_US": "Bio", "fr_FR": "Biographie"} |
-      | portrait | image | {"en_US": "Portrait", "fr_FR": "Image"} |
     When the user asks for the reference entity "designer"
     And the user edit the attribute "name"
     And the user edit the attribute "portrait"
