@@ -75,8 +75,8 @@ class AttributeMapping
             );
         }
         $this->targetAttributeType = $targetAttributeType;
-        $this->pimAttributeCode = $pimAttributeCode;
-        $this->status = (null === $this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
+        $this->pimAttributeCode = empty($pimAttributeCode) ? null : $pimAttributeCode;
+        $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
     }
 
     /**
