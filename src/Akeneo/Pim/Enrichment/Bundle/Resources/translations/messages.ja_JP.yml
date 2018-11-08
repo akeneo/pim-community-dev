@@ -1,3 +1,74 @@
 No products to remove: 削除する商品はありません
 "dot (.)": ドット (.)
 "comma (,)": コンマ ()
+pim_enrich:
+  category:
+    tab:
+      property.title: プロパティ
+      history.title: 履歴
+    suggest_selection: 左側のカテゴリから選択してください
+    or: または
+    create_new: 新しいカテゴリを作成
+  mass_edit_action:
+    limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
+    product:
+      page_title: 製品
+      page_subtitle: 一括編集(1件)|一括編集(%count% 件)
+      title: 操作を選択
+      subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      steps:
+        first: 商品を選択してください
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+    change-status:
+      label: ステータスの変更
+      description: 選択した製品は有効または無効になります。
+      success_flash: 製品の状態を変更しました
+      launched_flash: 状態を変更する一括操作が開始されています。終了後に通知されます。
+    edit-common-attributes:
+      label: 属性を編集
+      description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
+      empty: 編集する属性を選択してください
+      success_flash: 製品を更新する状態が現在実行されています。
+      message:
+        warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
+        invalid_attribute: 選択された製品とスキップされた属性に対し、コード"attribute_code"を持つ属性は共通ではない。
+        no_valid_attribute: 選択した属性のいずれも、この製品に適用できません。
+    classify-add:
+      label: カテゴリーに追加
+      description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
+      success_flash: 選択したカテゴリに製品が分類されました
+      launched_flash: '"カテゴリに追加"一括操作が開始されています。終了後に通知されます。'
+    classify-move:
+      label: カテゴリ間を移動
+      description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
+      success_flash: 選択したカテゴリに製品が移動されました
+      launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
+    classify-remove:
+      label: カテゴリから削除
+      description: 次のカテゴリから製品が削除されます。
+      success_flash: 選択されたカテゴリから製品が削除されました
+      launched_flash: カテゴリから削除する一括操作が開始されています。終了後に通知されます。
+    change-family:
+      label: ファミリーの変更
+      description: 選択した製品のファミリーを選択したファミリーに変更します
+      success_flash: 選択した製品のファミリーを変更しました
+      launched_flash: ファミリーを変更する一括操作が開始されています。終了後に通知されます。
+    add-to-groups:
+      label: グループに追加
+      description: 選択した製品を追加するグループを選択します
+      success_flash: 製品を選択したグループに追加しました
+      launched_flash: カテゴリに追加する一括操作が開始されています。終了後に通知されます。
+      no_group: 現時点でグループはありません。グループを作成することから始めてください。
+    set-attribute-requirements:
+      label: 属性の要件を設定
+      description: 以下の属性要件が選択したファミリーに適用されます
+      success_flash: 選択したファミリーに適用された属性要件
+      launched_flash: 属性の要件を設定する一括操作が開始されています。終了後に通知されます。
+    mass_action:
+      quick_export:
+        launched_flash: 製品をエクスポートするジョブが現在実行されています。
+category:
+  overview: カテゴリ

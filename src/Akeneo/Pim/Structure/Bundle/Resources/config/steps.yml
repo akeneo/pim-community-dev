@@ -298,6 +298,21 @@ services:
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
 
+    pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'ensure_attribute_group_order'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.csv_attribute_group_import.ensure_attribute_group_order'
+
+    pim_connector.step.xlsx_attribute_group_import.ensure_attribute_group_order:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'ensure_attribute_group_order'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.xlsx_attribute_group_import.ensure_attribute_group_order'
 
     ### Group type
     pim_connector.step.csv_group_type_export.export:
@@ -340,3 +355,14 @@ services:
             - '@pim_connector.processor.normalization.group_type'
             - '@pim_connector.writer.file.xlsx_group_type'
             - 10
+
+    pim_enrich.step.set_attribute_requirements.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.connector.reader.mass_edit.family'
+            - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
+            - '@pim_connector.writer.database.family'
+            - '%pim_job_product_batch_size%'

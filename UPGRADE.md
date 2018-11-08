@@ -1,11 +1,193 @@
 # UPGRADE FROM 2.3 TO 3.0
 
+## Disclaimer
+
+> Please check that you're using Akeneo PIM v2.3.
+
+> We're assuming that you created your project from the standard distribution.
+
+> This documentation helps to migrate projects based on the Community Edition.
+
+> Please perform a backup of your database before proceeding to the migration. You can use tools like [mysqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html).
+
+> Please perform a backup of your codebase if you don't use a VCS (Version Control System).
+
+## PHP Version
+
+Akeneo PIM v3.0 is now using PHP 7.2.
+
+## The main changes of the 3.0 version
+
+Main changes of the 3.0 are related to the code organization. In order to help the product team grow and to deliver more features, we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
+
+In a nutshell, we went from
+
+```bash
+$ tree src/ -d -L 3
+
+src/
+├── Akeneo
+│   ├── Bundle
+│   │   └── ...
+│   ├── Component
+│   │   └── ...
+└── Pim
+    ├── Bundle
+    │   ├── AnalyticsBundle
+    │   ├── ApiBundle
+    │   ├── CatalogBundle
+    │   ├── CatalogVolumeMonitoringBundle
+    │   ├── CommentBundle
+    │   ├── ConnectorBundle
+    │   ├── DashboardBundle
+    │   ├── DataGridBundle
+    │   ├── EnrichBundle
+    │   ├── FilterBundle
+    │   ├── ImportExportBundle
+    │   ├── InstallerBundle
+    │   ├── LocalizationBundle
+    │   ├── NavigationBundle
+    │   ├── NotificationBundle
+    │   ├── PdfGeneratorBundle
+    │   ├── ReferenceDataBundle
+    │   ├── UIBundle
+    │   ├── UserBundle
+    │   └── VersioningBundle
+    └── Component
+        ├── Api
+        ├── Catalog
+        ├── CatalogVolumeMonitoring
+        ├── Connector
+        ├── Enrich
+        ├── ReferenceData
+        └── User
+```
+
+to something like
+
+```bash
+$ tree src/ -d -L 4
+
+src/
+└── Akeneo
+   ├── Channel
+   │   ├── Bundle
+   │   └── Component
+   ├── Pim
+   │   ├── Enrichment
+   │   │   ├── Bundle
+   │   │   └── Component
+   │   └── Structure
+   │       ├── Bundle
+   │       └── Component
+   ├── Platform
+   │   ├── Bundle
+   │   │   └── ...
+   │   ├── Component
+   │   │   └── ...
+   │   └── config
+   ├── Tool
+   │   ├── Bundle
+   │   │   └── ...
+   │   └── Component
+   │       └── ...
+   └── UserManagement
+        ├── Bundle
+        └── Component
+```
+
+This change lead us to move all the classes of the PIM (`sed` commands are provided in the section _Migrate your custom code_ of this upgrade guide). It has also a small impact on the configuration files as described in the section *Migrate your standard project*.
+
+If you want to know more about this topic, you can read the [blog posts](#) we have written. You can also refer to [the definitions of each of those new folders](https://github.com/akeneo/pim-community-dev/blob/master/internal_doc/ARCHITECTURE.md#you-said-bounded-contexts).
+
+TODO: link to blog post
+
 ## Migrate your standard project
+
+/!\ Before starting the migration process, we advise you to stop the job queue consumer daemon and start it again only when the migration process is finished.
+
+TODO: add command to stop the daemon...
+
+To give you a quick overview of the changes made to a standard project, you can check on [Github](https://github.com/akeneo/pim-community-standard/compare/2.3...standard-for-3dot0).
+
+TODO: change the link!!
+
+1. Download the latest standard edition from the website [PIM community standard](http://www.akeneo.com/download/) and extract:
+
+    ```bash
+    wget http://download.akeneo.com/pim-community-standard-v3.0-latest.tar.gz
+    tar -zxf pim-community-standard-v3.0-latest.tar.gz
+    cd pim-community-standard/
+    ```
+
+2. Update the configuration files:
+
+    First, we'll consider you have a `$PIM_DIR` variable:
+
+    ```bash
+    export PIM_DIR=/path/to/your/current/pim/installation
+    ```
+    
+    Then copy the following files, normally you shouldn't have made a single change to them in your project. If it's the case, don't forget to update them with your changes:
+
+    ```bash
+    cp .env.dist $PIM_DIR/
+    cp .gitignore $PIM_DIR/
+    cp docker-compose.override.yml.dist $PIM_DIR/
+    cp docker-compose.yml $PIM_DIR/
+
+    cp app/PimRequirements.php $PIM_DIR/app/
+    cp app/config/config_behat.yml $PIM_DIR/app/config/
+    cp app/config/config_test.yml $PIM_DIR/app/config/
+    cp app/config/pim_parameters.yml $PIM_DIR/app/config/
+    cp app/config/security.yml $PIM_DIR/app/config/
+    cp app/config/security_test.yml $PIM_DIR/app/config/
+    ```
+    
+    At this step, most of the configuration files have been updated. But we still miss a few that are detailed in the next steps.
 
 3. Update your **app/config/config.yml**
 
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+
+    ```bash
+    cp app/config/config.yml $PIM_DIR/app/config
+    # then add your own changes
+    ```
+
+    Or you can follow the detailed list of changes:
+    
+        
+    * The configuration file `pim.yml` is not located in the *PimEnrichBundle* anymore:
+
+        v2.x
+        ```
+        imports:
+            - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
+        ```
+
+        v3.0
+        ```
+        imports:
+            - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
+        ```    
+    
+    * The translator now expects the language `en_US`:
+
+        v2.x
+        ```
+        framework:
+            translator:      { fallback: en }
+        ```
+
+        v3.0
+        ```
+        framework:
+            translator:      { fallback: en_US }
+        ```
+             
     * The reference data configuration has been moved in the Pim Structure. Therefore, you must update your reference data configuration. 
-    The key `pim_reference_data` is replaced by `akeneo_pim_structure:reference_data`:
+    The key `pim_reference_data` is replaced by `akeneo_pim_structure.reference_data`:
 
         v2.x
         ```
@@ -31,23 +213,179 @@
                     type: simple
         ```
 
-4. Update your **app/AppKernel.php**:
+    * The key `pim_enrich.max_products_category_removal` has been removed. Please use the container parameter `max_products_category_removal` instead if needed.
 
-    * Remove the following bundles:
-        - TODO
+4. Update your **app/config/routing.yml**
 
-    * For Enterprise Edition, you also need to remove the following bundle:
-        - TODO
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+
+    ```bash
+    cp app/config/routing.yml $PIM_DIR/app/config
+    # then add your own changes
+    ```
+
+    Or you can follow the detailed list of changes:
+
+    * The following route configurations have been removed:
+        - `pim_enrich`
+        - `pim_comment`
+        - `pim_pdf_generator`
+        - `pim_localization`
+        - `pim_reference_data`
+        - `oro_user`
         
-    * Add the following bundles:
-        - TODO
+    * The following route configurations have been added:
         
-    * For Enterprise Edition, you also need to add the following bundle:
-        - TODO
+        ```yaml
+        akeneo_channel:
+            resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
+            prefix:   /
+         
+         akeneo_pim_structure:
+            resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
+         
+         akeneo_pim_enrichment:
+            resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
+        ```
+        
+    * The following have been updated:
+        
+        ```yaml
+        oro_default:
+            path:  /
+            defaults:
+                template:    PimEnrichBundle::index.html.twig
+                _controller: FrameworkBundle:Template:template
+        ```
+        
+        to
+        
+        ```yaml
+        oro_default:
+            path:  /
+            defaults:
+                template:    PimUIBundle::index.html.twig
+                _controller: FrameworkBundle:Template:template
+        ```
 
+5. Update your **app/config/security.yml**:
+
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+
+    * The following have been updated:
+    
+    The parameter `security.encoders` has moved from
+     
+    ```yaml
+    encoders:
+        Pim\Bundle\UserBundle\Entity\User: sha512
+    ```
+    
+    to
+    
+    ```yaml
+    encoders:
+        Akeneo\UserManagement\Component\Model\User: sha512
+    ```
+        
+5. Update your **app/AppKernel.php**:
+
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+
+    ```bash
+    cp app/AppKernel.php $PIM_DIR/app/
+    # then add your own bundles
+    ```
+    Or you can follow the detailed list of changes:
+
+    * The following bundles have been renamed:
+        - `Pim\Bundle\FilterBundle\PimFilterBundle` now is `Oro\Bundle\PimFilterBundle\PimFilterBundle`
+        - `Pim\Bundle\DataGridBundle\PimDataGridBundle` now is `Oro\Bundle\PimDataGridBundle\PimDataGridBundle`
+        - `Pim\Bundle\UserBundle\PimUserBundle` now is `Akeneo\UserManagement\Bundle\PimUserBundle`
+        - `Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle` now is `Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle`
+        - `Pim\Bundle\DashboardBundle\PimDashboardBundle` now is `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
+        - `Pim\Bundle\ImportExportBundle\PimImportExportBundle` now is `Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle`
+        - `Pim\Bundle\InstallerBundle\PimInstallerBundle` now is `Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle`
+        - `Pim\Bundle\NotificationBundle\PimNotificationBundle` now is `Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle`
+        - `Pim\Bundle\UIBundle\PimUIBundle` now is `Akeneo\Platform\Bundle\UIBundle\PimUIBundle`
+        - `Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle` now is `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle`
+        - `Pim\Bundle\VersioningBundle\PimVersioningBundle` now is `Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle`
+        - `Pim\Bundle\ApiBundle\PimApiBundle` now is `Akeneo\Tool\Bundle\ApiBundle\PimApiBundle`
+        - `Pim\Bundle\ConnectorBundle\PimConnectorBundle` now is `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
+        - `Akeneo\Bundle\BatchBundle\AkeneoBatchBundle` now is `Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle`
+        - `Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle` now is `Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle`
+        - `Akeneo\Bundle\BufferBundle\AkeneoBufferBundle` now is `Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle`
+        - `Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle` now is `Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle`
+        - `Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle` now is `Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle`
+        - `Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle` now is `Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle`
+        - `Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle` now is `Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle`
+        - `Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle` now is `Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle`
+
+    * The following bundles have been removed:
+        - `Pim\Bundle\NavigationBundle\PimNavigationBundle`
+        - `Pim\Bundle\CatalogBundle\PimCatalogBundle`
+        - `Pim\Bundle\CommentBundle\PimCommentBundle`
+        - `Pim\Bundle\EnrichBundle\PimEnrichBundle`
+        - `Pim\Bundle\LocalizationBundle\PimLocalizationBundle`
+        - `Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle`
+        - `Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle`
+        - `Oro\Bundle\UserBundle\OroUserBundle`
+
+    * The following bundles have been added:
+        - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
+        - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
+        - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
+    
+6. Update your dependencies:
+
+    The easiest way to update your `composer.json` is to copy/paste from the latest standard edition and add your custom dependencies.
+    
+    ```bash
+    cp composer.json $PIM_DIR/
+    # then add your own dependencies
+    ```
+    
+    The easiest way to update your `package.json` is to copy/paste from the latest standard edition and add your custom dependencies.
+    
+    ```bash
+    cp package.json $PIM_DIR/
+    # then add your own dependencies
+    ```
+    
+    Now we are ready to update the backend dependencies:
+    
+    ```bash
+    cd $PIM_DIR
+    php -d memory_limit=3G composer update
+    ```
+    
+     **This step will copy the upgrades folder from `pim-community-dev/` to your Pim project root in order to migrate.**
+    If you have custom code in your project, this step may raise errors in the "post-script" command.
+    In this case, go to the chapter "Migrate your custom code" before running the database migration.
+
+    And we also have to update the frontend dependencies:
+    
+    ```bash
+    yarn install
+    ```
+
+7. Migrate your database:
+
+    ```bash
+    rm -rf var/cache
+    bin/console doctrine:migration:migrate --env=prod
+    ```
+
+8. Then re-generate the PIM assets:
+
+    ```bash
+    bin/console pim:installer:assets --symlink --clean --env=prod
+    yarn run webpack
+    ```
+    
 ## Database charset migration
 
-MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 
 ## Migrate your custom code
 
@@ -332,21 +670,21 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Update
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\Remover\\FamilyVariantRemover/Akeneo\\Pim\\Structure\\Component\\Remover\\FamilyVariantRemover/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\Remover\\FamilyRemover/Akeneo\\Pim\\Structure\\Component\\Remover\\FamilyRemover/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Query/Akeneo\\Pim\\Enrichment\\Component\\Product\\Query/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\DateValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\DateValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\MediaValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\MediaValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\MetricValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\MetricValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\OptionsValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\OptionsValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\OptionValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\OptionValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\PriceCollectionValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\PriceCollectionValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\ScalarValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\ScalarValueFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\ValueFactoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\ValueFactoryInterface/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\GroupFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\GroupFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\MetricFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\MetricFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\PriceFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\PriceFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductUniqueDataFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ProductUniqueDataFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueCollectionFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueCollectionFactoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactoryInterface/g
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\DateValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\DateValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\MediaValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\MediaValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\MetricValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\MetricValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\OptionsValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\OptionsValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\OptionValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\OptionValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\PriceCollectionValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\PriceCollectionValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\ScalarValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\ScalarValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\ValueFactoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\ValueFactoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\GroupFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\GroupFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\MetricFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\MetricFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\PriceFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\PriceFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductUniqueDataFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ProductUniqueDataFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueCollectionFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueCollectionFactoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Manager\\AttributeValuesResolver/Akeneo\\Pim\\Enrichment\\Component\\Product\\Manager\\AttributeValuesResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Manager\\AttributeValuesResolverInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Manager\\AttributeValuesResolverInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Manager\\CompletenessManager/Akeneo\\Pim\\Enrichment\\Component\\Product\\Manager\\CompletenessManager/g'
@@ -583,16 +921,16 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Buffer/Akene
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Console/Akeneo\\Tool\\Component\\Console/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Localization/Akeneo\\Tool\\Component\\Localization/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Versioning/Akeneo\\Tool\\Component\\Versioning/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\CategoryNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Category\\Normalizer\\Versioning/\\CategoryNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\ProductNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductModelNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\ProductModelNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\GroupNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\GroupNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\TranslationNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\TranslationNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ValueNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\ValueNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\DateTimeNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\DateTimeNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\FileNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\FileNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\MetricNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\MetricNormalizer/g`
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\PriceNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\PriceNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\CategoryNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Category\\Normalizer\\Versioning/\\CategoryNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\ProductNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductModelNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\ProductModelNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\GroupNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\GroupNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\TranslationNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\TranslationNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ValueNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\ValueNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\DateTimeNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\DateTimeNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\FileNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\FileNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\MetricNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\MetricNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\PriceNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning\\Product\\PriceNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\MeasureBundle/Akeneo\\Tool\\Bundle\\MeasureBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileStorage/Akeneo\\Tool\\Component\\FileStorage/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\FileStorageBundle/Akeneo\\Tool\\Bundle\\FileStorageBundle/g'

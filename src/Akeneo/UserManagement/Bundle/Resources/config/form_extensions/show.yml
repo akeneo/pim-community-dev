@@ -237,15 +237,15 @@ extensions:
             readOnly: true
 
     pim-user-show-product-grid-filters:
-        module: pim/form/common/fields/text
+        module: pim/user/fields/product-grid-filters
         parent: pim-user-show-additional-tab-content
         position: 40
         targetZone: content
         config:
-            fieldName: productGridFilters
+            fieldName: product_grid_filters
             label: pim_user_management.entity.user.properties.product_grid_filters
+            choiceRoute: pim_enrich_product_grid_filters
             readOnly: true
-
 
     pim-user-show-default-grid-views:
         module: pim/user/fields/default-grid-views

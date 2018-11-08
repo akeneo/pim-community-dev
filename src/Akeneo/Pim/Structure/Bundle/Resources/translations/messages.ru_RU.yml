@@ -1,0 +1,30 @@
+pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Параметры
+      value.title: Значения
+      history.title: Журнал
+  group_type:
+    tab:
+      property.title: Свойства
+  mass_edit_action:
+    family:
+      page_title: Семейства
+      page_subtitle: Массовое редактирование (1 семейство)|Массовое редактирование (%count% семейств)
+      title: Выберите операцию
+      subtitle: Выберите операцию, которую вы хотите применить для выбранного семейства|Выберите операцию, которую вы хотите применить для %count% выбранных семейств
+      confirm: Вы собираетесь обновить семейство со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% семейств со следующей информацией, пожалуйста, подтвердите.
+      steps:
+        first: Выберите семейства
+        second: Выберите операцию
+        third: Настройка
+        fourth: Подтверждение
+pim_enrich_attribute_form:
+  code: Код
+  type: Тип атрибута
+  reference_data_name: Имя справочных данных
+  unique: Уникальное значение
+  availableLocales: Доступные локали
+  locale_specific: Специфично для локали
+  group: Группа атрибутов
+  useableAsGridFilter: Используется в сетке

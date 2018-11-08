@@ -10,7 +10,7 @@ pim_catalog_volume:
       title: Ulottuvuudet koskien tuotemalleja
   axis:
     count_products: Tuotteet
-    average_max_attributes_per_family: Attribuutteja tuoteperheellä
+    average_max_attributes_per_family: Attribuutteja perheellä
     count_channels: Kanavat
     count_locales: Lokaatioita (aktivoidut)
     count_scopable_attributes: Kanavakohtaisia attribuutteja

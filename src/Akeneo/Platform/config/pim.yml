@@ -1,0 +1,77 @@
+imports:
+    - { resource: 'bundles/akeneo_batch.yml' }
+    - { resource: 'bundles/akeneo_api.yml' }
+    - { resource: 'bundles/assetic.yml' }
+    - { resource: 'bundles/doctrine.yml' }
+    - { resource: 'bundles/escape_wsse_authentication.yml' }
+    - { resource: 'bundles/fos_auth_server.yml' }
+    - { resource: 'bundles/fos_js_routing.yml' }
+    - { resource: 'bundles/fos_rest.yml' }
+    - { resource: 'bundles/gedmo_doctrine_extensions.yml' }
+    - { resource: 'bundles/liip_imagine.yml' }
+    - { resource: 'bundles/oneup_flysystem.yml' }
+    - { resource: 'bundles/oro_filter.yml' }
+    - { resource: 'bundles/oro_translation.yml' }
+    - { resource: 'bundles/pim_user.yml' }
+    - { resource: 'bundles/twig.yml' }
+
+parameters:
+    pim_job_product_batch_size: 10
+
+services:
+    oro.cache.abstract:
+        abstract:  true
+        class:     Doctrine\Common\Cache\PhpFileCache
+        arguments: ['%kernel.cache_dir%']
+    twig.extension.intl:
+         class: Twig_Extensions_Extension_Intl
+         tags:
+             - { name: twig.extension }
+    doctrine.dbal.default.wrapped_connection:
+        class: PDO
+        factory: 'doctrine.dbal.session_connection:getWrappedConnection'
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - '@doctrine.dbal.default.wrapped_connection'
+            -
+                db_table: pim_session
+
+akeneo_pim_enrichment:
+    localization:
+        decimal_separators:
+            - { value: '.', label: 'dot (.)' }
+            - { value: ',', label: 'comma (,)' }
+            - { value: '٫', label: 'arabic decimal separator (٫)' }
+        date_formats:
+            - { value: 'yyyy-MM-dd', label: 'yyyy-mm-dd' }
+            - { value: 'yyyy/MM/dd', label: 'yyyy/mm/dd' }
+            - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
+            - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
+            - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }
+
+akeneo_storage_utils:
+    mapping_overrides: ~
+
+akeneo_elasticsearch:
+    hosts: "%index_hosts%"
+    indexes:
+        -
+            service_name: "akeneo_elasticsearch.client.product"
+            index_name: "%product_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_model"
+            index_name: "%product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_and_product_model"
+            index_name: "%product_and_product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+
+framework:
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.apcu

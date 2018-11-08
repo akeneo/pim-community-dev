@@ -1,4 +1,4 @@
-import BaseView = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const mediator = require('oro/mediator');
@@ -72,7 +72,7 @@ class FiltersColumn extends BaseView {
     this.gridCollection = {};
     this.ignoredFilters = ['scope'];
     this.loadedFilters = [];
-    this.searchSelector = 'input[type="search"]'
+    this.searchSelector = 'input[type="search"]';
   }
 
   public events(): Backbone.EventsHash {
@@ -86,15 +86,15 @@ class FiltersColumn extends BaseView {
     let timer: any = null;
 
     if (this.opened) {
-      $(this.filterList).show()
+      $(this.filterList).show();
 
       timer = setTimeout(() => {
-        $(this.filterList).addClass('AknFilterBox-column--expanded')
+        $(this.filterList).addClass('AknFilterBox-column--expanded');
         $(this.searchSelector, this.filterList).focus();
         clearTimeout(timer);
       }, 100);
     } else {
-      $(this.filterList).removeClass('AknFilterBox-column--expanded')
+      $(this.filterList).removeClass('AknFilterBox-column--expanded');
       timer = setTimeout(() => {
         $(this.filterList).hide();
         clearTimeout(timer);
@@ -129,7 +129,7 @@ class FiltersColumn extends BaseView {
   }
 
   mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]): GridFilter[] {
-    const enabledFilters = Object.keys(this.gridCollection.state.filters)
+    const enabledFilters = Object.keys(this.gridCollection.state.filters);
     const filters = [...originalFilters, ...addedFilters];
     const uniqueFilters: GridFilter[] = [];
 
@@ -163,7 +163,7 @@ class FiltersColumn extends BaseView {
         this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, loadedFilters);
 
         this.renderFilters();
-        this.hideLoading()
+        this.hideLoading();
       });
     }
   }
@@ -215,7 +215,7 @@ class FiltersColumn extends BaseView {
       const search: string = searchValue.toLowerCase();
 
       return label.includes(search) || name.includes(search);
-    })
+    });
   }
 
   listenToListScroll(): void {

@@ -16,7 +16,9 @@ class UserBuilder {
       uiLocale: 'en_US',
       catalogScope: 'ecommerce',
       defaultTree: 'master',
-      avatar: null,
+      avatar: {
+        filePath: ''
+      },
       meta: {
           id: 1
       }

@@ -31,7 +31,7 @@ class ListAttributesUseableInProductGrid implements ListAttributesUseableInProdu
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $page, string $searchOnLabel = '', int $userId = null): array
+    public function fetch(string $locale, int $page, string $searchOnLabel, int $userId): array
     {
         $page = max($page, 1);
         $offset = ($page - 1) * ListAttributesUseableInProductGridQuery::ATTRIBUTES_PER_PAGE;

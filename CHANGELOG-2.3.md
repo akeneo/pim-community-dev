@@ -1,10 +1,40 @@
 # 2.3.x
 
+# 2.3.14 (2018-11-05)
+
+## Bug fixes
+
+PIM-7810: Fix to mass delete products and product models
+
+# 2.3.13 (2018-10-25)
+
+## Bug fixes
+
+- PIM-7759: Date range grid filters should be ignored when no value is set
+- PIM-7758: Fix the product and product model deletion from the grid
+- PIM-7765: Fix the loading of price values for disabled currencies
+
+# 2.3.12 (2018-10-17)
+
+## Bug fixes
+
+- PIM-7674: fix Avatar image broken on dashboard
+- PIM-7694: fix option null values crashing PDF
+- PIM-7731: check for attribute as label not null in normalizers 
+- PIM-7740: bump summernote version to fix scroll glitches
+- PIM-7746: Fix issue when an attribute code is numeric
+- PIM-7727: parent filter search case insensitive
+- PIM-7724: fix role label update and error displayed on permission save action
+- PIM-7747: convert boolean strings in User converter
+
+# 2.3.11 (2018-10-08)
+
 ## Bug fixes
 
 - PIM-7676: Add code filter on attribute and family grid
 - PIM-7673: Fix permissions on locales applied on channel settings page
 - PIM-7664: ReferenceDataCollectionValueFactory can now ignore unknown reference data with an optionnal argument and not throw an exception.
+- PIM-7672: Fix the mass edit controller to launch jobs with authentication.
 
 # 2.3.10 (2018-10-01)
 

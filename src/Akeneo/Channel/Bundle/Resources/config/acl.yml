@@ -1,0 +1,37 @@
+# Locale
+pim_enrich_locale_index:
+    type: action
+    label: pim_enrich.acl.locale.index
+    group_name: pim_enrich.acl_group.locale
+
+# Currency
+pim_enrich_currency_index:
+    type: action
+    label: pim_enrich.acl.currency.index
+    group_name: pim_enrich.acl_group.currency
+pim_enrich_currency_toggle:
+    type: action
+    label: pim_enrich.acl.currency.toggle
+    group_name: pim_enrich.acl_group.currency
+
+# Channel
+pim_enrich_channel_index:
+    type: action
+    label: pim_enrich.acl.channel.index
+    group_name: pim_enrich.acl_group.channel
+pim_enrich_channel_create:
+    type: action
+    label: pim_enrich.acl.channel.create
+    group_name: pim_enrich.acl_group.channel
+pim_enrich_channel_edit:
+    type: action
+    label: pim_enrich.acl.channel.edit
+    group_name: pim_enrich.acl_group.channel
+pim_enrich_channel_remove:
+    type: action
+    label: pim_enrich.acl.channel.remove
+    group_name: pim_enrich.acl_group.channel
+pim_enrich_channel_history:
+    type: action
+    label: pim_enrich.acl.channel.history
+    group_name: pim_enrich.acl_group.channel

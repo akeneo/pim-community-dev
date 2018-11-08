@@ -54,7 +54,11 @@ class OptionValue extends AbstractValue implements OptionValueInterface
         if (null !== $option = $this->getData()) {
             $optionValue = $option->getOptionValue();
 
-            return null !== $optionValue ? $optionValue->getValue() : '['.$option->getCode().']';
+            if (null === $optionValue || null === $optionValue->getValue()) {
+                return '['.$option->getCode().']';
+            }
+
+            return (string) $optionValue->getValue();
         }
 
         return '';

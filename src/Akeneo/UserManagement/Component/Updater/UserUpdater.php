@@ -4,7 +4,6 @@ namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
@@ -22,7 +21,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
-use Pim\Component\Catalog\FileStorage;
 
 /**
  * Updates an user
@@ -77,7 +75,7 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param FileInfoRepositoryInterface           $fileInfoRepository
      * @param FileStorerInterface                   $fileStorer
      * @param string                                $fileStorageFolder
-     * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository
+     * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository|null
      */
     public function __construct(
         UserManager $userManager,
@@ -90,7 +88,7 @@ class UserUpdater implements ObjectUpdaterInterface
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         string $fileStorageFolder,
-        IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
+        ?IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
     ) {
         $this->userManager = $userManager;
         $this->categoryRepository = $categoryRepository;
@@ -233,11 +231,16 @@ class UserUpdater implements ObjectUpdaterInterface
                 $this->setAvatar($user, $data);
                 break;
             case 'product_grid_filters':
-                $filters = [];
-                if ('' !== $data && [] !== $data) {
-                    $filters = explode(',', $data);
+                if (is_string($data) && '' !== $data) {
+                    $user->setProductGridFilters(explode(',', $data));
+                    break;
                 }
-                $user->setProductGridFilters($filters);
+                if (is_array($data) && [] !== $data) {
+                    $user->setProductGridFilters($data);
+                    break;
+                }
+
+                $user->setProductGridFilters([]);
                 break;
             default:
                 $matches = null;

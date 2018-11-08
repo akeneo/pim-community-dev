@@ -2,9 +2,10 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -36,6 +37,13 @@ class UserNormalizer implements NormalizerInterface
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
 
+    /**
+     * @param DateTimeNormalizer $dateTimeNormalizer
+     * @param NormalizerInterface $fileNormalizer
+     * @param SecurityFacade $securityFacade
+     * @param TokenStorageInterface $tokenStorage
+     * @param DatagridViewRepositoryInterface $datagridViewRepo
+     */
     public function __construct(
         DateTimeNormalizer $dateTimeNormalizer,
         NormalizerInterface $fileNormalizer,
@@ -120,13 +128,9 @@ class UserNormalizer implements NormalizerInterface
      */
     private function getRoleNames(UserInterface $user): array
     {
-        $roles = $user->getRolesCollection();
-        $result = [];
-        foreach ($roles as $role) {
-            $result[] = $role->getRole();
-        }
-
-        return $result;
+        return $user->getRolesCollection()->map(function (Role $role) {
+            return $role->getRole();
+        })->toArray();
     }
 
     /**

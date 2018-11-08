@@ -117,3 +117,14 @@ Feature: List attribute groups
     And I save the user
     When I am on the attribute groups page
     Then I should see the text "[marketing]"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7655
+  Scenario: Correctly display attribute groups sorted by their sort order
+    Given the "default" catalog configuration
+    And the following attribute groups:
+      | code      | label-en_US | sort_order |
+      | marketing | Marketing   | 0          |
+      | erp       | ERP         | 1          |
+    When I am logged in as "Julia"
+    And I am on the attribute groups page
+    Then the order of attribute groups should be "Marketing, ERP, Other"

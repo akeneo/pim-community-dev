@@ -20,12 +20,21 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function selectAttributes(array $attributes)
     {
         foreach ($attributes as $attribute) {
-            $this->find('css', 'header input')->setValue($attribute);
+            $this->spin(function () use ($attribute) {
+                $headerInput = $this->find('css', 'header input');
+
+                if (!$headerInput->isVisible() && $headerInput->isValid()) {
+                    return false;
+                }
+
+                $headerInput->setValue($attribute);
+
+                return true;
+            }, 'Cannot fill the header input');
 
             $attributeItem = $this->spin(function () use ($attribute) {
                 return $this->find('css', sprintf('li[data-attribute-code="%s"]', $attribute));
             }, sprintf('Cannot find the attribute %s in the list', $attribute));
-
 
             $dropZone = $this->spin(function () {
                 return $this->find('css', '.selected-attributes ul');
@@ -57,6 +66,13 @@ class AttributeSelectorDecorator extends ElementDecorator
         }, 'Cannot find the clear button');
 
         $button->click();
+        $this->spin(function () {
+            $selectedAttributes = $this->find(
+                'css',
+                '.selected-attributes .AknColumnConfigurator-listContainer .AknVerticalList'
+            );
+            return false === $selectedAttributes->has('css', '.AknVerticalList-item');
+        }, 'Cannot clear the selected attributes');
     }
 
     /**

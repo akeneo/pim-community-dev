@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Component\Api\tests\integration\Normalizer;
 
-use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the external api format
@@ -218,7 +218,6 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => null,
                         'scope'  => 'ecommerce',
                         'data'   => [
-                            ['amount' => '15.00', 'currency' => 'EUR'],
                             ['amount' => '20.00', 'currency' => 'USD'],
                         ],
                     ],
@@ -227,7 +226,6 @@ class ProductNormalizerIntegration extends TestCase
                         'scope'  => 'tablet',
                         'data'   => [
                             ['amount' => '17.00', 'currency' => 'EUR'],
-                            ['amount' => '24.00', 'currency' => 'USD'],
                         ],
                     ],
                 ],

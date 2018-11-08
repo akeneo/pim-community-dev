@@ -1,3 +1,0 @@
-pim_enrich_product_grid_filters:
-    path: /
-    defaults: { _controller: akeneo.pim.enrichment.controller.product_grid_filter:listAction }

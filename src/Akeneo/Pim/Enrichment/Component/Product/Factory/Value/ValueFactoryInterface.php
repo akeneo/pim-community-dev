@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -23,12 +26,11 @@ interface ValueFactoryInterface
      * @param string             $channelCode
      * @param string             $localeCode
      * @param mixed              $data
+     * @param bool               $ignoreUnknownData
      *
      * @return ValueInterface
-     *
-     * @todo merge master : add an argument at the end  : "bool $ignoreUnknownData". Cf ReferenceDataCollectionValueFactory class.
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data);
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false);
 
     /**
      * @param string $attributeType

@@ -126,7 +126,7 @@ class LocaleExtension extends \Twig_Extension
     public function flag(Twig_Environment $environment, $code, $short = true, $translateIn = null)
     {
         return $environment->render(
-            'PimEnrichBundle:Locale:_flag.html.twig',
+            'PimUIBundle:Locale:_flag.html.twig',
             [
                 'label'    => $this->localeLabel($code, $translateIn),
                 'region'   => \Locale::getRegion($code),

@@ -81,6 +81,36 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
             ->during('save', [$object]);
     }
 
+    function it_finds_attribute_options_by_attribute_and_codes()
+    {
+        $attribute = new Attribute();
+        $attributeOption1 = $this->createAttributeOption('attribute_option_1', $attribute);
+        $attributeOption2 = $this->createAttributeOption('attribute_option_2', $attribute);
+        $attributeOption3 = $this->createAttributeOption('attribute_option_3', $attribute);
+
+        $attribute2 = (new Attribute())->setCode('test');
+        $attributeOption4 = $this->createAttributeOption('attribute_option_4', $attribute2);
+
+        $this->beConstructedWith([
+            $attributeOption1->getCode() => $attributeOption1,
+            $attributeOption2->getCode() => $attributeOption2,
+            $attributeOption3->getCode() => $attributeOption3,
+            $attributeOption4->getCode() => $attributeOption4,
+        ]);
+
+        $this
+            ->findCodesByIdentifiers($attribute->getCode(), ['attribute_option_1', 'attribute_option_2'])
+            ->shouldReturn([$attributeOption1, $attributeOption2]);
+
+        $this
+            ->findCodesByIdentifiers($attribute2->getCode(), ['attribute_option_1'])
+            ->shouldReturn([]);
+
+        $this
+            ->findCodesByIdentifiers($attribute2->getCode(), ['attribute_option_4'])
+            ->shouldReturn([$attributeOption4]);
+    }
+
     private function createAttributeOption(string $code, AttributeInterface $attribute): AttributeOptionInterface
     {
         $attributeOption = new AttributeOption();

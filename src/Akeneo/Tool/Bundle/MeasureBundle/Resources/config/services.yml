@@ -2,6 +2,7 @@ parameters:
     akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
     akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
     akeneo_measure.measures_config: ~
+    pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasureFamilyController
 
 services:
     akeneo_measure.measure_converter:
@@ -15,3 +16,12 @@ services:
         class: 'Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController'
         arguments:
             - '%akeneo_measure.measures_config%'
+
+    pim_api.controller.measure_family:
+        class: '%pim_api.controller.measure_family.class%'
+        arguments:
+        - '@pim_api.converter.measure_family'
+        - '@pim_api.pagination.parameter_validator'
+        - '@pim_api.pagination.offset_hal_paginator'
+        - '%akeneo_measure.measures_config%'
+        - '%pim_api.configuration%'

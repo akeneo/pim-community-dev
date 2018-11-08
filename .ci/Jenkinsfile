@@ -10,7 +10,8 @@ String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
 String composer_command = "update"
-String runInEnterpriseEdition = "yes"
+String runInEnterpriseEdition = "no"
+String launchPhpUnitEndToEndTests = "yes"
 
 stage("Build") {
     milestone 1
@@ -21,6 +22,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
+                choice(choices: 'yes\nno', description: 'Run end to end tests in PhpUnit', name: 'launchPhpUnitEndToEndTests'),
                 string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
@@ -33,6 +35,7 @@ stage("Build") {
             launchAcceptanceTests = userInput['launchAcceptanceTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
             launchEndToEndTests = userInput['launchEndToEndTests']
+            launchPhpUnitEndToEndTests = userInput['launchPhpUnitEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
             composer_command = "install"
@@ -40,40 +43,42 @@ stage("Build") {
     }
     milestone 2
 
-    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
-        parallel(
-            "pim-ce": {
-                pod {
-                    container('docker') {
-                        checkout scm
-
-                        sh "cp .ci/Dockerfile Dockerfile"
-                        sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
-                    }
-                }
-            },
-            "pim-ee": {
-                if (runInEnterpriseEdition.equals("yes")) {
-                    pod {
-                        container('docker') {
-                            checkout([$class: 'GitSCM',
-                                branches: [[name: 'master']],
-                                userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                            ])
-
-                            dir('packages/pim-community-dev') {
+    if (launchUnitTests.equals("yes") || launchAcceptanceTests.equals("yes") || launchIntegrationTests.equals("yes") || launchEndToEndTests.equals("yes")) {
+        withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
+            parallel(
+                    "pim-ce": {
+                        pod {
+                            container('docker') {
                                 checkout scm
-                            }
 
-                            sh "cp .ci/Dockerfile Dockerfile"
-                            sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
+                                sh "cp .ci/Dockerfile Dockerfile"
+                                sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
+                            }
+                        }
+                    },
+                    "pim-ee": {
+                        if (runInEnterpriseEdition.equals("yes")) {
+                            pod {
+                                container('docker') {
+                                    checkout([$class: 'GitSCM',
+                                              branches: [[name: 'master']],
+                                              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+                                    ])
+
+                                    dir('packages/pim-community-dev') {
+                                        checkout scm
+                                    }
+
+                                    sh "cp .ci/Dockerfile Dockerfile"
+                                    sh "gcloud builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
+                                }
+                            }
+                        } else {
+                            echo "Skipping Enterprise Edition matrix"
                         }
                     }
-                } else {
-                    echo "Skipping Enterprise Edition matrix"
-                }
-            }
-        )
+            )
+        }
     }
 }
 
@@ -85,12 +90,6 @@ stage("Test") {
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel"
-            )},
-            "back-phpunit": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit %workspace%/junit_output.xml",
-                junit: "junit_output.xml"
             )},
             "back-phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
@@ -171,6 +170,35 @@ stage("Test") {
             )},
 
             // END TO END TESTS
+            "end-to-end-phpunit-ce": {queue(
+                    condition: launchPhpUnitEndToEndTests.equals("yes"),
+                    container: tag,
+                    containers: pimContainers(image: tag, selenium: false),
+                    verbose: (verboseOutputs == "yes"),
+                    fetcher: {
+                        return pimPhpunitEndToEndFetcher(
+                                paths:[
+                                        "/var/www/pim/tests",
+                                        "/var/www/pim/src"
+                                ]
+                        )
+                    }
+            )},
+            "end-to-end-phpunit-ee": {queue(
+                    condition: launchPhpUnitEndToEndTests.equals("yes") && runInEnterpriseEdition.equals("yes"),
+                    container: "${tag}-ee",
+                    containers: pimContainers(image: "${tag}-ee", selenium: false),
+                    verbose: (verboseOutputs == "yes"),
+                    fetcher: {
+                        return pimPhpunitEndToEndFetcher(
+                                paths:[
+                                        "var/www/pim/tests",
+                                        "var/www/pim/vendor/akeneo/pim-community-dev/src",
+                                        "var/www/pim/vendor/akeneo/pim-community-dev/tests"
+                                ]
+                        )
+                    }
+            )},
             "legacy-end-to-end-behat-ce": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),

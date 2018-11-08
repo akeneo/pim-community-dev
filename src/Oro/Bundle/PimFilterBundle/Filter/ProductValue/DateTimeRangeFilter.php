@@ -35,6 +35,10 @@ class DateTimeRangeFilter extends AbstractDateFilter
      */
     public function parseData($data)
     {
+        if (!$this->isValidData($data)) {
+            return false;
+        }
+
         $userTimeZone = new \DateTimeZone($this->userContext->getUserTimezone());
 
         switch ($data['type']) {

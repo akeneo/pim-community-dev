@@ -1,3 +1,7 @@
+parameters:
+    pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
+    pim_api.controller.media_file.class: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\MediaFileController
+
 services:
     pim_pdf_generator.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController'
@@ -210,7 +214,7 @@ services:
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_enrich.mass_edit_action.operation_job_launcher'
+            - '@pim_enrich.mass_edit_action.operation_authenticated_job_launcher'
             - '@pim_enrich.converter.mass_operation'
             - '@pim_datagrid.adapter.items_counter'
 
@@ -262,7 +266,7 @@ services:
             - '@oro_security.security_facade'
             - '%pim_catalog.entity.category.class%'
             - 'pim_enrich_product_model_categories_view'
-            - '@@AkeneoPimEnrichmentBundle/ProductModel/listCategories.json.twig'
+            - '@@AkeneoPimEnrichment/ProductModel/listCategories.json.twig'
 
     pim_enrich.controller.product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController'
@@ -276,4 +280,26 @@ services:
             - '%pim_catalog.entity.category.class%'
             - '@oro_security.security_facade'
             - 'pim_enrich_product_categories_view'
-            - '@@PimEnrich/Product/listCategories.json.twig'
+            - '@@AkeneoPimEnrichment/Product/listCategories.json.twig'
+
+    pim_api.controller.media_file:
+        class: '%pim_api.controller.media_file.class%'
+        arguments:
+        - '@pim_api.repository.media_file'
+        - '@pim_external_api_serializer'
+        - '@pim_api.pagination.parameter_validator'
+        - '@pim_api.pagination.offset_hal_paginator'
+        - '@akeneo_file_storage.file_storage.filesystem_provider'
+        - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+        - '@pim_api.repository.product'
+        - '@pim_catalog.updater.product'
+        - '@pim_catalog.saver.product'
+        - '@pim_catalog.validator.product'
+        - '@akeneo_file_storage.saver.file'
+        - '@akeneo_file_storage.file_storage.file.file_storer'
+        - '@akeneo_file_storage.remover.file'
+        - '@router'
+        - '@pim_catalog.repository.product_model'
+        - '@pim_api.updater.product_model'
+        - '@pim_catalog.saver.product_model'
+        - '%pim_api.configuration%'

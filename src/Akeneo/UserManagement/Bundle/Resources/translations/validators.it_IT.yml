@@ -1,0 +1,3 @@
+pim_user:
+  min_role: "E' necessario selezionare almeno {{ limit }} ruolo.|E' necessario selezionare almeno {{ limit }} ruoli."
+  password_match: "I campi password devono corrispondere."

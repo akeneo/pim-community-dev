@@ -30,3 +30,10 @@ services:
             - '%pim_catalog.entity.group.class%'
         tags:
             - { name: form.type, alias: pim_enrich_group }
+
+    pim_enrich.form.group:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'form.factory:createNamed'
+        arguments:
+            - 'pim_enrich_group_form'
+            - 'Akeneo\Pim\Enrichment\Bundle\Form\Type\GroupType'

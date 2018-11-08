@@ -1,0 +1,194 @@
+pim_enrich.entity.family:
+  label: Produktfamilie
+  uppercase_label: Produktfamilie
+  plural_label: Produktfamilien
+  flash:
+    update:
+      success: Produktfamilie erfolgreich aktualisiert.
+      fail: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
+      cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
+      cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
+    create:
+      success: Produktfamilie erfolgreich angelegt
+    delete:
+      success: Produktfamilie erfolgreich entfernt
+      fail: Diese Produktfamilie kann nicht gelöscht werden
+  property:
+    attribute_as_label: Attribut als Label verwendet
+    attribute_as_image: Attribut als Hauptbild in Verwendung
+    empty_attribute_as_image: Nicht ausgewählt
+  module:
+    attributes:
+      not_required_label: Nicht erforderlich
+      required_label: Erforderlich
+    create:
+      button: Produktfamilie anlegen
+    delete:
+      confirm: Möchten Sie diese Produktfamilie wirklich löschen?
+pim_enrich.entity.family_variant:
+  short_plural_label: Varianten
+  short_label: Variante
+  module:
+    edit:
+      variant_axis_label: Variantenachse(n)
+      variant_attributes: Variantenattribute
+    create:
+      label: Variante hinzufügen
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Optionen
+  flash:
+    create:
+      success: Attributoption erfolgreich erstellt
+      fail: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
+    update:
+      fail: Attributoption kann nicht gespeichert werden
+    delete:
+      fail: Fehler beim Löschen der Attributoption
+  module:
+    edit:
+      cancel_title: Änderung abbrechen
+pim_enrich.entity.association_type:
+  label: Verbindungstyp
+  flash:
+    update:
+      success: Verbindungstyp erfolgreich aktualisiert.
+      fail: Verbindungstyp konnte nicht aktualisiert werden.
+      fields_not_ready: "Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+    create:
+      success: Verbindungstyp erfolgreich erstellt
+    delete:
+      success: Verbindungstyp erfolgreich gelöscht
+      fail: Dieser Verbindungstyp kann nicht gelöscht werden
+  module:
+    create:
+      button: Verbindungstyp anlegen
+    delete:
+      confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
+pim_enrich.entity.group_type:
+  label: Gruppentyp
+  flash:
+    update:
+      success: Gruppentyp erfolgreich aktualisiert.
+      fail: Der Gruppentyp konnte nicht aktualisiert werden.
+      fields_not_ready: "Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+    create:
+      success: Gruppentyp erfolgreich erstellt
+    delete:
+      success: Gruppentyp erfolgreich gelöscht
+      fail: Dieser Gruppentyp kann nicht gelöscht werden
+  module:
+    create:
+      button: Gruppentyp anlegen
+    delete:
+      confirm: Möchten Sie diesen Gruppentyp wirklich löschen?
+pim_enrich.entity.attribute:
+  label: Attribut
+  plural_label: Attribute
+  flash:
+    update:
+      success: Attribut erfolgreich aktualisiert.
+      fail: Das Attribut konnte nicht aktualisiert werden.
+    delete:
+      success: Attribut erfolgreich entfernt
+      fail: Dieses Attribut kann nicht gelöscht werden
+  property:
+    allowed_extensions: Zulässige Dateiendungen
+    auto_option_sorting: Automatische Sortierung der Optionen in alphabetischer Reihenfolge
+    available_locales: Verfügbare Gebietsschemata
+    date_max: Max. Datum
+    date_min: Min. Datum
+    decimals_allowed: Dezimalwerte erlaubt
+    default_metric_unit:
+      label: Standardmaßeinheit
+      choose: Wählen Sie eine Einheit
+    group:
+      label: Attributgruppe
+      choose: Wählen Sie die Attributgruppe
+    is_locale_specific: Gebietsschemaspezifisch
+    localizable: Wert je Gebietsschema
+    max_characters: Max. Zeichen
+    max_file_size: Maximale Dateigröße (MB)
+    metric_family:
+      label: Metrische Gruppe
+      choose: Wählen Sie eine Produktfamilie
+    minimum_input_length: Mindestlänge für Auto-Vervollständigung
+    name: Name
+    negative_allowed: Negativwerte erlaubt
+    number_max: Max. Wert
+    number_min: Min. Wert
+    reference_data_name:
+      label: Referenzdatentyp
+      choose: Wählen Sie den Referenz-Datentyp
+    scopable: Wert je Ausgabekanal
+    type:
+      choose: Wählen Sie den Attributtyp aus
+      pim_catalog_identifier: Kennung
+      pim_catalog_text: Text
+      pim_catalog_textarea: Textbereich
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Preis
+      pim_catalog_multiselect: Mehrfachauswahl
+      pim_catalog_simpleselect: Einfachauswahl
+      pim_catalog_file: Datei
+      pim_catalog_image: Abbildung
+      pim_catalog_boolean: "Ja/Nein"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Maßeinheit
+      pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+      pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+    unique: Eindeutiger Wert
+    useable_as_grid_filter: Verwendbar in der Tabellenansicht
+    validation_regexp: Regulärer Ausdruck
+    validation_rule:
+      label: Validierungsregel
+      email: E-Mail
+      regexp: Regulärer Ausdruck
+      url: URL
+    wysiwyg_enabled: Rich-Text-Editor aktiviert
+  module:
+    add_attribute:
+      no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
+      attributes_selected: "{{ itemsCount }} Attribut(e) ausgewählt"
+    create:
+      button: Attribut anlegen
+    edit:
+      common: Allgemeine Parameter
+      type_specific: Spezifische Parameter
+      validation: Validierungsparameter
+    delete:
+      confirm: Möchten Sie dieses Attribut wirklich löschen?
+      confirm_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
+      confirm_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+pim_enrich.entity.attribute_group:
+  label: Attributgruppe
+  uppercase_label: Attributgruppe
+  plural_label: Attributgruppen
+  flash:
+    update:
+      success: Attributgruppe erfolgreich aktualisiert
+      fail: Die Attributgruppe konnte nicht aktualisiert werden
+    delete:
+      success: Attributgruppe erfolgreich entfernt
+  module:
+    add_attribute_group:
+      label: Nach Gruppen hinzufügen
+      attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
+    delete:
+      confirm: Möchten Sie diese Attributgruppe wirklich löschen?
+pim_enrich.mass_edit.family:
+  title: Massenbearbeitung Produktfamilien
+  step:
+    select:
+      label: Produktfamilien auswählen
+    choose:
+      title: Massenbearbeitung Produktfamilien
+    configure:
+      label: Konfigurieren
+    confirm:
+      label: Bestätigen
+    launched:
+      label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
+  operation:
+    set_requirements:
+      label: Benötigte Attribute auswählen
+      description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet

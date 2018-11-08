@@ -24,6 +24,20 @@
     animation-duration: @animationDuration;
     max-height: 70vh;
     overflow: auto;
+    font-style: normal;
+
+    &--offset {
+      left: @AknIconSize;
+    }
+
+    &--offset&--right {
+      right: @AknIconSize;
+    }
+
+    &--heightLimited {
+      max-height: 300px;
+      overflow: auto;
+    }
 
     &--right {
       right: 0;
@@ -66,6 +80,12 @@
     padding-bottom: 5px;
     padding-right: 40px;
     text-transform: uppercase;
+
+    &--soft {
+      color: @AknDefaultFontColor;
+      font-style: italic;
+      text-transform: none;
+    }
   }
 
   &-menuTitle,
@@ -87,6 +107,10 @@
     cursor: pointer;
     padding: 0;
     text-transform: none;
+
+    &--inactive {
+      cursor: default;
+    }
 
     &:hover {
       background: @AknDefaultHoverBackground;
@@ -112,8 +136,35 @@
     margin: 0 10px 10px 0;
   }
 
+  &-validationError {
+    display: flex;
+    align-items: baseline;
+    margin-top: 3px;
+    color: @AknRed;
+    font-style: italic;
+
+    &--arrow {
+      background: url("../../images/red_arrow.svg") no-repeat 0 40%;
+      padding-left: 15px;
+    }
+  }
+
   &--right {
     margin-right: 10px;
+  }
+
+  &-menuSection:not(:empty) {
+    border-bottom: 1px solid @AknSlateGrey;
+    margin: 0 0 12px 0;
+    padding-bottom: 12px;
+  }
+
+  &--left {
+    margin-left: 10px;
+  }
+
+  &--read-only {
+    cursor: default;
   }
 }
 

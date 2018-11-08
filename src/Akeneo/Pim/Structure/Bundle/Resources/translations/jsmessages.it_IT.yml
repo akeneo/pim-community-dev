@@ -1,0 +1,235 @@
+pim_enrich.entity.family:
+  label: famiglia
+  uppercase_label: Famiglia
+  plural_label: Famiglie
+  flash:
+    update:
+      success: Famiglia aggiornata con successo.
+      fail: Errore durante l'aggiornamento della famiglia.
+      cant_remove_attribute_as_label: Non è possibile rimuovere l'attributo utilizzato come etichetta
+      cant_remove_attribute_as_image: Non è possibile rimuovere l'attributo utilizzato come immagine principale
+      cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
+      fields_not_ready: "La famiglia non può essere salvata al momento. I campi seguenti non sono pronti: {{ fields }}"
+    create:
+      success: Famiglia creata con successo
+    delete:
+      success: Famiglia rimossa con successo
+      fail: Non è possibile eliminare questa famiglia
+  property:
+    attribute_as_label: Attributo utilizzato come etichetta
+    attribute_as_image: Attributo utilizzato come immagine principale
+    empty_attribute_as_image: Non Selezionato
+  page_title:
+    index: "]-Inf, 1]{{ count }} famiglia|]1, Inf[{{ count }} famiglie"
+  module:
+    attributes:
+      not_required_label: Non obbligatorio
+      required_label: Obbligatorio
+    create:
+      button: Crea famiglia
+    delete:
+      confirm: Sei sicuro di voler eliminare questa famiglia?
+pim_enrich.entity.family_variant:
+  label: famiglia variante
+  short_plural_label: Varianti
+  short_label: Variante
+  flash:
+    update:
+      success: Famiglia variante aggiornata correttamente. I prodotti con varianti saranno aggiornati con le modifiche apportate.
+      fail: La famiglia variante non può essere caricata.
+    create:
+      success: Famiglia variante creata correttamente
+  module:
+    edit:
+      common_attributes: Attributi comuni
+      no_common_attributes: Non ci sono attributi comuni
+      variant_axis_label: Asse di variante
+      variant_attributes: Attributi varianti
+      level_1: Attributi varianti livello uno
+      level_2: Attributi varianti livello due
+      description: Fai Drag&Drop degli attributi nel livello variante selezionato per avere questi attributi gestiti a livello variante.
+      attribute_remove: Elimina attributo
+      attribute_group_remove: Elimina gruppo attributo
+      confirm_attribute_removal_title: Conferma la rimozione degli attributi
+      confirm_attribute_removal_message: Rimuovendo questi attributi li rimetterai tra gli attributi comuni alla famiglia variante e cancellerai i valori dai prodotti varianti
+    create:
+      label: Aggiungi variante
+      title: Crea una nuova famiglia variante
+      description: In una famiglia variante si può definire una struttura per i prodotti con varianti. Scegli il numero dei livelli di varianti gestite, gli attributi usati come assi varianti e poi definisci come gli attributi vengono distribuiti.
+      variant_levels: Livelli varianti
+      axis_level: "Asse variante livello {{ level }}"
+    update_translations:
+      title: Aggiorna traduzioni
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Opzioni
+  flash:
+    create:
+      success: Opzione di attributo creata correttamente
+      fail: Si è verificato un errore durante il tentativo di creare l'opzione di attributo
+    update:
+      fail: Non è possibile salvare l'opzione dell'attributo
+    delete:
+      fail: Errore durante la cancellazione dell'opzione attributo
+  module:
+    edit:
+      cancel_title: Annulla la modifica
+      cancel_description: Attenzione, si perderanno i dati non salvati. Sei sicuro di voler annullare le modifiche su questa nuova opzione?
+pim_enrich.entity.association_type:
+  label: Tipo associazione
+  flash:
+    update:
+      success: Tipo di associazione aggiornato con successo.
+      fail: Il tipo di associazione non può essere aggiornato.
+      fields_not_ready: "Il tipo di associazione non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
+    create:
+      success: Tipo di associazione creata con successo
+    delete:
+      success: Tipo di associazione rimossa con successo
+      fail: Non è possibile eliminare questo tipo di associazione
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipo associazione|]1, Inf[{{ count }} tipi associazione"
+  module:
+    create:
+      button: Crea tipo associazione
+    delete:
+      confirm: Sei sicuro di voler eliminare questo tipo di associazione?
+pim_enrich.entity.group_type:
+  label: Tipo gruppo
+  flash:
+    update:
+      success: Il tipo di gruppo è stato aggiornato correttamente.
+      fail: Il tipo di gruppo non può essere aggiornato.
+      fields_not_ready: "Il tipo di gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
+    create:
+      success: Tipo di gruppo creato con successo
+    delete:
+      success: Tipo di gruppo rimosso con successo
+      fail: Non è possibile eliminare questo tipo di gruppo
+  page_title:
+    index: "]-Inf, 1]{{ count }} tipo gruppo|]1, Inf[{{ count }} tipi gruppo"
+  module:
+    create:
+      button: Crea tipo gruppo
+    delete:
+      confirm: Sei sicuro di voler eliminare questo tipo di gruppo?
+pim_enrich.entity.attribute:
+  label: attributo
+  plural_label: Attributi
+  flash:
+    update:
+      success: Attributo aggiornato con successo.
+      fail: L'attributo non può essere aggiornato.
+      fields_not_ready: "L'attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
+    delete:
+      success: Attributo eliminato con successo
+      fail: Non è possibile eliminare questo attributo
+  page_title:
+    index: "]-Inf, 1]{{ count }} attributo|]1, Inf[{{ count }} attributi"
+  property:
+    allowed_extensions: Estensioni consentite
+    auto_option_sorting: Ordina automaticamente le opzioni in ordine alfabetico
+    available_locales: Impostazioni locali disponibili
+    date_max: Data massima
+    date_min: Data minima
+    decimals_allowed: Valori decimali ammessi
+    default_metric_unit:
+      label: Unità metrica di default
+      choose: Scegli un'unità
+    group:
+      label: Gruppo attributi
+      choose: Scegliere il gruppo attributi
+    is_locale_specific: Impostazioni locali specifiche
+    localizable: Valore per impostazioni internazionali
+    max_characters: Numero massimo di caratteri
+    max_file_size: Dimensione massima del file (MB)
+    metric_family:
+      label: Famiglia metrica
+      choose: Scegli una famiglia
+    minimum_input_length: Lunghezza minima per l'autocompletamento
+    name: Nome
+    negative_allowed: Valori negativi ammessi
+    number_max: Numero massimo
+    number_min: Numero minimo
+    reference_data_name:
+      label: Tipo riferimento dati
+      choose: Sceglii il tipo di dati di riferimento
+    scopable: Valore per canale
+    type:
+      choose: Scegliere il tipo di attributo
+      pim_catalog_identifier: Identificatore
+      pim_catalog_text: Testo
+      pim_catalog_textarea: Area di testo
+      pim_catalog_number: Numero
+      pim_catalog_price_collection: Prezzo
+      pim_catalog_multiselect: Selezione multipla
+      pim_catalog_simpleselect: Selezione singola
+      pim_catalog_file: File
+      pim_catalog_image: Immagine
+      pim_catalog_boolean: "Sì/No"
+      pim_catalog_date: Data
+      pim_catalog_metric: Metrico
+      pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
+      pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
+    unique: Valore univoco
+    useable_as_grid_filter: Utilizzabile nella griglia
+    validation_regexp: Espressione regolare
+    validation_rule:
+      label: Regola di convalida
+      email: E-mail
+      regexp: Espressione regolare
+      url: URL
+    wysiwyg_enabled: Editor di testo RTF abilitato
+  module:
+    add_attribute:
+      no_available_attributes: Non ci sono altri attributi da aggiungere
+      attributes_selected: "{{ itemsCount }} attributo(i) selezionato(i)"
+    create:
+      button: Crea attributo
+    edit:
+      common: Parametri generali
+      type_specific: Digita parametri specifici
+      validation: Parametri di validazione
+    delete:
+      confirm: Sei sicuro di voler eliminare questo attributo?
+      confirm_from_family: Sei sicuro di voler rimuovere questo attributo dalla famiglia?
+      confirm_from_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?
+      confirm_from_product: Sei sicuro di voler rimuovere questo attributo dal prodotto?
+pim_enrich.entity.attribute_group:
+  label: Attributi di gruppo
+  uppercase_label: Gruppo attributi
+  plural_label: Gruppi di attributi
+  flash:
+    update:
+      success: Gruppo di attributi aggiornato con successo
+      fail: Gruppo di attributi non può essere aggiornato
+      fields_not_ready: "Il gruppo attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
+    delete:
+      success: Gruppo di attributi rimosso con successo
+      fail: Non è possibile eliminare questo gruppo attributo
+  module:
+    add_attribute_group:
+      label: Aggiungi per gruppi
+      no_attribute_groups_available: Nessun gruppo attributo disponibile
+      attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
+    delete:
+      confirm: Sei sicuro di voler eliminare questo gruppo di attributi?
+pim_enrich.mass_edit.family:
+  title: Azione di massa sulle famiglie
+  confirm: "{1}Stai per aggiornare una famiglia con le seguenti informazioni, conferma.|]1, Inf[Stai per aggiornare {{ itemsCount }} famiglie con le seguenti informazioni, conferma."
+  step:
+    select:
+      label: Scegli le famiglie
+    choose:
+      title: Azioni di massa sulle famiglie
+      label_count: "]0, Inf[Seleziona azione"
+    configure:
+      label: Configura
+    confirm:
+      label: Conferma
+    launched:
+      label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
+  operation:
+    set_requirements:
+      label: Imposta i requisiti degli attributi
+      description: I requisiti degli attributi seguenti saranno applicati alle famiglie selezionate
+      label_count: "{1}imposta i requisiti degli attributi di <span class=\"AknFullPage-title--highlight\">1 famiglia</span>|]1, Inf[imposta i requisiti degli attributi di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famiglie</span>"

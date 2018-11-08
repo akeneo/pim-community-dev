@@ -148,7 +148,7 @@ class JobTrackerController extends Controller
         }
 
         return $this->render(
-            'PimEnrichBundle:JobExecution:show.html.twig',
+            'PimUIBundle:JobExecution:show.html.twig',
             ['id' => $id]
         );
     }

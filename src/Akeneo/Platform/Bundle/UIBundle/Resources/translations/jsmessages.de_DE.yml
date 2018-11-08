@@ -110,3 +110,173 @@ oro_config:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Seite aktualisieren möchten?"
 "navigation.message.content.outdated": "Der Inhalt der Seite {{ title }} ist veraltet, bitte <a href='#' data-action='page-refresh'>aktualisieren Sie die Seite</a>"
 "Content of pinned page is outdated": "Inhalt der fixierten Seite ist veraltet"
+pim_common:
+  actions: Aktionen
+  add: Hinzufügen
+  add_attributes: Attribute hinzufügen
+  all: Alle
+  and: und
+  apply: Anwenden
+  by: von
+  cancel: Abbrechen
+  code: Code
+  confirm: Bestätigen
+  confirm_deletion: Löschen bestätigen
+  create: Anlegen
+  created: Erstellt
+  delete: Löschen
+  done: Fertig
+  edit: Bearbeiten
+  entity_updated: Es gibt ungesicherte Änderungen.
+  from: Von
+  general_properties: Allgemeine Eigenschaften
+  history: Historie
+  label: Bezeichnung
+  label_translations: Feldbezeichner-Übersetzungen
+  less_than: Weniger als
+  loading: Lädt...
+  more_than: Mehr als
+  next: Vor
+  "no": "Nein"
+  none: Keine
+  not_available: N/A
+  now: Jetzt
+  ok: OK
+  permissions: Berechtigungen
+  previous: Zurück
+  properties: Eigenschaften
+  required_label: (erforderlich)
+  save: Speichern
+  select2:
+    search: Suche...
+    no_match: Keine Treffer gefunden
+    load_more: Weitere Ergebnisse werden geladen...
+  status: Status
+  to: bis
+  type: Typ
+  update: Aktualisieren
+  "yes": "Ja"
+  operator: Operator
+  operators:
+    "=": Ist gleich
+    "!=": Ist nicht gleich
+    ">=": Größer als oder gleich
+    ">": Größer als
+    "<=": Weniger als oder gleich
+    "<": Früher als
+    EMPTY: Ist leer
+    NOT EMPTY: Ist nicht leer
+    CONTAINS: Enthält
+    DOES NOT CONTAIN: Enthält nicht
+    STARTS WITH: Beginnt mit
+    ENDS WITH: Endet mit
+error:
+  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+  forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
+alert:
+  attribute_option:
+    error_occured_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
+    save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
+  session_storage:
+    not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Es ist ein Fehler aufgetreten
+    update:
+      fail: Update fehlgeschlagen
+      success: Update erfolgreich
+    delete:
+      fail: Dieses Element kann nicht gelöscht werden
+      success: Element erfolgreich entfernt
+  module:
+    delete:
+      title: '{{ itemName }} löschen'
+      alternative_title: Entfernen bestätigen
+      item: Möchten Sie dieses Element wirklich löschen?
+    edit:
+      leave: Möchten Sie diese Seite wirklich verlassen?
+      discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken
+    download:
+      archive: Generiertes Archiv herunterladen
+      output: Generierte Datei herunterladen
+      input: Eingelesene Datei herunterladen
+      invalid_xlsx: Ungültige Daten herunterladen
+      invalid_csv: Ungültige Daten herunterladen
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attributgruppen
+  pim_enrich_attributegroup_create: Attributgruppen | Anlegen
+  pim_enrich_catalog_volume_index: Überwachung Katalogumfang
+  pim_enrich_categorytree_index: Kategorie-Strukturbäume
+  pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_attribute_index: Attribute
+  pim_enrich_attribute_create: Attribute | Anlegen
+  pim_enrich_product_index: Produkte
+  pim_enrich_family_index: Produktfamilien
+  pim_enrich_channel_index: Ausgabekanäle
+  pim_enrich_channel_create: Ausgabekanäle | Anlegen
+  pim_enrich_currency_index: Währungen
+  pim_enrich_locale_index: Gebietsschemata
+  pim_enrich_group_index: Gruppen
+  pim_enrich_associationtype_index: Verbindungstypen
+  pim_enrich_grouptype_index: Gruppentypen
+  pim_enrich_mass_edit_action_choose: Massenbearbeitung | Auswählen
+  pim_enrich_mass_edit_action_configure: Massenbearbeitung | Konfigurieren
+  pim_enrich_mass_edit_action_perform: Massenbearbeitung | Durchführen
+  pim_enrich_job_tracker_index: Prozess-Tracker
+  pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
+  pim_enrich_api_connection_index: API-Verbindungen
+  pim_enrich_mass_edit_action: Massenbearbeitung
+  pim_analytics_system_info_index: Systeminformationen
+pim_menu:
+  tab:
+    activity: Übersicht
+    imports: Importe
+    exports: Exporte
+    settings: Einstellungen
+    system: System
+    help:
+      title: Hilfe
+  item:
+    association_type: Verbindungstypen
+    attribute_group: Attributgruppen
+    channel: Ausgabekanäle
+    currency: Währungen
+    dashboard: Dashboard
+    family: Produktfamilien
+    group: Gruppen
+    group_type: Gruppentypen
+    export_history: Export-Historie
+    export_profile: Export-Profile
+    import_history: Import-Historie
+    import_profile: Import-Profile
+    configuration: Konfiguration
+    user_management: Benutzerverwaltung
+    user: Benutzer
+    user_group: Benutzergruppen
+    user_role: Rollen
+    info: Systeminformationen
+    job_tracker: Prozess-Tracker
+    api_connection: API-Verbindungen
+    catalog_volume: Überwachung Katalogumfang
+  navigation:
+    activity: Navigation Übersicht
+    system: Navigation System
+    user: Navigation Benutzerverwaltung
+    settings: Navigation Einstellung
+    product: Navigation Produkte
+    product_infos: Produktinformationen
+  user:
+    logout: Abmelden
+    user_account: Mein Konto
+pim_notification:
+  types:
+    import: Import
+    export: Export
+    quick_export: Schnell-Export
+    mass_edit: Massenbearbeitung

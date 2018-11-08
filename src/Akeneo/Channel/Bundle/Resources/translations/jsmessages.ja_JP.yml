@@ -1,0 +1,65 @@
+batch_jobs:
+  csv_currency_export:
+    label: 通貨をCSV形式でエクスポート
+    export.label: 通貨エクスポート
+  csv_currency_import:
+    label: 通貨をCSV形式でインポート
+    import.label: 通貨インポート
+  xlsx_currency_export:
+    label: 通貨をXLSX形式でエクスポート
+    export.label: 通貨エクスポート
+  xlsx_currency_import:
+    label: 通貨をXLSX形式でインポート
+    import.label: 通貨インポート
+  csv_locale_export:
+    label: ロケールをCSV形式でエクスポート
+    export.label: ロケールエクスポート
+  csv_locale_import:
+    label: ロケールをCSV形式でインポート
+    import.label: ロケールインポート
+  xlsx_locale_export:
+    label: ロケールをXLSX形式でエクスポート
+    export.label: ロケールエクスポート
+  xlsx_locale_import:
+    label: ロケールをXLSX形式でインポート
+    import.label: ロケールインポート
+  csv_channel_export:
+    label: チャネルをCSV形式でエクスポート
+    export.label: チャネルエクスポート
+  csv_channel_import:
+    label: チャネルをCSV形式でインポート
+    import.label: チャネルインポート
+  xlsx_channel_export:
+    label: チャネルをXLSX形式でエクスポート
+    export.label: チャネルエクスポート
+  xlsx_channel_import:
+    label: チャネルをXLSX形式でインポート
+    import.label: チャネルインポート
+pim_enrich.entity.channel:
+  label: チャネル
+  uppercase_label: チャンネル
+  flash:
+    update:
+      success: チャンネルを更新しました。
+      fail: チャンネルを更新できませんでした。
+    create:
+      success: チャンネルを作成しました。
+      fail: チャンネルを作成できませんでした。
+    delete:
+      success: チャンネルを削除しました
+      fail: このチャンネルを削除できません
+  property:
+    category_tree: カテゴリ ツリー
+    do_not_convert: 変換しない
+    label_conversion_units: 製品のエクスポート時に使用する各メトリック属性の変換ユニットを選択します
+  module:
+    create:
+      button: チャンネルを作成します
+    delete:
+      confirm: このチャンネルを削除してもよろしいですか。
+pim_enrich.entity.locale:
+  label: ロケール
+  uppercase_label: ロケール
+  plural_label: ロケール
+pim_enrich.entity.currency:
+  plural_label: 通貨

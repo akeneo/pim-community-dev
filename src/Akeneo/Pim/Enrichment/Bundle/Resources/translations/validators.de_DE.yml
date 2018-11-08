@@ -80,4 +80,6 @@ pim_catalog:
     303: Dieses Feld erwartet ein valides Format für Verbindungen.
     pim_immutable_product_validator: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
     pim_immutable_product_model_validator: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
-
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Es gibt Fehler in der Attribut-Maske

@@ -35,7 +35,7 @@ class UserUpdaterIntegration extends TestCase
         $this->get('pim_user.updater.user')->update($user, [], []);
 
         $errors = $this->get('validator')->validate($user);
-        $this->assertEquals(6, $errors->count());
+        $this->assertEquals(4, $errors->count());
 
         $result = [];
         foreach ($errors as $error) {
@@ -47,8 +47,6 @@ class UserUpdaterIntegration extends TestCase
             'email' => 'This value should not be blank.',
             'firstName' => 'This value should not be blank.',
             'lastName' => 'This value should not be blank.',
-            'uiLocale' => 'This value should not be blank.',
-            'catalogLocale' => 'This value should not be blank.'
         ];
 
         $this->assertEquals($expected, $result);

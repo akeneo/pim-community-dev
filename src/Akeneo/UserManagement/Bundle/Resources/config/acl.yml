@@ -51,3 +51,8 @@ pim_user_role_remove:
     type: action
     label: oro_security.acl.role.delete
     group_name: oro_security.acl_group.role
+
+# API connection
+pim_enrich_api_connection_manage:
+    type: action
+    label: pim_enrich.acl.api_connection.manage

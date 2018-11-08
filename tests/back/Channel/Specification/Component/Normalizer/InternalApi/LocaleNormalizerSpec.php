@@ -21,7 +21,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
     function it_normalizes_locales($userContext, LocaleInterface $en)
     {
         $en->getCode()->willReturn('en_US');
-        $userContext->getUiLocaleCode()->willReturn('en_US');
+        $userContext->getUiLocale()->willReturn($en);
 
         $this->normalize($en, 'internal_api')->shouldReturn([
             'code'     => 'en_US',

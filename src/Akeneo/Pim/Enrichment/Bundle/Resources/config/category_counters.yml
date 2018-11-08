@@ -1,0 +1,11 @@
+services:
+    pim_enrich.doctrine.counter.category_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryProductsCounter'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.repository.category'
+        tags:
+            - { name: pim_enrich.doctrine.counter.category_item, type: product }
+
+    pim_enrich.doctrine.counter.category_registry:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistry'
