@@ -48,6 +48,7 @@ class GetRecordsForConnectorAction
         $this->referenceEntityExists = $referenceEntityExists;
         $this->searchConnectorRecord = $searchConnectorRecord;
         $this->limit = new Limit($limit);
+        $this->findIdentifiers = $findIdentifiers;
     }
 
     /**
