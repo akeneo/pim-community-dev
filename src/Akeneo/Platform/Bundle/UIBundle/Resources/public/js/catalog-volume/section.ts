@@ -5,6 +5,7 @@ import BaseView = require('pimui/js/view/base');
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/section');
 const requireContext = require('require-context');
+const userContext = require('pim/user-context');
 
 class NoTemplateForAxisError extends Error {}
 
@@ -26,6 +27,7 @@ interface SectionConfig {
   hint: {
     code: string;
     title: string;
+    link: string;
   };
   title: string;
 }
@@ -58,6 +60,7 @@ class SectionView extends BaseView {
     hint: {
       code: '',
       title: '',
+      link: '',
     },
     title: '',
   };
@@ -117,7 +120,7 @@ class SectionView extends BaseView {
     this.$el.empty().html(
       this.template({
         title: __(this.config.title),
-        hintTitle: __(this.config.hint.title).replace('{{link}}', __('catalog_volume.link')),
+        hintTitle: __(this.config.hint.title).replace('{{link}}', this.config.hint.link),
         hintIsHidden: this.hintIsHidden(),
         align: this.config.align,
       })
@@ -181,9 +184,12 @@ class SectionView extends BaseView {
         name,
         icon: this.getIconName(name),
         value: axis.value,
-        has_warning: axis.hasWarning,
+        hasWarning: axis.hasWarning,
         title: __(`pim_catalog_volume.axis.${name}`),
         warningText: this.config.warningText,
+        meanLabel: __('catalog_volume.mean'),
+        maxLabel: __('catalog_volume.max'),
+        userLocale: userContext.get('uiLocale').split('_')[0],
       });
 
       this.$('.AknCatalogVolume-axisContainer').append(el);
