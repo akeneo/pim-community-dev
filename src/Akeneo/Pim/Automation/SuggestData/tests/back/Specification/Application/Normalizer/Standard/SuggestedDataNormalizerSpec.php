@@ -7,6 +7,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
@@ -18,9 +20,10 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 {
     public function let(
         AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository,
         MeasureConverter $measureConverter
     ): void {
-        $this->beConstructedWith($attributeRepository, $measureConverter);
+        $this->beConstructedWith($attributeRepository, $attributeOptionRepository, $measureConverter);
     }
 
     public function it_is_a_suggested_data_normalizer(): void
@@ -28,43 +31,13 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SuggestedDataNormalizer::class);
     }
 
-    public function it_throws_an_exception_if_attribute_does_not_exist($attributeRepository): void
-    {
-        $suggestedData = [
-            'foo' => 'bar',
-            'bar' => 'baz',
-        ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
-            [
-                'foo' => 'pim_catalog_text',
-            ]
-        );
-
-        $this->shouldThrow(new \InvalidArgumentException('Attribute with code "bar" does not exist'))
-             ->during('normalize', [new SuggestedData($suggestedData)]);
-    }
-
-    public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository): void
-    {
-        $suggestedData = [
-            'foo' => 'bar',
-            'bar' => 'baz',
-        ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
-            [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_price_collection',
-            ]
-        );
-
-        $this->shouldThrow(new \InvalidArgumentException('Unsupported attribute type "pim_catalog_price_collection"'))
-             ->during('normalize', [new SuggestedData($suggestedData)]);
-    }
-
     public function it_normalizes_suggested_data(
-        AttributeInterface $attribute,
         $attributeRepository,
-        $measureConverter
+        $measureConverter,
+        $attributeOptionRepository,
+        AttributeOptionInterface $option1,
+        AttributeOptionInterface $option2,
+        AttributeInterface $attribute
     ): void {
         $suggestedData = [
             'foo' => 'bar',
@@ -80,6 +53,13 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'processor' => 'pim_catalog_metric',
             ]
         );
+
+        $attributeOptionRepository
+            ->findCodesByIdentifiers('baz', ['option1', 'option2'])
+            ->willReturn([$option1, $option2]);
+
+        $option1->getCode()->willReturn('option1');
+        $option2->getCode()->willReturn('option3');
 
         $attribute->getMetricFamily()->willReturn('Frequency');
         $attribute->getDefaultMetricUnit()->willReturn('MEGAHERTZ');
@@ -123,5 +103,185 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
+    }
+
+    public function it_normalizes_suggested_data_ignoring_not_existing_attributes(
+        $attributeRepository
+    ): void {
+        $suggestedData = [
+            'foo' => 'bar',
+            'bar' => '0',
+            'baz' => 'option1,option2',
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_boolean',
+            ]
+        );
+
+        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
+            [
+                'foo' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'bar',
+                    ],
+                ],
+                'bar' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => false,
+                    ],
+                ],
+            ]
+        );
+    }
+
+    public function it_normalizes_suggested_data_ignoring_simple_select_if_option_does_not_exist(
+        $attributeRepository,
+        $attributeOptionRepository
+    ): void {
+        $suggestedData = [
+            'foo' => 'bar',
+            'bar' => '0',
+            'baz' => 'option1',
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_boolean',
+                'baz' => 'pim_catalog_simpleselect',
+            ]
+        );
+        $attributeOptionRepository->findCodesByIdentifiers('baz', ['option1'])->willReturn([]);
+
+        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
+            [
+                'foo' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'bar',
+                    ],
+                ],
+                'bar' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => false,
+                    ],
+                ],
+            ]
+        );
+    }
+
+    public function it_normalizes_suggested_data_ignoring_multi_select_if_no_option_at_all_exists(
+        $attributeRepository,
+        $attributeOptionRepository
+    ): void {
+        $suggestedData = [
+            'foo' => 'bar',
+            'bar' => '0',
+            'baz' => 'option1,option2',
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_boolean',
+                'baz' => 'pim_catalog_multiselect',
+            ]
+        );
+        $attributeOptionRepository->findCodesByIdentifiers('baz', ['option1', 'option2'])->willReturn([]);
+
+        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
+            [
+                'foo' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'bar',
+                    ],
+                ],
+                'bar' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => false,
+                    ],
+                ],
+            ]
+        );
+    }
+
+    public function it_normalizes_suggested_data_ignoring_multi_select_options_that_do_not_exist(
+        $attributeRepository,
+        $attributeOptionRepository,
+        AttributeOptionInterface $option1,
+        AttributeOptionInterface $option3
+    ): void {
+        $suggestedData = [
+            'foo' => 'bar',
+            'bar' => '0',
+            'baz' => 'option1,option2,option3',
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_boolean',
+                'baz' => 'pim_catalog_multiselect',
+            ]
+        );
+        $attributeOptionRepository
+            ->findCodesByIdentifiers('baz', ['option1', 'option2', 'option3'])
+            ->willReturn([$option1, $option3]);
+
+        $option1->getCode()->willReturn('option_is_1');
+        $option3->getCode()->willReturn('option_is_3');
+
+        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
+            [
+                'foo' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'bar',
+                    ],
+                ],
+                'bar' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => false,
+                    ],
+                ],
+                'baz' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => ['option_is_1', 'option_is_3'],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository): void
+    {
+        $suggestedData = [
+            'foo' => 'bar',
+            'bar' => 'baz',
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_price_collection',
+            ]
+        );
+
+        $this->shouldThrow(new \InvalidArgumentException('Unsupported attribute type "pim_catalog_price_collection"'))
+            ->during('normalize', [new SuggestedData($suggestedData)]);
     }
 }
