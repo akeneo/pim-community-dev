@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordsForConnectorByReferenceEntity;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordsForConnectorByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
@@ -42,7 +46,7 @@ class GetRecordsForConnectorContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindRecordsForConnectorByReferenceEntity */
+    /** @var InMemoryFindRecordsForConnectorByIdentifiers */
     private $findRecordsForConnector;
 
     /** @var ReferenceEntityRepositoryInterface */
@@ -54,10 +58,14 @@ class GetRecordsForConnectorContext implements Context
     /** @var array */
     private $recordPages;
 
+    /** @var InMemoryFindRecordIdentifiersForQuery */
+    private $findRecordIdentifiersForQuery;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindRecordsForConnectorByReferenceEntity $findRecordsForConnector,
+        InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
+        InMemoryFindRecordsForConnectorByIdentifiers $findRecordsForConnector,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository
     ) {
@@ -67,6 +75,7 @@ class GetRecordsForConnectorContext implements Context
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
         $this->recordPages = [];
+        $this->findRecordIdentifiersForQuery = $findRecordIdentifiersForQuery;
     }
 
     /**
@@ -77,18 +86,33 @@ class GetRecordsForConnectorContext implements Context
         $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
 
         for ($i = 1; $i <= $numberOfRecords; $i++) {
-            $recordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
-            $mainImageInfo = new FileInfo();
-            $mainImageInfo
-                ->setOriginalFilename(sprintf('%s_image.jpg', $recordCode))
-                ->setKey(sprintf('test/%s_image.jpg', $recordCode));
+            $rawRecordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [
+                'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i)
+            ];
 
-            $record = new RecordForConnector(
-                RecordCode::fromString($recordCode),
-                LabelCollection::fromArray([
-                    'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i)
-                ]),
-                Image::fromFileInfo($mainImageInfo),
+            $mainImageInfo = (new FileInfo())
+                ->setOriginalFilename(sprintf('%s_image.jpg', $rawRecordCode))
+                ->setKey(sprintf('test/%s_image.jpg', $rawRecordCode));
+            $mainImage = Image::fromFileInfo($mainImageInfo);
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+                $recordCode,
+                $labelCollection,
+                $mainImage,
+                ValueCollection::fromValues([])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $recordForConnector = new RecordForConnector(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                $mainImage,
                 [
                     'description' => [
                         [
@@ -107,11 +131,7 @@ class GetRecordsForConnectorContext implements Context
                 ]
             );
 
-            $this->findRecordsForConnector->save(
-                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-                RecordCode::fromString($recordCode),
-                $record
-            );
+            $this->findRecordsForConnector->save($recordIdentifier, $recordForConnector);
         }
 
         $referenceEntity = ReferenceEntity::create(
