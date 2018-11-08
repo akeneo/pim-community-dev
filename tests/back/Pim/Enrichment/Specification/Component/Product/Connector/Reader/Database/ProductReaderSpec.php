@@ -2,19 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
@@ -23,7 +21,6 @@ class ProductReaderSpec extends ObjectBehavior
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
@@ -31,10 +28,8 @@ class ProductReaderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             $metricConverter,
-            $objectDetacher,
-            true
+            $objectDetacher
         );
 
         $this->setStepExecution($stepExecution);
@@ -45,7 +40,6 @@ class ProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $stepExecution,
-        $completenessManager,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
@@ -104,8 +98,6 @@ class ProductReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $completenessManager->generateMissingForProducts($channel, $filters['data'])->shouldBeCalled();
-
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
@@ -121,7 +113,6 @@ class ProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $stepExecution,
-        $completenessManager,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
@@ -169,10 +160,6 @@ class ProductReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $completenessManager->generateMissingForProducts($channel, array_merge($filters['data'], [
-            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-        ]))->shouldBeCalled();
-
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
 
@@ -188,7 +175,6 @@ class ProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $stepExecution,
-        $completenessManager,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
@@ -234,10 +220,6 @@ class ProductReaderSpec extends ObjectBehavior
         );
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
-
-        $completenessManager->generateMissingForProducts($channel, array_merge($filters['data'],
-            [["field" => "family", "operator" => "NOT EMPTY", "value" => null]]
-        ))->shouldNotBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);

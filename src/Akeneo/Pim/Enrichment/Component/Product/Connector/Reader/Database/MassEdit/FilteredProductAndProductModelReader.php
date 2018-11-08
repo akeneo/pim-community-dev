@@ -8,7 +8,6 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -37,14 +36,8 @@ class FilteredProductAndProductModelReader implements
     /** @var ChannelRepositoryInterface */
     private $channelRepository;
 
-    /** @var CompletenessManager */
-    private $completenessManager;
-
     /** @var MetricConverter */
     private $metricConverter;
-
-    /** @var bool */
-    private $generateCompleteness;
 
     /** @var bool */
     private $readChildren;
@@ -61,24 +54,18 @@ class FilteredProductAndProductModelReader implements
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
-     * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
-     * @param bool                                $generateCompleteness
      * @param bool                                $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        bool $generateCompleteness,
         bool $readChildren
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
-        $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = $generateCompleteness;
         $this->readChildren = $readChildren;
     }
 
@@ -90,9 +77,6 @@ class FilteredProductAndProductModelReader implements
         $this->firstRead = true;
 
         $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
-        }
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getProductsCursor($filters, $channel);
