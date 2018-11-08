@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Limit;
 
 /**
  * Find the list of the records for a given reference entity identifier.
@@ -33,6 +34,6 @@ interface FindRecordsForConnectorByReferenceEntityInterface
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,
-        int $limit
+        Limit $limit
     ): array;
 }

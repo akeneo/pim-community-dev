@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordsForConnectorByReferenceEntityInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
@@ -22,7 +23,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -36,7 +36,7 @@ class GetRecordsForConnectorAction
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
-    /** @var int */
+    /** @var Limit */
     private $limit;
 
     public function __construct(
@@ -46,9 +46,7 @@ class GetRecordsForConnectorAction
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->findRecordsForConnector = $findRecordsForConnector;
-
-        Assert::greaterThan($limit, 0);
-        $this->limit = $limit;
+        $this->limit = new Limit($limit);
     }
 
     /**
