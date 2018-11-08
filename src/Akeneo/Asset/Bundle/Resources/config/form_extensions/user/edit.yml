@@ -1,0 +1,12 @@
+extensions:
+  pimee-user-edit-form-default-category-tree:
+    module: pimee/asset/fields/asset-category-tree
+    parent: pim-user-edit-form-additional-tab-content
+    targetZone: content
+    position: 35
+    config:
+      fieldName: default_asset_tree
+      label: pim_user_management.entity.user.properties.default_asset_tree
+      required: true
+      isMultiple: false
+      allowClear: false
