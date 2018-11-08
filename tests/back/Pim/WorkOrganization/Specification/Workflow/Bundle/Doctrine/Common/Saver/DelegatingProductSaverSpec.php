@@ -91,7 +91,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($filteredProduct)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($filteredProduct)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($filteredProduct)->shouldBeCalled();
 
@@ -144,7 +143,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($filteredProduct)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($filteredProduct)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
@@ -344,7 +342,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $fullOwnedProduct->getId()->willReturn(42);
         $filteredOwnedProduct->getId()->willReturn(42);
-        $completenessManager->generateMissingForProduct($fullOwnedProduct)->shouldBeCalled();
         $authorizationChecker->isGranted(Attributes::OWN, $fullOwnedProduct)
             ->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $fullOwnedProduct)
@@ -354,7 +351,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
 
         $objectManager->persist($fullOwnedProduct)->shouldBeCalled();
-        $completenessManager->schedule($fullOwnedProduct)->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
 
         $fullNotOwnedProduct->getId()->willReturn(43);
