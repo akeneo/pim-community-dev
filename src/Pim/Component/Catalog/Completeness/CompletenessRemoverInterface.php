@@ -25,8 +25,6 @@ interface CompletenessRemoverInterface
      * Remove completenesses of a product
      *
      * @param ProductInterface $product
-     *
-     * @deprecated Do not use anymore, will be removed in 3.0.
      */
     public function removeForProduct(ProductInterface $product);
 
@@ -34,8 +32,6 @@ interface CompletenessRemoverInterface
      * Remove completeness of a product without indexing it.
      *
      * @param ProductInterface $product
-     *
-     * @deprecated Do not use anymore, will be removed in 3.0.
      */
     public function removeForProductWithoutIndexing(ProductInterface $product): void;
 
@@ -43,8 +39,6 @@ interface CompletenessRemoverInterface
      * Remove completenesses for all product of a family
      *
      * @param FamilyInterface $family
-     *
-     * @deprecated Do not use anymore, will be removed in 3.0.
      */
     public function removeForFamily(FamilyInterface $family);
 
