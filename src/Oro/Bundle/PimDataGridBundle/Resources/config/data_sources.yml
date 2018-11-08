@@ -124,12 +124,12 @@ services:
             - { name: oro_datagrid.datasource, type: pim_datasource_smart }
 
     pim_datagrid.datasource.product_and_product_model:
-        class: '%pim_datagrid.datasource.product.class%'
+        class: 'Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
+            - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@pim_datagrid_serializer'
-            - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
+            - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
         calls:
             - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action'] ]
         tags:
