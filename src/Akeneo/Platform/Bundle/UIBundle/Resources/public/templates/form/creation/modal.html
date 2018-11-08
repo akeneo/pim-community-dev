@@ -1,9 +1,9 @@
 <div class="AknFullPage">
-    <div class="AknFullPage-content">
-        <div class="AknFullPage-left">
+    <div class="AknFullPage-contentWithIllustration">
+        <div>
             <img src="bundles/pimui/images/<%- picture %>" class="AknFullPage-image">
         </div>
-        <div class="AknFullPage-right">
+        <div>
             <div class="AknFullPage-subTitle"><%- subTitleLabel %></div>
             <div class="AknFullPage-title"><%- titleLabel %></div>
             <% if (typeof contentLabel !== 'undefined') { %>
@@ -11,7 +11,7 @@
                     <%- contentLabel %>
                 </div>
             <% } %>
-            <div data-drop-zone="fields">
+            <div data-drop-zone="fields" class="AknFormContainer">
                 <% if (null !== fields) { %>
                     <%= fields %>
                 <% } %>

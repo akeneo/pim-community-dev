@@ -1,16 +1,15 @@
 @import '../base/variables';
 
 .AknFullPage {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
   top: 0;
   left: 0;
-  background: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  z-index: 900;
+  justify-content: space-around;
+  align-items: center;
 
   &--confirm {
     display: flex;
@@ -20,6 +19,9 @@
   }
 
   &-buttons {
+    position: fixed;
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: space-between;
     padding: @AknFullPagePadding;
@@ -30,31 +32,47 @@
   }
 
   &-content {
+    padding: ~"20px calc(80px + 100vw / 6)";
+    overflow: hidden auto;
+    width: 100%;
+  }
+
+  &-contentWithIllustration {
     display: flex;
+    margin: 0;
+    padding: 20px 80px;
+    overflow: hidden auto;
+    align-items: stretch;
     justify-content: center;
-    overflow: auto;
-    flex: 1;
 
-    &--visible {
-      overflow: visible;
-    }
-
-    &--column {
-      flex-direction: column;
-      justify-content: space-around;
+    & > :nth-child(1) {
       flex-grow: 1;
+      padding: 20px;
+      text-align: right;
+    }
+
+    & > :nth-child(2) {
+      flex-grow: 2;
+      padding: 20px;
+      border-left: 2px solid @AknLightPurple;
     }
   }
 
-  &-left {
-    width: 250px;
-    padding: 0 40px 0 0;
-  }
-
-  &-right {
-    width: 650px;
-    padding: 20px 0 0 40px;
-    border-left: 2px solid @AknLightPurple;
+  &-content {
+    //display: flex;
+    //justify-content: center;
+    //overflow: auto;
+    //flex: 1;
+    //
+    //&--visible {
+    //  overflow: visible;
+    //}
+    //
+    //&--column {
+    //  flex-direction: column;
+    //  justify-content: space-around;
+    //  flex-grow: 1;
+    //}
   }
 
   &-image {
@@ -67,7 +85,7 @@
   }
 
   &-subTitle {
-    color: @AknSlateGrey;
+    color: @AknLightPurple;
     text-transform: uppercase;
     font-size: @AknFontSizeBigger;
   }
