@@ -1144,6 +1144,12 @@
 - Remove methods `generateMissingForProducts`, `generateMissingForChannel` and `generateMissing` from `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface`
     and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator`
 - Remove methods `generateMissingForProducts`, `generateMissingForChannel`, `generateMissing`, `schedule`, `bulkSchedule` and `scheduleForFamily` from `Akeneo\Pim\Enrichment\Component\Product\ManagerCompletenessManager`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Manager\`, remove arguments
+    `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface`,
+    `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`,
+    `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`,
+    `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface`
+`\ValueCompleteCheckerInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader`, remove arguments `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager` and last argument `bool`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader`, remove arguments `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager` and last argument `bool`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader`, remove argument `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager`
