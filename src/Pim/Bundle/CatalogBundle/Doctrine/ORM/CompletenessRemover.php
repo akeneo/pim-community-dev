@@ -69,8 +69,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated Do not use anymore, will be removed in 3.0.
      */
     public function removeForProduct(ProductInterface $product)
     {
@@ -89,8 +87,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated Do not use anymore, will be removed in 3.0.
      */
     public function removeForProductWithoutIndexing(ProductInterface $product): void
     {
@@ -107,8 +103,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @deprecated Do not use anymore, will be removed in 3.0.
      */
     public function removeForFamily(FamilyInterface $family)
     {
