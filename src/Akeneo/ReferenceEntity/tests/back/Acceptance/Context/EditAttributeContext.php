@@ -1160,19 +1160,22 @@ class EditAttributeContext implements Context
         Assert::assertCount($optionsCount, $attribute->normalize()['attribute_options']);
     }
 
+
     /**
-     * @Given /^a reference entity with an option attribute$/
+     * @Given /^a reference entity with an option attribute \'([^\']+)\' and the label \'([^\']+)\' equal to \'([^\']+)\'$/
      */
-    public function aReferenceEntityWithAnOptionAttribute()
+    public function aReferenceEntityWithAnOptionAttributeAndTheLabelEqualTo($attributeCode, $locale, $label)
     {
-        $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
-        $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
+        $identifier = AttributeIdentifier::create('designer', $attributeCode, md5('fingerprint'));
+        $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $optionAttribute = OptionAttribute::create(
             $identifier,
             ReferenceEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString('favorite_color'),
-            LabelCollection::fromArray([]),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([
+                $locale => $label
+            ]),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
