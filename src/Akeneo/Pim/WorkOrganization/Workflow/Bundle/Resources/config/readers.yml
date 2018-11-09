@@ -4,6 +4,4 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - false
