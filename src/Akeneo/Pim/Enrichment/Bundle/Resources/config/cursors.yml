@@ -58,3 +58,11 @@ services:
             - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
             - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
+
+    akeneo.pim.enrichment.factory.product_identifier_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\ProductAndProductModelIdentifierCursorFactory'
+        arguments:
+        - '@akeneo_elasticsearch.client.product_and_product_model'
+        - 'pim_catalog_product'
+

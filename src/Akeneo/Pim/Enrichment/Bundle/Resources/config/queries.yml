@@ -67,3 +67,21 @@ services:
         class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
+        arguments:
+        - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
+        - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
+
+    akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
+        arguments:
+        - '@database_connection'
+        - '@pim_catalog.factory.value_collection'
+
+    akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers'
+        arguments:
+        - '@database_connection'
+        - '@pim_catalog.factory.value_collection'
