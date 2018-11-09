@@ -7,6 +7,7 @@
 - PIM-7773: Fix routing issues with product status toggle 
 - PIM-7776: Fix injection in the job's label in notification area
 - PIM-7828: Fix ACL on System Info
+- PIM-7824: Fix filter on view with attribute option deleted
 
 # 2.3.16 (2018-11-13)
 
