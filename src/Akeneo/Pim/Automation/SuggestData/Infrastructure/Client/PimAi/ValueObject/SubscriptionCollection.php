@@ -23,9 +23,6 @@ class SubscriptionCollection implements \Countable
     /** @var Subscription[] */
     private $collection;
 
-    /** @var array */
-    private $warnings;
-
     /**
      * @param array $rawApiResponse
      */
@@ -33,7 +30,6 @@ class SubscriptionCollection implements \Countable
     {
         $this->validateResponseFormat($rawApiResponse);
         $this->collection = $this->buildCollection($rawApiResponse);
-        $this->warnings = $this->buildWarnings($rawApiResponse);
     }
 
     /**
@@ -42,14 +38,6 @@ class SubscriptionCollection implements \Countable
     public function getSubscriptions(): array
     {
         return $this->collection;
-    }
-
-    /**
-     * @return array
-     */
-    public function getWarnings(): array
-    {
-        return $this->warnings;
     }
 
     /**
@@ -85,21 +73,6 @@ class SubscriptionCollection implements \Countable
         }
 
         return $collection;
-    }
-
-    /**
-     * @param array $rawApiResponse
-     *
-     * @return array
-     */
-    private function buildWarnings(array $rawApiResponse): array
-    {
-        $warnings = $rawApiResponse['_embedded']['warnings'] ?? [];
-        if (!is_array($warnings)) {
-            throw new \InvalidArgumentException('warnings should be an array');
-        }
-
-        return $warnings;
     }
 
     /**

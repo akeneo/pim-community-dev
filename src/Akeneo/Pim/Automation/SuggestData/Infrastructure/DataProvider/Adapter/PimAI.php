@@ -160,20 +160,15 @@ class PimAI implements DataProviderInterface
         if ($identifiersMapping->isEmpty()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
         }
-        $warnings = [];
 
         $clientRequest = new RequestCollection();
         foreach ($subscriptionRequests as $subscriptionRequest) {
-            try {
-                $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
-            } catch (ProductSubscriptionException $e) {
-                $warnings[] = $e;
-            }
+            $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
         }
 
         $response = $this->doSubscribe($clientRequest);
 
-        $responses = new ProductSubscriptionResponseCollection($warnings);
+        $responses = new ProductSubscriptionResponseCollection();
         foreach ($response->getSubscriptions() as $subscription) {
             $responses->add($this->buildSubscriptionResponse($subscription));
         }

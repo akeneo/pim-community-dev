@@ -21,25 +21,6 @@ final class ProductSubscriptionResponseCollection
     /** @var ProductSubscriptionResponse[] */
     private $responses = [];
 
-    /** @var array */
-    private $warnings;
-
-    /**
-     * @param array $warnings
-     */
-    public function __construct(array $warnings)
-    {
-        $this->warnings = $warnings;
-    }
-
-    /**
-     * @return array
-     */
-    public function warnings(): array
-    {
-        return $this->warnings;
-    }
-
     /**
      * @param ProductSubscriptionResponse $response
      */

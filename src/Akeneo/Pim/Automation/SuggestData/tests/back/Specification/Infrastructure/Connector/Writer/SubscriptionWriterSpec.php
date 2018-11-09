@@ -86,7 +86,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
             new ProductSubscriptionRequest($product2->getWrappedObject()),
         ];
 
-        $collection = new ProductSubscriptionResponseCollection([]);
+        $collection = new ProductSubscriptionResponseCollection();
         $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false));
         $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
 
