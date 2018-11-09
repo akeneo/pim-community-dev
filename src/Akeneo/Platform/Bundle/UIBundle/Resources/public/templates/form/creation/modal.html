@@ -11,11 +11,12 @@
                     <%- contentLabel %>
                 </div>
             <% } %>
-            <div data-drop-zone="fields" class="AknFormContainer">
+            <div data-drop-zone="fields" class="AknFormContainer AknFormContainer--withPadding">
                 <% if (null !== fields) { %>
                     <%= fields %>
                 <% } %>
             </div>
+            <div title="<%- saveLabel %>" class="AknButton AknButton--apply ok"><%- saveLabel %></div>
         </div>
     </div>
 </div>

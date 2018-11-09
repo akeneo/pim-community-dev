@@ -32,6 +32,12 @@ define(
         return BaseForm.extend({
             config: {},
             template: _.template(template),
+            modal: null,
+            deferred: null,
+            events: {
+                'click .save': 'save',
+                'click .ok': 'confirmModal',
+            },
 
             /**
              * {@inheritdoc}
@@ -50,6 +56,7 @@ define(
                     titleLabel: __(this.config.labels.title),
                     subTitleLabel: __(this.config.labels.subTitle),
                     contentLabel: __(this.config.labels.content),
+                    saveLabel: __('pim_common.save'),
                     picture: this.config.picture,
                     fields: null
                 }));
@@ -67,46 +74,39 @@ define(
              * @return {Promise}
              */
             open() {
-                const deferred = $.Deferred();
+                this.deferred = $.Deferred();
 
-                const modal = new Backbone.BootstrapModal({
-                    title: __(this.config.labels.title),
+                this.modal = new Backbone.BootstrapModal({
                     content: '',
-                    cancelText: __('pim_common.cancel'),
-                    okText: __('pim_common.save'),
                     okCloses: false
                 });
 
-                modal.open();
-                modal.$el.addClass('modal--fullPage');
+                this.modal.open();
+                this.modal.$el.addClass('modal--fullPage');
+                this.modal.$el.find('.modal-footer .ok').remove();
 
-                const modalBody = modal.$('.modal-body');
+                const modalBody = this.modal.$('.modal-body');
                 modalBody.addClass('creation');
 
-                this.render()
-                    .setElement(modalBody)
+                this.setElement(modalBody)
                     .render();
 
-                modal.on('cancel', () => {
-                    deferred.reject();
-                    modal.remove();
+                this.modal.on('cancel', () => {
+                    this.deferred.reject();
+                    this.modal.remove();
                 });
 
-                modal.on('ok', this.confirmModal.bind(this, modal, deferred));
-
-                return deferred.promise();
+                return this.deferred.promise();
             },
 
             /**
              * Confirm the modal and redirect to route after save
-             * @param  {Object} modal    The backbone view for the modal
-             * @param  {Promise} deferred Promise to resolve
              */
-            confirmModal(modal, deferred) {
+            confirmModal() {
                 this.save().done(entity => {
-                    modal.close();
-                    modal.remove();
-                    deferred.resolve();
+                    this.modal.close();
+                    this.modal.remove();
+                    this.deferred.resolve();
 
                     let routerParams = {};
 
