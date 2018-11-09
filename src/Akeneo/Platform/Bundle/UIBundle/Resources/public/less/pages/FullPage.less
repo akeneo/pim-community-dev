@@ -33,7 +33,7 @@
   &-contentWithIllustration {
     display: flex;
     margin: 0;
-    padding: 20px 80px;
+    padding: ~"20px calc(80px + 50% - 480px)"; // Set content width to 960px
     overflow: hidden auto;
     align-items: stretch;
     justify-content: center;
@@ -51,12 +51,6 @@
       padding: 20px;
       border-left: 2px solid @AknLightPurple;
     }
-  }
-
-  &--confirm &-contentWithIllustration {
-    // Set content width to 960px
-    padding-left: ~"calc(80px + 50% - 480px)";
-    padding-right: ~"calc(80px + 50% - 480px)";
   }
 
   &-content {

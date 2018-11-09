@@ -127,6 +127,11 @@ define(
                         form.setData(this.initialFormData, {silent: true});
                         form.setElement(this.modal.$('.modal-body')).render();
 
+                        const okContainer = form.$el.find('[data-drop-zone="fields-container"]');
+                        if (okContainer) {
+                            this.modal.$('.modal-footer .ok').appendTo(okContainer);
+                        }
+
                         mediator.on('pim_enrich:form:modal:ok_button:disable', function () {
                             this.disableOkBtn();
                         }.bind(this));
