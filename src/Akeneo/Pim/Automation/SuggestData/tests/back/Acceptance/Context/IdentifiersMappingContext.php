@@ -15,7 +15,8 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -31,8 +32,8 @@ use PHPUnit\Framework\Assert;
  */
 class IdentifiersMappingContext implements Context
 {
-    /** @var ManageIdentifiersMapping */
-    private $manageIdentifiersMapping;
+    /** @var GetIdentifiersMappingHandler */
+    private $getIdentifiersMappingHandler;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
@@ -47,20 +48,20 @@ class IdentifiersMappingContext implements Context
     private $updateIdentifiersMappingHandler;
 
     /**
-     * @param ManageIdentifiersMapping $manageIdentifiersMapping
+     * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingApiFake $identifiersMappingApiFake
      */
     public function __construct(
-        ManageIdentifiersMapping $manageIdentifiersMapping,
+        GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
         UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingApiFake $identifiersMappingApiFake
     ) {
-        $this->manageIdentifiersMapping = $manageIdentifiersMapping;
+        $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
         $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
@@ -182,9 +183,8 @@ class IdentifiersMappingContext implements Context
         $identifiers = $this->extractIdentifiersMappingFromTable($table);
 
         $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
-        $normalizedIdentifiers = $identifiersMappingNormalizer->normalize(
-            $this->manageIdentifiersMapping->getIdentifiersMapping()->getIdentifiers()
-        );
+        $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
+        $normalizedIdentifiers = $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers());
 
         Assert::assertEquals($identifiers, $normalizedIdentifiers);
         Assert::assertEquals(
