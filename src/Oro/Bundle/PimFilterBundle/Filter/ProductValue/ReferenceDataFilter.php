@@ -3,10 +3,11 @@
 namespace Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
-use Oro\Bundle\PimFilterBundle\Filter\ProductValue\ChoiceFilter;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -22,24 +23,46 @@ class ReferenceDataFilter extends ChoiceFilter
     protected $registry;
 
     /**
-     * Constructor
-     *
-     * @param FormFactoryInterface           $factory
-     * @param ProductFilterUtility           $util
-     * @param UserContext                    $userContext
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ConfigurationRegistryInterface $registry
+     * @param FormFactoryInterface                    $factory
+     * @param ProductFilterUtility                    $util
+     * @param UserContext                             $userContext
+     * @param AttributeRepositoryInterface            $attributeRepository
+     * @param ConfigurationRegistryInterface          $registry
+     * @param AttributeOptionRepositoryInterface      $attributeOptionRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
-        ConfigurationRegistryInterface $registry
+        ConfigurationRegistryInterface $registry,
+        AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
-        parent::__construct($factory, $util, $userContext, null, $attributeRepository);
+        parent::__construct($factory, $util, $userContext, null, $attributeRepository, $attributeOptionRepository);
 
         $this->registry = $registry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $data = $this->parseData($data);
+        if (!$data) {
+            return false;
+        }
+
+        $operator = $this->getOperator($data['type']);
+
+        $this->util->applyFilter(
+            $ds,
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
+            $operator,
+            $data['value']
+        );
+
+        return true;
     }
 
     /**

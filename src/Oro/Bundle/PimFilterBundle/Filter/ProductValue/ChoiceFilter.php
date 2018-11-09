@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -28,27 +30,31 @@ class ChoiceFilter extends AjaxChoiceFilter
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var AttributeOptionRepositoryInterface */
+    protected $attributeOptionRepository;
+
     /**
-     * Constructor
-     *
-     * @param FormFactoryInterface         $factory
-     * @param ProductFilterUtility         $util
-     * @param UserContext                  $userContext
-     * @param string                       $optionRepoClass
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param FormFactoryInterface               $factory
+     * @param ProductFilterUtility               $util
+     * @param UserContext                        $userContext
+     * @param null|string                        $optionRepoClass
+     * @param AttributeRepositoryInterface       $attributeRepository
+     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
         $optionRepoClass,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
         parent::__construct($factory, $util);
 
         $this->userContext = $userContext;
         $this->optionRepoClass = $optionRepoClass;
         $this->attributeRepository = $attributeRepository;
+        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**
@@ -63,11 +69,18 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
+        /* TODO @merge remove null condition on master*/
+        if (Operators::IN_LIST === $operator || Operators::NOT_IN_LIST === $operator) {
+            $filteredValues = $this->filterOnlyExistingOptions($data['value']);
+        } else {
+            $filteredValues = $data['value'];
+        }
+
         $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
             $operator,
-            $data['value']
+            $filteredValues
         );
 
         return true;
@@ -100,19 +113,38 @@ class ChoiceFilter extends AjaxChoiceFilter
     {
         $attribute = $this->getAttribute();
 
+        /* TODO @merge remove null condition on master, optionRepoClass to delete*/
         return array_merge(
             parent::getFormOptions(),
             [
-                'choice_url'        => 'pim_ui_ajaxentity_list',
+                'choice_url' => 'pim_ui_ajaxentity_list',
                 'choice_url_params' => [
-                    'class'        => $this->optionRepoClass,
-                    'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
+                    'class' => $this->attributeOptionRepository->getClassName(),
+                    'dataLocale' => $this->userContext->getCurrentLocaleCode(),
                     'collectionId' => $attribute->getId(),
-                    'options'      => [
+                    'options' => [
                         'type' => 'code',
                     ],
-                ]
+                ],
             ]
         );
+    }
+
+    /**
+     * Filter options value to have only existing option codes
+     *
+     * @param $optionCodes
+     * @return array
+     */
+    private function filterOnlyExistingOptions($optionCodes)
+    {
+        $attribute = $this->getAttribute();
+        $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers(
+            $attribute->getCode(),
+            $optionCodes
+        );
+        $existingOptionCodes = array_column($attributeOptions, 'code');
+
+        return array_values(array_intersect($optionCodes, $existingOptionCodes));
     }
 }
