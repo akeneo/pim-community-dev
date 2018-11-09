@@ -1,6 +1,8 @@
 @import '../base/variables';
 
 .AknFullPage {
+  @bottomHeight: 120px;
+
   position: fixed;
   height: 100vh;
   width: 100vw;
@@ -8,8 +10,10 @@
   left: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  z-index: 805;
+  background: white;
 
   &-buttons {
     position: fixed;
@@ -18,6 +22,7 @@
     display: flex;
     justify-content: space-between;
     padding: @AknFullPagePadding;
+    width: 100%;
 
     &--right {
       justify-content: flex-end;
@@ -25,9 +30,12 @@
   }
 
   &-content {
+    display: flex;
+    flex-direction: column;
     padding: ~"20px calc(80px + 100vw / 6)";
     overflow: hidden auto;
     width: 100%;
+    align-items: center;
   }
 
   &-contentWithIllustration {
@@ -53,6 +61,11 @@
     }
   }
 
+  &-content--withBottom,
+  &-contentWithIllustration--withBottom {
+    margin-bottom: @bottomHeight;
+  }
+
   &-content {
     //display: flex;
     //justify-content: center;
@@ -76,6 +89,9 @@
   }
 
   &-bottom {
+    position: fixed;
+    bottom: 0;
+    height: @bottomHeight;
     padding: @AknFullPagePadding;
   }
 

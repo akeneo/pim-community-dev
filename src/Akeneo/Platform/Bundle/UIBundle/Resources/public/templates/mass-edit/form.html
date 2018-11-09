@@ -27,7 +27,7 @@
     </div>
 
     <% if (currentStep === 'choose') { %>
-    <div class="AknFullPage-content AknFullPage-content--column">
+    <div class="AknFullPage-content AknFullPage-content--withBottom">
         <div>
             <div class="AknFullPage-subTitle"><%- title %></div>
             <div class="AknFullPage-title"><%= labelCount %></div>
@@ -38,7 +38,7 @@
         </div>
     </div>
     <% } else { %>
-    <div class="AknFullPage-contentWithIllustration">
+    <div class="AknFullPage-contentWithIllustration AknFullPage-contentWithIllustration--withBottom">
         <div>
             <div class="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--<%- illustrationClass %>"></div>
         </div>
