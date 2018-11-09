@@ -64,6 +64,14 @@ class OptionAttribute extends AbstractAttribute
         );
     }
 
+    /**
+     * @return AttributeOption[]
+     */
+    public function getAttributeOptions(): array
+    {
+        return $this->attributeOptions;
+    }
+
     protected function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
