@@ -31,8 +31,8 @@ class ReferenceEntityField extends (Field as { new(config: any): any }) {
     ReactDOM.render((<RecordSelector
       referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
       value={createRecordCode(valueData)}
-      locale={LocaleReference.create(UserContext.get('catalogLocale'))}
-      channel={ChannelReference.create(UserContext.get('catalogScope'))}
+      locale={LocaleReference.create(UserContext.get('catalog_default_locale'))}
+      channel={ChannelReference.create(UserContext.get('catalog_default_scope'))}
       multiple={false}
       placeholder={__('pim_reference_entity.record.selector.no_value')}
       onChange={(recordCode: RecordCode) => {
