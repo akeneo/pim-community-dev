@@ -3,3 +3,10 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber\InitPimAiUserSubscriber'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    akeneo.pim.automation.suggest_data.event_subscriber.franklin_proposals_creation:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\FranklinProposalsCreationSubscriber'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+        tags:
+            - { name: 'kernel.event_subscriber' }

@@ -129,20 +129,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     public function test_it_fetches_a_null_raw_suggested_data_as_empty_array(): void
     {
         $product = $this->createProduct('a_product');
-
-        $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data, misses_mapping) 
-VALUES (:productId, :subscriptionId, :suggestedData, false)
-SQL;
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->prepare($query);
-        $statement->execute(
-            [
-                'productId' => $product->getId(),
-                'subscriptionId' => uniqid(),
-                'suggestedData' => null,
-            ]
-        );
+        $this->insertSubscription($product->getId(), uniqid(), []);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
@@ -150,25 +137,37 @@ SQL;
         Assert::assertTrue($subscription->getSuggestedData()->isEmpty());
     }
 
-    public function test_it_finds_pending_product_subscriptions(): void
+    public function test_that_it_finds_and_paginates_pending_product_subscriptions(): void
     {
-        $product = $this->createProduct('a_product');
-        $subscriptionId = uniqid();
-        $suggestedData = [
-            'an_attribute' => 'some data',
-            'another_attribute' => 'some other data',
+        $product1 = $this->createProduct('product_1');
+        $this->insertSubscription($product1->getId(), 'c', ['foo' => 'bar']);
+        $product2 = $this->createProduct('product_2');
+        $this->insertSubscription($product2->getId(), 'b', []);
+        $product3 = $this->createProduct('product_3');
+        $this->insertSubscription($product3->getId(), 'd', []);
+        $product4 = $this->createProduct('product_4');
+        $this->insertSubscription($product4->getId(), 'a', ['bar' => 'baz']);
+        $product5 = $this->createProduct('product_5');
+        $this->insertSubscription($product5->getId(), 'e', ['baz' => '42']);
+
+        $params = [
+            [10, null, ['a', 'c', 'e']],
+            [2, null, ['a', 'c']],
+            [1, 'b', ['c']],
+            [2, 'a', ['c', 'e']],
+            [10, 'd', ['e']],
+            [10, 'e', []],
         ];
-        $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
 
-        $otherProduct = $this->createProduct('another_product');
-        $otherSubscriptionId = uniqid();
-        $this->insertSubscription($otherProduct->getId(), $otherSubscriptionId, []);
+        foreach ($params as $param) {
+            list($limit, $searchAfter, $expectedIds) = $param;
+            $pendingSubscriptions = $this->getRepository()->findPendingSubscriptions($limit, $searchAfter);
 
-        $pendingSubscriptions = $this->getRepository()->findPendingSubscriptions();
-        Assert::assertCount(1, $pendingSubscriptions);
-        Assert::assertSame($product, $pendingSubscriptions[0]->getProduct());
-        Assert::assertSame($subscriptionId, $pendingSubscriptions[0]->getSubscriptionId());
-        Assert::assertSame($suggestedData, $pendingSubscriptions[0]->getSuggestedData()->getValues());
+            Assert::assertCount(count($expectedIds), $pendingSubscriptions);
+            foreach ($pendingSubscriptions as $pendingSubscription) {
+                Assert::assertContains($pendingSubscription->getSubscriptionId(), $expectedIds);
+            }
+        }
     }
 
     public function test_it_deletes_a_subscription(): void
@@ -188,6 +187,20 @@ SQL;
 
         $subscription = $this->getRepository()->findOneByProductId($productId);
         Assert::assertNull($subscription);
+    }
+
+    public function test_it_empties_suggested_data_for_specified_ids(): void
+    {
+        $product1 = $this->createProduct('product_1');
+        $this->insertSubscription($product1->getId(), 'subscription_to_empty', ['foo' => 'bar']);
+        $product2 = $this->createProduct('product_2');
+        $this->insertSubscription($product2->getId(), 'other-subscription', ['bar' => 'baz']);
+
+        $repo = $this->getRepository();
+        $repo->emptySuggestedData([$product1->getId()]);
+
+        Assert::assertEmpty($repo->findOneByProductId($product1->getId())->getSuggestedData()->getValues());
+        Assert::assertNotEmpty($repo->findOneByProductId($product2->getId())->getSuggestedData()->getValues());
     }
 
     /**

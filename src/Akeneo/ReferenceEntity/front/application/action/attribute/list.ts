@@ -20,13 +20,20 @@ export const updateAttributeList = () => async (dispatch: any, getState: () => E
   const referenceEntity = denormalizeReferenceEntity(getState().form.data);
   try {
     const attributes = await attributeFetcher.fetchAll(referenceEntity.getIdentifier());
-    dispatch(attributeListUpdated(attributes));
-    dispatch(updateColumns(getColumns(attributes, getState().structure.channels)));
+    dispatch(attributeListGotUpdated(attributes));
   } catch (error) {
     dispatch(notifyAttributeListUpdateFailed());
 
     throw error;
   }
+};
+
+export const attributeListGotUpdated = (attributes: Attribute[]) => (
+  dispatch: any,
+  getState: () => EditState
+): void => {
+  dispatch(attributeListUpdated(attributes));
+  dispatch(updateColumns(getColumns(attributes, getState().structure.channels)));
 };
 
 const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {

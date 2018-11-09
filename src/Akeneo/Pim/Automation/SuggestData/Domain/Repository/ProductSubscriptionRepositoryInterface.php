@@ -33,12 +33,20 @@ interface ProductSubscriptionRepositoryInterface
     public function findOneByProductId(int $productId): ?ProductSubscription;
 
     /**
+     * @param int $limit
+     * @param string|null $searchAfter
+     *
      * @return ProductSubscription[]
      */
-    public function findPendingSubscriptions(): array;
+    public function findPendingSubscriptions(int $limit, ?string $searchAfter): array;
 
     /**
      * @param ProductSubscription $subscription
      */
     public function delete(ProductSubscription $subscription): void;
+
+    /**
+     * @param int[] $productIds
+     */
+    public function emptySuggestedData(array $productIds): void;
 }

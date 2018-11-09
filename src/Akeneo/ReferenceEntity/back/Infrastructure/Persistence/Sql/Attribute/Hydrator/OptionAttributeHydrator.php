@@ -33,7 +33,7 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $row['attribute_options'] = $row['additional_properties']['attribute_options'];
+        $row['options'] = $row['additional_properties']['options'];
 
         return $row;
     }
@@ -50,7 +50,7 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
             AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($row['value_per_locale'])
         );
-        $attributeOptions = $this->hydrateOptions($row['attribute_options']);
+        $attributeOptions = $this->hydrateOptions($row['options']);
         $optionAttribute->setOptions($attributeOptions);
 
         return $optionAttribute;
@@ -68,7 +68,7 @@ class OptionAttributeHydrator extends AbstractAttributeHydrator
             'value_per_locale',
             'value_per_channel',
             'attribute_type',
-            'attribute_options',
+            'options',
         ];
     }
 

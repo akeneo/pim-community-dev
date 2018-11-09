@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
@@ -36,12 +37,10 @@ class ManageIdentifiersMapping
     }
 
     /**
-     * @return array
+     * @return IdentifiersMapping
      */
-    public function getIdentifiersMapping(): array
+    public function getIdentifiersMapping(): IdentifiersMapping
     {
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-
-        return $identifiersMapping->normalize();
+        return $this->identifiersMappingRepository->find();
     }
 }

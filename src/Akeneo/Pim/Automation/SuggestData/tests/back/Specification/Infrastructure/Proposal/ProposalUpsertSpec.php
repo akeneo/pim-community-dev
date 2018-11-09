@@ -13,15 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -34,9 +38,10 @@ class ProposalUpsertSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        EntityManagerClearerInterface $cacheClearer
     ): void {
-        $this->beConstructedWith($productUpdater, $draftBuilder, $draftSaver, $eventDispatcher);
+        $this->beConstructedWith($productUpdater, $draftBuilder, $draftSaver, $eventDispatcher, $cacheClearer);
     }
 
     public function it_is_a_create_proposal(): void
@@ -45,32 +50,56 @@ class ProposalUpsertSpec extends ObjectBehavior
         $this->shouldImplement(ProposalUpsertInterface::class);
     }
 
-    public function it_creates_a_proposal_from_suggested_data(
+    public function it_creates_proposals_from_suggested_data(
         $productUpdater,
         $draftBuilder,
         $draftSaver,
         $eventDispatcher,
+        $cacheClearer,
         ProductInterface $product,
-        EntityWithValuesDraftInterface $productDraft
+        ProductInterface $otherProduct,
+        EntityWithValuesDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $otherProductDraft
     ): void {
+        $product->getId()->willReturn(42);
         $suggestedData = ['foo' => 'bar'];
-        $productUpdater->update($product, ['values' => $suggestedData])->willReturn($product);
-
         $draftBuilder->build($product, 'PIM.ai')->willReturn($productDraft);
-        $eventDispatcher->dispatch(
-            EntityWithValuesDraftEvents::PRE_READY,
-            new GenericEvent($productDraft->getWrappedObject())
-        )->shouldBeCalled();
 
+        $otherProduct->getId()->willReturn(56);
+        $otherSuggestedData = ['test' => 42];
+        $draftBuilder->build($otherProduct, 'PIM.ai')->willReturn($otherProductDraft);
+
+        $productUpdater->update($product, ['values' => $suggestedData])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $productDraft->markAsReady()->shouldBeCalled();
         $draftSaver->save($productDraft)->shouldBeCalled();
 
+        $productUpdater->update($otherProduct, ['values' => $otherSuggestedData])->shouldBeCalled();
+        $otherProductDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
+        $otherProductDraft->markAsReady()->shouldBeCalled();
+        $draftSaver->save($otherProductDraft)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            EntityWithValuesDraftEvents::PRE_READY,
+            Argument::type(GenericEvent::class)
+        )->shouldBeCalledTimes(2);
         $eventDispatcher->dispatch(
             EntityWithValuesDraftEvents::POST_READY,
-            new GenericEvent($productDraft->getWrappedObject(), ['comment' => null])
-        )->shouldBeCalled();
+            Argument::type(GenericEvent::class)
+        )->shouldBeCalledTimes(2);
 
-        $this->process($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
+        $eventDispatcher->dispatch(
+            SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
+            new GenericEvent([42, 56])
+        )->shouldBeCalledOnce();
+        $cacheClearer->clear()->shouldBeCalledOnce();
+
+        $this->process(
+            [
+                new ProposalSuggestedData($suggestedData, $product->getWrappedObject()),
+                new ProposalSuggestedData($otherSuggestedData, $otherProduct->getWrappedObject()),
+            ],
+            'PIM.ai'
+        )->shouldReturn(null);
     }
 }

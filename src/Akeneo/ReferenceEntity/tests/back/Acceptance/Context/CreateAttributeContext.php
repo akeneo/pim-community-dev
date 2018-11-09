@@ -464,7 +464,7 @@ class CreateAttributeContext implements Context
         $expected['is_required'] = json_decode($expected['is_required']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
-        $expected['attribute_options'] = [];
+        $expected['options'] = [];
         ksort($expected);
 
         $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
@@ -518,7 +518,7 @@ class CreateAttributeContext implements Context
         $expected['is_required'] = json_decode($expected['is_required']);
         $expected['value_per_channel'] = json_decode($expected['value_per_channel']);
         $expected['value_per_locale'] = json_decode($expected['value_per_locale']);
-        $expected['attribute_options'] = [];
+        $expected['options'] = [];
         $expected['code'] = $attributeCode;
         ksort($expected);
 

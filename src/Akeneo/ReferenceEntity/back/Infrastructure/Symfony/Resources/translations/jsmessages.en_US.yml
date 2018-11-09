@@ -36,6 +36,10 @@ pim_reference_entity:
             image: Image
         attribute:
             title: Record attributes
+            attribute:
+                error:
+                    render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
+                    render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
         module:
             delete:
                 button: Delete entity
@@ -144,6 +148,8 @@ pim_reference_entity:
             image: Image
             record: Reference entity simple link
             record_collection: Reference entity multiple link
+            option: Option
+            option_collection: Option collection
         is_required: required for completeness
         no_data:
             title: There are no custom attributes for {{ entityLabel }}
@@ -172,7 +178,7 @@ pim_reference_entity:
                 code: Code (required)
                 label: Label
                 type: Attribute type
-                record_type: Record type
+                record_type: Related reference entity
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
                 is_required: Required for completeness
@@ -220,10 +226,10 @@ pim_enrich:
         attribute:
             property:
                 type:
-                    akeneo_reference_entity_collection: Reference entity collection
-                    akeneo_reference_entity: Reference entity
+                    akeneo_reference_entity_collection: Reference entity multiple link
+                    akeneo_reference_entity: Reference entity simple link
                 section:
                     type_specific: Type specific parameters
                 reference_entity:
-                    identifier: Reference entity
+                    identifier: Related reference entity
                     default_label: Please select a reference entity

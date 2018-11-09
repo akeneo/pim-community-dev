@@ -53,22 +53,49 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findPendingSubscriptions(): array
+    public function findPendingSubscriptions(int $limit, ?string $searchAfter): array
     {
         $qb = $this->em->createQueryBuilder()->select('subscription')->from(ProductSubscription::class, 'subscription');
         $qb->where(
             $qb->expr()->isNotNull('subscription.rawSuggestedData')
         );
+        if (null !== $searchAfter) {
+            $qb->andWhere('subscription.subscriptionId > :searchAfter')
+               ->setParameter('searchAfter', $searchAfter);
+        }
+        $qb->addOrderBy('subscription.subscriptionId', 'ASC')
+           ->setMaxResults($limit);
 
         return $qb->getQuery()->getResult();
     }
 
     /**
-     * @param ProductSubscription $subscription
+     * {@inheritdoc}
      */
     public function delete(ProductSubscription $subscription): void
     {
         $this->em->remove($subscription);
         $this->em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function emptySuggestedData(array $productIds): void
+    {
+        if (empty($productIds)) {
+            return;
+        }
+
+        $qb = $this->em->createQueryBuilder();
+        $qb->update(ProductSubscription::class, 'subscription')
+           ->set('subscription.rawSuggestedData', ':rawSuggestedData')
+           ->where(
+               $qb->expr()->in('subscription.product', ':productIds')
+           )
+           ->setParameter('rawSuggestedData', null)
+           ->setParameter('productIds', $productIds);
+
+        $qb->getQuery()->execute();
     }
 }

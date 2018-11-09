@@ -63,9 +63,6 @@ class GetRecordForConnectorContext implements Context
     /** @var null|Response */
     private $nonExistentRecord;
 
-    /** @var null|Response */
-    private $nonExistentReferenceEntityResponse;
-
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
@@ -232,23 +229,6 @@ class GetRecordForConnectorContext implements Context
 
             $this->referenceEntityRepository->create($referenceEntity);
         }
-    }
-
-    /**
-     * @When the connector requests for a record for a non-existent reference entity
-     */
-    public function theConnectorRequestsARecordForANonExistentReferenceEntity(): void
-    {
-        $client = $this->clientFactory->logIn('julia');
-        $this->nonExistentReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, self::REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_a_record.json");
-    }
-
-    /**
-     * @Then the PIM notifies the connector about an error indicating that the reference entity does not exist
-     */
-    public function thePIMNotifiesAnErrorIndicatingThatTheReferenceEntityDoesNotExist(): void
-    {
-        $this->webClientHelper->assertJsonFromFile($this->nonExistentReferenceEntityResponse, self::REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_a_record.json");
     }
 
     private function loadNameAttribute(): void

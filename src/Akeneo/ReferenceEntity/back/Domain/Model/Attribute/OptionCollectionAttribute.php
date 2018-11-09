@@ -64,7 +64,7 @@ class OptionCollectionAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'attribute_options' => array_map(
+                'options' => array_map(
                     function (AttributeOption $attributeOption) {
                         return $attributeOption->normalize();
                     },

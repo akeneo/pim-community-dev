@@ -6,6 +6,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@akeneo_measure.measure_converter'
 
     akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.family:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer'

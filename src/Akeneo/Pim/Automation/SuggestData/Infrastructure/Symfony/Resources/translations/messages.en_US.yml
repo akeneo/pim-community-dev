@@ -1,10 +1,13 @@
 akeneo_suggest_data:
     acl:
         suggest_data:
-            index: Suggest data
+            index: Franklin Insights product subscription
         pim_ai:
-            title: Manage connection to Franklin
-        settings.mapping: Map structure between your catalog and PIM.ai
+            title: Manage Franklin Insights connection
+        settings:
+            mapping: Manage Franklin Insights Settings
+    acl_group:
+        suggest_data: Franklin Insights Settings
     mapping_identifier:
         success: The mapping has been successfully saved
         error: An error occurred while saving the mapping

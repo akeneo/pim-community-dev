@@ -54,7 +54,7 @@ class OptionAttributeSpec extends ObjectBehavior
                 'value_per_channel'           => true,
                 'value_per_locale'            => true,
                 'type'                        => 'option',
-                'attribute_options'            => [],
+                'options'            => [],
             ]
         );
     }
@@ -78,7 +78,7 @@ class OptionAttributeSpec extends ObjectBehavior
             'value_per_channel'           => true,
             'value_per_locale'            => true,
             'type'                        => 'option',
-            'attribute_options'            => [
+            'options'            => [
                 [
                     'code' => 'red',
                     'labels'      => [

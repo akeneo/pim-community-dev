@@ -105,6 +105,18 @@ Feature: Create an attribute linked to a reference entity
     And the user saves the valid image attribute
     Then the user should not see any validation error
 
+  @acceptance-front
+  Scenario: Create a simple valid option attribute
+    When the user creates a valid option attribute
+    And the user saves the valid option attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create a simple valid option collection attribute
+    When the user creates a valid option collection attribute
+    And the user saves the valid option collection attribute
+    Then the user should not see any validation error
+
   @acceptance-back
   Scenario: Cannot create more text attributes than the limit
     Given 100 random attributes for a reference entity

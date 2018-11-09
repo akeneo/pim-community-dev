@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
@@ -29,8 +30,8 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function save(ProductSubscription $subscription): void
     {
-        $productId = $subscription->getProduct()->getId();
-        $this->subscriptions[$productId] = $subscription;
+        $this->subscriptions[$subscription->getSubscriptionId()] = $subscription;
+        ksort($this->subscriptions);
     }
 
     /**
@@ -38,26 +39,35 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
-        if (!isset($this->subscriptions[$productId])) {
-            return null;
+        foreach ($this->subscriptions as $subscription) {
+            if ($subscription->getProduct()->getId() === $productId) {
+                return $subscription;
+            }
         }
 
-        return $this->subscriptions[$productId];
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findPendingSubscriptions(): array
+    public function findPendingSubscriptions(int $limit, ?string $searchAfter): array
     {
-        return array_values(
-            array_filter(
-                $this->subscriptions,
-                function (ProductSubscription $subscription) {
-                    return !$subscription->getSuggestedData()->isEmpty();
+        $subscriptions = array_filter(
+            array_values($this->subscriptions),
+            function (ProductSubscription $subscription) use ($searchAfter) {
+                if ($subscription->getSuggestedData()->isEmpty()) {
+                    return false;
                 }
-            )
+                if (null !== $searchAfter && $subscription->getSubscriptionId() <= $searchAfter) {
+                    return false;
+                }
+
+                return true;
+            }
         );
+
+        return array_slice($subscriptions, 0, $limit);
     }
 
     /**
@@ -65,6 +75,18 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      */
     public function delete(ProductSubscription $subscription): void
     {
-        unset($this->subscriptions[$subscription->getProduct()->getId()]);
+        unset($this->subscriptions[$subscription->getSubscriptionId()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function emptySuggestedData(array $productIds): void
+    {
+        foreach ($this->subscriptions as $subscription) {
+            if (in_array($subscription->getProduct()->getId(), $productIds)) {
+                $subscription->setSuggestedData(new SuggestedData(null));
+            }
+        }
     }
 }

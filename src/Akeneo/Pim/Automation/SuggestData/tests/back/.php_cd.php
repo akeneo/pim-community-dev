@@ -29,6 +29,7 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\Enrichment\Component',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
 
             // Events
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
@@ -77,6 +78,7 @@ $rules = [
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
             'Symfony\Component\Translation',
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller'),
 

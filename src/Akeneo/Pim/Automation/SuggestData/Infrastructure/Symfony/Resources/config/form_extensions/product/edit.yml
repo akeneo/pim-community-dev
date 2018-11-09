@@ -4,6 +4,7 @@ extensions:
         parent: pim-product-edit-form-meta
         targetZone: meta
         position: 85
+        aclResourceId: akeneo_suggest_data_product_subscription
         config:
             createProductSubscriptionFailMessage: akeneo_suggest_data.entity.product_subscription.flash.create.fail
             createProductSubscriptionSuccessMessage: akeneo_suggest_data.entity.product_subscription.flash.create.success

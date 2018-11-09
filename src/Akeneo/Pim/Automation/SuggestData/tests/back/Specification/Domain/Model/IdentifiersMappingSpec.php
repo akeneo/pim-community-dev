@@ -102,41 +102,6 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->isValid()->shouldReturn(false);
     }
 
-    public function it_normalizes_identifiers_mapping($manufacturer, $model, $ean, $sku): void
-    {
-        $manufacturer->getCode()->willReturn('brand');
-        $model->getCode()->willReturn('mpn');
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
-
-        $this->normalize()->shouldReturn([
-            'brand' => 'brand',
-            'mpn' => 'mpn',
-            'upc' => 'ean',
-            'asin' => 'sku',
-        ]);
-    }
-
-    public function it_normalizes_empty_identifiers_mapping(): void
-    {
-        $this->beConstructedWith([]);
-
-        $this->normalize()->shouldReturn([]);
-    }
-
-    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean): void
-    {
-        $manufacturer->getCode()->willReturn('brand');
-        $ean->getCode()->willReturn('ean');
-
-        $this->normalize()->shouldReturn([
-            'brand' => 'brand',
-            'mpn' => null,
-            'upc' => 'ean',
-            'asin' => null,
-        ]);
-    }
-
     public function it_is_traversable(): void
     {
         $this->shouldHaveType(\Traversable::class);

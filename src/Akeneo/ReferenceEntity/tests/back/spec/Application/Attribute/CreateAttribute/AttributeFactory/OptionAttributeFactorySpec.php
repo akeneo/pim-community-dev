@@ -49,7 +49,7 @@ class OptionAttributeFactorySpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => false,
             'type' => 'option',
-            'attribute_options' => []
+            'options' => []
         ]);
     }
 

@@ -64,19 +64,6 @@ class IdentifiersMapping implements \IteratorAggregate
     }
 
     /**
-     * @return array
-     */
-    public function normalize(): array
-    {
-        $normalizedData = [];
-        foreach ($this->identifiers as $identifier => $attribute) {
-            $normalizedData[$identifier] = $attribute instanceof AttributeInterface ? $attribute->getCode() : null;
-        }
-
-        return $normalizedData;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getIterator(): iterable

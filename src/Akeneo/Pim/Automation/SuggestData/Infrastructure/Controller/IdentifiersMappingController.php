@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifi
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -76,8 +77,11 @@ class IdentifiersMappingController
      */
     public function getIdentifiersMappingAction(): JsonResponse
     {
+        $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
+        $identifiersMapping = $this->manageIdentifiersMapping->getIdentifiersMapping();
+
         return new JsonResponse(
-            $this->manageIdentifiersMapping->getIdentifiersMapping()
+            $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers())
         );
     }
 }

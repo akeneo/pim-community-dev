@@ -7,32 +7,7 @@ import Record from 'akeneoreferenceentity/domain/model/record/record';
 import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/value';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
 import __ from 'akeneoreferenceentity/tools/translator';
-
-class ErrorBoundary extends React.Component<{fieldName: string}, {hasError: boolean; error: Error | null}> {
-  constructor(props: {fieldName: string}) {
-    super(props);
-    this.state = {hasError: false, error: null};
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return {hasError: true, error};
-  }
-
-  componentDidCatch(error: Error | null) {
-    this.setState({
-      hasError: true,
-      error: error || new Error('An error occured during the rendering of the field view'),
-    });
-  }
-
-  render() {
-    if (this.state.hasError && null !== this.state.error) {
-      return <div>{__('pim_reference_entity.record.error.value', {fieldName: this.props.fieldName})}</div>;
-    }
-
-    return this.props.children;
-  }
-}
+import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
 export default (
   record: Record,
@@ -66,7 +41,7 @@ export default (
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <ErrorBoundary fieldName={value.attribute.getLabel(locale.stringValue())}>
+          <ErrorBoundary errorMessage={__('pim_reference_entity.record.error.value', {fieldName: value.attribute.getLabel(locale.stringValue())})}>
             <DataView
               value={value}
               onChange={onValueChange}

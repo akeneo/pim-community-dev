@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -180,7 +181,12 @@ class IdentifiersMappingContext implements Context
     {
         $identifiers = $this->extractIdentifiersMappingFromTable($table);
 
-        Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
+        $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
+        $normalizedIdentifiers = $identifiersMappingNormalizer->normalize(
+            $this->manageIdentifiersMapping->getIdentifiersMapping()->getIdentifiers()
+        );
+
+        Assert::assertEquals($identifiers, $normalizedIdentifiers);
         Assert::assertEquals(
             $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
             $this->identifiersMappingApiFake->get()
