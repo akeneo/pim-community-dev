@@ -89,11 +89,6 @@ stage("Test") {
                     script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cs.php --format=junit > %workspace%/php_cs_fixer_suggest_data_output.xml",
                     junit: "php_cs_fixer_suggest_data_output.xml"
                 )
-                testif(
-                    condition: launchUnitTests.equals("yes"),
-                    container: tag,
-                    script: "cd /var/www/pim && vendor/bin/phpcs"
-                )
             },
             "back-check-pullup": {testif(
                 condition: launchUnitTests.equals("yes"),
