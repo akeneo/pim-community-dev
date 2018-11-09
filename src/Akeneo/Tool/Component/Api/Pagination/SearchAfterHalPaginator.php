@@ -34,6 +34,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
         $this->resolver->setDefaults([
             'uri_parameters'      => [],
             'item_identifier_key' => 'code',
+            'limit'               => null,
         ]);
 
         $this->resolver->setRequired([
@@ -49,6 +50,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
         $this->resolver->setAllowedTypes('search_after', 'array');
         $this->resolver->setAllowedTypes('list_route_name', 'string');
         $this->resolver->setAllowedTypes('item_route_name', 'string');
+        $this->resolver->setAllowedTypes('limit', ['int', 'null']);
 
         $this->router = $router;
     }
@@ -62,6 +64,11 @@ class SearchAfterHalPaginator implements PaginatorInterface
             $parameters = $this->resolver->resolve($parameters);
         } catch (\InvalidArgumentException $e) {
             throw new PaginationParametersException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        $limit = $parameters['query_parameters']['limit'] ?? $parameters['limit'];
+        if (null === $limit) {
+            throw new PaginationParametersException('The limit must be defined.');
         }
 
         $embedded = [];
@@ -83,7 +90,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
             $this->createLink($parameters['list_route_name'], $uriParameters, null, 'first'),
         ];
 
-        if (count($items) === (int) $parameters['query_parameters']['limit']) {
+        if (count($items) === (int) $limit) {
             $links[] = $this->createLink(
                 $parameters['list_route_name'],
                 $uriParameters,
