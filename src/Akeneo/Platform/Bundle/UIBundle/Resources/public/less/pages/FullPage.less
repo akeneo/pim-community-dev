@@ -2,6 +2,7 @@
 
 .AknFullPage {
   @bottomHeight: 120px;
+  @topHeight: 120px;
 
   position: fixed;
   height: 100vh;
@@ -36,6 +37,12 @@
     overflow: hidden auto;
     width: 100%;
     align-items: center;
+
+    &--fullWidth {
+      padding-left: @AknFullPagePadding;
+      padding-right: @AknFullPagePadding;
+      flex-grow: 1;
+    }
   }
 
   &-contentWithIllustration {
@@ -61,11 +68,6 @@
     }
   }
 
-  &-content--withBottom,
-  &-contentWithIllustration--withBottom {
-    margin-bottom: @bottomHeight;
-  }
-
   &-content {
     //display: flex;
     //justify-content: center;
@@ -83,16 +85,37 @@
     //}
   }
 
-  &-image {
-    width: 210px;
-    height: 210px;
-  }
-
   &-bottom {
     position: fixed;
     bottom: 0;
     height: @bottomHeight;
     padding: @AknFullPagePadding;
+  }
+
+  &-content--withBottom,
+  &-contentWithIllustration--withBottom {
+    margin-bottom: @bottomHeight;
+  }
+
+  &-top {
+    position: fixed;
+    top: 0;
+    height: @topHeight;
+    display: flex;
+    flex-direction: column;
+    padding-top: @AknFullPagePadding;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-content--withTop,
+  &-contentWithIllustration--withTop {
+    margin-top: @topHeight;
+  }
+
+  &-image {
+    width: 210px;
+    height: 210px;
   }
 
   &-subTitle {
@@ -133,18 +156,6 @@
     &--bottom {
         margin-bottom: 30px;
     }
-  }
-
-  &-upperTitle {
-    position: relative;
-    top: -@AknFullPageTopPadding;
-    display: flex;
-    flex-direction: column;
-    height: @AknFullPageTopPadding;
-    margin: @AknFullPagePadding @AknFullPagePadding -@AknFullPageTopPadding @AknFullPagePadding;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
   }
 
   &-centeredContent {

@@ -1,0 +1,7 @@
+<ul id="column-list" class="AknVerticalList connected-sortable">
+    <% _.each(columns, function(column) { %>
+    <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
+        <div><%- column.label %></div>
+    </li>
+    <% }); %>
+</ul>
