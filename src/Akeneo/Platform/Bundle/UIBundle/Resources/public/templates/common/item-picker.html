@@ -1,35 +1,39 @@
-<div class="AknFullPage-top">
-    <div class="AknFullPage-title">
-        <%- title %>
-    </div>
-    <div class="AknFullPage-description">
-        <%- description %>
-    </div>
-</div>
-<div class="AknFullPage-content AknFullPage-content--withTop AknFullPage-content--fullWidth AknColumnConfigurator">
-    <div class="AknColumnConfigurator-column ui-resizable-container--column">
-        <div class="AknColumnConfigurator-listContainer ui-resizable-container--column-child">
-            <div class="AknColumnConfigurator-relativeContent categories-container">
-                <div id="item-picker-tree" data-datalocale="<%= locale %>" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
-            </div>
+<div class="AknFullPage">
+    <div class="AknFullPage-top">
+        <div class="AknFullPage-title">
+            <%- title %>
+        </div>
+        <div class="AknFullPage-description">
+            <%- description %>
         </div>
     </div>
-    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--large">
-        <div class="AknColumnConfigurator-listContainer">
-            <div id="<%- datagridIdentifier %>">
-                <div id="grid-<%- datagridIdentifier %>" data-type="datagrid">
-                    <div class="AknFilterBox AknFilterBox--search AknFilterBox--sticky filter-box" data-drop-zone="filters"></div>
-                    <div class="AknTitleContainer-line">
-                        <div data-drop-zone="search" class="AknTitleContainer-search search-zone"></div>
+    <div class="AknFullPage-content AknFullPage-content--withTop AknFullPage-content--fullWidth">
+        <div class="AknColumnConfigurator">
+            <div class="AknColumnConfigurator-column ui-resizable-container--column">
+                <div class="AknColumnConfigurator-listContainer ui-resizable-container--column-child">
+                    <div class="AknColumnConfigurator-relativeContent categories-container">
+                        <div id="item-picker-tree" data-datalocale="<%= locale %>" data-name="category" data-type="tree" class="filter-item" data-relatedentity="product"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--fixed">
-        <div class="basket"></div>
-        <div class="selection-inputs">
-            <input type="hidden" id="item-picker-append-field"/>
+            <div class="AknColumnConfigurator-column AknColumnConfigurator-column--large">
+                <div class="AknColumnConfigurator-listContainer">
+                    <div id="<%- datagridIdentifier %>">
+                        <div id="grid-<%- datagridIdentifier %>" data-type="datagrid">
+                            <div class="AknFilterBox AknFilterBox--search AknFilterBox--sticky filter-box" data-drop-zone="filters"></div>
+                            <div class="AknTitleContainer-line">
+                                <div data-drop-zone="search" class="AknTitleContainer-search search-zone"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="AknColumnConfigurator-column AknColumnConfigurator-column--fixed">
+                <div class="basket"></div>
+                <div class="selection-inputs">
+                    <input type="hidden" id="item-picker-append-field"/>
+                </div>
+            </div>
         </div>
     </div>
 </div>
