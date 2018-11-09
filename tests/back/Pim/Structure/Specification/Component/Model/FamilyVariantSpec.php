@@ -2,20 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
+use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class FamilyVariantSpec extends ObjectBehavior
 {

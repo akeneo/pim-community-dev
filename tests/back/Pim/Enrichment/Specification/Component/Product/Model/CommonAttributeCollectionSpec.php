@@ -3,15 +3,13 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CommonAttributeCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(CommonAttributeCollection::class);
+        $this->shouldHaveType(\Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection::class);
     }
 
     function it_is_a_collection()

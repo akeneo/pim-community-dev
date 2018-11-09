@@ -9,7 +9,6 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
 
     pim_catalog.saver.family_variant:

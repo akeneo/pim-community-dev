@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -17,9 +16,9 @@ class AssociationTypeNormalizer implements NormalizerInterface
     protected $translationNormalizer;
 
     /**
-     * @param TranslationNormalizer $translationNormalizer
+     * @param NormalizerInterface $translationNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(NormalizerInterface $translationNormalizer)
     {
         $this->translationNormalizer = $translationNormalizer;
     }

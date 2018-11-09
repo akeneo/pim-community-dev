@@ -594,7 +594,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Valida
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractMetric/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractMetric/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractProductPrice/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractProductPrice/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractValue/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractValue/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CommonAttributeCollection/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\CommonAttributeCollection/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CommonAttributeCollection/Akeneo\\Pim\\Structure\\Component\\Model\\CommonAttributeCollection/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\EntityWithAssociationsInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\EntityWithAssociationsInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\EntityWithFamilyInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\EntityWithFamilyInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\EntityWithFamilyVariantInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\EntityWithFamilyVariantInterface/g'

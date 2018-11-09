@@ -2,6 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
+use Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -12,13 +19,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater;
 use Prophecy\Argument;
 
 class FamilyVariantUpdaterSpec extends ObjectBehavior

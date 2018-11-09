@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver;
 
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -32,17 +31,14 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param CompletenessManager            $completenessManager (@deprecated will be removed in 2.1
      *                                                            {@see \Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber})
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;
-        $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 

@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 
 class KeepOnlyValuesForVariationSpec extends ObjectBehavior
 {

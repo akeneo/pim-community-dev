@@ -3,8 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,14 +19,14 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var EntityRepository */
+    /** @var AttributeRepository */
     protected $attributeRepository;
 
     /**
      * @param NormalizerInterface $normalizer
-     * @param EntityRepository    $attributeRepository
+     * @param ObjectRepository    $attributeRepository
      */
-    public function __construct(NormalizerInterface $normalizer, EntityRepository $attributeRepository)
+    public function __construct(NormalizerInterface $normalizer, ObjectRepository $attributeRepository)
     {
         $this->normalizer          = $normalizer;
         $this->attributeRepository = $attributeRepository;

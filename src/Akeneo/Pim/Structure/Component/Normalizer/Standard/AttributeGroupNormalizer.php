@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,11 +20,11 @@ class AttributeGroupNormalizer implements NormalizerInterface
     protected $attributeRepository;
 
     /**
-     * @param TranslationNormalizer        $translationNormalizer
+     * @param NormalizerInterface          $translationNormalizer
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
-        TranslationNormalizer $translationNormalizer,
+        NormalizerInterface $translationNormalizer,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->translationNormalizer = $translationNormalizer;
