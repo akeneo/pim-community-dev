@@ -41,7 +41,6 @@ class ProductSaverSpec extends ObjectBehavior
         $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
-        $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
         $objectManager->persist($product)->shouldBeCalled();
@@ -62,8 +61,6 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $completenessManager->schedule($product1)->shouldBeCalled();
-        $completenessManager->schedule($product2)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product1)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
 
@@ -102,9 +99,6 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-        $completenessManager->schedule($product1)->shouldBeCalledTimes(1);
-        $completenessManager->schedule($product2)->shouldBeCalled();
-
         $completenessManager->generateMissingForProduct($product1)->shouldBeCalledTimes(1);
         $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
 
