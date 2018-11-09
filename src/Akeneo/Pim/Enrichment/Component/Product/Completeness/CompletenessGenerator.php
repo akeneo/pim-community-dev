@@ -51,48 +51,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
-     *             Will be removed in 3.0.
-     */
-    public function generateMissingForProducts(ChannelInterface $channel, array $filters)
-    {
-        $products = $this->createProductQueryBuilderForMissings($channel, null, $filters)->execute();
-        foreach ($products as $product) {
-            $this->calculateProductCompletenesses($product);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
-     *             Will be removed in 3.0.
-     */
-    public function generateMissingForChannel(ChannelInterface $channel)
-    {
-        $products = $this->createProductQueryBuilderForMissings($channel)->execute();
-        foreach ($products as $product) {
-            $this->calculateProductCompletenesses($product);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated as completeness is generated on the fly when a product is saved since 2.x
-     *             Will be removed in 3.0.
-     */
-    public function generateMissing()
-    {
-        $products = $this->createProductQueryBuilderForMissings()->execute();
-        foreach ($products as $product) {
-            $this->calculateProductCompletenesses($product);
-        }
-    }
-
-    /**
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
      * @param array            $filters

@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\Mass
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -35,9 +34,6 @@ class ProductAndProductModelReader implements
     /** @var ChannelRepositoryInterface */
     private $channelRepository;
 
-    /** @var CompletenessManager */
-    private $completenessManager;
-
     /** @var StepExecution */
     private $stepExecution;
 
@@ -53,18 +49,15 @@ class ProductAndProductModelReader implements
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
-     * @param CompletenessManager                 $completenessManager
      * @param bool                                $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         bool $readChildren
     ) {
         $this->pqbFactory          = $pqbFactory;
         $this->channelRepository   = $channelRepository;
-        $this->completenessManager = $completenessManager;
         $this->readChildren        = $readChildren;
     }
 
@@ -76,9 +69,6 @@ class ProductAndProductModelReader implements
         $this->firstRead = true;
 
         $channel = $this->getConfiguredChannel();
-        if (null !== $channel) {
-            $this->completenessManager->generateMissingForChannel($channel);
-        }
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getCursor($filters, $channel);

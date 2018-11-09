@@ -7,12 +7,7 @@ services:
     pim_catalog.manager.completeness:
         class: '%pim_catalog.manager.completeness.class%'
         arguments:
-            - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
             - '@pim_catalog.completeness.generator'
-            - '@pim_catalog.remover.completeness'
-            - '@pim_catalog.completeness.checker'
 
     pim_catalog.resolver.attribute_values:
         class: '%pim_catalog.resolver.attribute_values.class%'

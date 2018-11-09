@@ -6,8 +6,6 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
@@ -30,14 +28,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var MetricConverter */
     protected $metricConverter;
-
-    /** @var bool */
-    protected $generateCompleteness;
 
     /** @var StepExecution */
     protected $stepExecution;
@@ -51,22 +43,16 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
-     * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
-     * @param bool                                $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
-        MetricConverter $metricConverter,
-        $generateCompleteness
+        MetricConverter $metricConverter
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
-        $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
     /**
@@ -76,8 +62,6 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     {
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
-
-        $this->generateCompletenessForMissings();
 
         $this->products = $this->getProductsCursor($filters, $channel);
         $this->firstRead = true;
@@ -165,11 +149,11 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * Get a filter by field name
      *
-     * @param $filters
-     * @param $fieldName
+     * @param string $fieldName
+     *
      * @return array
      */
-    protected function getConfiguredFilter($fieldName)
+    protected function getConfiguredFilter(string $fieldName)
     {
         $filters = $this->getConfiguredFilters();
 
@@ -195,25 +179,5 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $productQueryBuilder = $this->pqbFactory->create($options);
 
         return $productQueryBuilder->execute();
-    }
-
-    private function generateCompletenessForMissings(): void
-    {
-        $channel = $this->getConfiguredChannel();
-        $filters = $this->getConfiguredFilters();
-
-        $familyFilter = $this->getConfiguredFilter('family');
-        $completenessFilter = $this->getConfiguredFilter('completeness');
-        $calculateCompleteness = !empty($completenessFilter) && $completenessFilter['operator'] !== 'ALL';
-
-        if (null === $familyFilter) {
-            $filters = array_merge($filters, [
-                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]);
-        }
-
-        if (null !== $channel && $this->generateCompleteness && $calculateCompleteness) {
-            $this->completenessManager->generateMissingForProducts($channel, $filters);
-        }
     }
 }
