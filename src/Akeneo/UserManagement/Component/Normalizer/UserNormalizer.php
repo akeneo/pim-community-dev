@@ -84,6 +84,7 @@ class UserNormalizer implements NormalizerInterface
             'default_category_tree'     => $user->getDefaultTree()->getCode(),
             'default_asset_tree'        => $user->getDefaultAssetTree() ? $user->getDefaultAssetTree()->getCode() : null,
             'proposals_to_review_notification' => $user->hasProposalsToReviewNotification(),
+            'proposals_state_notifications' => $user->hasProposalsStateNotification(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
             'roles'                     => $this->getRoleNames($user),
