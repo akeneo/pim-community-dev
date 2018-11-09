@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AbstractApi;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,18 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AuthenticationWebService implements AuthenticationApiInterface
+class AuthenticationWebService extends AbstractApi implements AuthenticationApiInterface
 {
-    private $uriGenerator;
-
-    private $httpClient;
-
-    public function __construct(UriGenerator $uriGenerator, Client $httpClient)
-    {
-        $this->uriGenerator = $uriGenerator;
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -13,12 +13,14 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  * file that was distributed with this source code.
  */
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
+
 /**
  * Interface for the API Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-interface IdentifiersMappingApiInterface
+interface IdentifiersMappingApiInterface extends AuthenticatedApi
 {
     /**
      * Call the API to update the identifiers mapping.

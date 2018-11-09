@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use GuzzleHttp\ClientInterface;
 
 /**
@@ -25,20 +23,15 @@ class Client
     /** @var ClientInterface */
     private $httpClient;
 
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
-
     /** @var string */
     private $token;
 
     /**
      * @param ClientInterface $httpClient
-     * @param ConfigurationRepositoryInterface $configurationRepository
      */
-    public function __construct(ClientInterface $httpClient, ConfigurationRepositoryInterface $configurationRepository)
+    public function __construct(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
-        $this->configurationRepository = $configurationRepository;
     }
 
     /**
@@ -53,7 +46,7 @@ class Client
     public function request(string $method, string $uri, array $options = [])
     {
         $options = $options + [
-            'headers' => ['Authorization' => $this->getToken()],
+            'headers' => ['Authorization' => $this->token],
         ];
 
         $response = $this->httpClient->request($method, $uri, $options);
@@ -63,17 +56,10 @@ class Client
     }
 
     /**
-     * @return null|string
+     * @param string $token
      */
-    private function getToken(): ?string
+    public function setToken(string $token): void
     {
-        if (empty($this->token)) {
-            $config = $this->configurationRepository->find();
-            if ($config instanceof Configuration) {
-                $this->token = $config->getToken();
-            }
-        }
-
-        return (string) $this->token;
+        $this->token = $token;
     }
 }

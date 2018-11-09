@@ -46,4 +46,11 @@ class IdentifiersMappingApiFake implements IdentifiersMappingApiInterface
     {
         return $this->identifiersMapping;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken(string $token): void
+    {
+    }
 }

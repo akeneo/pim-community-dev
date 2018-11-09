@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
@@ -45,6 +46,11 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
     public function it_is_an_attribute_options_mapping_web_service(): void
     {
         $this->shouldHaveType(OptionsMappingWebService::class);
+    }
+
+    public function it_is_an_authenticated_webservice(): void
+    {
+        $this->shouldImplement(AuthenticatedApi::class);
     }
 
     public function it_implements_attribute_options_mapping_interface(): void

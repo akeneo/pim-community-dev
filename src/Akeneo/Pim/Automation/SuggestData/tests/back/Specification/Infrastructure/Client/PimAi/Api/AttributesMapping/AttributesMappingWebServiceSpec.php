@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingWebService;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use PhpSpec\ObjectBehavior;
@@ -33,6 +34,11 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
     public function it_is_a_attributes_mapping_webservice(): void
     {
         $this->shouldHaveType(AttributesMappingWebService::class);
+    }
+
+    public function it_is_an_authenticated_webservice(): void
+    {
+        $this->shouldImplement(AuthenticatedApi::class);
     }
 
     public function it_fetches_attributes_mapping(
