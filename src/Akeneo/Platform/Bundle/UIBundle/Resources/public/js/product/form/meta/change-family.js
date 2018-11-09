@@ -10,6 +10,7 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form',
         'pim/template/product/meta/change-family-modal',
@@ -20,6 +21,7 @@ define(
     ],
     function (
         _,
+        __,
         Backbone,
         BaseForm,
         modalTemplate,
@@ -45,15 +47,23 @@ define(
             },
             showModal: function () {
                 var familyModal = new Backbone.BootstrapModal({
+                    className: 'modal modal--fullPage',
                     allowCancel: true,
-                    cancelText: _.__('pim_common.cancel'),
-                    title: _.__('pim_enrich.entity.product.module.change_family.title'),
                     content: this.modalTemplate({
-                        product: this.getFormData()
+                        product: this.getFormData(),
+                        title: __('pim_enrich.entity.product.module.change_family.title'),
+                        subtitle: __('pim_enrich.entity.product.uppercase_label'),
+                        placeholder: __('pim_enrich.entity.product.module.change_family.empty_selection'),
+                        mergeAttributes: __('pim_enrich.entity.product.module.change_family.merge_attributes'),
+                        keepAttributes: __('pim_enrich.entity.product.module.change_family.keep_attributes'),
+                        ok: __('pim_common.ok'),
                     })
                 });
 
-                familyModal.on('ok', function () {
+                familyModal.open();
+
+                familyModal.$el.find('.modal-footer .ok').remove();
+                familyModal.$el.find('.ok').click(() => {
                     var selectedFamily = familyModal.$('.family-select2').select2('val') || null;
 
                     this.getRoot().trigger('pim_enrich:form:change-family:before');
@@ -62,9 +72,7 @@ define(
                     familyModal.close();
 
                     this.getRoot().trigger('pim_enrich:form:change-family:after');
-                }.bind(this));
-
-                familyModal.open();
+                });
 
                 var options = Select2Configurator.getConfig(this.getFormData().family);
 
