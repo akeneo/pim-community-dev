@@ -98,7 +98,7 @@ extensions:
         config:
             trans:
                 title: pim_enrich.entity.product_model.module.delete.confirm
-                subTitle: pim_enrich.entity.product.plural_label_model
+                subTitle: pim_enrich.entity.product_model.plural_label
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product_model.flash.delete.success
                 fail: pim_enrich.entity.product_model.flash.delete.fail

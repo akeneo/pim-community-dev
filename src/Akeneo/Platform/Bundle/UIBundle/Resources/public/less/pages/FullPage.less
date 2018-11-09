@@ -11,13 +11,6 @@
   justify-content: space-around;
   align-items: center;
 
-  &--confirm {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 100px 0;
-  }
-
   &-buttons {
     position: fixed;
     top: 0;
@@ -49,7 +42,8 @@
     & > :nth-child(1) {
       flex-grow: 1;
       padding: 20px;
-      text-align: right;
+      display: flex;
+      justify-content: flex-end;
     }
 
     & > :nth-child(2) {
@@ -57,6 +51,12 @@
       padding: 20px;
       border-left: 2px solid @AknLightPurple;
     }
+  }
+
+  &--confirm &-contentWithIllustration {
+    // Set content width to 960px
+    padding-left: ~"calc(80px + 50% - 480px)";
+    padding-right: ~"calc(80px + 50% - 480px)";
   }
 
   &-content {
