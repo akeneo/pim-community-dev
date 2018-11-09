@@ -10,8 +10,16 @@
     "response": {
         "status": 200,
         "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_7"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+                }
+            },
             "_embedded": {
-                "_items": []
+                "items": []
             }
         }
     }
