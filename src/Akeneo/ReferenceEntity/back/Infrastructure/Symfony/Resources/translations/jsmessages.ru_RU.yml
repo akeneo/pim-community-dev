@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Перетащите чтобы загрузить, или нажмите здесь
+      small:
+        remove: Удалить
+        download: Скачать
   reference_entity:
     button:
       save: Сохранить
@@ -56,6 +63,8 @@ pim_reference_entity:
         type: Тип атрибута
       confirm: Сохранить
     edit:
+      save: Сохранить
+      cancel: Отмена
       input:
         label: Метка
         type: Тип атрибута

@@ -1,8 +1,14 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Crear una nova entitat
-  akeneo_reference_entities_reference_entity_edit: Editar una entitat de referència
   akeneo_reference_entities_record_edit: Editar un registre
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Arrossegueu-lo aquí per carregar o feu-hi clic
+      small:
+        remove: Eliminar
+        download: Descarregar
   reference_entity:
     validation:
       code:
@@ -42,6 +48,7 @@ pim_reference_entity:
         code: Codi (requerit)
       confirm: Desar
     delete:
+      message: Esteu segur que voleu suprimir l'entitat "{{ referenceEntityLabel }}"?
       title: Atribut
     notification:
       save:
@@ -55,6 +62,7 @@ pim_reference_entity:
         fail: S'ha produït un error durant l'eliminació de l'entitat de referència
   record:
     validation:
+      limit_reached: 'Vostè no pot crear el registre "{{ %record_label% }}" perquè vostè ha arribat al límit de registres {{ %limit% }} per a aquesta entitat de referència'
       code:
         pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
         should_be_unique: 'Aquest codi ja existeix per a aquesta entitat.'
@@ -64,6 +72,10 @@ pim_reference_entity:
     no_result:
       title: No hi ha cap resultat de la cerca
       subtitle: Provi amb nous criteris de cerca.
+    selector:
+      no_value: Feu clic aquí per seleccionar un registre.
+    error:
+      value: Vaja, sembla que la representació del camp "{{ fieldName }}" ha fallat. Mira la consola de desenvolupador per a més detalls.
     button:
       save: Desar
       create: Afegir nou
@@ -85,21 +97,27 @@ pim_reference_entity:
         code: Codi (requerit)
       confirm: Desar
     delete:
+      message: Esteu segur que voleu suprimir el registre "{{ recordLabel }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
       title: Registre
     delete_all:
       confirm: Esteu segur que voleu suprimir tots els registres "{{ entityIdentifier }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
     grid:
+      search: Cerca a l'etiqueta, el codi i el text dels atributs
       column:
         code: Codi
         image: Imatge
         label: Etiqueta
         action: Accions
+      more_result:
+        title: Això no és!
+        description: Només heu desplaçat els primers 500 resultats de registres {{ total }}. Per veure més, proveu amb criteris de cerca més específics.
     tab:
       enrich: Enriquir
     notification:
       save:
         success: Registre actualitzat correctament.
         fail: S'ha produït un error durant el guardat del registre
+        validation_error: El registre no podria ser actualitzat
       create:
         success: Registre creat correctament.
         fail: S'ha produït un error durant la creació del registre
@@ -110,6 +128,8 @@ pim_reference_entity:
         success: Tots el registres de "{{ entityIdentifier }}" s'han eliminat correctament.
         fail: S'ha produït un error durant l'eliminació de tots els registres de l'entitat de referència
   attribute:
+    validation:
+      limit_reached: 'Vostè no pot crear l''atribut "{{ %attribute_label% }}" perquè vostè ha arribat al límit d''atributs de {{ %limit% }} per a aquesta entitat de referència'
     default:
       code: Codi
       label: Etiqueta
@@ -134,13 +154,14 @@ pim_reference_entity:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
+        record_type: Entitat de referència per enllaçar
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
       confirm: Desar
     edit:
       delete: Eliminar l'atribut
-      common.title: Paràmetres comuns
-      additional.title: Paràmetres addicionals
+      save: Desar
+      cancel: Cancelar
       input:
         code: Codi (requerit)
         label: Etiqueta
@@ -162,6 +183,7 @@ pim_reference_entity:
             regular_expression: Expressió regular
             url: URL
     delete:
+      message: Esteu segur que voleu suprimir l'atribut "{{ attributeLabel }}"?
       title: Atribut
     notification:
       list:
@@ -169,9 +191,11 @@ pim_reference_entity:
       save:
         success: Atribut actualitzat correctament.
         fail: S'ha produït un error durant el guardat de l'atribut
+        validation_error: No s'ha pogut actualitzar l'atribut
       create:
         success: Atribut creat correctament.
         fail: S'ha produït un error durant la creació de l'atribut
+        validation_error: No s'ha pogut crear l'atribut
       delete:
         success: Atribut eliminat correctament.
         fail: S'ha produït un error durant l'eliminació de l'atribut
@@ -188,9 +212,7 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_reference_entity_collection: Entitat de referència
+          akeneo_reference_entity_collection: Enllaç múltiple d'entitat de referència
+          akeneo_reference_entity: Enllaç simple de l'entitat de referència
         section:
           type_specific: Escriu els paràmetres específics
-        reference_entity:
-          identifier: Entitat de referència
-          default_label: Si us plau, selecciona una entitat de referència

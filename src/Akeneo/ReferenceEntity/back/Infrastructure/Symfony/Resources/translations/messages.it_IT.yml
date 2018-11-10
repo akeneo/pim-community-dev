@@ -9,6 +9,3 @@ akeneo_referenceentity:
       create: Crea una riga
       delete: Elimina una riga
       delete_all: Elimina tutte le righe entità
-    attribute:
-      create: Aggiungi un attributo ad un'entità di riferimento
-      edit: Modifica un attributo di un'entità di riferimento

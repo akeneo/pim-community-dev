@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Træk og slip for at uploade eller klik her
+      small:
+        remove: Fjern
+        download: Hent
   reference_entity:
     button:
       save: Gem
@@ -60,6 +67,8 @@ pim_reference_entity:
         value_per_channel: Værdi pr. kanal
       confirm: Gem
     edit:
+      save: Gem
+      cancel: Annuller
       input:
         label: Etiket
         type: Attributtype
