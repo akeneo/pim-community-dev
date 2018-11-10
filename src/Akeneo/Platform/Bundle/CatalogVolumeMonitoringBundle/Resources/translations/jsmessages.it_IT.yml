@@ -1,9 +1,9 @@
 pim_catalog_volume:
-  product_values: "Hai <span class=\"AknDescriptionHeader-title--highlight\">{{values}}</span> valori di prodotto nel tuo PIM! Mediamente sono <span class=\"AknDescriptionHeader-title--highlight\">{{average}}</span> valori di prodotto per ogni prodotto! 💪"
-  product_values_description: 'Più valori di prodotto hai, più valore ha il tuo PIM, più alto è il tuo ROI! Maggiori dettagli <a href="#" class="AknDescriptionHeader-link">qui</a>'
+  product_values: "Hai <span>{{values}}</span> valori di prodotto nel tuo PIM! In media sono <span>{{average}}</span> valori di prodotto per prodotto!&nbsp;💪"
+  product_values_description: 'Più dati di prodotto hai, più valore ha il tuo PIM, più alto è il tuo ROI! Maggiori dettagli <a href="{{link}}" target="_blank">qui</a>'
   section:
     product_values:
-      hint: Sapevi che il numero totale di valori di prodotto nel tuo PIM è direttamente collegato agli assi seguenti?<br/>Per maggiori dettagli, ti invitiamo a <a href="{{}}" target="_blank">leggere questo articolo</a>.
+      hint: 'Sapevi che il numero totale di valori di prodotto nel tuo PIM è direttamente collegato agli assi seguenti?<br/>Per avere più dettagli, vi invitiamo a <a href="{{link}}" target="_blank">leggere questo articolo</a>.'
       title: Assi che influenzano il numero di valori di prodotto
     catalog_structure:
       hint: Potresti sapere che una buona struttura di catalogo è davvero importante ed è una condizione per un arricchimento efficiente. Qui sotto ci sono i vari assi per monitorare la struttura del tuo catalogo.

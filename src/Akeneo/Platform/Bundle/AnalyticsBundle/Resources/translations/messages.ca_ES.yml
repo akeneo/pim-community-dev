@@ -27,7 +27,10 @@ pim_analytics:
     nb_localizable_attributes: Nombre d'atributs localitzables
     nb_scopable_localizable_attributes: Nombre d'atributs localitzables i assolits
     nb_useable_as_grid_filter_attributes: Nombre d'atributs utilitzables com a filtre de quadrícula
+    avg_percentage_scopable_attributes_per_family: Percentatge mitjà d'atributs multicanal per família (%)
     avg_percentage_localizable_attributes_per_family: Percentatge mitjà d'atributs localitzables per família (%)
+    avg_percentage_scopable_localizable_attributes_per_family: Percentatge mitjà d'atributs localitzables i multicanal per família (%)
+    avg_number_attributes_per_family: Nombre mitjà d'atributs per família
     nb_locales: Nombre de configuracions regionals
     nb_families: Nombre de famílies
     nb_users: Nombre d'usuaris
