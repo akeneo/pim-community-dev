@@ -36,7 +36,7 @@ class AddPermissionFilterPass implements CompilerPassInterface
                                 'type' => 'product_permission',
                                 'ftype' => 'choice',
                                 'data_name' => 'permissions',
-                                'label' => 'pim_common.permissions',
+                                'label' => 'Permissions',
                                 'options' => [
                                     'field_options' => [
                                         'multiple' => false,

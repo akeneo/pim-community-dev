@@ -23,7 +23,7 @@ Feature: Manage notifications preferences
     And I should see the text "When proposal is accepted or rejected"
     And I logout
     Given I am logged in as "Mary"
-    And I am on the "Mary" user
+    And I edit the "Mary" user
     And I visit the "Notifications" tab
     Then I should not see "When new proposal to review"
     And I should see the text "When proposal is accepted or rejected"

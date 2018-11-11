@@ -1,7 +1,7 @@
 extensions:
-  pimee-user-edit-form-default-category-tree:
+  pimee-user-show-default-category-tree:
     module: pimee/asset/fields/asset-category-tree
-    parent: pim-user-edit-form-additional-tab-content
+    parent: pim-user-show-additional-tab-content
     targetZone: content
     position: 35
     config:
@@ -10,13 +10,15 @@ extensions:
       required: true
       isMultiple: false
       allowClear: false
+      isReadOnly: true
 
-  pimee-user-edit-form-asset-delay-reminder:
+  pimee-user-show-asset-delay-reminder:
     module: pim/form/common/fields/number
-    parent: pim-user-edit-form-groups-and-roles-tab-content
+    parent: pim-user-show-groups-and-roles-tab-content
     targetZone: content
     position: 40
     config:
       fieldName: asset_delay_reminder
       label: user.asset_delay_reminder
       required: true
+      isReadOnly: true
