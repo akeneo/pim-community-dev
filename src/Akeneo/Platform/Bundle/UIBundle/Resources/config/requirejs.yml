@@ -1003,6 +1003,7 @@ config:
     pim/form/common/fields/textarea:                pimui/js/form/common/fields/textarea
     pim/form/common/fields/metric:                  pimui/js/form/common/fields/metric
     pim/form/common/fields/password:                pimui/js/form/common/fields/password.ts
+    pim/form/common/fields/number:                  pimui/js/form/common/fields/number.ts
     pim/form/common/fields/media:                   pimui/js/form/common/fields/media.ts
     pim/form/common/fields/available-locales:       pimui/js/form/common/fields/available-locales.ts
 
@@ -1123,6 +1124,7 @@ config:
     pim/template/form/common/fields/textarea:                 pimui/templates/form/common/fields/textarea.html
     pim/template/form/common/fields/metric:                   pimui/templates/form/common/fields/metric.html
     pim/template/form/common/fields/password:                 pimui/templates/form/common/fields/password.html
+    pim/template/form/common/fields/number:                   pimui/templates/form/common/fields/number.html
     pim/template/form/common/fields/media:                    pimui/templates/form/common/fields/media.html
     # Attribute group
     pim/template/form/attribute-group/tab/attribute: pimui/templates/attribute-group/tab/attribute.html

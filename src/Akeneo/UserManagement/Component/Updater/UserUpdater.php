@@ -218,6 +218,9 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'timezone':
                 $user->setTimezone($data);
                 break;
+            case 'asset_delay_reminder':
+                $user->setAssetDelayReminder($data);
+                break;
             case 'default_asset_tree':
                 $user->setDefaultAssetTree($this->findAssetCategory($data));
                 break;

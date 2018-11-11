@@ -82,6 +82,8 @@ class UserNormalizer implements NormalizerInterface
             'user_default_locale'       => $user->getUiLocale()->getCode(),
             'catalog_default_scope'     => $user->getCatalogScope()->getCode(),
             'default_category_tree'     => $user->getDefaultTree()->getCode(),
+            'email_notifications'       => $user->isEmailNotifications(),
+            'asset_delay_reminder'      => $user->getAssetDelayReminder(),
             'default_asset_tree'        => $user->getDefaultAssetTree() ? $user->getDefaultAssetTree()->getCode() : null,
             'proposals_to_review_notification' => $user->hasProposalsToReviewNotification(),
             'proposals_state_notifications' => $user->hasProposalsStateNotification(),
