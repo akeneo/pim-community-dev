@@ -16,7 +16,7 @@ imports:
     - { resource: '@PimApiBundle/Resources/config/api.yml' }
 
 parameters:
-    pim_job_product_batch_size: 10
+    pim_job_product_batch_size: 100
 
 services:
     oro.cache.abstract:

@@ -281,27 +281,24 @@ class ProductModelAssociationProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productAssocFilter,
         $stepExecution,
-        $productDetacher,
-        ProductModelInterface $product,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['code']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $productRepository->getIdentifierProperties()->shouldNotBeCalled();
+        $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $convertedData = [
             'code' => 'tshirt',
             'associations' => []
         ];
 
-        $productAssocFilter->filter(Argument::any())->shouldNotBeCalled()->willReturn([]);
+        $productAssocFilter->filter(Argument::any())->shouldNotBeCalled();
         $productUpdater->update(Argument::any())->shouldNotBeCalled();
 
         $stepExecution->incrementSummaryInfo('product_model_skipped_no_associations')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
-        $productDetacher->detach($product)->shouldBeCalled();
         $this->process($convertedData)->shouldReturn(null);
     }
 }
