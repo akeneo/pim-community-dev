@@ -2,6 +2,11 @@
 
 ## Bug fixes
 
+- PIM-7776: Fix injection in the job's label in notification area
+- PIM-7774: Fix refresh of grid date filter
+
+## Bug fixes
+
 - PIM-7828: Fix ACL on System Info
 - PIM-7773: Fix routing issues with product status toggle 
 - PIM-7778: Fix ACL on Catalog Volume Monitoring
@@ -17,7 +22,6 @@
 - PIM-7767: Remove option values label from attribute versioning
 - PIM-7771: Fix refresh versioning command about duplicate version's rule.
 - PIM-7813: Fix a bug that prevents to drag'n'drop an attribute group containing a lot of attributes in the variant family configuration screen.
-- PIM-7776: Fix injection in the job's label in notification area
 
 # 2.3.15 (2018-11-06)
 
