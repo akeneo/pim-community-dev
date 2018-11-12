@@ -10,9 +10,28 @@
     "response": {
         "status": 200,
         "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_3"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records"
+                },
+                "next": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?search_after=brand_6"
+                }
+            },
             "_embedded": {
-                "_items": [
+                "items": [
                     {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_4"
+                            },
+                            "main_image_download": {
+                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_4_image.jpg"
+                            }
+                        },
                         "code": "brand_4",
                         "labels": {
                             "en_US": "Brand number 4"
@@ -36,6 +55,14 @@
                         "main_image": "test/brand_4_image.jpg"
                     },
                     {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_5"
+                            },
+                            "main_image_download": {
+                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_5_image.jpg"
+                            }
+                        },
                         "code": "brand_5",
                         "labels": {
                             "en_US": "Brand number 5"
@@ -59,6 +86,14 @@
                         "main_image": "test/brand_5_image.jpg"
                     },
                     {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_6"
+                            },
+                            "main_image_download": {
+                                "href": "http://localhost/api/rest/v1/reference-entities-media-files/test/brand_6_image.jpg"
+                            }
+                        },
                         "code": "brand_6",
                         "labels": {
                             "en_US": "Brand number 6"

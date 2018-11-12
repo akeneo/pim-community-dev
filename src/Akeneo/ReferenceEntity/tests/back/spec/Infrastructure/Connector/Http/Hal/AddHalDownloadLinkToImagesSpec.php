@@ -132,7 +132,7 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
             ]
         ];
 
-        $this->__invoke($referenceEntityIdentifier, $normalizedRecord)->shouldReturn($expectedNormalizedRecord);
+        $this->__invoke($referenceEntityIdentifier, [$normalizedRecord])->shouldReturn([$expectedNormalizedRecord]);
     }
 
     function it_does_not_add_hal_download_links_if_there_are_no_images(
@@ -164,6 +164,6 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
 
         $router->generate(Argument::any())->shouldNotBeCalled();
 
-        $this->__invoke($referenceEntityIdentifier, $normalizedRecord)->shouldReturn($normalizedRecord);
+        $this->__invoke($referenceEntityIdentifier, [$normalizedRecord])->shouldReturn([$normalizedRecord]);
     }
 }
