@@ -148,6 +148,7 @@ pimee_product_asset:
         first: Triar recursos
         second: Configurar
         third: Confirmar
+  not_editable: No teniu permís per editar el recurs "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
