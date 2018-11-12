@@ -108,8 +108,11 @@ class ConnectorRecordHydrator
             $attribute = $attributes[$attributeIdentifier];
             $attributeCode = (string) $attribute->getCode();
             $valueTransformer = $this->valueTransformerRegistry->getTransformer($attribute);
+            $normalizedValue = $valueTransformer->transform($rawValue, $attribute);
 
-            $normalizedValues[$attributeCode][] = $valueTransformer->transform($rawValue);
+            if (null !== $normalizedValue) {
+                $normalizedValues[$attributeCode][] = $normalizedValue;
+            }
         }
 
         return $normalizedValues;

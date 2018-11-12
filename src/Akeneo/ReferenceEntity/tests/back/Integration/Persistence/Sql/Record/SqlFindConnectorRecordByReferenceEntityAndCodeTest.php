@@ -34,6 +34,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
@@ -53,7 +54,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationTestCase
 {
     /** @var RecordRepositoryInterface */
-    private $repository;
+    private $recordRepository;
 
     /** @var FindConnectorRecordByReferenceEntityAndCodeInterface*/
     private $findConnectorRecordQuery;
@@ -62,10 +63,10 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $this->recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $this->findConnectorRecordQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code');
         $this->resetDB();
-        $this->createReferenceEntityWithAttributes();
+        $this->createReferenceEntityWithAttributesAndRecords();
     }
 
     /**
@@ -143,7 +144,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
     {
         $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $fileInfo = new FileInfo();
         $fileInfo
@@ -198,20 +199,23 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ])
         );
 
-        $this->repository->create($record);
+        $this->recordRepository->create($record);
 
         return $record;
     }
 
-    private function createReferenceEntityWithAttributes(): void
+    private function createReferenceEntityWithAttributesAndRecords(): void
     {
         $repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $referenceEntity = ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString('designer'),
-            [],
-            Image::createEmpty()
-        );
-        $repository->create($referenceEntity);
+
+        foreach (['designer', 'country', 'brand'] as $identifier) {
+            $referenceEntityDesigner = ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString($identifier),
+                [],
+                Image::createEmpty()
+            );
+            $repository->create($referenceEntityDesigner);
+        }
 
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
@@ -226,6 +230,7 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
+
         $image = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'fingerprint'),
             ReferenceEntityIdentifier::fromString('designer'),
@@ -268,6 +273,28 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
         $attributesRepository->create($image);
         $attributesRepository->create($country);
         $attributesRepository->create($brands);
+
+        $countryRecord = Record::create(
+            RecordIdentifier::fromString('country_france_fingerprint'),
+            ReferenceEntityIdentifier::fromString('country'),
+            RecordCode::fromString('france'),
+            ['en_US' => 'France'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->recordRepository->create($countryRecord);
+
+        foreach (['kartell', 'lexon', 'cogip'] as $code) {
+            $brandRecord = Record::create(
+                RecordIdentifier::fromString(sprintf('brand_%s_fingerprint', $code)),
+                ReferenceEntityIdentifier::fromString('brand'),
+                RecordCode::fromString($code),
+                ['en_US' => ucfirst($code)],
+                Image::createEmpty(),
+                ValueCollection::fromValues([])
+            );
+            $this->recordRepository->create($brandRecord);
+        }
     }
 
     private function assertSameRecords(ConnectorRecord $expectedRecord, ConnectorRecord $currentRecord): void

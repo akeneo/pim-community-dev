@@ -242,10 +242,14 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.record.transformer.record_connector_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordConnectorValueTransformer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }
 
     akeneo_referenceentity.infrastructure.persistence.record.transformer.record_collection_connector_value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordCollectionConnectorValueTransformer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes'
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }

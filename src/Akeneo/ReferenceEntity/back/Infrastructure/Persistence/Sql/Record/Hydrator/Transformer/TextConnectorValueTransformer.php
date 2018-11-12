@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -27,12 +28,14 @@ class TextConnectorValueTransformer implements ConnectorValueTransformerInterfac
         return $attribute instanceof TextAttribute;
     }
 
-    public function transform(array $normalizedValue): array
+    public function transform(array $normalizedValue, AbstractAttribute $attribute): array
     {
+        Assert::true($this->supports($attribute));
+
         return [
-            'locale'  => $normalizedValue['locale'] ?? null,
-            'channel' => $normalizedValue['channel'] ?? null,
-            'data'    => $normalizedValue['data'] ?? null,
+            'locale'  => $normalizedValue['locale'],
+            'channel' => $normalizedValue['channel'],
+            'data'    => $normalizedValue['data'],
         ];
     }
 }

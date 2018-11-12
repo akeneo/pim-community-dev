@@ -31,7 +31,7 @@ class ImageConnectorValueTransformerSpec extends ObjectBehavior
         $this->supports($textAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_connector_value()
+    function it_transforms_a_normalized_value_to_a_normalized_connector_value(ImageAttribute $imageAttribute)
     {
         $this->transform([
             'data'      => [
@@ -42,21 +42,10 @@ class ImageConnectorValueTransformerSpec extends ObjectBehavior
             'locale'    => 'en_us',
             'channel'   => 'ecommerce',
             'attribute' => 'image_designer_fingerprint',
-        ])->shouldReturn([
+        ], $imageAttribute)->shouldReturn([
             'locale'  => 'en_us',
             'channel' => 'ecommerce',
             'data'    => 'test/image_1.jpg',
-        ]);
-    }
-
-    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_connector_value()
-    {
-        $this->transform([
-            'attribute' => 'image_designer_fingerprint',
-        ])->shouldReturn([
-            'locale'  => null,
-            'channel' => null,
-            'data'    => null,
         ]);
     }
 }

@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindExistingRecordCodesInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -22,17 +24,34 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
  */
 class RecordCollectionConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
+    /** @var FindExistingRecordCodesInterface */
+    private $findExistingRecordCodes;
+
+    public function __construct(FindExistingRecordCodesInterface $findExistingRecordCodes)
+    {
+        $this->findExistingRecordCodes = $findExistingRecordCodes;
+    }
+
     public function supports(AbstractAttribute $attribute): bool
     {
         return $attribute instanceof RecordCollectionAttribute;
     }
 
-    public function transform(array $normalizedValue): array
+    public function transform(array $normalizedValue, AbstractAttribute $attribute): ?array
     {
+        Assert::true($this->supports($attribute));
+
+        $referenceEntityIdentifier = $attribute->getRecordType();
+        $existingRecordCodes = ($this->findExistingRecordCodes)($referenceEntityIdentifier, $normalizedValue['data']);
+
+        if (empty($existingRecordCodes)) {
+            return null;
+        }
+
         return [
-            'locale'  => $normalizedValue['locale'] ?? null,
-            'channel' => $normalizedValue['channel'] ?? null,
-            'data'    => $normalizedValue['data'] ?? [],
+            'locale'  => $normalizedValue['locale'],
+            'channel' => $normalizedValue['channel'],
+            'data'    => $existingRecordCodes,
         ];
     }
 }
