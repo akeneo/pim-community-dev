@@ -160,24 +160,29 @@ function(
          * @inheritDoc
          */
         _renderCriteria: function(el) {
+            const value = this._getDisplayValue();
             $(el).append(
                 this.popupCriteriaTemplate({
                     label: this.label,
                     name: this.name,
                     choices: this.choices,
-                    selectedChoice: this.emptyValue.type,
+                    selectedChoice: value.type,
                     inputClass: this.inputClass,
-                    selectedOperatorLabel: _.findWhere(this.choices, {value: this.emptyValue.type}).label,
+                    selectedOperatorLabel: _.findWhere(this.choices, {value: value.type}).label,
                     operatorLabel: __('pim.grid.choice_filter.operator'),
                     updateLabel: __('Update'),
                     fromLabel: __('from'),
-                    toLabel: __('to')
+                    toLabel: __('to'),
+                    from: value.value.start,
+                    to: value.value.end,
                 })
             );
 
             _.each(this.criteriaValueSelectors.value, function(selector, name) {
                 this.dateWidgets[name] = Datepicker.init(this.$(selector), this.datetimepickerOptions);
             }, this);
+
+            this._displayFilterType(value.type);
 
             return this;
         },
