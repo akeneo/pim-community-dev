@@ -59,7 +59,7 @@ CSV;
             'Attribute "a_number_integer" belongs to the attribute group "attributeGroupB" on which you only have view permission.',
             'No product with identifier "productA" has been found'
         ];
-        $this->assertAuthenticatedImport($importCSV, 'mary', [], 1, 0, 2, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 1, 0, 1, $expectedWarnings);
     }
 
     public function testToSkipImportProductsWithNotViewablableAttributeWithPermissions()
@@ -99,7 +99,7 @@ CSV;
             'You only have a view permission on the locale "fr_FR".',
             'No product with identifier "productA" has been found'
         ];
-        $this->assertAuthenticatedImport($importCSV, 'mary', [], 0, 0, 2, $expectedWarning);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 0, 0, 1, $expectedWarning);
     }
 
     public function testToSkipProductsWithNotViewablableLocalizableAttributeWithPermissions()
