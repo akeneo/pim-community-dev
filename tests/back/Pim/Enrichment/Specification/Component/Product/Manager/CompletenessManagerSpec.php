@@ -1,47 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Manager;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * @author    Damien Carcel <damien.carcel@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CompletenessManagerSpec extends ObjectBehavior
 {
-    function let(
-        FamilyRepositoryInterface $familyRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
-        CompletenessGeneratorInterface $generator,
-        CompletenessRemoverInterface $remover,
-        ValueCompleteCheckerInterface $valueCompleteChecker
-    ) {
-        $this->beConstructedWith(
-            $familyRepository,
-            $channelRepository,
-            $localeRepository,
-            $generator,
-            $remover,
-            $valueCompleteChecker
-        );
+    function let(CompletenessGeneratorInterface $generator)
+    {
+        $this->beConstructedWith($generator);
     }
 
-    function it_bulk_schedules_completeness_on_several_products(
-        CompletenessRemoverInterface $remover,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $product1->getId()->willReturn(1);
-        $product2->getId()->willReturn(2);
+    function it_bulk_schedules_completeness_on_several_products($generator)
+    {
+        $product = new Product();
 
-        $remover->removeForProductWithoutIndexing($product1)->shouldBeCalled();
-        $remover->removeForProductWithoutIndexing($product2)->shouldBeCalled();
+        $generator->generateMissingForProduct($product)->shouldBeCalled();
 
-        $this->bulkSchedule([$product1, $product2]);
+        $this->generateMissingForProduct($product);
     }
 }

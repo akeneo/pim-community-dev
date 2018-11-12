@@ -4,18 +4,14 @@ services:
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - true
 
     pim_connector.reader.database.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - false
 
     pim_connector.reader.file.csv_product_model_association:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelAssociationReader'
@@ -117,9 +113,7 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - true
             - false
 
     pim_enrich.reader.database.product_and_product_model:
@@ -127,7 +121,6 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - true
 
     pim_enrich.reader.database.grouped_product_and_product_model:
@@ -135,7 +128,6 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - false
 
     pim_enrich.reader.database.products_and_variant_products_of_product_models:
@@ -143,9 +135,7 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - true
             - true
 
     pim_enrich.reader.database.product:
@@ -153,9 +143,7 @@ services:
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
-            - true
 
     pim_enrich.reader.database.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductModelReader'

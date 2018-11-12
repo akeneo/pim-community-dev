@@ -2,20 +2,18 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit;
 
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader;
-use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
@@ -29,16 +27,13 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
             $metricConverter,
-            true,
             false
         );
 
@@ -56,7 +51,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $stepExecution,
-        $completenessManager,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
@@ -101,7 +95,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $completenessManager->generateMissingForChannel($channel)->shouldBeCalled();
         $products = [$productModel1, $product1, $productModel2, $product2, $product3, $productModel3];
         $productsCount = count($products);
         $cursor->valid()->will(
