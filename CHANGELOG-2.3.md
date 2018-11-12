@@ -9,6 +9,7 @@
 
 ## Bug fixes
 
+- PIM-7852: Increase product import performances and fixes model association import when comparison is disabled
 - PIM-7812: Fix command that generate missing asset variation files
 
 # 2.3.15 (2018-11-06)
