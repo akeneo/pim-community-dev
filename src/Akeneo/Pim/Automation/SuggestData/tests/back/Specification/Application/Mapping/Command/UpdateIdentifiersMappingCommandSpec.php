@@ -70,7 +70,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         ];
         $this->beConstructedWith($mapping);
 
-        $expected = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $expected = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
         $given = array_keys($mapping);
         sort($expected);
         sort($given);

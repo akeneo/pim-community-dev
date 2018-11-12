@@ -30,9 +30,9 @@ class IdentifiersMappingNormalizer
     public function normalize(IdentifiersMapping $mapping): array
     {
         $normalizedMapping = [];
-        foreach (IdentifiersMapping::PIM_AI_IDENTIFIERS as $pimAiIdentifier) {
-            $normalizedMapping[$pimAiIdentifier] = [
-                'from' => ['id' => $pimAiIdentifier],
+        foreach (IdentifiersMapping::FRANKLIN_IDENTIFIERS as $franklinIdentifier) {
+            $normalizedMapping[$franklinIdentifier] = [
+                'from' => ['id' => $franklinIdentifier],
                 'status' => 'inactive',
             ];
         }

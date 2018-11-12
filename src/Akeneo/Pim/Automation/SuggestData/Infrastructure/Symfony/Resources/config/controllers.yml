@@ -7,8 +7,8 @@ services:
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
             - '@akeneo.pim.automation.suggest_data.normalizer.product_subscription_status'
 
-    akeneo.pim.automation.suggest_data.controller.pim_ai:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\PimAiConnectionController'
+    akeneo.pim.automation.suggest_data.controller.franklin:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\FranklinConnectionController'
         arguments:
             - '@akeneo.pim.automation.suggest_data.application.configuration.command.activate_connection_handler'
             - '@akeneo.pim.automation.suggest_data.application.configuration.query.get_configuration_handler'

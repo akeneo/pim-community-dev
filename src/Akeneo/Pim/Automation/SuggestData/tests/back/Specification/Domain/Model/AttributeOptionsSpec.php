@@ -64,7 +64,7 @@ class AttributeOptionsSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_pimai_code_is_empty(): void
+    public function it_throws_an_exception_if_franklin_code_is_empty(): void
     {
         $this->beConstructedWith([
             '' => [

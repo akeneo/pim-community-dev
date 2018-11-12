@@ -1,5 +1,5 @@
 parameters:
-    akeneo.pim.automation.suggest_data.data_provider.alias: 'pim_ai'
+    akeneo.pim.automation.suggest_data.data_provider.alias: 'franklin'
 
 services:
     akeneo.pim.automation.suggest_data.data_provider.registry:

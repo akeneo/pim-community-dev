@@ -119,19 +119,19 @@ class EditIdentifiersMappingView extends BaseView {
    * @param identifiersMapping
    */
   private renderAttributeSelectors(identifiersMapping: { [franklinIdentifier: string]: string }): void {
-    Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
+    Object.keys(identifiersMapping).forEach((franklinAttributeCode: string) => {
       const attributeSelector = new SimpleSelectAttribute({
         className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
         config: {
           choiceRoute: 'pim_enrich_attribute_rest_index',
-          fieldName: pimAiAttributeCode,
+          fieldName: franklinAttributeCode,
           label: '',
           types: EditIdentifiersMappingView.VALID_MAPPING,
         },
       });
       attributeSelector.setParent(this);
 
-      const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
+      const $dom = this.$el.find('.attribute-selector[data-identifier="' + franklinAttributeCode + '"]');
       attributeSelector.configure().then(() => {
         $dom.html(attributeSelector.render().$el);
       });
@@ -152,10 +152,10 @@ class EditIdentifiersMappingView extends BaseView {
   private updateIdentifierStatuses(): void {
     const identifiersMapping: { [franklinIdentifier: string]: string } = this.getFormData();
 
-    Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
-      null === identifiersMapping[pimAiAttributeCode] || '' === identifiersMapping[pimAiAttributeCode]
-        ? this.identifiersStatuses[pimAiAttributeCode] = 'inactive'
-        : this.identifiersStatuses[pimAiAttributeCode] = 'active';
+    Object.keys(identifiersMapping).forEach((franklinAttributeCode: string) => {
+      null === identifiersMapping[franklinAttributeCode] || '' === identifiersMapping[franklinAttributeCode]
+        ? this.identifiersStatuses[franklinAttributeCode] = 'inactive'
+        : this.identifiersStatuses[franklinAttributeCode] = 'active';
     });
   }
 

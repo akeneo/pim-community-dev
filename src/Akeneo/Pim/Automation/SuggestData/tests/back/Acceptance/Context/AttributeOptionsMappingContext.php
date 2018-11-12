@@ -23,7 +23,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;

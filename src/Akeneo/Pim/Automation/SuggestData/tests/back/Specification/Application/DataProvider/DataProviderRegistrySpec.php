@@ -37,12 +37,12 @@ class DataProviderRegistrySpec extends ObjectBehavior
 
     public function it_returns_the_right_data_provider(
         DataProviderInterface $inMemoryAdapter,
-        DataProviderInterface $pimAiAdapter
+        DataProviderInterface $franklinAdapter
     ): void {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
-        $this->addDataProvider('pim_ai', $pimAiAdapter)->shouldReturn(null);
+        $this->addDataProvider('franklin', $franklinAdapter)->shouldReturn(null);
         $this->getDataProvider('in_memory')->shouldReturn($inMemoryAdapter);
-        $this->getDataProvider('pim_ai')->shouldReturn($pimAiAdapter);
+        $this->getDataProvider('franklin')->shouldReturn($franklinAdapter);
     }
 
     public function it_throws_an_exception_when_the_data_provider_is_not_registered(

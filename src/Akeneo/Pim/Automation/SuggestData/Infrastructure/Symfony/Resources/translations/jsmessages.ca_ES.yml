@@ -4,7 +4,7 @@ pim_title:
   akeneo_suggest_data_attributes_mapping_edit: 'Configuració de les estadístiques de Franklin'
 pim_menu:
   item:
-    pim_ai: Estadístiques de Franklin
+    franklin: Estadístiques de Franklin
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -34,7 +34,7 @@ akeneo_suggest_data:
     attributes_mapping:
       label: Mapatge dels atributs
       fields:
-        pim_ai_attribute: 'Atribut de Franklin'
+        franklin_attribute: 'Atribut de Franklin'
         suggest_data:
           label: Estatus d'atribut de Franklin
           pending: Pendent

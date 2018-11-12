@@ -15,9 +15,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converte
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionMapping
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionMapping
     as FranklinAttributeOptionMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping
     as FranklinAttributeOptionsMapping;
 
 /**

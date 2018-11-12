@@ -1,8 +1,8 @@
 monolog:
     handlers:
-        pimai:
+        franklin:
             level: info
             type: stream
-            path: '%kernel.logs_dir%/pimai.log'
-            channels: ['pimai']
-    channels: ['pimai']
+            path: '%kernel.logs_dir%/ask-franklin.log'
+            channels: ['franklin']
+    channels: ['franklin']

@@ -60,7 +60,7 @@ class FrontSearchFilter extends BaseForm {
   public render(): BaseForm {
     this.$el.html(this.template({
       label: __('pim_datagrid.search', {
-        label: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'),
+        label: __('akeneo_suggest_data.entity.attributes_mapping.fields.franklin_attribute'),
       }),
     }));
 

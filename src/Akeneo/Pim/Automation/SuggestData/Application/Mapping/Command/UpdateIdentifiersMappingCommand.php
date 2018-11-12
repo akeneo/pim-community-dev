@@ -51,7 +51,7 @@ class UpdateIdentifiersMappingCommand
      */
     private function validateIdentifiers(array $identifiersMapping): void
     {
-        $expectedKeys = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $expectedKeys = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
 
         $mappingKeys = array_keys($identifiersMapping);
         sort($mappingKeys);

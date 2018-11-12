@@ -159,9 +159,9 @@ class FixturesContext extends PimContext
      */
     private function updateIdentifiersMapping(array $mappedIdentifiers): void
     {
-        $pimAiIdentifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $franklinIdentifiers = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
 
-        $emptyIdentifiersMapping = array_fill_keys($pimAiIdentifiers, null);
+        $emptyIdentifiersMapping = array_fill_keys($franklinIdentifiers, null);
         $identifiersMapping = array_merge($emptyIdentifiersMapping, $mappedIdentifiers);
 
         $updateIdentifierCommand = new UpdateIdentifiersMappingCommand($identifiersMapping);
@@ -256,7 +256,7 @@ class FixturesContext extends PimContext
         $extractedData = $tableNode->getRowsHash();
         array_shift($extractedData);
 
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $extractedData);
     }
