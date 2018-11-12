@@ -12,7 +12,7 @@ pim_enrich_product_toggle_status:
     defaults: { _controller: pim_enrich.controller.product:toggleStatusAction }
     requirements:
         id: '[0-9a-f]+'
-    methods: [GET, POST]
+    methods: [POST]
 
 pim_enrich_product_listcategories:
     path: /list-categories/product/{id}/parent/{categoryId}

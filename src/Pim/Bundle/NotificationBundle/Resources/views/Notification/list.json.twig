@@ -8,10 +8,15 @@
         {% set generatedUrl = null %}
     {% endif %}
 
+    {% set sanitizedMessageParams = {} %}
+    {% for labelKey, value in item.notification.messageParams %}
+        {% set sanitizedMessageParams = sanitizedMessageParams|merge({('' ~ labelKey): value|escape}) %}
+    {% endfor %}
+
     {% set notifications = notifications|merge([{
         id: item.id,
         type: item.notification.type,
-        message: item.notification.message|trans(item.notification.messageParams),
+        message: item.notification.message|trans(sanitizedMessageParams),
         viewed: item.viewed,
         url: generatedUrl,
         createdAt: item.notification.created|date("Y-m-d H:i:s", userTimezone),
