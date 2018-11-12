@@ -6,6 +6,7 @@
 - PIM-7767: Remove option values label from attribute versioning
 - PIM-7771: Fix refresh versioning command about duplicate version's rule.
 - PIM-7813: Fix a bug that prevents to drag'n'drop an attribute group containing a lot of attributes in the variant family configuration screen.
+- PIM-7828: Fix ACL on System Info
 
 # 2.3.15 (2018-11-06)
 
