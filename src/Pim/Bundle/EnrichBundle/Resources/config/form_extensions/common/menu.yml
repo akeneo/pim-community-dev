@@ -49,7 +49,6 @@ extensions:
     pim-menu-activity-catalog-volume:
         module: pim/menu/item
         parent: pim-menu-activity-navigation-block
-        aclResourceId: oro_config_system
         position: 101
         config:
             title: pim_menu.item.catalog_volume
