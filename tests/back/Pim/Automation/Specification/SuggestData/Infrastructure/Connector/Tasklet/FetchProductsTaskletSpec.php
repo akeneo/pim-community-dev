@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\FetchProd
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -29,7 +30,7 @@ class FetchProductsTaskletSpec extends ObjectBehavior
     public function let(
         StepExecution $stepExecution,
         FetchProductsHandler $fetchProductsHandler
-    ) {
+    ): void {
         $this->beConstructedWith($fetchProductsHandler);
 
         $this->setStepExecution($stepExecution);
@@ -41,10 +42,12 @@ class FetchProductsTaskletSpec extends ObjectBehavior
         $this->shouldImplement(TaskletInterface::class);
     }
 
-    public function it_fetches_products($fetchProductsHandler): void
+    public function it_fetches_products($stepExecution, $fetchProductsHandler): void
     {
         $command = new FetchProductsCommand();
         $fetchProductsHandler->handle($command)->shouldBeCalled();
+
+        $stepExecution->addError(Argument::any())->shouldNotBeCalled();
 
         $this->execute();
     }
