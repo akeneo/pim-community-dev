@@ -54,6 +54,9 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Application',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector',
 
+            // TODO: can be removed when we disable the link to product in ProductSubscription
+            'Akeneo\Pim\Enrichment\Component\Product\Repository',
+
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
             // TODO: should be removed see with JJ and AL

@@ -68,7 +68,6 @@ class UpdateAttributesMappingByFamilyCommand
      *              "type" => "multiselect"
      *          ],
      *          "attribute" => "tshirt_style",
-     *          "status" => 1
      *      ]
      * ]
      *
@@ -87,14 +86,9 @@ class UpdateAttributesMappingByFamilyCommand
                 throw InvalidMappingException::expectedKey($targetKey, 'attribute');
             }
 
-            if (!array_key_exists('status', $mappingRow)) {
-                throw InvalidMappingException::expectedKey($targetKey, 'status');
-            }
-
             $this->attributesMapping[] = new AttributeMapping(
                 $targetKey,
                 $mappingRow['pimAiAttribute']['type'],
-                $mappingRow['status'],
                 $mappingRow['attribute']
             );
         }

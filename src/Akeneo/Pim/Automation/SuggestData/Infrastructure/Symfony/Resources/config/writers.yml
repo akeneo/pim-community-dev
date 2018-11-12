@@ -1,6 +1,10 @@
 services:
     akeneo.pim.automation.suggest_data.connector.writer.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\SubscriptionWriter'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.connector.writer.unsubscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\UnsubscriptionWriter'

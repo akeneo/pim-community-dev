@@ -51,10 +51,10 @@ class GetRecordForConnectorAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(string $referenceEntityIdentifier, string $recordCode): JsonResponse
+    public function __invoke(string $referenceEntityIdentifier, string $code): JsonResponse
     {
         try {
-            $recordCode = RecordCode::fromString($recordCode);
+            $recordCode = RecordCode::fromString($code);
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
@@ -71,7 +71,7 @@ class GetRecordForConnectorAction
         }
 
         $normalizedRecord = $record->normalize();
-        $normalizedRecord = ($this->addHalLinksToImageValues)($referenceEntityIdentifier, $normalizedRecord);
+        $normalizedRecord = current(($this->addHalLinksToImageValues)($referenceEntityIdentifier, [$normalizedRecord]));
 
         return new JsonResponse($normalizedRecord);
     }

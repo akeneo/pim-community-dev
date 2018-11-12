@@ -26,12 +26,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -45,6 +48,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
@@ -89,6 +93,8 @@ final class EditRecordContext implements Context
     private const RECORD_TYPE = 'brand';
     private const RECORD_ATTRIBUTE_CODE = 'brand_linked';
     private const RECORD_ATTRIBUTE_IDENTIFIER = 'brand_linked_designer_fingerprint';
+    private const OPTION_ATTRIBUTE_CODE = 'favorite_color';
+    private const OPTION_ATTRIBUTE_IDENTIFIER = 'favorite_color_designer_fingerprint';
     private const DUMMY_ORIGINAL_VALUE = 'Une valeur naïve';
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
 
@@ -1862,6 +1868,114 @@ final class EditRecordContext implements Context
                 AttributeValuePerLocale::fromBoolean(false),
                 ReferenceEntityIdentifier::fromString(self::RECORD_TYPE)
             )
+        );
+    }
+
+    /**
+     * @Given /^a reference entity with an option attribute$/
+     */
+    public function aReferenceEntityWithAnOptionAttribute()
+    {
+        $this->createReferenceEntity();
+
+        $attribute = OptionAttribute::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::OPTION_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            AttributeCode::fromString(self::OPTION_ATTRIBUTE_CODE),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $attribute->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray([])),
+            AttributeOption::create(OptionCode::fromString('green'), LabelCollection::fromArray([])),
+        ]);
+
+        $this->attributeRepository->create($attribute);
+    }
+
+    /**
+     * @Given /^a record belonging to this reference entity with values of "([^"]+)" for the option attribute$/
+     */
+    public function aRecordBelongingToThisReferenceEntityWithValuesOfForTheOptionAttribute($optionCode)
+    {
+        $recordValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::OPTION_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            OptionData::createFromNormalize($optionCode)
+        );
+        $this->createRecord($recordValue);
+    }
+
+    /**
+     * @When /^the user updates the option attribute of the record to "([^"]+)"$/
+     */
+    public function theUserUpdatesTheOptionAttributeOfTheRecordTo($optionCode)
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code' => self::RECORD_CODE,
+            'labels' => [],
+            'values' => [
+                [
+                    'attribute' => self::OPTION_ATTRIBUTE_IDENTIFIER,
+                    'channel' => null,
+                    'locale' => null,
+                    'data' => $optionCode
+                ],
+            ],
+        ]);
+
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should have the option value "([^"]+)" for this attribute$/
+     */
+    public function theRecordShouldHaveTheOptionValueForThisAttribute($expectedValue)
+    {
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::OPTION_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        );
+
+        Assert::assertNotNull($value);
+        Assert::assertEquals($expectedValue, $value->getData()->normalize());
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property option attribute with message "(.*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyOptionAttributeWithMessageBlue($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::OPTION_ATTRIBUTE_CODE,
+            $expectedMessage
         );
     }
 }

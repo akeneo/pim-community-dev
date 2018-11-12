@@ -30,12 +30,13 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attributes
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Request;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
-    as FranklinAttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping as FranklinAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
@@ -174,14 +175,15 @@ class PimAISpec extends ObjectBehavior
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
 
-        $subscriptionApi->subscribeProduct(
+        $request = new RequestCollection();
+        $request->add(new Request(
             [
                 'upc' => '123456789',
                 'asin' => '987654321',
             ],
             42,
-            $normalizedFamily
-        )->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
+            $normalizedFamily));
+        $subscriptionApi->subscribe($request)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this
             ->subscribe($productSubscriptionRequest)

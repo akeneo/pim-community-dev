@@ -38,7 +38,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse
+    public function subscribe(RequestCollection $request): ApiResponse
     {
         switch ($this->status) {
             case self::STATUS_EXPIRED_TOKEN:
@@ -50,6 +50,9 @@ final class SubscriptionFake implements SubscriptionApiInterface
             default:
                 break;
         }
+
+        $formParams = $request->toFormParams();
+        $identifiers = $formParams[0];
 
         $filename = sprintf('subscriptions/post/%s-%s.json', key($identifiers), current($identifiers));
 

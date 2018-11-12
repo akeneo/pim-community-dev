@@ -21,9 +21,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class AttributeMapping
 {
-    /** The attribute is not mapped yet */
-    public const ATTRIBUTE_PENDING = 0;
-
     /** The attribute is mapped */
     public const ATTRIBUTE_MAPPED = 1;
 
@@ -59,13 +56,11 @@ class AttributeMapping
     /**
      * @param string $targetAttributeCode
      * @param string $targetAttributeType
-     * @param int $status
      * @param null|string $pimAttributeCode
      */
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
-        int $status,
         ?string $pimAttributeCode
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
@@ -80,19 +75,8 @@ class AttributeMapping
             );
         }
         $this->targetAttributeType = $targetAttributeType;
-
-        if (!in_array($status, [self::ATTRIBUTE_PENDING, self::ATTRIBUTE_MAPPED, self::ATTRIBUTE_UNMAPPED])) {
-            throw new \InvalidArgumentException('Status "%s" does not match with expected types (0, 1, 2)', $status);
-        }
-        $this->status = $status;
-
-        if (self::ATTRIBUTE_MAPPED !== $this->status) {
-            $this->pimAttributeCode = null;
-        } elseif (null === $pimAttributeCode) {
-            throw new \InvalidArgumentException('Status need to be mapped if you want to map with an attribute');
-        } else {
-            $this->pimAttributeCode = $pimAttributeCode;
-        }
+        $this->pimAttributeCode = empty($pimAttributeCode) ? null : $pimAttributeCode;
+        $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
     }
 
     /**

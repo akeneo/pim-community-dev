@@ -64,9 +64,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $query = [
             '_source' => '_id',
-            'from' => $recordQuery->getSize() * $recordQuery->getPage(),
             'size' => $recordQuery->getSize(),
-            'sort' => ['updated_at' => 'desc'],
             'query'   => [
                 'constant_score' => [
                     'filter' => [
@@ -83,6 +81,18 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                 ],
             ],
         ];
+
+        if ($recordQuery->isPaginatedUsingOffset()) {
+            $query['from'] = $recordQuery->getSize() * $recordQuery->getPage();
+            $query['sort'] = ['updated_at' => 'desc'];
+        }
+
+        if ($recordQuery->isPaginatedUsingSearchAfter()) {
+            if (null !== $recordQuery->getSearchAfterCode()) {
+                $query['search_after'] = [$recordQuery->getSearchAfterCode()];
+            }
+            $query['sort'] = ['code' => 'asc'];
+        }
 
         if (null !== $fullTextFilter && !empty($fullTextFilter['value'])) {
             $terms = $this->getTerms($fullTextFilter);

@@ -122,5 +122,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordsForConnectorAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_reference_entity'
+            - '@akeneo_referenceentity.application.record.search_connector_record'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_images'
             - '%reference_entity_records_for_connector_limit_per_page%'

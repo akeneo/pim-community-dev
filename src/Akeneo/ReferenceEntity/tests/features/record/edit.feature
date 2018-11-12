@@ -348,6 +348,24 @@ Feature: Edit an record
     When the user updates the record collection attribute of the record with unknown values
     Then there should be a validation error on the property record attribute with message "The records "unknown_brand,wrong_brand" were not found."
 
+  # Option value
+  @acceptance-back
+  Scenario: Updating the option value of a record
+    Given a reference entity with an option attribute
+    And a record belonging to this reference entity with values of "green" for the option attribute
+    When the user updates the option attribute of the record to "red"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the option value "red" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the option value of a record with non-existent option
+    Given a reference entity with an option attribute
+    And a record belonging to this reference entity with values of "green" for the option attribute
+    When the user updates the option attribute of the record to "blue"
+    Then there should be a validation error on the property option attribute with message "The option with code "blue" does not exist for this attribute"
+    And the record should have the option value "green" for this attribute
+
   @acceptance-front
   Scenario: Display a record labels in the edit form
     Given a valid record

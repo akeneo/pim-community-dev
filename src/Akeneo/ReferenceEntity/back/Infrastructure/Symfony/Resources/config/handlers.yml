@@ -63,6 +63,12 @@ services:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers'
 
+    akeneo_referenceentity.application.record.search_connector_record:
+        class: Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_identifiers'
+
     akeneo_referenceentity.application.record.index_records_handler:
         class: Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler
         arguments:

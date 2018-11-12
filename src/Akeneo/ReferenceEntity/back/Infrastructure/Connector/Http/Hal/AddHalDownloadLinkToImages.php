@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
 /**
- * Add download links at HAL format to a normalized record for each image (as main image or as value)
+ * Add download links at HAL format to a list of normalized records for each image (as main image or as value)
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -41,13 +41,20 @@ class AddHalDownloadLinkToImages
         $this->findImageAttributeCodes = $findImageAttributeCodes;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecords): array
+    {
+        $imageAttributeCodes = ($this->findImageAttributeCodes)($referenceEntityIdentifier);
+
+        return array_map(function ($normalizedRecord) use ($imageAttributeCodes) {
+            return $this->addDownloadLinkToNormalizedRecord($normalizedRecord, $imageAttributeCodes);
+        }, $normalizedRecords);
+    }
+
+    private function addDownloadLinkToNormalizedRecord(array $normalizedRecord, array $imageAttributeCodes): array
     {
         if (!empty($normalizedRecord['main_image'])) {
             $normalizedRecord = $this->addDownloadLinkToMainImage($normalizedRecord);
         }
-
-        $imageAttributeCodes = ($this->findImageAttributeCodes)($referenceEntityIdentifier);
 
         foreach ($imageAttributeCodes as $imageAttributeCode) {
             $imageAttributeCode = (string) $imageAttributeCode;
