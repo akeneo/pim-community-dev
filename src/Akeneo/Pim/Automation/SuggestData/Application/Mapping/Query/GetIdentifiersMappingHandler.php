@@ -11,18 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
- * TODO: Change this class name.
- * Service to manage identifiers mapping.
- *
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ManageIdentifiersMapping
+class GetIdentifiersMappingHandler
 {
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
@@ -30,16 +27,12 @@ class ManageIdentifiersMapping
     /**
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
-    public function __construct(
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-    ) {
+    public function __construct(IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
+    {
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
-    /**
-     * @return IdentifiersMapping
-     */
-    public function getIdentifiersMapping(): IdentifiersMapping
+    public function handle(GetIdentifiersMappingQuery $query): IdentifiersMapping
     {
         return $this->identifiersMappingRepository->find();
     }

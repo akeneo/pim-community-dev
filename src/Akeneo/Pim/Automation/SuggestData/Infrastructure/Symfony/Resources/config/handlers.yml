@@ -98,3 +98,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
+    akeneo.pim.automation.suggest_data.handler.get_identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'

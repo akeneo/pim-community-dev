@@ -1,9 +1,4 @@
 services:
-    akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
-
     akeneo.pim.automation.suggest_data.proposal.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert'
         arguments:
