@@ -73,6 +73,20 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             );
         }));
 
+        if ($query->isPaginatedUsingSearchAfter()) {
+            $searchAfterCode = $query->getSearchAfterCode();
+            $records = array_values(array_filter($records, function (Record $record) use ($searchAfterCode): bool {
+                return null === $searchAfterCode
+                    || strcasecmp((string) $record->getCode(), $searchAfterCode) > 0;
+            }));
+
+            usort($records, function ($firstRecord, $secondRecord) {
+                return strcasecmp((string) $firstRecord->getCode(), (string) $secondRecord->getCode());
+            });
+
+            $records = array_slice($records, 0, $query->getSize());
+        }
+
         $result = new IdentifiersForQueryResult();
         $result->total = count($records);
         $result->identifiers = array_map(function (Record $record): string {

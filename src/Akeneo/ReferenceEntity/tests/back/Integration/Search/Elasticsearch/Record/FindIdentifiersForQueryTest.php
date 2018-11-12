@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Integration\SearchIntegrationTestCase;
@@ -309,6 +311,42 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'identifiers' => ['brand_kartell', 'brand_alessi'],
             'total' => 2
         ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function paginated_by_search_after_search()
+    {
+        $query = RecordQuery::createPaginatedUsingSearchAfter(
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('alessi'),
+            10
+        );
+
+        $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertSame([
+            'identifiers' => ['brand_bangolufsen', 'brand_kartell'],
+            'total' => 3
+        ], $matchingIdentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function paginated_by_search_after_from_the_start_search()
+    {
+        $query = RecordQuery::createPaginatedUsingSearchAfter(
+            ReferenceEntityIdentifier::fromString('brand'),
+            null,
+            10
+        );
+
+        $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
+        Assert::assertSame([
+            'identifiers' => ['brand_alessi', 'brand_bangolufsen', 'brand_kartell'],
+            'total' => 3
+        ], $matchingIdentifiers->normalize());
     }
 
     private function loadDataset()

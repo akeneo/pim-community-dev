@@ -15,7 +15,8 @@ services:
         arguments:
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_identifiers'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
