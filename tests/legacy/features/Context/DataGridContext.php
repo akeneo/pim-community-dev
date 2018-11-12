@@ -504,12 +504,9 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        // Temporary solution waiting for Category tree moving (PIM-6574)
-        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
-
+        $this->getSession()->wait(6000, false); //TODO REMOVE THIS UGLY THING
         $action = ucfirst(strtolower($actionName));
         $this->getDatagrid()->clickOnAction($element, $action);
-        $this->wait();
     }
 
     /**
