@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
-
 /**
  * Exception thrown when the user does not have enough credits to subscribe a product to Franklin.
  *
