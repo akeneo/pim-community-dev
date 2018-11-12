@@ -1,5 +1,7 @@
 # 1.7.x
 
+# 1.7.34 (2018-11-12)
+
 ## Bug fixes
 
 PIM-7581: Fix unselect category when its code is numeric
