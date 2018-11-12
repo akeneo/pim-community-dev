@@ -24,7 +24,7 @@ pimee_product_asset:
       upload: Загрузить
       delete: Удалить
       download: Скачать
-      generate_from_reference: Генерация на основе ссылки
+      generate_from_reference: Создание из образца
       reset_variations: Сбросить вариации
     confirmation.subTitle: Медиафайлы
     grid:
@@ -34,7 +34,7 @@ pimee_product_asset:
       code: Код
       description: Описание
       end_of_use: Конец использования
-      reference: Ссылка
+      reference: Образец
       filename: Имя файла
       width: Ширина
       height: Высота
@@ -45,7 +45,7 @@ pimee_product_asset:
       actions: Действия
       download: Скачать
       tag: Теги
-      no_reference: Файл по ссылке не был загружен еще.
+      no_reference: Файл образца не был загружен еще.
       no_variation: Не был создан еще ни один файл вариации.
     flash:
       update:
@@ -59,8 +59,8 @@ pimee_product_asset:
   enrich_reference:
     flash:
       delete:
-        success: Файл по ссылке был удален.
-        error: Файл по ссылке не был удален. Произошла ошибка.
+        success: Файл образца был удален.
+        error: Файл образца не был удален. Произошла ошибка.
   enrich_variation:
     flash:
       transformation:

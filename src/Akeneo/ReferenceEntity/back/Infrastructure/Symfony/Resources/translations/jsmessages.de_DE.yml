@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Upload per Drag & Drop oder hier klicken
+      small:
+        remove: Entfernen
+        download: Herunterladen
   reference_entity:
     button:
       save: Speichern
@@ -59,6 +66,8 @@ pim_reference_entity:
         value_per_channel: Wert je Ausgabekanal
       confirm: Speichern
     edit:
+      save: Speichern
+      cancel: Abbrechen
       input:
         label: Bezeichnung
         type: Attributtyp

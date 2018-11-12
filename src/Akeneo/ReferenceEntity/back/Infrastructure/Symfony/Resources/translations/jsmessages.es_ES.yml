@@ -1,6 +1,13 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Crear una nueva entidad
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Arrastrar y soltar para cargar o haga clic aquí
+      small:
+        remove: Quitar
+        download: Descargar
   reference_entity:
     button:
       save: Guardar
@@ -83,6 +90,8 @@ pim_reference_entity:
         value_per_channel: Valor por canal
       confirm: Guardar
     edit:
+      save: Guardar
+      cancel: Cancelar
       input:
         code: Código (requerido)
         label: Etiqueta

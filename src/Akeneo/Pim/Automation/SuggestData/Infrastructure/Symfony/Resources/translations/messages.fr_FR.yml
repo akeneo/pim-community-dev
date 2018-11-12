@@ -1,8 +1,6 @@
 akeneo_suggest_data:
-  acl:
-    suggest_data:
-      index: Suggestion de données
-    settings.mapping: Structure de mapping entre votre catalogue et PIM.ai
+  acl_group:
+    suggest_data: Paramètres de Franklin Insights
   mapping_identifier:
     success: Le mapping a été sauvegardé avec succès
     error: Une erreur est survenue pendant la sauvegarde du mapping

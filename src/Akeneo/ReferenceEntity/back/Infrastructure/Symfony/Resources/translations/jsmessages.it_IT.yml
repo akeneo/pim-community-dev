@@ -1,8 +1,14 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Crea una nuova entità
-  akeneo_reference_entities_reference_entity_edit: Modifica una entità di riferimento
   akeneo_reference_entities_record_edit: Modifica riga
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Drag and drop per caricare un file o fai click qui
+      small:
+        remove: Rimuovere
+        download: Scarica
   reference_entity:
     validation:
       code:
@@ -140,8 +146,8 @@ pim_reference_entity:
       confirm: Salva
     edit:
       delete: Elimina l'attributo
-      common.title: Parametri comuni
-      additional.title: Parametri aggiuntivi
+      save: Salva
+      cancel: Annulla
       input:
         code: Codice (richiesto)
         label: Etichetta
@@ -186,10 +192,5 @@ pim_enrich:
   entity:
     attribute:
       property:
-        type:
-          akeneo_reference_entity_collection: Entità di riferimento
         section:
           type_specific: Digita parametri specifici
-        reference_entity:
-          identifier: Entità di riferimento
-          default_label: Seleziona un'entità di riferimento

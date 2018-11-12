@@ -28,10 +28,8 @@ akeneo_suggest_data:
           active: Attivo
           inactive: Inattivo
       constraint:
-        duplicate_attribute_code: "Un attributo non può essere usato più di una volta. L'attributo \"{{ attributeCode }}\" è stato usato {{ frequency }} volte."
         missing_or_invalid_identifiers: "Le chiavi di mappatura di alcuni identificatori sono assenti o non validi. Previsto: \"{{ expected }}\", attuale \"{{ given }}\"."
         attribute_not_found: "L'attributo con il codice attributo \"{{ attributeCode }}\" per la mappatura degli identificatori non esiste."
-        mandatory_attribute_mapping: "Questo attributo è obbligatorio"
         attribute_type: "Questo tipo di attributo non può essere impostato come identificatore"
     attributes_mapping:
       label: Mappatura attributi
@@ -75,7 +73,6 @@ akeneo_suggest_data:
         sub_title: 'Benvenuto nell''<span class="AknDescriptionHeader-title--highlight">Assistente AI Informazioni Prodotto</span>!'
         description:
           first_step: 'Il primo passo nella connessione dell''assistente è configurare il token API.'
-          second_step: 'Il prossimo passo nel processo di connessione è di abbinare i tuoi <a href="#" class="AknDescriptionHeader-link">identificatori di catalogo prodotti</a> agli identificatori dell''assistente.'
       activation:
         label: 'Connettore Franklin'
         activation_code: 'Codice di attivazione'
