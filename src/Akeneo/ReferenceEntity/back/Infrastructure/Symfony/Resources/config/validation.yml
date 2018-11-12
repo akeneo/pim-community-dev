@@ -93,6 +93,10 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionVa
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionValueCommand: ~
 
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCollectionValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditOptionCollectionValueCommand: ~
+
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
