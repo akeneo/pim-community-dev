@@ -24,73 +24,55 @@ class AttributeMappingSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_MAPPED, 'pim');
+        $this->beConstructedWith('target', 'multiselect', 'pim');
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
     public function it_is_initializable_without_a_nullable_pim_attribute_code(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_PENDING, null);
+        $this->beConstructedWith('target', 'multiselect', null);
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    public function it_sets_null_as_pim_attribute_code_if_status_is_unmapped(): void
+    public function it_returns_an_active_status_when_attribute_is_mapped(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_PENDING, 'foobar');
+        $this->beConstructedWith('target', 'multiselect', 'foobar');
 
-        $this->getPimAttributeCode()->shouldReturn(null);
+        $this->getStatus()->shouldReturn(AttributeMapping::ATTRIBUTE_MAPPED);
     }
 
-    public function it_returns_the_status(): void
+    public function it_returns_an_inactive_status_when_no_attribute_mapped(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_UNMAPPED, 'foobar');
+        $this->beConstructedWith('target', 'multiselect', null);
 
         $this->getStatus()->shouldReturn(AttributeMapping::ATTRIBUTE_UNMAPPED);
     }
 
     public function it_returns_the_pim_attribute_code(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_MAPPED, 'foobar');
+        $this->beConstructedWith('target', 'multiselect', 'foobar');
 
         $this->getPimAttributeCode()->shouldReturn('foobar');
     }
 
     public function it_returns_the_target_attribute_code(): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_MAPPED, 'foobar');
+        $this->beConstructedWith('target', 'multiselect', 'foobar');
 
         $this->getTargetAttributeCode()->shouldReturn('target');
     }
 
     public function it_sets_attribute_to_the_attribute_mapping(AttributeInterface $attribute): void
     {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_MAPPED, 'foobar');
+        $this->beConstructedWith('target', 'multiselect', 'foobar');
 
         $this->setAttribute($attribute)->shouldReturn($this);
         $this->getAttribute()->shouldReturn($attribute);
     }
 
-    public function it_throws_an_exception_if_status_is_invalid(): void
-    {
-        $this->beConstructedWith('target', 'multiselect', 4, 'pim');
-
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->duringInstantiation();
-    }
-
     public function it_throws_an_exception_if_type_is_invalid(): void
     {
-        $this->beConstructedWith('target', 'invalid-type', AttributeMapping::ATTRIBUTE_MAPPED, 'pim');
-
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->duringInstantiation();
-    }
-
-    public function it_throws_an_exception_if_status_is_mapped_without_pim_attribute(): void
-    {
-        $this->beConstructedWith('target', 'multiselect', AttributeMapping::ATTRIBUTE_MAPPED, null);
+        $this->beConstructedWith('target', 'invalid-type', 'pim');
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
