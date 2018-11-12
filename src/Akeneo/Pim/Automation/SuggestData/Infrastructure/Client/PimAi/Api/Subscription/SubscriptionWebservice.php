@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AbstractApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -30,24 +29,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SubscriptionWebservice implements SubscriptionApiInterface
+class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInterface
 {
-    /** @var UriGenerator */
-    private $uriGenerator;
-
-    /** @var Client */
-    private $httpClient;
-
-    /**
-     * @param UriGenerator $uriGenerator
-     * @param Client $httpClient
-     */
-    public function __construct(UriGenerator $uriGenerator, Client $httpClient)
-    {
-        $this->uriGenerator = $uriGenerator;
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * {@inheritdoc}
      */

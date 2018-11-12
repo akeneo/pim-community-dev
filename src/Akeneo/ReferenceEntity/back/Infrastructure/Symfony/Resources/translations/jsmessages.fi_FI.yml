@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+      small:
+        remove: Poista
+        download: Lataa
   reference_entity:
     button:
       save: Tallenna
@@ -60,6 +67,8 @@ pim_reference_entity:
         value_per_channel: Kanavakohtainen arvo
       confirm: Tallenna
     edit:
+      save: Tallenna
+      cancel: Peruuta
       input:
         label: Nimike
         type: Attribuuttityyppi

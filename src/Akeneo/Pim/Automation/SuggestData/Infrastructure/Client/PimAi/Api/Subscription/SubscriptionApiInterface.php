@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
@@ -22,15 +23,12 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\Inva
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface SubscriptionApiInterface
+interface SubscriptionApiInterface extends AuthenticatedApi
 {
     /**
      * @param array $identifiers
-     *
-     * @throws BadRequestException
-     * @throws InsufficientCreditsException
-     * @throws InvalidTokenException
-     * @throws FranklinServerException
+     * @param int $trackerId
+     * @param array $familyInfos
      *
      * @return ApiResponse
      */

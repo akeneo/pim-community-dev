@@ -10,5 +10,5 @@ akeneo_referenceentity:
       delete: Suprimeix un registre
       delete_all: Suprimeix tots els registres d'entitat
     attribute:
-      create: Afegir un atribut a l'entitat de referencia
-      edit: Editar un atribut per una entitat de referència
+      create: Afegeix un atribut a una entitat de referència
+      edit: Editar un atribut d'una entitat de referència

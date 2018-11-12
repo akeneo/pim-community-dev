@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
@@ -25,14 +26,15 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
@@ -79,6 +81,12 @@ class PimAI implements DataProviderInterface
     /** @var OptionsMappingInterface */
     private $attributeOptionsMappingApi;
 
+    /** @var ConfigurationRepositoryInterface */
+    private $configurationRepository;
+
+    /** @var Token */
+    private $token;
+
     /**
      * @param AuthenticationApiInterface $authenticationApi
      * @param SubscriptionApiInterface $subscriptionApi
@@ -89,6 +97,7 @@ class PimAI implements DataProviderInterface
      * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
      * @param FamilyNormalizer $familyNormalizer
+     * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,
@@ -99,7 +108,8 @@ class PimAI implements DataProviderInterface
         OptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
-        FamilyNormalizer $familyNormalizer
+        FamilyNormalizer $familyNormalizer,
+        ConfigurationRepositoryInterface $configurationRepository
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
@@ -110,6 +120,12 @@ class PimAI implements DataProviderInterface
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->familyNormalizer = $familyNormalizer;
+        $this->configurationRepository = $configurationRepository;
+
+        $this->identifiersMappingApi->setToken($this->getToken());
+        $this->attributesMappingApi->setToken($this->getToken());
+        $this->attributeOptionsMappingApi->setToken($this->getToken());
+        $this->subscriptionApi->setToken($this->getToken());
     }
 
     /**
@@ -292,5 +308,20 @@ class PimAI implements DataProviderInterface
         }
 
         return $mapping[$status];
+    }
+
+    /**
+     * @return string
+     */
+    private function getToken(): string
+    {
+        if (null === $this->token) {
+            $config = $this->configurationRepository->find();
+            if ($config instanceof Configuration) {
+                $this->token = $config->getToken();
+            }
+        }
+
+        return (string) $this->token;
     }
 }

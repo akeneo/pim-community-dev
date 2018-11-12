@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+      small:
+        remove: Supprimer
+        download: Téléchargement
   reference_entity:
     validation:
       code:
@@ -77,6 +84,8 @@ pim_reference_entity:
         value_per_channel: Valeur par canal
       confirm: Enregistrer
     edit:
+      save: Enregistrer
+      cancel: Annuler
       input:
         label: Libellé
         type: Type d'attribut

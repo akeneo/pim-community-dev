@@ -61,4 +61,11 @@ class OptionsMappingFake implements OptionsMappingInterface
     {
         return $this->mappings[$familyCode][$franklinAttributeId] ?? $this->mappings[$familyCode][$franklinAttributeId];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken(string $token): void
+    {
+    }
 }

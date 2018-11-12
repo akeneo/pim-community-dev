@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Dra och släpp för att ladda upp eller klicka här
+      small:
+        remove: Ta bort
+        download: Ladda ner
   reference_entity:
     button:
       save: Spara
@@ -55,6 +62,8 @@ pim_reference_entity:
         type: Attribut typ
       confirm: Spara
     edit:
+      save: Spara
+      cancel: Avbryt
       input:
         label: Etikett
         type: Attribut typ

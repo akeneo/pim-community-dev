@@ -51,4 +51,11 @@ class AttributesMappingFake implements AttributesMappingApiInterface
     {
         $this->mappings[$familyCode] = $mapping;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken(string $token): void
+    {
+    }
 }

@@ -18,7 +18,7 @@ services:
     akeneo.pim.automation.suggest_data.controller.identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\IdentifiersMappingController'
         arguments:
-           - '@akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
+           - '@akeneo.pim.automation.suggest_data.handler.get_identifiers_mapping'
            - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.controller.attributes_mapping:

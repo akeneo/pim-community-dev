@@ -13,34 +13,15 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  * file that was distributed with this source code.
  */
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AbstractApi;
 
 /**
  * API Web Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class IdentifiersMappingApiWebService implements IdentifiersMappingApiInterface
+class IdentifiersMappingApiWebService extends AbstractApi implements IdentifiersMappingApiInterface
 {
-    /** @var UriGenerator */
-    private $uriGenerator;
-
-    /** @var Client */
-    private $httpClient;
-
-    /**
-     * @param UriGenerator $uriGenerator
-     * @param Client $httpClient
-     */
-    public function __construct(
-        UriGenerator $uriGenerator,
-        Client $httpClient
-    ) {
-        $this->uriGenerator = $uriGenerator;
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * {@inheritdoc}
      */

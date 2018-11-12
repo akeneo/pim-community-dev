@@ -15,7 +15,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,21 +27,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class IdentifiersMappingController
 {
-    /** @var ManageIdentifiersMapping */
-    private $manageIdentifiersMapping;
+    /** @var GetIdentifiersMappingHandler */
+    private $getIdentifiersMappingHandler;
 
     /** @var UpdateIdentifiersMappingHandler */
     private $updateIdentifiersMappingHandler;
 
     /**
-     * @param ManageIdentifiersMapping $manageIdentifiersMapping
+     * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      */
     public function __construct(
-        ManageIdentifiersMapping $manageIdentifiersMapping,
+        GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
         UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
     ) {
-        $this->manageIdentifiersMapping = $manageIdentifiersMapping;
+        $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
         $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
     }
 
@@ -78,7 +79,7 @@ class IdentifiersMappingController
     public function getIdentifiersMappingAction(): JsonResponse
     {
         $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
-        $identifiersMapping = $this->manageIdentifiersMapping->getIdentifiersMapping();
+        $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
 
         return new JsonResponse(
             $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers())

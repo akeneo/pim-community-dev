@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
+      small:
+        remove: 削除
+        download: ダウンロード
   reference_entity:
     button:
       save: 保存
@@ -60,6 +67,8 @@ pim_reference_entity:
         value_per_channel: チャンネルごとの値
       confirm: 保存
     edit:
+      save: 保存
+      cancel: キャンセル
       input:
         label: ラベル
         type: 属性タイプ

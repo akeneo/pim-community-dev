@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Persistence\Query\Product;
+namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Persistence\Query\Product;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

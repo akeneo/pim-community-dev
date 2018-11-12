@@ -135,4 +135,11 @@ final class SubscriptionFake implements SubscriptionApiInterface
     {
         $this->lastFetchDate = $lastFetchDate;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken(string $token): void
+    {
+    }
 }

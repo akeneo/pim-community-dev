@@ -14,15 +14,17 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
@@ -30,6 +32,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Identifier
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
     as FranklinAttributeOptionsMapping;
@@ -44,6 +47,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * TODO: There are lot of spec to add. Half of the class is not spec.
@@ -59,8 +63,16 @@ class PimAISpec extends ObjectBehavior
         OptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
-        FamilyNormalizer $familyNormalizer
+        FamilyNormalizer $familyNormalizer,
+        ConfigurationRepositoryInterface $configurationRepository
     ): void {
+        $configuration = new Configuration();
+        $configuration->setToken(new Token('valid-token'));
+        $configurationRepository->find()->willReturn($configuration);
+        $identifiersMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $attributesMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $attributeOptionsMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
         $this->beConstructedWith(
             $authenticationApi,
             $subscriptionApi,
@@ -70,7 +82,8 @@ class PimAISpec extends ObjectBehavior
             $attributeOptionsMappingApi,
             $identifiersMappingNormalizer,
             $attributesMappingNormalizer,
-            $familyNormalizer
+            $familyNormalizer,
+            $configurationRepository
         );
     }
 
@@ -173,13 +186,6 @@ class PimAISpec extends ObjectBehavior
         $this
             ->subscribe($productSubscriptionRequest)
             ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
-    }
-
-    public function it_fetches_products_from_pim_ai($subscriptionApi): void
-    {
-        $subscriptionApi
-            ->fetchProducts()
-            ->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
     }
 
     public function it_updates_the_identifiers_mapping(

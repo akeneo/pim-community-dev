@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AbstractApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -24,24 +23,8 @@ use GuzzleHttp\Exception\ServerException;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributesMappingWebService implements AttributesMappingApiInterface
+class AttributesMappingWebService extends AbstractApi implements AttributesMappingApiInterface
 {
-    /** @var UriGenerator */
-    private $uriGenerator;
-
-    /** @var Client */
-    private $httpClient;
-
-    /**
-     * @param UriGenerator $uriGenerator
-     * @param Client $httpClient
-     */
-    public function __construct(UriGenerator $uriGenerator, Client $httpClient)
-    {
-        $this->uriGenerator = $uriGenerator;
-        $this->httpClient = $httpClient;
-    }
-
     /**
      * @param string $familyCode
      *
