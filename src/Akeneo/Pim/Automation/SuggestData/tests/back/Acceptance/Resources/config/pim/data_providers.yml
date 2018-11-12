@@ -1,18 +1,22 @@
 services:
-    akeneo.pim.automation.suggest_data.franklin_client.authentication:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationFake'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.franklin_client.uri_generator'
-            - '@akeneo.pim.automation.suggest_data.franklin_client.http_client'
+    akeneo.pim.automation.suggest_data.franklin_client.http_client:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\FakeClient'
 
-    akeneo.pim.automation.suggest_data.franklin_client.subscription:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionFake'
-
-    akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiFake'
-
-    akeneo.pim.automation.suggest_data.franklin_client.attributes_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingFake'
-
-    akeneo.pim.automation.suggest_data.franklin_client.attribute_options_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingFake'
+#    akeneo.pim.automation.suggest_data.pimai_client.authentication:
+#        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationFake'
+#        arguments:
+#            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+#            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
+#
+#    akeneo.pim.automation.suggest_data.pimai_client.subscription:
+#        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake'
+#
+#    akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping:
+#        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake'
+#
+#    akeneo.pim.automation.suggest_data.pimai_client.attributes_mapping:
+#        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingFake'
+#
+#    akeneo.pim.automation.suggest_data.pimai_client.attribute_options_mapping:
+#        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingFake'
+#

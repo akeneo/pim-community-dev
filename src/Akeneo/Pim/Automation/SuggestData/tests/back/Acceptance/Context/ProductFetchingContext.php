@@ -6,7 +6,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\FakeClient;
 use Behat\Behat\Context\Context;
 
 /**
@@ -17,19 +17,19 @@ final class ProductFetchingContext implements Context
     /** @var FetchProductsHandler */
     private $fetchProductsHandler;
 
-    /** @var SubscriptionFake */
-    private $subscriptionApi;
+    /** @var FakeClient */
+    private $fakeClient;
 
     /**
      * @param FetchProductsHandler $fetchProductsHandler
-     * @param SubscriptionFake $subscriptionApi
+     * @param FakeClient $fakeClient
      */
     public function __construct(
         FetchProductsHandler $fetchProductsHandler,
-        SubscriptionFake $subscriptionApi
+        FakeClient $fakeClient
     ) {
         $this->fetchProductsHandler = $fetchProductsHandler;
-        $this->subscriptionApi = $subscriptionApi;
+        $this->fakeClient = $fakeClient;
     }
 
     /**
@@ -51,6 +51,6 @@ final class ProductFetchingContext implements Context
     public function lastFetchHaveBeenDone($lastFetchDate): void
     {
         // TODO: Rework with a real date later (See APAI-170)
-        $this->subscriptionApi->defineLastFetchDate($lastFetchDate);
+        $this->fakeClient->defineLastFetchDate($lastFetchDate);
     }
 }

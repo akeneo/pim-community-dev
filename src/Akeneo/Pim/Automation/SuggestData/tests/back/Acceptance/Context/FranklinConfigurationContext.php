@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
@@ -31,10 +32,6 @@ use PHPUnit\Framework\Assert;
  */
 final class FranklinConfigurationContext implements Context
 {
-    private const FRANKLIN_VALID_TOKEN = 'valid-token';
-
-    private const FRANKLIN_INVALID_TOKEN = 'invalid-token';
-
     /** @var ActivateConnectionHandler */
     private $activateConnectionHandler;
 
@@ -90,10 +87,10 @@ final class FranklinConfigurationContext implements Context
     /**
      * @Given Franklin is configured with a valid token
      */
-    public function franklinIsConfiguredWithValidToken(): void
+    public function franklinIsConfiguredWithAValidToken(): void
     {
         $configuration = new Configuration();
-        $configuration->setToken(new Token(self::FRANKLIN_VALID_TOKEN));
+        $configuration->setToken(new Token(FakeClient::VALID_TOKEN));
         $this->configurationRepository->save($configuration);
     }
 
@@ -103,7 +100,7 @@ final class FranklinConfigurationContext implements Context
     public function franklinIsConfiguredWithAnExpiredToken(): void
     {
         $configuration = new Configuration();
-        $configuration->setToken(new Token(self::FRANKLIN_INVALID_TOKEN));
+        $configuration->setToken(new Token(FakeClient::INVALID_TOKEN));
         $this->configurationRepository->save($configuration);
     }
 
@@ -112,7 +109,7 @@ final class FranklinConfigurationContext implements Context
      */
     public function configuresFranklinUsingValidToken(): void
     {
-        $command = new ActivateConnectionCommand(new Token(static::FRANKLIN_VALID_TOKEN));
+        $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));
         $this->activateConnectionHandler->handle($command);
     }
 
@@ -122,7 +119,7 @@ final class FranklinConfigurationContext implements Context
     public function configuresFranklinUsingAnInvalidToken(): void
     {
         try {
-            $command = new ActivateConnectionCommand(new Token(static::FRANKLIN_INVALID_TOKEN));
+            $command = new ActivateConnectionCommand(new Token(FakeClient::INVALID_TOKEN));
             $this->activateConnectionHandler->handle($command);
 
             throw new ConnectionConfigurationException();
@@ -195,7 +192,7 @@ final class FranklinConfigurationContext implements Context
      */
     public function aValidTokenIsRetrieved(): void
     {
-        Assert::assertEquals(static::FRANKLIN_VALID_TOKEN, $this->retrievedConfiguration->getToken());
+        Assert::assertEquals(FakeClient::VALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 
     /**
@@ -203,6 +200,6 @@ final class FranklinConfigurationContext implements Context
      */
     public function anExpiredTokenIsRetrieved(): void
     {
-        Assert::assertEquals(static::FRANKLIN_INVALID_TOKEN, $this->retrievedConfiguration->getToken());
+        Assert::assertEquals(FakeClient::INVALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 }

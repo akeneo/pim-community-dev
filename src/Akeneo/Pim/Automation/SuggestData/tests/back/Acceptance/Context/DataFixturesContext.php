@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
@@ -79,6 +80,10 @@ class DataFixturesContext implements Context
 
     /** @var InMemoryAttributeOptionRepository */
     private $attributeOptionRepository;
+    /**
+     * @var FakeClient
+     */
+    private $fakeClient;
 
     /**
      * @param InMemoryProductRepository $productRepository
@@ -95,6 +100,7 @@ class DataFixturesContext implements Context
      * @param EntityBuilder $categoryBuilder
      * @param InMemoryCategoryRepository $categoryRepository
      * @param InMemoryAttributeOptionRepository $attributeOptionRepository
+     * @param FakeClient $fakeClient
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -110,7 +116,8 @@ class DataFixturesContext implements Context
         InMemoryProductSubscriptionRepository $subscriptionRepository,
         EntityBuilder $categoryBuilder,
         InMemoryCategoryRepository $categoryRepository,
-        InMemoryAttributeOptionRepository $attributeOptionRepository
+        InMemoryAttributeOptionRepository $attributeOptionRepository,
+        FakeClient $fakeClient
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -126,6 +133,7 @@ class DataFixturesContext implements Context
         $this->categoryBuilder = $categoryBuilder;
         $this->categoryRepository = $categoryRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->fakeClient = $fakeClient;
     }
 
     /**
@@ -298,6 +306,14 @@ class DataFixturesContext implements Context
             $attributeOption->setAttribute($attribute);
             $this->attributeOptionRepository->save($attributeOption);
         }
+    }
+
+    /**
+     * @Given there are no more credits on my Franklin account
+     */
+    public function thereAreNoMoreCreditsOnMyAccount(): void
+    {
+        $this->fakeClient->disableCredit();
     }
 
     /**

@@ -24,7 +24,7 @@ services:
             - {verify: false, handler: '@akeneo.pim.automation.suggest_data.franklin_client.guzzle_stack'}
 
     akeneo.pim.automation.suggest_data.franklin_client.http_client:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Client'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClient'
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.guzzle_client'
 

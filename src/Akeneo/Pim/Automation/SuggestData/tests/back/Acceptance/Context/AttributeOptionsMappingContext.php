@@ -23,7 +23,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -48,25 +47,19 @@ class AttributeOptionsMappingContext implements Context
     /** @var SaveAttributeOptionsMappingHandler */
     private $saveAttributeOptionsMappingHandler;
 
-    /** @var OptionsMappingInterface */
-    private $optionsMappingApi;
-
     /** @var array */
     private $savedAttributeOptionsMapping;
 
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
      * @param SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
-     * @param OptionsMappingInterface $optionsMappingApi
      */
     public function __construct(
         GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler,
-        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler,
-        OptionsMappingInterface $optionsMappingApi
+        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
     ) {
         $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
         $this->saveAttributeOptionsMappingHandler = $saveAttributeOptionsMappingHandler;
-        $this->optionsMappingApi = $optionsMappingApi;
 
         $this->savedAttributeOptionsMapping = [];
     }

@@ -125,11 +125,6 @@ class Franklin implements DataProviderInterface
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->familyNormalizer = $familyNormalizer;
         $this->configurationRepository = $configurationRepository;
-
-        $this->identifiersMappingApi->setToken($this->getToken());
-        $this->attributesMappingApi->setToken($this->getToken());
-        $this->attributeOptionsMappingApi->setToken($this->getToken());
-        $this->subscriptionApi->setToken($this->getToken());
     }
 
     /**
@@ -137,6 +132,7 @@ class Franklin implements DataProviderInterface
      */
     public function subscribe(ProductSubscriptionRequest $subscriptionRequest): ProductSubscriptionResponse
     {
+        $this->subscriptionApi->setToken($this->getToken());
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
@@ -156,6 +152,7 @@ class Franklin implements DataProviderInterface
      */
     public function bulkSubscribe(array $subscriptionRequests): ProductSubscriptionResponseCollection
     {
+        $this->subscriptionApi->setToken($this->getToken());
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
@@ -191,6 +188,7 @@ class Franklin implements DataProviderInterface
      */
     public function fetch(): \Iterator
     {
+        $this->subscriptionApi->setToken($this->getToken());
         try {
             $subscriptionsPage = $this->subscriptionApi->fetchProducts();
         } catch (ClientException $e) {
@@ -205,6 +203,7 @@ class Franklin implements DataProviderInterface
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
+        $this->identifiersMappingApi->setToken($this->getToken());
         $this->identifiersMappingApi->update($this->identifiersMappingNormalizer->normalize($identifiersMapping));
     }
 
@@ -215,6 +214,7 @@ class Franklin implements DataProviderInterface
      */
     public function unsubscribe(string $subscriptionId): void
     {
+        $this->subscriptionApi->setToken($this->getToken());
         try {
             $this->subscriptionApi->unsubscribeProduct($subscriptionId);
         } catch (ClientException $e) {
@@ -227,6 +227,7 @@ class Franklin implements DataProviderInterface
      */
     public function getAttributesMapping(string $familyCode): AttributesMappingResponse
     {
+        $this->attributesMappingApi->setToken($this->getToken());
         $apiResponse = $this->attributesMappingApi->fetchByFamily($familyCode);
 
         $attributesMapping = new AttributesMappingResponse();
@@ -250,6 +251,7 @@ class Franklin implements DataProviderInterface
      */
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
     {
+        $this->attributesMappingApi->setToken($this->getToken());
         $mapping = $this->attributesMappingNormalizer->normalize($attributesMapping);
 
         $this->attributesMappingApi->update($familyCode, $mapping);
@@ -262,6 +264,7 @@ class Franklin implements DataProviderInterface
         FamilyCode $familyCode,
         FranklinAttributeId $franklinAttributeId
     ): ReadAttributeOptionsMapping {
+        $this->attributeOptionsMappingApi->setToken($this->getToken());
         $franklinOptionsMapping = $this
             ->attributeOptionsMappingApi
             ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
@@ -283,6 +286,7 @@ class Franklin implements DataProviderInterface
         FranklinAttributeId $franklinAttributeId,
         WriteAttributeOptionsMapping $attributeOptionsMapping
     ): void {
+        $this->attributeOptionsMappingApi->setToken($this->getToken());
         $attributeOptionsMappingNormalize = new AttributeOptionsMappingNormalizer();
 
         $this->attributeOptionsMappingApi->update(

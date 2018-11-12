@@ -63,14 +63,12 @@ class ProductSubscriptionContext implements Context
         InMemoryProductSubscriptionRepository $productSubscriptionRepository,
         SubscribeProductHandler $subscribeProductHandler,
         DataFixturesContext $dataFixturesContext,
-        SubscriptionFake $subscriptionApi,
         UnsubscribeProductHandler $unsubscribeProductHandler
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscribeProductHandler = $subscribeProductHandler;
         $this->dataFixturesContext = $dataFixturesContext;
-        $this->subscriptionApi = $subscriptionApi;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
     }
 
@@ -134,22 +132,6 @@ class ProductSubscriptionContext implements Context
         } else {
             Assert::isInstanceOf($productSubscription, ProductSubscription::class);
         }
-    }
-
-    /**
-     * @Given the Franklin token is expired
-     */
-    public function theTokenIsExpired(): void
-    {
-        $this->subscriptionApi->expireToken();
-    }
-
-    /**
-     * @Given there are no more credits on my Franklin account
-     */
-    public function thereAreNoMoreCreditsOnMyAccount(): void
-    {
-        $this->subscriptionApi->disableCredit();
     }
 
     /**
