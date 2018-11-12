@@ -576,7 +576,7 @@ pim_title.job_tracker:
 pim_title.dashboard: "Панель управления"
 pim_catalog_identifier: Идентификатор
 pim_catalog_text: Текст
-pim_catalog_textarea: Текстовая область
+pim_catalog_textarea: Текст
 pim_catalog_number: Число
 pim_catalog_price_collection: Цена
 pim_catalog_multiselect: Множественный выбор
