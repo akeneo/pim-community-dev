@@ -63,10 +63,15 @@ class EditOptionValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditOptionValueCommand $command): void
     {
-        $violations = $this->checkType($command);
-        if (0 === $violations->count()) {
+        if ($this->validType($command)) {
             $this->checkOptionExists($command);
         }
+    }
+
+    private function validType(EditOptionValueCommand $command): bool
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($command->optionCode, new Constraints\Type('string'));
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
@@ -78,15 +83,11 @@ class EditOptionValueCommandValidator extends ConstraintValidator
                     ->setInvalidValue($violation->getInvalidValue())
                     ->addViolation();
             }
+
+            return false;
         }
-    }
 
-    private function checkType(EditOptionValueCommand $command):ConstraintViolationListInterface
-    {
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($command->optionCode, new Constraints\Type('string'));
-
-        return $violations;
+        return true;
     }
 
     private function checkOptionExists(EditOptionValueCommand $command): void
