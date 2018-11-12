@@ -366,6 +366,24 @@ Feature: Edit an record
     Then there should be a validation error on the property option attribute with message "The option with code "blue" does not exist for this attribute"
     And the record should have the option value "green" for this attribute
 
+  # Option collection value
+  @acceptance-back
+  Scenario: Updating the option collection value of a record
+    Given a reference entity with an option collection attribute
+    And a record belonging to this reference entity with values of "vodka, whisky" for the option collection attribute
+    When the user updates the option collection attribute of the record to "vodka, rhum"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the option collection value "vodka, rhum" for this attribute
+
+  @acceptance-back
+  Scenario: Updating the option collection value of a record with non-existent option
+    Given a reference entity with an option collection attribute
+    And a record belonging to this reference entity with values of "vodka, whisky" for the option collection attribute
+    When the user updates the option collection attribute of the record to "vodka, water"
+    Then there should be a validation error on the property option collection attribute with message "The following option codes don't exist for this attribute : "water""
+    And the record should have the option collection value "vodka, whisky" for this attribute
+
   @acceptance-front
   Scenario: Display a record labels in the edit form
     Given a valid record
