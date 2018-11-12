@@ -1,20 +1,23 @@
 pim_catalog_volume:
-  product_values: "Teniu <span class=\"AknDescriptionHeader-title--highlight\">{{values}}</span> valors de productes en el seu PIM! De mitjana, és <span class=\"AknDescriptionHeader-title--highlight\">{{average}}</span> valors de producte per producte! 💪"
-  product_values_description: 'El PIM es torna més valuós com més productes tens, i el ROI més poderós! Més detalls <a href="#" class="AknDescriptionHeader-link">aquí</a>'
+  product_values: "Tens <span>{{values}}</span> valors de producte en el PIM! Amb una mitjana de <span>{{average}}</span> valors de productes per producte!&nbsp;💪"
+  product_values_description: 'El PIM es torna més valuós com més productes tens, i el ROI més poderós! Més detalls <a href="{{link}}" target="_blank">aquí</a>'
   section:
     product_values:
-      hint: Sap que el nombre total de valors de producte en el PIM està directament relacionat amb els següents eixos?<br/>Per més detalls, l'invitem a <a href="{{}}" target="_blank">llegir aquest article</a>.
+      hint: 'Sap que el nombre total de valors de producte en el PIM està directament relacionat amb els següents eixos?<br/> Per més detalls, l''invitem a <a href="{{link}}" target="_blank">llegir aquest article</a>.'
       title: Eixos que influeixen al número de valors de producte
     catalog_structure:
       hint: Vostè sap que l'estructura d'un bon catàleg és molt important i va condicionat a un enriquiment eficient. A continuació es presenten els diversos eixos per controlar l'estructura del catàleg.
       title: Eixos relacionats amb l'estructura del catàleg
     variant_modelling:
       hint: Si esteu utilitzant el modelatge de variant, aquí teniu ajuda dels eixos per controlar el volum.
+      title: Eixos sobre el variant de modelatge
   axis:
     count_products: Productes
     average_max_attributes_per_family: Atributs per família
     count_channels: Canals
     count_locales: Locals (activats)
+    count_scopable_attributes: Atributs multicanal
+    count_localizable_and_scopable_attributes: Atributs localitzables i multicanal
     count_localizable_attributes: Atributs localitzables
     count_families: Famílies
     count_attributes: Atributs

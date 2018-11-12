@@ -1,6 +1,9 @@
 pim_catalog_volume:
+  product_values: "Sinulla on <span>{{values}}</span> tuotearvoa PIM:ssä!. Tuotteella on on keskimäärin <span>{{average}}</span> tuotearvoa!&nbsp;💪"
+  product_values_description: 'Mitä enemmän tuotearvoja on, sitä arvokkaampi PIM on ja sitä korkeampi ROI on! <a href="{{link}}" target="_blank">Lue lisää aiheesta </a>'
   section:
     product_values:
+      hint: 'Tiesitkö, että tuotearvojen kokonaismäärä liittyy suoraan seuraaviin ulottuvuuksiin?<br/>Löydät lisätietoja aiheesta <a href="{{link}}" target="_blank">tästä artikkelista</a>.'
       title: Ulottuvuudet, jotka vaikuttavat tuotearvojen lukumäärään
     catalog_structure:
       hint: Varmaan tiedätkin, että hyvä katalogirakenne on erittäin tärkeä ja edellytys tehokkaalle rikastukselle. Alla on joitakin ulottuvuuksia katalogirakenteen seurantaan.

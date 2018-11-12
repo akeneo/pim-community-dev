@@ -1,6 +1,9 @@
 pim_catalog_volume:
+  product_values: "¡Tiene <span>{{values}}</span> valores de productos en su PIM! Un promedio de <span>{{average}}</span> valores de productos por producto&nbsp;💪"
+  product_values_description: 'Mientras más valores de producto usted tiene, el PIM se vuelve más valioso, y mayor el ROI también. Más detalles <a href="{{link}}" target="_blank">aquí</a>'
   section:
     product_values:
+      hint: '¿Sabe que el número total de valores de productos en su PIM está directamente relacionado con los siguientes ejes? <br/>Para obtener más detalles, lo invitamos a <a href="{{link}}" target="_blank">leer este artículo</a>.'
       title: Ejes que influencian el número de valores de productos
     catalog_structure:
       title: Ejes relacionados a la estructura del catálogo

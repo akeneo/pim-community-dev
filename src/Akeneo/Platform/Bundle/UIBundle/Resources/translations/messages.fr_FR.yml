@@ -112,7 +112,7 @@ pim_enrich:
       remove: Supprimer une famille
       history: Afficher l'historique de la famille
     family_variant:
-      remove: Supprimez une variante de famille
+      remove: Supprimer une variante de famille
     attribute_group:
       index: Liste des groupes d'attributs
       create: Créer un groupe d'attributs
