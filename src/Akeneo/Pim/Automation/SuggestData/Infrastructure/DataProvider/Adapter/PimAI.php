@@ -33,9 +33,9 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attributes
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Request;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\Request;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\FranklinServerException;
@@ -161,12 +161,12 @@ class PimAI implements DataProviderInterface
             throw ProductSubscriptionException::invalidIdentifiersMapping();
         }
 
-        $clientRequest = new RequestCollection();
+        $clientRequests = new RequestCollection();
         foreach ($subscriptionRequests as $subscriptionRequest) {
-            $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
+            $clientRequests->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
         }
 
-        $response = $this->doSubscribe($clientRequest);
+        $response = $this->doSubscribe($clientRequests);
 
         $responses = new ProductSubscriptionResponseCollection();
         foreach ($response->getSubscriptions() as $subscription) {
@@ -329,16 +329,16 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * @param RequestCollection $clientRequest
+     * @param RequestCollection $clientRequests
      *
      * @throws ProductSubscriptionException
      *
      * @return SubscriptionCollection
      */
-    private function doSubscribe(RequestCollection $clientRequest): SubscriptionCollection
+    private function doSubscribe(RequestCollection $clientRequests): SubscriptionCollection
     {
         try {
-            $clientResponse = $this->subscriptionApi->subscribe($clientRequest);
+            $clientResponse = $this->subscriptionApi->subscribe($clientRequests);
         } catch (InvalidTokenException $e) {
             throw ProductSubscriptionException::invalidToken();
         } catch (InsufficientCreditsException $e) {

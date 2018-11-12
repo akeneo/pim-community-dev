@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Write;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -27,16 +27,6 @@ final class RequestCollection
     public function add(Request $request): void
     {
         $this->requests[] = $request;
-    }
-
-    /**
-     * @param int $index
-     *
-     * @return Request|null
-     */
-    public function get(int $index): ?Request
-    {
-        return $this->requests[$index] ?? null;
     }
 
     /**
