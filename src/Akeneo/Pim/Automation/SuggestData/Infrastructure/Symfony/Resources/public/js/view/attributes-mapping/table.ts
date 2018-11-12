@@ -333,9 +333,14 @@ class AttributeMapping extends BaseView {
       this.attributeOptionsMappingModal.open();
       this.attributeOptionsMappingForm = form;
 
+      const familyLabel = i18n.getLabel(
+          normalizedFamily.labels,
+          UserContext.get('catalog_default_locale'),
+          normalizedFamily.code,
+      );
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
       formContent
-        .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalog_default_locale'), normalizedFamily.code))
+        .setFamilyLabel(familyLabel)
         .setFamilyCode(familyCode)
         .setFranklinAttributeLabel(franklinAttributeLabel)
         .setCatalogAttributeCode(catalogAttributeCode);
