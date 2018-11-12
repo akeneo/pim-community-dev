@@ -33,7 +33,7 @@ class SubscriptionCollection implements \Countable
     }
 
     /**
-     * @return array
+     * @return Subscription[]
      */
     public function getSubscriptions(): array
     {

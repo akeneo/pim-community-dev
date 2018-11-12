@@ -37,6 +37,7 @@ final class ProductSubscriptionResponse
      * @param int $productId
      * @param string $subscriptionId
      * @param array $suggestedData
+     * @param bool $isMappingMissing
      */
     public function __construct(int $productId, string $subscriptionId, array $suggestedData, bool $isMappingMissing)
     {

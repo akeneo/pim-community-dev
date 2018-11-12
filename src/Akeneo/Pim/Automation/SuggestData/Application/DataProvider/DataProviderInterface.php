@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 
@@ -32,9 +33,20 @@ interface DataProviderInterface
     /**
      * @param ProductSubscriptionRequest $request
      *
+     * @throws ProductSubscriptionException
+     *
      * @return ProductSubscriptionResponse
      */
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
+
+    /**
+     * @param ProductSubscriptionRequest[] $requests
+     *
+     * @throws ProductSubscriptionException
+     *
+     * @return ProductSubscriptionResponseCollection
+     */
+    public function bulkSubscribe(array $requests): ProductSubscriptionResponseCollection;
 
     /**
      * @param Token $token

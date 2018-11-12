@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
@@ -32,6 +33,8 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attributes
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Request;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\ClientException;
@@ -40,6 +43,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\Insu
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
@@ -131,32 +135,45 @@ class PimAI implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse
+    public function subscribe(ProductSubscriptionRequest $subscriptionRequest): ProductSubscriptionResponse
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
         }
 
-        $product = $request->getProduct();
-        $mapped = $request->getMappedValues($identifiersMapping);
-        if (empty($mapped)) {
-            throw ProductSubscriptionException::invalidMappedValues();
+        $clientRequest = new RequestCollection();
+        $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
+        $subscriptions = $this->doSubscribe($clientRequest);
+
+        return $this->buildSubscriptionResponse($subscriptions->getFirst());
+    }
+
+    /**
+     * @param ProductSubscriptionRequest[] $subscriptionRequests
+     *
+     * @return ProductSubscriptionResponseCollection
+     */
+    public function bulkSubscribe(array $subscriptionRequests): ProductSubscriptionResponseCollection
+    {
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+        if ($identifiersMapping->isEmpty()) {
+            throw ProductSubscriptionException::invalidIdentifiersMapping();
         }
 
-        $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
-        try {
-            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $product->getId(), $familyInfos);
-        } catch (InvalidTokenException $e) {
-            throw ProductSubscriptionException::invalidToken();
-        } catch (InsufficientCreditsException $e) {
-            throw ProductSubscriptionException::insufficientCredits();
-        } catch (BadRequestException | FranklinServerException $e) {
-            throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
+        $clientRequests = new RequestCollection();
+        foreach ($subscriptionRequests as $subscriptionRequest) {
+            $clientRequests->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
         }
-        $subscription = $clientResponse->content()->getFirst();
 
-        return $this->buildSubscriptionResponse($subscription);
+        $response = $this->doSubscribe($clientRequests);
+
+        $responses = new ProductSubscriptionResponseCollection();
+        foreach ($response->getSubscriptions() as $subscription) {
+            $responses->add($this->buildSubscriptionResponse($subscription));
+        }
+
+        return $responses;
     }
 
     /**
@@ -276,6 +293,27 @@ class PimAI implements DataProviderInterface
     }
 
     /**
+     * @param ProductSubscriptionRequest $subscriptionRequest
+     * @param IdentifiersMapping $identifiersMapping
+     *
+     * @return Request
+     */
+    private function buildClientRequest(
+        ProductSubscriptionRequest $subscriptionRequest,
+        IdentifiersMapping $identifiersMapping
+    ): Request {
+        $product = $subscriptionRequest->getProduct();
+        $mapped = $subscriptionRequest->getMappedValues($identifiersMapping);
+        if (empty($mapped)) {
+            throw ProductSubscriptionException::invalidMappedValues();
+        }
+
+        $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
+
+        return new Request($mapped, $product->getId(), $familyInfos);
+    }
+
+    /**
      * @param Subscription $subscription
      *
      * @return ProductSubscriptionResponse
@@ -288,6 +326,28 @@ class PimAI implements DataProviderInterface
             $subscription->getAttributes(),
             $subscription->isMappingMissing()
         );
+    }
+
+    /**
+     * @param RequestCollection $clientRequests
+     *
+     * @throws ProductSubscriptionException
+     *
+     * @return SubscriptionCollection
+     */
+    private function doSubscribe(RequestCollection $clientRequests): SubscriptionCollection
+    {
+        try {
+            $clientResponse = $this->subscriptionApi->subscribe($clientRequests);
+        } catch (InvalidTokenException $e) {
+            throw ProductSubscriptionException::invalidToken();
+        } catch (InsufficientCreditsException $e) {
+            throw ProductSubscriptionException::insufficientCredits();
+        } catch (BadRequestException | FranklinServerException $e) {
+            throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
+        }
+
+        return $clientResponse->content();
     }
 
     /**

@@ -34,15 +34,13 @@ class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInter
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse
+    public function subscribe(RequestCollection $request): ApiResponse
     {
         $route = $this->uriGenerator->generate('/api/subscriptions');
 
-        $params = $identifiers + ['tracker_id' => $trackerId] + ['family' => $familyInfos];
-
         try {
             $response = $this->httpClient->request('POST', $route, [
-                'form_params' => [$params],
+                'form_params' => $request->toFormParams(),
             ]);
 
             $content = json_decode($response->getBody()->getContents(), true);
