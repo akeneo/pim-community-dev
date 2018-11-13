@@ -1,5 +1,13 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7828: Fix ACL on System Info
+- PIM-7773: Fix routing issues with product status toggle 
+- PIM-7778: Fix ACL on Catalog Volume Monitoring
+- PIM-7774: Fix refresh of grid date filter
+- PIM-7776: Fix injection in the job's label in notification area
+
 # 2.3.16 (2018-11-13)
 
 ## Bug fixes
