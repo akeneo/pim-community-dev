@@ -8,6 +8,7 @@ Pim\Bundle\UserBundle\Entity\User:
             - Length:
                 min:        3
                 max:        255
+            - Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         email:
             - NotBlank:     ~
             - Length:
@@ -28,14 +29,22 @@ Pim\Bundle\UserBundle\Entity\User:
                 min:        1
                 minMessage: "You must select at least {{ limit }} role"
                 groups:     [User]
+        namePrefix:
+            - Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         firstName:
             - NotBlank:     ~
             - Length:
                 max:        100
+            - Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
+        middleName:
+            - Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         lastName:
             - NotBlank:     ~
             - Length:
                 max:        100
+            - Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
+        nameSuffix:
+            - Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters: ~
         birthday:
             - Date:         ~
         imageFile:
