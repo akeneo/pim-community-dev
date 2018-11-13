@@ -6,7 +6,6 @@ namespace spec\Pim\Bundle\UserBundle\Validator\Constraints;
 use Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters;
 use Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharactersValidator;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

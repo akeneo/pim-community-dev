@@ -22,8 +22,7 @@ class ValueShouldNotContainsBlacklistedCharactersValidator extends ConstraintVal
         }
 
         //strpbrk returns a string if one of the characters in second argument string was found
-        if(!empty(strpbrk($value, implode('', self::BLACKLISTED_CHARACTERS))))
-        {
+        if (!empty(strpbrk($value, implode('', self::BLACKLISTED_CHARACTERS)))) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ items }}', implode(', ', self::BLACKLISTED_CHARACTERS))
                 ->addViolation();
