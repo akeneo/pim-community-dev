@@ -93,3 +93,8 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionUpdater
         tags:
             - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.option_collection_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
