@@ -15,7 +15,7 @@ Feature: Fetch products from Franklin
     And the product "B00EYZY6AC" of the family "router"
     And the product "606449099812" of the family "router"
     And a predefined mapping as follows:
-      | pim_ai_code | attribute_code |
+      | franklin_code | attribute_code |
       | upc         | pim_upc        |
       | asin        | asin           |
     And the product "B00EYZY6AC" is subscribed to Franklin

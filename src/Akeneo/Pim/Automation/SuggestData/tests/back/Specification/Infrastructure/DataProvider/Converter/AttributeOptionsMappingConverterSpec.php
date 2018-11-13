@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\OptionsMapping
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping
     as FranklinAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use PhpSpec\ObjectBehavior;

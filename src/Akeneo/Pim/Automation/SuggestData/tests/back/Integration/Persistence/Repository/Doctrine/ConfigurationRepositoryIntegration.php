@@ -39,7 +39,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $retrievedConfiguration = $statement->fetchAll();
 
         $this->assertSame([[
-            'entity' => 'pim-ai',
+            'entity' => 'franklin',
             'name' => 'token',
             'value' => $tokenString,
         ]], $retrievedConfiguration);
@@ -63,7 +63,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $retrievedConfiguration = $statement->fetchAll();
 
         $this->assertSame([[
-            'entity' => 'pim-ai',
+            'entity' => 'franklin',
             'name' => 'token',
             'value' => 'a_new_token',
         ]], $retrievedConfiguration);

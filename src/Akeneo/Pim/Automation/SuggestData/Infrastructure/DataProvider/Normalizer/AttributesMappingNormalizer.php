@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping as DomainAttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 
 /**
  * Prepare AttributesMapping model from Domain layer in order to be used by Franklin client.

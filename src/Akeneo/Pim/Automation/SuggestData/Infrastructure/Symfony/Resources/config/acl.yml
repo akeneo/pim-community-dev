@@ -5,7 +5,7 @@ akeneo_suggest_data_product_subscription:
 
 akeneo_suggest_data_connection:
     type: action
-    label: akeneo_suggest_data.acl.pim_ai.title
+    label: akeneo_suggest_data.acl.franklin.title
 
 akeneo_suggest_data_settings_mapping:
     type: action

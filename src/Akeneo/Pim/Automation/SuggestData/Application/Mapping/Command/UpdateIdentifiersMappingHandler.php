@@ -89,16 +89,16 @@ class UpdateIdentifiersMappingHandler
      */
     private function replaceAttributeCodesByAttributes(array $identifiers): array
     {
-        foreach ($identifiers as $pimAiCode => $attributeCode) {
-            $identifiers[$pimAiCode] = null;
+        foreach ($identifiers as $franklinCode => $attributeCode) {
+            $identifiers[$franklinCode] = null;
             if (null !== $attributeCode) {
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
                 if (!$attribute instanceof AttributeInterface) {
-                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class, $pimAiCode);
+                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class, $franklinCode);
                 }
 
-                $identifiers[$pimAiCode] = $attribute;
+                $identifiers[$franklinCode] = $attribute;
             }
         }
 

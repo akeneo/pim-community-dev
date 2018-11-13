@@ -5,7 +5,7 @@ pim_title:
 
 pim_menu:
     item:
-        pim_ai: Franklin Insights
+        franklin: Franklin Insights
 
 akeneo_suggest_data:
     entity:
@@ -38,7 +38,7 @@ akeneo_suggest_data:
         attributes_mapping:
             label: Attributes mapping
             fields:
-                pim_ai_attribute: 'Franklin attribute'
+                franklin_attribute: 'Franklin attribute'
                 suggest_data:
                     label: Franklin attribute status
                     pending: Pending

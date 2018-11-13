@@ -42,7 +42,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
         $expectedMapping = [
             'product_weight' => [
-                'pimAiAttribute' => [
+                'franklinAttribute' => [
                     'label' => 'Product Weight',
                     'type' => 'metric',
                     'summary' => ['23kg', '12kg'],
