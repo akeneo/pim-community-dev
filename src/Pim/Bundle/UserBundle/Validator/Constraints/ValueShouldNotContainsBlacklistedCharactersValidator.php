@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * Validator for user inputs where some characters are now blacklisted in order to prevent injection of malicious code
+ */
 class ValueShouldNotContainsBlacklistedCharactersValidator extends ConstraintValidator
 {
     private const BLACKLISTED_CHARACTERS = ['<', '>', '&', '"'];
