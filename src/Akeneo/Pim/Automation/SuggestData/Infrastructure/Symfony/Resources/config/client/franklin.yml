@@ -32,7 +32,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator'
         public: false
         arguments:
-            - 'https://pim-ai.dev.cloud.akeneo.com'
+            - 'https://pim-ai.prod.cloud.akeneo.com'
 
     akeneo.pim.automation.suggest_data.franklin_client.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice'
