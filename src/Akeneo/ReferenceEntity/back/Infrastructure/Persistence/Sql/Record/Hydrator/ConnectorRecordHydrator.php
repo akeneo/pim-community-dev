@@ -17,8 +17,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerRegistry;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
@@ -29,23 +29,23 @@ use Webmozart\Assert\Assert;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordForConnectorHydrator
+class ConnectorRecordHydrator
 {
     /** @var AbstractPlatform */
     private $platform;
 
-    /** @var ValueForConnectorTransformerRegistry */
+    /** @var ConnectorValueTransformerRegistry */
     private $valueTransformerRegistry;
 
     public function __construct(
         Connection $connection,
-        ValueForConnectorTransformerRegistry $valueTransformerRegistry
+        ConnectorValueTransformerRegistry $valueTransformerRegistry
     ) {
         $this->platform = $connection->getDatabasePlatform();
         $this->valueTransformerRegistry = $valueTransformerRegistry;
     }
 
-    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): RecordForConnector
+    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): ConnectorRecord
     {
         $labels = Type::getType(Type::JSON_ARRAY)
             ->convertToPHPValue($row['labels'], $this->platform);
@@ -71,14 +71,14 @@ class RecordForConnectorHydrator
             $recordImage =  $this->hydrateImage($row);
         }
 
-        $recordForConnector = new RecordForConnector(
+        $connectorRecord = new ConnectorRecord(
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
             $recordImage,
             $normalizedValues
         );
 
-        return $recordForConnector;
+        return $connectorRecord;
     }
 
     private function hydrateImage(array $imageData): Image

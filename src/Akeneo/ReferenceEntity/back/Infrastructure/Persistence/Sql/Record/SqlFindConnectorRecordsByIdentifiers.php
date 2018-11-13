@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordForConnectorByReferenceEntityAndCodeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordForConnectorHydrator;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -27,10 +26,10 @@ use Doctrine\DBAL\Types\Type;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordForConnectorByReferenceEntityAndCode implements FindRecordForConnectorByReferenceEntityAndCodeInterface
+class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
 {
     /** @var Connection */
-    private $connection;
+    private $sqlConnection;
 
     /** @var FindValueKeyCollectionInterface */
     private $findValueKeyCollection;
@@ -38,22 +37,25 @@ class SqlFindRecordForConnectorByReferenceEntityAndCode implements FindRecordFor
     /** @var FindAttributesIndexedByIdentifierInterface */
     private $findAttributesIndexedByIdentifier;
 
-    /** @var RecordForConnectorHydrator */
+    /** @var ConnectorRecordHydrator */
     private $recordHydrator;
 
     public function __construct(
         Connection $connection,
-        RecordForConnectorHydrator $hydrator,
+        ConnectorRecordHydrator $hydrator,
         FindValueKeyCollectionInterface $findValueKeyCollection,
         FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
     ) {
-        $this->connection = $connection;
+        $this->sqlConnection = $connection;
         $this->findValueKeyCollection = $findValueKeyCollection;
         $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
         $this->recordHydrator = $hydrator;
     }
 
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordForConnector
+    /**
+     * {@inheritdoc}
+     */
+    public function __invoke(array $identifiers): array
     {
         $sql = <<<SQL
             SELECT 
@@ -65,35 +67,36 @@ class SqlFindRecordForConnectorByReferenceEntityAndCode implements FindRecordFor
                 fi.file_key as image_file_key,
                 fi.original_filename as image_original_filename
             FROM
-                akeneo_reference_entity_record ee
-                LEFT JOIN akeneo_file_storage_file_info fi ON fi.file_key = ee.image
-            WHERE 
-                code = :code AND reference_entity_identifier = :reference_entity_identifier;
+                akeneo_reference_entity_record record
+                LEFT JOIN akeneo_file_storage_file_info fi ON fi.file_key = record.image
+            WHERE identifier IN (:identifiers);
 SQL;
 
-        $statement = $this->connection->executeQuery(
+        $statement = $this->sqlConnection->executeQuery(
             $sql,
-            [
-                'code' => (string) $recordCode,
-                'reference_entity_identifier' => (string) $referenceEntityIdentifier,
-            ]
+            ['identifiers' => $identifiers],
+            ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
-        $result = $statement->fetch();
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        if (empty($result)) {
-            return null;
-        }
-
-        return $this->hydrateRecord($result);
+        return empty($results) ? [] : $this->hydrateRecords($results);
     }
 
-    private function hydrateRecord(array $result): RecordForConnector
+    /**
+     * @return ConnectorRecord[]
+     */
+    private function hydrateRecords(array $results): array
     {
-        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier(current($results));
         $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
         $indexedAttributes = ($this->findAttributesIndexedByIdentifier)($referenceEntityIdentifier);
 
-        return $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+        $hydratedRecords = [];
+        foreach ($results as $result) {
+            $hydratedRecords[] = $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+        }
+
+        return $hydratedRecords;
     }
 
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
@@ -103,7 +106,7 @@ SQL;
         }
         $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],
-            $this->connection->getDatabasePlatform()
+            $this->sqlConnection->getDatabasePlatform()
         );
 
         return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);

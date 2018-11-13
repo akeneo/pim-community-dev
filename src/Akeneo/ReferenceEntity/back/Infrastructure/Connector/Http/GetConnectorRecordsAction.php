@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
@@ -31,7 +31,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetRecordsForConnectorAction
+class GetConnectorRecordsAction
 {
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
@@ -82,7 +82,7 @@ class GetRecordsForConnectorAction
         }
 
         $records = ($this->searchConnectorRecord)($recordQuery);
-        $records = array_map(function (RecordForConnector $record) {
+        $records = array_map(function (ConnectorRecord $record) {
             return $record->normalize();
         }, $records);
 

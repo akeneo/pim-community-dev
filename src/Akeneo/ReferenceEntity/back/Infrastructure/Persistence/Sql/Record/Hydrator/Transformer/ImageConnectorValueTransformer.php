@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordCollectionValueForConnectorTransformer implements ValueForConnectorTransformerInterface
+class ImageConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof RecordCollectionAttribute;
+        return $attribute instanceof ImageAttribute;
     }
 
     public function transform(array $normalizedValue): array
@@ -32,7 +32,7 @@ class RecordCollectionValueForConnectorTransformer implements ValueForConnectorT
         return [
             'locale'  => $normalizedValue['locale'] ?? null,
             'channel' => $normalizedValue['channel'] ?? null,
-            'data'    => $normalizedValue['data'] ?? [],
+            'data'    => $normalizedValue['data']['filePath'] ?? null,
         ];
     }
 }

@@ -14,16 +14,25 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 
 /**
- * Transform a normalized record value to a normalized record value for connector.
- *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface ValueForConnectorTransformerInterface
+class TextConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
-    public function supports(AbstractAttribute $attribute): bool;
+    public function supports(AbstractAttribute $attribute): bool
+    {
+        return $attribute instanceof TextAttribute;
+    }
 
-    public function transform(array $normalizedValue): array;
+    public function transform(array $normalizedValue): array
+    {
+        return [
+            'locale'  => $normalizedValue['locale'] ?? null,
+            'channel' => $normalizedValue['channel'] ?? null,
+            'data'    => $normalizedValue['data'] ?? null,
+        ];
+    }
 }

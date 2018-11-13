@@ -16,10 +16,10 @@ namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use PhpSpec\ObjectBehavior;
 
-class RecordForConnectorSpec extends ObjectBehavior
+class ConnectorRecordSpec extends ObjectBehavior
 {
      function let()
     {
@@ -60,7 +60,7 @@ class RecordForConnectorSpec extends ObjectBehavior
 
      function it_is_initializable()
     {
-        $this->shouldHaveType(RecordForConnector::class);
+        $this->shouldHaveType(ConnectorRecord::class);
     }
 
      function it_normalizes_itself()

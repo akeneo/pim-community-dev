@@ -19,21 +19,21 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class ValueForConnectorTransformerRegistry
+class ConnectorValueTransformerRegistry
 {
-    /** @var ValueForConnectorTransformerInterface[] */
-    private $valueForConnectorTransformers;
+    /** @var ConnectorValueTransformerInterface[] */
+    private $ConnectorValueTransformers;
 
-    public function __construct(iterable $valueForConnectorTransformers)
+    public function __construct(iterable $ConnectorValueTransformers)
     {
-        $this->valueForConnectorTransformers = $valueForConnectorTransformers;
+        $this->ConnectorValueTransformers = $ConnectorValueTransformers;
     }
 
-    public function getTransformer(AbstractAttribute $attribute): ValueForConnectorTransformerInterface
+    public function getTransformer(AbstractAttribute $attribute): ConnectorValueTransformerInterface
     {
-        foreach ($this->valueForConnectorTransformers as $valueForConnectorTransformer) {
-            if ($valueForConnectorTransformer->supports($attribute)) {
-                return $valueForConnectorTransformer;
+        foreach ($this->ConnectorValueTransformers as $ConnectorValueTransformer) {
+            if ($ConnectorValueTransformer->supports($attribute)) {
+                return $ConnectorValueTransformer;
             }
         }
 

@@ -21,24 +21,24 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordForConnectorHydrator;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordValueForConnectorTransformer;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextValueForConnectorTransformer;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerRegistry;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordConnectorValueTransformer;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextConnectorValueTransformer;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
-class RecordForConnectorHydratorSpec extends ObjectBehavior
+class ConnectorRecordHydratorSpec extends ObjectBehavior
 {
     function let(
         Connection $connection
     ) {
-        $valueTransformerRegistry = new ValueForConnectorTransformerRegistry([
-            new TextValueForConnectorTransformer(),
-            new RecordValueForConnectorTransformer(),
+        $valueTransformerRegistry = new ConnectorValueTransformerRegistry([
+            new TextConnectorValueTransformer(),
+            new RecordConnectorValueTransformer(),
         ]);
 
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
@@ -47,10 +47,10 @@ class RecordForConnectorHydratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RecordForConnectorHydrator::class);
+        $this->shouldHaveType(ConnectorRecordHydrator::class);
     }
 
-    function it_hydrates_a_record_for_connector(
+    function it_hydrates_a_connector_record(
         TextAttribute $nameAttribute,
         RecordAttribute $countryAttribute
     ) {
@@ -105,7 +105,7 @@ class RecordForConnectorHydratorSpec extends ObjectBehavior
         $file->setOriginalFilename('image_1.jpg');
         $image = Image::fromFileInfo($file);
 
-        $expectedRecord = $recordForConnector = new RecordForConnector(
+        $expectedRecord = $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('starck'),
             LabelCollection::fromArray([
                 'en_US' => 'Starck',
@@ -194,7 +194,7 @@ class RecordForConnectorHydratorSpec extends ObjectBehavior
             ])
         ];
 
-        $expectedRecord = $recordForConnector = new RecordForConnector(
+        $expectedRecord = $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('starck'),
             LabelCollection::fromArray([
                 'en_US' => 'Starck',

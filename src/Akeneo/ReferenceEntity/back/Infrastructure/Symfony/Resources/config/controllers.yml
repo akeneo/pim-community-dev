@@ -106,9 +106,9 @@ services:
             - '@oro_security.security_facade'
 
     akeneo_referenceentity.infrastructure.connector.action.record.get:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordForConnectorAction
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorRecordAction
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_images'
 
@@ -119,10 +119,10 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes'
 
     akeneo_referenceentity.infrastructure.connector.action.records.get:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetRecordsForConnectorAction
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorRecordsAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.application.record.search_connector_record'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_images'
-            - '%reference_entity_records_for_connector_limit_per_page%'
+            - '%reference_entity_connector_records_limit_per_page%'

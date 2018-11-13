@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class TextValueForConnectorTransformer implements ValueForConnectorTransformerInterface
+class RecordConnectorValueTransformer implements ConnectorValueTransformerInterface
 {
     public function supports(AbstractAttribute $attribute): bool
     {
-        return $attribute instanceof TextAttribute;
+        return $attribute instanceof RecordAttribute;
     }
 
     public function transform(array $normalizedValue): array
