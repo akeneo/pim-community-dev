@@ -59,6 +59,7 @@ $rules = [
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
+            'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
 
