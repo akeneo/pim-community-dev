@@ -18,6 +18,7 @@ define(
              * {@inheritdoc}
              */
             renderForm: function (route) {
+                FetcherRegistry.getFetcher('locale').clear();
                 if (undefined === route.params.code) {
                     var label = 'pim_enrich.entity.channel.label.create';
 

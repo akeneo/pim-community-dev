@@ -6,9 +6,11 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -135,7 +137,7 @@ class UserController extends Controller
         $data = json_decode($request->getContent(), true);
         // TODO There is a configuration on the Front form to remove this before send
         unset($data['code'], $data['last_login'], $data['login_count'], $data['password']);
-
+        $previousUserName = $data['username'];
         $passwordViolations = $this->validatePassword($user, $data);
         if ($this->isPasswordUpdating($data) && $passwordViolations->count() === 0) {
             $data['password'] = $data['new_password'];
@@ -164,8 +166,21 @@ class UserController extends Controller
         }
 
         $this->saver->save($user);
+        $this->get('session')->remove('dataLocale');
 
-        return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+
+        return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
+    }
+
+    protected function update(UserInterface $user, ?string $previousUsername = null)
+    {
+        $this->get('event_dispatcher')->dispatch(
+            UserEvent::POST_UPDATE,
+            new GenericEvent($user, ['current_user' => $this->getUser(), 'previous_username' => $previousUsername])
+        );
+
+        $this->get('session')->remove('dataLocale');
+        return $user;
     }
 
     /**
