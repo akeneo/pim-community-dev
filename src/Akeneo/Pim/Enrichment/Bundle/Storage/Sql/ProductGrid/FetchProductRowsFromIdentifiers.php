@@ -167,7 +167,7 @@ SQL;
     {
         $result = [];
         foreach ($identifiers as $identifier) {
-            $result[$identifier]['label'] = null;
+            $result[$identifier]['label'] = sprintf('[%s]', $identifier);
         }
 
         $sql = <<<SQL
@@ -197,7 +197,9 @@ SQL;
                 $row['is_localizable'] ? $localeCode : null
             );
 
-            $result[$row['identifier']]['label'] = $label ?? null;
+            if (null !== $label) {
+                $result[$row['identifier']]['label'] = $label->getData();
+            }
         }
 
         return $result;

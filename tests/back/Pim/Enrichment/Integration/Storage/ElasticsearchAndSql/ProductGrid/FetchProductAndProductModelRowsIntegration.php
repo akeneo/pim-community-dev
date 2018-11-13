@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Storage\Sql\ProductGrid;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
@@ -11,8 +12,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\AssertRows;
+use AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid\ProductGridFixturesLoader;
+use PHPUnit\Framework\Assert;
 
-class FetchProductRowsFromIdentifiersIntegration extends TestCase
+class FetchProductAndProductModelRowsIntegration extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -22,7 +26,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         parent::setUp();
     }
 
-    public function test_fetch_products_from_identifiers()
+    public function test_fetch_product_models_from_codes()
     {
         $userId = $this
             ->get('database_connection')
@@ -32,16 +36,23 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
             static::$kernel->getContainer(),
             $this->getFixturePath('akeneo.jpg')
         );
-        [$product1, $product2] = $fixturesLoader->createProductAndProductModels()['products'];
 
-        $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers');
-        $rows = $query(['baz', 'foo'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'en_US', $userId);
+        $fixtures = $fixturesLoader->createProductAndProductModels();
+        [$rootProductModel, $subProductModel] = $fixtures['product_models'];
+        [$product1, $product2] = $fixtures['products'];
 
-        $sku = new Attribute();
-        $sku->setCode('sku');
+        $pqb = $this
+            ->get('akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor')
+            ->create(['limit' => 10]);
+        $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows');
+        $queryParameters = new FetchProductAndProductModelRowsParameters(
+            $pqb,
+            ['sku', 'a_localizable_image', 'a_scopable_image'],
+            'ecommerce', 'en_US',
+            (int) $userId
+        );
 
-        $yesNo = new Attribute();
-        $yesNo->setCode('a_yes_no');
+        $rows = $query($queryParameters);
 
         $anImage = new Attribute();
         $anImage->setCode('an_image');
@@ -54,28 +65,14 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         $aScopableImage->setCode('a_scopable_image');
         $aScopableImage->setScopable(true);
 
+        $sku = new Attribute();
+        $sku->setCode('sku');
+
         $akeneoImage = current($this
             ->get('akeneo_file_storage.repository.file_info')
             ->findAll($this->getFixturePath('akeneo.jpg')));
 
         $expectedRows = [
-            Row::fromProduct(
-                'foo',
-                'A family A',
-                ['[groupB]', '[groupA]'],
-                true,
-                $product1->getCreated(),
-                $product1->getUpdated(),
-                new ScalarValue($sku, null, null, 'foo'),
-                new MediaValue($anImage, null, null, $akeneoImage),
-                31,
-                $product1->getId(),
-                'sub_product_model',
-                new ValueCollection([
-                    new ScalarValue($sku, null, null, 'foo'),
-                    new MediaValue($anImage, null, null, $akeneoImage)
-                ])
-            ),
             Row::fromProduct(
                 'baz',
                 null,
@@ -83,7 +80,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 true,
                 $product2->getCreated(),
                 $product2->getUpdated(),
-                null,
+                '[baz]',
                 null,
                 null,
                 $product2->getId(),
@@ -94,9 +91,24 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                     new MediaValue($aScopableImage, 'ecommerce', null, $akeneoImage),
                 ])
             ),
+            Row::fromProductModel(
+                'root_product_model',
+                'A family A',
+                $rootProductModel->getCreated(),
+                $rootProductModel->getUpdated(),
+                '[root_product_model]',
+                new MediaValue($anImage, null, null, $akeneoImage),
+                $rootProductModel->getId(),
+                ['total' => 1, 'complete' => 0],
+                null,
+                new ValueCollection([
+                    new MediaValue($anImage, null, null, $akeneoImage)
+                ])
+            ),
         ];
 
-        AssertRows::same($expectedRows, $rows);
+        Assert::assertSame(2, $rows->totalCount());
+        AssertRows::same($expectedRows, $rows->rows());
     }
 
     /**

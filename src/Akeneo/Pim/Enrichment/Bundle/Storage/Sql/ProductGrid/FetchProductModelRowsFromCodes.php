@@ -109,7 +109,7 @@ SQL;
     {
         $result = [];
         foreach ($codes as $code) {
-            $result[$code]['label'] = null;
+            $result[$code]['label'] = sprintf('[%s]', $code);
         }
 
         $sql = <<<SQL
@@ -140,7 +140,9 @@ SQL;
                 $row['is_localizable'] ? $localeCode : null
             );
 
-            $result[$row['code']]['label'] = $label ?? null;
+            if (null !== $label) {
+                $result[$row['code']]['label'] = $label->getData();
+            }
         }
 
         return $result;

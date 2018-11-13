@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Storage\Sql\ProductGrid;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use PHPUnit\Framework\Assert;

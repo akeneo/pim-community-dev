@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Storage\Sql\ProductGrid;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
@@ -29,7 +29,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
     {
         $userId = $this
             ->get('database_connection')
-            ->fetchColumn('SELECT id from oro_user where username = "admin"', [], 0);
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
 
         $fixturesLoader = new ProductGridFixturesLoader(
             static::$kernel->getContainer(),
@@ -57,7 +57,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 'A family A',
                 $rootProductModel->getCreated(),
                 $rootProductModel->getUpdated(),
-                null,
+                '[root_product_model]',
                 new MediaValue($anImage, null, null, $akeneoImage),
                 $rootProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
@@ -71,7 +71,7 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 'A family A',
                 $subProductModel->getCreated(),
                 $subProductModel->getUpdated(),
-                null,
+                '[sub_product_model]',
                 new MediaValue($anImage, null, null, $akeneoImage),
                 $subProductModel->getId(),
                 ['total' => 1, 'complete' => 0],

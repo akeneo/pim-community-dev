@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Storage\Sql\ProductGrid;
+namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
 use PHPUnit\Framework\Assert;
 use Psr\Container\ContainerInterface;

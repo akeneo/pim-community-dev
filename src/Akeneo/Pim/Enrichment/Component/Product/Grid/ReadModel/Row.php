@@ -33,7 +33,7 @@ final class Row
     /** @var \DateTimeInterface */
     private $updated;
 
-    /** @var null|string */
+    /** @var string */
     private $label;
 
     /** @var null|MediaValue */
@@ -55,7 +55,7 @@ final class Row
     private $checked;
 
     /** @var array */
-    private $childrenCompleteness; // @todo rename/restructure ?
+    private $childrenCompleteness;
 
     /** @var null|string */
     private $parent;
@@ -124,7 +124,7 @@ final class Row
         ?bool $enabled,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
-        ?string $label,
+        string $label,
         ?MediaValue $image,
         ?int $completeness,
         int $technicalId,
@@ -156,7 +156,7 @@ final class Row
         ?string $family,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
-        ?string $label,
+        string $label,
         ?MediaValue $image,
         int $technicalId,
         array $childrenCompleteness,
