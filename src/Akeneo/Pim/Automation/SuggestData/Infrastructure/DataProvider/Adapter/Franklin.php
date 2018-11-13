@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
@@ -28,28 +29,17 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCo
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\Subscription;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 
 /**
  * Franklin implementation to connect to a data provider.
@@ -64,9 +54,6 @@ class Franklin implements DataProviderInterface
     /** @var SubscriptionApiInterface */
     private $subscriptionApi;
 
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
-
     /** @var IdentifiersMappingApiInterface */
     private $identifiersMappingApi;
 
@@ -79,9 +66,6 @@ class Franklin implements DataProviderInterface
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
-    /** @var FamilyNormalizer */
-    private $familyNormalizer;
-
     /** @var OptionsMappingInterface */
     private $attributeOptionsMappingApi;
 
@@ -91,40 +75,40 @@ class Franklin implements DataProviderInterface
     /** @var Token */
     private $token;
 
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
+
     /**
      * @param AuthenticationApiInterface $authenticationApi
      * @param SubscriptionApiInterface $subscriptionApi
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param IdentifiersMappingApiInterface $identifiersMappingApi
      * @param AttributesMappingApiInterface $attributesMappingApi
      * @param OptionsMappingInterface $attributeOptionsMappingApi
      * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
-     * @param FamilyNormalizer $familyNormalizer
      * @param ConfigurationRepositoryInterface $configurationRepository
+     * @param SubscriptionProviderInterface $subscriptionProvider
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
         OptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer,
-        FamilyNormalizer $familyNormalizer,
-        ConfigurationRepositoryInterface $configurationRepository
+        ConfigurationRepositoryInterface $configurationRepository,
+        SubscriptionProviderInterface $subscriptionProvider
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingApi = $identifiersMappingApi;
         $this->attributesMappingApi = $attributesMappingApi;
         $this->attributeOptionsMappingApi = $attributeOptionsMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
-        $this->familyNormalizer = $familyNormalizer;
         $this->configurationRepository = $configurationRepository;
+        $this->subscriptionProvider = $subscriptionProvider;
     }
 
     /**
@@ -132,51 +116,19 @@ class Franklin implements DataProviderInterface
      */
     public function subscribe(ProductSubscriptionRequest $subscriptionRequest): ProductSubscriptionResponse
     {
-        $this->subscriptionApi->setToken($this->getToken());
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isEmpty()) {
-            throw ProductSubscriptionException::invalidIdentifiersMapping();
-        }
-
-        $clientRequest = new RequestCollection();
-        $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
-        $subscriptions = $this->doSubscribe($clientRequest);
-
-        return $this->buildSubscriptionResponse($subscriptions->getFirst());
+        return $this->subscriptionProvider->subscribe($subscriptionRequest);
     }
 
     /**
-     * @param ProductSubscriptionRequest[] $subscriptionRequests
-     *
-     * @return ProductSubscriptionResponseCollection
+     * {@inheritdoc}
      */
     public function bulkSubscribe(array $subscriptionRequests): ProductSubscriptionResponseCollection
     {
-        $this->subscriptionApi->setToken($this->getToken());
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isEmpty()) {
-            throw ProductSubscriptionException::invalidIdentifiersMapping();
-        }
-
-        $clientRequests = new RequestCollection();
-        foreach ($subscriptionRequests as $subscriptionRequest) {
-            $clientRequests->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
-        }
-
-        $response = $this->doSubscribe($clientRequests);
-
-        $responses = new ProductSubscriptionResponseCollection();
-        foreach ($response->getSubscriptions() as $subscription) {
-            $responses->add($this->buildSubscriptionResponse($subscription));
-        }
-
-        return $responses;
+        return $this->subscriptionProvider->bulkSubscribe($subscriptionRequests);
     }
 
     /**
-     * @param Token $token
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function authenticate(Token $token): bool
     {
@@ -188,14 +140,7 @@ class Franklin implements DataProviderInterface
      */
     public function fetch(): \Iterator
     {
-        $this->subscriptionApi->setToken($this->getToken());
-        try {
-            $subscriptionsPage = $this->subscriptionApi->fetchProducts();
-        } catch (ClientException $e) {
-            throw new ProductSubscriptionException($e->getMessage());
-        }
-
-        return new SubscriptionsCursor($subscriptionsPage);
+        return $this->subscriptionProvider->fetch();
     }
 
     /**
@@ -294,74 +239,6 @@ class Franklin implements DataProviderInterface
             (string) $franklinAttributeId,
             $attributeOptionsMappingNormalize->normalize($attributeOptionsMapping)
         );
-    }
-
-    /**
-     * @param ProductSubscriptionRequest $subscriptionRequest
-     * @param IdentifiersMapping $identifiersMapping
-     *
-     * @return Request
-     */
-    private function buildClientRequest(
-        ProductSubscriptionRequest $subscriptionRequest,
-        IdentifiersMapping $identifiersMapping
-    ): Request {
-        $product = $subscriptionRequest->getProduct();
-        $mapped = $subscriptionRequest->getMappedValues($identifiersMapping);
-        if (empty($mapped)) {
-            throw ProductSubscriptionException::invalidMappedValues();
-        }
-
-        $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
-
-        return new Request($mapped, $product->getId(), $familyInfos);
-    }
-
-    /**
-     * @param Subscription $subscription
-     *
-     * @return ProductSubscriptionResponse
-     */
-    private function buildSubscriptionResponse(Subscription $subscription): ProductSubscriptionResponse
-    {
-        $suggestedValues = array_map(
-            function (array $data) {
-                return [
-                    'pimAttributeCode' => $data['name'],
-                    'value' => $data['value'],
-                ];
-            },
-            $subscription->getAttributes()
-        );
-
-        return new ProductSubscriptionResponse(
-            $subscription->getTrackerId(),
-            $subscription->getSubscriptionId(),
-            $suggestedValues,
-            $subscription->isMappingMissing()
-        );
-    }
-
-    /**
-     * @param RequestCollection $clientRequests
-     *
-     * @throws ProductSubscriptionException
-     *
-     * @return SubscriptionCollection
-     */
-    private function doSubscribe(RequestCollection $clientRequests): SubscriptionCollection
-    {
-        try {
-            $clientResponse = $this->subscriptionApi->subscribe($clientRequests);
-        } catch (InvalidTokenException $e) {
-            throw ProductSubscriptionException::invalidToken();
-        } catch (InsufficientCreditsException $e) {
-            throw ProductSubscriptionException::insufficientCredits();
-        } catch (BadRequestException | FranklinServerException $e) {
-            throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
-        }
-
-        return $clientResponse->content();
     }
 
     /**
