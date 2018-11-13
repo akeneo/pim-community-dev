@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7823: Fix product gap between product grid and sequential edit when selecting `All` option
 - PIM-7783: Fix constraint on attribute name
 - PIM-7767: Remove option values label from attribute versioning
 - PIM-7771: Fix refresh versioning command about duplicate version's rule.

@@ -19,3 +19,10 @@ services:
             - '%pim_enrich.cursor.sequential_edit_cursor.class%'
             - 1000
             - 'pim_catalog_product'
+
+    pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory:
+        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
+            - '@pim_enrich.query.product_and_product_model_search_aggregator'
