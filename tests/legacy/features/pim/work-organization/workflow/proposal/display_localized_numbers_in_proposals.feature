@@ -28,7 +28,7 @@ Feature: Display localized numbers in proposals
 
   Scenario: Successfully display localized attributes of a proposal in the french format
     Given I am logged in as "Julia"
-    And I am on the User profile edit page
+    And I edit the "Julia" user
     And I visit the "Interfaces" tab
     And I fill in the following information:
       | UI locale | French (France) |
