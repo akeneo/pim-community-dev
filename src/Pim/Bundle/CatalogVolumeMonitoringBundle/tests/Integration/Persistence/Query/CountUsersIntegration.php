@@ -33,8 +33,8 @@ class CountUsersIntegration extends QueryTestCase
             $this->createUser([
                 'username'  => 'new_user_' . rand(),
                 'email'     => 'test_' . rand().'@test.fr',
-                'first_name' => rand(),
-                'last_name' => rand(),
+                'first_name' => 'firstname_' . rand(),
+                'last_name' => 'lastname_' . rand(),
                 'password' => rand(),
                 'catalog_default_locale' => 'en_US',
                 'user_default_locale' => 'en_US'
