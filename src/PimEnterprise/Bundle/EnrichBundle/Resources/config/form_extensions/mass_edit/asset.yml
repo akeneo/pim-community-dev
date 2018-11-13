@@ -35,6 +35,7 @@ extensions:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-asset-edit
         position: 120
+        aclResourceId: pimee_product_asset_category_list
         config:
             title: pimee_enrich.mass_edit.asset.title
             label: pimee_enrich.mass_edit.asset.operation.add_to_category.label
