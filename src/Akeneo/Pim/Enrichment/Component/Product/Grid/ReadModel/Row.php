@@ -19,10 +19,10 @@ final class Row
     private $identifier;
 
     /** @var string */
-    private $family;
+    private $familyCode;
 
     /** @var string[] */
-    private $groups;
+    private $groupCodes;
 
     /** @var boolean */
     private $enabled;
@@ -33,7 +33,7 @@ final class Row
     /** @var \DateTimeInterface */
     private $updated;
 
-    /** @var null|ScalarValue */
+    /** @var null|string */
     private $label;
 
     /** @var null|MediaValue */
@@ -88,7 +88,7 @@ final class Row
         ?bool $enabled,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
-        ?ScalarValue $label,
+        ?string $label,
         ?MediaValue $image,
         ?int $completeness,
         string $documentType,
@@ -100,8 +100,8 @@ final class Row
         ValueCollection $values
     ) {
         $this->identifier = $identifier;
-        $this->family = $family;
-        $this->groups = $groups;
+        $this->familyCode = $family;
+        $this->groupCodes = $groups;
         $this->enabled = $enabled;
         $this->created = $created;
         $this->updated = $updated;
@@ -124,7 +124,7 @@ final class Row
         ?bool $enabled,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
-        ?ScalarValue $label,
+        ?string $label,
         ?MediaValue $image,
         ?int $completeness,
         int $technicalId,
@@ -156,7 +156,7 @@ final class Row
         ?string $family,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
-        ?ScalarValue $label,
+        ?string $label,
         ?MediaValue $image,
         int $technicalId,
         array $childrenCompleteness,
@@ -196,7 +196,7 @@ final class Row
      */
     public function family(): ?string
     {
-        return $this->family;
+        return $this->familyCode;
     }
 
     /**
@@ -204,7 +204,7 @@ final class Row
      */
     public function groups(): array
     {
-        return $this->groups;
+        return $this->groupCodes;
     }
 
     /**
@@ -234,10 +234,9 @@ final class Row
     /**
      * @return string
      */
-    public function label(): String
+    public function label(): string
     {
-        return null === $this->label || empty($this->label->getData()) ?
-            $this->identifier : $this->label->getData();
+        return $this->label;
     }
 
     /**

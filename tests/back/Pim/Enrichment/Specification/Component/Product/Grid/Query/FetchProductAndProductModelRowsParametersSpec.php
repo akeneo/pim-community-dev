@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;

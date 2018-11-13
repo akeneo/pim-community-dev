@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
@@ -30,7 +30,7 @@ class RowSpec extends ObjectBehavior
                 true,
                 new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
                 new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-                new ScalarValue($scalarAttribute, null, null, 'data'),
+                'data',
                 new MediaValue($mediaAttribute, null, null, new FileInfo()),
                 90,
                 1,
@@ -72,7 +72,7 @@ class RowSpec extends ObjectBehavior
                 'family label',
                 new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
                 new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-                new ScalarValue($scalarAttribute, null, null, 'data'),
+                'data',
                 new MediaValue($mediaAttribute, null, null, new FileInfo()),
                 1,
                 [],
@@ -97,34 +97,5 @@ class RowSpec extends ObjectBehavior
         $this->childrenCompleteness()->shouldReturn([]);
         $this->parent()->shouldReturn('parent_code');
         $this->values()->shouldBeLike(new ValueCollection([new ScalarValue($scalarAttribute, null, null, 'data')]));
-    }
-
-    function it_has_identifier_as_label_if_there_is_no_label_value()
-    {
-        $scalarAttribute = new Attribute();
-        $scalarAttribute->setCode('scalar_attribute');
-
-        $mediaAttribute = new Attribute();
-        $mediaAttribute->setCode('media_attribute');
-
-        $this->beConstructedThrough(
-            'fromProduct',
-            [
-                'identifier',
-                'family label',
-                [],
-                true,
-                new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-                new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-                null,
-                null,
-                90,
-                1,
-                'parent_code',
-                new ValueCollection([])
-            ]
-        );
-
-        $this->label()->shouldReturn('identifier');
     }
 }

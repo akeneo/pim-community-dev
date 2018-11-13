@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
+namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
@@ -29,7 +29,7 @@ class RowsSpec extends ObjectBehavior
             true,
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-            new ScalarValue($scalarAttribute, null, null, 'data'),
+            'data',
             new MediaValue($mediaAttribute, null, null, new FileInfo()),
             90,
             1,
@@ -60,7 +60,7 @@ class RowsSpec extends ObjectBehavior
             true,
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-            new ScalarValue($scalarAttribute, null, null, 'data'),
+            'data',
             new MediaValue($mediaAttribute, null, null, new FileInfo()),
             90,
             1,
