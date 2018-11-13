@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7830: Fix server-side validation for Product Asset creation
+
 # 2.3.16 (2018-11-13)
 
 ## Bug fixes
