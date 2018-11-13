@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\WarningCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use PhpSpec\ObjectBehavior;
 
 /**

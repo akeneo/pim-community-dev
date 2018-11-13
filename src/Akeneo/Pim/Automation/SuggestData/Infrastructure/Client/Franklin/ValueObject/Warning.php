@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject;
 
 /**
+ * Represents a warning issued by Franklin when trying to subscribe a product.
+ *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class Warning
@@ -43,7 +45,7 @@ final class Warning
      */
     public function trackerId(): int
     {
-        return (int) $this->rawWarning['entry']['extra']['tracker_id'];
+        return (int) $this->rawWarning['entry']['tracker_id'];
     }
 
     /**
@@ -62,7 +64,7 @@ final class Warning
             }
         }
 
-        if (!isset($rawWarning['entry']['extra']['tracker_id'])) {
+        if (!isset($rawWarning['entry']['tracker_id'])) {
             throw new \InvalidArgumentException('Missing "tracker_id" in raw warning data');
         }
     }

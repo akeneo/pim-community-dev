@@ -224,6 +224,18 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
+     * @Then a Franklin subscription error message should be sent
+     */
+    public function aFranklinSubscriptionErrorMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::dataProviderError()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
      * @Then an invalid subscription message should be sent
      */
     public function anInvalidSubscriptionMessageShouldBeSent(): void

@@ -60,4 +60,12 @@ final class ProductSubscriptionException extends \Exception
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_mapped_values'));
     }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function dataProviderError(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'data_provider_error'));
+    }
 }

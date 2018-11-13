@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
@@ -30,7 +31,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\F
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\Subscription;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 
@@ -84,9 +84,13 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         $clientRequest = new RequestCollection();
         $clientRequest->add($this->buildClientRequest($subscriptionRequest, $identifiersMapping));
-        $subscriptions = $this->doSubscribe($clientRequest);
+        $subscriptions = $this->doSubscribe($clientRequest)->subscriptions();
 
-        return $this->buildSubscriptionResponse($subscriptions->getFirst());
+        if (null === $subscriptions->first()) {
+            throw ProductSubscriptionException::dataProviderError();
+        }
+
+        return $this->buildSubscriptionResponse($subscriptions->first());
     }
 
     /**
@@ -111,8 +115,8 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
 
         $response = $this->doSubscribe($clientRequests);
 
-        $responses = new ProductSubscriptionResponseCollection();
-        foreach ($response->getSubscriptions() as $subscription) {
+        $responses = new ProductSubscriptionResponseCollection($response->warnings()->toArray());
+        foreach ($response->subscriptions() as $subscription) {
             $responses->add($this->buildSubscriptionResponse($subscription));
         }
 
@@ -204,12 +208,12 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
      *
      * @throws ProductSubscriptionException
      *
-     * @return SubscriptionCollection
+     * @return ApiResponse
      */
-    private function doSubscribe(RequestCollection $clientRequests): SubscriptionCollection
+    private function doSubscribe(RequestCollection $clientRequests): ApiResponse
     {
         try {
-            $clientResponse = $this->api->subscribe($clientRequests);
+            return $this->api->subscribe($clientRequests);
         } catch (InvalidTokenException $e) {
             throw ProductSubscriptionException::invalidToken();
         } catch (InsufficientCreditsException $e) {
@@ -217,7 +221,5 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         } catch (BadRequestException | FranklinServerException $e) {
             throw new ProductSubscriptionException($e->getMessage(), $e->getCode());
         }
-
-        return $clientResponse->content();
     }
 }

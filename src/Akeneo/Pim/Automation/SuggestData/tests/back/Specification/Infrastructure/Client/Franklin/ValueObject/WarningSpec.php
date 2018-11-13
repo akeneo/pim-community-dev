@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Warning;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\Warning;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -26,9 +26,7 @@ class WarningSpec extends ObjectBehavior
         $rawWarning = [
             'message' => 'Lorem ipsum',
             'entry' => [
-                'extra' => [
-                    'tracker_id' => '42',
-                ],
+                'tracker_id' => '42',
             ],
         ];
         $this->beConstructedWith($rawWarning);
@@ -49,7 +47,6 @@ class WarningSpec extends ObjectBehavior
             [
                 'message' => 'Lorem ipsum',
                 'entry' => [
-                    'extra' => [],
                 ],
             ]
         );
@@ -65,9 +62,7 @@ class WarningSpec extends ObjectBehavior
             [
                 'message' => $message,
                 'entry' => [
-                    'extra' => [
-                        'tracker_id' => '42',
-                    ],
+                    'tracker_id' => '42',
                 ],
             ]
         );
@@ -80,9 +75,7 @@ class WarningSpec extends ObjectBehavior
             [
                 'message' => 'Warning message',
                 'entry' => [
-                    'extra' => [
-                        'tracker_id' => '42',
-                    ],
+                    'tracker_id' => '42',
                 ],
             ]
         );
