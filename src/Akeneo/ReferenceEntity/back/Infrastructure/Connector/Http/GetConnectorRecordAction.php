@@ -15,7 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordForConnectorByReferenceEntityAndCodeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,10 +26,10 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  * @author Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetRecordForConnectorAction
+class GetConnectorRecordAction
 {
-    /** @var FindRecordForConnectorByReferenceEntityAndCodeInterface */
-    private $findRecordForConnectorQuery;
+    /** @var FindConnectorRecordByReferenceEntityAndCodeInterface */
+    private $findConnectorRecord;
 
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
@@ -38,12 +38,12 @@ class GetRecordForConnectorAction
     private $addHalLinksToImageValues;
 
     public function __construct(
-        FindRecordForConnectorByReferenceEntityAndCodeInterface $findRecordForConnectorQuery,
+        FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord,
         ReferenceEntityExistsInterface $referenceEntityExists,
         AddHalDownloadLinkToImages $addHalLinksToImageValues
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
-        $this->findRecordForConnectorQuery = $findRecordForConnectorQuery;
+        $this->findConnectorRecord = $findConnectorRecord;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
     }
 
@@ -64,7 +64,7 @@ class GetRecordForConnectorAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $record = ($this->findRecordForConnectorQuery)($referenceEntityIdentifier, $recordCode);
+        $record = ($this->findConnectorRecord)($referenceEntityIdentifier, $recordCode);
 
         if (null === $record) {
             throw new NotFoundHttpException(sprintf('Record "%s" does not exist for the reference entity "%s".', $recordCode, $referenceEntityIdentifier));

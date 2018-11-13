@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindRecordsForConnectorByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
@@ -25,7 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -36,7 +36,7 @@ use Webmozart\Assert\Assert;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class GetRecordsForConnectorContext implements Context
+class GetConnectorRecordsContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
 
@@ -46,8 +46,8 @@ class GetRecordsForConnectorContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindRecordsForConnectorByIdentifiers */
-    private $findRecordsForConnector;
+    /** @var InMemoryFindConnectorRecordsByIdentifiers */
+    private $findConnectorRecords;
 
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
@@ -65,13 +65,13 @@ class GetRecordsForConnectorContext implements Context
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
-        InMemoryFindRecordsForConnectorByIdentifiers $findRecordsForConnector,
+        InMemoryFindConnectorRecordsByIdentifiers $findConnectorRecords,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findRecordsForConnector = $findRecordsForConnector;
+        $this->findConnectorRecords = $findConnectorRecords;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
         $this->recordPages = [];
@@ -109,7 +109,7 @@ class GetRecordsForConnectorContext implements Context
 
             $this->findRecordIdentifiersForQuery->add($record);
 
-            $recordForConnector = new RecordForConnector(
+            $connectorRecord = new ConnectorRecord(
                 $recordCode,
                 LabelCollection::fromArray($labelCollection),
                 $mainImage,
@@ -131,7 +131,7 @@ class GetRecordsForConnectorContext implements Context
                 ]
             );
 
-            $this->findRecordsForConnector->save($recordIdentifier, $recordForConnector);
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
         }
 
         $referenceEntity = ReferenceEntity::create(

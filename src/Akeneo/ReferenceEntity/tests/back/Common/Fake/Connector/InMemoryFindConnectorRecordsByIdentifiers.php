@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordsForConnectorByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordsForConnectorByIdentifiers implements FindRecordsForConnectorByIdentifiersInterface
+class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
 {
-    /** @var RecordForConnector[] */
+    /** @var ConnectorRecord[] */
     private $recordsByIdentifier;
 
     public function __construct()
@@ -31,9 +31,9 @@ class InMemoryFindRecordsForConnectorByIdentifiers implements FindRecordsForConn
         $this->recordsByIdentifier = [];
     }
 
-    public function save(RecordIdentifier $recordIdentifier, RecordForConnector $recordForConnector): void
+    public function save(RecordIdentifier $recordIdentifier, ConnectorRecord $connectorRecord): void
     {
-        $this->recordsByIdentifier[(string) $recordIdentifier] = $recordForConnector;
+        $this->recordsByIdentifier[(string) $recordIdentifier] = $connectorRecord;
     }
 
     /**

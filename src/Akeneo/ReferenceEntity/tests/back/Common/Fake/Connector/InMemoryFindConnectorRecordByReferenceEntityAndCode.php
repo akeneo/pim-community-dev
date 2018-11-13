@@ -15,16 +15,16 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordForConnectorByReferenceEntityAndCodeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordForConnectorByReferenceEntityAndCode implements FindRecordForConnectorByReferenceEntityAndCodeInterface
+class InMemoryFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRecordByReferenceEntityAndCodeInterface
 {
-    /** @var RecordForConnector[] */
+    /** @var ConnectorRecord[] */
     private $results;
 
     public function __construct()
@@ -35,9 +35,9 @@ class InMemoryFindRecordForConnectorByReferenceEntityAndCode implements FindReco
     public function save(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode,
-        RecordForConnector $recordForConnector
+        ConnectorRecord $connectorRecord
     ): void {
-        $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] = $recordForConnector;
+        $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] = $connectorRecord;
     }
 
     /**
@@ -46,7 +46,7 @@ class InMemoryFindRecordForConnectorByReferenceEntityAndCode implements FindReco
     public function __invoke(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode
-    ): ?RecordForConnector {
+    ): ?ConnectorRecord {
         return $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] ?? null;
     }
 }

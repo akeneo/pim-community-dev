@@ -40,20 +40,20 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordsForConnectorByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
-class SqlFindRecordsForConnectorByIdentifiersTest extends SqlIntegrationTestCase
+class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 {
     /** @var RecordRepositoryInterface */
     private $repository;
 
-    /** @var FindRecordsForConnectorByIdentifiersInterface */
-    private $findRecordsForConnectorQuery;
+    /** @var FindConnectorRecordsByIdentifiersInterface */
+    private $findConnectorRecordsQuery;
 
     /** @var SaverInterface */
     private $fileInfoSaver;
@@ -63,7 +63,7 @@ class SqlFindRecordsForConnectorByIdentifiersTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->findRecordsForConnectorQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_identifiers');
+        $this->findConnectorRecordsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers');
         $this->fileInfoSaver = $this->get('akeneo_file_storage.saver.file');
 
         $this->resetDB();
@@ -78,12 +78,12 @@ class SqlFindRecordsForConnectorByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['starck', 'dyson', 'newson']);
         $this->loadRecords(['unexpected_record']);
 
-        $expectedRecordsForConnector = $this->createRecordsForConnector(['dyson', 'newson', 'starck']);
+        $expectedConnectorRecords = $this->createConnectorRecords(['dyson', 'newson', 'starck']);
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
-        $recordsForConnectorFound = ($this->findRecordsForConnectorQuery)($identifiers);
+        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers);
 
-        $this->assertSameRecordsForConnector($expectedRecordsForConnector, $recordsForConnectorFound);
+        $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
     }
 
     /**
@@ -93,24 +93,24 @@ class SqlFindRecordsForConnectorByIdentifiersTest extends SqlIntegrationTestCase
     {
         $this->loadRecords(['starck', 'dyson']);
 
-        $recordsFound = ($this->findRecordsForConnectorQuery)(['foo', 'bar']);
+        $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar']);
         $this->assertSame([], $recordsFound);
     }
 
     /**
-     * @param RecordForConnector[] $expectedRecordsForConnector
-     * @param RecordForConnector[] $recordsForConnectorFound
+     * @param ConnectorRecord[] $expectedConnectorRecords
+     * @param ConnectorRecord[] $connectorRecordsFound
      */
-    private function assertSameRecordsForConnector(array $expectedRecordsForConnector, array $recordsForConnectorFound): void
+    private function assertSameConnectorRecords(array $expectedConnectorRecords, array $connectorRecordsFound): void
     {
-        $this->assertCount(count($expectedRecordsForConnector), $recordsForConnectorFound);
+        $this->assertCount(count($expectedConnectorRecords), $connectorRecordsFound);
 
-        foreach ($expectedRecordsForConnector as $index => $recordForConnector) {
-            $this->assertSameRecordForConnector($recordForConnector, $recordsForConnectorFound[$index]);
+        foreach ($expectedConnectorRecords as $index => $connectorRecord) {
+            $this->assertSameConnectorRecord($connectorRecord, $connectorRecordsFound[$index]);
         }
     }
 
-    private function assertSameRecordForConnector(RecordForConnector $expectedRecord, RecordForConnector $currentRecord): void
+    private function assertSameConnectorRecord(ConnectorRecord $expectedRecord, ConnectorRecord $currentRecord): void
     {
         $expectedRecord = $expectedRecord->normalize();
         $expectedRecord['values'] = $this->sortRecordValues($expectedRecord['values']);
@@ -194,17 +194,17 @@ class SqlFindRecordsForConnectorByIdentifiersTest extends SqlIntegrationTestCase
     /**
      * @param string[] $codes
      *
-     * @return RecordForConnector[]
+     * @return ConnectorRecord[]
      */
-    private function createRecordsForConnector(array $codes): array
+    private function createConnectorRecords(array $codes): array
     {
-        $recordsForConnector = [];
+        $connectorRecords = [];
         foreach ($codes as $code) {
             $imageInfo = (new FileInfo())
                 ->setOriginalFilename(sprintf('image_%s.jpg', $code))
                 ->setKey(sprintf('test/image_%s.jpg', $code));
 
-            $recordsForConnector[] = new RecordForConnector(
+            $connectorRecords[] = new ConnectorRecord(
                 RecordCode::fromString($code),
                 LabelCollection::fromArray(['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)]),
                 Image::fromFileInfo($imageInfo),
@@ -225,7 +225,7 @@ class SqlFindRecordsForConnectorByIdentifiersTest extends SqlIntegrationTestCase
             );
         }
 
-        return $recordsForConnector;
+        return $connectorRecords;
     }
 
     private function loadReferenceEntityWithAttributes(): void

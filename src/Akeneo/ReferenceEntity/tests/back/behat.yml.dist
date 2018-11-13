@@ -24,8 +24,8 @@ default:
             paths:
                 - '%paths.base%/../features'
             contexts_services:
-                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_record_for_connector_context
-                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_records_for_connector_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_record_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_records_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.not_found_reference_entity_context
             filters:
                 tags: '@integration-back'

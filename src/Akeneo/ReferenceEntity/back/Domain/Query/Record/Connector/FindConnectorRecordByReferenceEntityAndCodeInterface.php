@@ -17,12 +17,12 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find a record given a reference entity identifier and a record code
+ * Find a connector record given a reference entity identifier and a record code
  *
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindRecordForConnectorByReferenceEntityAndCodeInterface
+interface FindConnectorRecordByReferenceEntityAndCodeInterface
 {
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordForConnector;
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?ConnectorRecord;
 }

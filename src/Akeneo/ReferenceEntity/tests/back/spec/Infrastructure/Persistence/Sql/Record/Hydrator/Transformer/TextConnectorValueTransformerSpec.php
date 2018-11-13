@@ -15,14 +15,14 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydr
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
 
-class TextValueForConnectorTransformerSpec extends ObjectBehavior
+class TextConnectorValueTransformerSpec extends ObjectBehavior
 {
-    function it_is_a_value_for_connector_transformer()
+    function it_is_a_connector_value_transformer()
     {
-        $this->shouldImplement(ValueForConnectorTransformerInterface::class);
+        $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
     function it_only_supports_a_value_of_a_text_attribute(TextAttribute $textAttribute, ImageAttribute $imageAttribute)
@@ -31,7 +31,7 @@ class TextValueForConnectorTransformerSpec extends ObjectBehavior
         $this->supports($imageAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_value_for_connector()
+    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_connector_value()
     {
         $this->transform([
             'data'      => 'Starck',
@@ -45,7 +45,7 @@ class TextValueForConnectorTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_value_for_connector()
+    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_connector_value()
     {
         $this->transform([
             'attribute' => 'name_designer_fingerprint'

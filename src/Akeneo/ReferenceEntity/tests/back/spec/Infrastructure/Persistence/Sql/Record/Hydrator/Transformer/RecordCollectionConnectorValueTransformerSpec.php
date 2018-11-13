@@ -15,14 +15,14 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydr
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
 use PhpSpec\ObjectBehavior;
 
-class RecordCollectionValueForConnectorTransformerSpec extends ObjectBehavior
+class RecordCollectionConnectorValueTransformerSpec extends ObjectBehavior
 {
-    function it_is_a_value_for_connector_transformer()
+    function it_is_a_connector_value_transformer()
     {
-        $this->shouldImplement(ValueForConnectorTransformerInterface::class);
+        $this->shouldImplement(ConnectorValueTransformerInterface::class);
     }
 
     function it_only_supports_a_value_of_an_record_attribute(
@@ -33,7 +33,7 @@ class RecordCollectionValueForConnectorTransformerSpec extends ObjectBehavior
         $this->supports($textAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_value_for_connector()
+    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_connector_value()
     {
         $this->transform([
             'data'      => ['kartell', 'lexon', 'cogip'],
@@ -47,7 +47,7 @@ class RecordCollectionValueForConnectorTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_value_for_connector()
+    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_connector_value()
     {
         $this->transform([
             'attribute' => 'brands_designer_fingerprint',

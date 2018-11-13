@@ -21,7 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordForConnector
+class ConnectorRecord
 {
     /** @var RecordCode */
     private $code;

@@ -44,26 +44,26 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindRecordForConnectorByReferenceEntityAndCodeInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\RecordForConnector;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
-class SqlFindRecordForConnectorByReferenceEntityAndCodeTest extends SqlIntegrationTestCase
+class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationTestCase
 {
     /** @var RecordRepositoryInterface */
     private $repository;
 
-    /** @var FindRecordForConnectorByReferenceEntityAndCodeInterface*/
-    private $findRecordForConnectorQuery;
+    /** @var FindConnectorRecordByReferenceEntityAndCodeInterface*/
+    private $findConnectorRecordQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
-        $this->findRecordForConnectorQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code');
+        $this->findConnectorRecordQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code');
         $this->resetDB();
         $this->createReferenceEntityWithAttributes();
     }
@@ -71,11 +71,11 @@ class SqlFindRecordForConnectorByReferenceEntityAndCodeTest extends SqlIntegrati
     /**
      * @test
      */
-    public function it_finds_a_record_for_connector()
+    public function it_finds_a_connector_record()
     {
         $record = $this->createStarckRecord();
 
-        $expectedRecord = new RecordForConnector(
+        $expectedRecord = new ConnectorRecord(
             $record->getCode(),
             LabelCollection::fromArray(['en_US' => 'Starck', 'fr_FR' => 'Starck']),
             $record->getImage(),
@@ -116,7 +116,7 @@ class SqlFindRecordForConnectorByReferenceEntityAndCodeTest extends SqlIntegrati
             ]
         );
 
-        $recordFound = ($this->findRecordForConnectorQuery)(ReferenceEntityIdentifier::fromString('designer'), $record->getCode());
+        $recordFound = ($this->findConnectorRecordQuery)(ReferenceEntityIdentifier::fromString('designer'), $record->getCode());
 
         $this->assertSameRecords($expectedRecord, $recordFound);
     }
@@ -129,7 +129,7 @@ class SqlFindRecordForConnectorByReferenceEntityAndCodeTest extends SqlIntegrati
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('Foo');
 
-        $recordFound = ($this->findRecordForConnectorQuery)($referenceEntityIdentifier, $recordCode);
+        $recordFound = ($this->findConnectorRecordQuery)($referenceEntityIdentifier, $recordCode);
 
         $this->assertNull($recordFound);
     }
@@ -270,7 +270,7 @@ class SqlFindRecordForConnectorByReferenceEntityAndCodeTest extends SqlIntegrati
         $attributesRepository->create($brands);
     }
 
-    private function assertSameRecords(RecordForConnector $expectedRecord, RecordForConnector $currentRecord): void
+    private function assertSameRecords(ConnectorRecord $expectedRecord, ConnectorRecord $currentRecord): void
     {
         $expectedRecord = $expectedRecord->normalize();
         $expectedRecord['values'] = $this->sortRecordValues($expectedRecord['values']);

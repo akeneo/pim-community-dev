@@ -15,22 +15,22 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydr
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerRegistry;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry;
 use PhpSpec\ObjectBehavior;
 
-class ValueForConnectorTransformerRegistrySpec extends ObjectBehavior
+class ConnectorValueTransformerRegistrySpec extends ObjectBehavior
 {
     function let(
-        ValueForConnectorTransformerInterface $textTransformer,
-        ValueForConnectorTransformerInterface $imageTransformer
+        ConnectorValueTransformerInterface $textTransformer,
+        ConnectorValueTransformerInterface $imageTransformer
     ) {
         $this->beConstructedWith([$textTransformer, $imageTransformer]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ValueForConnectorTransformerRegistry::class);
+        $this->shouldHaveType(ConnectorValueTransformerRegistry::class);
     }
 
     function it_returns_the_transformer_that_supports_the_given_type(
