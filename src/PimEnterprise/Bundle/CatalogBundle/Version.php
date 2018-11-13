@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '2.3.15';
+    const VERSION = '2.3.16';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Lychee';

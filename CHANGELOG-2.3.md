@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.16 (2018-11-13)
+
 ## Bug fixes
 
 - PIM-7812: Fix command that generate missing asset variation files
