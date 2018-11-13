@@ -17,6 +17,10 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Webmozart\Assert\Assert;
 
 /**
+ * Collection of options stored in a record value, for "option collection" attributes.
+ *
+ * @see \Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */

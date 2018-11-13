@@ -23,6 +23,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 
 /**
+ * Record updater responsible for updating values of "record collection" on a record.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
