@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterDataProviderPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -45,13 +43,5 @@ class AkeneoSuggestDataBundle extends Bundle
                 false
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerCommands(Application $application): void
-    {
-        $application->add(new FetchProductsCommand());
     }
 }
