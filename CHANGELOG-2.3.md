@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7838: Fix ACL on Mass edit for Asset category classify action
+
 # 2.3.16 (2018-11-13)
 
 ## Bug fixes
