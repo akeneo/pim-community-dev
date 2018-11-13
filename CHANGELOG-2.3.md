@@ -12,6 +12,7 @@
 - PIM-7853: Fix unwanted automatic reload of the user page even if there were errors on the form
 - PIM-7841: Allow users to set regional locales for UI (en_NZ, pt_PT and pt_BR)
 - PIM-7791: Suppress warning on attribute option in case of case sensitive codes
+- PIM-7831: Blacklist some characters in user form inputs in order to prevent from malicious injection
 
 # 2.3.16 (2018-11-13)
 
