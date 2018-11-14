@@ -25,7 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class NotFoundReferenceEntityContext implements Context
 {
-    private const REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
+    private const RECORD_REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
+    private const REFERENCE_ENTITY_REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -51,7 +52,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsARecordForANonExistentReferenceEntity(): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_a_record.json";
+        $this->notFoundReferenceEntityRequestContract = self::RECORD_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_a_record.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
@@ -69,7 +70,7 @@ class NotFoundReferenceEntityContext implements Context
     public function theConnectorRequestsAllTheRecordsForANonExistentReferenceEntity(): void
     {
         $client = $this->clientFactory->logIn('julia');
-        $this->notFoundReferenceEntityRequestContract = self::REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_the_list_of_records.json";
+        $this->notFoundReferenceEntityRequestContract = self::RECORD_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_the_list_of_records.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 
@@ -78,6 +79,8 @@ class NotFoundReferenceEntityContext implements Context
      */
     public function theConnectorRequestsANonExistentReferenceEntity(): void
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::REFERENCE_ENTITY_REQUEST_CONTRACT_DIR. "not_found_reference_entity.json";
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 }
