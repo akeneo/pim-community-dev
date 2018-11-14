@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
@@ -30,15 +30,12 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCo
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -51,20 +48,17 @@ class Franklin implements DataProviderInterface
     /** @var AuthenticationProviderInterface */
     private $authenticationProvider;
 
+    /** @var AttributesMappingProviderInterface */
+    private $attributesMappingProvider;
+
     /** @var SubscriptionApiInterface */
     private $subscriptionApi;
 
     /** @var IdentifiersMappingApiInterface */
     private $identifiersMappingApi;
 
-    /** @var AttributesMappingApiInterface */
-    private $attributesMappingApi;
-
     /** @var IdentifiersMappingNormalizer */
     private $identifiersMappingNormalizer;
-
-    /** @var AttributesMappingNormalizer */
-    private $attributesMappingNormalizer;
 
     /** @var OptionsMappingInterface */
     private $attributeOptionsMappingApi;
@@ -82,33 +76,30 @@ class Franklin implements DataProviderInterface
      * @param AuthenticationProviderInterface $authenticationProvider
      * @param SubscriptionApiInterface $subscriptionApi
      * @param IdentifiersMappingApiInterface $identifiersMappingApi
-     * @param AttributesMappingApiInterface $attributesMappingApi
      * @param OptionsMappingInterface $attributeOptionsMappingApi
      * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
-     * @param AttributesMappingNormalizer $attributesMappingNormalizer
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param SubscriptionProviderInterface $subscriptionProvider
+     * @param AttributesMappingProviderInterface $attributesMappingProvider
      */
     public function __construct(
         AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingApiInterface $identifiersMappingApi,
-        AttributesMappingApiInterface $attributesMappingApi,
         OptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         ConfigurationRepositoryInterface $configurationRepository,
-        SubscriptionProviderInterface $subscriptionProvider
+        SubscriptionProviderInterface $subscriptionProvider,
+        AttributesMappingProviderInterface $attributesMappingProvider
     ) {
         $this->authenticationProvider = $authenticationProvider;
         $this->subscriptionApi = $subscriptionApi;
         $this->identifiersMappingApi = $identifiersMappingApi;
-        $this->attributesMappingApi = $attributesMappingApi;
         $this->attributeOptionsMappingApi = $attributeOptionsMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
-        $this->attributesMappingNormalizer = $attributesMappingNormalizer;
         $this->configurationRepository = $configurationRepository;
         $this->subscriptionProvider = $subscriptionProvider;
+        $this->attributesMappingProvider = $attributesMappingProvider;
     }
 
     /**
@@ -172,23 +163,7 @@ class Franklin implements DataProviderInterface
      */
     public function getAttributesMapping(string $familyCode): AttributesMappingResponse
     {
-        $this->attributesMappingApi->setToken($this->getToken());
-        $apiResponse = $this->attributesMappingApi->fetchByFamily($familyCode);
-
-        $attributesMapping = new AttributesMappingResponse();
-        foreach ($apiResponse as $attribute) {
-            $attribute = new DomainAttributeMapping(
-                $attribute->getTargetAttributeCode(),
-                $attribute->getTargetAttributeLabel(),
-                $attribute->getTargetAttributeType(),
-                $attribute->getPimAttributeCode(),
-                $this->mapAttributeMappingStatus($attribute->getStatus()),
-                $attribute->getSummary()
-            );
-            $attributesMapping->addAttribute($attribute);
-        }
-
-        return $attributesMapping;
+        return $this->attributesMappingProvider->getAttributesMapping($familyCode);
     }
 
     /**
@@ -196,10 +171,7 @@ class Franklin implements DataProviderInterface
      */
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
     {
-        $this->attributesMappingApi->setToken($this->getToken());
-        $mapping = $this->attributesMappingNormalizer->normalize($attributesMapping);
-
-        $this->attributesMappingApi->update($familyCode, $mapping);
+        $this->attributesMappingProvider->updateAttributesMapping($familyCode, $attributesMapping);
     }
 
     /**
@@ -239,26 +211,6 @@ class Franklin implements DataProviderInterface
             (string) $franklinAttributeId,
             $attributeOptionsMappingNormalize->normalize($attributeOptionsMapping)
         );
-    }
-
-    /**
-     * @param string $status
-     *
-     * @return int
-     */
-    private function mapAttributeMappingStatus(string $status): int
-    {
-        $mapping = [
-            AttributeMapping::STATUS_PENDING => DomainAttributeMapping::ATTRIBUTE_PENDING,
-            AttributeMapping::STATUS_INACTIVE => DomainAttributeMapping::ATTRIBUTE_UNMAPPED,
-            AttributeMapping::STATUS_ACTIVE => DomainAttributeMapping::ATTRIBUTE_MAPPED,
-        ];
-
-        if (!array_key_exists($status, $mapping)) {
-            throw new \InvalidArgumentException(sprintf('Unknown mapping attribute status "%s"', $status));
-        }
-
-        return $mapping[$status];
     }
 
     /**

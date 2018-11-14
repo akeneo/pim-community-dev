@@ -13,27 +13,26 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -47,12 +46,11 @@ class FranklinSpec extends ObjectBehavior
         AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingApiInterface $identifiersMappingApi,
-        AttributesMappingApiInterface $attributesMappingApi,
         OptionsMappingInterface $attributeOptionsMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
-        AttributesMappingNormalizer $attributesMappingNormalizer,
         ConfigurationRepositoryInterface $configurationRepository,
-        SubscriptionProviderInterface $productSubscription
+        SubscriptionProviderInterface $productSubscription,
+        AttributesMappingProviderInterface $attributesMappingProvider
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
@@ -61,12 +59,11 @@ class FranklinSpec extends ObjectBehavior
             $authenticationProvider,
             $subscriptionApi,
             $identifiersMappingApi,
-            $attributesMappingApi,
             $attributeOptionsMappingApi,
             $identifiersMappingNormalizer,
-            $attributesMappingNormalizer,
             $configurationRepository,
-            $productSubscription
+            $productSubscription,
+            $attributesMappingProvider
         );
     }
 
@@ -113,47 +110,19 @@ class FranklinSpec extends ObjectBehavior
             );
     }
 
-    public function it_gets_attributes_mapping($attributesMappingApi): void
+    public function it_gets_attributes_mapping($attributesMappingProvider, AttributesMappingResponse $response): void
     {
-        $response = new AttributesMapping([
-            [
-                'from' => [
-                    'id' => 'product_weight',
-                    'label' => [
-                        'en_us' => 'Product Weight',
-                    ],
-                    'type' => 'metric',
-                ],
-                'to' => null,
-                'summary' => ['23kg',  '12kg'],
-                'status' => 'pending',
-            ],
-            [
-                'from' => [
-                    'id' => 'color',
-                    'type' => 'multiselect',
-                ],
-                'to' => ['id' => 'color'],
-                'status' => 'pending',
-                'summary' => ['blue',  'red'],
-            ],
-        ]);
-        $attributesMappingApi->fetchByFamily('camcorders')->willReturn($response);
-        $attributesMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
+        $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($response);
 
-        $attributesMappingResponse = $this->getAttributesMapping('camcorders');
-        $attributesMappingResponse->shouldHaveCount(2);
+        $this->getAttributesMapping('camcorders')->shouldReturn($response);
     }
 
-    public function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
+    public function it_updates_attributes_mapping($attributesMappingProvider): void
     {
         $familyCode = 'foobar';
         $attributesMapping = ['foo' => 'bar'];
-        $normalizedMapping = ['bar' => 'foo'];
 
-        $attributesMappingNormalizer->normalize($attributesMapping)->willReturn($normalizedMapping);
-        $attributesMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $attributesMappingApi->update($familyCode, $normalizedMapping)->shouldBeCalled();
+        $attributesMappingProvider->updateAttributesMapping($familyCode, $attributesMapping)->shouldBeCalled();
 
         $this->updateAttributesMapping($familyCode, $attributesMapping);
     }
