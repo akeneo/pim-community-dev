@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -46,22 +47,24 @@ class AttributeOptionsMappingContext implements Context
 
     /** @var SaveAttributeOptionsMappingHandler */
     private $saveAttributeOptionsMappingHandler;
-
-    /** @var array */
-    private $savedAttributeOptionsMapping;
+    /**
+     * @var FakeClient
+     */
+    private $fakeClient;
 
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
      * @param SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
+     * @param FakeClient $fakeClient
      */
     public function __construct(
         GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler,
-        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
+        SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler,
+        FakeClient $fakeClient
     ) {
         $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
         $this->saveAttributeOptionsMappingHandler = $saveAttributeOptionsMappingHandler;
-
-        $this->savedAttributeOptionsMapping = [];
+        $this->fakeClient = $fakeClient;
     }
 
     /**
@@ -117,11 +120,6 @@ class AttributeOptionsMappingContext implements Context
             new AttributeOptions($attributeOptions)
         );
         $this->saveAttributeOptionsMappingHandler->handle($command);
-
-        $this->savedAttributeOptionsMapping = $this->optionsMappingApi->getMappingByFamilyAndFranklinAttributeId(
-            $family,
-            $attrCode
-        );
     }
 
     /**
@@ -152,7 +150,7 @@ class AttributeOptionsMappingContext implements Context
      */
     public function theAttributeOptionsMappingShouldBe(TableNode $optionsMapping): void
     {
-        $expectedSavedAttributeOptions = [];
+        $expectedOptionsMapping = [];
         foreach ($optionsMapping->getHash() as $option) {
             $to = null;
             if (!empty($option['catalog_attribute_option_code'])) {
@@ -162,7 +160,7 @@ class AttributeOptionsMappingContext implements Context
                 ];
             }
 
-            $expectedSavedAttributeOptions[] = [
+            $expectedOptionsMapping[] = [
                 'from' => [
                     'id' => $option['franklin_attribute_option_id'],
                     'label' => [
@@ -173,7 +171,7 @@ class AttributeOptionsMappingContext implements Context
             ];
         }
 
-        Assert::eq($expectedSavedAttributeOptions, $this->savedAttributeOptionsMapping);
+        Assert::eq($expectedOptionsMapping, $this->fakeClient->getOptionsMapping());
     }
 
     /**
