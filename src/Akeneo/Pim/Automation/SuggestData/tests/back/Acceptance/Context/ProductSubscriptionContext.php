@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Un
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionFake;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
@@ -44,9 +43,6 @@ class ProductSubscriptionContext implements Context
     /** @var DataFixturesContext */
     private $dataFixturesContext;
 
-    /** @var SubscriptionFake */
-    private $subscriptionApi;
-
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
@@ -55,7 +51,6 @@ class ProductSubscriptionContext implements Context
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
      * @param SubscribeProductHandler $subscribeProductHandler
      * @param DataFixturesContext $dataFixturesContext
-     * @param SubscriptionFake $subscriptionApi
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
      */
     public function __construct(
