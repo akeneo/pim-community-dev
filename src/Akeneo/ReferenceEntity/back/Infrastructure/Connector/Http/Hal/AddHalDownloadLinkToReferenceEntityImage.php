@@ -2,7 +2,6 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
@@ -17,9 +16,11 @@ class AddHalDownloadLinkToReferenceEntityImage
 
     public function __invoke(array $normalizedReferenceEntity): array
     {
-        $imageUrl = $this->generateImageUrl($normalizedReferenceEntity['image']);
-        $imageLink = new Link('image_download', $imageUrl);
-        $normalizedReferenceEntity['_links'] = ($normalizedReferenceEntity['_links'] ?? []) + $imageLink->toArray();
+        if (!empty($normalizedReferenceEntity['image'])) {
+            $imageUrl = $this->generateImageUrl($normalizedReferenceEntity['image']);
+            $imageLink = new Link('image_download', $imageUrl);
+            $normalizedReferenceEntity['_links'] = ($normalizedReferenceEntity['_links'] ?? []) + $imageLink->toArray();
+        }
 
         return $normalizedReferenceEntity;
     }
