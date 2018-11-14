@@ -7,7 +7,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
+define(
+    [
         'jquery',
         'underscore',
         'oro/translator',
@@ -149,10 +150,8 @@ define([
                             `#attributes-column-level-0,
                             #attributes-column-level-1,
                             #attributes-column-level-2`
-                        )
-                        .sortable({
+                        ).sortable({
                             connectWith: '.connected-sortable',
-                            containment: this.$el,
                             tolerance: 'pointer',
                             cursor: 'move',
                             cancel: 'div.alert',
@@ -164,10 +163,8 @@ define([
                             `#attribute-groups-column-level-0,
                             #attribute-groups-column-level-1,
                             #attribute-groups-column-level-2`
-                        )
-                        .sortable({
+                        ).sortable({
                             connectWith: '.connected-group-sortable',
-                            containment: this.$el,
                             tolerance: 'pointer',
                             cursor: 'move',
                             cancel: 'div.alert',
@@ -202,7 +199,7 @@ define([
                         destinationLevel,
                         movedAttributes
                     );
-                }
+                };
             },
 
             /**
@@ -225,7 +222,7 @@ define([
                         destinationLevel,
                         movedAttributes
                     );
-                }
+                };
             },
 
             /**
@@ -300,7 +297,7 @@ define([
                     __('pim_enrich.entity.family_variant.module.edit.confirm_attribute_removal_message'),
                     __('pim_enrich.entity.family_variant.module.edit.confirm_attribute_removal_title'),
                     () => {
-                        var data = this.getFormData();
+                        const data = this.getFormData();
                         data.variant_attribute_sets.forEach((attributeSet) => {
                             if (attributeSet.level === level) {
                                 attributeSet.attributes = attributeSet.attributes.filter(
