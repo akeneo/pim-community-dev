@@ -16,13 +16,13 @@ namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindImageAttributeCodesInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
-class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
+class AddHalDownloadLinkToRecordImagesSpec extends ObjectBehavior
 {
     function let(
         Router $router,
@@ -33,7 +33,7 @@ class AddHalDownloadLinkToImagesSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AddHalDownloadLinkToImages::class);
+        $this->shouldHaveType(AddHalDownloadLinkToRecordImages::class);
     }
 
     function it_adds_hal_download_links_to_images(

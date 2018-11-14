@@ -20,12 +20,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 
 /**
- * Add download links at HAL format to a list of normalized records for each image (as main image or as value)
+ * Add download links at HAL format to a list of normalized records for each record image (as main image or as value)
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AddHalDownloadLinkToImages
+class AddHalDownloadLinkToRecordImages
 {
     /** @var Router */
     private $router;

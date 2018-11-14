@@ -70,7 +70,7 @@ class GetConnectorReferenceEntityContext implements Context
 
         $referenceEntity = new ConnectorReferenceEntity(
             $referenceEntityIdentifier,
-            LabelCollection::fromArray(['fr_FR' => 'A label']),
+            LabelCollection::fromArray(['fr_FR' => 'Marque']),
             Image::fromFileInfo($imageInfo)
         );
 

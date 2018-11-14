@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordByReferenceEntityAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -34,13 +34,13 @@ class GetConnectorRecordAction
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
-    /** @var AddHalDownloadLinkToImages */
+    /** @var AddHalDownloadLinkToRecordImages */
     private $addHalLinksToImageValues;
 
     public function __construct(
         FindConnectorRecordByReferenceEntityAndCodeInterface $findConnectorRecord,
         ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalDownloadLinkToImages $addHalLinksToImageValues
+        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->findConnectorRecord = $findConnectorRecord;
