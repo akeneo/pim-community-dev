@@ -77,7 +77,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
-                  key: mysqlPIMuserpassword
+                  key: mysqlPimUserPassword
             - name: GOOGLE_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -86,6 +86,26 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            {{- if .Values.onboarder.enabled }}
+            - name: ONBOARDER_ENABLED
+              value: "1"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: ONBOARDER_RETAILER_URL
+              value: https://{{ .Values.common.retailerDomain }}
+            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
+              value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
+            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
+              value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
+            - name: ONBOARDER_QUEUE_NAME
+              value:  {{ .Values.onboarder.pubsub.queueName | quote }}
+            - name: ONBOARDER_CLOUD_STORAGE_BUCKET_NAME
+              value:  {{ .Values.common.aobGcsBucketName | quote }}
+            {{- else }}
+            - name: ONBOARDER_ENABLED
+              value: "0"
+            {{- end }}
+
 {{- if .Values.common.phpConfCLI }}
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
@@ -97,17 +117,13 @@ spec:
               mountPath: /var/www/html/{{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .path }}{{ end }}/users.csv
               subPath: users.csv
               readOnly: true
-            - name: pim-parameter
-              mountPath: /var/www/html/app/config/parameters.yml
-              subPath: parameters.yml
+            {{- if .Values.onboarder.enabled }}
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
               readOnly: true
+            {{- end }}
       volumes:
-        - name: pim-parameter
-          configMap:
-            name: pim-config
-            items:
-              - key: parameters.yml
-                path: parameters.yml
         - name: user-csv
           configMap:
             name: pim-config
@@ -117,3 +133,11 @@ spec:
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+        {{- if .Values.onboarder.enabled }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+        {{- end }}

@@ -52,10 +52,20 @@ spec:
             - name: fpm-data
               mountPath: /data
               readOnly: false
-            - name: pim-parameter
-              mountPath: /var/www/html/app/config/parameters.yml
-              subPath: parameters.yml
+            {{- if .Values.onboarder.enabled }}
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
               readOnly: true
+            - name: sso-onboarder-private
+              mountPath: /var/secrets/pimmaster/pimmaster.pem
+              subPath: pimmaster.pem
+              readOnly: true
+            - name: sso-onboarder-public
+              mountPath: /var/secrets/pimmaster/pimmaster.crt
+              subPath: pimmaster.crt
+              readOnly: true
+            {{- end }}
           env:
             - { name: SYMFONY_ENV, value: prod }
             - { name: TRUSTED_PROXY_IPS, value: 10.0.0.0/8 }
@@ -86,7 +96,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
-                  key: mysqlPIMuserpassword
+                  key: mysqlPimUserPassword
             - name: GOOGLE_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -95,6 +105,35 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            {{- if .Values.onboarder.enabled }}
+            - name: ONBOARDER_ENABLED
+              value: "1"
+            - name: GCP_PROJECT_ID
+              value: {{ .Values.common.gcpProjectID | quote }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: ONBOARDER_RETAILER_URL
+              value: https://{{ .Values.common.retailerDomain }}
+            - name: ONBOARDER_PIMMASTER_URL
+              value: https://{{ .Values.common.pimMasterDomain }}
+            - name: SIMPLESAMLPHP_CONFIG_DIR
+              value: /var/www/html/vendor/akeneo/pim-onboarder/src/Infrastructure/Authentication/SimpleSamlPhp/Configuration
+            - name: ONBOARDER_SSO_IDP_PUBLIC_KEY
+              value: {{ .Values.onboarder.sso.idp.publicKey | quote }}
+            - name: ONBOARDER_SSO_CERTS_PATH
+              value: "/var/secrets/pimmaster/"
+            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
+              value: {{ .Values.onboarder.pubsub.topicPub | quote }}
+            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
+              value: {{ .Values.onboarder.pubsub.topicCon | quote }}
+            - name: ONBOARDER_QUEUE_NAME
+              value: {{ .Values.onboarder.pubsub.queueName | quote }}
+            - name: ONBOARDER_CLOUD_STORAGE_BUCKET_NAME
+              value: {{ .Values.common.aobGcsBucketName | quote }}
+            {{- else }}
+            - name: ONBOARDER_ENABLED
+              value: "0"
+            {{- end }}
 {{- if .Values.common.phpConfFPM }}
 {{ toYaml .Values.common.phpConfFPM  | indent 12 }}
 {{- end }}
@@ -114,15 +153,9 @@ spec:
       volumes:
         - name: web-src
           emptyDir: {}
-        - name: pim-parameter
-          configMap:
-            name: pim-config
-            items:
-              - key: parameters.yml
-                path: parameters.yml
         - name: fpm-data
           persistentVolumeClaim:
-            claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+            claimName: pvc-data-pim-{{required ".Values.global.extraLabels.pfid is required" .Values.global.extraLabels.pfid }}
         - name: conf-httpd
           configMap:
             name: pim-config
@@ -131,3 +164,23 @@ spec:
                 path: httpd.conf
               - key: mime.types
                 path: mime.types
+        {{- if .Values.onboarder.enabled }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+        - name: sso-onboarder-private
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobPimmasterPem
+              path: pimmaster.pem
+        - name: sso-onboarder-public
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobPimmasterCrt
+              path: pimmaster.crt
+        {{- end }}

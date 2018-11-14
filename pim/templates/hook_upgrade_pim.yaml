@@ -77,7 +77,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
-                  key: mysqlPIMuserpassword
+                  key: mysqlPimUserPassword
             - name: GOOGLE_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -93,17 +93,7 @@ spec:
             - name: fpm-data
               mountPath: /data
               readOnly: false
-            - name: pim-parameter
-              mountPath: /var/www/html/app/config/parameters.yml
-              subPath: parameters.yml
-              readOnly: true
       volumes:
-        - name: pim-parameter
-          configMap:
-            name: pim-config
-            items:
-              - key: parameters.yml
-                path: parameters.yml
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}

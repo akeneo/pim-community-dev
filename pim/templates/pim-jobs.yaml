@@ -24,17 +24,13 @@ spec:
           - name: php
             image: "{{ $tplCtx.Values.image.pim.repository }}:{{ $tplCtx.Values.image.pim.tag }}"
             imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
-            command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console $jobOptions.pimCommand']
+            command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console {{ $jobOptions.pimCommand }}"']
             resources:
   {{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
             volumeMounts:
               - name: fpm-data
                 mountPath: /data
                 readOnly: false
-              - name: pim-parameter
-                mountPath: /var/www/html/app/config/parameters.yml
-                subPath: parameters.yml
-                readOnly: true
             env:
             - name: SYMFONY_ENV
               value: prod
@@ -56,18 +52,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
-                  key: mysqlPIMuserpassword
+                  key: mysqlPimUserPassword
 {{- if $tplCtx.Values.common.phpConfCLI }}
 {{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
           restartPolicy: OnFailure
           volumes:
-            - name: pim-parameter
-              configMap:
-                name: pim-config
-                items:
-                  - key: parameters.yml
-                    path: parameters.yml
             - name: fpm-data
               persistentVolumeClaim:
                 claimName: pvc-data-pim-{{ $tplCtx.Values.global.extraLabels.pfid }}

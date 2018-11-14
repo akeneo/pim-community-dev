@@ -11,3 +11,6 @@ nfs:
 mysql:
   common:
     class: standard
+
+certmanager:
+  issuer: letsencrypt-staging

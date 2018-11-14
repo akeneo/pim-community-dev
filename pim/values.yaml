@@ -2,9 +2,9 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-    pfid: test-pim
+    pfid: nil
   monitoring:
-    enabled: false
+    enabled: true
 
 backup:
   enabled: true
@@ -64,7 +64,7 @@ google:
   cluster_name: default
 
 certmanager:
-  issuer: selfsigning
+  issuer: letsencrypt-prod
   acme:
     challenge: dns01
     dns01:
@@ -73,8 +73,8 @@ certmanager:
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-    tag: v2.3.8
-    pullPolicy: Always
+    tag: v2.3.15
+    pullPolicy: IfNotPresent
   httpd:
     repository: httpd
     tag: 2.4.33
@@ -93,25 +93,40 @@ pim:
   defaultCatalog: minimal
   jobs:
     batch-purge:
-      enabled: false
+      enabled: true
       pimCommand: "akeneo:batch:purge-job-execution"
       schedule: "0 0 1 * *"
     completeness-calculate:
-      enabled: false
+      enabled: true
       pimCommand: "pim:completeness:calculate"
       schedule: "0 2 1 * *"
     rule-run:
-      enabled: false
+      enabled: true
       pimCommand: "akeneo:rule:run"
       schedule: "0 */1 * * *"
     versionning-refresh:
-      enabled: false
+      enabled: true
       pimCommand: "pim:versioning:refresh"
       schedule: "0 3 * * *"
     volume-aggregate:
-      enabled: false
+      enabled: true
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
+
+# Onboarder
+onboarder:
+  enabled: false
+  pubsub:
+    topicPub: default-middleware
+    topicCon: default-pimmaster
+    queueName: default-middleware    
+  serviceAccount: Y2hhbmdlbWU=
+  sso:
+    idp:
+      publicKey: nil
+    sp:
+      rawCrt: nil
+      rawPem: nil
 
 nfs:
   nameOverride: ""
@@ -176,3 +191,6 @@ catalog:
     icecat: 
       path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
       class: PimEnterpriseInstallerBundle:icecat_demo_dev
+    onboarder: 
+      path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder
+      class: PimOnboarderBundle:onboarder

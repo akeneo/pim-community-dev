@@ -23,5 +23,5 @@ spec:
       - pvc-data-{{ .Release.Name }}-mysql-server-0  
   export:
     snapshotAge: {{ .Values.backup.export.snapshotAge }}
-    bucketUrl: gs://{{ .Values.google.project }}-exported-backup-store
+    bucketUrl: gs://{{ .Values.google.project_id }}-exported-backup-store
 {{ end}}
