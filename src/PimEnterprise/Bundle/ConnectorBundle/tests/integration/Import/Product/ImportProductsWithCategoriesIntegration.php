@@ -91,7 +91,7 @@ CSV;
             'Product "productA" does not exist.'
         ];
 
-        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 2, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 1, $expectedWarnings);
     }
 
     /**
