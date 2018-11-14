@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
@@ -126,17 +126,10 @@ class FakeClient implements ClientInterface
         $this->lastFetchDate = $lastFetchDate;
     }
 
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param array $options
-     *
-     * @return \GuzzleHttp\Psr7\Response
-     */
-    private function handleToken(string $method, string $uri, array $options): \GuzzleHttp\Psr7\Response
+    private function handleToken(string $method, string $uri, array $options)
     {
         // api/stats does not need token or status
-        if ('/api/stats' === $uri) {
+        if ('/stats' === $uri) {
             if (self::VALID_TOKEN !== $options['headers']['Authorization']) {
                 $request = new Request($method, $uri);
                 $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_FORBIDDEN);

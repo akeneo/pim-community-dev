@@ -6,7 +6,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\FakeClient;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Behat\Behat\Context\Context;
 
 /**

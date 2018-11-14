@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin;
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;

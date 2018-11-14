@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMa
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\FakeClient;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
