@@ -13,8 +13,41 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector;
 
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
+/**
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ */
 class ConnectorReferenceEntity
 {
+    /** @var ReferenceEntityIdentifier */
+    private $identifier;
 
+    /** @var LabelCollection */
+    private $labelCollection;
+
+    /** @var Image */
+    private $image;
+
+    public function __construct(
+        ReferenceEntityIdentifier $identifier,
+        LabelCollection $labelCollection,
+        Image $image
+    ) {
+        $this->identifier = $identifier;
+        $this->labelCollection = $labelCollection;
+        $this->image = $image;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'code' => $this->identifier->normalize(),
+            'labels' => $this->labelCollection->normalize(),
+            'image' => $this->image->isEmpty() ? null : $this->image->getKey()
+        ];
+    }
 }

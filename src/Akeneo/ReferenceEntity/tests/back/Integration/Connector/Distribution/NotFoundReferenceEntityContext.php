@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Behat\Behat\Context\Context;
+use PhpSpec\Exception\Example\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -70,5 +71,13 @@ class NotFoundReferenceEntityContext implements Context
         $client = $this->clientFactory->logIn('julia');
         $this->notFoundReferenceEntityRequestContract = self::REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_the_list_of_records.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
+
+    /**
+     * @When the connector requests a non-existent reference entity
+     */
+    public function theConnectorRequestsANonExistentReferenceEntity(): void
+    {
+        throw new PendingException();
     }
 }

@@ -15,7 +15,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
-interface FindConnectorReferenceEntityByReferenceEntityCodeInterface
+interface FindConnectorReferenceEntityByReferenceEntityIdentifierInterface
 {
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): ?ConnectorReferenceEntity;
 }
