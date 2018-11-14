@@ -29,6 +29,7 @@ class FakeClient implements ClientInterface
     /** @const string */
     public const INVALID_TOKEN = 'invalid-token';
 
+    /** @const string */
     public const FAKE_PATH = __DIR__ . '/../../../tests/back/Resources/fake/franklin-api/';
 
     /** @var string */
@@ -43,8 +44,10 @@ class FakeClient implements ClientInterface
     /** @var array */
     private $identifiersMapping = [];
 
+    /** @var array */
     private $attributesMapping = [];
 
+    /** @var array */
     private $optionsMapping = [];
 
     /**
@@ -55,6 +58,10 @@ class FakeClient implements ClientInterface
         // Clean base uri
         $uri = str_replace('https://pim-ai.prod.cloud.akeneo.com/api/', '', $uri);
 
+        if ('stats' === $uri) {
+            return $this->authenticate($method, $uri, $options);
+        }
+
         $this->handleToken($method, $uri, $options);
 
         $this->handleCredits($method, $uri);
@@ -63,29 +70,11 @@ class FakeClient implements ClientInterface
             return $this->handleMapping($method, $uri, $options);
         }
 
-        if ('subscriptions/updated-since/yesterday' === $uri) {
-            $filename = sprintf('subscriptions/updated-since/%s.json', $this->lastFetchDate);
-            $jsonContent = file_get_contents(
-                sprintf(__DIR__ . '/Api/resources/%s', $filename)
-            );
-
-            return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
+        if (false !== strpos($uri, 'subscriptions')) {
+            return $this->handleSubscription($method, $uri, $options);
         }
 
-        if ('subscriptions' === $uri) {
-            // TODO: Assert sent parameters
-            if (isset($options['form_params'][0]['asin'])) {
-                $filename = sprintf('subscriptions/post/asin-%s.json', $options['form_params'][0]['asin']);
-                $jsonContent = file_get_contents(
-                    sprintf(__DIR__ . '/Api/resources/%s', $filename)
-                );
-
-                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
-            }
-        }
-
-        // TODO: Should return null in order to break everything :D
-        return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK);
+        throw new \LogicException('Request has not been catched by the Fake Client');
     }
 
     /**
@@ -96,39 +85,68 @@ class FakeClient implements ClientInterface
         $this->token = $token;
     }
 
+    /**
+     * @return array
+     */
     public function getIdentifiersMapping(): array
     {
         return $this->identifiersMapping;
     }
 
+    /**
+     * @return array
+     */
     public function getOptionsMapping(): array
     {
         return $this->optionsMapping;
     }
 
+    /**
+     * Disable user credits.
+     */
     public function disableCredit(): void
     {
         $this->hasCredits = false;
     }
 
-    public function defineLastFetchDate($lastFetchDate): void
+    /**
+     * @param string $lastFetchDate
+     */
+    public function defineLastFetchDate(string $lastFetchDate): void
     {
         $this->lastFetchDate = $lastFetchDate;
     }
 
-    private function handleToken(string $method, string $uri, array $options)
+    /**
+     * Try to authenticate to Franklin with a defined token.
+     *
+     * Returns a response with HTTP 200 if token is valid
+     * Throws a client exception with invalid token otherwise
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     */
+    private function authenticate(string $method, string $uri, array $options): \GuzzleHttp\Psr7\Response
     {
-        // api/stats does not need token or status
-        if ('stats' === $uri) {
-            if (self::VALID_TOKEN !== $options['headers']['Authorization']) {
-                $request = new Request($method, $uri);
-                $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_FORBIDDEN);
-                throw new ClientException('Invalid token', $request, $response);
-            }
-
-            return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK);
+        if (self::VALID_TOKEN !== $options['headers']['Authorization']) {
+            $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_FORBIDDEN);
+            throw new ClientException('Invalid token', new Request($method, $uri), $response);
         }
 
+        return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK);
+    }
+
+    /**
+     * If token is invalid, raise a client exception.
+     *
+     * @param string $method
+     * @param string $uri
+     */
+    private function handleToken(string $method, string $uri): void
+    {
         if (self::INVALID_TOKEN === $this->token) {
             $request = new Request($method, $uri);
             $response = new \GuzzleHttp\Psr7\Response(Response::HTTP_FORBIDDEN);
@@ -137,6 +155,8 @@ class FakeClient implements ClientInterface
     }
 
     /**
+     * Throw an exception if the user does not have credit.
+     *
      * @param string $method
      * @param string $uri
      */
@@ -149,6 +169,17 @@ class FakeClient implements ClientInterface
         }
     }
 
+    /**
+     * Fake mapping end-points.
+     * When getting mapping, it returns a fake data content from a file in the fake path
+     * When saving mapping, it saves it into a dedicated instance variable that could be assert through a getter.
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     */
     private function handleMapping(string $method, string $uri, array $options)
     {
         if ('GET' === $method) {
@@ -161,6 +192,9 @@ class FakeClient implements ClientInterface
 
             return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], file_get_contents($fakeFilepath));
         }
+
+        // Deal with PUT/POST
+        // TODO: Assert sent data
         if (false !== strpos($uri, 'identifiers')) {
             $this->identifiersMapping = $options['form_params'];
         } elseif (false !== strpos($uri, 'options')) {
@@ -172,5 +206,40 @@ class FakeClient implements ClientInterface
         }
 
         return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK);
+    }
+
+    /**
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     */
+    private function handleSubscription(string $method, string $uri, array $options): \GuzzleHttp\Psr7\Response
+    {
+        switch ($method) {
+            case 'DELETE':
+                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, []);
+            case 'GET':
+                $filename = sprintf('subscriptions/updated-since/%s.json', $this->lastFetchDate);
+                $jsonContent = file_get_contents(
+                    sprintf(__DIR__ . '/Api/resources/%s', $filename)
+                );
+
+                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
+            case 'POST':
+                // TODO: Assert sent parameters
+                if (isset($options['form_params'][0]['asin'])) {
+                    $filename = sprintf('subscriptions/post/asin-%s.json', $options['form_params'][0]['asin']);
+                    $jsonContent = file_get_contents(
+                        sprintf(__DIR__ . '/Api/resources/%s', $filename)
+                    );
+
+                    return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
+                }
+                    throw new \LogicException('Subscription fake client only handle ASIN');
+            default:
+                throw new \LogicException('Wrong method send for subscription');
+        }
     }
 }
