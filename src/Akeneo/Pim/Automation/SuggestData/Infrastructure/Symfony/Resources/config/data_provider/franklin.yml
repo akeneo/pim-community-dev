@@ -4,11 +4,11 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.authentication'
             - '@akeneo.pim.automation.suggest_data.franklin_client.subscription'
-            - '@akeneo.pim.automation.suggest_data.franklin_client.attribute_options_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
             - '@akeneo.pim.automation.suggest_data.data_provider.product_subscription'
             - '@akeneo.pim.automation.suggest_data.data_provider.attributes_mapping'
             - '@akeneo.pim.automation.suggest_data.data_provider.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.data_provider.attribute_options_mapping'
         tags:
             - { name: 'akeneo.pim.automation.suggest_data.data_provider', alias: 'franklin' }
 
@@ -36,4 +36,10 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
+    akeneo.pim.automation.suggest_data.data_provider.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributeOptionsMappingProvider'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.franklin_client.attribute_options_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'

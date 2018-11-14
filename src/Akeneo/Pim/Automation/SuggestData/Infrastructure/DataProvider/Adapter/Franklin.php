@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
@@ -31,11 +32,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCo
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 
 /**
  * Franklin implementation to connect to a data provider.
@@ -53,9 +51,6 @@ class Franklin implements DataProviderInterface
     /** @var SubscriptionApiInterface */
     private $subscriptionApi;
 
-    /** @var OptionsMappingInterface */
-    private $attributeOptionsMappingApi;
-
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
@@ -68,31 +63,34 @@ class Franklin implements DataProviderInterface
     /** @var IdentifiersMappingProviderInterface */
     private $identifiersMappingProvider;
 
+    /** @var AttributeOptionsMappingProviderInterface */
+    private $attributeOptionsMappingProvider;
+
     /**
      * @param AuthenticationProviderInterface $authenticationProvider
      * @param SubscriptionApiInterface $subscriptionApi
-     * @param OptionsMappingInterface $attributeOptionsMappingApi
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param AttributesMappingProviderInterface $attributesMappingProvider
      * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
+     * @param AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider
      */
     public function __construct(
         AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
-        OptionsMappingInterface $attributeOptionsMappingApi,
         ConfigurationRepositoryInterface $configurationRepository,
         SubscriptionProviderInterface $subscriptionProvider,
         AttributesMappingProviderInterface $attributesMappingProvider,
-        IdentifiersMappingProviderInterface $identifiersMappingProvider
+        IdentifiersMappingProviderInterface $identifiersMappingProvider,
+        AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider
     ) {
         $this->authenticationProvider = $authenticationProvider;
         $this->subscriptionApi = $subscriptionApi;
-        $this->attributeOptionsMappingApi = $attributeOptionsMappingApi;
         $this->configurationRepository = $configurationRepository;
         $this->subscriptionProvider = $subscriptionProvider;
         $this->attributesMappingProvider = $attributesMappingProvider;
         $this->identifiersMappingProvider = $identifiersMappingProvider;
+        $this->attributeOptionsMappingProvider = $attributeOptionsMappingProvider;
     }
 
     /**
@@ -173,18 +171,7 @@ class Franklin implements DataProviderInterface
         FamilyCode $familyCode,
         FranklinAttributeId $franklinAttributeId
     ): ReadAttributeOptionsMapping {
-        $this->attributeOptionsMappingApi->setToken($this->getToken());
-        $franklinOptionsMapping = $this
-            ->attributeOptionsMappingApi
-            ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
-
-        $converter = new AttributeOptionsMappingConverter();
-
-        return $converter->clientToApplication(
-            (string) $familyCode,
-            (string) $franklinAttributeId,
-            $franklinOptionsMapping
-        );
+        return $this->attributeOptionsMappingProvider->getAttributeOptionsMapping($familyCode, $franklinAttributeId);
     }
 
     /**
@@ -195,13 +182,10 @@ class Franklin implements DataProviderInterface
         FranklinAttributeId $franklinAttributeId,
         WriteAttributeOptionsMapping $attributeOptionsMapping
     ): void {
-        $this->attributeOptionsMappingApi->setToken($this->getToken());
-        $attributeOptionsMappingNormalize = new AttributeOptionsMappingNormalizer();
-
-        $this->attributeOptionsMappingApi->update(
-            (string) $familyCode,
-            (string) $franklinAttributeId,
-            $attributeOptionsMappingNormalize->normalize($attributeOptionsMapping)
+        $this->attributeOptionsMappingProvider->saveAttributeOptionsMapping(
+            $familyCode,
+            $franklinAttributeId,
+            $attributeOptionsMapping
         );
     }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
@@ -27,11 +28,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -44,11 +42,11 @@ class FranklinSpec extends ObjectBehavior
     public function let(
         AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
-        OptionsMappingInterface $attributeOptionsMappingApi,
         ConfigurationRepositoryInterface $configurationRepository,
         SubscriptionProviderInterface $productSubscription,
         AttributesMappingProviderInterface $attributesMappingProvider,
-        IdentifiersMappingProviderInterface $identifiersMappingProvider
+        IdentifiersMappingProviderInterface $identifiersMappingProvider,
+        AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
@@ -56,11 +54,11 @@ class FranklinSpec extends ObjectBehavior
         $this->beConstructedWith(
             $authenticationProvider,
             $subscriptionApi,
-            $attributeOptionsMappingApi,
             $configurationRepository,
             $productSubscription,
             $attributesMappingProvider,
-            $identifiersMappingProvider
+            $identifiersMappingProvider,
+            $attributeOptionsMappingProvider
         );
     }
 
@@ -119,20 +117,18 @@ class FranklinSpec extends ObjectBehavior
         $this->updateAttributesMapping($familyCode, $attributesMapping);
     }
 
-    public function it_retrieves_attribute_options_mapping($attributeOptionsMappingApi): void
+    public function it_retrieves_attribute_options_mapping($attributeOptionsMappingProvider): void
     {
-        $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
-        $mappingData = json_decode(file_get_contents($filepath), true);
+        $familyCode = new FamilyCode('family_code');
+        $franklinAttributeId = new FranklinAttributeId('franklin_attr_id');
+        $mapping = new AttributeOptionsMapping('family_code', 'franklin_attr_id', []);
 
-        $strFamilyCode = 'family_code';
-        $strFranklinAttrId = 'franklin_attr_id';
-        $attributeOptionsMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $attributeOptionsMappingApi
-            ->fetchByFamilyAndAttribute($strFamilyCode, $strFranklinAttrId)
-            ->willReturn(new OptionsMapping($mappingData));
+        $attributeOptionsMappingProvider
+            ->getAttributeOptionsMapping($familyCode, $franklinAttributeId)
+            ->willReturn($mapping);
 
         $this
-            ->getAttributeOptionsMapping(new FamilyCode($strFamilyCode), new FranklinAttributeId($strFranklinAttrId))
-            ->shouldReturnAnInstanceOf(AttributeOptionsMapping::class);
+            ->getAttributeOptionsMapping($familyCode, $franklinAttributeId)
+            ->shouldReturn($mapping);
     }
 }
