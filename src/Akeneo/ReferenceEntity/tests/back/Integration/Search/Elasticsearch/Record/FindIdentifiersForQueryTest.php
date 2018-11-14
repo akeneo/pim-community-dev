@@ -318,10 +318,11 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
      */
     public function paginated_by_search_after_search()
     {
-        $query = RecordQuery::createPaginatedUsingSearchAfter(
+        $query = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('alessi'),
-            10
+            10,
+            null
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
@@ -336,10 +337,11 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
      */
     public function paginated_by_search_after_from_the_start_search()
     {
-        $query = RecordQuery::createPaginatedUsingSearchAfter(
+        $query = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
             null,
-            10
+            10,
+            null
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);

@@ -17,7 +17,8 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersForQueryInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -26,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
+class SqlFindConnectorRecordsByIdentifiersForQuery implements FindConnectorRecordsByIdentifiersForQueryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -55,7 +56,7 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers): array
+    public function __invoke(array $identifiers, RecordQuery $recordQuery): array
     {
         $sql = <<<SQL
             SELECT 
@@ -79,13 +80,13 @@ SQL;
         );
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        return empty($results) ? [] : $this->hydrateRecords($results);
+        return empty($results) ? [] : $this->hydrateRecords($results, $recordQuery);
     }
 
     /**
      * @return ConnectorRecord[]
      */
-    private function hydrateRecords(array $results): array
+    private function hydrateRecords(array $results, RecordQuery $recordQuery): array
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier(current($results));
         $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
@@ -93,7 +94,8 @@ SQL;
 
         $hydratedRecords = [];
         foreach ($results as $result) {
-            $hydratedRecords[] = $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+            $hydratedRecord = $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+            $hydratedRecords[] = $this->filterRecordValues($hydratedRecord, $recordQuery);
         }
 
         return $hydratedRecords;
@@ -110,5 +112,15 @@ SQL;
         );
 
         return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
+    }
+
+    private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
+    {
+        $channelIdentifier = $recordQuery->getFilterValuesChannelIdentifier();
+        if (null !== $channelIdentifier) {
+            $connectorRecord = $connectorRecord->filterValuesByChannel($channelIdentifier);
+        }
+
+        return $connectorRecord;
     }
 }

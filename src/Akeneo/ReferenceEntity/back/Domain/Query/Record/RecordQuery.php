@@ -50,6 +50,14 @@ class RecordQuery
     /** @var string */
     private $paginationMethod;
 
+    /**
+     * If defined, the record values will be filtered by the given channel.
+     * The values without channel will not be filtered.
+     *
+     * @var ChannelIdentifier|null
+     */
+    private $filterValuesChannelIdentifier;
+
     private function __construct(
         ?ChannelIdentifier $channel,
         ?LocaleIdentifier $locale,
@@ -57,7 +65,8 @@ class RecordQuery
         ?int $page,
         int $size,
         ?RecordCode $searchAfterCode,
-        string $paginationMethod
+        string $paginationMethod,
+        ?ChannelIdentifier $filterValuesChannelIdentifier
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -81,6 +90,7 @@ class RecordQuery
 
         $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = $paginationMethod;
+        $this->filterValuesChannelIdentifier = $filterValuesChannelIdentifier;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -102,14 +112,16 @@ class RecordQuery
             $normalizedQuery['page'],
             $normalizedQuery['size'],
             null,
-            self::PAGINATE_USING_OFFSET
+            self::PAGINATE_USING_OFFSET,
+            null
         );
     }
 
-    public static function createPaginatedUsingSearchAfter(
+    public static function createPaginatedQueryUsingSearchAfter(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,
-        int $size
+        int $size,
+        ?ChannelIdentifier $filterValuesChannelIdentifier
     ): RecordQuery {
         $filters = [
             [
@@ -126,7 +138,8 @@ class RecordQuery
             null,
             $size,
             $searchAfterCode,
-            self::PAGINATE_USING_SEARCH_AFTER
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $filterValuesChannelIdentifier
         );
     }
 
@@ -187,5 +200,10 @@ class RecordQuery
     public function isPaginatedUsingSearchAfter()
     {
         return $this->paginationMethod === self::PAGINATE_USING_SEARCH_AFTER;
+    }
+
+    public function getFilterValuesChannelIdentifier(): ?ChannelIdentifier
+    {
+        return $this->filterValuesChannelIdentifier;
     }
 }

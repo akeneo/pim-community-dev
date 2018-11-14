@@ -1,0 +1,17 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "channel": "wrong_channel"
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message":"Channel \"wrong_channel\" does not exist or is not activated."
+        }
+    }
+}

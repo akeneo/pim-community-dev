@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
@@ -30,6 +30,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
 /**
@@ -46,7 +47,7 @@ class GetConnectorRecordsContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorRecordsByIdentifiers */
+    /** @var InMemoryFindConnectorRecordsByIdentifiersForQuery */
     private $findConnectorRecords;
 
     /** @var ReferenceEntityRepositoryInterface */
@@ -61,11 +62,14 @@ class GetConnectorRecordsContext implements Context
     /** @var InMemoryFindRecordIdentifiersForQuery */
     private $findRecordIdentifiersForQuery;
 
+    /** @var null|Response */
+    private $unprocessableEntityResponse;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
-        InMemoryFindConnectorRecordsByIdentifiers $findConnectorRecords,
+        InMemoryFindConnectorRecordsByIdentifiersForQuery $findConnectorRecords,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository
     ) {
@@ -178,5 +182,150 @@ class GetConnectorRecordsContext implements Context
                 )
             );
         }
+    }
+
+    /**
+     * @Given /^([\d]+) records for the ([\S]+) reference entity with filled attribute values for the ([\S]+) and the ([\S]+) channels$/
+     */
+    public function theRecordsForTheReferenceEntityWithFilledAttributesValuesForTwoChannels(
+        int $numberOfRecords,
+        string $referenceEntityIdentifier,
+        string $firstChannel,
+        string $secondChannel
+    ): void {
+        $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
+
+        for ($i = 1; $i <= $numberOfRecords; $i++) {
+            $rawRecordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
+            $recordCode = RecordCode::fromString($rawRecordCode);
+            $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
+            $labelCollection = [
+                'en_US' => sprintf('%s number %d', ucfirst($referenceEntityIdentifier), $i)
+            ];
+
+            $mainImageInfo = (new FileInfo())
+                ->setOriginalFilename(sprintf('%s_image.jpg', $rawRecordCode))
+                ->setKey(sprintf('test/%s_image.jpg', $rawRecordCode));
+            $mainImage = Image::fromFileInfo($mainImageInfo);
+
+            $record = Record::create(
+                $recordIdentifier,
+                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+                $recordCode,
+                $labelCollection,
+                $mainImage,
+                ValueCollection::fromValues([])
+            );
+
+            $this->findRecordIdentifiersForQuery->add($record);
+
+            $connectorRecord = new ConnectorRecord(
+                $recordCode,
+                LabelCollection::fromArray($labelCollection),
+                $mainImage,
+                [
+                    'description' => [
+                        [
+                            'locale' => 'en_US',
+                            'channel' => strtolower($firstChannel),
+                            'data' => sprintf(
+                                'Description for %s number %d and channel %s',
+                                ucfirst($referenceEntityIdentifier), $i, $firstChannel
+                            )
+                        ],
+                        [
+                            'locale' => 'en_US',
+                            'channel' => strtolower($secondChannel),
+                            'data' => sprintf(
+                                'Description for %s number %d and channel %s',
+                                ucfirst($referenceEntityIdentifier), $i, $secondChannel
+                            )
+                        ]
+                    ],
+                    'country' => [
+                        [
+                            'locale' => null,
+                            'channel' => null,
+                            'data' => 'italy'
+                        ]
+                    ]
+                ]
+            );
+
+            $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
+        }
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            [],
+            Image::createEmpty()
+        );
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    /**
+     * @When /^the connector requests all records of the ([\S]+) reference entity with the information of the ([\S]+) channel$/
+     */
+    public function theConnectorRequestsAllRecordsOfTheReferenceEntityWithInformationOfTheChannel(
+        string $referenceEntityIdentifier,
+        string $channel
+    ): void {
+        $client = $this->clientFactory->logIn('julia');
+        $this->recordPages = [];
+
+        $this->recordPages[1] = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . sprintf(
+                "successful_%s_records_for_%s_channel.json",
+                strtolower($referenceEntityIdentifier),
+                strtolower($channel)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the PIM returns [\d]+ records of the ([\S]+) reference entity with only the attribute values of the ([\S]+) channel$/
+     */
+    public function thePimReturnsRecordsOfTheReferenceEntityWithOnlyAttributeValuesOfTheChannel(
+        string $referenceEntityIdentifier,
+        string $channel
+    ): void {
+        Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
+
+        $this->webClientHelper->assertJsonFromFile(
+            $this->recordPages[1],
+            self::REQUEST_CONTRACT_DIR . sprintf(
+                "successful_%s_records_for_%s_channel.json",
+                strtolower($referenceEntityIdentifier),
+                strtolower($channel)
+            )
+        );
+    }
+
+    /**
+     * @When /^the connector requests all records of the ([\S]+) reference entity with the information of a non-existent channel$/
+     */
+    public function theConnectorRequestTheInformationForANonExistentChannelForTheReferenceEntity(string $referenceEntityIdentifier): void
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . sprintf(
+                "unprocessable_entity_%s_records_for_non_existent_channel.json",
+                strtolower($referenceEntityIdentifier)
+            )
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about an error indicating that the provided channel does not exist
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheProvidedChannelDoesNotExist()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->unprocessableEntityResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_channel.json'
+        );
     }
 }

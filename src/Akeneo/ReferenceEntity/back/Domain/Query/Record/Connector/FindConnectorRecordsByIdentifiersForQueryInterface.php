@@ -13,18 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+
 /**
- * Find connector records by identifiers.
+ * Find connector records by identifiers for the given search query.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindConnectorRecordsByIdentifiersInterface
+interface FindConnectorRecordsByIdentifiersForQueryInterface
 {
     /**
-     * @param string[] $identifiers
+     * @param string[]    $identifiers
+     * @param RecordQuery $recordQuery
      *
      * @return ConnectorRecord[]
      */
-    public function __invoke(array $identifiers): array;
+    public function __invoke(array $identifiers, RecordQuery $recordQuery): array;
 }

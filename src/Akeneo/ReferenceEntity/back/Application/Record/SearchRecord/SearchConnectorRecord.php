@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\Record\SearchRecord;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 
@@ -28,12 +28,12 @@ class SearchConnectorRecord
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
-    /** @var FindConnectorRecordsByIdentifiersInterface */
+    /** @var FindConnectorRecordsByIdentifiersForQueryInterface */
     private $findConnectorRecordsByIdentifiers;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindConnectorRecordsByIdentifiersInterface $findRecordItemsForIdentifiers
+        FindConnectorRecordsByIdentifiersForQueryInterface $findRecordItemsForIdentifiers
     ) {
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
         $this->findConnectorRecordsByIdentifiers = $findRecordItemsForIdentifiers;
@@ -42,7 +42,7 @@ class SearchConnectorRecord
     public function __invoke(RecordQuery $query): array
     {
         $result = ($this->findIdentifiersForQuery)($query);
-        $records = empty($result) ? [] : ($this->findConnectorRecordsByIdentifiers)($result->identifiers);
+        $records = empty($result) ? [] : ($this->findConnectorRecordsByIdentifiers)($result->identifiers, $query);
 
         return $records;
     }

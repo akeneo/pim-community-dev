@@ -88,7 +88,7 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiersForQuery
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record'
