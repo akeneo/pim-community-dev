@@ -35,17 +35,19 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             $subscriptionId,
             ['upc' => '72527273070', 'asin' => 'B00005N5PF', 'mpn' => 'AS4561AD142', 'brand' => 'intel']
         );
-        $subscription->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+        $subscription->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
 
         $this->getRepository()->save($subscription);
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->query('
+        $statement = $entityManager->getConnection()->query(
+            '
             SELECT product_id, subscription_id, raw_suggested_data, 
             requested_upc, requested_asin, requested_mpn, requested_brand 
             from pim_suggest_data_product_subscription;
-        ');
+        '
+        );
         $retrievedSubscriptions = $statement->fetchAll();
 
         Assert::assertCount(1, $retrievedSubscriptions);
@@ -53,7 +55,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             [
                 'product_id' => $product->getId(),
                 'subscription_id' => $subscriptionId,
-                'raw_suggested_data' => '{"foo": "bar"}',
+                'raw_suggested_data' => '[{"name": "foo", "value": "bar"}]',
                 'requested_upc' => '72527273070',
                 'requested_asin' => 'B00005N5PF',
                 'requested_mpn' => 'AS4561AD142',
@@ -68,15 +70,15 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
         $suggestedData = [
-            'an_attribute' => 'some data',
-            'another_attribute' => 'some other data',
+            ['name' => 'an_attribute', 'value' => 'some data'],
+            ['name' => 'another_attribute', 'value' => 'some other data'],
         ];
         $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
-        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
+        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->jsonSerialize());
     }
 
     public function test_that_it_gets_null_for_a_non_subscribed_product_id(): void
@@ -96,8 +98,10 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $subscription1->setSuggestedData(new SuggestedData(null));
         $this->getRepository()->save($subscription1);
 
-        $subscription2 = new ProductSubscription($this->createProduct(
-            'another_product'),
+        $subscription2 = new ProductSubscription(
+            $this->createProduct(
+                'another_product'
+            ),
             'subscription-2',
             ['sku' => '72527273070']
         );
@@ -140,15 +144,15 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     public function test_that_it_finds_and_paginates_pending_product_subscriptions(): void
     {
         $product1 = $this->createProduct('product_1');
-        $this->insertSubscription($product1->getId(), 'c', ['foo' => 'bar']);
+        $this->insertSubscription($product1->getId(), 'c', [['name' => 'foo', 'value' => 'bar']]);
         $product2 = $this->createProduct('product_2');
         $this->insertSubscription($product2->getId(), 'b', []);
         $product3 = $this->createProduct('product_3');
         $this->insertSubscription($product3->getId(), 'd', []);
         $product4 = $this->createProduct('product_4');
-        $this->insertSubscription($product4->getId(), 'a', ['bar' => 'baz']);
+        $this->insertSubscription($product4->getId(), 'a', [['name' => 'bar', 'value' => 'baz']]);
         $product5 = $this->createProduct('product_5');
-        $this->insertSubscription($product5->getId(), 'e', ['baz' => '42']);
+        $this->insertSubscription($product5->getId(), 'e', [['name' => 'baz', 'value' => '42']]);
 
         $params = [
             [10, null, ['a', 'c', 'e']],
@@ -175,8 +179,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $productId = $this->createProduct('a_product_to_delete')->getId();
         $subscriptionId = uniqid();
         $suggestedData = [
-            'an_attribute' => 'some data',
-            'another_attribute' => 'some other data',
+            ['name' => 'an_attribute', 'value' => 'some data'],
+            ['name' => 'another_attribute', 'value' => 'some other data'],
         ];
         $this->insertSubscription($productId, $subscriptionId, $suggestedData);
 
@@ -192,15 +196,15 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     public function test_it_empties_suggested_data_for_specified_ids(): void
     {
         $product1 = $this->createProduct('product_1');
-        $this->insertSubscription($product1->getId(), 'subscription_to_empty', ['foo' => 'bar']);
+        $this->insertSubscription($product1->getId(), 'subscription_to_empty', [['name' => 'foo', 'value' => 'bar']]);
         $product2 = $this->createProduct('product_2');
-        $this->insertSubscription($product2->getId(), 'other-subscription', ['bar' => 'baz']);
+        $this->insertSubscription($product2->getId(), 'other-subscription', [['name' => 'bar', 'value' => 'baz']]);
 
         $repo = $this->getRepository();
         $repo->emptySuggestedData([$product1->getId()]);
 
-        Assert::assertEmpty($repo->findOneByProductId($product1->getId())->getSuggestedData()->getValues());
-        Assert::assertNotEmpty($repo->findOneByProductId($product2->getId())->getSuggestedData()->getValues());
+        Assert::assertTrue($repo->findOneByProductId($product1->getId())->getSuggestedData()->isEmpty());
+        Assert::assertFalse($repo->findOneByProductId($product2->getId())->getSuggestedData()->isEmpty());
     }
 
     /**

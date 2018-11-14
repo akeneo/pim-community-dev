@@ -66,7 +66,7 @@ final class SuggestedValue
             throw InvalidSuggestedValueException::invalidValue();
         }
 
-        if (empty($this->value)) {
+        if ('' == $this->value || (is_array($this->value) && 0 === count($this->value))) {
             throw InvalidSuggestedValueException::emptyValue();
         }
 

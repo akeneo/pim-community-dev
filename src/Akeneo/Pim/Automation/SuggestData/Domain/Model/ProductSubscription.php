@@ -102,7 +102,7 @@ class ProductSubscription
     public function setSuggestedData(SuggestedData $suggestedData): self
     {
         $this->suggestedData = $suggestedData;
-        $this->rawSuggestedData = $suggestedData->getValues();
+        $this->rawSuggestedData = $suggestedData->jsonSerialize();
 
         return $this;
     }

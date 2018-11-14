@@ -18,27 +18,49 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class SuggestedData
+final class SuggestedData implements \IteratorAggregate, \JsonSerializable
 {
-    /** @var array */
+    /** @var SuggestedValue[] */
     private $values = [];
 
     /**
-     * @param array $values
+     * @param array|null $values
      */
     public function __construct(?array $values)
     {
         if (null !== $values) {
-            $this->values = $values;
+            foreach ($values as $value) {
+                $this->values[] = new SuggestedValue($value['name'], $value['value']);
+            }
         }
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function getValues(): array
+    public function jsonSerialize()
     {
-        return $this->values;
+        if ($this->isEmpty()) {
+            return null;
+        }
+
+        return array_map(
+            function (SuggestedValue $suggestedValue) {
+                return [
+                    'name' => $suggestedValue->name(),
+                    'value' => $suggestedValue->value(),
+                ];
+            },
+            $this->values
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->values);
     }
 
     /**

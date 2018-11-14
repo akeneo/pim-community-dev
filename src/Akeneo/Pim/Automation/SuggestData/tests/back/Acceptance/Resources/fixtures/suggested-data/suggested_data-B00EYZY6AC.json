@@ -1,9 +1,30 @@
-{
-    "asin": "B00EYZY6AC",
-    "pim_upc": "730870200933",
-    "mpn": "FE20093",
-    "pim_brand": "Frederic Fekkai",
-    "memory": "RAM (Installed): 256 MB",
-    "processor": "1 GIGAHERTZ",
-    "power_device": "External Power Adapter"
-}
+[
+  {
+    "name": "asin",
+    "value": "B00EYZY6AC"
+  },
+  {
+    "name": "pim_upc",
+    "value": "730870200933"
+  },
+  {
+    "name": "mpn",
+    "value": "FE20093"
+  },
+  {
+    "name": "pim_brand",
+    "value": "Frederic Fekkai"
+  },
+  {
+    "name": "memory",
+    "value": "RAM (Installed): 256 MB"
+  },
+  {
+    "name": "processor",
+    "value": "1 GIGAHERTZ"
+  },
+  {
+    "name": "power_device",
+    "value": "External Power Adapter"
+  }
+]

@@ -45,8 +45,9 @@ class FetchProductsHandlerSpec extends ObjectBehavior
     ): void {
         $dataProvider->fetch()->willReturn($cursor);
 
-        $subscriptionResponse1 = new ProductSubscriptionResponse(42, 'an-id', ['foo' => 'bar'], true);
-        $subscriptionResponse2 = new ProductSubscriptionResponse(84, 'another-id', ['foo' => 'bar'], false);
+        $subscriptionResponse1 = new ProductSubscriptionResponse(42, 'an-id', [['name' => 'foo', 'value' => 'bar']], true);
+        $subscriptionResponse2 = new ProductSubscriptionResponse(84, 'another-id',
+            [['name' => 'foo', 'value' => 'bar']], false);
 
         $cursor->valid()->willReturn(true, true, false);
         $cursor->current()->willReturn($subscriptionResponse1, $subscriptionResponse2);

@@ -58,7 +58,14 @@ class ProductSubscriptionSpec extends ObjectBehavior
 
     public function it_gets_the_suggested_data(): void
     {
-        $suggestedData = new SuggestedData(['upc' => '42']);
+        $suggestedData = new SuggestedData(
+            [
+                [
+                    'name' => 'upc',
+                    'value' => '42',
+                ],
+            ]
+        );
         $this->setSuggestedData($suggestedData);
 
         $this->getSuggestedData()->shouldReturn($suggestedData);
@@ -66,12 +73,18 @@ class ProductSubscriptionSpec extends ObjectBehavior
 
     public function it_can_be_emptied(): void
     {
-        $suggestedData = new SuggestedData(['upc' => '42']);
+        $rawSuggestedData = [
+            [
+                'name' => 'upc',
+                'value' => '42',
+            ],
+        ];
+        $suggestedData = new SuggestedData($rawSuggestedData);
         $this->setSuggestedData($suggestedData);
-        $this->getSuggestedData()->getValues()->shouldReturn(['upc' => '42']);
+        $this->getSuggestedData()->jsonSerialize()->shouldReturn($rawSuggestedData);
 
         $this->emptySuggestedData();
-        $this->getSuggestedData()->getValues()->shouldReturn([]);
+        $this->getSuggestedData()->jsonSerialize()->shouldReturn(null);
     }
 
     public function it_sets_missing_mapping(): void

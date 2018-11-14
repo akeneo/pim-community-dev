@@ -40,10 +40,22 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ): void {
         $suggestedData = [
-            'foo' => 'bar',
-            'bar' => '0',
-            'baz' => 'option1,option2',
-            'processor' => '1 GIGAHERTZ',
+            [
+                'name' => 'foo',
+                'value' => 'bar',
+            ],
+            [
+                'name' => 'bar',
+                'value' => '0',
+            ],
+            [
+                'name' => 'baz',
+                'value' => 'option1,option2',
+            ],
+            [
+                'name' => 'processor',
+                'value' => '1 GIGAHERTZ',
+            ],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz', 'processor'])->willReturn(
             [
@@ -109,9 +121,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeRepository
     ): void {
         $suggestedData = [
-            'foo' => 'bar',
-            'bar' => '0',
-            'baz' => 'option1,option2',
+            ['name' => 'foo', 'value' => 'bar'],
+            ['name' => 'bar', 'value' => '0'],
+            ['name' => 'baz', 'value' => 'option1,option2'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -145,9 +157,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeOptionRepository
     ): void {
         $suggestedData = [
-            'foo' => 'bar',
-            'bar' => '0',
-            'baz' => 'option1',
+            ['name' => 'foo', 'value' => 'bar'],
+            ['name' => 'bar', 'value' => '0'],
+            ['name' => 'baz', 'value' => 'option1'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -183,9 +195,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeOptionRepository
     ): void {
         $suggestedData = [
-            'foo' => 'bar',
-            'bar' => '0',
-            'baz' => 'option1,option2',
+            ['name' => 'foo', 'value' => 'bar'],
+            ['name' => 'bar', 'value' => '0'],
+            ['name' => 'baz', 'value' => 'option1,option2'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -223,9 +235,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         AttributeOptionInterface $option3
     ): void {
         $suggestedData = [
-            'foo' => 'bar',
-            'bar' => '0',
-            'baz' => 'option1,option2,option3',
+            ['name' => 'foo', 'value' => 'bar'],
+            ['name' => 'bar', 'value' => '0'],
+            ['name' => 'baz', 'value' => 'option1,option2,option3'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -271,8 +283,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository): void
     {
         $suggestedData = [
-            'foo' => 'bar',
-            'bar' => 'baz',
+            ['name' => 'foo', 'value' => 'bar'],
+            ['name' => 'bar', 'value' => 'baz'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
             [
@@ -282,6 +294,6 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(new \InvalidArgumentException('Unsupported attribute type "pim_catalog_price_collection"'))
-            ->during('normalize', [new SuggestedData($suggestedData)]);
+             ->during('normalize', [new SuggestedData($suggestedData)]);
     }
 }
