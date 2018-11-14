@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
@@ -30,7 +31,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
@@ -48,8 +48,8 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Ide
  */
 class Franklin implements DataProviderInterface
 {
-    /** @var AuthenticationApiInterface */
-    private $authenticationApi;
+    /** @var AuthenticationProviderInterface */
+    private $authenticationProvider;
 
     /** @var SubscriptionApiInterface */
     private $subscriptionApi;
@@ -79,7 +79,7 @@ class Franklin implements DataProviderInterface
     private $subscriptionProvider;
 
     /**
-     * @param AuthenticationApiInterface $authenticationApi
+     * @param AuthenticationProviderInterface $authenticationProvider
      * @param SubscriptionApiInterface $subscriptionApi
      * @param IdentifiersMappingApiInterface $identifiersMappingApi
      * @param AttributesMappingApiInterface $attributesMappingApi
@@ -90,7 +90,7 @@ class Franklin implements DataProviderInterface
      * @param SubscriptionProviderInterface $subscriptionProvider
      */
     public function __construct(
-        AuthenticationApiInterface $authenticationApi,
+        AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
@@ -100,7 +100,7 @@ class Franklin implements DataProviderInterface
         ConfigurationRepositoryInterface $configurationRepository,
         SubscriptionProviderInterface $subscriptionProvider
     ) {
-        $this->authenticationApi = $authenticationApi;
+        $this->authenticationProvider = $authenticationProvider;
         $this->subscriptionApi = $subscriptionApi;
         $this->identifiersMappingApi = $identifiersMappingApi;
         $this->attributesMappingApi = $attributesMappingApi;
@@ -132,7 +132,7 @@ class Franklin implements DataProviderInterface
      */
     public function authenticate(Token $token): bool
     {
-        return $this->authenticationApi->authenticate((string) $token);
+        return $this->authenticationProvider->authenticate($token);
     }
 
     /**

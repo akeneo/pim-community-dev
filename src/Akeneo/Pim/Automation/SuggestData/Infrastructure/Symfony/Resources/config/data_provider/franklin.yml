@@ -2,7 +2,7 @@ services:
     akeneo.pim.automation.suggest_data.data_provider.franklin:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.franklin_client.authentication'
+            - '@akeneo.pim.automation.suggest_data.data_provider.authentication'
             - '@akeneo.pim.automation.suggest_data.franklin_client.subscription'
             - '@akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.franklin_client.attributes_mapping'
@@ -20,3 +20,8 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.family'
             - '@akeneo.pim.automation.suggest_data.franklin_client.subscription'
+
+    akeneo.pim.automation.suggest_data.data_provider.authentication:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AuthenticationProvider'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.franklin_client.authentication'

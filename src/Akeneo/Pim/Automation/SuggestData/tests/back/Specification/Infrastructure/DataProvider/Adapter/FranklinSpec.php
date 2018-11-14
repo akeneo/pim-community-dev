@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
@@ -24,7 +25,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
@@ -44,7 +44,7 @@ use Prophecy\Argument;
 class FranklinSpec extends ObjectBehavior
 {
     public function let(
-        AuthenticationApiInterface $authenticationApi,
+        AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
@@ -58,7 +58,7 @@ class FranklinSpec extends ObjectBehavior
         $configuration->setToken(new Token('valid-token'));
         $configurationRepository->find()->willReturn($configuration);
         $this->beConstructedWith(
-            $authenticationApi,
+            $authenticationProvider,
             $subscriptionApi,
             $identifiersMappingApi,
             $attributesMappingApi,
