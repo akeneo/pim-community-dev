@@ -63,11 +63,11 @@ class ProposalUpsertSpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(42);
         $suggestedData = ['foo' => 'bar'];
-        $draftBuilder->build($product, 'PIM.ai')->willReturn($productDraft);
+        $draftBuilder->build($product, 'Franklin')->willReturn($productDraft);
 
         $otherProduct->getId()->willReturn(56);
         $otherSuggestedData = ['test' => 42];
-        $draftBuilder->build($otherProduct, 'PIM.ai')->willReturn($otherProductDraft);
+        $draftBuilder->build($otherProduct, 'Franklin')->willReturn($otherProductDraft);
 
         $productUpdater->update($product, ['values' => $suggestedData])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
@@ -99,7 +99,7 @@ class ProposalUpsertSpec extends ObjectBehavior
                 new ProposalSuggestedData($suggestedData, $product->getWrappedObject()),
                 new ProposalSuggestedData($otherSuggestedData, $otherProduct->getWrappedObject()),
             ],
-            'PIM.ai'
+            'Franklin'
         )->shouldReturn(null);
     }
 }

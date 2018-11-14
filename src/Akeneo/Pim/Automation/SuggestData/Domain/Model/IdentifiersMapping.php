@@ -23,7 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 class IdentifiersMapping implements \IteratorAggregate
 {
     /** @var string[] */
-    public const PIM_AI_IDENTIFIERS = [
+    public const FRANKLIN_IDENTIFIERS = [
         'brand',
         'mpn',
         'upc',

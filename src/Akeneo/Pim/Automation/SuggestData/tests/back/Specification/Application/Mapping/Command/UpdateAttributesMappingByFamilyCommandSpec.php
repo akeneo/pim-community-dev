@@ -40,7 +40,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     public function it_returns_an_attribute_mapping(): void
     {
         $mapping = ['color' => [
-            'pimAiAttribute' => ['type' => 'multiselect'],
+            'franklinAttribute' => ['type' => 'multiselect'],
             'attribute' => 'tshirt_style',
         ]];
         $this->beConstructedWith('family_code', $mapping);

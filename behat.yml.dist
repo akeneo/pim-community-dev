@@ -177,7 +177,7 @@ legacy:
                     - '@akeneo_e2e.context.suggest_data.builder.product'
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
-                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\PimAiConfigurationContext:
+                - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FranklinConfigurationContext:
                     - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.suggest_data.repository.configuration'
                 - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\ProductSubscriptionContext:
@@ -240,7 +240,7 @@ acceptance:
             paths:
                 - '%paths.base%/src/Akeneo/Pim/Automation/SuggestData/tests/features'
             contexts_services:
-                - akeneo_acceptance.context.suggest_data.pim_ai
+                - akeneo_acceptance.context.suggest_data.franklin
                 - akeneo_acceptance.context.suggest_data.identifiers_mapping
                 - akeneo_acceptance.context.suggest_data.product_subscription
                 - akeneo_acceptance.context.suggest_data.product_subscription_status

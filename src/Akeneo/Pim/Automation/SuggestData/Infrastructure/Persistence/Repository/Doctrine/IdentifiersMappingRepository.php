@@ -47,13 +47,13 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
      */
     public function save(IdentifiersMapping $identifiersMapping): void
     {
-        foreach ($identifiersMapping as $pimAiCode => $attribute) {
+        foreach ($identifiersMapping as $franklinCode => $attribute) {
             $identifierMapping = $this->em
                 ->getRepository(IdentifierMapping::class)
-                ->findOneBy(['pimAiCode' => $pimAiCode]);
+                ->findOneBy(['franklinCode' => $franklinCode]);
 
             if (!$identifierMapping instanceof IdentifierMapping) {
-                $identifierMapping = new IdentifierMapping($pimAiCode, $attribute);
+                $identifierMapping = new IdentifierMapping($franklinCode, $attribute);
             }
             $identifierMapping->setAttribute($attribute);
 
@@ -70,9 +70,9 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     {
         $identifiers = $this->em->getRepository(IdentifierMapping::class)->findAll();
 
-        $identifiersArray = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+        $identifiersArray = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
         foreach ($identifiers as $identifier) {
-            $identifiersArray[$identifier->getPimAiCode()] = $identifier->getAttribute();
+            $identifiersArray[$identifier->getFranklinCode()] = $identifier->getAttribute();
         }
 
         return new IdentifiersMapping($identifiersArray);

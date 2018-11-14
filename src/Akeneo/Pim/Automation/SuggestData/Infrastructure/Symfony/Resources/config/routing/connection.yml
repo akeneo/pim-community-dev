@@ -4,19 +4,19 @@ akeneo_suggest_data_connection_edit:
 
 akeneo_suggest_data_connection_get:
     path: /
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:getAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.franklin:getAction }
     requirements:
         code: '[\w._-]+'
     methods: [GET]
 
 akeneo_suggest_data_connection_post:
     path: /
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:postAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.franklin:postAction }
     requirements:
         code: '[\w._-]+'
     methods: [POST]
 
 akeneo_suggest_data_connection_status_get:
     path: /status
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.franklin:isActiveAction }
     methods: [GET]

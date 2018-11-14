@@ -29,7 +29,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
 
         $this->assertEquals([
             [
-                'pim_ai_code' => 'brand',
+                'franklin_code' => 'brand',
                 'attribute_id' => $this->getAttribute('sku')->getId(),
             ],
         ], $mapping);
@@ -47,7 +47,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
 
         $this->assertEquals([
             [
-                'pim_ai_code' => 'brand',
+                'franklin_code' => 'brand',
                 'attribute_id' => $this->getAttribute('ean')->getId(),
             ],
         ], $mapping);
@@ -99,7 +99,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $entityManager->clear();
 
         $statement = $entityManager->getConnection()->query(
-            'SELECT pim_ai_code, attribute_id from pim_suggest_data_pimai_identifier_mapping;'
+            'SELECT franklin_code, attribute_id from pim_suggest_data_franklin_identifier_mapping;'
         );
 
         return $statement->fetchAll();

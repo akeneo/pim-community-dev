@@ -19,5 +19,5 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 final class ProposalAuthor
 {
     /** @var string */
-    public const USERNAME = 'PIM.ai';
+    public const USERNAME = 'Franklin';
 }

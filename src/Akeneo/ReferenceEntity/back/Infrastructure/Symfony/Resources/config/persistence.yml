@@ -76,19 +76,19 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_record_for_connector_by_reference_entity_and_code:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordForConnectorByReferenceEntityAndCode
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordByReferenceEntityAndCode
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_for_connector'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_records_for_connector_by_identifiers:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordsForConnectorByIdentifiers
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_for_connector'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
@@ -192,11 +192,11 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_referenceentity.infrastructure.persistence.record.hydrator.record_for_connector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordForConnectorHydrator
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.connector_record:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.record.transformer.value_for_connector_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator
@@ -225,27 +225,31 @@ services:
             - { name: akeneo_referenceentity.data_hydrator }
 
     # Record value transformers
-    akeneo_referenceentity.infrastructure.persistence.record.transformer.value_for_connector_registry:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ValueForConnectorTransformerRegistry
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry
         arguments:
-            - !tagged akeneo_referenceentity.value_for_connector_transformer
+            - !tagged akeneo_referenceentity.connector_value_transformer
 
-    akeneo_referenceentity.infrastructure.persistence.record.transformer.text_value_for_connector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextValueForConnectorTransformer
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.text_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\TextConnectorValueTransformer
         tags:
-            - { name: akeneo_referenceentity.value_for_connector_transformer }
+            - { name: akeneo_referenceentity.connector_value_transformer }
 
-    akeneo_referenceentity.infrastructure.persistence.record.transformer.image_value_for_connector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ImageValueForConnectorTransformer
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.image_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ImageConnectorValueTransformer
         tags:
-            - { name: akeneo_referenceentity.value_for_connector_transformer }
+            - { name: akeneo_referenceentity.connector_value_transformer }
 
-    akeneo_referenceentity.infrastructure.persistence.record.transformer.record_value_for_connector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordValueForConnectorTransformer
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.record_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordConnectorValueTransformer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
         tags:
-            - { name: akeneo_referenceentity.value_for_connector_transformer }
+            - { name: akeneo_referenceentity.connector_value_transformer }
 
-    akeneo_referenceentity.infrastructure.persistence.record.transformer.record_collection_value_for_connector:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordCollectionValueForConnectorTransformer
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.record_collection_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\RecordCollectionConnectorValueTransformer
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_existing_record_codes'
         tags:
-            - { name: akeneo_referenceentity.value_for_connector_transformer }
+            - { name: akeneo_referenceentity.connector_value_transformer }

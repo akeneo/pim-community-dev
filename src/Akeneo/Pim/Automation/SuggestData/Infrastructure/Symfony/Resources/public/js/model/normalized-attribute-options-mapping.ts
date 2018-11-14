@@ -25,7 +25,7 @@ export interface NormalizedAttributeOptionsMapping {
   franklinAttributeCode: string;
   catalogAttributeCode: string;
   mapping: {
-    [pimAiAttributeOptionCode: string]: {
+    [franklinAttributeOptionCode: string]: {
       franklinAttributeOptionCode: {
         label: string;
       },

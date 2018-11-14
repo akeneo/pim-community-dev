@@ -27,7 +27,7 @@ use Oro\Bundle\ConfigBundle\Entity\Config;
 final class ConfigurationRepository implements ConfigurationRepositoryInterface
 {
     private const TOKEN_KEY = 'token';
-    private const PIM_AI_CODE = 'pim-ai';
+    private const FRANKLIN_CODE = 'franklin';
     private const ORO_CONFIG_RECORD_ID = 1;
 
     /** @var EntityManagerInterface */
@@ -81,7 +81,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
         $oroConfig = $this->findOroConfig();
         if (null === $oroConfig) {
             $oroConfig = new Config();
-            $oroConfig->setEntity(self::PIM_AI_CODE);
+            $oroConfig->setEntity(self::FRANKLIN_CODE);
             $oroConfig->setRecordId(static::ORO_CONFIG_RECORD_ID);
         }
         $this->updateOroConfigValues($oroConfig, $configuration);
@@ -95,7 +95,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     private function findOroConfig(): ?Config
     {
         return $this->entityManager->getRepository(Config::class)->findOneBy([
-            'scopedEntity' => self::PIM_AI_CODE,
+            'scopedEntity' => self::FRANKLIN_CODE,
             'recordId' => self::ORO_CONFIG_RECORD_ID,
         ]);
     }

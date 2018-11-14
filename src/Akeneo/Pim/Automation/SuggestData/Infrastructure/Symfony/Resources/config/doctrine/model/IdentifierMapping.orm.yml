@@ -1,20 +1,20 @@
 Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifierMapping:
     type: entity
-    table: pim_suggest_data_pimai_identifier_mapping
+    table: pim_suggest_data_franklin_identifier_mapping
     changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
-        pim_ai_code_idx:
+        franklin_code_idx:
             columns:
-                - pim_ai_code
+                - franklin_code
     fields:
         id:
             type: integer
             id: true
             generator:
                 strategy: AUTO
-        pimAiCode:
+        franklinCode:
             type: string
-            column: pim_ai_code
+            column: franklin_code
     oneToOne:
         attribute:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface

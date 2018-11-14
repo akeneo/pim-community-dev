@@ -99,7 +99,7 @@ extensions:
                 pending: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.pending
                 mapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.mapped
                 unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
-                pimAiAttribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
+                franklinAttribute: akeneo_suggest_data.entity.attributes_mapping.fields.franklin_attribute
                 catalogAttribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
                 attributeMappingStatus: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
                 valuesSummary: akeneo_suggest_data.entity.attributes_mapping.fields.values_summary
@@ -113,7 +113,7 @@ extensions:
         position: 10
         targetZone: filters
         config:
-            fieldName: 'pimAiAttribute'
+            fieldName: 'franklinAttribute'
 
     pim-suggest-data-settings-attributes-mapping-index-status-filter:
         module: pimee/view/common/status-filter

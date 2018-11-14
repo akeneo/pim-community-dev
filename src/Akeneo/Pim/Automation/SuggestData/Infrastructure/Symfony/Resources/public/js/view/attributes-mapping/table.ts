@@ -27,7 +27,7 @@ const UserContext = require('pim/user-context');
 
 interface AttributesMappingForFamily {
   [franklinAttribute: string]: {
-    pimAiAttribute: {
+    franklinAttribute: {
       label: string,
       type: string,
       summary: string[],
@@ -52,7 +52,7 @@ interface Config {
     pending: string,
     mapped: string,
     unmapped: string,
-    pimAiAttribute: string,
+    franklinAttribute: string,
     catalogAttribute: string,
     attributeMappingStatus: string,
     valuesSummary: string,
@@ -99,7 +99,7 @@ class AttributeMapping extends BaseView {
       pending: '',
       mapped: '',
       unmapped: '',
-      pimAiAttribute: '',
+      franklinAttribute: '',
       catalogAttribute: '',
       attributeMappingStatus: '',
       valuesSummary: '',
@@ -147,7 +147,7 @@ class AttributeMapping extends BaseView {
       familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
       escapeHtml: EscapeHtml.escapeHtml,
       statuses: this.getMappingStatuses(),
-      pimAiAttribute: __(this.config.labels.pimAiAttribute),
+      franklinAttribute: __(this.config.labels.franklinAttribute),
       catalogAttribute: __(this.config.labels.catalogAttribute),
       attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
       type: __(this.config.labels.type),
@@ -180,7 +180,7 @@ class AttributeMapping extends BaseView {
           this.appendAttributeSelector(mapping, franklinAttributeCode, isAttributeOptionsButtonVisible);
         });
 
-        Filterable.afterRender(this, __(this.config.labels.pimAiAttribute));
+        Filterable.afterRender(this, __(this.config.labels.franklinAttribute));
 
         this.renderExtensions();
         this.delegateEvents();
@@ -217,7 +217,7 @@ class AttributeMapping extends BaseView {
         fieldName: 'mapping.' + franklinAttributeCode + '.attribute',
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
-        types: AttributeMapping.VALID_MAPPING[mapping[franklinAttributeCode].pimAiAttribute.type],
+        types: AttributeMapping.VALID_MAPPING[mapping[franklinAttributeCode].franklinAttribute.type],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
@@ -305,7 +305,7 @@ class AttributeMapping extends BaseView {
    */
   private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
     const $line = $(event.currentTarget).closest('.line');
-    const franklinAttributeLabel = $line.data('pim-ai-attribute') as string;
+    const franklinAttributeLabel = $line.data('franklin-attribute') as string;
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
         $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;

@@ -7,7 +7,7 @@ config:
                     module: pimee/controller/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:
-                        entity: pim-ai-connection
+                        entity: franklin-connection
                 akeneo_suggest_data_identifiers_mapping_edit:
                     module: pimee/controller/identifiers-mapping
                     aclResourceId: akeneo_suggest_data_settings_mapping

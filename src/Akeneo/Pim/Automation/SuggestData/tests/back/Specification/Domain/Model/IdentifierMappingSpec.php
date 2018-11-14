@@ -23,12 +23,12 @@ class IdentifierMappingSpec extends ObjectBehavior
 {
     public function let(AttributeInterface $akeneoAttribute): void
     {
-        $this->beConstructedWith('pim_ai_code', $akeneoAttribute);
+        $this->beConstructedWith('franklin_code', $akeneoAttribute);
     }
 
-    public function it_gets_pim_ai_attribute_code(): void
+    public function it_gets_franklin_attribute_code(): void
     {
-        $this->getPimAiCode()->shouldReturn('pim_ai_code');
+        $this->getFranklinCode()->shouldReturn('franklin_code');
     }
 
     public function it_gets_akeneo_attribute($akeneoAttribute): void
@@ -56,9 +56,9 @@ class IdentifierMappingSpec extends ObjectBehavior
 
     public function it_build_an_identifier_mapping_object_without_akeneo_attribute(): void
     {
-        $this->beConstructedWith('pim_ai_code', null);
+        $this->beConstructedWith('franklin_code', null);
 
-        $this->getPimAiCode()->shouldReturn('pim_ai_code');
+        $this->getFranklinCode()->shouldReturn('franklin_code');
         $this->getAttribute()->shouldReturn(null);
     }
 }

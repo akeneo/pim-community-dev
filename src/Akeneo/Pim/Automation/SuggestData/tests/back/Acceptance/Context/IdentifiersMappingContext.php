@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMa
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiFake;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -86,7 +86,7 @@ class IdentifiersMappingContext implements Context
     public function aPredefinedMapping(TableNode $table): void
     {
         $mapped = $this->extractIdentifiersMappingFromTable($table);
-        $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $identifiers = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
 
         $tmp = array_fill_keys($identifiers, null);
         $tmp = array_merge($tmp, $mapped);
@@ -211,7 +211,7 @@ class IdentifiersMappingContext implements Context
         $extractedData = $tableNode->getRowsHash();
         array_shift($extractedData);
 
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $extractedData);
     }
@@ -220,7 +220,7 @@ class IdentifiersMappingContext implements Context
      * Transforms from gherkin table:.
      *
      *                                | Not mandatory  | as much locales as you want ...
-     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | franklin_code | attribute_code | en_US | fr_FR  |
      * | brand       | brand          | Brand | Marque |
      * | mpn         | mpn            | MPN   | MPN    |
      * | upc         | ean            | EAN   | EAN    |
@@ -230,7 +230,7 @@ class IdentifiersMappingContext implements Context
      *
      * [
      *     [
-     *         'from' => ['id' => 'brand'], (pim_ai_code)
+     *         'from' => ['id' => 'brand'], (franklin_code)
      *         'status' => 'active',
      *         'to' => [
      *             'id' => 'brand', (attribute_code)
@@ -252,7 +252,7 @@ class IdentifiersMappingContext implements Context
         $extractedData = $tableNode->getRows();
         $indexes = array_shift($extractedData);
         $locales = array_filter($indexes, function ($value) {
-            return 'pim_ai_code' !== $value && 'attribute_code' !== $value;
+            return 'franklin_code' !== $value && 'attribute_code' !== $value;
         });
 
         $mappings = [];
@@ -265,13 +265,13 @@ class IdentifiersMappingContext implements Context
                 }
             }
 
-            $mappings[$rawMapping['pim_ai_code']] = [
-                'from' => ['id' => $rawMapping['pim_ai_code']],
+            $mappings[$rawMapping['franklin_code']] = [
+                'from' => ['id' => $rawMapping['franklin_code']],
                 'status' => empty($rawMapping['attribute_code']) ? 'inactive' : 'active',
             ];
 
             if (!empty($rawMapping['attribute_code'])) {
-                $mappings[$rawMapping['pim_ai_code']]['to'] = [
+                $mappings[$rawMapping['franklin_code']]['to'] = [
                     'id' => $rawMapping['attribute_code'],
                     'label' => $labels,
                 ];
@@ -285,7 +285,7 @@ class IdentifiersMappingContext implements Context
      * Transforms from gherkin table:.
      *
      *                                | Not mandatory and will not be part of extraction |
-     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | franklin_code | attribute_code | en_US | fr_FR  |
      * | brand       | brand          | Brand | Marque |
      * | mpn         | mpn            | MPN   | MPN    |
      * | upc         | ean            | EAN   | EAN    |
@@ -293,7 +293,7 @@ class IdentifiersMappingContext implements Context
      *
      * to php array with simple identifier mapping:
      *
-     * pim_ai_code => attribute_code
+     * franklin_code => attribute_code
      * [
      *     'brand' => 'brand',
      *     'mpn' => 'mpn',
@@ -309,10 +309,10 @@ class IdentifiersMappingContext implements Context
     {
         $mapping = [];
         foreach ($tableNode->getColumnsHash() as $column) {
-            $mapping[$column['pim_ai_code']] = $column['attribute_code'];
+            $mapping[$column['franklin_code']] = $column['attribute_code'];
         }
 
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $mapping);
     }

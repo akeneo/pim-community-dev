@@ -52,14 +52,14 @@ final class ProductSubscriptionRequest
     public function getMappedValues(IdentifiersMapping $mapping): array
     {
         $mapped = [];
-        foreach ($mapping as $pimAiCode => $mappedAttribute) {
+        foreach ($mapping as $franklinCode => $mappedAttribute) {
             if (!$mappedAttribute instanceof AttributeInterface) {
                 continue;
             }
 
             $value = $this->product->getValue($mappedAttribute->getCode());
             if (null !== $value && $value->hasData()) {
-                $mapped[$pimAiCode] = (string) $value;
+                $mapped[$franklinCode] = (string) $value;
             }
         }
 

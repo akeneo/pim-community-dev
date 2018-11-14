@@ -17,7 +17,7 @@ Feature: Fetch product subscription status
   Scenario: I retrieved the product subscription status for a product which has no values for the identifiers mapping
     Given the product "606449099812" of the family "router"
     And a predefined mapping as follows:
-      | pim_ai_code | attribute_code |
+      | franklin_code | attribute_code |
       | asin        | asin           |
     When I retrieve the product subscription status of the product "606449099812"
     Then the product subscription status indicates that mapping is not filled
@@ -25,7 +25,7 @@ Feature: Fetch product subscription status
   Scenario: I retrieved the product subscription status for a product which has values for the identifiers mapping
     Given the product "606449099812" of the family "router"
     And a predefined mapping as follows:
-      | pim_ai_code | attribute_code |
+      | franklin_code | attribute_code |
       | upc         | pim_upc        |
     When I retrieve the product subscription status of the product "606449099812"
     Then the product subscription status indicates that mapping is filled

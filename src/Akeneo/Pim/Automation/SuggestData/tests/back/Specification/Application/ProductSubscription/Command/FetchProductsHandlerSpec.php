@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -21,7 +21,7 @@ class FetchProductsHandlerSpec extends ObjectBehavior
     public function let(
         DataProviderFactory $dataProviderFactory,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        PimAI $dataProvider
+        Franklin $dataProvider
     ): void {
         $this->beConstructedWith(
             $dataProviderFactory,

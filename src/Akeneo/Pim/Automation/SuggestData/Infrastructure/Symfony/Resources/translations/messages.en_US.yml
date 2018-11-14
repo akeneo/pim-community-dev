@@ -2,7 +2,7 @@ akeneo_suggest_data:
     acl:
         suggest_data:
             index: Franklin Insights product subscription
-        pim_ai:
+        franklin:
             title: Manage Franklin Insights connection
         settings:
             mapping: Manage Franklin Insights Settings
