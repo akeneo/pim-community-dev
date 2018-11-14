@@ -462,14 +462,14 @@
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\QueryBuilderUtility`
 
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectCodeResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolverInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolverInterface`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\GroupSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSaver`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\GroupSavingOptionsResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSavingOptionsResolver`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductModelDescendantsSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductUniqueDataSynchronizer` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolverInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSavingOptionsResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
 
 - Move namespace `Pim\Bundle\CatalogBundle\Elasticsearch` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch`
 
@@ -505,7 +505,8 @@
 - Move `Pim\Component\Catalog\Model\GroupTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\GroupTranslationInterface`
 - Move `Pim\Component\Catalog\Entity\Group` to `Akeneo\Pim\Enrichment\Component\Category\Entity\Group`
 - Move `Pim\Component\Catalog\Model\GroupInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\GroupInterface`
-- Move `Pim\Component\Catalog\Entity\CategoryTranslation` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation`
+- Move `Pim\Bundle\CatalogBundle\Entity\Category` to `Akeneo\Pim\Enrichment\Component\Category\Model\Category`
+- Move `Pim\Bundle\CatalogBundle\Entity\CategoryTranslation` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation`
 - Move `Pim\Component\Catalog\Model\CategoryTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface`
 - Move `Pim\Component\Catalog\Entity\Category` to `Akeneo\Pim\Enrichment\Component\Category\Model\Category`
 - Move `Pim\Component\Catalog\Model\CategoryInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface`
@@ -869,6 +870,7 @@
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet`
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet`
 - Move `Pim\Component\Connector\Analyzer\AnalyzerInterface` to `Akeneo\Tool\Component\Connector\Analyzer\AnalyzerInterface`
+- Move `Pim\Component\Connector\Archiver\AbstractInvalidItemWriter` to `Akeneo\Tool\Component\Connector\Archiver\AbstractInvalidItemWriter`
 - Move `Pim\Component\Connector\Archiver\AbstractFilesystemArchiver` to `Akeneo\Tool\Component\Connector\Archiver\AbstractFilesystemArchiver`
 - Move `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver` to `Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver`
 - Move `Pim\Component\Connector\Archiver\ArchiverInterface` to `Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface`
@@ -910,7 +912,9 @@
 - Move `Pim\Component\Connector\Reader\Database\AbstractReader` to `Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader`
 - Move `Pim\Component\Connector\Reader\DummyItemReader` to `Akeneo\Tool\Component\Connector\Reader\DummyItemReader`
 - Move `Pim\Component\Connector\Reader\File\ArrayReader` to `Akeneo\Tool\Component\Connector\Reader\File\ArrayReader`
-- Move `Pim\Component\Connector\Reader\File\Reader` to `Akeneo\Tool\Component\Connector\Reader\File\Reader`
+- Move `Pim\Component\Connector\Reader\File\Csv\Reader` to `Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader`
+- Move `Pim\Component\Connector\Reader\File\Xlsx\Reader` to `Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader`
+- Move `Pim\Component\Connector\Reader\File\Yaml\Reader` to `Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader`
 - Move `Pim\Component\Connector\Reader\File\FileIteratorFactory` to `Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory`
 - Move `Pim\Component\Connector\Reader\File\FileIteratorInterface` to `Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface`
 - Move `Pim\Component\Connector\Reader\File\MediaPathTransformer` to `Akeneo\Tool\Component\Connector\Reader\File\MediaPathTransformer`
@@ -1048,21 +1052,21 @@
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider` to `Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductFormProvider`
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\ProductModelFormProvider` to `Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductModelFormProvider`
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider` to `Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\BaseEmptyValueProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\BaseEmptyValueProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\EmptyValueChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueChainedProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\EmptyValueProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\BaseFieldProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\BaseFieldProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\FieldChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldChainedProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\FieldProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\WysiwygFieldProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\WysiwygFieldProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\BaseFilterProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\BaseFilterProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\FilterChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterChainedProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\FilterProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\BaseEmptyValueProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\BaseFieldProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\WysiwygFieldProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Filter\BaseFilterProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\BaseFilterProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Filter\FilterChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface`
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormChainedProvider`
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface`
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\NoCompatibleFormProviderFoundException` to `Akeneo\Platform\Bundle\UIBundle\Provider\Form\NoCompatibleFormProviderFoundException`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\FormExtensionProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider`
-- Move `Pim\Bundle\EnrichBundle\Provider\Form\StructureVersionProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface`
 - Remove `Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController` to `Akeneo\Channel\Bundle\Controller\InternalApi\CurrencyController`
 - Move `Pim\Bundle\EnrichBundle\Controller\CurrencyController` to `Akeneo\Channel\Bundle\Controller\UI\CurrencyController`
