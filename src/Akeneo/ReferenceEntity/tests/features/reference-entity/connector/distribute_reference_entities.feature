@@ -10,7 +10,7 @@ Feature: Connection to e-commerce platforms and marketplaces
     Then the PIM returns the Brand reference entity
 
   @integration-back
-  Scenario: Notify an error when getting a record of a non-existent reference entity
+  Scenario: Notify an error when getting a non-existent reference entity
     Given some reference entities with some records
     When the connector requests a non-existent reference entity
     Then the PIM notifies the connector about an error indicating that the reference entity does not exist
