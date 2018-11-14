@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -27,12 +28,14 @@ class ImageConnectorValueTransformer implements ConnectorValueTransformerInterfa
         return $attribute instanceof ImageAttribute;
     }
 
-    public function transform(array $normalizedValue): array
+    public function transform(array $normalizedValue, AbstractAttribute $attribute): array
     {
+        Assert::true($this->supports($attribute));
+
         return [
-            'locale'  => $normalizedValue['locale'] ?? null,
-            'channel' => $normalizedValue['channel'] ?? null,
-            'data'    => $normalizedValue['data']['filePath'] ?? null,
+            'locale'  => $normalizedValue['locale'],
+            'channel' => $normalizedValue['channel'],
+            'data'    => $normalizedValue['data']['filePath'],
         ];
     }
 }

@@ -38,7 +38,6 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
     ) {
         $valueTransformerRegistry = new ConnectorValueTransformerRegistry([
             new TextConnectorValueTransformer(),
-            new RecordConnectorValueTransformer(),
         ]);
 
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
@@ -52,7 +51,7 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_connector_record(
         TextAttribute $nameAttribute,
-        RecordAttribute $countryAttribute
+        TextAttribute $countryAttribute
     ) {
         $valueKeyCollection = ValueKeyCollection::fromValueKeys([
             ValueKey::createFromNormalized('name_designer_fingerprint_ecommerce_en_US'),
@@ -140,7 +139,7 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
 
     function it_does_not_hydrates_unexpected_values(
         TextAttribute $nameAttribute,
-        RecordAttribute $countryAttribute
+        TextAttribute $countryAttribute
     ) {
         $valueKeyCollection = ValueKeyCollection::fromValueKeys([
             ValueKey::createFromNormalized('name_designer_fingerprint_ecommerce_en_US'),

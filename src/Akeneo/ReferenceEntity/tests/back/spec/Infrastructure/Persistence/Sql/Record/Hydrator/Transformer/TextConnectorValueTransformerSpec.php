@@ -31,28 +31,17 @@ class TextConnectorValueTransformerSpec extends ObjectBehavior
         $this->supports($imageAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_normalized_value_without_missing_data_to_a_normalized_connector_value()
+    function it_transforms_a_normalized_to_a_normalized_connector_value(TextAttribute $textAttribute)
     {
         $this->transform([
             'data'      => 'Starck',
             'locale'    => 'en_us',
             'channel'   => 'ecommerce',
             'attribute' => 'name_designer_fingerprint',
-        ])->shouldReturn([
+        ], $textAttribute)->shouldReturn([
             'locale'  => 'en_us',
             'channel' => 'ecommerce',
             'data'    => 'Starck',
-        ]);
-    }
-
-    function it_transforms_a_normalized_value_with_missing_data_to_a_normalized_connector_value()
-    {
-        $this->transform([
-            'attribute' => 'name_designer_fingerprint'
-        ])->shouldReturn([
-            'locale'  => null,
-            'channel' => null,
-            'data'    => null,
         ]);
     }
 }
