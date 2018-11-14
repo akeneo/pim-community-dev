@@ -183,14 +183,7 @@ class FakeClient implements ClientInterface
     private function handleMapping(string $method, string $uri, array $options)
     {
         if ('GET' === $method) {
-            $fakeFilepath = sprintf('%s/%s.json', realpath(self::FAKE_PATH), $uri);
-            if (!file_exists($fakeFilepath)) {
-                throw new \LogicException(
-                    sprintf('File "%s" not found. The FakeClient cannot provide you fake data.', $fakeFilepath)
-                );
-            }
-
-            return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], file_get_contents($fakeFilepath));
+            return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $this->loadFakeData($uri));
         }
 
         // Deal with PUT/POST
@@ -209,6 +202,8 @@ class FakeClient implements ClientInterface
     }
 
     /**
+     * Handles subscription end-points.
+     *
      * @param string $method
      * @param string $uri
      * @param array $options
@@ -221,25 +216,36 @@ class FakeClient implements ClientInterface
             case 'DELETE':
                 return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, []);
             case 'GET':
-                $filename = sprintf('subscriptions/updated-since/%s.json', $this->lastFetchDate);
-                $jsonContent = file_get_contents(
-                    sprintf(__DIR__ . '/Api/resources/%s', $filename)
-                );
-
-                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
+                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $this->loadFakeData($uri));
             case 'POST':
                 // TODO: Assert sent parameters
                 if (isset($options['form_params'][0]['asin'])) {
-                    $filename = sprintf('subscriptions/post/asin-%s.json', $options['form_params'][0]['asin']);
-                    $jsonContent = file_get_contents(
-                        sprintf(__DIR__ . '/Api/resources/%s', $filename)
-                    );
-
-                    return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
+                    $key = 'asin';
+                } elseif (isset($options['form_params'][0]['upc'])) {
+                    $key = 'upc';
+                } elseif (isset($options['form_params'][0]['mpn']) && isset($options['form_params'][0]['brand'])) {
+                    $key = 'mpn-brand';
+                } else {
+                    throw new \LogicException('Parameters sent for subscription are incorrects');
                 }
-                    throw new \LogicException('Subscription fake client only handle ASIN');
+
+                $jsonContent = $this->loadFakeData(sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key]));
+
+                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
             default:
                 throw new \LogicException('Wrong method send for subscription');
         }
+    }
+
+    private function loadFakeData($filepath)
+    {
+        $fakeFilepath = sprintf('%s/%s.json', realpath(self::FAKE_PATH), $filepath);
+        if (!file_exists($fakeFilepath)) {
+            throw new \LogicException(
+                sprintf('File "%s" not found. The FakeClient cannot provide you fake data.', $fakeFilepath)
+            );
+        }
+
+        return file_get_contents($fakeFilepath);
     }
 }
