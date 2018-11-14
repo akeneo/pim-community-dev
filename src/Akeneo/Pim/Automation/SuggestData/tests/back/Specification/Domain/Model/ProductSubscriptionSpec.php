@@ -71,22 +71,6 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $this->getSuggestedData()->shouldReturn($suggestedData);
     }
 
-    public function it_can_be_emptied(): void
-    {
-        $rawSuggestedData = [
-            [
-                'name' => 'upc',
-                'value' => '42',
-            ],
-        ];
-        $suggestedData = new SuggestedData($rawSuggestedData);
-        $this->setSuggestedData($suggestedData);
-        $this->getSuggestedData()->jsonSerialize()->shouldReturn($rawSuggestedData);
-
-        $this->emptySuggestedData();
-        $this->getSuggestedData()->jsonSerialize()->shouldReturn(null);
-    }
-
     public function it_sets_missing_mapping(): void
     {
         $this->markAsMissingMapping(false)->shouldReturn($this);

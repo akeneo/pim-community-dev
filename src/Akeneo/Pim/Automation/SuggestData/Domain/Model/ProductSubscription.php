@@ -108,17 +108,6 @@ class ProductSubscription
     }
 
     /**
-     * @return ProductSubscription
-     */
-    public function emptySuggestedData(): self
-    {
-        $this->rawSuggestedData = null;
-        $this->suggestedData = null;
-
-        return $this;
-    }
-
-    /**
      * @param bool $isMappingMissing
      *
      * @return ProductSubscription
