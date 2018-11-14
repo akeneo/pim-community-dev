@@ -50,13 +50,24 @@ class FakeClient implements ClientInterface
     /** @var array */
     private $optionsMapping = [];
 
+    /** @var UriGenerator */
+    private $uriGenerator;
+
+    /**
+     * @param UriGenerator $uriGenerator
+     */
+    public function __construct(UriGenerator $uriGenerator)
+    {
+        $this->uriGenerator = $uriGenerator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {
         // Clean base uri
-        $uri = str_replace('https://pim-ai.prod.cloud.akeneo.com/api/', '', $uri);
+        $uri = str_replace($this->uriGenerator->getBaseUri() . '/api/', '', $uri);
 
         if ('stats' === $uri) {
             return $this->authenticate($method, $uri, $options);
