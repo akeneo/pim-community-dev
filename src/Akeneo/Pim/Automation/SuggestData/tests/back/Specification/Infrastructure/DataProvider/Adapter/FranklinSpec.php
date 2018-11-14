@@ -327,6 +327,8 @@ class FranklinSpec extends ObjectBehavior
                                     'label' => ['en_US' => 'Laptop'],
                                 ],
                             ],
+                            'mapped_identifiers' => [],
+                            'mapped_attributes' => [],
                             'misses_mapping' => false,
                         ],
                     ],

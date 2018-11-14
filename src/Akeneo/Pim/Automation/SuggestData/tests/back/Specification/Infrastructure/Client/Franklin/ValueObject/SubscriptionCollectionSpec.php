@@ -87,6 +87,18 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                     'label' => ['en_US' => 'Laptop'],
                 ],
             ],
+            'mapped_identifiers' => [
+                [
+                    'name' => 'ean',
+                    'value' => '606449099812',
+                ],
+            ],
+            'mapped_attributes' => [
+                [
+                    'name' => 'ram',
+                    'value' => '256 MEGABYTE',
+                ],
+            ],
             'misses_mapping' => false,
         ];
     }
@@ -103,6 +115,18 @@ class SubscriptionCollectionSpec extends ObjectBehavior
             ],
             'extra' => [
                 'tracker_id' => 50,
+            ],
+            'mapped_identifiers' => [
+                [
+                    'name' => 'ean',
+                    'value' => '123456789123',
+                ],
+            ],
+            'mapped_attributes' => [
+                [
+                    'name' => 'processor_frequency',
+                    'value' => '1 GIGAHERTZ',
+                ],
             ],
             'misses_mapping' => false,
         ];

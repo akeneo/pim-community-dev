@@ -45,7 +45,7 @@ class Subscription
      */
     public function getAttributes(): array
     {
-        return $this->rawSubscription['identifiers'] + $this->rawSubscription['attributes'];
+        return array_merge($this->rawSubscription['mapped_identifiers'], $this->rawSubscription['mapped_attributes']);
     }
 
     /**
@@ -73,8 +73,8 @@ class Subscription
     {
         $expectedKeys = [
             'id',
-            'identifiers',
-            'attributes',
+            'mapped_identifiers',
+            'mapped_attributes',
             'extra',
             'misses_mapping',
         ];
@@ -87,6 +87,21 @@ class Subscription
 
         if (!isset($rawSubscription['extra']['tracker_id'])) {
             throw new \InvalidArgumentException('Missing "tracker_id" in raw subscription data');
+        }
+
+        foreach (['mapped_identifiers', 'mapped_attributes'] as $key) {
+            if (!is_array($rawSubscription[$key])) {
+                throw new \InvalidArgumentException(
+                    sprintf('key "%s" must be an array in raw subscription data', $key)
+                );
+            }
+            foreach ($rawSubscription[$key] as $index => $value) {
+                if (!isset($value['name']) || !isset($value['value'])) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Missing key "name" or "value" for "%s"[%d] in raw suggested data', $key, $index)
+                    );
+                }
+            }
         }
     }
 }
