@@ -9,6 +9,7 @@
 - PIM-7828: Fix ACL on System Info
 - PIM-7824: Fix filter on view with attribute option deleted
 - PIM-7852: Increase product import performances and fixes model association import when comparison is disabled
+- PIM-7853: Fix unwanted automatic reload of the user page even if there were errors on the form
 
 # 2.3.16 (2018-11-13)
 
