@@ -108,12 +108,6 @@ Feature: List attribute groups
   Scenario: Successfully display attribute group labels translated from the catalog locale
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I edit the "de_DE" locale
-    And I visit the "Permissions" tab
-    And I fill in the following information:
-      | Allowed to view product information | All |
-    And I should see the text "There are unsaved changes"
-    And I save the locale
     And I am on the "tablet" channel page
     And I add the "german" locale to the "tablet" channel
     And I edit the "Julia" user
