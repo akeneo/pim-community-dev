@@ -1,0 +1,95 @@
+Area: Area
+ACRE: Acre
+ARE: Are
+ARPENT: Arpent
+CENTIARE: Centiare
+HECTARE: Hectare
+SQUARE_CENTIMETER: Square centimetre
+SQUARE_DECIMETER: Square decimetre
+SQUARE_DEKAMETER: Square dekametre
+SQUARE_FOOT: Square foot
+SQUARE_FURLONG: Square furlong
+SQUARE_HECTOMETER: Square hectometre
+SQUARE_INCH: Square inch
+SQUARE_KILOMETER: Square kilometre
+SQUARE_METER: Square metre
+SQUARE_MIL: Square mil
+SQUARE_MILE: Square mile
+SQUARE_MILLIMETER: Square millimetre
+SQUARE_YARD: Square yard
+Binary: Binary
+BIT: Bit
+BYTE: Byte
+KILOBYTE: Kilobyte
+MEGABYTE: Megabyte
+GIGABYTE: Gigabyte
+TERABYTE: Terabyte
+Frequency: Frequency
+GIGAHERTZ: Gigahertz
+KILOHERTZ: Kilohertz
+MEGAHERTZ: Megahertz
+TERAHERTZ: Terahertz
+HERTZ: Hertz
+Length: Length
+CENTIMETER: Centimetre
+CHAIN: Chain
+DECIMETER: Decimetre
+DEKAMETER: Dekametre
+FEET: Feet
+FURLONG: Furlong
+INCH: Inch
+HECTOMETER: Hectometre
+KILOMETER: Kilometre
+METER: Metre
+MIL: Mil
+MILE: Mile
+MILLIMETER: Millimetre
+YARD: Yard
+Power: Power
+GIGAWATT: Gigawatt
+KILOWATT: Kilowatt
+MEGAWATT: Megawatt
+TERAWATT: Terawatt
+WATT: Watt
+Speed: Speed
+FOOT_PER_SECOND: Foot per second
+FOOT_PER_HOUR: Foot per hour
+KILOMETER_PER_HOUR: Kilometre per hour
+METER_PER_HOUR: Metre per hour
+METER_PER_MINUTE: Metre per minute
+METER_PER_SECOND: Metre per second
+MILE_PER_HOUR: Mile per hour
+YARD_PER_HOUR: Yard per hour
+Temperature: Temperature
+CELSIUS: Celsius
+FAHRENHEIT: Fahrenheit
+KELVIN: Kelvin
+RANKINE: Rankine
+REAUMUR: Reaumur
+Volume: Volume
+BARREL: Barrel
+CENTILITER: Centilitre
+CUBIC_CENTIMETER: Cubic centimetre
+CUBIC_DECIMETER: Cubic decimetre
+CUBIC_FOOT: Cubic foot
+CUBIC_INCH: Cubic inch
+CUBIC_METER: Cubic metre
+CUBIC_MILLIMETER: Cubic millimetre
+CUBIC_YARD: Cubic yard
+DECILITER: Decilitre
+GALLON: Gallon
+LITER: Litre
+MILLILITER: Millilitre
+OUNCE: Ounce
+PINT: Pint
+Weight: Weight
+DENIER: Denier
+GRAIN: Grain
+GRAM: Gram
+KILOGRAM: Kilogram
+LIVRE: Livre
+MARC: Marc
+MILLIGRAM: Milligram
+ONCE: Once
+POUND: Pound
+TON: Ton
