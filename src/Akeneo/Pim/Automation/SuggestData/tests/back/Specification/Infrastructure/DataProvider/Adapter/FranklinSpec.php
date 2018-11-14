@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
@@ -26,14 +27,12 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -45,12 +44,11 @@ class FranklinSpec extends ObjectBehavior
     public function let(
         AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
-        IdentifiersMappingApiInterface $identifiersMappingApi,
         OptionsMappingInterface $attributeOptionsMappingApi,
-        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         ConfigurationRepositoryInterface $configurationRepository,
         SubscriptionProviderInterface $productSubscription,
-        AttributesMappingProviderInterface $attributesMappingProvider
+        AttributesMappingProviderInterface $attributesMappingProvider,
+        IdentifiersMappingProviderInterface $identifiersMappingProvider
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
@@ -58,12 +56,11 @@ class FranklinSpec extends ObjectBehavior
         $this->beConstructedWith(
             $authenticationProvider,
             $subscriptionApi,
-            $identifiersMappingApi,
             $attributeOptionsMappingApi,
-            $identifiersMappingNormalizer,
             $configurationRepository,
             $productSubscription,
-            $attributesMappingProvider
+            $attributesMappingProvider,
+            $identifiersMappingProvider
         );
     }
 
@@ -74,15 +71,10 @@ class FranklinSpec extends ObjectBehavior
     }
 
     public function it_updates_the_identifiers_mapping(
-        IdentifiersMappingApiInterface $identifiersMappingApi,
-        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
+        $identifiersMappingProvider,
         IdentifiersMapping $mapping
     ): void {
-        $normalizedMapping = ['foo' => 'bar'];
-
-        $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
-        $identifiersMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $identifiersMappingApi->update($normalizedMapping)->shouldBeCalled();
+        $identifiersMappingProvider->updateIdentifiersMapping($mapping)->shouldBeCalled();
 
         $this->updateIdentifiersMapping($mapping);
     }

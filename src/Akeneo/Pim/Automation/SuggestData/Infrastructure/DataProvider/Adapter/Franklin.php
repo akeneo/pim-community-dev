@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
@@ -30,13 +31,11 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCo
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
  * Franklin implementation to connect to a data provider.
@@ -54,12 +53,6 @@ class Franklin implements DataProviderInterface
     /** @var SubscriptionApiInterface */
     private $subscriptionApi;
 
-    /** @var IdentifiersMappingApiInterface */
-    private $identifiersMappingApi;
-
-    /** @var IdentifiersMappingNormalizer */
-    private $identifiersMappingNormalizer;
-
     /** @var OptionsMappingInterface */
     private $attributeOptionsMappingApi;
 
@@ -72,34 +65,34 @@ class Franklin implements DataProviderInterface
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
+    /** @var IdentifiersMappingProviderInterface */
+    private $identifiersMappingProvider;
+
     /**
      * @param AuthenticationProviderInterface $authenticationProvider
      * @param SubscriptionApiInterface $subscriptionApi
-     * @param IdentifiersMappingApiInterface $identifiersMappingApi
      * @param OptionsMappingInterface $attributeOptionsMappingApi
-     * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param AttributesMappingProviderInterface $attributesMappingProvider
+     * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
      */
     public function __construct(
         AuthenticationProviderInterface $authenticationProvider,
         SubscriptionApiInterface $subscriptionApi,
-        IdentifiersMappingApiInterface $identifiersMappingApi,
         OptionsMappingInterface $attributeOptionsMappingApi,
-        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         ConfigurationRepositoryInterface $configurationRepository,
         SubscriptionProviderInterface $subscriptionProvider,
-        AttributesMappingProviderInterface $attributesMappingProvider
+        AttributesMappingProviderInterface $attributesMappingProvider,
+        IdentifiersMappingProviderInterface $identifiersMappingProvider
     ) {
         $this->authenticationProvider = $authenticationProvider;
         $this->subscriptionApi = $subscriptionApi;
-        $this->identifiersMappingApi = $identifiersMappingApi;
         $this->attributeOptionsMappingApi = $attributeOptionsMappingApi;
-        $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
         $this->configurationRepository = $configurationRepository;
         $this->subscriptionProvider = $subscriptionProvider;
         $this->attributesMappingProvider = $attributesMappingProvider;
+        $this->identifiersMappingProvider = $identifiersMappingProvider;
     }
 
     /**
@@ -139,8 +132,7 @@ class Franklin implements DataProviderInterface
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
-        $this->identifiersMappingApi->setToken($this->getToken());
-        $this->identifiersMappingApi->update($this->identifiersMappingNormalizer->normalize($identifiersMapping));
+        $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
     }
 
     /**
