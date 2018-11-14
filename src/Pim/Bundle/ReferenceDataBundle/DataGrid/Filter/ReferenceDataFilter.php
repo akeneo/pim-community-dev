@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -22,24 +24,47 @@ class ReferenceDataFilter extends ChoiceFilter
     protected $registry;
 
     /**
-     * Constructor
-     *
-     * @param FormFactoryInterface           $factory
-     * @param ProductFilterUtility           $util
-     * @param UserContext                    $userContext
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ConfigurationRegistryInterface $registry
+     * TODO @merge remove optionReposClass (removed in ChoiceFilter), remove null on attributeOptionRepo
+     * @param FormFactoryInterface                    $factory
+     * @param ProductFilterUtility                    $util
+     * @param UserContext                             $userContext
+     * @param AttributeRepositoryInterface            $attributeRepository
+     * @param ConfigurationRegistryInterface          $registry
+     * @param AttributeOptionRepositoryInterface|null $attributeOptionRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
-        ConfigurationRegistryInterface $registry
+        ConfigurationRegistryInterface $registry,
+        AttributeOptionRepositoryInterface $attributeOptionRepository = null
     ) {
-        parent::__construct($factory, $util, $userContext, null, $attributeRepository);
+        parent::__construct($factory, $util, $userContext, null, $attributeRepository, $attributeOptionRepository);
 
         $this->registry = $registry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $data = $this->parseData($data);
+        if (!$data) {
+            return false;
+        }
+
+        $operator = $this->getOperator($data['type']);
+
+        $this->util->applyFilter(
+            $ds,
+            $this->get(ProductFilterUtility::DATA_NAME_KEY),
+            $operator,
+            $data['value']
+        );
+
+        return true;
     }
 
     /**
