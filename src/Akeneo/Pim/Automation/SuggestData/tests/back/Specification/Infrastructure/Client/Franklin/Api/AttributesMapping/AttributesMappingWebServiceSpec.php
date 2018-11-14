@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
 use PhpSpec\ObjectBehavior;
@@ -73,10 +74,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
 
     private function getApiJsonReturn(): string
     {
-        $directory = realpath(
-            sprintf('%s/../../../../../../../../Infrastructure/Client/Franklin/Api/resources', __DIR__)
-        );
-        $filepath = sprintf('%s/%s.json', $directory, 'attributes-mapping-family-router');
+        $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes.json';
         if (!file_exists($filepath)) {
             throw new \InvalidArgumentException(sprintf('File "%s" not found', $filepath));
         }
