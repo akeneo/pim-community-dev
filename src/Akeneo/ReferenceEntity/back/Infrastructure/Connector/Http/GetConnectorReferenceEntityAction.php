@@ -6,7 +6,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToReferenceEntityImage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -19,17 +19,17 @@ class GetConnectorReferenceEntityAction
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
-    /** @var AddHalDownloadLinkToRecordImages */
-    private $addHalLinksToImageValues;
+    /** @var AddHalDownloadLinkToReferenceEntityImage */
+    private $addHalLinksToReferenceEntityImage;
 
     public function __construct(
         FindConnectorReferenceEntityByReferenceEntityIdentifierInterface $findConnectorReferenceEntity,
         ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues
+        AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->findConnectorReferenceEntity = $findConnectorReferenceEntity;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
+        $this->addHalLinksToReferenceEntityImage = $addHalLinksToImageValues;
     }
 
     /**
@@ -47,10 +47,11 @@ class GetConnectorReferenceEntityAction
         $referenceEntity = ($this->findConnectorReferenceEntity)($referenceEntityIdentifier);
 
         if (null === $referenceEntity) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier, $referenceEntityIdentifier));
+            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $normalizedReferenceEntity = $referenceEntity->normalize();
+        $normalizedReferenceEntity = ($this->addHalLinksToReferenceEntityImage)($normalizedReferenceEntity);
 
         return new JsonResponse($normalizedReferenceEntity);
     }
