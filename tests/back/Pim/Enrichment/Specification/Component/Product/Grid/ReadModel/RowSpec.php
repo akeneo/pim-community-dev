@@ -40,8 +40,8 @@ class RowSpec extends ObjectBehavior
         );
 
         $this->identifier()->shouldReturn('identifier');
-        $this->family()->shouldReturn('family label');
-        $this->groups()->shouldReturn(['group_1', 'group_2']);
+        $this->familyCode()->shouldReturn('family label');
+        $this->groupCodes()->shouldReturn(['group_1', 'group_2']);
         $this->enabled()->shouldReturn(true);
         $this->created()->shouldBeLike(new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')));
         $this->updated()->shouldBeLike(new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')));
@@ -53,7 +53,7 @@ class RowSpec extends ObjectBehavior
         $this->searchId()->shouldReturn('product_1');
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
-        $this->parent()->shouldReturn('parent_code');
+        $this->parentCode()->shouldReturn('parent_code');
         $this->values()->shouldBeLike(new ValueCollection([new ScalarValue($scalarAttribute, null, null, 'data')]));
     }
 
@@ -82,8 +82,8 @@ class RowSpec extends ObjectBehavior
         );
 
         $this->identifier()->shouldReturn('identifier');
-        $this->family()->shouldReturn('family label');
-        $this->groups()->shouldReturn([]);
+        $this->familyCode()->shouldReturn('family label');
+        $this->groupCodes()->shouldReturn([]);
         $this->enabled()->shouldReturn(false);
         $this->created()->shouldBeLike(new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')));
         $this->updated()->shouldBeLike(new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')));
@@ -95,7 +95,7 @@ class RowSpec extends ObjectBehavior
         $this->searchId()->shouldReturn('product_model_1');
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
-        $this->parent()->shouldReturn('parent_code');
+        $this->parentCode()->shouldReturn('parent_code');
         $this->values()->shouldBeLike(new ValueCollection([new ScalarValue($scalarAttribute, null, null, 'data')]));
     }
 }

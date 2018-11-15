@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -15,6 +14,9 @@ use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
  */
 final class Row
 {
+    private const PRODUCT_TYPE = 'product';
+    private const PRODUCT_MODEL_TYPE = 'product_model';
+
     /** @var string */
     private $identifier;
 
@@ -60,31 +62,31 @@ final class Row
     /** @var null|string */
     private $parent;
 
-    /** @var ValueCollection */
+    /** @var ValueCollectionInterface */
     private $values;
 
     /**
-     * @param string             $identifier
-     * @param null|string        $family
-     * @param string[]           $groups
-     * @param bool|null          $enabled
-     * @param \DateTimeInterface $created
-     * @param \DateTimeInterface $updated
-     * @param null|ScalarValue   $label
-     * @param null|MediaValue    $image
-     * @param null|int           $completeness
-     * @param string             $documentType
-     * @param int                $technicalId
-     * @param string             $searchId
-     * @param bool               $checked
-     * @param array              $childrenCompleteness
-     * @param null|string        $parent
-     * @param ValueCollection    $values
+     * @param string                   $identifier
+     * @param null|string              $family
+     * @param string[]                 $groupCodes
+     * @param bool|null                $enabled
+     * @param \DateTimeInterface       $created
+     * @param \DateTimeInterface       $updated
+     * @param string                   $label
+     * @param null|MediaValue          $image
+     * @param null|int                 $completeness
+     * @param string                   $documentType
+     * @param int                      $technicalId
+     * @param string                   $searchId
+     * @param bool                     $checked
+     * @param array                    $childrenCompleteness
+     * @param null|string              $parentCode
+     * @param ValueCollectionInterface $values
      */
     private function __construct(
         string $identifier,
         ?string $family,
-        array $groups,
+        array $groupCodes,
         ?bool $enabled,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
@@ -96,12 +98,12 @@ final class Row
         string $searchId,
         ?bool $checked,
         array $childrenCompleteness,
-        ?string $parent,
-        ValueCollection $values
+        ?string $parentCode,
+        ValueCollectionInterface $values
     ) {
         $this->identifier = $identifier;
         $this->familyCode = $family;
-        $this->groupCodes = $groups;
+        $this->groupCodes = $groupCodes;
         $this->enabled = $enabled;
         $this->created = $created;
         $this->updated = $updated;
@@ -113,14 +115,14 @@ final class Row
         $this->searchId = $searchId;
         $this->checked = $checked;
         $this->childrenCompleteness = $childrenCompleteness;
-        $this->parent = $parent;
+        $this->parent = $parentCode;
         $this->values = $values;
     }
 
     public static function fromProduct(
         string $identifier,
-        ?string $family,
-        array $groups,
+        ?string $familyCode,
+        array $groupCodes,
         ?bool $enabled,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
@@ -128,32 +130,32 @@ final class Row
         ?MediaValue $image,
         ?int $completeness,
         int $technicalId,
-        ?string $parent,
+        ?string $parentCode,
         ValueCollection $values
     ):self {
         return new self(
             $identifier,
-            $family,
-            $groups,
+            $familyCode,
+            $groupCodes,
             $enabled,
             $created,
             $updated,
             $label,
             $image,
             $completeness,
-            IdEncoder::PRODUCT_TYPE,
+            self::PRODUCT_TYPE,
             $technicalId,
-            IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $technicalId),
+            sprintf('%s_%s', self::PRODUCT_TYPE, $technicalId),
             true,
             [],
-            $parent,
+            $parentCode,
             $values
         );
     }
 
     public static function fromProductModel(
         string $code,
-        ?string $family,
+        string $familyCode,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         string $label,
@@ -165,7 +167,7 @@ final class Row
     ):self {
         return new self(
             $code,
-            $family,
+            $familyCode,
             [],
             false,
             $created,
@@ -173,9 +175,9 @@ final class Row
             $label,
             $image,
             null,
-            IdEncoder::PRODUCT_MODEL_TYPE,
+            self::PRODUCT_MODEL_TYPE,
             $technicalId,
-            IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $technicalId),
+            sprintf('%s_%s', self::PRODUCT_MODEL_TYPE, $technicalId),
             true,
             $childrenCompleteness,
             $parent,
@@ -194,7 +196,7 @@ final class Row
     /**
      * @return null|string
      */
-    public function family(): ?string
+    public function familyCode(): ?string
     {
         return $this->familyCode;
     }
@@ -202,7 +204,7 @@ final class Row
     /**
      * @return string[]
      */
-    public function groups(): array
+    public function groupCodes(): array
     {
         return $this->groupCodes;
     }
@@ -298,15 +300,15 @@ final class Row
     /**
      * @return null|string
      */
-    public function parent(): ?string
+    public function parentCode(): ?string
     {
         return $this->parent;
     }
 
     /**
-     * @return ValueCollection
+     * @return ValueCollectionInterface
      */
-    public function values(): ValueCollection
+    public function values(): ValueCollectionInterface
     {
         return $this->values;
     }

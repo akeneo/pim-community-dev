@@ -92,7 +92,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             true,
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
-            null,
+            'label',
             null,
             90,
             1,
@@ -103,8 +103,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             $pqb->getWrappedObject(),
             ['attribute_1', 'attribute_2'],
             'ecommerce',
-            'fr_FR',
-            0
+            'fr_FR'
         ))->willReturn(new Rows([$row], 1));
         $this->process($datagrid, $config);
 

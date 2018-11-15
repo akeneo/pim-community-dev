@@ -42,13 +42,13 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
         $productAndProductModelIdentifiersCursor = $queryParameters->productQueryBuilder()->execute();
         $identifiers = iterator_to_array($productAndProductModelIdentifiersCursor);
         $productIdentifiers = [];
-        $productModelIdentifiers = [];
+        $productModelCodes = [];
 
         foreach ($identifiers as $identifier) {
             if ($identifier->getType() === ProductInterface::class) {
                 $productIdentifiers[] = $identifier->getIdentifier();
             } elseif ($identifier->getType() === ProductModelInterface::class) {
-                $productModelIdentifiers[] = $identifier->getIdentifier();
+                $productModelCodes[] = $identifier->getIdentifier();
             }
         }
 
@@ -59,7 +59,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             $queryParameters->localeCode()
         );
         $productModelRows = ($this->fetchProductModelRowsFromCodes)(
-            $productModelIdentifiers,
+            $productModelCodes,
             $queryParameters->attributeCodes(),
             $queryParameters->channelCode(),
             $queryParameters->localeCode()

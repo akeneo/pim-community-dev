@@ -49,11 +49,10 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
         Assert::eq($format, 'datagrid');
 
         $data['identifier'] = $row->identifier();
-        $data['family'] = $row->family();
-        $data['groups'] = implode(',', $row->groups());
+        $data['family'] = $row->familyCode();
+        $data['groups'] = implode(',', $row->groupCodes());
         $data['enabled'] = $row->enabled();
         $data['values'] = $this->normalizer->normalize($row->values(), 'datagrid', $context);
-        ;
         $data['created'] = $this->normalizer->normalize($row->created(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($row->updated(), $format, $context);
         $data['label'] = $row->label();
@@ -65,7 +64,7 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
         $data['search_id'] = $row->searchId();
         $data['is_checked'] = $row->checked();
         $data['complete_variant_product'] = $row->childrenCompleteness();
-        $data['parent'] = $row->parent();
+        $data['parent'] = $row->parentCode();
 
         return $data;
     }

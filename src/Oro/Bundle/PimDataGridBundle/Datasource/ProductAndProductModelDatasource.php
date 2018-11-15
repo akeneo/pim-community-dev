@@ -58,22 +58,21 @@ class ProductAndProductModelDatasource extends Datasource
     {
         $attributesToDisplay = $this->getAttributeCodesToDisplay();
 
-        $channel = $this->getConfiguration('scope_code');
-        $locale = $this->getConfiguration('locale_code');
+        $channelCode = $this->getConfiguration('scope_code');
+        $localeCode = $this->getConfiguration('locale_code');
 
         $getRowsQueryParameters = new Query\FetchProductAndProductModelRowsParameters(
             $this->pqb,
             $attributesToDisplay,
-            $channel,
-            $locale,
-            0 // @todo get UserId
+            $channelCode,
+            $localeCode
         );
 
         $rows = ($this->fetchRows)($getRowsQueryParameters);
 
         $context = [
-            'locales'             => [$locale],
-            'channels'            => [$channel],
+            'locales'             => [$localeCode],
+            'channels'            => [$channelCode],
             'data_locale'         => $this->getParameters()['dataLocale'],
             'association_type_id' => $this->getConfiguration('association_type_id', false),
             'current_group_id'    => $this->getConfiguration('current_group_id', false),

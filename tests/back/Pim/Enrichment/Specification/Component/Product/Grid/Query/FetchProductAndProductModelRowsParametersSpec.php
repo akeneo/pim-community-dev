@@ -16,7 +16,7 @@ class FetchProductAndProductModelRowsParametersSpec extends ObjectBehavior
 {
     function let(ProductQueryBuilderInterface $builder)
     {
-        $this->beConstructedWith($builder, ['attribute_1'], 'channel_code', 'locale_code', 123);
+        $this->beConstructedWith($builder, ['attribute_1'], 'channel_code', 'locale_code');
     }
 
     function it_has_the_attribute_codes()
@@ -32,10 +32,5 @@ class FetchProductAndProductModelRowsParametersSpec extends ObjectBehavior
     function it_has_the_locale_code()
     {
         $this->localeCode()->shouldReturn('locale_code');
-    }
-
-    function it_has_the_user_id()
-    {
-        $this->userId()->shouldReturn(123);
     }
 }

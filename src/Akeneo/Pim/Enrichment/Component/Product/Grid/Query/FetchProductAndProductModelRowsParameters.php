@@ -32,28 +32,22 @@ final class FetchProductAndProductModelRowsParameters
     /** @var string */
     private $localeCode;
 
-    /** @var int */
-    private $userId;
-
     /**
      * @param ProductQueryBuilderInterface $productQueryBuilder
      * @param array                        $attributes
      * @param string                       $channel
      * @param string                       $locale
-     * @param int                          $userId
      */
     public function __construct(
         ProductQueryBuilderInterface $productQueryBuilder,
         array $attributes,
         string $channel,
-        string $locale,
-        int $userId
+        string $locale
     ) {
         $this->productQueryBuilder = $productQueryBuilder;
         $this->attributeCodes = $attributes;
         $this->channelCode = $channel;
         $this->localeCode = $locale;
-        $this->userId = $userId;
     }
 
     /**
@@ -86,13 +80,5 @@ final class FetchProductAndProductModelRowsParameters
     public function localeCode(): string
     {
         return $this->localeCode;
-    }
-
-    /**
-     * @return int
-     */
-    public function userId(): int
-    {
-        return $this->userId;
     }
 }

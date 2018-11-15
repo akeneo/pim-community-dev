@@ -19,16 +19,16 @@ final class AssertRows
 
     private static function assertSameRow(Row $expectedRow, Row $row): void
     {
-        $expectedGroups = $expectedRow->groups();
-        $groups = $row->groups();
+        $expectedGroups = $expectedRow->groupCodes();
+        $groups = $row->groupCodes();
 
         Assert::assertSame($expectedRow->identifier(), $row->identifier());
-        Assert::assertSame($expectedRow->parent(), $row->parent());
+        Assert::assertSame($expectedRow->parentCode(), $row->parentCode());
         Assert::assertSame($expectedRow->completeness(), $row->completeness());
         Assert::assertSame($expectedRow->childrenCompleteness(), $row->childrenCompleteness());
         Assert::assertSame($expectedRow->checked(), $row->checked());
         Assert::assertSame(sort($expectedGroups), sort($groups));
-        Assert::assertSame($expectedRow->family(), $row->family());
+        Assert::assertSame($expectedRow->familyCode(), $row->familyCode());
         Assert::assertSame($expectedRow->technicalId(), $row->technicalId());
         Assert::assertSame($expectedRow->searchId(), $row->searchId());
         Assert::assertSame($expectedRow->documentType(), $row->documentType());
