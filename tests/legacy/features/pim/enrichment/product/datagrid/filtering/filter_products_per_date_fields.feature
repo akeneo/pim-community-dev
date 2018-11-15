@@ -26,6 +26,7 @@ Feature: Filter products by date field
       | release | is empty     |       | book   |
       | release | is not empty |       | postit |
 
+  @critical
   Scenario: Successfully filter products by date attributes
     Given the following products:
       | sku    | release    |

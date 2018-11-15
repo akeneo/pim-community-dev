@@ -26,10 +26,12 @@ Feature: Filter products
     And I switch the locale to "en_US"
     And I switch the scope to "tablet"
 
+  @critical
   Scenario: Filter incomplete products and product model
     When I filter by "completeness" with operator "" and value "no"
     Then I should see products product3
 
+  @critical
   Scenario: Successfully filter complete products
     When I filter by "completeness" with operator "" and value "yes"
     Then I should see products code-product-model

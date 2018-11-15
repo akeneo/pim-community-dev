@@ -20,7 +20,7 @@ Feature: Browse products by locale and scope
     And I am logged in as "Mary"
     And I am on the products grid
 
-  @skip
+  @skip @critical
   Scenario: Successfully display english data on products page
     Given I switch the locale to "en_US"
     Then I should see product postit
