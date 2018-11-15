@@ -95,7 +95,7 @@ define(
                     dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', dateFormat),
                     channelLabel: i18n.getLabel(
                         project.channel.labels,
-                        userContext.get('user_default_locale'),
+                        userContext.get('uiLocale'),
                         project.channel.code
                     ),
                     localeLabel: project.locale.label,

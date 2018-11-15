@@ -41,7 +41,11 @@ export default (
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <ErrorBoundary errorMessage={__('pim_reference_entity.record.error.value', {fieldName: value.attribute.getLabel(locale.stringValue())})}>
+          <ErrorBoundary
+            errorMessage={__('pim_reference_entity.record.error.value', {
+              fieldName: value.attribute.getLabel(locale.stringValue()),
+            })}
+          >
             <DataView
               value={value}
               onChange={onValueChange}

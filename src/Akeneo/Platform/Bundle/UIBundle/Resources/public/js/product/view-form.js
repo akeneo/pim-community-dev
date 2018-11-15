@@ -55,7 +55,7 @@ define(
              */
             render: function () {
                 PageTitle.render(this.config.routeKey, {
-                    'product.label': this.getFormData().meta.label[UserContext.get('catalog_default_locale')]
+                    'product.label': this.getFormData().meta.label[UserContext.get('catalogLocale')]
                 });
 
                 return EditForm.prototype.render.apply(this, arguments);

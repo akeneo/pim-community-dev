@@ -30,7 +30,7 @@ define(
                     ajax: {
                         url: Routing.generate('pim_ui_ajaxentity_list', {
                             class: 'Akeneo\\Asset\\Component\\Model\\Tag',
-                            dataLocale: UserContext.get('user_default_locale'),
+                            dataLocale: UserContext.get('uiLocale'),
                             isCreatable: false
                         }),
                         quietMillis: 250,
@@ -41,7 +41,7 @@ define(
                                 options: {
                                     limit: 20,
                                     page: page,
-                                    locale: UserContext.get('user_default_locale')
+                                    locale: UserContext.get('uiLocale')
                                 }
                             };
                         },

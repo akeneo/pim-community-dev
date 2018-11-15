@@ -149,7 +149,7 @@ define(
             renderGrid: function () {
                 var urlParams = {
                     alias: this.datagrid.name,
-                    params: {dataLocale: UserContext.get('catalog_default_locale')}
+                    params: {dataLocale: UserContext.get('catalogLocale')}
                 };
 
                 urlParams.params[this.datagrid.paramName] = this.getProductId();

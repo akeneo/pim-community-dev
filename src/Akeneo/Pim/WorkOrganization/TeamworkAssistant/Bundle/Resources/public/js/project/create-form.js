@@ -192,7 +192,7 @@ define(
                 var loadingMask = new LoadingMask();
                 var project = _.defaults(this.getFormData(), {label: null});
                 project.datagrid_view = DatagridState.get('product-grid', ['filters', 'columns']);
-                project.locale = UserContext.get('catalog_default_locale');
+                project.locale = UserContext.get('catalogLocale');
 
                 this.$el.empty().append(loadingMask.render().$el.show());
 
@@ -256,7 +256,7 @@ define(
                         localeValue = model.get('locale').label;
                         channelValue = i18n.getLabel(
                             channel.labels,
-                            UserContext.get('catalog_default_locale'),
+                            UserContext.get('catalogLocale'),
                             channel.code
                         );
                     }
@@ -298,7 +298,7 @@ define(
              * @return {Promise}
              */
             getLocaleLabel: function () {
-                var catalogLocale = UserContext.get('catalog_default_locale');
+                var catalogLocale = UserContext.get('catalogLocale');
 
                 return FetcherRegistry.getFetcher('locale').fetch(catalogLocale).then(function (locale) {
                     return locale.label;
@@ -311,8 +311,8 @@ define(
              * @return {Promise}
              */
             getChannelLabel: function () {
-                var catalogChannel = UserContext.get('catalog_default_scope');
-                var catalogLocale = UserContext.get('catalog_default_locale');
+                var catalogChannel = UserContext.get('catalogScope');
+                var catalogLocale = UserContext.get('catalogLocale');
 
                 return FetcherRegistry.getFetcher('channel')
                     .fetch(catalogChannel, {force_list_method: true})

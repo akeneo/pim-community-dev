@@ -34,8 +34,8 @@ class ReferenceEntityField extends (Field as {new (config: any): any}) {
       <RecordSelector
         referenceEntityIdentifier={createReferenceEntityIdentifier(templateContext.attribute.reference_data_name)}
         value={valueData}
-        locale={LocaleReference.create(UserContext.get('catalog_default_locale'))}
-        channel={ChannelReference.create(UserContext.get('catalog_default_scope'))}
+        locale={LocaleReference.create(UserContext.get('catalogLocale'))}
+        channel={ChannelReference.create(UserContext.get('catalogScope'))}
         multiple={false}
         placeholder={__('pim_reference_entity.record.selector.no_value')}
         onChange={(recordCode: RecordCode) => {

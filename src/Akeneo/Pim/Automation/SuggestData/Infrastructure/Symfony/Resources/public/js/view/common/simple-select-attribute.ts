@@ -74,13 +74,13 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   protected convertBackendItem(item: NormalizedAttribute): object {
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalog_default_locale'), item.code),
+      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
       group: {
         text: (
           item.group ?
             i18n.getLabel(
               this.attributeGroups[item.group].labels,
-              UserContext.get('catalog_default_locale'),
+              UserContext.get('catalogLocale'),
               this.attributeGroups[item.group],
             ) : ''
         ),

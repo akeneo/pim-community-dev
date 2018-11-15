@@ -335,7 +335,7 @@ class AttributeMapping extends BaseView {
 
       const familyLabel = i18n.getLabel(
           normalizedFamily.labels,
-          UserContext.get('catalog_default_locale'),
+          UserContext.get('catalogLocale'),
           normalizedFamily.code,
       );
       const formContent = form.getExtension('content') as AttributeOptionsMapping;

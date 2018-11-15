@@ -1,6 +1,5 @@
-import * as $ from "jquery";
 const BaseBoolean = require('pim/form/common/fields/boolean');
-const Routing = require('routing');
+const UserContext = require('pim/user-context');
 
 /**
  * This module will display or not a boolean field regarding the URL called.
@@ -15,13 +14,15 @@ class VisibleBoolean extends BaseBoolean {
    */
   render() {
     if (this.visible === null) {
-      const username = this.getFormData().username;
-      $.get(Routing.generate('pimee_workflow_rest_user_fields_visibility', { identifier: username }))
-        .then((result: { [key:string] : boolean }) => {
-          this.visible = result[this.config.fieldName];
-
-          this.render();
-        })
+      this.visible = UserContext.get('display_' + this.config.fieldName);
+      this.render();
+      // const username = this.getFormData().username;
+      // $.get(Routing.generate('pimee_workflow_rest_user_fields_visibility', { identifier: username }))
+      //   .then((result: { [key:string] : boolean }) => {
+      //     this.visible = result[this.config.fieldName];
+      //
+      //     this.render();
+      //   })
     } else {
       BaseBoolean.prototype.render.apply(this, arguments);
     }

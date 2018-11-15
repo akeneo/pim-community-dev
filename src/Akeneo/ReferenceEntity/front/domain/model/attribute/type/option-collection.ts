@@ -1,5 +1,7 @@
 import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntityIdentifier, {createIdentifier as createReferenceEntityIdentifier,} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import ReferenceEntityIdentifier, {
+  createIdentifier as createReferenceEntityIdentifier,
+} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 import {
@@ -48,7 +50,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
       is_required
     );
 
-    options.map((option) => {
+    options.map(option => {
       if (!(option instanceof Option)) {
         throw new InvalidArgumentError('Attribute expects a list of Option as options');
       }
@@ -75,7 +77,7 @@ export class ConcreteOptionCollectionAttribute extends ConcreteAttribute impleme
     return {
       ...super.normalize(),
       type: 'option_collection',
-      options: this.options.map((option:Option) => option.normalize())
+      options: this.options.map((option: Option) => option.normalize()),
     };
   }
 }

@@ -8,7 +8,7 @@ const UserContext = require('pim/user-context');
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InterfaceNormalizedCategory {
+type InterfaceNormalizedCategory = {
   code: string;
   labels: { [key:string] : string };
 }
@@ -32,7 +32,7 @@ class AssetCategoryTree extends BaseSelect {
    */
   formatChoices(categories: InterfaceNormalizedCategory[]): { [key:string] : string } {
     return categories.reduce((result: { [key:string] : string }, category: InterfaceNormalizedCategory) => {
-      const label = category.labels[UserContext.get('user_default_locale')];
+      const label = category.labels[UserContext.get('uiLocale')];
       result[category.code] = label !== undefined ? label : '[' + category.code + ']';
 
       return result;
