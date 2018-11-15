@@ -9,6 +9,7 @@ services:
             -
                 - '@akeneo.pim.automation.suggest_data.connector.step.validate_configuration.subscription'
                 - '@akeneo.pim.automation.suggest_data.connector.step.subscribe_products'
+                - '@akeneo.pim.automation.suggest_data.connector.step.create_proposals'
         tags:
             - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'mass_edit' }
 
@@ -32,6 +33,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo.pim.automation.suggest_data.connector.step.fetch_products'
+                - '@akeneo.pim.automation.suggest_data.connector.step.create_proposals'
         tags:
             - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'suggest_data_fetch_products' }
 

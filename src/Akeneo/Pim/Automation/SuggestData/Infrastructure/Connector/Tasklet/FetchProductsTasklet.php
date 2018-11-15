@@ -20,8 +20,9 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
- * Tasklet that allows to launch data pulling from Franklin.
- * It can be used automatically with a CRON but also manually from a specific date (TODO: APAI-170).
+ * Tasklet used to launch data pulling from Franklin.
+ * The job it is used in can be run automatically with a CRON task,
+ * but also manually from a specific date (TODO: APAI-170).
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
