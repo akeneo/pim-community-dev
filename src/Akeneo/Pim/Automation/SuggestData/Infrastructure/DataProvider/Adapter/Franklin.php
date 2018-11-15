@@ -20,9 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInter
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
@@ -31,9 +29,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 
 /**
  * Franklin implementation to connect to a data provider.
@@ -48,15 +43,6 @@ class Franklin implements DataProviderInterface
     /** @var AttributesMappingProviderInterface */
     private $attributesMappingProvider;
 
-    /** @var SubscriptionApiInterface */
-    private $subscriptionApi;
-
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
-
-    /** @var Token */
-    private $token;
-
     /** @var SubscriptionProviderInterface */
     private $subscriptionProvider;
 
@@ -68,8 +54,6 @@ class Franklin implements DataProviderInterface
 
     /**
      * @param AuthenticationProviderInterface $authenticationProvider
-     * @param SubscriptionApiInterface $subscriptionApi
-     * @param ConfigurationRepositoryInterface $configurationRepository
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param AttributesMappingProviderInterface $attributesMappingProvider
      * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
@@ -77,16 +61,12 @@ class Franklin implements DataProviderInterface
      */
     public function __construct(
         AuthenticationProviderInterface $authenticationProvider,
-        SubscriptionApiInterface $subscriptionApi,
-        ConfigurationRepositoryInterface $configurationRepository,
         SubscriptionProviderInterface $subscriptionProvider,
         AttributesMappingProviderInterface $attributesMappingProvider,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
         AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider
     ) {
         $this->authenticationProvider = $authenticationProvider;
-        $this->subscriptionApi = $subscriptionApi;
-        $this->configurationRepository = $configurationRepository;
         $this->subscriptionProvider = $subscriptionProvider;
         $this->attributesMappingProvider = $attributesMappingProvider;
         $this->identifiersMappingProvider = $identifiersMappingProvider;
@@ -134,18 +114,11 @@ class Franklin implements DataProviderInterface
     }
 
     /**
-     * @param string $subscriptionId
-     *
-     * @throws ProductSubscriptionException
+     * {@inheritdoc}
      */
     public function unsubscribe(string $subscriptionId): void
     {
-        $this->subscriptionApi->setToken($this->getToken());
-        try {
-            $this->subscriptionApi->unsubscribeProduct($subscriptionId);
-        } catch (ClientException $e) {
-            throw new ProductSubscriptionException($e->getMessage());
-        }
+        $this->subscriptionProvider->unsubscribe($subscriptionId);
     }
 
     /**
@@ -187,20 +160,5 @@ class Franklin implements DataProviderInterface
             $franklinAttributeId,
             $attributeOptionsMapping
         );
-    }
-
-    /**
-     * @return string
-     */
-    private function getToken(): string
-    {
-        if (null === $this->token) {
-            $config = $this->configurationRepository->find();
-            if ($config instanceof Configuration) {
-                $this->token = $config->getToken();
-            }
-        }
-
-        return (string) $this->token;
     }
 }

@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
@@ -32,6 +35,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -41,9 +45,20 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function let(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         FamilyNormalizer $familyNormalizer,
-        SubscriptionApiInterface $subscriptionApi
+        SubscriptionApiInterface $subscriptionApi,
+        ConfigurationRepositoryInterface $configurationRepo
     ): void {
-        $this->beConstructedWith($identifiersMappingRepository, $familyNormalizer, $subscriptionApi);
+        $configuration = new Configuration();
+        $configuration->setToken(new Token('valid-token'));
+        $configurationRepo->find()->willReturn($configuration);
+        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
+
+        $this->beConstructedWith(
+            $identifiersMappingRepository,
+            $familyNormalizer,
+            $subscriptionApi,
+            $configurationRepo
+        );
     }
 
     public function it_throws_an_exception_if_no_mapping_has_been_defined(
@@ -80,6 +95,19 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this->shouldThrow(ProductSubscriptionException::invalidMappedValues())
             ->during('subscribe', [$productSubscriptionRequest]);
+    }
+
+    public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi): void
+    {
+        $clientException = new ClientException('exception-message');
+        $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
+
+        $this
+            ->shouldThrow(new ProductSubscriptionException('exception-message'))
+            ->during(
+                'unsubscribe',
+                ['foo-bar']
+            );
     }
 
     public function it_subscribes_product_to_franklin(
@@ -142,7 +170,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
     }
 
-    // Next specs are about `fetch()` method and don't need more spec.
     public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page): void
     {
         $subscriptionApi->fetchProducts()->willReturn($page);

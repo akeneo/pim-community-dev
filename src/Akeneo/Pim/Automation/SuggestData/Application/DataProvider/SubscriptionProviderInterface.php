@@ -33,6 +33,11 @@ interface SubscriptionProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
+     * @param string $subscriptionId
+     */
+    public function unsubscribe(string $subscriptionId): void;
+
+    /**
      * @param ProductSubscriptionRequest[] $requests
      *
      * @throws ProductSubscriptionException

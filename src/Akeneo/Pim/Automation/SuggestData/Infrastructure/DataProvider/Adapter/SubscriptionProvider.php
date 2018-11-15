@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
@@ -45,21 +48,32 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     private $familyNormalizer;
 
     /** @var SubscriptionApiInterface */
-    private $subscriptionApi;
+    private $api;
+
+    /** @var ConfigurationRepositoryInterface */
+    private $configurationRepo;
+
+    /** @var Token */
+    private $token;
 
     /**
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param FamilyNormalizer $familyNormalizer
-     * @param SubscriptionApiInterface $subscriptionApi
+     * @param SubscriptionApiInterface $api
+     * @param ConfigurationRepositoryInterface $configurationRepo
      */
     public function __construct(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         FamilyNormalizer $familyNormalizer,
-        SubscriptionApiInterface $subscriptionApi
+        SubscriptionApiInterface $api,
+        ConfigurationRepositoryInterface $configurationRepo
     ) {
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->familyNormalizer = $familyNormalizer;
-        $this->subscriptionApi = $subscriptionApi;
+        $this->api = $api;
+        $this->configurationRepo = $configurationRepo;
+
+        $this->api->setToken($this->getToken());
     }
 
     /**
@@ -120,12 +134,26 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     public function fetch(): \Iterator
     {
         try {
-            $subscriptionsPage = $this->subscriptionApi->fetchProducts();
+            $subscriptionsPage = $this->api->fetchProducts();
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
 
         return new SubscriptionsCursor($subscriptionsPage);
+    }
+
+    /**
+     * @param string $subscriptionId
+     *
+     * @throws ProductSubscriptionException
+     */
+    public function unsubscribe(string $subscriptionId): void
+    {
+        try {
+            $this->api->unsubscribeProduct($subscriptionId);
+        } catch (ClientException $e) {
+            throw new ProductSubscriptionException($e->getMessage());
+        }
     }
 
     /**
@@ -186,7 +214,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     private function doSubscribe(RequestCollection $clientRequests): SubscriptionCollection
     {
         try {
-            $clientResponse = $this->subscriptionApi->subscribe($clientRequests);
+            $clientResponse = $this->api->subscribe($clientRequests);
         } catch (InvalidTokenException $e) {
             throw ProductSubscriptionException::invalidToken();
         } catch (InsufficientCreditsException $e) {
@@ -196,5 +224,20 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         }
 
         return $clientResponse->content();
+    }
+
+    /**
+     * @return string
+     */
+    private function getToken(): string
+    {
+        if (null === $this->token) {
+            $config = $this->configurationRepo->find();
+            if ($config instanceof Configuration) {
+                $this->token = $config->getToken();
+            }
+        }
+
+        return (string) $this->token;
     }
 }

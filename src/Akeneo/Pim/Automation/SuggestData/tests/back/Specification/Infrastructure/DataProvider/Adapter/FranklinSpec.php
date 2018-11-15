@@ -19,43 +19,26 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationPro
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-/**
- * TODO: There are lot of spec to add. Half of the class is not spec.
- */
 class FranklinSpec extends ObjectBehavior
 {
     public function let(
         AuthenticationProviderInterface $authenticationProvider,
-        SubscriptionApiInterface $subscriptionApi,
-        ConfigurationRepositoryInterface $configurationRepository,
-        SubscriptionProviderInterface $productSubscription,
+        SubscriptionProviderInterface $productSubscriptionProvider,
         AttributesMappingProviderInterface $attributesMappingProvider,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
         AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider
     ): void {
-        $configuration = new Configuration();
-        $configuration->setToken(new Token('valid-token'));
-        $configurationRepository->find()->willReturn($configuration);
         $this->beConstructedWith(
             $authenticationProvider,
-            $subscriptionApi,
-            $configurationRepository,
-            $productSubscription,
+            $productSubscriptionProvider,
             $attributesMappingProvider,
             $identifiersMappingProvider,
             $attributeOptionsMappingProvider
@@ -77,27 +60,11 @@ class FranklinSpec extends ObjectBehavior
         $this->updateIdentifiersMapping($mapping);
     }
 
-    public function it_unsubscribes_a_subscription_id_from_franklin($subscriptionApi): void
+    public function it_unsubscribes_a_subscription_id_from_franklin($productSubscriptionProvider): void
     {
-        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $subscriptionApi->unsubscribeProduct('foo-bar')->shouldBeCalled();
+        $productSubscriptionProvider->unsubscribe('foo-bar')->shouldBeCalled();
 
-        $this->unsubscribe('foo-bar')->shouldReturn(null);
-    }
-
-    public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi): void
-    {
-        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
-
-        $clientException = new ClientException('exception-message');
-        $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
-
-        $this
-            ->shouldThrow(new ProductSubscriptionException('exception-message'))
-            ->during(
-                'unsubscribe',
-                ['foo-bar']
-            );
+        $this->unsubscribe('foo-bar');
     }
 
     public function it_gets_attributes_mapping($attributesMappingProvider, AttributesMappingResponse $response): void
