@@ -138,6 +138,8 @@ class FakeClient implements ClientInterface
      * @param string $uri
      * @param array $options
      *
+     * @throws ClientException
+     *
      * @return \GuzzleHttp\Psr7\Response
      */
     private function authenticate(string $method, string $uri, array $options): \GuzzleHttp\Psr7\Response
@@ -155,6 +157,8 @@ class FakeClient implements ClientInterface
      *
      * @param string $method
      * @param string $uri
+     *
+     * @throws ClientException
      */
     private function handleToken(string $method, string $uri): void
     {
@@ -170,6 +174,8 @@ class FakeClient implements ClientInterface
      *
      * @param string $method
      * @param string $uri
+     *
+     * @throws ClientException
      */
     private function handleCredits(string $method, string $uri): void
     {
@@ -189,9 +195,11 @@ class FakeClient implements ClientInterface
      * @param string $uri
      * @param array $options
      *
+     * @throws \LogicException
+     *
      * @return \GuzzleHttp\Psr7\Response
      */
-    private function handleMapping(string $method, string $uri, array $options)
+    private function handleMapping(string $method, string $uri, array $options): \GuzzleHttp\Psr7\Response
     {
         if ('GET' === $method) {
             return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $this->loadFakeData($uri));
@@ -218,6 +226,8 @@ class FakeClient implements ClientInterface
      * @param string $method
      * @param string $uri
      * @param array $options
+     *
+     * @throws \LogicException
      *
      * @return \GuzzleHttp\Psr7\Response
      */
@@ -248,7 +258,14 @@ class FakeClient implements ClientInterface
         }
     }
 
-    private function loadFakeData($filepath)
+    /**
+     * @param string $filepath
+     *
+     * @throws \LogicException
+     *
+     * @return string
+     */
+    private function loadFakeData(string $filepath): string
     {
         $fakeFilepath = sprintf('%s/%s.json', realpath(self::FAKE_PATH), $filepath);
         if (!file_exists($fakeFilepath)) {
