@@ -26,6 +26,18 @@ class SubscriptionSpec extends ObjectBehavior
                     'label' => ['en_US' => 'Laptop'],
                 ],
             ],
+            'mapped_identifiers' => [
+                [
+                    'name' => 'ean',
+                    'value' => '606449099812',
+                ],
+            ],
+            'mapped_attributes' => [
+                [
+                    'name' => 'ram',
+                    'value' => '256 MEGABYTE',
+                ],
+            ],
             'misses_mapping' => false,
         ]);
     }
@@ -40,12 +52,20 @@ class SubscriptionSpec extends ObjectBehavior
         $this->getSubscriptionId()->shouldReturn('86b7a527-9531-4a46-bc5c-02d89dcbc7eb');
     }
 
-    public function it_returns_all_attributes_combined(): void
+    public function it_combines_mapped_identifiers_and_mapped_attributes(): void
     {
-        $this->getAttributes()->shouldReturn([
-            'upc' => '606449099812',
-            'Memory' => 'RAM (Installed): 256 MB',
-        ]);
+        $this->getAttributes()->shouldReturn(
+            [
+                [
+                    'name' => 'ean',
+                    'value' => '606449099812',
+                ],
+                [
+                    'name' => 'ram',
+                    'value' => '256 MEGABYTE',
+                ],
+            ]
+        );
     }
 
     public function it_returns_the_tracker_id_as_an_integer(): void
@@ -60,6 +80,28 @@ class SubscriptionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    public function it_throws_an_exception_if_keys_are_missing_in_suggested_data(): void
+    {
+        $this->beConstructedWith(
+            [
+                'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+                'identifiers' => [],
+                'attributes' => [],
+                'extra' => [
+                    'tracker_id' => '42',
+                ],
+                'misses_mapping' => true,
+                'mapped_identifiers' => [
+                    [
+                        'test' => 'test',
+                    ],
+                ],
+                'mapped_attributes' => [],
+            ]
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     public function it_returns_missing_mapping_if_the_information_exists(): void
     {
         $this->beConstructedWith([
@@ -70,6 +112,8 @@ class SubscriptionSpec extends ObjectBehavior
                 'tracker_id' => '42',
             ],
             'misses_mapping' => true,
+            'mapped_identifiers' => [],
+            'mapped_attributes' => [],
         ]);
 
         $this->isMappingMissing()->shouldReturn(true);
@@ -85,6 +129,8 @@ class SubscriptionSpec extends ObjectBehavior
                 'tracker_id' => '42',
             ],
             'misses_mapping' => false,
+            'mapped_identifiers' => [],
+            'mapped_attributes' => [],
         ]);
 
         $this->isMappingMissing()->shouldReturn(false);

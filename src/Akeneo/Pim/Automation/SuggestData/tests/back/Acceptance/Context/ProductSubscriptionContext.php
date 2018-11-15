@@ -150,7 +150,7 @@ class ProductSubscriptionContext implements Context
         $product = $this->productRepository->findOneByIdentifier($identifier);
         $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
 
-        Assert::isEmpty($subscription->getSuggestedData()->getValues());
+        Assert::true($subscription->getSuggestedData()->isEmpty());
     }
 
     /**

@@ -58,20 +58,17 @@ class ProductSubscriptionSpec extends ObjectBehavior
 
     public function it_gets_the_suggested_data(): void
     {
-        $suggestedData = new SuggestedData(['upc' => '42']);
+        $suggestedData = new SuggestedData(
+            [
+                [
+                    'pimAttributeCode' => 'upc',
+                    'value' => '42',
+                ],
+            ]
+        );
         $this->setSuggestedData($suggestedData);
 
         $this->getSuggestedData()->shouldReturn($suggestedData);
-    }
-
-    public function it_can_be_emptied(): void
-    {
-        $suggestedData = new SuggestedData(['upc' => '42']);
-        $this->setSuggestedData($suggestedData);
-        $this->getSuggestedData()->getValues()->shouldReturn(['upc' => '42']);
-
-        $this->emptySuggestedData();
-        $this->getSuggestedData()->getValues()->shouldReturn([]);
     }
 
     public function it_sets_missing_mapping(): void

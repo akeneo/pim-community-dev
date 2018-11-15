@@ -324,10 +324,20 @@ class Franklin implements DataProviderInterface
      */
     private function buildSubscriptionResponse(Subscription $subscription): ProductSubscriptionResponse
     {
+        $suggestedValues = array_map(
+            function (array $data) {
+                return [
+                    'pimAttributeCode' => $data['name'],
+                    'value' => $data['value'],
+                ];
+            },
+            $subscription->getAttributes()
+        );
+
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
-            $subscription->getAttributes(),
+            $suggestedValues,
             $subscription->isMappingMissing()
         );
     }

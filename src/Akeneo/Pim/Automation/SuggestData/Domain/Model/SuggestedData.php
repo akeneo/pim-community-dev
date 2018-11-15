@@ -14,31 +14,51 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 /**
- * It structures data that comes from Franklin and that allows to create proposals.
+ * It structures data coming from the data provider and allows to create proposals.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class SuggestedData
+final class SuggestedData implements \IteratorAggregate
 {
-    /** @var array */
+    /** @var SuggestedValue[] */
     private $values = [];
 
     /**
      * @param array $values
      */
-    public function __construct(?array $values)
+    public function __construct(array $values)
     {
-        if (null !== $values) {
-            $this->values = $values;
+        foreach ($values as $value) {
+            $this->values[] = new SuggestedValue($value['pimAttributeCode'], $value['value']);
         }
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getValues(): array
+    public function getRawValues(): ?array
     {
-        return $this->values;
+        if ($this->isEmpty()) {
+            return null;
+        }
+
+        return array_map(
+            function (SuggestedValue $suggestedValue) {
+                return [
+                    'pimAttributeCode' => $suggestedValue->pimAttributeCode(),
+                    'value' => $suggestedValue->value(),
+                ];
+            },
+            $this->values
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->values);
     }
 
     /**
