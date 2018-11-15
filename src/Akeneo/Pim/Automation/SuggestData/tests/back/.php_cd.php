@@ -73,7 +73,7 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller',
+            'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi',
 
             // External dependencies
             'Symfony\Component\HttpFoundation',
@@ -81,7 +81,7 @@ $rules = [
             'Symfony\Component\Translation',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller'),
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi'),
 
     $builder->only(
         [
