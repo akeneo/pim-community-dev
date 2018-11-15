@@ -1,30 +1,30 @@
 [
   {
-    "name": "asin",
+    "pimAttributeCode": "asin",
     "value": "B00F0DD0I6"
   },
   {
-    "name": "pim_upc",
+    "pimAttributeCode": "pim_upc",
     "value": "606449099812"
   },
   {
-    "name": "mpn",
+    "pimAttributeCode": "mpn",
     "value": "R7000-100NAS"
   },
   {
-    "name": "pim_brand",
+    "pimAttributeCode": "pim_brand",
     "value": "Netgear"
   },
   {
-    "name": "memory",
+    "pimAttributeCode": "memory",
     "value": "RAM (Installed): 256 MB"
   },
   {
-    "name": "processor",
+    "pimAttributeCode": "processor",
     "value": "1 GIGAHERTZ"
   },
   {
-    "name": "power_device",
+    "pimAttributeCode": "power_device",
     "value": "External Power Adapter"
   }
 ]

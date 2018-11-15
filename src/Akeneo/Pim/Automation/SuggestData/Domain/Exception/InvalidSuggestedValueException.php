@@ -29,9 +29,9 @@ class InvalidSuggestedValueException extends \InvalidArgumentException
     /**
      * @return InvalidSuggestedValueException
      */
-    public static function emptyName(): InvalidSuggestedValueException
+    public static function emptyAttributeCode(): InvalidSuggestedValueException
     {
-        return new static('"name" must not be empty');
+        return new static('"pimAttributeCode" must not be empty');
     }
 
     /**

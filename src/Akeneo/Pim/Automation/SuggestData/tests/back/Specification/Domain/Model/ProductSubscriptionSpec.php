@@ -61,7 +61,7 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $suggestedData = new SuggestedData(
             [
                 [
-                    'name' => 'upc',
+                    'pimAttributeCode' => 'upc',
                     'value' => '42',
                 ],
             ]

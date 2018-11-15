@@ -1,30 +1,30 @@
 [
   {
-    "name": "asin",
+    "pimAttributeCode": "asin",
     "value": "B00EYZY6AC"
   },
   {
-    "name": "pim_upc",
+    "pimAttributeCode": "pim_upc",
     "value": "730870200933"
   },
   {
-    "name": "mpn",
+    "pimAttributeCode": "mpn",
     "value": "FE20093"
   },
   {
-    "name": "pim_brand",
+    "pimAttributeCode": "pim_brand",
     "value": "Frederic Fekkai"
   },
   {
-    "name": "memory",
+    "pimAttributeCode": "memory",
     "value": "RAM (Installed): 256 MB"
   },
   {
-    "name": "processor",
+    "pimAttributeCode": "processor",
     "value": "1 GIGAHERTZ"
   },
   {
-    "name": "power_device",
+    "pimAttributeCode": "power_device",
     "value": "External Power Adapter"
   }
 ]

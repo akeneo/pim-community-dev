@@ -56,7 +56,7 @@ class ProposalSuggestedDataFactorySpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
 
         $subscription->getProduct()->willReturn($product);
-        $suggestedData = new SuggestedData([['name' => 'foo', 'value' => 'bar']]);
+        $suggestedData = new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]);
         $subscription->getSuggestedData()->willReturn($suggestedData);
         $normalizer->normalize($suggestedData)->willThrow(new \InvalidArgumentException());
 
@@ -74,7 +74,7 @@ class ProposalSuggestedDataFactorySpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
 
         $subscription->getProduct()->willReturn($product);
-        $suggestedData = new SuggestedData([['name' => 'foo', 'value' => 'bar']]);
+        $suggestedData = new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]);
         $subscription->getSuggestedData()->willReturn($suggestedData);
         $normalizer->normalize($suggestedData)->willReturn([]);
 
@@ -94,7 +94,7 @@ class ProposalSuggestedDataFactorySpec extends ObjectBehavior
         $subscription->getProduct()->willReturn($product);
         $subscription->getSubscriptionId()->willReturn('abc-123');
 
-        $suggestedData = new SuggestedData([['name' => 'foo', 'value' => 'bar']]);
+        $suggestedData = new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]);
         $subscription->getSuggestedData()->willReturn($suggestedData);
         $normalizer->normalize($suggestedData)->willReturn(
             [

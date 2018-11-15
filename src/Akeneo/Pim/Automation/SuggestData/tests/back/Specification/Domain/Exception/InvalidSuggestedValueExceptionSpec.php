@@ -29,8 +29,8 @@ class InvalidSuggestedValueExceptionSpec extends ObjectBehavior
 
     public function it_has_empty_name_message(): void
     {
-        $this->beConstructedThrough('emptyName');
-        $this->getMessage()->shouldReturn('"name" must not be empty');
+        $this->beConstructedThrough('emptyAttributeCode');
+        $this->getMessage()->shouldReturn('"pimAttributeCode" must not be empty');
     }
 
     public function it_has_empty_value_message(): void

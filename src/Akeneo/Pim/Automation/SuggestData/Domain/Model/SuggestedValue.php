@@ -21,18 +21,18 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidSuggestedValueExce
 final class SuggestedValue
 {
     /** @var string */
-    private $name;
+    private $pimAttributeCode;
 
     /** @var mixed */
     private $value;
 
     /**
-     * @param string $name
+     * @param string $pimAttributeCode
      * @param mixed $value
      */
-    public function __construct(string $name, $value)
+    public function __construct(string $pimAttributeCode, $value)
     {
-        $this->name = $name;
+        $this->pimAttributeCode = $pimAttributeCode;
         $this->value = $value;
         $this->validate();
     }
@@ -40,9 +40,9 @@ final class SuggestedValue
     /**
      * @return string
      */
-    public function name(): string
+    public function pimAttributeCode(): string
     {
-        return $this->name;
+        return $this->pimAttributeCode;
     }
 
     /**
@@ -55,15 +55,15 @@ final class SuggestedValue
 
     /**
      * Validates that:
-     *   - $this->name is a non-empty string
+     *   - $this->pimAttributeCode is a non-empty string
      *   - $this->value is a non-empty string or a non-empty array of strings.
      *
      * @throws InvalidSuggestedValueException
      */
     private function validate(): void
     {
-        if ('' === $this->name) {
-            throw InvalidSuggestedValueException::emptyName();
+        if ('' === $this->pimAttributeCode) {
+            throw InvalidSuggestedValueException::emptyAttributeCode();
         }
 
         if (is_string($this->value)) {

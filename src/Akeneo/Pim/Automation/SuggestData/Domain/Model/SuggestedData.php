@@ -29,7 +29,7 @@ final class SuggestedData implements \IteratorAggregate
     public function __construct(array $values)
     {
         foreach ($values as $value) {
-            $this->values[] = new SuggestedValue($value['name'], $value['value']);
+            $this->values[] = new SuggestedValue($value['pimAttributeCode'], $value['value']);
         }
     }
 
@@ -45,7 +45,7 @@ final class SuggestedData implements \IteratorAggregate
         return array_map(
             function (SuggestedValue $suggestedValue) {
                 return [
-                    'name' => $suggestedValue->name(),
+                    'pimAttributeCode' => $suggestedValue->pimAttributeCode(),
                     'value' => $suggestedValue->value(),
                 ];
             },

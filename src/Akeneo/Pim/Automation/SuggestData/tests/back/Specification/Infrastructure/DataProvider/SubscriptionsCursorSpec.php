@@ -31,7 +31,18 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $currentPage->current()->willReturn($subscription);
         $subscription->getTrackerId()->willReturn(42);
         $subscription->getSubscriptionId()->willReturn('id-42');
-        $subscription->getAttributes()->willReturn(['an_attribute', 'another_attribute']);
+        $subscription->getAttributes()->willReturn(
+            [
+                [
+                    'name' => 'an_attribute',
+                    'value' => 'a_value',
+                ],
+                [
+                    'name' => 'another_attribute',
+                    'value' => 'another_value',
+                ],
+            ]
+        );
         $subscription->isMappingMissing()->willReturn(false);
 
         $productSubscriptionResponse = $this->current();

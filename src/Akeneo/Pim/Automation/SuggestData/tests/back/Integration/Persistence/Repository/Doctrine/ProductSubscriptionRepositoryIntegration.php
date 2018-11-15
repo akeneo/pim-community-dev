@@ -35,7 +35,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             $subscriptionId,
             ['upc' => '72527273070', 'asin' => 'B00005N5PF', 'mpn' => 'AS4561AD142', 'brand' => 'intel']
         );
-        $subscription->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
+        $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
 
         $this->getRepository()->save($subscription);
 
@@ -51,17 +51,22 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $retrievedSubscriptions = $statement->fetchAll();
 
         Assert::assertCount(1, $retrievedSubscriptions);
+        $subscriptionData = $retrievedSubscriptions[0];
+        $expectedValues = [
+            'product_id' => $product->getId(),
+            'subscription_id' => $subscriptionId,
+            'requested_upc' => '72527273070',
+            'requested_asin' => 'B00005N5PF',
+            'requested_mpn' => 'AS4561AD142',
+            'requested_brand' => 'intel',
+        ];
+
+        foreach ($expectedValues as $key => $expected) {
+            Assert::assertEquals($expected, $subscriptionData[$key]);
+        }
         Assert::assertEquals(
-            [
-                'product_id' => $product->getId(),
-                'subscription_id' => $subscriptionId,
-                'raw_suggested_data' => '[{"name": "foo", "value": "bar"}]',
-                'requested_upc' => '72527273070',
-                'requested_asin' => 'B00005N5PF',
-                'requested_mpn' => 'AS4561AD142',
-                'requested_brand' => 'intel',
-            ],
-            $retrievedSubscriptions[0]
+            [['pimAttributeCode' => 'foo', 'value' => 'bar']],
+            json_decode($subscriptionData['raw_suggested_data'], true)
         );
     }
 
@@ -70,8 +75,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
         $suggestedData = [
-            ['name' => 'an_attribute', 'value' => 'some data'],
-            ['name' => 'another_attribute', 'value' => 'some other data'],
+            ['pimAttributeCode' => 'an_attribute', 'value' => 'some data'],
+            ['pimAttributeCode' => 'another_attribute', 'value' => 'some other data'],
         ];
         $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
 
@@ -136,15 +141,15 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     public function test_that_it_finds_and_paginates_pending_product_subscriptions(): void
     {
         $product1 = $this->createProduct('product_1');
-        $this->insertSubscription($product1->getId(), 'c', [['name' => 'foo', 'value' => 'bar']]);
+        $this->insertSubscription($product1->getId(), 'c', [['pimAttributeCode' => 'foo', 'value' => 'bar']]);
         $product2 = $this->createProduct('product_2');
         $this->insertSubscription($product2->getId(), 'b', []);
         $product3 = $this->createProduct('product_3');
         $this->insertSubscription($product3->getId(), 'd', []);
         $product4 = $this->createProduct('product_4');
-        $this->insertSubscription($product4->getId(), 'a', [['name' => 'bar', 'value' => 'baz']]);
+        $this->insertSubscription($product4->getId(), 'a', [['pimAttributeCode' => 'bar', 'value' => 'baz']]);
         $product5 = $this->createProduct('product_5');
-        $this->insertSubscription($product5->getId(), 'e', [['name' => 'baz', 'value' => '42']]);
+        $this->insertSubscription($product5->getId(), 'e', [['pimAttributeCode' => 'baz', 'value' => '42']]);
 
         $params = [
             [10, null, ['a', 'c', 'e']],
@@ -171,8 +176,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $productId = $this->createProduct('a_product_to_delete')->getId();
         $subscriptionId = uniqid();
         $suggestedData = [
-            ['name' => 'an_attribute', 'value' => 'some data'],
-            ['name' => 'another_attribute', 'value' => 'some other data'],
+            ['pimAttributeCode' => 'an_attribute', 'value' => 'some data'],
+            ['pimAttributeCode' => 'another_attribute', 'value' => 'some other data'],
         ];
         $this->insertSubscription($productId, $subscriptionId, $suggestedData);
 
@@ -188,9 +193,17 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     public function test_it_empties_suggested_data_for_specified_ids(): void
     {
         $product1 = $this->createProduct('product_1');
-        $this->insertSubscription($product1->getId(), 'subscription_to_empty', [['name' => 'foo', 'value' => 'bar']]);
+        $this->insertSubscription(
+            $product1->getId(),
+            'subscription_to_empty',
+            [['pimAttributeCode' => 'foo', 'value' => 'bar']]
+        );
         $product2 = $this->createProduct('product_2');
-        $this->insertSubscription($product2->getId(), 'other-subscription', [['name' => 'bar', 'value' => 'baz']]);
+        $this->insertSubscription(
+            $product2->getId(),
+            'other-subscription',
+            [['pimAttributeCode' => 'bar', 'value' => 'baz']]
+        );
 
         $repo = $this->getRepository();
         $repo->emptySuggestedData([$product1->getId()]);

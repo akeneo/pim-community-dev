@@ -42,11 +42,11 @@ class SuggestedDataSpec extends ObjectBehavior
         $this->beConstructedWith(
             [
                 [
-                    'name' => 'color',
+                    'pimAttributeCode' => 'color',
                     'value' => 'black',
                 ],
                 [
-                    'name' => 'fabric',
+                    'pimAttributeCode' => 'fabric',
                     'value' => 'leather',
                 ],
             ]
@@ -66,7 +66,7 @@ class SuggestedDataSpec extends ObjectBehavior
         $this->beConstructedWith(
             [
                 [
-                    'name' => 'color',
+                    'pimAttributeCode' => 'color',
                     'value' => 'black',
                 ],
             ]
@@ -78,11 +78,11 @@ class SuggestedDataSpec extends ObjectBehavior
     {
         $suggestedValues = [
             [
-                'name' => 'color',
+                'pimAttributeCode' => 'color',
                 'value' => 'black',
             ],
             [
-                'name' => 'fabric',
+                'pimAttributeCode' => 'fabric',
                 'value' => 'leather',
             ],
         ];

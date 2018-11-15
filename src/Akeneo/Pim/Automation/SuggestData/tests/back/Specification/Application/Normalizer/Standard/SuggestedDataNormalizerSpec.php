@@ -41,19 +41,19 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     ): void {
         $suggestedData = [
             [
-                'name' => 'foo',
+                'pimAttributeCode' => 'foo',
                 'value' => 'bar',
             ],
             [
-                'name' => 'bar',
+                'pimAttributeCode' => 'bar',
                 'value' => '0',
             ],
             [
-                'name' => 'baz',
+                'pimAttributeCode' => 'baz',
                 'value' => 'option1,option2',
             ],
             [
-                'name' => 'processor',
+                'pimAttributeCode' => 'processor',
                 'value' => '1 GIGAHERTZ',
             ],
         ];
@@ -121,9 +121,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeRepository
     ): void {
         $suggestedData = [
-            ['name' => 'foo', 'value' => 'bar'],
-            ['name' => 'bar', 'value' => '0'],
-            ['name' => 'baz', 'value' => 'option1,option2'],
+            ['pimAttributeCode' => 'foo', 'value' => 'bar'],
+            ['pimAttributeCode' => 'bar', 'value' => '0'],
+            ['pimAttributeCode' => 'baz', 'value' => 'option1,option2'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -157,9 +157,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeOptionRepository
     ): void {
         $suggestedData = [
-            ['name' => 'foo', 'value' => 'bar'],
-            ['name' => 'bar', 'value' => '0'],
-            ['name' => 'baz', 'value' => 'option1'],
+            ['pimAttributeCode' => 'foo', 'value' => 'bar'],
+            ['pimAttributeCode' => 'bar', 'value' => '0'],
+            ['pimAttributeCode' => 'baz', 'value' => 'option1'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -195,9 +195,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeOptionRepository
     ): void {
         $suggestedData = [
-            ['name' => 'foo', 'value' => 'bar'],
-            ['name' => 'bar', 'value' => '0'],
-            ['name' => 'baz', 'value' => 'option1,option2'],
+            ['pimAttributeCode' => 'foo', 'value' => 'bar'],
+            ['pimAttributeCode' => 'bar', 'value' => '0'],
+            ['pimAttributeCode' => 'baz', 'value' => 'option1,option2'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -235,9 +235,9 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         AttributeOptionInterface $option3
     ): void {
         $suggestedData = [
-            ['name' => 'foo', 'value' => 'bar'],
-            ['name' => 'bar', 'value' => '0'],
-            ['name' => 'baz', 'value' => 'option1,option2,option3'],
+            ['pimAttributeCode' => 'foo', 'value' => 'bar'],
+            ['pimAttributeCode' => 'bar', 'value' => '0'],
+            ['pimAttributeCode' => 'baz', 'value' => 'option1,option2,option3'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -283,8 +283,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository): void
     {
         $suggestedData = [
-            ['name' => 'foo', 'value' => 'bar'],
-            ['name' => 'bar', 'value' => 'baz'],
+            ['pimAttributeCode' => 'foo', 'value' => 'bar'],
+            ['pimAttributeCode' => 'bar', 'value' => 'baz'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
             [

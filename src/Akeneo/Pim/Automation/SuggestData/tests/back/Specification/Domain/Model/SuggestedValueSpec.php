@@ -32,9 +32,9 @@ class SuggestedValueSpec extends ObjectBehavior
         $this->shouldHaveType(SuggestedValue::class);
     }
 
-    public function it_has_a_name(): void
+    public function it_has_an_attribute_code(): void
     {
-        $this->name()->shouldReturn('name');
+        $this->pimAttributeCode()->shouldReturn('name');
     }
 
     public function it_has_a_value(): void

@@ -62,12 +62,12 @@ class SuggestedDataNormalizer
         $normalized = [];
         $attributeCodes = [];
         foreach ($suggestedData as $suggestedValue) {
-            $attributeCodes[] = $suggestedValue->name();
+            $attributeCodes[] = $suggestedValue->pimAttributeCode();
         }
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes($attributeCodes);
 
         foreach ($suggestedData as $suggestedValue) {
-            $attributeCode = $suggestedValue->name();
+            $attributeCode = $suggestedValue->pimAttributeCode();
             $value = $suggestedValue->value();
             if (!isset($attributeTypes[$attributeCode])) {
                 continue;

@@ -57,7 +57,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $product = new Product();
         $product->setId(42);
         $subscription = new ProductSubscription($product, 'a-fake-subscription', ['sku' => '72527273070']);
-        $subscription->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
+        $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription);
 
         $otherProduct = new Product();
@@ -75,13 +75,13 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     public function it_searches_pending_subscriptions(): void
     {
         $subscription1 = new ProductSubscription(new Product(), 'fake-id', ['asin' => 'ABC']);
-        $subscription1->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
+        $subscription1->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription1);
         $subscription2 = new ProductSubscription(new Product(), 'abc', ['asin' => 'ABC']);
-        $subscription2->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
+        $subscription2->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription2);
         $subscription3 = new ProductSubscription(new Product(), 'def', ['asin' => 'ABC']);
-        $subscription3->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
+        $subscription3->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription3);
 
         $this->findPendingSubscriptions(10, null)->shouldReturn([$subscription2, $subscription3, $subscription1]);
@@ -109,7 +109,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     ): void {
         $product->getId()->willReturn(42);
         $subscription = new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id', []);
-        $subscription->setSuggestedData(new SuggestedData([['name' => 'foo', 'value' => 'bar']]));
+        $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
 
         $this->save($subscription);
         Assert::false($subscription->getSuggestedData()->isEmpty());
