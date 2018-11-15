@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
@@ -24,19 +22,13 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Ide
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class IdentifiersMappingProvider implements IdentifiersMappingProviderInterface
+class IdentifiersMappingProvider extends AbstractProvider implements IdentifiersMappingProviderInterface
 {
     /** @var IdentifiersMappingApiInterface */
     private $api;
 
     /** @var IdentifiersMappingNormalizer */
     private $normalizer;
-
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
-
-    /** @var Token */
-    private $token;
 
     /**
      * @param IdentifiersMappingApiInterface $api
@@ -48,9 +40,10 @@ class IdentifiersMappingProvider implements IdentifiersMappingProviderInterface
         IdentifiersMappingNormalizer $normalizer,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
+        parent::__construct($configurationRepository);
+
         $this->api = $api;
         $this->normalizer = $normalizer;
-        $this->configurationRepository = $configurationRepository;
     }
 
     /**
@@ -60,20 +53,5 @@ class IdentifiersMappingProvider implements IdentifiersMappingProviderInterface
     {
         $this->api->setToken($this->getToken());
         $this->api->update($this->normalizer->normalize($identifiersMapping));
-    }
-
-    /**
-     * @return string
-     */
-    private function getToken(): string
-    {
-        if (null === $this->token) {
-            $config = $this->configurationRepository->find();
-            if ($config instanceof Configuration) {
-                $this->token = $config->getToken();
-            }
-        }
-
-        return (string) $this->token;
     }
 }

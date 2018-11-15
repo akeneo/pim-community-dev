@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
@@ -26,19 +24,13 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Att
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AttributesMappingProvider implements AttributesMappingProviderInterface
+class AttributesMappingProvider extends AbstractProvider implements AttributesMappingProviderInterface
 {
     /** @var AttributesMappingApiInterface */
     private $api;
 
     /** @var AttributesMappingNormalizer */
     private $normalizer;
-
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
-
-    /** @var Token */
-    private $token;
 
     /**
      * @param AttributesMappingApiInterface $api
@@ -50,9 +42,10 @@ class AttributesMappingProvider implements AttributesMappingProviderInterface
         AttributesMappingNormalizer $normalizer,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
+        parent::__construct($configurationRepository);
+
         $this->api = $api;
         $this->normalizer = $normalizer;
-        $this->configurationRepository = $configurationRepository;
     }
 
     /**
@@ -110,20 +103,5 @@ class AttributesMappingProvider implements AttributesMappingProviderInterface
         }
 
         return $mapping[$status];
-    }
-
-    /**
-     * @return string
-     */
-    private function getToken(): string
-    {
-        if (null === $this->token) {
-            $config = $this->configurationRepository->find();
-            if ($config instanceof Configuration) {
-                $this->token = $config->getToken();
-            }
-        }
-
-        return (string) $this->token;
     }
 }

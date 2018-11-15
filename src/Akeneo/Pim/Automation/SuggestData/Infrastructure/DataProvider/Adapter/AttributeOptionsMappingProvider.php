@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
@@ -28,16 +26,10 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Att
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AttributeOptionsMappingProvider implements AttributeOptionsMappingProviderInterface
+class AttributeOptionsMappingProvider extends AbstractProvider implements AttributeOptionsMappingProviderInterface
 {
     /** @var OptionsMappingInterface */
     private $api;
-
-    /** @var Token */
-    private $token;
-
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
 
     /**
      * @param OptionsMappingInterface $api
@@ -47,8 +39,9 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
         OptionsMappingInterface $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
+        parent::__construct($configurationRepository);
+
         $this->api = $api;
-        $this->configurationRepository = $configurationRepository;
     }
 
     /**
@@ -89,20 +82,5 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
             (string) $franklinAttributeId,
             $normalizedMapping
         );
-    }
-
-    /**
-     * @return string
-     */
-    private function getToken(): string
-    {
-        if (null === $this->token) {
-            $config = $this->configurationRepository->find();
-            if ($config instanceof Configuration) {
-                $this->token = $config->getToken();
-            }
-        }
-
-        return (string) $this->token;
     }
 }

@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
@@ -39,7 +37,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsC
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class SubscriptionProvider implements SubscriptionProviderInterface
+class SubscriptionProvider extends AbstractProvider implements SubscriptionProviderInterface
 {
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
@@ -49,12 +47,6 @@ class SubscriptionProvider implements SubscriptionProviderInterface
 
     /** @var SubscriptionApiInterface */
     private $api;
-
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
-
-    /** @var Token */
-    private $token;
 
     /**
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
@@ -68,9 +60,10 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         SubscriptionApiInterface $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
+        parent::__construct($configurationRepository);
+
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->familyNormalizer = $familyNormalizer;
-        $this->configurationRepository = $configurationRepository;
         $this->api = $api;
     }
 
@@ -226,20 +219,5 @@ class SubscriptionProvider implements SubscriptionProviderInterface
         }
 
         return $clientResponse->content();
-    }
-
-    /**
-     * @return string
-     */
-    private function getToken(): string
-    {
-        if (null === $this->token) {
-            $config = $this->configurationRepository->find();
-            if ($config instanceof Configuration) {
-                $this->token = $config->getToken();
-            }
-        }
-
-        return (string) $this->token;
     }
 }
