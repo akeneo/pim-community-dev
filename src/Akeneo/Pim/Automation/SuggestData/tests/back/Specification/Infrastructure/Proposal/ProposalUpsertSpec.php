@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposa
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;

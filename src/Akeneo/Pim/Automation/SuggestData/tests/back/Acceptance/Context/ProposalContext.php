@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
+use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;

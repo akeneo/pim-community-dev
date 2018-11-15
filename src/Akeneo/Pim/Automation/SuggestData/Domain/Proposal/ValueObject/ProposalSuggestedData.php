@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
