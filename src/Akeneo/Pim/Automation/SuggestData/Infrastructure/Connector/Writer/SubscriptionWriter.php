@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
@@ -35,32 +34,29 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
-
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
 
     /** @var IdentifiersMapping */
     private $identifiersMapping;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param SubscriptionProviderInterface $subscriptionProvider
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->subscriptionProvider = $subscriptionProvider;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
@@ -70,7 +66,6 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function initialize(): void
     {
-        $this->dataProvider = $this->dataProviderFactory->create();
         $this->identifiersMapping = $this->identifiersMappingRepository->find();
     }
 
@@ -87,7 +82,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function write(array $items): void
     {
-        $collection = $this->dataProvider->bulkSubscribe($items);
+        $collection = $this->subscriptionProvider->bulkSubscribe($items);
 
         foreach ($items as $item) {
             $response = $collection->get($item->getProduct()->getId());

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,15 +18,13 @@ use Prophecy\Argument;
 class FetchProductsHandlerSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        Franklin $dataProvider
+        SubscriptionProviderInterface $subscriptionProvider,
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ): void {
         $this->beConstructedWith(
-            $dataProviderFactory,
+            $subscriptionProvider,
             $subscriptionRepository
         );
-        $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
     public function it_is_a_fetch_products_handler(): void
@@ -36,14 +33,14 @@ class FetchProductsHandlerSpec extends ObjectBehavior
     }
 
     public function it_fetches_products_through_the_data_provider(
-        $dataProvider,
+        $subscriptionProvider,
         $subscriptionRepository,
         FetchProductsCommand $command,
         ProductSubscription $subscription1,
         ProductSubscription $subscription2,
         SubscriptionsCursor $cursor
     ): void {
-        $dataProvider->fetch()->willReturn($cursor);
+        $subscriptionProvider->fetch()->willReturn($cursor);
 
         $subscriptionResponse1 = new ProductSubscriptionResponse(
             42,

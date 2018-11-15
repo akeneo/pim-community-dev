@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
@@ -37,16 +36,14 @@ use Prophecy\Argument;
 class SubscriptionWriterSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         StepExecution $stepExecution,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $this->beConstructedWith($dataProviderFactory, $productSubscriptionRepository, $identifiersMappingRepository);
+        $this->beConstructedWith($subscriptionProvider, $productSubscriptionRepository, $identifiersMappingRepository);
         $this->setStepExecution($stepExecution);
         $this->initialize();
     }
@@ -67,7 +64,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
     }
 
     public function it_subscribes_items(
-        $dataProvider,
+        $subscriptionProvider,
         $productSubscriptionRepository,
         $identifiersMapping,
         $stepExecution,
@@ -90,7 +87,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false));
         $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
 
-        $dataProvider->bulkSubscribe($items)->willReturn($collection);
+        $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
         $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(2);
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(2);

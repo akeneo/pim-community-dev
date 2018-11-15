@@ -1,15 +1,4 @@
 services:
-    akeneo.pim.automation.suggest_data.data_provider.franklin:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Franklin'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.data_provider.authentication'
-            - '@akeneo.pim.automation.suggest_data.data_provider.product_subscription'
-            - '@akeneo.pim.automation.suggest_data.data_provider.attributes_mapping'
-            - '@akeneo.pim.automation.suggest_data.data_provider.identifiers_mapping'
-            - '@akeneo.pim.automation.suggest_data.data_provider.attribute_options_mapping'
-        tags:
-            - { name: 'akeneo.pim.automation.suggest_data.data_provider', alias: 'franklin' }
-
     akeneo.pim.automation.suggest_data.data_provider.product_subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\SubscriptionProvider'
         arguments:

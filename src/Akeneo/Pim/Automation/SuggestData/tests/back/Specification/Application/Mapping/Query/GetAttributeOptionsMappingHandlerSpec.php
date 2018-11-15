@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
@@ -30,13 +29,10 @@ use PhpSpec\ObjectBehavior;
 class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider,
         FamilyRepositoryInterface $familyRepository
     ): void {
-        $dataProviderFactory->create()->willReturn($dataProvider);
-
-        $this->beConstructedWith($dataProviderFactory, $familyRepository);
+        $this->beConstructedWith($attributeOptionsMappingProvider, $familyRepository);
     }
 
     public function it_is_a_get_attribute_option_mapping_handler(): void
@@ -59,7 +55,7 @@ class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 
     public function it_returns_an_attribute_options_mapping(
         $familyRepository,
-        $dataProvider,
+        $attributeOptionsMappingProvider,
         FamilyInterface $family
     ): void {
         $familyCode = new FamilyCode('foo');
@@ -69,7 +65,7 @@ class GetAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier($familyCode)->willReturn($family);
 
         $attributeOptionsMapping = new AttributeOptionsMapping('foo', 'bar', []);
-        $dataProvider->getAttributeOptionsMapping('foo', 'bar')->willReturn($attributeOptionsMapping);
+        $attributeOptionsMappingProvider->getAttributeOptionsMapping('foo', 'bar')->willReturn($attributeOptionsMapping);
 
         $this->handle($query)->shouldReturn($attributeOptionsMapping);
     }
