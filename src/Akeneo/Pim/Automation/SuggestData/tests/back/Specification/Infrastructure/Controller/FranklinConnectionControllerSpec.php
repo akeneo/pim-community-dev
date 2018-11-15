@@ -24,7 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationEx
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\FranklinConnectionController;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

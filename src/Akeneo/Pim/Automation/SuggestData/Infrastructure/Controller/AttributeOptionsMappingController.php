@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\OptionsMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\OptionsMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

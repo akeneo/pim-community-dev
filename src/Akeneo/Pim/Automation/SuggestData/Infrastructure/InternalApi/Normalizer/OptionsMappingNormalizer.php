@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeOptionsMappingNormalizer
+class OptionsMappingNormalizer
 {
     /**
      * @param AttributeOptionsMapping $attributeOptionsMapping
@@ -29,7 +29,7 @@ class AttributeOptionsMappingNormalizer
     {
         return [
             'family' => $attributeOptionsMapping->familyCode(),
-            'franklin_attribute_code' => $attributeOptionsMapping->franklinAttributeId(),
+            'franklinAttributeCode' => $attributeOptionsMapping->franklinAttributeId(),
             'mapping' => $this->normalizeMapping($attributeOptionsMapping->mapping()),
         ];
     }
@@ -43,14 +43,12 @@ class AttributeOptionsMappingNormalizer
     {
         $normalizedMapping = [];
         foreach ($attributeOptionsMapping as $attributeOptionMapping) {
-            $normalizedMapping[] = [
-                $attributeOptionMapping->franklinAttributeId => [
-                    'franklin_attribute_option_code' => [
-                        'label' => $attributeOptionMapping->franklinAttributeLabel,
-                    ],
-                    'catalog_attribute_option_code' => $attributeOptionMapping->pimAttributeCode,
-                    'status' => $attributeOptionMapping->status(),
+            $normalizedMapping[$attributeOptionMapping->franklinAttributeId()] = [
+                'franklinAttributeOptionCode' => [
+                    'label' => $attributeOptionMapping->franklinAttributeLabel(),
                 ],
+                'catalogAttributeOptionCode' => $attributeOptionMapping->catalogAttributeCode(),
+                'status' => $attributeOptionMapping->status(),
             ];
         }
 
