@@ -27,7 +27,8 @@ Feature: Apply a mass action on products only (and not product models)
     And I am on the products page
 
   Scenario: Apply a mass action on products and product models
-    Given I show the filter "color"
+    Given I type "col" in the manage filter input
+    And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
     And I press the "Bulk actions" button

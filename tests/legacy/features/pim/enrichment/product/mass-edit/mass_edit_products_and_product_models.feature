@@ -27,7 +27,8 @@ Feature: Apply a mass action on products only (and not product models)
     And I am on the products page
 
   Scenario: Mass edits family of only products within a selection of products and product models
-    Given I show the filter "color"
+    Given I type "col" in the manage filter input
+    And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
     And I press the "Bulk actions" button
