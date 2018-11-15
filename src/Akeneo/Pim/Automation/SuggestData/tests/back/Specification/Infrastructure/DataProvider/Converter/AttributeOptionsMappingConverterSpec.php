@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping
     as FranklinAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
@@ -31,9 +32,8 @@ class AttributeOptionsMappingConverterSpec extends ObjectBehavior
 
     public function it_converts_a_client_attribute_options_mapping_into_application_model(): void
     {
-        $fakeDirectory = realpath(__DIR__ . '/../../../../Resources/fake/franklin-api/attribute-options-mapping');
-        $filename = 'get_family_router_attribute_color.json';
-        $mappingData = json_decode(file_get_contents(sprintf('%s/%s', $fakeDirectory, $filename)), true);
+        $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
+        $mappingData = json_decode(file_get_contents($filepath), true);
         $clientMapping = new FranklinAttributeOptionsMapping($mappingData);
 
         $pimAttributeOptionsMapping = $this

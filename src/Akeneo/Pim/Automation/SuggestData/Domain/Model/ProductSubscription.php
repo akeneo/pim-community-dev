@@ -88,7 +88,7 @@ class ProductSubscription
     public function getSuggestedData(): SuggestedData
     {
         if (null === $this->suggestedData) {
-            $this->suggestedData = new SuggestedData($this->rawSuggestedData);
+            $this->suggestedData = new SuggestedData($this->rawSuggestedData ?? []);
         }
 
         return $this->suggestedData;
@@ -102,18 +102,7 @@ class ProductSubscription
     public function setSuggestedData(SuggestedData $suggestedData): self
     {
         $this->suggestedData = $suggestedData;
-        $this->rawSuggestedData = $suggestedData->getValues();
-
-        return $this;
-    }
-
-    /**
-     * @return ProductSubscription
-     */
-    public function emptySuggestedData(): self
-    {
-        $this->rawSuggestedData = null;
-        $this->suggestedData = null;
+        $this->rawSuggestedData = $suggestedData->getRawValues();
 
         return $this;
     }

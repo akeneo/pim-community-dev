@@ -67,7 +67,7 @@ interface Config {
  * It displays a grid with all the attributes to map.
  *
  * The attribute types authorized for the mapping are defined in
- * Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeMappingController
+ * Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\AttributeMappingController
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */

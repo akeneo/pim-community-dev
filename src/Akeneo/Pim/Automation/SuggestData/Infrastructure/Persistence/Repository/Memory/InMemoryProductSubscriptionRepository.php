@@ -85,7 +85,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     {
         foreach ($this->subscriptions as $subscription) {
             if (in_array($subscription->getProduct()->getId(), $productIds)) {
-                $subscription->setSuggestedData(new SuggestedData(null));
+                $subscription->setSuggestedData(new SuggestedData([]));
             }
         }
     }

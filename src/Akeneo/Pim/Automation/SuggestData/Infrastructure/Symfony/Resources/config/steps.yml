@@ -39,3 +39,19 @@ services:
             - '@akeneo.pim.automation.suggest_data.connector.processor.unsubscription'
             - '@akeneo.pim.automation.suggest_data.connector.writer.unsubscription'
             - 1
+
+    akeneo.pim.automation.suggest_data.connector.step.fetch_products:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'fetch_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.suggest_data.connector.tasklet.fetch_products'
+
+    akeneo.pim.automation.suggest_data.connector.step.create_proposals:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'create_proposals'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.suggest_data.connector.tasklet.create_proposals'

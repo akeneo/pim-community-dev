@@ -45,10 +45,20 @@ class SubscriptionsCursor implements \Iterator
             return null;
         }
 
+        $suggestedValues = array_map(
+            function (array $data) {
+                return [
+                    'pimAttributeCode' => $data['name'],
+                    'value' => $data['value'],
+                ];
+            },
+            $subscription->getAttributes()
+        );
+
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
-            $subscription->getAttributes(),
+            $suggestedValues,
             $subscription->isMappingMissing()
         );
     }

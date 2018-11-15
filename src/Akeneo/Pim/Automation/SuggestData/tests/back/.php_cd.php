@@ -45,6 +45,7 @@ $rules = [
             // External dependencies
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',
+            'Psr\Http\Message\ResponseInterface',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Client'),
 
@@ -59,6 +60,7 @@ $rules = [
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
+            'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
 
@@ -71,7 +73,7 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller',
+            'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi',
 
             // External dependencies
             'Symfony\Component\HttpFoundation',
@@ -79,7 +81,7 @@ $rules = [
             'Symfony\Component\Translation',
             'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller'),
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi'),
 
     $builder->only(
         [

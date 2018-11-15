@@ -35,6 +35,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscri
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping as FranklinAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
@@ -70,10 +71,6 @@ class FranklinSpec extends ObjectBehavior
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepository->find()->willReturn($configuration);
-        $identifiersMappingApi->setToken(Argument::any())->shouldBeCalled();
-        $attributesMappingApi->setToken(Argument::any())->shouldBeCalled();
-        $attributeOptionsMappingApi->setToken(Argument::any())->shouldBeCalled();
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
         $this->beConstructedWith(
             $authenticationApi,
             $subscriptionApi,
@@ -183,6 +180,7 @@ class FranklinSpec extends ObjectBehavior
             ],
             42,
             $normalizedFamily));
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->subscribe($request)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this
@@ -198,6 +196,7 @@ class FranklinSpec extends ObjectBehavior
         $normalizedMapping = ['foo' => 'bar'];
 
         $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
+        $identifiersMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
         $identifiersMappingApi->update($normalizedMapping)->shouldBeCalled();
 
         $this->updateIdentifiersMapping($mapping);
@@ -205,6 +204,7 @@ class FranklinSpec extends ObjectBehavior
 
     public function it_unsubscribes_a_subscription_id_from_franklin($subscriptionApi): void
     {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->unsubscribeProduct('foo-bar')->shouldBeCalled();
 
         $this->unsubscribe('foo-bar')->shouldReturn(null);
@@ -212,6 +212,8 @@ class FranklinSpec extends ObjectBehavior
 
     public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi): void
     {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
+
         $clientException = new ClientException('exception-message');
         $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
 
@@ -249,6 +251,7 @@ class FranklinSpec extends ObjectBehavior
             ],
         ]);
         $attributesMappingApi->fetchByFamily('camcorders')->willReturn($response);
+        $attributesMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
 
         $attributesMappingResponse = $this->getAttributesMapping('camcorders');
         $attributesMappingResponse->shouldHaveCount(2);
@@ -258,6 +261,7 @@ class FranklinSpec extends ObjectBehavior
     public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page): void
     {
         $subscriptionApi->fetchProducts()->willReturn($page);
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
 
         $cursor = $this->fetch();
         $cursor->shouldBeAnInstanceOf(SubscriptionsCursor::class);
@@ -267,6 +271,7 @@ class FranklinSpec extends ObjectBehavior
         $subscriptionApi
     ): void {
         $clientException = new ClientException('An exception message');
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->fetchProducts()->willThrow($clientException);
 
         $this->shouldThrow(new ProductSubscriptionException('An exception message'))->during('fetch');
@@ -279,6 +284,7 @@ class FranklinSpec extends ObjectBehavior
         $normalizedMapping = ['bar' => 'foo'];
 
         $attributesMappingNormalizer->normalize($attributesMapping)->willReturn($normalizedMapping);
+        $attributesMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
         $attributesMappingApi->update($familyCode, $normalizedMapping)->shouldBeCalled();
 
         $this->updateAttributesMapping($familyCode, $attributesMapping);
@@ -286,12 +292,12 @@ class FranklinSpec extends ObjectBehavior
 
     public function it_retrieves_attribute_options_mapping($attributeOptionsMappingApi): void
     {
-        $fakeDirectory = realpath(__DIR__ . '/../../../../Resources/fake/franklin-api/attribute-options-mapping');
-        $filename = 'get_family_router_attribute_color.json';
-        $mappingData = json_decode(file_get_contents(sprintf('%s/%s', $fakeDirectory, $filename)), true);
+        $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
+        $mappingData = json_decode(file_get_contents($filepath), true);
 
         $strFamilyCode = 'family_code';
         $strFranklinAttrId = 'franklin_attr_id';
+        $attributeOptionsMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
         $attributeOptionsMappingApi
             ->fetchByFamilyAndAttribute($strFamilyCode, $strFranklinAttrId)
             ->willReturn(new FranklinAttributeOptionsMapping($mappingData));
@@ -321,6 +327,8 @@ class FranklinSpec extends ObjectBehavior
                                     'label' => ['en_US' => 'Laptop'],
                                 ],
                             ],
+                            'mapped_identifiers' => [],
+                            'mapped_attributes' => [],
                             'misses_mapping' => false,
                         ],
                     ],

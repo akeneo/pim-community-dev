@@ -17,11 +17,11 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authent
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -36,7 +36,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class SubscriptionWebserviceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, Client $httpClient): void
+    public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient): void
     {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }

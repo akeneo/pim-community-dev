@@ -60,10 +60,15 @@ class SuggestedDataNormalizer
     public function normalize(SuggestedData $suggestedData): array
     {
         $normalized = [];
-        $suggestedValues = $suggestedData->getValues();
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($suggestedValues));
+        $attributeCodes = [];
+        foreach ($suggestedData as $suggestedValue) {
+            $attributeCodes[] = $suggestedValue->pimAttributeCode();
+        }
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes($attributeCodes);
 
-        foreach ($suggestedValues as $attributeCode => $value) {
+        foreach ($suggestedData as $suggestedValue) {
+            $attributeCode = $suggestedValue->pimAttributeCode();
+            $value = $suggestedValue->value();
             if (!isset($attributeTypes[$attributeCode])) {
                 continue;
             }

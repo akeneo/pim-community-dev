@@ -101,7 +101,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
             },
             'haveSameAttributesAs' => function (Subscription $subscription, $productId) {
                 $product = $this->getProductSubscription($productId);
-                $attributes = $product['identifiers'] + $product['attributes'];
+                $attributes = array_merge($product['mapped_identifiers'], $product['mapped_attributes']);
 
                 return $subscription->getAttributes() === $attributes;
             },
@@ -153,7 +153,14 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                         'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
-                'misses_mapping' => false,
+                'mapped_identifiers' => [
+                    [
+                        'name' => 'pim_upc',
+                        'value' => '1111-aaaa',
+                    ],
+                ],
+                'mapped_attributes' => [],
+                'misses_mapping' => true,
             ],
             [
                 'id' => '2222-bbbb',
@@ -191,6 +198,8 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                         'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
+                'mapped_identifiers' => [],
+                'mapped_attributes' => [],
                 'misses_mapping' => false,
             ],
             [
@@ -228,6 +237,22 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'cancel' => [
                         'href' => '/api/subscriptions/3333-cccc',
                         'type' => 'application/prs.hal-forms+json',
+                    ],
+                ],
+                'mapped_identifiers' => [
+                    [
+                        'name' => 'pim_upc',
+                        'value' => '3333-cccc',
+                    ],
+                ],
+                'mapped_attributes' => [
+                    [
+                        'name' => 'memory',
+                        'value' => '512 MEGABYTE',
+                    ],
+                    [
+                        'name' => 'series',
+                        'value' => 'R7000',
                     ],
                 ],
                 'misses_mapping' => false,

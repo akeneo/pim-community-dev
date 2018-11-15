@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Client;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ClientInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
 
 /**
@@ -24,16 +24,16 @@ class AbstractApi
     /** @var UriGenerator */
     protected $uriGenerator;
 
-    /** @var Client */
+    /** @var ClientInterface */
     protected $httpClient;
 
     /**
      * @param UriGenerator $uriGenerator
-     * @param Client $httpClient
+     * @param ClientInterface $httpClient
      */
     public function __construct(
         UriGenerator $uriGenerator,
-        Client $httpClient
+        ClientInterface $httpClient
     ) {
         $this->uriGenerator = $uriGenerator;
         $this->httpClient = $httpClient;

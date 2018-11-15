@@ -15,6 +15,6 @@ Feature: Unsubscribe a product to Franklin
   Scenario: Failed to unsubscribe a product with an invalid token
     Given the product "B00EYZY6AC" of the family "router"
     And the product "B00EYZY6AC" is subscribed to Franklin
-    And the Franklin token is expired
+    And Franklin is configured with an expired token
     When I unsubscribe the product "B00EYZY6AC"
     Then the product "B00EYZY6AC" should be subscribed
