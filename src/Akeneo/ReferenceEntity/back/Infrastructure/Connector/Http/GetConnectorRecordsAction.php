@@ -20,7 +20,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToImages;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,14 +45,14 @@ class GetConnectorRecordsAction
     /** @var PaginatorInterface */
     private $halPaginator;
 
-    /** @var AddHalDownloadLinkToImages */
+    /** @var AddHalDownloadLinkToRecordImages */
     private $addHalLinksToImageValues;
 
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         SearchConnectorRecord $searchConnectorRecord,
         PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToImages $addHalLinksToImageValues,
+        AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
         int $limit
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
