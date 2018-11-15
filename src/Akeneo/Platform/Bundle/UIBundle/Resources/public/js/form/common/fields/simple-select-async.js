@@ -116,7 +116,7 @@ define(
                     options: {
                         limit: this.resultsPerPage,
                         page: page,
-                        catalogLocale: UserContext.get('catalog_default_locale')
+                        catalogLocale: UserContext.get('catalogLocale')
                     }
                 };
             },
@@ -199,7 +199,7 @@ define(
 
                 return {
                     id: item.code,
-                    text: i18n.getLabel(item.labels, UserContext.get('catalog_default_locale'), item.code)
+                    text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
                 };
             },
 

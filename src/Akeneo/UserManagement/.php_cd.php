@@ -16,7 +16,7 @@ $rules = [
         'Akeneo\UserManagement\Component',
         'Oro\Bundle\PimDataGridBundle\Entity\DatagridView', // TODO: The locale is linked by reference instead of id
         'Akeneo\UserManagement\Bundle\Manager\UserManager', // TODO: We use it to encode the user's password
-        'Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface', // TODO: Should be somewhere else
+        'Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface', // TODO: User has some view
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager', // TODO: This dependency should be removed
         'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
         'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
@@ -47,8 +47,8 @@ $rules = [
         'Symfony\Bundle\FrameworkBundle', // TODO:Some old Oro controllers extend the symfony controller
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // TODO: you should not use form type anymore
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // TODO: you should not use form type anymore
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface', //TODO: Find where it should belong to
-        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider' // TODO: Discuss about that
+        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface', //TODO: Link by id
+        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider' // TODO: Integration by database
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

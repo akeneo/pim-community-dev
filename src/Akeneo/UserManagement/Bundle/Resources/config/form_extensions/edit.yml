@@ -23,7 +23,7 @@ extensions:
         parent: pim-user-edit-form
         targetZone: main-image
         config:
-            fallback: '/bundles/pimui/images/info-user.png'
+            fallbackPath: '/bundles/pimui/images/info-user.png'
 
     pim-user-edit-form-cache-invalidator:
         module: pim/cache-invalidator
@@ -54,6 +54,7 @@ extensions:
             updateFailureMessage: pim_user_management.entity.user.flash.update.fail
             notReadyMessage: pim_user_management.entity.user.flash.update.fields_not_ready
             url: pim_user_user_rest_post
+            excludedProperties: ['display_proposals_to_review_notification', 'display_proposals_state_notifications', 'last_login', 'login_count', 'password']
 
     pim-user-edit-form-secondary-actions:
         module: pim/form/common/secondary-actions
@@ -237,8 +238,8 @@ extensions:
             isMultiple: false
             allowClear: false
 
-    pim-user-edit-form-catalog-scope:
-        module: pim/user/fields/scope
+    pim-user-edit-form-catalog-channel:
+        module: pim/user/fields/channel
         parent: pim-user-edit-form-additional-tab-content
         position: 20
         targetZone: content

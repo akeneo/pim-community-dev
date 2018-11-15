@@ -27,7 +27,7 @@ define(
                         var label = _.escape(
                             i18n.getLabel(
                                 groupType.labels,
-                                UserContext.get('catalog_default_locale'),
+                                UserContext.get('catalogLocale'),
                                 groupType.code
                             )
                         );

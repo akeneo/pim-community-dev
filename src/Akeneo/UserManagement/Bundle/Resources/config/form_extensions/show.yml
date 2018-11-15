@@ -23,7 +23,7 @@ extensions:
         parent: pim-user-show
         targetZone: main-image
         config:
-            fallback: '/bundles/pimui/images/info-user.png'
+            fallbackPath: '/bundles/pimui/images/info-user.png'
 
     pim-user-show-cache-invalidator:
         module: pim/cache-invalidator
@@ -210,8 +210,8 @@ extensions:
             allowClear: false
             readOnly: true
 
-    pim-user-show-catalog-scope:
-        module: pim/user/fields/scope
+    pim-user-show-catalog-channel:
+        module: pim/user/fields/channel
         parent: pim-user-show-additional-tab-content
         position: 20
         targetZone: content

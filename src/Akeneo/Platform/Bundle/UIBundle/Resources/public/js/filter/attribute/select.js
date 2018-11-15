@@ -105,7 +105,7 @@ define([
                         return {
                             label: i18n.getLabel(
                                 attribute.labels,
-                                UserContext.get('user_default_locale'),
+                                UserContext.get('uiLocale'),
                                 attribute.code
                             ),
                             select2Options: this.getSelect2Options(attribute),
@@ -153,7 +153,7 @@ define([
                         return {
                             search: term,
                             options: {
-                                locale: UserContext.get('user_default_locale')
+                                locale: UserContext.get('uiLocale')
                             }
                         };
                     },
@@ -204,7 +204,7 @@ define([
                 this.config.url,
                 {
                     class: this.config.entityClass,
-                    dataLocale: UserContext.get('user_default_locale'),
+                    dataLocale: UserContext.get('uiLocale'),
                     collectionId: attribute.meta.id,
                     options: {type: 'code'},
                     referenceDataName: attribute.reference_data_name

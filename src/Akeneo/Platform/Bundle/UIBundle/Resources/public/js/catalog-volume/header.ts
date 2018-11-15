@@ -46,7 +46,7 @@ class HeaderView extends BaseView {
       const headerContents: string = this.headerTemplate({
         title: __(this.config.title)
           .replace('{{values}}', productValues.value.toLocaleString(
-            userContext.get('user_default_locale').split('_')[0],
+            userContext.get('uiLocale').split('_')[0],
             {useGrouping: true})
           )
           .replace('{{average}}', productValuesAverage.value.average),

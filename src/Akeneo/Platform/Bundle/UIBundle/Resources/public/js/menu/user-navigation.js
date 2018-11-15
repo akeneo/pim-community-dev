@@ -89,6 +89,9 @@ define(
                 );
             },
 
+            /**
+             * Return user's avatar
+             */
             getAvatar: function () {
                 const filePath = UserContext.get('avatar').filePath;
                 if (null === filePath || undefined === filePath) {

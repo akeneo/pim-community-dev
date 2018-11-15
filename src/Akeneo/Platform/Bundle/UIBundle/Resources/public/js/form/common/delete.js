@@ -98,7 +98,6 @@ define(
 
                 this.remover.remove(this.getIdentifier())
                     .done(function () {
-                        debugger;
                         messenger.notify('success', __(this.config.trans.success));
                         router.redirectToRoute(this.config.redirect);
                     }.bind(this))

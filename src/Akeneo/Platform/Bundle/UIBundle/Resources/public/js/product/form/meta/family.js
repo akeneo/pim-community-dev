@@ -55,7 +55,7 @@ define(
                             familyLabel: family ?
                                 i18n.getLabel(
                                     family.labels,
-                                    UserContext.get('catalog_default_locale'),
+                                    UserContext.get('catalogLocale'),
                                     product.family
                                 ) : _.__('pim_common.none')
                         })

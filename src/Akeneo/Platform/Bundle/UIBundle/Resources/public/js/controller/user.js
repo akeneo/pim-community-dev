@@ -5,7 +5,7 @@ define([
         'pim/controller/front',
         'pim/fetcher-registry',
         'pim/page-title',
-        'pim/form-builder'
+        'pim/form-builder',
     ], function (
         _,
         BaseController,
@@ -20,7 +20,6 @@ define([
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher('user').fetch(
                     route.params.code,
-                    //{cached: false, full_attributes: false}
                 ).then((user) => {
                     if (!this.active) {
                         return;

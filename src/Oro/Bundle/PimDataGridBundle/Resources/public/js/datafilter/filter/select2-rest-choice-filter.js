@@ -88,7 +88,7 @@ define(
                                     options: {
                                         limit: this.resultsPerPage,
                                         page: page,
-                                        locale: UserContext.get('catalog_default_locale')
+                                        locale: UserContext.get('catalogLocale')
                                     }
                                 };
                             }.bind(this),

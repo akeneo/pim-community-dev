@@ -8,13 +8,15 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -31,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserController extends Controller
+class UserController
 {
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -60,6 +62,15 @@ class UserController extends Controller
     /** @var UserPasswordEncoderInterface */
     protected $encoder;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /** @var Session */
+    private $session;
+
+    /** @var ObjectManager */
+    private $objectManager;
+
     /**
      * @param TokenStorageInterface                 $tokenStorage
      * @param NormalizerInterface                   $normalizer
@@ -69,6 +80,9 @@ class UserController extends Controller
      * @param SaverInterface                        $saver
      * @param NormalizerInterface                   $constraintViolationNormalizer
      * @param UserPasswordEncoderInterface          $encoder
+     * @param EventDispatcherInterface              $eventDispatcher
+     * @param Session                               $session
+     * @param ObjectManager                         $objectManager
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -79,8 +93,10 @@ class UserController extends Controller
         SaverInterface $saver,
         NormalizerInterface $constraintViolationNormalizer,
         SimpleFactoryInterface $factory,
-
-        UserPasswordEncoderInterface $encoder
+        UserPasswordEncoderInterface $encoder,
+        EventDispatcherInterface $eventDispatcher,
+        Session $session,
+        ObjectManager $objectManager
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -91,6 +107,9 @@ class UserController extends Controller
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->factory = $factory;
         $this->encoder = $encoder;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->session = $session;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -135,8 +154,9 @@ class UserController extends Controller
 
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
-        // TODO There is a configuration on the Front form to remove this before send
-        unset($data['code'], $data['last_login'], $data['login_count'], $data['password']);
+
+        //code is useful to reach the route, cannot forget it in the query
+        unset($data['code']);
         $previousUserName = $data['username'];
         $passwordViolations = $this->validatePassword($user, $data);
         if ($this->isPasswordUpdating($data) && $passwordViolations->count() === 0) {
@@ -166,20 +186,18 @@ class UserController extends Controller
         }
 
         $this->saver->save($user);
-        $this->get('session')->remove('dataLocale');
-
 
         return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
     }
 
     protected function update(UserInterface $user, ?string $previousUsername = null)
     {
-        $this->get('event_dispatcher')->dispatch(
+        $this->eventDispatcher->dispatch(
             UserEvent::POST_UPDATE,
-            new GenericEvent($user, ['current_user' => $this->getUser(), 'previous_username' => $previousUsername])
+            new GenericEvent($user, ['current_user' => $this->tokenStorage->getToken()->getUser(), 'previous_username' => $previousUsername])
         );
 
-        $this->get('session')->remove('dataLocale');
+        $this->session->remove('dataLocale');
         return $user;
     }
 
@@ -211,7 +229,7 @@ class UserController extends Controller
                 );
             }
 
-            return new JsonResponse(['values' => $normalizedViolations], 400);
+            return new JsonResponse(['values' => $normalizedViolations], Response::HTTP_BAD_REQUEST);
         }
 
         $this->saver->save($user);
@@ -227,6 +245,10 @@ class UserController extends Controller
      */
     public function deleteAction(Request $request, $identifier): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $user = $this->getUserOr404($identifier);
 
         $token = $this->tokenStorage->getToken();
@@ -235,9 +257,8 @@ class UserController extends Controller
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $em = $this->get('doctrine.orm.entity_manager');
-        $em->remove($user);
-        $em->flush();
+        $this->objectManager->remove($user);
+        $this->objectManager->flush();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

@@ -1,11 +1,12 @@
 services:
     pim_user.factory.user:
-        class: 'Akeneo\UserManagement\Bundle\Factory\UserFactory'
+        class: 'Akeneo\UserManagement\Component\Factory\UserFactory'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
             - '@pim_user.repository.group'
+            - 'Akeneo\UserManagement\Component\Model\User'
 
     pim_user.factory.group:
         class: '%akeneo_storage_utils.factory.simple.class%'

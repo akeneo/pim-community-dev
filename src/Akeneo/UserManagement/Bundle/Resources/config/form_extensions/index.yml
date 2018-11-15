@@ -67,4 +67,3 @@ extensions:
         config:
            title: pim_user_management.entity.user.module.create.button
            modalForm: pim-user-create-modal
-

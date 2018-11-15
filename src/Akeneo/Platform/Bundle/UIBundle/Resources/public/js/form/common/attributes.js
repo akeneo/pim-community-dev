@@ -198,8 +198,8 @@ define(
                         $.when(
                             AttributeGroupManager.getAttributeGroupsForObject(data)
                         ).then((attributeGroups) => {
-                            const scope = UserContext.get('catalog_default_scope');
-                            const locale = UserContext.get('catalog_default_locale');
+                            const scope = UserContext.get('catalogScope');
+                            const locale = UserContext.get('catalogLocale');
                             const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(data, scope, locale);
 
                             const sections = _.values(
@@ -215,7 +215,7 @@ define(
                                     this.attributeGroupTemplate,
                                     i18n.getLabel(
                                         section.attributeGroup.labels,
-                                        UserContext.get('catalog_default_locale'),
+                                        UserContext.get('catalogLocale'),
                                         section.attributeGroup.code
                                     )
                                 ));
@@ -264,15 +264,15 @@ define(
                         AttributeManager.isOptional(field.attribute, object)
                     );
                 }).then(function (field, channels, isOptional) {
-                    var scope = _.findWhere(channels, { code: UserContext.get('catalog_default_scope') });
-                    var locale = UserContext.get('catalog_default_locale');
+                    var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
+                    var locale = UserContext.get('catalogLocale');
 
                     field.setContext({
                         entity: this.getFormData(),
                         locale,
                         scope: scope.code,
                         scopeLabel: i18n.getLabel(scope.labels, locale, scope.code),
-                        uiLocale: UserContext.get('catalog_default_locale'),
+                        uiLocale: UserContext.get('catalogLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
@@ -369,14 +369,14 @@ define(
              * @param {Object} options
              */
             setScope: function (scope, options) {
-                UserContext.set('catalog_default_scope', scope, options);
+                UserContext.set('catalogScope', scope, options);
             },
 
             /**
              * Get the current scope
              */
             getScope: function () {
-                return UserContext.get('catalog_default_scope');
+                return UserContext.get('catalogScope');
             },
 
             /**
@@ -403,14 +403,14 @@ define(
              * @param {Object} options
              */
             setLocale: function (locale, options) {
-                UserContext.set('catalog_default_locale', locale, options);
+                UserContext.set('catalogLocale', locale, options);
             },
 
             /**
              * Get the current locale
              */
             getLocale: function () {
-                return UserContext.get('catalog_default_locale');
+                return UserContext.get('catalogLocale');
             },
 
             /**

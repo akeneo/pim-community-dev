@@ -27,7 +27,7 @@ define(
                         var label = _.escape(
                             i18n.getLabel(
                                 associationType.labels,
-                                UserContext.get('catalog_default_locale'),
+                                UserContext.get('catalogLocale'),
                                 associationType.code
                             )
                         );

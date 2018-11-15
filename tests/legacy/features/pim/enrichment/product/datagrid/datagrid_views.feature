@@ -127,7 +127,6 @@ Feature: Datagrid views
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    And I wait 5 seconds
     When I logout
     And I am logged in as "Julia"
     And I am on the products grid
@@ -139,7 +138,6 @@ Feature: Datagrid views
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    And I wait 5 seconds
     When I am on the products grid
     Then I should see the text "Sneakers only"
     And the grid should contain 2 elements

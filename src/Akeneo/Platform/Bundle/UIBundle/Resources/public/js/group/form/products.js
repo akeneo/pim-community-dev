@@ -53,7 +53,7 @@ define([
                     this.productGroupGrid = new Grid(
                         this.config.gridId,
                         {
-                            locale: UserContext.get('catalog_default_locale'),
+                            locale: UserContext.get('catalogLocale'),
                             currentGroup: this.getFormData().meta.id,
                             id: this.getFormData().meta.id,
                             selection: this.getFormData().products,

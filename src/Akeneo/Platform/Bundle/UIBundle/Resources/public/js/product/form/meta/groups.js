@@ -99,7 +99,7 @@ define(
              * @returns {Array}
              */
             prepareGroupsForTemplate: function (groups) {
-                var locale = UserContext.get('catalog_default_locale');
+                var locale = UserContext.get('catalogLocale');
 
                 return _.map(groups, function (group) {
                     return {
@@ -148,7 +148,7 @@ define(
                                 'pim_enrich.entity.product.module.show_group.title',
                                 { group: i18n.getLabel(
                                     group.labels,
-                                    UserContext.get('catalog_default_locale'),
+                                    UserContext.get('catalogLocale'),
                                     group.code
                                 )}
                             ),
@@ -156,7 +156,7 @@ define(
                                 products:     productList.products,
                                 productCount: productList.productCount,
                                 identifier:   identifierAttribute,
-                                locale:       UserContext.get('catalog_default_locale')
+                                locale:       UserContext.get('catalogLocale')
                             })
                         });
 

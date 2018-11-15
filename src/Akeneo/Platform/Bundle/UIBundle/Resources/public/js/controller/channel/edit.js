@@ -44,7 +44,7 @@ define(
                             const label = _.escape(
                                 i18n.getLabel(
                                     channel.labels,
-                                    UserContext.get('catalog_default_locale'),
+                                    UserContext.get('catalogLocale'),
                                     channel.code
                                 )
                             );

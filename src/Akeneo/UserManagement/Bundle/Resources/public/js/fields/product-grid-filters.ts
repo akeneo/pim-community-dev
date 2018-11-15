@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
 import * as i18n from 'pimui/js/i18n';
-import * as _ from "underscore";
+import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const BaseMultiSelectAsync = require('pim/form/common/fields/multi-select-async');
@@ -61,13 +61,13 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   protected convertBackendItem(item: NormalizedAttributeInterface): Object {
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalog_default_locale'), item.code),
+      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
       group: {
         text: (
           item.group ?
             i18n.getLabel(
               this.attributeGroups[item.group].labels,
-              UserContext.get('catalog_default_locale'),
+              UserContext.get('catalogLocale'),
               item.group
             ) : ''
         )
@@ -79,7 +79,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    * {@inheritdoc}
    */
   protected select2InitSelection(element: any, callback: any): void {
-    const strValues:string = (<any> $(element)).val();
+    const strValues = (<any> $(element)).val() as string;
     const values = strValues.split(',');
     if (values.length > 0) {
       $.ajax({
@@ -106,7 +106,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    */
   private static getSystemAttributeGroup(): NormalizedAttributeGroupInterface {
     const result: NormalizedAttributeGroupInterface = {labels: {}};
-    result['labels'][UserContext.get('catalog_default_locale')] = __('pim_datagrid.filters.system');
+    result['labels'][UserContext.get('catalogLocale')] = __('pim_datagrid.filters.system');
 
     return result;
   }

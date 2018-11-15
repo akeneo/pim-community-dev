@@ -38,7 +38,7 @@ define([
                             options: {
                                 limit: 20,
                                 page: page,
-                                locale: userContext.get('user_default_locale')
+                                locale: userContext.get('uiLocale')
                             }
                         };
                     },
@@ -50,7 +50,7 @@ define([
                         _.each(families, function (value, key) {
                             data.results.push({
                                 id: key,
-                                text: i18n.getLabel(value.labels, userContext.get('user_default_locale'), value.code)
+                                text: i18n.getLabel(value.labels, userContext.get('uiLocale'), value.code)
                             });
                         });
 
@@ -68,7 +68,7 @@ define([
                                         id: family.code,
                                         text: i18n.getLabel(
                                             family.labels,
-                                            userContext.get('user_default_locale'),
+                                            userContext.get('uiLocale'),
                                             family.code
                                         )
                                     };

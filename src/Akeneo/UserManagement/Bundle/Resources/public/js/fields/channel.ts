@@ -8,12 +8,12 @@ const UserContext = require('pim/user-context');
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InterfaceNormalizedChannel {
+type InterfaceNormalizedChannel = {
   code: string;
   labels: { [key:string] : string };
 }
 
-class ScopeField extends BaseSelect {
+class ChannelField extends BaseSelect {
   /**
    * {@inheritdoc}
    */
@@ -32,7 +32,7 @@ class ScopeField extends BaseSelect {
    */
   formatChoices(scopes: InterfaceNormalizedChannel[]): { [key:string] : string } {
     return scopes.reduce((result: { [key:string] : string }, channel: InterfaceNormalizedChannel) => {
-      const label = channel.labels[UserContext.get('user_default_locale')];
+      const label = channel.labels[UserContext.get('uiLocale')];
       result[channel.code] = label !== undefined ? label : '[' + channel.code + ']';
 
       return result;
@@ -40,4 +40,4 @@ class ScopeField extends BaseSelect {
   }
 }
 
-export = ScopeField;
+export = ChannelField;

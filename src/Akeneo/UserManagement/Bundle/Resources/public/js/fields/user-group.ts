@@ -7,7 +7,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InterfaceNormalizedUserGroup {
+type InterfaceNormalizedUserGroup = {
   meta: { default: boolean };
   name: string;
 }

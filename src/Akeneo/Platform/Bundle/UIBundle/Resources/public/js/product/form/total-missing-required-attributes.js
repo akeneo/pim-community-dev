@@ -49,8 +49,8 @@ define(
                 this.$el.empty();
 
                 const product = this.getFormData();
-                const scope = UserContext.get('catalog_default_scope');
-                const locale = UserContext.get('catalog_default_locale');
+                const scope = UserContext.get('catalogScope');
+                const locale = UserContext.get('catalogLocale');
 
                 const missingAttributes = toFillFieldProvider.getMissingRequiredFields(product, scope, locale);
 

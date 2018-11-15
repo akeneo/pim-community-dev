@@ -43,7 +43,7 @@ function (
                 var label = _.escape(
                     i18n.getLabel(
                         attribute.labels,
-                        UserContext.get('catalog_default_locale'),
+                        UserContext.get('catalogLocale'),
                         attribute.code
                     )
                 );

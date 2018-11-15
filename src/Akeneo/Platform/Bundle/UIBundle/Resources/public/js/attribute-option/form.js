@@ -36,7 +36,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        locale: UserContext.get('catalog_default_locale'),
+                        locale: UserContext.get('catalogLocale'),
                         i18n: i18n,
                         option: this.getFormData()
                     })

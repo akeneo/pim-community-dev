@@ -81,7 +81,7 @@ define(
                             };
                             params[this.datagrids.products.paramName] =
                                 this.datagrids.products.getParamValue(associationType);
-                            params.dataLocale = UserContext.get('catalog_default_locale');
+                            params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
                         }.bind(this),
@@ -98,7 +98,7 @@ define(
                         getInitialParams: function (associationType) {
                             let params = {};
                             params[this.paramName] = this.getParamValue(associationType);
-                            params.dataLocale = UserContext.get('catalog_default_locale');
+                            params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
                         },
@@ -175,7 +175,7 @@ define(
                     this.$el.html(
                         this.template({
                             product: this.getFormData(),
-                            locale: UserContext.get('catalog_default_locale'),
+                            locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationTarget: this.getCurrentAssociationTarget(),
                             currentAssociationTypeCode: this.getCurrentAssociationType(),
@@ -216,7 +216,7 @@ define(
                         this.panesTemplate({
                             __: __,
                             label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
-                            locale: UserContext.get('catalog_default_locale'),
+                            locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationType: this.getCurrentAssociationType(),
                             currentAssociationTarget: this.getCurrentAssociationTarget(),
@@ -666,7 +666,7 @@ define(
                         .fetch(this.getCurrentAssociationType())
                         .then((associationType) => {
                             form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
-                                associationType: associationType.labels[UserContext.get('catalog_default_locale')]
+                                associationType: associationType.labels[UserContext.get('catalogLocale')]
                             }));
 
                             let modal = new Backbone.BootstrapModal({

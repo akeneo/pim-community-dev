@@ -2,7 +2,6 @@ parameters:
     pim_user.controller.user_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserController
     pim_user.controller.security_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\SecurityController
     pim_user.controller.user_group_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserGroupController
-    pim_user.controller.user_role_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController
 
 services:
     pim_user.controller.user_rest:
@@ -17,6 +16,9 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@pim_user.factory.user'
             - '@security.password_encoder'
+            - '@event_dispatcher'
+            - '@session'
+            - '@doctrine.orm.entity_manager'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
@@ -37,7 +39,7 @@ services:
             - '@pim_internal_api_serializer'
 
     pim_user.controller.user_role_rest:
-        class: '%pim_user.controller.user_role_rest.class%'
+        class: 'Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController'
         arguments:
             - '@pim_user.repository.role'
             - '@serializer'

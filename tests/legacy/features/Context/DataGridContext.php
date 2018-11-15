@@ -504,7 +504,8 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        $this->getSession()->wait(6000, false); //TODO REMOVE THIS UGLY THING
+        //Wait for the JS action to be linked to the button because it will do the default action of the row otherwise
+        $this->getSession()->wait(6000, false);
         $action = ucfirst(strtolower($actionName));
         $this->getDatagrid()->clickOnAction($element, $action);
     }

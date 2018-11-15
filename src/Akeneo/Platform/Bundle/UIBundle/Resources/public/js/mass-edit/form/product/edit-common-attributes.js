@@ -49,7 +49,7 @@ define(
             configure: function () {
                 return $.when(
                     FetcherRegistry.getFetcher('channel')
-                        .fetch(UserContext.get('catalog_default_scope'), {force_list_method: true}),
+                        .fetch(UserContext.get('catalogScope'), {force_list_method: true}),
                     FetcherRegistry.getFetcher('locale').search({ activated: true, cached: false })
                 ).then((channel, locales) => {
                     this.channel = channel;
@@ -126,10 +126,10 @@ define(
                 return __(
                     this.config.description,
                     {
-                        locale: _.findWhere(this.locales, {code: UserContext.get('catalog_default_locale')}).label,
+                        locale: _.findWhere(this.locales, {code: UserContext.get('catalogLocale')}).label,
                         scope: i18n.getLabel(
                             this.channel.labels,
-                            UserContext.get('catalog_default_locale'),
+                            UserContext.get('catalogLocale'),
                             this.channel.code
                         )
                     }
@@ -146,9 +146,9 @@ define(
 
                 data.actions = [{
                     normalized_values: values,
-                    ui_locale: UserContext.get('user_default_locale'),
-                    attribute_locale: UserContext.get('catalog_default_locale'),
-                    attribute_channel: UserContext.get('catalog_default_scope')
+                    ui_locale: UserContext.get('uiLocale'),
+                    attribute_locale: UserContext.get('catalogLocale'),
+                    attribute_channel: UserContext.get('catalogScope')
                 }];
 
                 this.setData(data);

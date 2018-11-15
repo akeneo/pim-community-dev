@@ -189,7 +189,7 @@ class SectionView extends BaseView {
         warningText: this.config.warningText,
         meanLabel: __('catalog_volume.mean'),
         maxLabel: __('catalog_volume.max'),
-        userLocale: userContext.get('user_default_locale').split('_')[0],
+        userLocale: userContext.get('uiLocale').split('_')[0],
       });
 
       this.$('.AknCatalogVolume-axisContainer').append(el);

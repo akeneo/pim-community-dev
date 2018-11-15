@@ -65,8 +65,8 @@ define(
 
                 const filePath = _.result(this.getFormData().meta.image, 'filePath', null);
 
-                if (filePath === null && undefined !== this.config.fallback) {
-                    return this.config.fallback;
+                if (filePath === null && undefined !== this.config.fallbackPath) {
+                    return this.config.fallbackPath;
                 }
 
                 return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');

@@ -71,7 +71,7 @@ define(
                         this.config.gridName,
                         {
                             family_id: this.getFormData().meta.id,
-                            localeCode: UserContext.get('user_default_locale')
+                            localeCode: UserContext.get('uiLocale')
                         }
                     );
                 }

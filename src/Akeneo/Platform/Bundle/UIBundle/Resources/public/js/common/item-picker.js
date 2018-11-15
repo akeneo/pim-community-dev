@@ -386,7 +386,7 @@ define(
              * @return {string}
              */
             getLocale: function () {
-                return UserContext.get('catalog_default_locale');
+                return UserContext.get('catalogLocale');
             },
 
             /**
@@ -395,7 +395,7 @@ define(
              * @return {string}
              */
             getScope: function () {
-                return UserContext.get('catalog_default_scope');
+                return UserContext.get('catalogScope');
             }
         });
     }

@@ -57,7 +57,7 @@ function (
                 value: this.getFormData()[this.fieldName],
                 groups: _.sortBy(this.attributeGroups, 'sort_order'),
                 i18n: i18n,
-                locale: UserContext.get('catalog_default_locale'),
+                locale: UserContext.get('catalogLocale'),
                 labels: {
                     defaultLabel: __('pim_enrich.entity.attribute.property.group.choose')
                 }

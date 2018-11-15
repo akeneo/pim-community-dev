@@ -61,7 +61,7 @@ define(
 
                 return i18n.getLabel(
                     data.labels,
-                    UserContext.get('catalog_default_locale'),
+                    UserContext.get('catalogLocale'),
                     data.code
                 );
             }

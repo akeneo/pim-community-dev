@@ -41,7 +41,7 @@ define(
                                 options: {
                                     limit: 20,
                                     page: page,
-                                    locale: UserContext.get('user_default_locale')
+                                    locale: UserContext.get('uiLocale')
                                 }
                             };
                         },
@@ -55,7 +55,7 @@ define(
                                     id: key,
                                     text: i18n.getLabel(
                                         value.labels,
-                                        UserContext.get('user_default_locale'),
+                                        UserContext.get('uiLocale'),
                                         value.code
                                     )
                                 });
@@ -73,7 +73,7 @@ define(
                                         id: family.code,
                                         text: i18n.getLabel(
                                             family.labels,
-                                            UserContext.get('user_default_locale'),
+                                            UserContext.get('uiLocale'),
                                             family.code
                                         )
                                     });

@@ -32,7 +32,7 @@ define(
              * {@inheritdoc}
              */
             render() {
-                const catalogLocal = UserContext.get('catalog_default_locale');
+                const catalogLocal = UserContext.get('catalogLocale');
 
                 FetcherRegistry.getFetcher('family')
                     .fetch(this.getFormData().family)

@@ -24,7 +24,7 @@ extensions:
     pim-user-create-modal-password:
         module: pim/form/common/fields/password
         parent: pim-user-create-modal
-        position: 10
+        position: 15
         targetZone: fields
         config:
             fieldName: password

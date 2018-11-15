@@ -31,7 +31,7 @@ define([
         return BaseForm.extend({
             className: 'AknFieldContainer',
             template: _.template(template),
-            catalogLocale: UserContext.get('catalog_default_locale'),
+            catalogLocale: UserContext.get('catalogLocale'),
 
             /**
              * Initializes configuration.
