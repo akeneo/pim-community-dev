@@ -24,6 +24,9 @@ config:
             record_collection:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/record-collection'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record-collection.tsx'
+            option:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/option'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/option.tsx'
 
         akeneoreferenceentity/application/configuration/attribute:
             image:
