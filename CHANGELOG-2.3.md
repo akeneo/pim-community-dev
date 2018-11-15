@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.17 (2018-11-15)
+
 ## Bug fixes
 
 - PIM-7774: Fix refresh of grid date filter
