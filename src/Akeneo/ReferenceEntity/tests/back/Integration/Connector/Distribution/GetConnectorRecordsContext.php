@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiersForQuery;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -65,13 +67,17 @@ class GetConnectorRecordsContext implements Context
     /** @var null|Response */
     private $unprocessableEntityResponse;
 
+    /** @var InMemoryChannelExists */
+    private $channelExists;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
         InMemoryFindConnectorRecordsByIdentifiersForQuery $findConnectorRecords,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        InMemoryChannelExists $channelExists
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -80,6 +86,7 @@ class GetConnectorRecordsContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->recordPages = [];
         $this->findRecordIdentifiersForQuery = $findRecordIdentifiersForQuery;
+        $this->channelExists = $channelExists;
     }
 
     /**
@@ -194,6 +201,9 @@ class GetConnectorRecordsContext implements Context
         string $secondChannel
     ): void {
         $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
+
+        $this->channelExists->save(ChannelIdentifier::fromCode(strtolower($firstChannel)));
+        $this->channelExists->save(ChannelIdentifier::fromCode(strtolower($secondChannel)));
 
         for ($i = 1; $i <= $numberOfRecords; $i++) {
             $rawRecordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);

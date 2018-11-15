@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -50,8 +50,8 @@ class GetConnectorRecordsAction
     /** @var AddHalDownloadLinkToRecordImages */
     private $addHalLinksToImageValues;
 
-    /** @var FindActivatedLocalesPerChannelsInterface */
-    private $findActivatedLocalesPerChannels;
+    /** @var ChannelExistsInterface */
+    private $channelExists;
 
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
@@ -59,14 +59,14 @@ class GetConnectorRecordsAction
         PaginatorInterface $halPaginator,
         AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
         int $limit,
-        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels
+        ChannelExistsInterface $channelExists
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->searchConnectorRecord = $searchConnectorRecord;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
+        $this->channelExists = $channelExists;
     }
 
     /**
@@ -79,12 +79,12 @@ class GetConnectorRecordsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $channelFilter = $this->getChannelFilter($request);
+            $filterValuesChannel = $this->getFilterValuesChannel($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $searchAfterCode,
                 $this->limit->intValue(),
-                $channelFilter
+                $filterValuesChannel
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
@@ -131,14 +131,18 @@ class GetConnectorRecordsAction
         return $this->halPaginator->paginate($records, $paginationParameters, count($records));
     }
 
-    private function getChannelFilter(Request $request): ?ChannelIdentifier
+    private function getFilterValuesChannel(Request $request): ?ChannelIdentifier
     {
         $channel = $request->get('channel', null);
 
-        if (null !== $channel && !in_array($channel, array_keys(($this->findActivatedLocalesPerChannels)()))) {
-            throw new \InvalidArgumentException(sprintf('Channel "%s" does not exist or is not activated.', $channel));
+        if (null !== $channel) {
+            $channel = ChannelIdentifier::fromCode($channel);
+
+            if (false === ($this->channelExists)($channel)) {
+                throw new \InvalidArgumentException(sprintf('Channel "%s" does not exist.', $channel->normalize()));
+            }
         }
 
-        return null !== $channel ? ChannelIdentifier::fromCode($channel) : null;
+        return $channel;
     }
 }

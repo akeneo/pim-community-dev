@@ -11,7 +11,7 @@
         "status": 422,
         "body": {
             "code": 422,
-            "message":"Channel \"wrong_channel\" does not exist or is not activated."
+            "message":"Channel \"wrong_channel\" does not exist."
         }
     }
 }
