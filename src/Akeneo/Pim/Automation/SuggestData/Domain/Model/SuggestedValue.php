@@ -54,6 +54,10 @@ final class SuggestedValue
     }
 
     /**
+     * Validates that:
+     *   - $this->name is a non-empty string
+     *   - $this->value is a non-empty string or a non-empty array of strings.
+     *
      * @throws InvalidSuggestedValueException
      */
     private function validate(): void
@@ -62,20 +66,27 @@ final class SuggestedValue
             throw InvalidSuggestedValueException::emptyName();
         }
 
-        if (!is_string($this->value) && !is_array($this->value)) {
-            throw InvalidSuggestedValueException::invalidValue();
-        }
+        if (is_string($this->value)) {
+            if ('' === $this->value) {
+                throw InvalidSuggestedValueException::emptyValue();
+            }
 
-        if ('' == $this->value || (is_array($this->value) && 0 === count($this->value))) {
-            throw InvalidSuggestedValueException::emptyValue();
+            return;
         }
 
         if (is_array($this->value)) {
-            array_walk($this->value, function ($data): void {
-                if (!is_string($data)) {
+            if (0 === count($this->value)) {
+                throw InvalidSuggestedValueException::emptyValue();
+            }
+            foreach ($this->value as $value) {
+                if (!is_string($value)) {
                     throw InvalidSuggestedValueException::invalidValue();
                 }
-            });
+            }
+
+            return;
         }
+
+        throw InvalidSuggestedValueException::invalidValue();
     }
 }

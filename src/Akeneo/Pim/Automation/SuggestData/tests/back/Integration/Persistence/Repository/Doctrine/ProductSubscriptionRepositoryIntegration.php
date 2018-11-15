@@ -78,7 +78,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
-        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->jsonSerialize());
+        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getRawValues());
     }
 
     public function test_that_it_gets_null_for_a_non_subscribed_product_id(): void
@@ -95,7 +95,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'subscription-1',
             ['sku' => '72527273070']
         );
-        $subscription1->setSuggestedData(new SuggestedData(null));
+        $subscription1->setSuggestedData(new SuggestedData([]));
         $this->getRepository()->save($subscription1);
 
         $subscription2 = new ProductSubscription(
@@ -107,14 +107,6 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         );
         $this->getRepository()->save($subscription2);
 
-        $subscription3 = new ProductSubscription(
-            $this->createProduct('a_third_product'),
-            'subscription-3',
-            ['sku' => '72527273070']
-        );
-        $subscription3->setSuggestedData(new SuggestedData([]));
-        $this->getRepository()->save($subscription3);
-
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
@@ -123,7 +115,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
         $subscriptionRows = $statement->fetchAll();
 
-        Assert::assertCount(3, $subscriptionRows);
+        Assert::assertCount(2, $subscriptionRows);
 
         foreach ($subscriptionRows as $subscriptionRow) {
             Assert::isNull($subscriptionRow['raw_suggested_data']);

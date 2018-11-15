@@ -14,31 +14,29 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 /**
- * It structures data that comes from Franklin and that allows to create proposals.
+ * It structures data coming from the data provider and allows to create proposals.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class SuggestedData implements \IteratorAggregate, \JsonSerializable
+final class SuggestedData implements \IteratorAggregate
 {
     /** @var SuggestedValue[] */
     private $values = [];
 
     /**
-     * @param array|null $values
+     * @param array $values
      */
-    public function __construct(?array $values)
+    public function __construct(array $values)
     {
-        if (null !== $values) {
-            foreach ($values as $value) {
-                $this->values[] = new SuggestedValue($value['name'], $value['value']);
-            }
+        foreach ($values as $value) {
+            $this->values[] = new SuggestedValue($value['name'], $value['value']);
         }
     }
 
     /**
-     * {@inheritdoc}
+     * @return array|null
      */
-    public function jsonSerialize()
+    public function getRawValues(): ?array
     {
         if ($this->isEmpty()) {
             return null;

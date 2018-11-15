@@ -80,6 +80,28 @@ class SubscriptionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    public function it_throws_an_exception_if_keys_are_missing_in_suggested_data(): void
+    {
+        $this->beConstructedWith(
+            [
+                'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+                'identifiers' => [],
+                'attributes' => [],
+                'extra' => [
+                    'tracker_id' => '42',
+                ],
+                'misses_mapping' => true,
+                'mapped_identifiers' => [
+                    [
+                        'test' => 'test',
+                    ],
+                ],
+                'mapped_attributes' => [],
+            ]
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     public function it_returns_missing_mapping_if_the_information_exists(): void
     {
         $this->beConstructedWith([

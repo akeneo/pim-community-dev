@@ -19,14 +19,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 class InvalidSuggestedValueException extends \InvalidArgumentException
 {
     /**
-     * @param string $message
-     */
-    private function __construct(string $message)
-    {
-        parent::__construct($message);
-    }
-
-    /**
      * @return InvalidSuggestedValueException
      */
     public static function invalidValue(): InvalidSuggestedValueException

@@ -24,7 +24,7 @@ class SuggestedDataSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(null);
+        $this->beConstructedWith([]);
     }
 
     public function it_is_a_suggested_data(): void
@@ -35,11 +35,6 @@ class SuggestedDataSpec extends ObjectBehavior
     public function it_is_iterable(): void
     {
         $this->shouldImplement(\IteratorAggregate::class);
-    }
-
-    public function it_is_json_serializable(): void
-    {
-        $this->shouldImplement(\JsonSerializable::class);
     }
 
     public function it_is_a_collection_of_suggested_values(): void
@@ -79,7 +74,7 @@ class SuggestedDataSpec extends ObjectBehavior
         $this->isEmpty()->shouldReturn(false);
     }
 
-    public function it_prepares_values_for_json_serialization(): void
+    public function it_gets_raw_values(): void
     {
         $suggestedValues = [
             [
@@ -92,11 +87,11 @@ class SuggestedDataSpec extends ObjectBehavior
             ],
         ];
         $this->beConstructedWith($suggestedValues);
-        $this->jsonSerialize()->shouldReturn($suggestedValues);
+        $this->getRawValues()->shouldReturn($suggestedValues);
     }
 
     public function it_returns_null_if_there_are_no_values(): void
     {
-        $this->jsonSerialize()->shouldReturn(null);
+        $this->getRawValues()->shouldReturn(null);
     }
 }
