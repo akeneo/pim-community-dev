@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
--GITHUB-7532: Fix the prepoluation of textarea field    
+-GITHUB-7532: Fix the prepopulation of textarea field    
 
 # 2.0.42 (2018-11-12)
 
