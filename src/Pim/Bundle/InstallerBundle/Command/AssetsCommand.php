@@ -75,7 +75,8 @@ class AssetsCommand extends ContainerAwareCommand
             ->runCommand('oro:assetic:dump')
             ->runCommand('pim:installer:dump-require-paths')
             ->runCommand('pim:installer:dump-extensions');
-        $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
+        // TODO On the merge to master, it will fail; just remove the 2-letters locales.
+        $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it', 'en_NZ', 'pt_PT', 'pt_BR'];
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $defaultLocales)]);
 
         if (true === $input->getOption('symlink')) {
