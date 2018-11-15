@@ -14,6 +14,7 @@ Feature: Execute a job
       | new_heels | sole_fabric,lace_fabric,heel_color |
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully import a csv file of products with reference data
     Given the following CSV file to import:
       """
