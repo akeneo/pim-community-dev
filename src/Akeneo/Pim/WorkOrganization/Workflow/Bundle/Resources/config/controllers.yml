@@ -7,7 +7,6 @@ parameters:
     pimee_workflow.controller.rest.product.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductController
     pimee_workflow.controller.product_model_draft_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductModelDraftController
     pimee_workflow.controller.author_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\AuthorDraftController
-    pimee_workflow.controller.user_fields_visibility_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\UserFieldsVisibilityController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -86,12 +85,6 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
-
-    pimee_workflow.controller.user_fields_visibility_rest:
-        class: '%pimee_workflow.controller.user_fields_visibility_rest.class%'
-        arguments:
-            - '@pimee_security.repository.category_access'
-            - '@pim_user.repository.user'
 
     pimee_workflow.controller.product_model_draft:
         class: '%pimee_workflow.controller.product_model_draft.class%'

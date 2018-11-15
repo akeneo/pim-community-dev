@@ -14,6 +14,8 @@
 - TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
 
 ## BC breaks
+- Remove `Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType`
+- Remove bundle `PimEnterpriseUserBundle`
 - Move `PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductModelNormalizer`
 - Move `Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryItemsCounter`

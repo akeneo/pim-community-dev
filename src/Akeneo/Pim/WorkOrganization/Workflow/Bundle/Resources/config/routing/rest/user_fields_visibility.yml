@@ -1,6 +1,0 @@
-pimee_workflow_rest_user_fields_visibility:
-    path: /{identifier}
-    defaults: { _controller: pimee_workflow.controller.user_fields_visibility_rest:getVisibilityAction }
-    methods: [GET]
-    requirements:
-        identifier: '[a-zA-Z0-9_]+'

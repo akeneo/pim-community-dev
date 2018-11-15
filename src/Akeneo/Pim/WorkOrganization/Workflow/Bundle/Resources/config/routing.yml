@@ -47,10 +47,6 @@ pimee_datagrid_export:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/pimee_export.yml'
     prefix: /datagrid/export
 
-pimee_workflow_user_fields_visibility:
-    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/user_fields_visibility.yml'
-    prefix: /workflow/user_fields_visibility/rest
-
 # External API
 external_api_product_draft:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/external_api/product_draft.yml'
