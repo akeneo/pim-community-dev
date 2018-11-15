@@ -8,6 +8,7 @@ Feature: Add attribute options
     And I am logged in as "Julia"
     And I am on the attributes page
 
+  @critical
   Scenario: Successfully create a simple reference data
     Given I create a "Reference data simple select" attribute
     And I fill in the following information:

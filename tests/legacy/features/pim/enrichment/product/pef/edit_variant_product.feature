@@ -12,6 +12,7 @@ Feature: Edit a variant product
     And I edit the "1111111119" product
     Then I should see the text "Clothing by color and size"
 
+  @critical
   Scenario: Successfully edit and save a variant product
     Given I am logged in as "Mary"
     And I edit the "1111111119" product
@@ -22,6 +23,7 @@ Feature: Edit a variant product
     Then I should not see the text "There are unsaved changes."
     And the product Weight should be "8000 Gram"
 
+  @critical
   Scenario: Attributes coming from parent are read only
     Given I am logged in as "Mary"
     And I edit the "1111111119" product
@@ -32,6 +34,7 @@ Feature: Edit a variant product
     And I should see the text "Color (Variant axis)"
     And I should see the text "Size (Variant axis)"
 
+  @critical
   Scenario: Attributes coming from common attributes are read only
     Given I am logged in as "Mary"
     And I edit the "1111111119" product
@@ -40,6 +43,7 @@ Feature: Edit a variant product
     And the field Meta description should be read only
     And I should see the text "This attribute can be updated in the common attributes."
 
+  @critical
   Scenario: Axis attributes are read only
     Given I am logged in as "Mary"
     And I edit the "1111111119" product

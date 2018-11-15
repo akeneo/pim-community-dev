@@ -8,6 +8,7 @@ Feature: Display a variant product
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Mary"
 
+  @critical
   Scenario: I can see the variant meta only in variant products
     When I am on the "1111111111" product page
     Then I should see the text "VARIANT"
