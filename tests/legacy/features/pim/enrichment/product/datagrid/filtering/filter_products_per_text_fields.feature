@@ -8,6 +8,7 @@ Feature: Filter products by text field
     Given the "default" catalog configuration
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products with special characters value for text attribute
     Given the following attribute:
       | label-en_US | type             | useable_as_grid_filter | localizable | group | code |
@@ -76,6 +77,7 @@ Feature: Filter products by text field
       | name   | is empty     |       | book   |
       | name   | is not empty |       | postit |
 
+  @critical
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
       | label-en_US | type             | localizable | scopable | useable_as_grid_filter | group | code |

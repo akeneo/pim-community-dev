@@ -15,6 +15,7 @@ Feature: Filter products by category
       | blue-jeans    | men_2015_summer        |
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products by category
     Given I am on the products grid
     When I open the category tree

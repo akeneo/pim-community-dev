@@ -29,6 +29,7 @@ Feature: Filter products with multiples simpleselect filters
       | POST-3 | furniture | debian    |       |
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products grid
     And I show the filter "company"

@@ -30,6 +30,7 @@ Feature: Filter products with multiples number fields filters
     And I show the filter "supplier"
     And I show the filter "component"
 
+  @critical
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "supplier" with operator "=" and value "03"
     And I should be able to use the following filters:

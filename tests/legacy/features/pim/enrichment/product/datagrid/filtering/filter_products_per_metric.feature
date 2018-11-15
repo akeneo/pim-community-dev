@@ -21,6 +21,7 @@ Feature: Filter products per metric
       | pen    |           | yes     |                  |               |
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products by metric
     Given I am on the products grid
     Then I should not see the filter weight
