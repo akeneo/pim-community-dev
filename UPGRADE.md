@@ -16,6 +16,10 @@
 
 Akeneo PIM v3.0 is now using PHP 7.2.
 
+## Database charset migration
+
+MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+
 ## The main changes of the 3.0 version
 
 Main changes of the 3.0 are related to the code organization. In order to help the product team grow and to deliver more features, we had to reorganize the code structure. Now it is split by functional domain instead of being grouped by technical concerns. 
@@ -382,10 +386,6 @@ TODO: change the link!!
     bin/console pim:installer:assets --symlink --clean --env=prod
     yarn run webpack
     ```
-    
-## Database charset migration
-
-MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 
 ## Migrate your custom code
 
