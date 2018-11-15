@@ -49,8 +49,6 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
     ) {
         $this->api = $api;
         $this->configurationRepository = $configurationRepository;
-
-        $this->api->setToken($this->getToken());
     }
 
     /**
@@ -60,6 +58,7 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
         FamilyCode $familyCode,
         FranklinAttributeId $franklinAttributeId
     ): ReadAttributeOptionsMapping {
+        $this->api->setToken($this->getToken());
         $franklinOptionsMapping = $this
             ->api
             ->fetchByFamilyAndAttribute((string) $familyCode, (string) $franklinAttributeId);
@@ -81,6 +80,7 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
         FranklinAttributeId $franklinAttributeId,
         WriteAttributeOptionsMapping $attributeOptionsMapping
     ): void {
+        $this->api->setToken($this->getToken());
         $normalizer = new AttributeOptionsMappingNormalizer();
         $normalizedMapping = $normalizer->normalize($attributeOptionsMapping);
 

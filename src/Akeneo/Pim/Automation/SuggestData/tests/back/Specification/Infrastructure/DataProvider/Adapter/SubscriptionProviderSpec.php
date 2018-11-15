@@ -51,7 +51,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
 
         $this->beConstructedWith(
             $identifiersMappingRepository,
@@ -63,8 +62,10 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_no_mapping_has_been_defined(
         ProductInterface $product,
-        $identifiersMappingRepository
+        $identifiersMappingRepository,
+        $subscriptionApi
     ): void {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
@@ -73,10 +74,12 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_product_has_no_mapped_value(
         $identifiersMappingRepository,
+        $subscriptionApi,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue
     ): void {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
                 [
@@ -99,6 +102,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
     public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi): void
     {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $clientException = new ClientException('exception-message');
         $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
 
@@ -121,6 +125,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
         ValueInterface $skuValue,
         FamilyInterface $family
     ): void {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
                 [
@@ -172,6 +177,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
     public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page): void
     {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->fetchProducts()->willReturn($page);
 
         $cursor = $this->fetch();
@@ -181,6 +187,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_throws_product_subscription_exception_if_something_went_wrong_during_fetch(
         $subscriptionApi
     ): void {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $clientException = new ClientException('An exception message');
         $subscriptionApi->fetchProducts()->willThrow($clientException);
 

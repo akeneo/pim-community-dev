@@ -36,7 +36,6 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
-        $api->setToken(Argument::any())->shouldBeCalled();
     }
 
     public function it_is_an_identifier_mapping_provider(): void
@@ -47,6 +46,7 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
 
     public function it_updates_the_identifiers_mapping($api, $normalizer, IdentifiersMapping $mapping): void
     {
+        $api->setToken(Argument::type('string'))->shouldBeCalled();
         $normalizedMapping = ['foo' => 'bar'];
 
         $normalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);

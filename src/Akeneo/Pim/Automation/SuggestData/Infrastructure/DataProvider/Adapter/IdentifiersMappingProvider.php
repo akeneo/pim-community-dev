@@ -51,8 +51,6 @@ class IdentifiersMappingProvider implements IdentifiersMappingProviderInterface
         $this->api = $api;
         $this->normalizer = $normalizer;
         $this->configurationRepository = $configurationRepository;
-
-        $this->api->setToken($this->getToken());
     }
 
     /**
@@ -60,6 +58,7 @@ class IdentifiersMappingProvider implements IdentifiersMappingProviderInterface
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
+        $this->api->setToken($this->getToken());
         $this->api->update($this->normalizer->normalize($identifiersMapping));
     }
 

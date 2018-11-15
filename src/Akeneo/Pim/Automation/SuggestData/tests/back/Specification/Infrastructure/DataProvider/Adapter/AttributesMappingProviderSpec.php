@@ -35,7 +35,6 @@ class AttributesMappingProviderSpec extends ObjectBehavior
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
-        $api->setToken(Argument::any())->shouldBeCalled();
     }
 
     public function it_is_an_attributes_mapping_provider(): void
@@ -46,6 +45,7 @@ class AttributesMappingProviderSpec extends ObjectBehavior
 
     public function it_gets_attributes_mapping($api): void
     {
+        $api->setToken(Argument::type('string'))->shouldBeCalled();
         $response = new AttributesMapping([
             [
                 'from' => [
@@ -77,6 +77,7 @@ class AttributesMappingProviderSpec extends ObjectBehavior
 
     public function it_updates_attributes_mapping($api, $normalizer): void
     {
+        $api->setToken(Argument::type('string'))->shouldBeCalled();
         $familyCode = 'foobar';
         $attributesMapping = ['foo' => 'bar'];
         $normalizedMapping = ['bar' => 'foo'];

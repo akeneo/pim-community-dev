@@ -53,7 +53,6 @@ class AttributesMappingProvider implements AttributesMappingProviderInterface
         $this->api = $api;
         $this->normalizer = $normalizer;
         $this->configurationRepository = $configurationRepository;
-        $this->api->setToken($this->getToken());
     }
 
     /**
@@ -61,6 +60,7 @@ class AttributesMappingProvider implements AttributesMappingProviderInterface
      */
     public function getAttributesMapping(string $familyCode): AttributesMappingResponse
     {
+        $this->api->setToken($this->getToken());
         $apiResponse = $this->api->fetchByFamily($familyCode);
 
         $attributesMapping = new AttributesMappingResponse();
@@ -84,6 +84,7 @@ class AttributesMappingProvider implements AttributesMappingProviderInterface
      */
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
     {
+        $this->api->setToken($this->getToken());
         $mapping = $this->normalizer->normalize($attributesMapping);
 
         $this->api->update($familyCode, $mapping);

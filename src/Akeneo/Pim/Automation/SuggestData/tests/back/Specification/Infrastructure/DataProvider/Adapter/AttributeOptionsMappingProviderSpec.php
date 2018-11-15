@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributeOptionsMappingProvider;
 use PhpSpec\ObjectBehavior;
@@ -33,7 +34,6 @@ class AttributeOptionsMappingProviderSpec extends ObjectBehavior
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
-        $api->setToken(Argument::any())->shouldBeCalled();
 
         $this->beConstructedWith($api, $configurationRepo);
     }
@@ -46,9 +46,9 @@ class AttributeOptionsMappingProviderSpec extends ObjectBehavior
 
     public function it_retrieves_attribute_options_mapping($api): void
     {
-        $fakeDirectory = realpath(__DIR__ . '/../../../../Resources/fake/franklin-api/attribute-options-mapping');
-        $filename = 'get_family_router_attribute_color.json';
-        $mappingData = json_decode(file_get_contents(sprintf('%s/%s', $fakeDirectory, $filename)), true);
+        $api->setToken(Argument::type('string'))->shouldBeCalled();
+        $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
+        $mappingData = json_decode(file_get_contents($filepath), true);
 
         $strFamilyCode = 'family_code';
         $strFranklinAttrId = 'franklin_attr_id';

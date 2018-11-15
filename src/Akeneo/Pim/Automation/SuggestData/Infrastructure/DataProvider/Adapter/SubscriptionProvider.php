@@ -70,10 +70,8 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     ) {
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->familyNormalizer = $familyNormalizer;
-        $this->api = $api;
         $this->configurationRepository = $configurationRepository;
-
-        $this->api->setToken($this->getToken());
+        $this->api = $api;
     }
 
     /**
@@ -85,6 +83,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
      */
     public function subscribe(ProductSubscriptionRequest $subscriptionRequest): ProductSubscriptionResponse
     {
+        $this->api->setToken($this->getToken());
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
@@ -106,6 +105,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
      */
     public function bulkSubscribe(array $subscriptionRequests): ProductSubscriptionResponseCollection
     {
+        $this->api->setToken($this->getToken());
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw ProductSubscriptionException::invalidIdentifiersMapping();
@@ -133,6 +133,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
      */
     public function fetch(): \Iterator
     {
+        $this->api->setToken($this->getToken());
         try {
             $subscriptionsPage = $this->api->fetchProducts();
         } catch (ClientException $e) {
@@ -149,6 +150,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
      */
     public function unsubscribe(string $subscriptionId): void
     {
+        $this->api->setToken($this->getToken());
         try {
             $this->api->unsubscribeProduct($subscriptionId);
         } catch (ClientException $e) {
