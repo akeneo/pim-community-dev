@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
@@ -23,8 +23,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\FranklinConnectionController;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\FranklinConnectionController;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -216,7 +216,7 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
     private function loadFakeData($filename): string
     {
         $directory = realpath(
-            sprintf('%s/../../../%s/%s', __DIR__, 'Resources/fake/pim-internal-api', 'franklin-connection')
+            sprintf('%s/../../../../%s/%s', __DIR__, 'Resources/fake/pim-internal-api', 'franklin-connection')
         );
         $filepath = sprintf('%s/%s.json', $directory, $filename);
         if (!file_exists($filepath)) {

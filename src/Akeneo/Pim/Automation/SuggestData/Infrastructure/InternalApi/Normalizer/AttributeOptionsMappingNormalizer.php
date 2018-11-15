@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class OptionsMappingNormalizer
+class AttributeOptionsMappingNormalizer
 {
     /**
      * @param AttributeOptionsMapping $attributeOptionsMapping
@@ -29,7 +29,7 @@ class OptionsMappingNormalizer
     {
         return [
             'family' => $attributeOptionsMapping->familyCode(),
-            'franklinAttributeCode' => $attributeOptionsMapping->franklinAttributeId(),
+            'franklin_attribute_code' => $attributeOptionsMapping->franklinAttributeId(),
             'mapping' => $this->normalizeMapping($attributeOptionsMapping->mapping()),
         ];
     }
@@ -43,12 +43,14 @@ class OptionsMappingNormalizer
     {
         $normalizedMapping = [];
         foreach ($attributeOptionsMapping as $attributeOptionMapping) {
-            $normalizedMapping[$attributeOptionMapping->franklinAttributeId()] = [
-                'franklinAttributeOptionCode' => [
-                    'label' => $attributeOptionMapping->franklinAttributeLabel(),
+            $normalizedMapping[] = [
+                $attributeOptionMapping->franklinAttributeId => [
+                    'franklin_attribute_option_code' => [
+                        'label' => $attributeOptionMapping->franklinAttributeLabel,
+                    ],
+                    'catalog_attribute_option_code' => $attributeOptionMapping->pimAttributeCode,
+                    'status' => $attributeOptionMapping->status(),
                 ],
-                'catalogAttributeOptionCode' => $attributeOptionMapping->catalogAttributeCode(),
-                'status' => $attributeOptionMapping->status(),
             ];
         }
 

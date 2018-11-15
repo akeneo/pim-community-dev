@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
@@ -19,8 +19,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\AttributesMappingNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\FamiliesNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

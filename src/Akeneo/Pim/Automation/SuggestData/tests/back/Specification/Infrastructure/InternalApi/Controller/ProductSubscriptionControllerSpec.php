@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
@@ -20,8 +20,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetP
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi as InternalApi;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\ProductSubscriptionController;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\ProductSubscriptionController;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer as InternalApi;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnect
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\ConnectionStatusNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\ConnectionStatusNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

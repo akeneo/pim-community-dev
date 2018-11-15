@@ -10,7 +10,7 @@
 /**
  * Interface and constants for model of normalized Attribute Options Mapping.
  * This file defines the contract of the format received and send to the back-end.
- * @see Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeOptionsMappingController
+ * @see Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\AttributeOptionsMappingController
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
