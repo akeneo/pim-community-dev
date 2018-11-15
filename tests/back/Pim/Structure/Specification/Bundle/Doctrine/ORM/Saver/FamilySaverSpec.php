@@ -15,10 +15,9 @@ class FamilySaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $eventDispatcher);
+        $this->beConstructedWith($objectManager, $eventDispatcher);
     }
 
     function it_is_a_saver()

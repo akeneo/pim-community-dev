@@ -23,9 +23,6 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
