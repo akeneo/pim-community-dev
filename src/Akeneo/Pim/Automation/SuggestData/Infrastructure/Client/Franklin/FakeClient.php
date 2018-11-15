@@ -268,7 +268,7 @@ class FakeClient implements ClientInterface
     private function loadFakeData(string $filepath): string
     {
         $fakeFilepath = sprintf('%s/%s.json', realpath(self::FAKE_PATH), $filepath);
-        if (!file_exists($fakeFilepath)) {
+        if (!is_file($fakeFilepath)) {
             throw new \LogicException(
                 sprintf('File "%s" not found. The FakeClient cannot provide you fake data.', $fakeFilepath)
             );

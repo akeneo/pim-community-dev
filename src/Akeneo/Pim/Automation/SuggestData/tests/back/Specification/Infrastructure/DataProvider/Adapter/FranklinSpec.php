@@ -180,7 +180,7 @@ class FranklinSpec extends ObjectBehavior
             ],
             42,
             $normalizedFamily));
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->subscribe($request)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this
@@ -196,7 +196,7 @@ class FranklinSpec extends ObjectBehavior
         $normalizedMapping = ['foo' => 'bar'];
 
         $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
-        $identifiersMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $identifiersMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
         $identifiersMappingApi->update($normalizedMapping)->shouldBeCalled();
 
         $this->updateIdentifiersMapping($mapping);
@@ -204,7 +204,7 @@ class FranklinSpec extends ObjectBehavior
 
     public function it_unsubscribes_a_subscription_id_from_franklin($subscriptionApi): void
     {
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->unsubscribeProduct('foo-bar')->shouldBeCalled();
 
         $this->unsubscribe('foo-bar')->shouldReturn(null);
@@ -212,7 +212,7 @@ class FranklinSpec extends ObjectBehavior
 
     public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi): void
     {
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
 
         $clientException = new ClientException('exception-message');
         $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
@@ -251,7 +251,7 @@ class FranklinSpec extends ObjectBehavior
             ],
         ]);
         $attributesMappingApi->fetchByFamily('camcorders')->willReturn($response);
-        $attributesMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $attributesMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
 
         $attributesMappingResponse = $this->getAttributesMapping('camcorders');
         $attributesMappingResponse->shouldHaveCount(2);
@@ -261,7 +261,7 @@ class FranklinSpec extends ObjectBehavior
     public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page): void
     {
         $subscriptionApi->fetchProducts()->willReturn($page);
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
 
         $cursor = $this->fetch();
         $cursor->shouldBeAnInstanceOf(SubscriptionsCursor::class);
@@ -271,7 +271,7 @@ class FranklinSpec extends ObjectBehavior
         $subscriptionApi
     ): void {
         $clientException = new ClientException('An exception message');
-        $subscriptionApi->setToken(Argument::any())->shouldBeCalled();
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
         $subscriptionApi->fetchProducts()->willThrow($clientException);
 
         $this->shouldThrow(new ProductSubscriptionException('An exception message'))->during('fetch');
@@ -284,7 +284,7 @@ class FranklinSpec extends ObjectBehavior
         $normalizedMapping = ['bar' => 'foo'];
 
         $attributesMappingNormalizer->normalize($attributesMapping)->willReturn($normalizedMapping);
-        $attributesMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $attributesMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
         $attributesMappingApi->update($familyCode, $normalizedMapping)->shouldBeCalled();
 
         $this->updateAttributesMapping($familyCode, $attributesMapping);
@@ -297,7 +297,7 @@ class FranklinSpec extends ObjectBehavior
 
         $strFamilyCode = 'family_code';
         $strFranklinAttrId = 'franklin_attr_id';
-        $attributeOptionsMappingApi->setToken(Argument::any())->shouldBeCalled();
+        $attributeOptionsMappingApi->setToken(Argument::type('string'))->shouldBeCalled();
         $attributeOptionsMappingApi
             ->fetchByFamilyAndAttribute($strFamilyCode, $strFranklinAttrId)
             ->willReturn(new FranklinAttributeOptionsMapping($mappingData));
