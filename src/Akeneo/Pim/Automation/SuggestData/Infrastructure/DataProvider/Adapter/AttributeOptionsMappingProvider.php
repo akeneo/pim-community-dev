@@ -37,18 +37,18 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
     private $token;
 
     /** @var ConfigurationRepositoryInterface */
-    private $configurationRepo;
+    private $configurationRepository;
 
     /**
      * @param OptionsMappingInterface $api
-     * @param ConfigurationRepositoryInterface $configurationRepo
+     * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         OptionsMappingInterface $api,
-        ConfigurationRepositoryInterface $configurationRepo
+        ConfigurationRepositoryInterface $configurationRepository
     ) {
         $this->api = $api;
-        $this->configurationRepo = $configurationRepo;
+        $this->configurationRepository = $configurationRepository;
 
         $this->api->setToken($this->getToken());
     }
@@ -97,7 +97,7 @@ class AttributeOptionsMappingProvider implements AttributeOptionsMappingProvider
     private function getToken(): string
     {
         if (null === $this->token) {
-            $config = $this->configurationRepo->find();
+            $config = $this->configurationRepository->find();
             if ($config instanceof Configuration) {
                 $this->token = $config->getToken();
             }

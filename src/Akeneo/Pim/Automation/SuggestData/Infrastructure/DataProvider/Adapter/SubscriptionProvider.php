@@ -51,7 +51,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     private $api;
 
     /** @var ConfigurationRepositoryInterface */
-    private $configurationRepo;
+    private $configurationRepository;
 
     /** @var Token */
     private $token;
@@ -60,18 +60,18 @@ class SubscriptionProvider implements SubscriptionProviderInterface
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param FamilyNormalizer $familyNormalizer
      * @param SubscriptionApiInterface $api
-     * @param ConfigurationRepositoryInterface $configurationRepo
+     * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         FamilyNormalizer $familyNormalizer,
         SubscriptionApiInterface $api,
-        ConfigurationRepositoryInterface $configurationRepo
+        ConfigurationRepositoryInterface $configurationRepository
     ) {
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->familyNormalizer = $familyNormalizer;
         $this->api = $api;
-        $this->configurationRepo = $configurationRepo;
+        $this->configurationRepository = $configurationRepository;
 
         $this->api->setToken($this->getToken());
     }
@@ -232,7 +232,7 @@ class SubscriptionProvider implements SubscriptionProviderInterface
     private function getToken(): string
     {
         if (null === $this->token) {
-            $config = $this->configurationRepo->find();
+            $config = $this->configurationRepository->find();
             if ($config instanceof Configuration) {
                 $this->token = $config->getToken();
             }
