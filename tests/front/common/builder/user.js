@@ -12,10 +12,14 @@ class UserBuilder {
       image: null,
       lastLogin: 1518092814,
       loginCount: 18,
-      catalogLocale: 'en_US',
-      uiLocale: 'en_US',
-      catalogScope: 'ecommerce',
-      defaultTree: 'master',
+      catalog_default_locale: 'en_US',
+      user_default_locale: 'en_US',
+      catalog_default_scope: 'ecommerce',
+      default_category_tree: 'master',
+      email_notifications: null,
+      proposals_state_notifications: null,
+      proposals_to_review_notification: null,
+      default_asset_tree: null,
       avatar: {
         filePath: ''
       },
