@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Controller;
 
 use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -28,6 +29,8 @@ class SystemInfoController
 
     /**
      * @param string $_format
+     *
+     * @AclAncestor("pim_analytics_system_info_index")
      *
      * @return Response
      */

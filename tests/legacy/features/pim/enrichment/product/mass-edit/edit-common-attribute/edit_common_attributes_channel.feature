@@ -39,7 +39,8 @@ Feature: Edit common attributes of many products at once
       | sandals   | weight                   | 500 GRAM                |
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
-    When I show the filter "description"
+    When I type "descr" in the manage filter input
+    And I show the filter "description"
     And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
     And I select rows sneakers
