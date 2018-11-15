@@ -14,6 +14,7 @@ Feature: Join an image to a product
     And I am logged in as "Mary"
     And I am on the "Car" product page
 
+  @critical
   Scenario: Successfully upload an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product

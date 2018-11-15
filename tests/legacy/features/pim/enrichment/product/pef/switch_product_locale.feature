@@ -24,6 +24,7 @@ Feature: Switch product locale
     And I save the product
     Then the product Name should be "My cool jacket"
 
+  @critical
   Scenario: Successfully edit a product in another locale
     Given I switch the locale to "de_DE"
     Then the product Name should be empty

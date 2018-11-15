@@ -4,6 +4,7 @@ Feature: Import attributes
   As a product manager
   I need to be able to import attributes
 
+  @critical
   Scenario: Successfully import attributes with reference data
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

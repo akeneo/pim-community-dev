@@ -18,6 +18,7 @@ Feature: Edit a product
       | fabric | neoprene     |              |
       | fabric | silk         | Silk         |
 
+  @critical
   Scenario: Successfully add reference data values to a product
     Given I am logged in as "Mary"
     And I am on the "high-heels" product page
@@ -30,6 +31,7 @@ Feature: Edit a product
     Then the product Heel color should be "red"
     Then the product Sole fabric should be "neoprene, silk"
 
+  @critical
   Scenario: Successfully edit reference data values to a product
     Given I am logged in as "Mary"
     And the following product values:
