@@ -73,9 +73,7 @@ class ProductAndProductModelDatasource extends Datasource
         $context = [
             'locales'             => [$localeCode],
             'channels'            => [$channelCode],
-            'data_locale'         => $this->getParameters()['dataLocale'],
-            'association_type_id' => $this->getConfiguration('association_type_id', false),
-            'current_group_id'    => $this->getConfiguration('current_group_id', false),
+            'data_locale'         => $this->getParameters()['dataLocale']
         ];
 
         $normalizedRows = [

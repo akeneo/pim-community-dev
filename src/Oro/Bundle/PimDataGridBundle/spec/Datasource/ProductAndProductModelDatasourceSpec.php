@@ -69,8 +69,6 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
             ],
             'locale_code' => 'fr_FR',
             'scope_code' => 'ecommerce',
-            'association_type_id' => 2,
-            'current_group_id' => 3,
             PagerExtension::PER_PAGE_PARAM => 15
         ];
 
@@ -110,9 +108,7 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $rowNormalizer->normalize($row, 'datagrid', [
             'locales'       => ['fr_FR'],
             'channels'      => ['ecommerce'],
-            'data_locale'   => 'fr_FR',
-            'association_type_id' => 2,
-            'current_group_id' => 3
+            'data_locale'   => 'fr_FR'
         ])->willReturn([
             'identifier'   => 'identifier',
             'family'       => 'family label',
