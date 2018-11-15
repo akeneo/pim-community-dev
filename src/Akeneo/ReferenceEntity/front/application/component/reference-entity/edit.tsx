@@ -7,6 +7,7 @@ import sidebarProvider from 'akeneoreferenceentity/application/configuration/sid
 import CreateRecordModal from 'akeneoreferenceentity/application/component/record/create';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {redirectToReferenceEntityList} from 'akeneoreferenceentity/application/action/reference-entity/router';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   sidebar: {
@@ -45,9 +46,7 @@ class ReferenceEntityEditView extends React.Component<EditProps> {
       className="AknColumn-navigationLink"
       onClick={this.props.events.backToReferenceEntityList}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (' ' === event.key) {
-          this.props.events.backToReferenceEntityList();
-        }
+        if (Key.Space === event.key) this.props.events.backToReferenceEntityList();
       }}
     >
       {__('pim_reference_entity.record.button.back')}

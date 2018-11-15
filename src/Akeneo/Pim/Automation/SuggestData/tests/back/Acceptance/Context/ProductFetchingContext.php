@@ -6,7 +6,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionFake;
 use Behat\Behat\Context\Context;
 
 /**
@@ -22,7 +22,7 @@ final class ProductFetchingContext implements Context
 
     /**
      * @param FetchProductsHandler $fetchProductsHandler
-     * @param SubscriptionFake $subscriptionFake
+     * @param SubscriptionFake $subscriptionApi
      */
     public function __construct(
         FetchProductsHandler $fetchProductsHandler,
@@ -33,9 +33,9 @@ final class ProductFetchingContext implements Context
     }
 
     /**
-     * @When the subscribed products are fetched from PIM.ai
+     * @When the subscribed products are fetched from Franklin
      */
-    public function theProductsAreFetchedFromPimAi(): void
+    public function theProductsAreFetchedFromFranklin(): void
     {
         try {
             $this->fetchProductsHandler->handle(new FetchProductsCommand());

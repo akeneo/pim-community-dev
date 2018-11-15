@@ -52,14 +52,14 @@ final class ProductSubscriptionRequest
     public function getMappedValues(IdentifiersMapping $mapping): array
     {
         $mapped = [];
-        foreach ($mapping as $pimAiCode => $mappedAttribute) {
+        foreach ($mapping as $franklinCode => $mappedAttribute) {
             if (!$mappedAttribute instanceof AttributeInterface) {
                 continue;
             }
 
             $value = $this->product->getValue($mappedAttribute->getCode());
             if (null !== $value && $value->hasData()) {
-                $mapped[$pimAiCode] = (string) $value;
+                $mapped[$franklinCode] = (string) $value;
             }
         }
 
@@ -67,7 +67,7 @@ final class ProductSubscriptionRequest
     }
 
     /**
-     * For PIM.ai, MPN and Brand form one identifier.
+     * For Franklin, MPN and Brand form one identifier.
      * As a result, we should never subscribe a product if it has a value for only one of them.
      *
      * @param array $mapped

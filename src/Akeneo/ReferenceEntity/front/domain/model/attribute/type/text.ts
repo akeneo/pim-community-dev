@@ -4,12 +4,11 @@ import ReferenceEntityIdentifier, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {
-  CommonNormalizedAttribute,
-  CommonAttribute,
-  CommonConcreteAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/common';
+  NormalizedAttribute,
+  Attribute,
+  ConcreteAttribute,
+} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {MaxLength, NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 import {IsTextarea, NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {
@@ -34,7 +33,7 @@ export type NormalizedTextAdditionalProperty =
   | NormalizedValidationRule
   | NormalizedRegularExpression;
 
-export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
+export interface NormalizedTextAttribute extends NormalizedAttribute {
   type: 'text';
   max_length: NormalizedMaxLength;
   is_textarea: NormalizedIsTextarea;
@@ -43,7 +42,7 @@ export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
   regular_expression: NormalizedRegularExpression;
 }
 
-export interface TextAttribute extends CommonAttribute {
+export interface TextAttribute extends Attribute {
   maxLength: MaxLength;
   isTextarea: IsTextarea;
   isRichTextEditor: IsRichTextEditor;
@@ -54,7 +53,7 @@ export interface TextAttribute extends CommonAttribute {
 
 export class InvalidArgumentError extends Error {}
 
-export class ConcreteTextAttribute extends CommonConcreteAttribute implements TextAttribute {
+export class ConcreteTextAttribute extends ConcreteAttribute implements TextAttribute {
   private constructor(
     identifier: Identifier,
     referenceEntityIdentifier: ReferenceEntityIdentifier,
@@ -75,7 +74,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
       referenceEntityIdentifier,
       code,
       labelCollection,
-      AttributeType.Text,
+      'text',
       valuePerLocale,
       valuePerChannel,
       order,
@@ -149,3 +148,5 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
     };
   }
 }
+
+export const denormalize = ConcreteTextAttribute.createFromNormalized;

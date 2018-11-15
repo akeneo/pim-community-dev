@@ -4,6 +4,10 @@ pimee_enrich.acl.attribute_group.edit_permissions: Attributgruppenberechtigungen
 pimee_importexport.acl.export_profile.edit_permissions: Export-Profil Berechtigungen verwalten
 pimee_importexport.acl.import_profile.edit_permissions: Import-Profil Berechtigungen verwalten
 pimee_enrich.groups.label: Eigentümer-Gruppen
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Attribute bearbeiten
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung entfernen
 pim_analytics:
   info_type:
     nb_custom_locale_accesses: Anzahl der benutzerdefinierten Zugriffe auf das Gebietsschema
@@ -12,3 +16,83 @@ pim_analytics:
 job_profile.permissions:
   execute.label: Berechtigt Job-Profil auszuführen
   edit.label: Berechtigt Job-Profil zu bearbeiten
+pim_title.locale:
+  edit: "Gebietsschemata %locale.code% | Bearbeiten"
+attribute group.permissions:
+  view.label: Berechtigt Attribute anzuzeigen
+  view.help: Erlauben, die Produkte in dieser Attributgruppe anzusehen
+  edit.label: Berechtigt Attribute zu bearbeiten
+  edit.help: Bearbeitung der Produkte in dieser Attributgruppe erlauben
+  no_access_to_attributes: Sie haben keinen Zugriff auf die Attribute dieses Produktes. Bitte kontaktieren Sie Ihren Administrator.
+category.permissions:
+  view.label: Berechtigt Produkte anzuzeigen
+  view.help: Erlauben, die Produkte in dieser Kategorie anzusehen
+  edit.label: Berechtigt Produkte zu bearbeiten
+  edit.help: Erlauben, die Produkte in dieser Kategorie zu bearbeiten (beinhaltet die Berechtigung anzuzeigen)
+  own.label: Berechtigt Produkte zu besitzen
+  own.help: Berechtigt Produkte in dieser Kategorie zu überprüfen, klassifizieren, zuzuordnen, veröffentlichen oder die Veröffentlichung zu entziehen (beinhaltet die Berechtigung zu bearbeiten)
+  no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
+  apply_on_children.label: Änderung auf die Kindelemente anwenden
+  apply_on_children.help: Die Änderungen an den Berechtigungen auf alle Kindelemente kopieren. Bestehende Berechtigungen bei Kindelementen werden beibehalten.
+locale.permissions:
+  view.label: Berechtigt Produktinformationen anzuzeigen
+  view.help: Erlauben, die Produkteinformationen in diesem Gebietsschema anzusehen
+  edit.label: Berechtigt Produktinformationen zu bearbeiten
+  edit.help: Erlauben, die Produkteinformationen in diesem Gebietsschema zu bearbeiten (beinhaltet die Berechtigung anzuzeigen)
+  no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata . Bitte kontaktieren Sie Ihren Administrator.
+flash.locale.updated: Das Gebietsschema und die Berechtigungen wurden erfolgreich aktualisiert
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
+      page_title: Produkte
+      page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
+      title: Aktion auswählen
+      subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
+      confirm: Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.
+      steps:
+        first: Produkte auswählen
+        second: Aktion auswählen
+        third: Konfigurieren
+        fourth: Bestätigen
+    publish:
+      message:
+        error: Sie sind nicht der Eigentümer von diesem Produkt. Sie können es nicht veröffentlichen.
+        warning: 'Sie sind nicht der Eigentümer aller ausgewählten Produkte. Sie können diese Produkte nicht veröffentlichen: "%notGranted%".'
+      not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
+    unpublish:
+      message:
+        error: Sie sind nicht der Eigentümer dieses Produkts und können deshalb die Veröffentlichung nicht entziehen.
+        warning: 'Sie sind nicht der Eigentümer von allen ausgewählten Produkten. Sie können die Veröffentlichung dieser Produkte nicht aufheben: %notGranted%".'
+        info: Den %nbProducts% ausgewählten Produkten wird die Veröffentlichung entzogen.
+      not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
+    classify:
+      message:
+        error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht klassifizieren.
+        warning: 'Sie sind nicht der Eigentümer aller ausgewählten Produkte. Sie können diese Produkte nicht klassifizieren: "%notGranted%".'
+    edit_common_attributes:
+      message:
+        error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht bearbeiten.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Berechtigungen
+  acl.product_ownership.title: Eigentum
+  attributes:
+    empty: keine
+  category:
+    tab:
+      permission:
+        title: Berechtigungen
+  groups:
+    label: Eigentümer-Gruppen
+    empty: keine
+add_product_value_with_permission_and_rules:
+  steps.perform: Produktwert hinzufügen
+update_product_value_with_permission_and_rules:
+  steps.perform: Wert des Produkts aktualisieren
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Attribute bearbeiten
+  steps.edit_common_attributes_processor.title: Attribute bearbeiten
+pim_enrich_attribute_form:
+  isReadOnly: Nur Lesezugriff

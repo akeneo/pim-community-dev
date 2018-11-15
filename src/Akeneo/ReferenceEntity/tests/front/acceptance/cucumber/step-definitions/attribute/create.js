@@ -63,7 +63,67 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user saves the valid attribute', async function() {
-    const requestContract = getRequestContract('Attribute/Create/ok.json');
+    const requestContract = getRequestContract('Attribute/Create/attribute_text_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.save();
+  });
+
+  When('the user creates a valid record attribute', async function() {
+    await answerChannelList.apply(this);
+    await startCreate(this.page);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'record');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+  });
+
+  Then('the user saves the valid record attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_record_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.save();
+  });
+
+  When('the user creates a valid record collection attribute', async function() {
+    await answerChannelList.apply(this);
+    await startCreate(this.page);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'record_collection');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+  });
+
+  Then('the user saves the valid record collection attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_record_collection_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.save();
+  });
+
+  When('the user creates a valid image attribute', async function() {
+    await answerChannelList.apply(this);
+    await startCreate(this.page);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'image');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+  });
+
+  Then('the user saves the valid image attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_image_ok.json');
 
     await listenRequest(this.page, requestContract);
 
@@ -93,4 +153,46 @@ module.exports = async function(cucumber) {
 
     assert.strictEqual(error, expectedError);
   });
+
+
+  When('the user creates a valid option attribute', async function() {
+    await answerChannelList.apply(this);
+    await startCreate(this.page);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'option');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+  });
+
+  Then('the user saves the valid option attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_option_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.save();
+  });
+
+  When('the user creates a valid option collection attribute', async function() {
+    await answerChannelList.apply(this);
+    await startCreate(this.page);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.select('.AknFieldContainer[data-code="type"]', 'option_collection');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
+  });
+
+  Then('the user saves the valid option collection attribute', async function() {
+    const requestContract = getRequestContract('Attribute/Create/attribute_option_collection_ok.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.save();
+  });
+
 };

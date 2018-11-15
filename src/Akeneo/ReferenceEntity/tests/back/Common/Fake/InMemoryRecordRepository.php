@@ -78,6 +78,23 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
+    public function getByReferenceEntityAndCodes(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        array $recordCodes
+    ): array {
+        $recordCodesFound = [];
+
+        foreach ($this->records as $record) {
+            foreach ($recordCodes as $recordCode) {
+                if ($record->getCode()->equals(RecordCode::fromString($recordCode)) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+                    $recordCodesFound[] = $record->getCode();
+                }
+            }
+        }
+
+        return $recordCodesFound;
+    }
+
     public function deleteByReferenceEntityAndCode(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code

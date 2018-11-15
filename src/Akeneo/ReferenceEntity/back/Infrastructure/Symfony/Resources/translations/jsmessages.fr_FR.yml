@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+      small:
+        remove: Supprimer
+        download: Téléchargement
   reference_entity:
     validation:
       code:
@@ -25,10 +32,14 @@ pim_reference_entity:
       input:
         label: Libellé
       confirm: Enregistrer
+    delete:
+      title: Attribut
   record:
     validation:
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
+    no_result:
+      subtitle: Essayez à nouveau avec d'autres critères de recherche.
     button:
       save: Enregistrer
       create: Créer
@@ -48,6 +59,7 @@ pim_reference_entity:
         code: Code
         image: Image
         label: Libellé
+        action: Actions
     tab:
       enrich: Enrichir
   attribute:
@@ -72,6 +84,8 @@ pim_reference_entity:
         value_per_channel: Valeur par canal
       confirm: Enregistrer
     edit:
+      save: Enregistrer
+      cancel: Annuler
       input:
         label: Libellé
         type: Type d'attribut
@@ -90,7 +104,7 @@ pim_reference_entity:
             regular_expression: Expression régulière
             url: URL
     delete:
-      confirm: L'attribut sera supprimé. Confirmer ?
+      title: Attribut
     notification:
       save:
         success: Attribut mis à jour avec succès.
@@ -101,6 +115,12 @@ pim_reference_entity:
       delete:
         success: Attribut supprimé avec succès.
         fail: Une erreur s'est produite pendant la suppression de l'attribut
+  modal:
+    delete:
+      subtitle: Supprimer l'élément
+      button:
+        cancel: Annuler
+        confirm: Supprimer
 pim_enrich:
   confirmation:
     discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'

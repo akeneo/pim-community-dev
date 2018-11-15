@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Træk og slip for at uploade eller klik her
+      small:
+        remove: Fjern
+        download: Hent
   reference_entity:
     button:
       save: Gem
@@ -16,7 +23,11 @@ pim_reference_entity:
       input:
         label: Etiket
       confirm: Gem
+    delete:
+      title: Attribut
   record:
+    no_result:
+      subtitle: Prøv igen med nye søgekriterier.
     button:
       save: Gem
       create: Tilføj ny
@@ -35,6 +46,7 @@ pim_reference_entity:
         code: Kode
         image: Billede
         label: Etiket
+        action: Aktioner
     tab:
       enrich: Berige
   attribute:
@@ -55,6 +67,8 @@ pim_reference_entity:
         value_per_channel: Værdi pr. kanal
       confirm: Gem
     edit:
+      save: Gem
+      cancel: Annuller
       input:
         label: Etiket
         type: Attributtype
@@ -72,6 +86,8 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Regulære udtryk
             url: URL
+    delete:
+      title: Attribut
     notification:
       save:
         success: Atributten blev opdateret.
@@ -79,6 +95,12 @@ pim_reference_entity:
         success: Atributten blev oprettet.
       delete:
         success: Atributten blev slettet.
+  modal:
+    delete:
+      subtitle: Bekræft sletning
+      button:
+        cancel: Annuller
+        confirm: Slet
 pim_enrich:
   entity:
     attribute:

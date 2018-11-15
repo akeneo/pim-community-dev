@@ -6,6 +6,8 @@ import ValidationError from 'akeneoreferenceentity/domain/model/validation-error
 import Record from 'akeneoreferenceentity/domain/model/record/record';
 import {getDataFieldView} from 'akeneoreferenceentity/application/configuration/value';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
+import __ from 'akeneoreferenceentity/tools/translator';
+import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
 export default (
   record: Record,
@@ -39,7 +41,15 @@ export default (
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <DataView value={value} onChange={onValueChange} onSubmit={onFieldSubmit} />
+          <ErrorBoundary errorMessage={__('pim_reference_entity.record.error.value', {fieldName: value.attribute.getLabel(locale.stringValue())})}>
+            <DataView
+              value={value}
+              onChange={onValueChange}
+              onSubmit={onFieldSubmit}
+              channel={channel}
+              locale={locale}
+            />
+          </ErrorBoundary>
         </div>
         {getErrorsView(errors, value)}
       </div>

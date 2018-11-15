@@ -53,13 +53,25 @@ pimee_workflow:
         second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
-btn.publish: Julkaise
-btn.unpublish: Peruuta julkaisu
+btn:
+  publish: Julkaise
+  unpublish: Peruuta julkaisu
+  save working copy: Tallenna työn alla oleva kopio
+  save draft: Tallenna luonnos
+  save working copy and next: Tallenna työn alla oleva kopio ja jatka
+  save draft and next: Tallenna luonnos ja jatka
+  save working copy and finish: Tallenna työn alla oleva kopio ja lopeta
+  save draft and finish: Tallenna luonnos ja lopeta
+  send for approval: Lähetä hyväksyttäväksi
+  sent for approval: Lähetetty hyväksyttäväksi
+  editworkingcopy: Muokkaa työn alla olevaa kopiota
 flash:
   product:
+    updated: Tuotteen työn alla oleva kopio on päivitetty
     published: Tuote on julkaistu onnistuneesti.
     unpublished: Tuotteen tila on muutettu onnistuneesti tilaan "Julkaisematon".
   product_draft:
+    updated: Luonnos on tallennettu onnistuneesti
     approve:
       success: Ehdotus on otettu käyttöön onnistuneesti.
       error: Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi. %error%
@@ -71,7 +83,6 @@ pim_menu:
   item:
     published_product: Julkaistut tuotteet
     proposal: Ehdotukset
-btn.editworkingcopy: Muokkaa työn alla olevaa kopiota
 confirmation:
   product:
     publish: Oletko varma, että haluat julkaista tämän tuotteen?
@@ -102,3 +113,23 @@ pimee_dashboard:
       product: Tuote
       review: Tarkastus
       empty: Ei tuoteluonnoksia tarkastettavaksi
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Julkaise
+      description: Julkaise valitut tuotteet, tällä hetkellä julkaistu data pyyhkiytyy julkaistavan datan alta.
+      success_flash: Valitut tuotteet ovat julkaistu onnistuneesti.
+      launched_flash: Työ "Tuotteiden julkaisu" on tällä hetkellä käynnissä.
+      message:
+        info: '%nbProducts% valitut tuotteet julkaistaan.'
+    unpublish:
+      label: Peruuta julkaisu
+      description: Muuta valittujen tuotteiden tila tilaan "Julkaisematon", tällä hetkellä julkaistu data poistetaan.
+      success_flash: Valitut tuotteet ovat onnistuneesti muutettu tilaan "Julkaisematon".
+      launched_flash: Työ "Peruuta julkaisu tuotteelta/tuotteilta" on käynnissä.
+      message:
+        info: '%nbProducts% valittujen tuotteiden julkaisu peruutetaan.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Ehdotukset

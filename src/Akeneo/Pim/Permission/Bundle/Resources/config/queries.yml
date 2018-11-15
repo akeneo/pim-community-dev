@@ -20,7 +20,30 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
 
+    pimee_enrich.doctrine.counter.category_product:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory_without_permission'
+            - '@pim_catalog.repository.category'
+            - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+        tags:
+            - { name: pim_enrich.doctrine.counter.category_item, type: product }
+
     pimee_security.product_grid.query.list_attributes:
         class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListAttributesUseableInProductGrid
         arguments:
             - '@database_connection'
+
+    pimee_security.product_grid.query.list_available_columns:
+        class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListProductGridAvailableColumns
+        arguments:
+            - '@database_connection'
+            - '@oro_datagrid.configuration.provider.chain'
+
+    pimee_security.product_grid.query.list_available_column_groups:
+        class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListProductGridAvailableColumnGroups
+        arguments:
+            - '@database_connection'
+            - '@oro_datagrid.configuration.provider.chain'

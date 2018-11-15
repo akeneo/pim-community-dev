@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -33,19 +34,25 @@ class SubscriptionProcessor implements ItemProcessorInterface, InitializableInte
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
     /** @var IdentifiersMapping */
     private $identifiersMapping;
 
     /**
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -82,7 +89,9 @@ class SubscriptionProcessor implements ItemProcessorInterface, InitializableInte
             );
         }
 
-        $request = new ProductSubscriptionRequest($product);
+        $fullProduct = $this->productRepository->find($product->getId());
+        $request = new ProductSubscriptionRequest($fullProduct);
+
         if (empty($request->getMappedValues($this->identifiersMapping))) {
             throw new InvalidItemException(
                 'Product does not have enough identifier values',

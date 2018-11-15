@@ -5,7 +5,7 @@ Feature: Delete one record
 
   @acceptance-back
   Scenario: Deleting a record
-    Given an reference entity with one record
+    Given a reference entity with one record
     When the user deletes the record
     Then there is no exception thrown
     And there is no violations errors
@@ -29,4 +29,4 @@ Feature: Delete one record
     Given a valid record
     And the user has the following rights:
       | akeneo_referenceentity_record_delete | false |
-    Then the user shouldn't see the delete button
+    Then the user should not see the delete button

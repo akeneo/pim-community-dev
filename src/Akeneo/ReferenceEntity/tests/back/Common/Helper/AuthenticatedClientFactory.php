@@ -56,7 +56,7 @@ class AuthenticatedClientFactory
     private function createUser(string $username): User
     {
         $user = new User();
-        $user->setUsername('julia');
+        $user->setUsername($username);
         $this->userRepository->save($user);
 
         return $user;

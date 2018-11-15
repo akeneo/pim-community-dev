@@ -44,7 +44,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
 
     public function it_is_thrown_if_an_attribute_is_mapped_several_times(): void
     {
-        $this->beConstructedThrough('duplicateAttributeCode', [2, 'attribute_code', 'className']);
+        $this->beConstructedThrough('duplicateAttributeCode', ['className']);
 
         $this->getMessage()->shouldReturn(
             'akeneo_suggest_data.entity.identifier_mapping.constraint.duplicate_attribute_code'

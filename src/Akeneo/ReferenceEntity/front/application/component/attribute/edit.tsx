@@ -7,26 +7,24 @@ import {getErrorsView} from 'akeneoreferenceentity/application/component/app/val
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import {
-  attributeEditionLabelUpdated,
-  attributeEditionIsRequiredUpdated,
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
+  attributeEditionIsRequiredUpdated,
+  attributeEditionLabelUpdated,
 } from 'akeneoreferenceentity/domain/event/attribute/edit';
-import Attribute, {
-  AdditionalProperty,
-  denormalizeAttribute,
-} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {saveAttribute} from 'akeneoreferenceentity/application/action/attribute/edit';
-import TextPropertyView from 'akeneoreferenceentity/application/component/attribute/edit/text';
-import ImagePropertyView from 'akeneoreferenceentity/application/component/attribute/edit/image';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
-import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/delete';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
-import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
+import Key from 'akeneoreferenceentity/tools/key';
+import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
+import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
 interface StateProps {
   context: {
@@ -45,7 +43,7 @@ interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
     onIsRequiredUpdated: (isRequired: boolean) => void;
-    onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+    onAdditionalPropertyUpdated: (property: string, value: any) => void;
     onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onOpenDeleteModal: () => void;
     onCancelDeleteModal: () => void;
@@ -56,38 +54,24 @@ interface DispatchProps {
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class InvalidAttributeTypeError extends Error {}
-
 const getAdditionalProperty = (
   attribute: Attribute,
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void,
+  onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
-  errors: ValidationError[]
+  errors: ValidationError[],
+  locale: string
 ): JSX.Element => {
-  switch (attribute.type) {
-    case AttributeType.Text:
-      return (
-        <TextPropertyView
-          attribute={attribute as TextAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    case AttributeType.Image:
-      return (
-        <ImagePropertyView
-          attribute={attribute as ImageAttribute}
-          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-          onSubmit={onSubmit}
-          errors={errors}
-        />
-      );
-    default:
-      throw new InvalidAttributeTypeError(
-        `There is no view capable of rendering attribute of type "${attribute.type}"`
-      );
-  }
+  const AttributeView = getAttributeView(attribute);
+
+  return (
+    <AttributeView
+      attribute={attribute as TextAttribute}
+      onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+      onSubmit={onSubmit}
+      errors={errors}
+      locale={locale}
+    />
+  );
 };
 
 class Edit extends React.Component<EditProps> {
@@ -128,9 +112,7 @@ class Edit extends React.Component<EditProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.events.onSubmit();
-    }
+    if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -140,21 +122,10 @@ class Edit extends React.Component<EditProps> {
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
-            <header className="AknSubsection-title AknSubsection-title--sticky">
-              {__('pim_reference_entity.attribute.edit.common.title')}
-              <span
-                title={__('pim_reference_entity.attribute.edit.save')}
-                className="AknButtonList-item AknButton-squareIcon AknButton-squareIcon--small AknButton-squareIcon--validate"
-                tabIndex={0}
-                onClick={this.props.events.onSubmit}
-                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (' ' === event.key) {
-                    this.props.events.onSubmit();
-                  }
-                }}
-              />
+            <header className="AknSubsection-title AknSubsection-title--sticky  AknSubsection-title--light">
+              {__('pim_reference_entity.attribute.edit.title', {code: this.props.attribute.getCode().stringValue()})}
             </header>
-            <div className="AknFormContainer AknFormContainer--expanded">
+            <div className="AknFormContainer AknFormContainer--expanded AknFormContainer--withSmallPadding">
               <div className="AknFieldContainer" data-code="label">
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.label">
@@ -181,24 +152,6 @@ class Edit extends React.Component<EditProps> {
                   />
                 </div>
                 {getErrorsView(this.props.errors, 'labels')}
-              </div>
-              <div className="AknFieldContainer" data-code="code">
-                <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                  <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.code">
-                    {__('pim_reference_entity.attribute.edit.input.code')}
-                  </label>
-                </div>
-                <div className="AknFieldContainer-inputContainer">
-                  <input
-                    type="text"
-                    className="AknTextField AknTextField--light AknTextField--disabled"
-                    id="pim_reference_entity.attribute.edit.input.code"
-                    name="code"
-                    value={this.props.attribute.code.stringValue()}
-                    readOnly
-                    tabIndex={-1}
-                  />
-                </div>
               </div>
               <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
                 <div className="AknFieldContainer-header">
@@ -254,32 +207,52 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'isRequired')}
               </div>
+              <ErrorBoundary errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_edit')}>
+                {getAdditionalProperty(
+                  this.props.attribute,
+                  this.props.events.onAdditionalPropertyUpdated,
+                  this.props.events.onSubmit,
+                  this.props.errors,
+                  this.props.context.locale
+                )}
+              </ErrorBoundary>
             </div>
-          </div>
-          <div className="AknSubsection">
-            <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: 0, paddingTop: '10px'}}>
-              {__('pim_reference_entity.attribute.edit.additional.title')}
-            </header>
-            <div className="AknFormContainer AknFormContainer--expanded">
-              {getAdditionalProperty(
-                this.props.attribute,
-                this.props.events.onAdditionalPropertyUpdated,
-                this.props.events.onSubmit,
-                this.props.errors
-              )}
-            </div>
-          </div>
-          <div
-            className="AknButton AknButton--delete"
-            tabIndex={0}
-            onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-              if (' ' === event.key) {
-                this.props.events.onOpenDeleteModal();
-              }
-            }}
-            onClick={() => this.props.events.onOpenDeleteModal()}
-          >
-            {__('pim_reference_entity.attribute.edit.delete')}
+            <footer className="AknSubsection-footer AknSubsection-footer--sticky">
+              <span
+                className="AknButton AknButton--delete"
+                tabIndex={0}
+                onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                  if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
+                }}
+                onClick={() => this.props.events.onOpenDeleteModal()}
+                style={{flex: 1}}
+              >
+                <Trash color="#D4604F" className="AknButton-animatedIcon" />
+                {__('pim_reference_entity.attribute.edit.delete')}
+              </span>
+              <span
+                title={__('pim_reference_entity.attribute.edit.cancel')}
+                className="AknButton AknButton--small AknButton--grey AknButton--spaced"
+                tabIndex={0}
+                onClick={this.props.events.onCancel}
+                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                  if (Key.Space === event.key) this.props.events.onCancel();
+                }}
+              >
+                {__('pim_reference_entity.attribute.edit.cancel')}
+              </span>
+              <span
+                title={__('pim_reference_entity.attribute.edit.save')}
+                className="AknButton AknButton--small AknButton--apply AknButton--spaced"
+                tabIndex={0}
+                onClick={this.props.events.onSubmit}
+                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                  if (Key.Space === event.key) this.props.events.onSubmit();
+                }}
+              >
+                {__('pim_reference_entity.attribute.edit.save')}
+              </span>
+            </footer>
           </div>
         </div>
         {this.props.confirmDelete.isActive && (
@@ -322,7 +295,7 @@ export default connect(
         onIsRequiredUpdated: (isRequired: boolean) => {
           dispatch(attributeEditionIsRequiredUpdated(isRequired));
         },
-        onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => {
+        onAdditionalPropertyUpdated: (property: string, value: any) => {
           dispatch(attributeEditionAdditionalPropertyUpdated(property, value));
         },
         onCancel: () => {

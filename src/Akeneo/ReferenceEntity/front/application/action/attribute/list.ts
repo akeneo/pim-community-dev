@@ -7,10 +7,12 @@ import {notifyAttributeListUpdateFailed} from 'akeneoreferenceentity/application
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
-import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {generateKey} from 'akeneoreferenceentity/domain/model/record/value-collection';
+import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/application/configuration/attribute';
+import {hasDataCellView} from 'akeneoreferenceentity/application/configuration/value';
 
 export class InvalidArgument extends Error {}
 
@@ -18,13 +20,20 @@ export const updateAttributeList = () => async (dispatch: any, getState: () => E
   const referenceEntity = denormalizeReferenceEntity(getState().form.data);
   try {
     const attributes = await attributeFetcher.fetchAll(referenceEntity.getIdentifier());
-    dispatch(attributeListUpdated(attributes));
-    dispatch(updateColumns(getColumns(attributes, getState().structure.channels)));
+    dispatch(attributeListGotUpdated(attributes));
   } catch (error) {
     dispatch(notifyAttributeListUpdateFailed());
 
     throw error;
   }
+};
+
+export const attributeListGotUpdated = (attributes: Attribute[]) => (
+  dispatch: any,
+  getState: () => EditState
+): void => {
+  dispatch(attributeListUpdated(attributes));
+  dispatch(updateColumns(getColumns(attributes, getState().structure.channels)));
 };
 
 const getColumn = (attribute: Attribute, channel: ChannelReference, locale: LocaleReference): Column => {
@@ -51,7 +60,11 @@ const getColumn = (attribute: Attribute, channel: ChannelReference, locale: Loca
 };
 
 export const getColumns = (attributes: Attribute[], channels: Channel[]) => {
+  const attributeTypes = getAttributeTypes()
+    .filter((attributeType: AttributeType) => hasDataCellView(attributeType.identifier))
+    .map((attributeType: AttributeType) => attributeType.identifier);
   return attributes
+    .filter((attribute: Attribute) => attributeTypes.includes(attribute.getType()))
     .sort((first: Attribute, second: Attribute) => first.order - second.order)
     .reduce((columns: Column[], attribute: Attribute) => {
       channels.forEach((channel: Channel) => {

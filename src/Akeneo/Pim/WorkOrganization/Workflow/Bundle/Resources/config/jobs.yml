@@ -11,6 +11,8 @@ parameters:
     pimee_workflow.job_name.xlsx_published_product_quick_export: 'xlsx_published_product_quick_export'
     pimee_workflow.job_name.csv_published_product_grid_context_quick_export: 'csv_published_product_grid_context_quick_export'
     pimee_workflow.job_name.xlsx_published_product_grid_context_quick_export: 'xlsx_published_product_grid_context_quick_export'
+    pimee_enrich.job_name.publish_product: 'publish_product'
+    pimee_enrich.job_name.unpublish_product: 'unpublish_product'
 
 services:
     # CSV Imports -----------------------------------------------------------------------------------------------------
@@ -173,3 +175,25 @@ services:
                 - '@pimee_workflow.step.xlsx_published_product.quick_export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
+
+    pimee_enrich.job.publish_product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.publish_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.publish_product.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pimee_enrich.job.unpublish_product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_enrich.job_name.unpublish_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.unpublish_product.perform'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }

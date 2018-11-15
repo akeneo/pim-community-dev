@@ -14,22 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping as DomainAttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 
 /**
- * Prepare AttributesMapping model from Domain layer in order to be used by PIM.ai client.
+ * Prepare AttributesMapping model from Domain layer in order to be used by Franklin client.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributesMappingNormalizer
 {
-    /** @var string[] */
-    public const PIM_AI_MAPPING_STATUS = [
-        DomainAttributeMapping::ATTRIBUTE_PENDING => AttributeMapping::STATUS_PENDING,
-        DomainAttributeMapping::ATTRIBUTE_MAPPED => AttributeMapping::STATUS_ACTIVE,
-        DomainAttributeMapping::ATTRIBUTE_UNMAPPED => AttributeMapping::STATUS_INACTIVE,
-    ];
-
     /**
      * @param DomainAttributeMapping[] $attributesMapping
      *
@@ -58,10 +51,12 @@ class AttributesMappingNormalizer
                 ];
             }
 
+            $status = DomainAttributeMapping::ATTRIBUTE_MAPPED === $attributeMapping->getStatus()
+                ? AttributeMapping::STATUS_ACTIVE : AttributeMapping::STATUS_INACTIVE;
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
                 'to' => $normalizedPimAttribute,
-                'status' => static::PIM_AI_MAPPING_STATUS[$attributeMapping->getStatus()],
+                'status' => $status,
             ];
         }
 

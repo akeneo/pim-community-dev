@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
@@ -32,10 +31,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ImageAttributeDetails;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\TextAttributeDetails;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
@@ -55,7 +52,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_the_attributes_details_for_an_reference_entity()
+    public function it_returns_the_attributes_details_for_a_reference_entity()
     {
         $attributeDetails = ($this->findAttributesDetails)(ReferenceEntityIdentifier::fromString('designer'));
 
@@ -184,81 +181,101 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     private function assertNameAttribute($attributeDetails): void
     {
         $actualName = $this->getAttributeWithCode($attributeDetails, 'name');
-        $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedName->code = AttributeCode::fromString('name');
-        $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Name']);
-        $expectedName->order = AttributeOrder::fromInteger(0);
-        $expectedName->isRequired = AttributeIsRequired::fromBoolean(true);
-        $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
-        $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
-        $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(false);
-        $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
-        $expectedName->validationRule = AttributeValidationRule::none();
-        $expectedName->regularExpression = AttributeRegularExpression::createEmpty();
-        $this->assertAttributeDetails($expectedName, $actualName);
+
+        $expectedName = new AttributeDetails();
+        $expectedName->type = 'text';
+        $expectedName->identifier = 'name_designer_test';
+        $expectedName->referenceEntityIdentifier = 'designer';
+        $expectedName->code = 'name';
+        $expectedName->labels = ['en_US' => 'Name'];
+        $expectedName->order = 0;
+        $expectedName->isRequired = true;
+        $expectedName->valuePerChannel = true;
+        $expectedName->valuePerLocale = true;
+        $expectedName->additionalProperties = [
+            'max_length' => 155,
+            'is_textarea' => false,
+            'is_rich_text_editor' => false,
+            'validation_rule' => 'none',
+            'regular_expression' => null,
+        ];
+
+        $this->assertEquals($expectedName, $actualName);
     }
 
     private function assertEmailAttribute($attributeDetails): void
     {
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'email');
-        $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'email', 'test');
-        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedName->code = AttributeCode::fromString('email');
-        $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Email']);
-        $expectedName->order = AttributeOrder::fromInteger(1);
-        $expectedName->isRequired = AttributeIsRequired::fromBoolean(true);
-        $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
-        $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
-        $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(false);
-        $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
-        $expectedName->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
-        $expectedName->regularExpression = AttributeRegularExpression::createEmpty();
-        $this->assertAttributeDetails($expectedName, $actualEmail);
+
+        $expectedEmail = new AttributeDetails();
+        $expectedEmail->type = 'text';
+        $expectedEmail->identifier = 'email_designer_test';
+        $expectedEmail->referenceEntityIdentifier = 'designer';
+        $expectedEmail->code = 'email';
+        $expectedEmail->labels = ['en_US' => 'Email'];
+        $expectedEmail->order = 1;
+        $expectedEmail->isRequired = true;
+        $expectedEmail->valuePerChannel = true;
+        $expectedEmail->valuePerLocale = true;
+        $expectedEmail->additionalProperties = [
+            'max_length' => 155,
+            'is_textarea' => false,
+            'is_rich_text_editor' => false,
+            'validation_rule' => 'email',
+            'regular_expression' => null,
+        ];
+
+        $this->assertEquals($expectedEmail, $actualEmail);
     }
 
     private function assertCustomRegex($attributeDetails)
     {
-        $actualEmail = $this->getAttributeWithCode($attributeDetails, 'regex');
-        $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'regex', 'test');
-        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedName->code = AttributeCode::fromString('regex');
-        $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Regex']);
-        $expectedName->order = AttributeOrder::fromInteger(2);
-        $expectedName->isRequired = AttributeIsRequired::fromBoolean(true);
-        $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
-        $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
-        $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(false);
-        $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
-        $expectedName->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION);
-        $expectedName->regularExpression = AttributeRegularExpression::fromString('/\w+/');
-        $this->assertAttributeDetails($expectedName, $actualEmail);
+        $actualRegex = $this->getAttributeWithCode($attributeDetails, 'regex');
+
+        $expectedRegex = new AttributeDetails();
+        $expectedRegex->type = 'text';
+        $expectedRegex->identifier = 'regex_designer_test';
+        $expectedRegex->referenceEntityIdentifier = 'designer';
+        $expectedRegex->code = 'regex';
+        $expectedRegex->labels = ['en_US' => 'Regex'];
+        $expectedRegex->order = 2;
+        $expectedRegex->isRequired = true;
+        $expectedRegex->valuePerChannel = true;
+        $expectedRegex->valuePerLocale = true;
+        $expectedRegex->additionalProperties = [
+            'max_length' => 155,
+            'is_textarea' => false,
+            'is_rich_text_editor' => false,
+            'validation_rule' => 'regular_expression',
+            'regular_expression' => '/\w+/',
+        ];
+
+        $this->assertEquals($expectedRegex, $actualRegex);
     }
 
     private function assertLongDescriptionAttribute($attributeDetails)
     {
-        $actualEmail = $this->getAttributeWithCode($attributeDetails, 'long_description');
-        $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'long_description', 'test');
-        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedName->code = AttributeCode::fromString('long_description');
-        $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Long description']);
-        $expectedName->order = AttributeOrder::fromInteger(3);
-        $expectedName->isRequired = AttributeIsRequired::fromBoolean(true);
-        $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
-        $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
-        $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(true);
-        $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(true);
-        $expectedName->validationRule = AttributeValidationRule::none();
-        $expectedName->regularExpression = AttributeRegularExpression::createEmpty();
-        $this->assertAttributeDetails($expectedName, $actualEmail);
+        $actualLongDescription = $this->getAttributeWithCode($attributeDetails, 'long_description');
+
+        $expectedLongDescription = new AttributeDetails();
+        $expectedLongDescription->type = 'text';
+        $expectedLongDescription->identifier = 'long_description_designer_test';
+        $expectedLongDescription->referenceEntityIdentifier = 'designer';
+        $expectedLongDescription->code = 'long_description';
+        $expectedLongDescription->labels = ['en_US' => 'Long description'];
+        $expectedLongDescription->order = 3;
+        $expectedLongDescription->isRequired = true;
+        $expectedLongDescription->valuePerChannel = true;
+        $expectedLongDescription->valuePerLocale = true;
+        $expectedLongDescription->additionalProperties = [
+            'max_length' => 155,
+            'is_textarea' => true,
+            'is_rich_text_editor' => true,
+            'validation_rule' => 'none',
+            'regular_expression' => null,
+        ];
+
+        $this->assertEquals($expectedLongDescription, $actualLongDescription);
     }
 
     /**
@@ -268,21 +285,28 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     private function assertImageAttribute($attributeDetails): void
     {
         $actualImage = $this->getAttributeWithCode($attributeDetails, 'image');
-        $expectedImage = new ImageAttributeDetails();
-        $expectedImage->identifier = AttributeIdentifier::create('designer', 'image', 'test');
-        $expectedImage->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $expectedImage->code = AttributeCode::fromString('name');
-        $expectedImage->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
-        $expectedImage->order = AttributeOrder::fromInteger(4);
-        $expectedImage->isRequired = AttributeIsRequired::fromBoolean(true);
-        $expectedImage->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
-        $expectedImage->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
-        $expectedImage->maxFileSize = AttributeMaxFileSize::fromString('1000');
-        $expectedImage->allowedExtensions = AttributeAllowedExtensions::fromList(['pdf']);
-        $this->assertAttributeDetails($expectedImage, $actualImage);
+
+        $expectedImage = new AttributeDetails();
+        $expectedImage->type = 'image';
+        $expectedImage->identifier = 'image_designer_test';
+        $expectedImage->referenceEntityIdentifier = 'designer';
+        $expectedImage->code = 'image';
+        $expectedImage->labels = ['en_US' => 'Portrait'];
+        $expectedImage->order = 4;
+        $expectedImage->isRequired = true;
+        $expectedImage->valuePerChannel = true;
+        $expectedImage->valuePerLocale = true;
+        $expectedImage->additionalProperties = [
+            'max_file_size' => '1000',
+            'allowed_extensions' => ['pdf'],
+        ];
+
+        $this->assertEquals($expectedImage, $actualImage);
     }
 
-    private function getAttributeWithCode(array $attributesDetails, string $attributeCode): AbstractAttributeDetails
+    // TODO: add test case for new attribute types
+
+    private function getAttributeWithCode(array $attributesDetails, string $attributeCode): AttributeDetails
     {
         foreach ($attributesDetails as $attributeDetails) {
             if ($attributeCode === (string) $attributeDetails->code) {
@@ -291,35 +315,5 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         }
 
         throw new \LogicException(sprintf('Attribute details with attribute code "%s" not found.', $attributeCode));
-    }
-
-    private function assertAttributeDetails(AbstractAttributeDetails $expected, AbstractAttributeDetails $actual)
-    {
-        $this->assertEquals($expected->identifier, $actual->identifier);
-        $this->assertEquals($expected->referenceEntityIdentifier, $actual->referenceEntityIdentifier);
-        $expectedLabels = $expected->labels->normalize();
-        $actualLabels = $actual->labels->normalize();
-        $this->assertEmpty(
-            array_merge(
-                array_diff($expectedLabels, $actualLabels),
-                array_diff($actualLabels, $expectedLabels)
-            )
-        );
-        $this->assertEquals($expected->order, $actual->order);
-        $this->assertEquals($expected->isRequired, $actual->isRequired);
-        $this->assertEquals($expected->valuePerChannel, $actual->valuePerChannel);
-        $this->assertEquals($expected->valuePerLocale, $actual->valuePerLocale);
-        if ($expected instanceof TextAttributeDetails && $actual instanceof TextAttributeDetails) {
-            $this->assertEquals($expected->maxLength, $actual->maxLength);
-            $this->assertEquals($expected->isTextarea, $actual->isTextarea);
-            $this->assertEquals($expected->isRichTextEditor, $actual->isRichTextEditor);
-            $this->assertEquals($expected->validationRule, $actual->validationRule);
-            $this->assertEquals($expected->regularExpression, $actual->regularExpression);
-        } elseif ($expected instanceof ImageAttributeDetails && $actual instanceof ImageAttributeDetails) {
-            $this->assertEquals($expected->maxFileSize, $actual->maxFileSize);
-            $this->assertSame($expected->allowedExtensions->normalize(), $actual->allowedExtensions->normalize());
-        } else {
-            throw new \LogicException('Expected attribute details to be of type text or image. unknown given');
-        }
     }
 }

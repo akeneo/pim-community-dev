@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,13 +70,13 @@ class IndexAction
     }
 
     /**
-     * @param AbstractAttributeDetails[] $attributesDetails
+     * @param AttributeDetails[] $attributesDetails
      *
      * @return array
      */
     private function normalizeAttributesDetails(array $attributesDetails): array
     {
-        return array_map(function (AbstractAttributeDetails $attributeDetails) {
+        return array_map(function (AttributeDetails $attributeDetails) {
             return $attributeDetails->normalize();
         }, $attributesDetails);
     }

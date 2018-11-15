@@ -15,11 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddProd
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,30 +29,18 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /**
      * @param PropertyAdderInterface        $propertyAdder
      * @param ValidatorInterface            $validator
-     * @param UserManager                   $userManager
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
         PropertyAdderInterface $propertyAdder,
         ValidatorInterface $validator,
-        UserManager $userManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct($propertyAdder, $validator);
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-        $this->userManager = $userManager;
     }
 
     /**
@@ -66,26 +50,11 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      */
     public function process($product)
     {
-        $this->initSecurityContext($this->stepExecution);
         if ($this->hasRight($product)) {
             return BaseProcessor::process($product);
         }
 
         return null;
-    }
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
     }
 
     /**

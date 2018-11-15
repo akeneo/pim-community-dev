@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Upload per Drag & Drop oder hier klicken
+      small:
+        remove: Entfernen
+        download: Herunterladen
   reference_entity:
     button:
       save: Speichern
@@ -16,7 +23,11 @@ pim_reference_entity:
       input:
         label: Bezeichnung
       confirm: Speichern
+    delete:
+      title: Attribut
   record:
+    no_result:
+      subtitle: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
     button:
       save: Speichern
       delete: Löschen
@@ -34,6 +45,7 @@ pim_reference_entity:
         code: Code
         image: Abbildung
         label: Bezeichnung
+        action: Aktionen
     tab:
       enrich: Anreichern
   attribute:
@@ -54,6 +66,8 @@ pim_reference_entity:
         value_per_channel: Wert je Ausgabekanal
       confirm: Speichern
     edit:
+      save: Speichern
+      cancel: Abbrechen
       input:
         label: Bezeichnung
         type: Attributtyp
@@ -71,6 +85,8 @@ pim_reference_entity:
             email: E-Mail
             regular_expression: Regulärer Ausdruck
             url: URL
+    delete:
+      title: Attribut
     notification:
       save:
         success: Attribut erfolgreich aktualisiert.
@@ -78,6 +94,12 @@ pim_reference_entity:
         success: Attribut erfolgreich erstellt.
       delete:
         success: Attribut erfolgreich gelöscht.
+  modal:
+    delete:
+      subtitle: Löschen bestätigen
+      button:
+        cancel: Abbrechen
+        confirm: Löschen
 pim_enrich:
   entity:
     attribute:

@@ -173,6 +173,9 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $this->attributeRepository->getByIdentifier($identifier);
     }
 
+    /**
+     * @test
+     */
     public function it_creates_an_attribute_with_and_finds_it_by_reference_entity_and_attribute_code()
     {
         $attributeCode = AttributeCode::fromString('description');
@@ -194,6 +197,54 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $attributeFound = $this->attributeRepository->getByReferenceEntityAndCode('designer', 'description');
         $this->assertSame($attribute->normalize(), $attributeFound->normalize());
     }
+
+    /**
+     * @test
+     */
+    public function it_counts_attributes_by_reference_entity()
+    {
+        $attributeCode = AttributeCode::fromString('description');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $this->assertSame(0, $this->attributeRepository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $identifier = $this->attributeRepository->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $attribute = TextAttribute::createTextarea(
+            $identifier,
+            $referenceEntityIdentifier,
+            $attributeCode,
+            LabelCollection::fromArray(['en_US' => 'description', 'fr_FR' => 'description']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        );
+        $this->attributeRepository->create($attribute);
+
+        $this->assertSame(1, $this->attributeRepository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $attributeCode = AttributeCode::fromString('name');
+        $identifier = $this->attributeRepository->nextIdentifier($referenceEntityIdentifier, $attributeCode);
+        $attribute = TextAttribute::createText(
+            $identifier,
+            $referenceEntityIdentifier,
+            $attributeCode,
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($attribute);
+
+        $this->assertSame(2, $this->attributeRepository->countByReferenceEntity($referenceEntityIdentifier));
+    }
+
     /**
      * @test
      */

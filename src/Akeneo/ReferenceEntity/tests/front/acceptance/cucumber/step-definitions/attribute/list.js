@@ -1,6 +1,7 @@
 const path = require('path');
 const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
 const Attributes = require('../../decorators/reference-entity/edit/attributes.decorator');
+const {getRequestContract, listenRequest} = require('../../tools');
 
 const {
   decorators: {createElementDecorator},
@@ -65,6 +66,32 @@ module.exports = async function(cucumber) {
           labels: JSON.parse(normalizedAttribute.labels),
           max_file_size: '124.12',
           allowed_extensions: ['png', 'jpg'],
+        };
+      } else if ('option' === normalizedAttribute.type) {
+        return {
+          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          reference_entity_identifier: referenceEntityIdentifier,
+          code: normalizedAttribute.code,
+          is_required: false,
+          order: 2,
+          value_per_locale: true,
+          value_per_channel: false,
+          type: 'option',
+          labels: JSON.parse(normalizedAttribute.labels),
+          options: [],
+        };
+      } else if ('option_collection' === normalizedAttribute.type) {
+        return {
+          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          reference_entity_identifier: referenceEntityIdentifier,
+          code: normalizedAttribute.code,
+          is_required: false,
+          order: 3,
+          value_per_locale: true,
+          value_per_channel: false,
+          type: 'option_collection',
+          labels: JSON.parse(normalizedAttribute.labels),
+          options: [],
         };
       } else {
         throw new Error(`Attribute of type "${normalizedAttribute.type}" not supported.`);
@@ -161,6 +188,10 @@ module.exports = async function(cucumber) {
 
       return request;
     });
+
+    const requestContract = getRequestContract('Attribute/ListDetails/ok/name_portrait.json');
+
+    await listenRequest(this.page, requestContract);
 
     await attributes.remove(attributeIdentifier);
   });

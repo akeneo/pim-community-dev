@@ -93,7 +93,7 @@ final class AttributesMappingContext implements Context
         $requestMapping = [];
         foreach ($mappings->getColumnsHash() as $mapping) {
             $requestMapping[$mapping['target_attribute_code']] = [
-                'pim_ai_attribute' => [
+                'franklinAttribute' => [
                     'label' => 'A label',
                     'type' => 'text',
                 ],

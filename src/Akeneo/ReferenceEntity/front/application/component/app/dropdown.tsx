@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Key from 'akeneoreferenceentity/tools/key';
 
 export interface DropdownElement {
   identifier: string;
@@ -20,7 +21,7 @@ const DefaultButtonView = ({
     data-selected={selectedElement.identifier}
     onClick={() => onClick()}
     onKeyPress={event => {
-      if (' ' === event.key) onClick();
+      if (Key.Space === event.key) onClick();
     }}
     aria-label={selectedElement.label}
   >
@@ -48,7 +49,7 @@ const DefaultItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >
@@ -76,14 +77,19 @@ interface Props {
   onSelectionChange: (element: DropdownElement) => void;
 }
 
-class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement: string}> {
+interface State {
+  isOpen: boolean;
+  selectedElement: string;
+}
+
+class Dropdown extends React.Component<Props, State> {
   state = {
     isOpen: false,
     selectedElement: this.props.selectedElement,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    this.setState({selectedElement: nextProps.selectedElement});
+  static getDerivedStateFromProps(props: Props, state: State) {
+    return {...state, selectedElement: props.selectedElement};
   }
 
   open() {
@@ -136,7 +142,7 @@ class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement:
       <div className={`AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
         {this.state.isOpen ? <div className="AknDropdown-mask" onClick={this.close.bind(this)} /> : null}
         {dropdownButton(this.state.selectedElement, this.props.label)}
-        <div className={'AknDropdown-menu ' + openClass}>
+        <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass}`}>
           <div className="AknDropdown-menuTitle">{this.props.label}</div>
           {ElementViews}
         </div>

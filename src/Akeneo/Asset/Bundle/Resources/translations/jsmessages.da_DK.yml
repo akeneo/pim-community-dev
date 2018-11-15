@@ -74,11 +74,16 @@ pim_dashboard:
         mass_upload: Masse upload
 pim_title:
   pimee_product_asset_mass_upload: Indlæs aktiver
+  pimee_product_asset_index: Aktiver
+  pimee_product_asset_edit: Aktiv {{ asset.label }} | Rediger
+  pimee_asset_categorytree_index: Kategorier
+  pimee_asset_categorytree_edit: Kategori {{ category.label }} | Rediger
 batch_jobs:
   apply_assets_mass_upload:
     label: Aktiver masse indlæs
     perform.label: Masse upload
   yml_asset_channel_configuration_import:
+    import.label: Aktiv kanal konfiguration import
     label: Aktiv kanal konfiguration import i Yaml
     import_asset.label: Aktiv kanal konfiguration import i Yaml
   yml_asset_channel_configuration_export:
@@ -138,3 +143,69 @@ asset_grid:
   label: Produkt aktiver
 create_asset:
   title: Opret et aktiv
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Masse Rediger aktiver
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Aktiv transformationer
+      not_found: Ingen transformation fundet
+      transformation: Transformation
+      options: Muligheder
+      colorspace:
+        title: Farverum
+        options:
+          colorspace: '%value% farverum'
+      resize:
+        title: Skalér
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+      resolution:
+        title: Opløsning
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skaler
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+          ratio: '%value%% forhold'
+      thumbnail:
+        title: Miniature
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+pimee_enrich.mass_edit.asset:
+  title: Aktiver bulk handling
+  step:
+    select:
+      label: Vælg Aktiver
+    choose:
+      title: Aktiver bulk handlinger
+    configure:
+      label: Konfigurér
+    confirm:
+      label: Bekræft
+  operation:
+    add_tag:
+      label: Tilføje tags til aktiver
+      description: Tags vil blive tilføjet til aktiverne.
+      field: Etiketter
+      empty_selection: Vælg venligst mærkat
+    add_to_category:
+      label: Klassificere produkter i kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+pim_catalog_volume:
+  axis:
+    count_assets: Aktiver
+    count_asset_categories: Aktiver kategorier
+pim_menu:
+  tab:
+    asset: Aktiver
+  item:
+    asset_category: Aktiver kategorier
+    upload_asset: Indlæs aktiver

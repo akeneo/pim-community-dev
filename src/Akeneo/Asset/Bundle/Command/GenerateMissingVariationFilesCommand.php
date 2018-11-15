@@ -14,6 +14,7 @@ namespace Akeneo\Asset\Bundle\Command;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -112,7 +113,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
 
         foreach ($processedAssets as $asset) {
             $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
-            $this->getCompletenessGenerator()->scheduleForAsset($asset);
+            $this->getCompletenessRemover()->removeForAsset($asset);
         }
 
         $output->writeln('<info>Done!</info>');
@@ -129,10 +130,11 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return \Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface
+     *
+     * @return CompletenessRemoverInterface
      */
-    protected function getCompletenessGenerator()
+    protected function getCompletenessRemover()
     {
-        return $this->getContainer()->get('pim_catalog.completeness.generator');
+        return $this->getContainer()->get('pimee_product_asset.remover.completeness');
     }
 }

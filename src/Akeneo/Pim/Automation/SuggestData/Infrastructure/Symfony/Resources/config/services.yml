@@ -1,18 +1,4 @@
 services:
-    akeneo.pim.automation.suggest_data.service.subscribe_product:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.handler.subscribe_product'
-
-    akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
-            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.repository.configuration'
-            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
-
     akeneo.pim.automation.suggest_data.proposal.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert'
         arguments:
@@ -20,3 +6,9 @@ services:
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.saver.product_draft'
             - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'
+
+    akeneo.pim.automation.suggest_data.proposal.factory.suggested_data:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'

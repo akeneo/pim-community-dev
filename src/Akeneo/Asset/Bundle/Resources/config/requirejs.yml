@@ -2,6 +2,7 @@ config:
     paths:
         # Fields
         pimee/asset-collection-field: akeneoasset/js/product/field/asset-collection-field
+        pimee/asset/fields/asset-category-tree: akeneoasset/js/fields/asset-category-tree
 
         # Templates
         pimee/template/picker/asset-collection: akeneoasset/templates/picker/asset-collection.html
@@ -26,6 +27,11 @@ config:
                         warmup: false
                         urls:
                             list: pimee_product_asset_rest_index
+                asset-category:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pimee_enrich_asset_category_rest_list
 
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
@@ -40,3 +46,12 @@ config:
                     config:
                         route: pim_enrich_mass_edit_rest_get_filter
                     aclResourceId: pimee_product_asset_index
+                pimee_asset_categorytree_create:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_category_create
+                pimee_asset_categorytree_edit:
+                    module: pim/controller/form
+                    aclResourceId: pimee_product_asset_category_edit
+                pimee_asset_categorytree_remove:
+                    module: pim/controller/template
+                    aclResourceId: pimee_asset_categorytree_remove

@@ -65,6 +65,20 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Import des propositions en XLSX
     import.label: Import des propositions en XLSX
+  csv_published_product_quick_export:
+    export.label: Export rapide CSV des produits publiés
+    perform.label: Export rapide CSV des produits publiés
+  csv_published_product_grid_context_quick_export:
+    export.label: Export rapide CSV des produits publiés dans le contexte de grille
+    perform.label: Export rapide CSV des produits publiés dans le contexte de grille
+  xlsx_published_product_quick_export:
+    export.label: Export rapide XLSX des produits publiés
+    perform.label: Export rapide XLSX des produits publiés
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Export rapide XLSX des produits publiés dans le contexte de grille
+    perform.label: Export rapide XLSX des produits publiés dans le contexte de grille
+  publish_product:
+    perform.label: Publier les produits
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
@@ -83,3 +97,105 @@ pimee_dashboard:
       product: Produit
       review: Relire
       empty: Il n'y a aucune proposition à examiner
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publié
+      revert: Restaurer
+    attribute:
+      can_be_updated_by_a_rule: "Cet attribut peut être mis à jour par une règle : {{ rule }}"
+      value_updated: Cette valeur est modifiée sur le brouillon actuel
+    meta:
+      published_version: Version publiée
+      owner_groups: Groupes propriétaires
+      draft_status: État du brouillon
+      draft:
+        in_progress: En cours
+        sent_for_approval: En attente d’approbation
+        working_copy: Version de travail
+    revert:
+      title: Confirmer la restauration d'une version antérieure
+      content: Êtes-vous sûr de vouloir restaurer le produit dans cette version ?
+    publish:
+      title: Publier ce produit
+      content: Êtes-vous sûr de vouloir publier ce produit ?
+    unpublish:
+      title: Dépublier ce produit
+      content: Êtes-vous sûr de vouloir dépublier ce produit ?
+    copy:
+      working_copy: Version de travail
+      draft: Mon brouillon
+      draft_of: "Brouillon de {{ author }}"
+    approval:
+      send: Soumettre pour validation
+      sent: Soumis à la validation
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produit publié avec succès
+      fail: Échec lors de la publication du produit
+    unpublish:
+      success: Produit dépublié avec succès
+      fail: Échec lors de la dépublication du produit
+    revert:
+      success: La version précédente du produit a été restaurée
+  page_title:
+    index: "]-Inf, 1]{{ count }} produit publié|]1, Inf[{{ count }} produits publiés"
+  module:
+    publish:
+      label: Publier
+      publish_this_version: Publier cette version
+    unpublish:
+      label: Dépublier
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: La proposition a été soumise avec succès.
+      fail: "La proposition ne peut être soumise en raison de l'erreur suivante: {{ error }}"
+    reject:
+      success: La proposition a été rejetée.
+    remove:
+      success: La proposition a été supprimée.
+    update:
+      success: Le brouillon a bien été enregistré
+      fail: Le brouillon du produit n'a pas pu être mis à jour
+    create:
+      success: Le brouillon a été envoyé pour validation
+      fail: Vous ne pouvez pas envoyer ce brouillon pour validation
+  module:
+    create:
+      label: Enregistrer le brouillon
+    proposal:
+      accept: Accepter la proposition
+      accept_selected: Accepter le(s) proposition(s) sélectionnée(s)
+      reject: Rejeter la proposition
+      reject_selected: Rejeter le(s) proposition(s) sélectionnée(s)
+      remove: Supprimer la proposition
+      comment_title: Commenter votre proposition (facultatif - 255 caractères max.)
+      comment_chars: caractères.
+      confirm: Envoyer
+    edit:
+      discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
+      discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publier
+      label_count: "{1}Publier <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Publier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+      description: Les produits seront publiés
+      warning: Les {{ itemsCount }} produits sélectionnés vont être publiés.
+    unpublish:
+      label: Dépublier
+      label_count: "{1}Dépublier <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Dépublier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+      description: Les produits seront dépubliés
+      warning: Les {{ itemsCount }} produits sélectionnés vont être dépubliés.
+pim_menu:
+  navigation:
+    published_products: Produits publiés
+  item:
+    proposal: Propositions
+    published_product: Produits publiés
+pim_title:
+  pimee_workflow_proposal_index: Propositions
+  pimee_workflow_published_product_index: Produits publiés
+  pimee_workflow_published_product_view: Produit publié {{ product.label }} | Visualisation

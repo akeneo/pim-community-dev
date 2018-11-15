@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInter
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
  * Checks if a suggest data connection is active or not.
@@ -32,16 +33,22 @@ class GetConnectionStatusHandler
     /** @var DataProviderInterface */
     private $dataProvider;
 
+    /** @var IdentifiersMappingRepositoryInterface */
+    private $identifiersMappingRepository;
+
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param DataProviderFactory $dataProviderFactory
+     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        DataProviderFactory $dataProviderFactory
+        DataProviderFactory $dataProviderFactory,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
         $this->configurationRepository = $configurationRepository;
         $this->dataProvider = $dataProviderFactory->create();
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
     /**
@@ -49,13 +56,13 @@ class GetConnectionStatusHandler
      */
     public function handle(GetConnectionStatusQuery $query): ConnectionStatus
     {
+        $identifiersMapping = $this->identifiersMappingRepository->find();
         $configuration = $this->configurationRepository->find();
         if (!$configuration->getToken() instanceof Token) {
-            return new ConnectionStatus(false);
+            return new ConnectionStatus(false, $identifiersMapping->isValid());
         }
-
         $isActive = $this->dataProvider->authenticate($configuration->getToken());
 
-        return new ConnectionStatus($isActive);
+        return new ConnectionStatus($isActive, $identifiersMapping->isValid());
     }
 }

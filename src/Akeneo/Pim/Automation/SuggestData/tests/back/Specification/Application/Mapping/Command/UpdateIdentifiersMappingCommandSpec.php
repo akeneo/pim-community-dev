@@ -70,7 +70,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         ];
         $this->beConstructedWith($mapping);
 
-        $expected = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $expected = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
         $given = array_keys($mapping);
         sort($expected);
         sort($given);
@@ -94,7 +94,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         ]);
 
         $this->shouldThrow(
-            InvalidMappingException::duplicateAttributeCode(2, 'ean', UpdateIdentifiersMappingCommand::class)
+            InvalidMappingException::duplicateAttributeCode(UpdateIdentifiersMappingCommand::class)
         )->duringInstantiation();
     }
 }

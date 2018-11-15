@@ -1,0 +1,11 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: Entità riferimenti
+  acl:
+    reference_entity:
+      create: Crea un'entità
+      delete: Elimina un'entità
+    record:
+      create: Crea una riga
+      delete: Elimina una riga
+      delete_all: Elimina tutte le righe entità

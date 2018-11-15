@@ -29,7 +29,7 @@ class IsReferenceEntityConfigured extends Constraint
     public $invalidMessage = 'The reference entity "%reference_entity_identifier%" identifier is not valid';
 
     /** @var string */
-    public $emptyMessage = 'You need to define an reference entity type for your attribute';
+    public $emptyMessage = 'You need to define a reference entity type for your attribute';
 
     /** @var string */
     public $propertyPath = 'reference_data_name';

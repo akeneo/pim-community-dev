@@ -1,13 +1,10 @@
 akeneo_suggest_data:
-  acl:
-    suggest_data:
-      index: Suggerència de dades
-    pim_ai:
-      title: Gestionar la connexió a PIM.ai
-    settings.mapping: Estructura del mapa entre el teu catàleg i el PIM.ai
+  acl_group:
+    suggest_data: Configuració de les estadístiques de Franklin
   mapping_identifier:
     success: El mapatge s'ha guardat correctament
     error: S'ha produït un error durant el guardat del mapatge
 job_execution.summary:
+  configuration_validation: Configuració de les estadístiques de Franklin
   subscribed: subscrit
   unsubscribed: subscripció cancel·lada

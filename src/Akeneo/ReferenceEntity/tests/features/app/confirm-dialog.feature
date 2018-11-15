@@ -1,12 +1,10 @@
-Feature: Edit an reference entity
-  In order to update the information of an reference entity
+Feature: Edit a reference entity
+  In order to update the information of a reference entity
   As a user
-  I want see the details of an reference entity and update them
+  I want see the details of a reference entity and update them
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
 
 #  @acceptance-front
   Scenario: Display confirmation dialog when the user reload the page and accept it

@@ -11,13 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Handler;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -27,44 +31,80 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepository,
-        DataProviderFactory $dataProviderFactory
+        DataProviderFactory $dataProviderFactory,
+        DataProviderInterface $dataProvider,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ): void {
-        $this->beConstructedWith($configurationRepository, $dataProviderFactory);
+        $this->beConstructedWith($configurationRepository, $dataProviderFactory, $identifiersMappingRepository);
+        $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
     public function it_checks_that_a_connection_is_active(
-        DataProviderInterface $dataProvider,
-        $dataProviderFactory,
-        $configurationRepository
+        IdentifiersMapping $identifiersMapping,
+        GetConnectionStatusQuery $query,
+        $dataProvider,
+        $configurationRepository,
+        $identifiersMappingRepository
     ): void {
-        $configuration = new Configuration(['token' => 'bar']);
+        $configuration = new Configuration();
+        $configuration->setToken(new Token('bar'));
 
         $configurationRepository->find()->willReturn($configuration);
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
 
-        $this->getStatus()->shouldReturnAnActiveStatus();
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(false);
+
+        $this->handle($query)->shouldReturnAnActiveStatus();
     }
 
     public function it_checks_that_a_connection_is_inactive(
-        DataProviderInterface $dataProvider,
-        $dataProviderFactory,
-        $configurationRepository
+        IdentifiersMapping $identifiersMapping,
+        GetConnectionStatusQuery $query,
+        $dataProvider,
+        $configurationRepository,
+        $identifiersMappingRepository
     ): void {
-        $configuration = new Configuration(['token' => 'bar']);
+        $configuration = new Configuration();
+        $configuration->setToken(new Token('bar'));
 
         $configurationRepository->find()->willReturn($configuration);
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);
 
-        $this->getStatus()->shouldReturnAnInactiveStatus();
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(false);
+
+        $this->handle($query)->shouldReturnAnInactiveStatus();
     }
 
-    public function it_checks_that_a_connection_does_not_exist($configurationRepository): void
-    {
-        $configurationRepository->find()->willReturn(null);
+    public function it_checks_that_an_identifiers_mapping_is_valid(
+        IdentifiersMapping $identifiersMapping,
+        GetConnectionStatusQuery $query,
+        $configurationRepository,
+        $identifiersMappingRepository
+    ): void {
+        $configuration = new Configuration();
+        $configurationRepository->find()->willReturn($configuration);
 
-        $this->getStatus()->shouldReturnAnInactiveStatus();
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(true);
+
+        $this->handle($query)->shouldReturnValidIdentifiersMappingStatus();
+    }
+
+    public function it_checks_that_an_identifiers_mapping_is_invalid(
+        IdentifiersMapping $identifiersMapping,
+        GetConnectionStatusQuery $query,
+        $configurationRepository,
+        $identifiersMappingRepository
+    ): void {
+        $configuration = new Configuration();
+        $configurationRepository->find()->willReturn($configuration);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(false);
+
+        $this->handle($query)->shouldReturnInvalidIdentifiersMappingStatus();
     }
 
     /**
@@ -74,10 +114,16 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
     {
         return [
             'returnAnActiveStatus' => function (ConnectionStatus $connectionStatus) {
-                return true === $connectionStatus->isActive();
+                return $connectionStatus->isActive();
             },
             'returnAnInactiveStatus' => function (ConnectionStatus $connectionStatus) {
-                return false === $connectionStatus->isActive();
+                return !$connectionStatus->isActive();
+            },
+            'returnValidIdentifiersMappingStatus' => function (ConnectionStatus $connectionStatus) {
+                return $connectionStatus->isIdentifiersMappingValid();
+            },
+            'returnInvalidIdentifiersMappingStatus' => function (ConnectionStatus $connectionStatus) {
+                return !$connectionStatus->isIdentifiersMappingValid();
             },
         ];
     }

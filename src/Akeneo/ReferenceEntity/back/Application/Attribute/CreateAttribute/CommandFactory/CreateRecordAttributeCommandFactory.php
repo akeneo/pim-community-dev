@@ -31,8 +31,29 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
     {
         $command = new CreateRecordAttributeCommand();
         $this->fillCommonProperties($command, $normalizedCommand);
+
+        $this->checkAdditionalProperties($normalizedCommand);
+
         $command->recordType = $normalizedCommand['record_type'];
 
         return $command;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkAdditionalProperties(array $nomalizedCommand): void
+    {
+        $keysToCheck = [
+            'record_type',
+        ];
+
+        foreach ($keysToCheck as $keyToCheck) {
+            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Expects normalized command to have key "%s"', $keyToCheck)
+                );
+            }
+        }
     }
 }

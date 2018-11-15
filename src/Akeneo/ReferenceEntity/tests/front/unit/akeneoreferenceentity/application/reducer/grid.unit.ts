@@ -203,7 +203,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       query: {
         filters: [
           {
-            field: 'search',
+            field: 'full_text',
             operator: '=',
             value: 'sear',
             context: {},
@@ -216,7 +216,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
     const newState = reducer(state, {
       type: 'GRID_UPDATE_FILTER',
-      field: 'search',
+      field: 'full_text',
       operator: '=',
       value: 'searc',
       context: {},
@@ -226,7 +226,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
       query: {
         filters: [
           {
-            field: 'search',
+            field: 'full_text',
             operator: '=',
             value: 'searc',
             context: {},

@@ -307,8 +307,8 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
         $qb->select('asset')
             ->from($this->_entityName, $this->getAlias())
-            ->where(':endOfUse1 < asset.endOfUseAt')
-            ->andWhere('asset.endOfUseAt < :endOfUse2')
+            ->where(':endOfUse1 <= asset.endOfUseAt')
+            ->andWhere('asset.endOfUseAt <= :endOfUse2')
             ->setParameter(':endOfUse1', $endOfUse1)
             ->setParameter(':endOfUse2', $endOfUse2);
 

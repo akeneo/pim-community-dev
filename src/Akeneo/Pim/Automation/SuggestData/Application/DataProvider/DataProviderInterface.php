@@ -16,9 +16,14 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -28,9 +33,20 @@ interface DataProviderInterface
     /**
      * @param ProductSubscriptionRequest $request
      *
+     * @throws ProductSubscriptionException
+     *
      * @return ProductSubscriptionResponse
      */
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
+
+    /**
+     * @param ProductSubscriptionRequest[] $requests
+     *
+     * @throws ProductSubscriptionException
+     *
+     * @return ProductSubscriptionResponseCollection
+     */
+    public function bulkSubscribe(array $requests): ProductSubscriptionResponseCollection;
 
     /**
      * @param Token $token
@@ -70,4 +86,26 @@ interface DataProviderInterface
      * @param array $attributesMapping
      */
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void;
+
+    /**
+     * @param FamilyCode $familyCode
+     * @param FranklinAttributeId $franklinAttributeId
+     *
+     * @return ReadAttributeOptionsMapping
+     */
+    public function getAttributeOptionsMapping(
+        FamilyCode $familyCode,
+        FranklinAttributeId $franklinAttributeId
+    ): ReadAttributeOptionsMapping;
+
+    /**
+     * @param FamilyCode $familyCode
+     * @param FranklinAttributeId $franklinAttributeId
+     * @param WriteAttributeOptionsMapping $attributeOptionsMapping
+     */
+    public function saveAttributeOptionsMapping(
+        FamilyCode $familyCode,
+        FranklinAttributeId $franklinAttributeId,
+        WriteAttributeOptionsMapping $attributeOptionsMapping
+    ): void;
 }

@@ -56,12 +56,6 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
      * @param ItemCategoryAccessQuery            $productCategoryAccessQuery
      * @param ItemCategoryAccessQuery            $productModelCategoryAccessQuery
      * @param TokenStorageInterface              $tokenStorage
-     *
-     * @merge make $productModelRepository mandatory on master.
-     * @merge make $productCategoryAccessQuery mandatory on master.
-     * @merge make $productModelCategoryAccessQuery mandatory on master.
-     * @merge make $tokenStorage mandatory on master.
-     * @merge remove $authorizationChecker on master.
      */
     public function __construct(
         FieldSetterInterface $associationFieldSetter,

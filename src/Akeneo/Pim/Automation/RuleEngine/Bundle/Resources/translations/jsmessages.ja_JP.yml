@@ -67,6 +67,8 @@ flash:
     executed: ルールの実行が開始されました。完了後、あなたに通知されます。
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: ルールの設定
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: ルールの実行
   default_steps:
     execute_rules: ルールの実行
   yml_rule_import:
@@ -87,3 +89,8 @@ batch_jobs:
 pim_notification:
   types:
     rule: ルールの設定
+pim_menu:
+  item:
+    rule: ルール
+pim_title:
+  pimee_catalog_rule_rule_index: ルール

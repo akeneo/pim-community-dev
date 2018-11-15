@@ -1,0 +1,45 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Endast läsning
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> kommer att få<strong> {{ permission }}</strong> i denna kategori
+      revoke: Gruppen <strong>{{ group }}</strong> kommer inte att få<strong> {{ permission }}</strong> i denna kategori
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> kommer att få<strong> {{ permission }}</strong> i denna kategori
+      revoke: Gruppen <strong>{{ group }}</strong> kommer inte att få<strong> {{ permission }}</strong> i denna kategori
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> kommer <strong>få{{ permission }}</strong> av detta attributgrupp
+      revoke: Gruppen <strong>{{ group }}</strong> kommer <strong> inte få{{ permission }}</strong> av detta attributgrupp
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      view: Tillåtet för att visa attribut
+      edit: Får redigera attribut
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Grupp {{ group }} kommer att få {{ permission }} jobbprofil
+      execute: Tillåt att köra jobbprofil
+      edit: Tillåt att redigera jobbprofil
+      removed: Grupp {{ group }} kommer inte att få {{ permission }} jobbprofil
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Lägg till produkt värde med behörighet kontrollera & regler ansökan
+    perform.label: Lägga till produktens värde
+  update_product_value_with_permission_and_rules:
+    label: Uppdatera produkt värde med behörighet kontrollera & regler ansökan
+    perform.label: Uppdatera produktens värde
+  remove_product_value_with_permission_and_rules:
+    label: Ta bort produktvärde med tillstånd kontrollera & regler ansökan
+    perform.label: Ta bort produktvärde
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Redigera Attribut
+    cleaner.label: Rensa temporära filer

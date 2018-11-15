@@ -1,4 +1,11 @@
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Dra och släpp för att ladda upp eller klicka här
+      small:
+        remove: Ta bort
+        download: Ladda ner
   reference_entity:
     button:
       save: Spara
@@ -16,6 +23,8 @@ pim_reference_entity:
       input:
         label: Etikett
       confirm: Spara
+    delete:
+      title: Attribut
   record:
     button:
       save: Spara
@@ -34,6 +43,7 @@ pim_reference_entity:
         code: Kod
         image: Bild
         label: Etikett
+        action: Åtgärder
     tab:
       enrich: Berika
   attribute:
@@ -52,6 +62,8 @@ pim_reference_entity:
         type: Attribut typ
       confirm: Spara
     edit:
+      save: Spara
+      cancel: Avbryt
       input:
         label: Etikett
         type: Attribut typ
@@ -67,6 +79,14 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Reguljära uttryck
             url: URL
+    delete:
+      title: Attribut
+  modal:
+    delete:
+      subtitle: Bekräfta radering
+      button:
+        cancel: Avbryt
+        confirm: Ta bort
 pim_enrich:
   entity:
     attribute:

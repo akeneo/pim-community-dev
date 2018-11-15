@@ -1,3 +1,6 @@
+user:
+    asset_delay_reminder: Asset delay reminder (in days)
+
 pimee_product_asset:
     form:
         product:
@@ -82,6 +85,10 @@ pim_dashboard:
 
 pim_title:
     pimee_product_asset_mass_upload: Upload assets
+    pimee_product_asset_index: Assets
+    pimee_product_asset_edit: Asset {{ asset.label }} | Edit
+    pimee_asset_categorytree_index: Categories
+    pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
 
 batch_jobs:
     apply_assets_mass_upload:
@@ -91,6 +98,7 @@ batch_jobs:
         label: Assets mass upload and add to product
         perform.label: Mass upload assets and add to product
     yml_asset_channel_configuration_import:
+        import.label: Asset channel configuration import
         label: Asset channel configuration import in Yaml
         import_asset.label: Asset channel configuration import in Yaml
     yml_asset_channel_configuration_export:
@@ -151,3 +159,83 @@ asset_grid:
     label: Product assets
 create_asset:
     title: Create an asset
+
+pim_datagrid:
+    mass_action:
+        mass_edit:
+            asset_edit: Mass edit assets
+
+pimee_enrich.entity.channel:
+    module:
+        asset_transformation:
+            title: Asset transformations
+            not_found: No transformation found
+            transformation: Transformation
+            options: Options
+            colorspace:
+                title: Colorspace
+                options:
+                    colorspace: '%value% colorspace'
+            resize:
+                title: Resize
+                options:
+                    width: '%value%px width'
+                    height: '%value%px height'
+            resolution:
+                title: Resolution
+                options:
+                    resolution: '%value%'
+                    resolution-unit: '%value%'
+            scale:
+                title: Scale
+                options:
+                    width: '%value%px width'
+                    height: '%value%px height'
+                    ratio: '%value%% ratio'
+            thumbnail:
+                title: Thumbnail
+                options:
+                    width: '%value%px width'
+                    height: '%value%px height'
+
+pimee_enrich.mass_edit.asset:
+    title: Assets bulk action
+    confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} assets with the following information, please confirm."
+    step:
+        select:
+            label: Choose assets
+        choose:
+            title: Assets bulk actions
+            label_count: "]0, Inf[Select your action"
+        configure:
+            label: Configure
+        confirm:
+            label: Confirm
+    operation:
+        add_tag:
+            label: Add tags to assets
+            description: Tags will be added to the assets.
+            label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
+            field: Tags
+            empty_selection: Please choose tags
+        add_to_category:
+            label: Classify assets in categories
+            description: The assets will be positioned into following categories, the existing placement will be lost.
+            label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+
+pim_catalog_volume:
+    section:
+        assets:
+            title: Axes on assets
+            hint: You can follow the volume regarding the assets right here
+    axis:
+        count_assets: Assets
+        count_asset_categories: Asset categories
+        count_asset_category_trees: Asset category trees
+
+pim_menu:
+    tab:
+        asset: Assets
+    item:
+        asset_category: Asset categories
+        upload_asset: Upload Assets

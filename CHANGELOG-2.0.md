@@ -1,5 +1,29 @@
 # 2.0.x
 
+# 2.0.42 (2018-11-12)
+
+## Bug fixes
+
+- PIM-7757: Fix the risk of inserting duplicate completenesses.
+
+# 2.0.41 (2018-10-23)
+
+## Bug fixes
+
+- PIM-7753: Fix computation of completeness of variant products when an attribute at product model level is updated on a bulk action
+
+# 2.0.40 (2018-10-15)
+
+# 2.0.39 (2018-10-08)
+
+## Bug fixes
+
+- PIM-7669: Variant product dropdown in the PEF doesn't work when variants are categorized in categories with different user permissions
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to add `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
+
 # 2.0.38 (2018-09-13)
 
 # 2.0.37 (2018-09-11)

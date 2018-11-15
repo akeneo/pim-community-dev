@@ -1,6 +1,6 @@
 services:
-    akeneo_acceptance.context.suggest_data.pim_ai:
-        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\PimAiConfigurationContext'
+    akeneo_acceptance.context.suggest_data.franklin:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\FranklinConfigurationContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.application.configuration.command.activate_connection_handler'
             - '@__symfony__.akeneo.pim.automation.suggest_data.application.configuration.query.get_configuration_handler'
@@ -12,10 +12,11 @@ services:
     akeneo_acceptance.context.suggest_data.identifiers_mapping:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\IdentifiersMappingContext'
         arguments:
-            - '@__symfony__.akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@__symfony__.pim_catalog.repository.attribute'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping'
         tags:
             - { name: 'fob.context_service' }
 
@@ -35,6 +36,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@test.category.builder'
             - '@__symfony__.pim_catalog.repository.category'
+            - '@__symfony__.pim_catalog.repository.attribute_option'
         tags:
             - { name: 'fob.context_service' }
 
@@ -43,10 +45,18 @@ services:
         arguments:
             - '@__symfony__.pim_catalog.repository.product_without_permission'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.service.subscribe_product'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.subscribe_product'
             - '@akeneo_acceptance.context.suggest_data.data_fixtures'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.franklin_client.subscription'
             - '@__symfony__.akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.product_subscription_status:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductSubscriptionStatusContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.product_without_permission'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_product_subscription_status'
         tags:
             - { name: 'fob.context_service' }
 
@@ -54,7 +64,7 @@ services:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductFetchingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.franklin_client.subscription'
         tags:
             - { name: 'fob.context_service' }
 
@@ -67,10 +77,18 @@ services:
         tags:
             - { name: 'fob.context_service' }
 
+    akeneo_acceptance.context.suggest_data.attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context\AttributeOptionsMappingContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attribute_options_mapping_by_family_and_attribute'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.franklin_client.attribute_options_mapping'
+        tags:
+            - { name: 'fob.context_service' }
+
     akeneo_acceptance.context.suggest_data.proposal:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProposalContext'
         arguments:
-
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.create_proposals'
             - '@__symfony__.akeneo.pim.automation.suggest_data.proposal.create_proposal'
         tags:

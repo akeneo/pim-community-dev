@@ -3,22 +3,22 @@ import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import Select2 from 'akeneoreferenceentity/application/component/app/select2';
-import {AdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import {ImageAttribute, ImageAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 import {
   AllowedExtensionsOptions,
   AllowedExtensions,
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
 import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
+import Key from 'akeneoreferenceentity/tools/key';
 
-export default ({
+const ImageView = ({
   attribute,
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
 }: {
   attribute: ImageAttribute;
-  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+  onAdditionalPropertyUpdated: (property: string, value: ImageAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
 }) => {
@@ -38,9 +38,7 @@ export default ({
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-              if ('Enter' === event.key) {
-                onSubmit();
-              }
+              if (Key.Enter === event.key) onSubmit();
             }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxFileSize.isValid(event.currentTarget.value)) {
@@ -82,3 +80,5 @@ export default ({
     </React.Fragment>
   );
 };
+
+export const view = ImageView;

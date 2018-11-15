@@ -6,7 +6,6 @@ Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription:
         suggest_data_subscription_idx:
             columns:
                 - subscription_id
-                - product_id
     fields:
         id:
             type: integer
@@ -25,6 +24,23 @@ Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription:
             type: boolean
             column: misses_mapping
             nullable: false
+        requestedAsin:
+            type: string
+            column: requested_asin
+            nullable: true
+        requestedUpc:
+            type: string
+            column: requested_upc
+            nullable: true
+        requestedBrand:
+            type: string
+            column: requested_brand
+            nullable: true
+        requestedMpn:
+            type: string
+            column: requested_mpn
+            nullable: true
+
     oneToOne:
         product:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface

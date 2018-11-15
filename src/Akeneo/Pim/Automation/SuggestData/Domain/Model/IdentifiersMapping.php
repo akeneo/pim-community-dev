@@ -23,7 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 class IdentifiersMapping implements \IteratorAggregate
 {
     /** @var string[] */
-    public const PIM_AI_IDENTIFIERS = [
+    public const FRANKLIN_IDENTIFIERS = [
         'brand',
         'mpn',
         'upc',
@@ -64,19 +64,6 @@ class IdentifiersMapping implements \IteratorAggregate
     }
 
     /**
-     * @return array
-     */
-    public function normalize(): array
-    {
-        $normalizedData = [];
-        foreach ($this->identifiers as $identifier => $attribute) {
-            $normalizedData[$identifier] = $attribute instanceof AttributeInterface ? $attribute->getCode() : null;
-        }
-
-        return $normalizedData;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getIterator(): iterable
@@ -90,5 +77,17 @@ class IdentifiersMapping implements \IteratorAggregate
     public function isEmpty(): bool
     {
         return empty($this->identifiers) || empty(array_filter($this->identifiers));
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        $validMPNAndBrand = null !== $this->getIdentifier('mpn') && null !== $this->getIdentifier('brand');
+        $validUPC = null !== $this->getIdentifier('upc');
+        $validASIN = null !== $this->getIdentifier('asin');
+
+        return $validASIN || $validUPC || $validMPNAndBrand;
     }
 }

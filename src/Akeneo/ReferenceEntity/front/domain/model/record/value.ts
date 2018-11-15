@@ -1,8 +1,11 @@
 import ChannelReference, {NormalizedChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference, {NormalizedLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import Data from 'akeneoreferenceentity/domain/model/record/data';
-import Attribute, {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import {CommonConcreteAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {
+  ConcreteAttribute,
+  Attribute,
+  NormalizedAttribute,
+} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 export type NormalizedValue = {
@@ -28,8 +31,8 @@ class Value {
     readonly locale: LocaleReference,
     readonly data: Data
   ) {
-    if (!(attribute instanceof CommonConcreteAttribute)) {
-      throw new InvalidTypeError('Value expect CommonConcreteAttribute as attribute argument');
+    if (!(attribute instanceof ConcreteAttribute)) {
+      throw new InvalidTypeError('Value expect ConcreteAttribute as attribute argument');
     }
     if (!(channel instanceof ChannelReference)) {
       throw new InvalidTypeError('Value expect ChannelReference as channel argument');

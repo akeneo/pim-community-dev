@@ -23,7 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class ImageAttribute extends AbstractAttribute
 {
-    private const ATTRIBUTE_TYPE = 'image';
+    public const ATTRIBUTE_TYPE = 'image';
 
     /** @var AttributeMaxFileSize */
     private $maxFileSize;

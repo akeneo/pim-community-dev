@@ -15,9 +15,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\UpdateP
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,46 +28,26 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /**
      * @param PropertySetterInterface       $propertySetter
      * @param ValidatorInterface            $validator
-     * @param UserManager                   $userManager
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        UserManager $userManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct($propertySetter, $validator);
 
         $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-        $this->userManager = $userManager;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * We override parent to initialize the security context
      */
     public function process($product)
     {
-        $username = $this->stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->tokenStorage->setToken($token);
-
         if ($this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
             return BaseProcessor::process($product);
         } else {

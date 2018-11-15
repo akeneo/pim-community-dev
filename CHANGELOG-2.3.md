@@ -1,5 +1,43 @@
 # 2.3.x
 
+# 2.3.16 (2018-11-13)
+
+## Bug fixes
+
+- PIM-7812: Fix command that generate missing asset variation files
+
+# 2.3.15 (2018-11-06)
+
+# 2.3.14 (2018-11-05)
+
+## Bug fixes
+
+- PIM-7764: Allows on PAM scale transformations from 0% (included) to 100% (included).
+
+# 2.3.13 (2018-10-25)
+
+## Bug fixes
+
+- PIM-7756: Don't generate asset variation if no transformation supports the reference file type for a channel
+
+# 2.3.12 (2018-10-17)
+
+## Bug fixes
+
+- PIM-7723: fix consistency between TWA widget numbers and the datagrid view 
+- PIM-7731: check for attribute as label not null in normalizers 
+- PIM-7734: fix published product datagrid status filter 
+- PIM-7733: Fix memory leak during mass publishing
+- PIM-7742: fix expired assets notification
+- PIM-7736: Fix memory leak during published products indexing
+
+# 2.3.11 (2018-10-08)
+
+## Bug fixes
+
+- PIM-7672: Fix missing permission check on assets during a mass edit.
+- PIM-7709: Execute all transformations of a channel even if one of them does not support the file to transform
+
 # 2.3.10 (2018-10-01)
 
 ## Bug fixes

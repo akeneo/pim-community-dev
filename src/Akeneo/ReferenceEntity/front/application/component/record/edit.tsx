@@ -26,6 +26,7 @@ import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/re
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   sidebar: {
@@ -77,9 +78,7 @@ class RecordEditView extends React.Component<EditProps> {
       className="AknColumn-navigationLink"
       onClick={this.props.events.backToReferenceEntity}
       onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (' ' === event.key) {
-          this.props.events.backToReferenceEntity();
-        }
+        if (Key.Space === event.key) this.props.events.backToReferenceEntity();
       }}
     >
       {__('pim_reference_entity.record.button.back')}

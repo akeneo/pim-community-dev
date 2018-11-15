@@ -44,7 +44,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_reference_entity(): void
+    public function it_creates_a_reference_entity(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -69,7 +69,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_reference_entity_with_no_labels(): void
+    public function it_creates_a_reference_entity_with_no_labels(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -223,10 +223,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
-
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_create', true);
     }

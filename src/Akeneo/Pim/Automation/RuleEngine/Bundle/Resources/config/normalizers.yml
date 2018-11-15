@@ -1,10 +1,14 @@
-parameters:
-    akeneo_rule_engine.normalizer.rule_definition.class: Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleDefinitionNormalizer
-
 services:
     akeneo_rule_engine.normalizer.rule_definition:
-        class: '%akeneo_rule_engine.normalizer.rule_definition.class%'
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleDefinitionNormalizer'
         arguments:
             - '@pim_catalog.localization.presenter.registry'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    pimee_enrich.serializer.normalizer.rule_relation:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer\RuleRelationNormalizer'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }

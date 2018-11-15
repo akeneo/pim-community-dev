@@ -5,15 +5,18 @@ import {attributeCreationStart} from 'akeneoreferenceentity/domain/event/attribu
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
-import {denormalizeAttribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {denormalizeReferenceEntity,} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
+import Key from 'akeneoreferenceentity/tools/key';
+import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
+
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -51,7 +54,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
           htmlFor={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
         >
           <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-${type}.svg`} />
-          <span>{__(`pim_reference_entity.attribute.type.${type}`)}</span>
+          <span>{identifier}</span>
         </label>
       </div>
       <div className="AknFieldContainer-inputContainer">
@@ -78,7 +81,7 @@ const renderSystemAttributes = () => {
   );
 };
 
-const renderAttributesPlaceholder = () => {
+const renderAttributePlaceholders = () => {
   return Array(8)
     .fill('placeholder')
     .map((attributeIdentifier, key) => (
@@ -124,6 +127,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
   render() {
     const {onAttributeEdit, locale} = this.props;
     const attribute = denormalizeAttribute(this.props.attribute);
+    const icon = getAttributeIcon(attribute.getType());
 
     return (
       <div
@@ -137,12 +141,9 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
             htmlFor={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
           >
-            <img
-              className="AknFieldContainer-labelImage"
-              src={`bundles/pimui/images/attribute/icon-${attribute.type}.svg`}
-            />
+            <img className="AknFieldContainer-labelImage" src={icon} />
             <span>
-              {__(`pim_reference_entity.attribute.type.${attribute.type}`)}{' '}
+              {attribute.getCode().stringValue()}{' '}
               {attribute.isRequired ? `(${__('pim_reference_entity.attribute.is_required')})` : ''}
             </span>
           </label>
@@ -160,7 +161,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknIconButton AknIconButton--edit"
             onClick={() => onAttributeEdit(attribute.getIdentifier())}
             onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (' ' === event.key) onAttributeEdit(attribute.getIdentifier());
+              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
             }}
           />
         </div>
@@ -206,16 +207,18 @@ class AttributesView extends React.Component<CreateProps> {
               <div className="AknFormContainer AknFormContainer--withPadding">
                 {renderSystemAttributes()}
                 {this.props.firstLoading ? (
-                  renderAttributesPlaceholder()
+                  renderAttributePlaceholders()
                 ) : (
                   <React.Fragment>
                     {this.props.attributes.map((attribute: NormalizedAttribute) => (
-                      <AttributeView
-                        key={attribute.identifier}
-                        attribute={attribute}
-                        onAttributeEdit={this.props.events.onAttributeEdit}
-                        locale={this.props.context.locale}
-                      />
+                      <ErrorBoundary errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_list')}>
+                        <AttributeView
+                          key={attribute.identifier}
+                          attribute={attribute}
+                          onAttributeEdit={this.props.events.onAttributeEdit}
+                          locale={this.props.context.locale}
+                        />
+                      </ErrorBoundary>
                     ))}
                     <button
                       className="AknButton AknButton--action"

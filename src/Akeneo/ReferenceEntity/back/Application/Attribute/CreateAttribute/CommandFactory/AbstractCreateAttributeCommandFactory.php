@@ -25,14 +25,38 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
         AbstractCreateAttributeCommand $command,
         array $normalizedCommand
     ): AbstractCreateAttributeCommand {
-        $command->code = $normalizedCommand['code'] ?? null;
-        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
-        $command->labels = $normalizedCommand['labels'] ?? null;
+        $this->checkCommonProperties($normalizedCommand);
+
+        $command->code = $normalizedCommand['code'];
+        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'];
+        $command->labels = $normalizedCommand['labels'];
         $command->order = $normalizedCommand['order'] ?? null;
         $command->isRequired = $normalizedCommand['is_required'] ?? false;
-        $command->valuePerChannel = $normalizedCommand['value_per_channel'] ?? null;
-        $command->valuePerLocale = $normalizedCommand['value_per_locale'] ?? null;
+        $command->valuePerChannel = $normalizedCommand['value_per_channel'];
+        $command->valuePerLocale = $normalizedCommand['value_per_locale'];
 
         return $command;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkCommonProperties(array $nomalizedCommand): void
+    {
+        $keysToCheck = [
+            'labels',
+            'code',
+            'reference_entity_identifier',
+            'value_per_channel',
+            'value_per_locale',
+        ];
+
+        foreach ($keysToCheck as $keyToCheck) {
+            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Expects normalized command to have key "%s"', $keyToCheck)
+                );
+            }
+        }
     }
 }

@@ -1,3 +1,9 @@
 pimee_security:
     resource: '@AkeneoPimPermissionBundle/Resources/config/routing/permissions.yml'
     prefix: /permissions
+
+pimee_enrich_locale_edit:
+    path: /configuration/locale/{id}/edit
+    defaults: { _controller: pim_enrich.controller.locale:editAction }
+    requirements:
+        id: \d+

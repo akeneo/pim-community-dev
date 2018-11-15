@@ -114,7 +114,9 @@
   },
   "processor": {
     "code": "processor",
-    "type": "pim_catalog_text",
+    "type": "pim_catalog_metric",
+    "metric_family": "Frequency",
+    "default_metric_unit": "MEGAHERTZ",
     "group": "other",
     "localizable": false,
     "scopable": false,

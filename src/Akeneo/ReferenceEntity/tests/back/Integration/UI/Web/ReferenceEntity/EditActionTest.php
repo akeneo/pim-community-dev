@@ -49,7 +49,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_edits_an_reference_entity_details(): void
+    public function it_edits_a_reference_entity_details(): void
     {
         $postContent = [
             'identifier' => 'designer',
@@ -145,10 +145,6 @@ class EditActionTest extends ControllerIntegrationTestCase
             Image::createEmpty()
         );
         $referenceEntityRepository->create($entityItem);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
 
         $fr = new Locale();
         $fr->setId(1);

@@ -13,31 +13,36 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class IdentifiersMappingController
 {
-    /** @var ManageIdentifiersMapping */
-    private $manageIdentifiersMapping;
+    /** @var GetIdentifiersMappingHandler */
+    private $getIdentifiersMappingHandler;
 
-    /** @var TranslatorInterface */
-    private $translator;
+    /** @var UpdateIdentifiersMappingHandler */
+    private $updateIdentifiersMappingHandler;
 
     /**
-     * @param ManageIdentifiersMapping $manageIdentifiersMapping
-     * @param TranslatorInterface $translator
+     * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
+     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      */
-    public function __construct(ManageIdentifiersMapping $manageIdentifiersMapping, TranslatorInterface $translator)
-    {
-        $this->manageIdentifiersMapping = $manageIdentifiersMapping;
-        $this->translator = $translator;
+    public function __construct(
+        GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
+        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+    ) {
+        $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
+        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
     }
 
     /**
@@ -50,7 +55,8 @@ class IdentifiersMappingController
         $identifiersMapping = json_decode($request->getContent(), true);
 
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping($identifiersMapping);
+            $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return new JsonResponse(json_encode($identifiersMapping));
         } catch (InvalidMappingException $invalidMapping) {
@@ -72,8 +78,11 @@ class IdentifiersMappingController
      */
     public function getIdentifiersMappingAction(): JsonResponse
     {
+        $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
+        $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
+
         return new JsonResponse(
-            $this->manageIdentifiersMapping->getIdentifiersMapping()
+            $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers())
         );
     }
 }

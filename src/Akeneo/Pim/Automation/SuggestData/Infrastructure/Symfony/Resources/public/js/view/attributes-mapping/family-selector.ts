@@ -1,8 +1,25 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import * as _ from 'underscore';
+import AttributeMapping = require('./table');
+
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
 const lineTemplate = require('pimee/template/attributes-mapping/family-line');
+
+interface Config {
+  fieldName: string;
+  label: string;
+  choiceRoute: string;
+}
 
 /**
  * This module allow user to select a catalog family for suggest data updating.
@@ -10,16 +27,10 @@ const lineTemplate = require('pimee/template/attributes-mapping/family-line');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-
-/** Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
-const MAPPING_EMPTY: number = 0;
-const MAPPING_FULL: number = 1;
-const MAPPING_PENDING_ATTRIBUTES: number = 2;
-
 class FamilySelector extends BaseSelect {
   private readonly lineView = _.template(lineTemplate);
 
-  constructor(config: { config: object }) {
+  constructor(config: { config: Config }) {
     super(config);
     this.events = {
       'change input': (event: { target: any }) => {
@@ -46,6 +57,7 @@ class FamilySelector extends BaseSelect {
     const parent = BaseSelect.prototype.getSelect2Options.apply(this, arguments);
     parent.formatResult = this.onGetResult.bind(this);
     parent.dropdownCssClass = 'select2--withIcon ' + parent.dropdownCssClass;
+
     return parent;
   }
 
@@ -66,13 +78,13 @@ class FamilySelector extends BaseSelect {
   public convertBackendItem(item: { status: number }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
     switch (item.status) {
-      case MAPPING_FULL:
+      case AttributeMapping.FAMILY_MAPPING_FULL:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
         break;
-      case MAPPING_PENDING_ATTRIBUTES:
+      case AttributeMapping.FAMILY_MAPPING_PENDING:
         result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
         break;
-      case MAPPING_EMPTY:
+      case AttributeMapping.FAMILY_MAPPING_EMPTY:
       default:
         result.className = '';
     }

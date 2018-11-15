@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Удалить медиафайл
       categories_view: Обращение к категории медиафайла
       mass_upload: Масс загрузка медиафайлов
+      remove_from_collection: Удаление медиафайла продукта из коллекции медиафайлов
     category_asset_picker:
       list: Перечислить категории медиафайлов в средстве выбора медиафайлов
     category:
@@ -146,6 +147,7 @@ pimee_product_asset:
         first: Выбор медиафайлов
         second: Настройка
         third: Подтверждение
+  not_editable: У вас нет доступа на редактирование медиафайла "%code%".
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
@@ -175,5 +177,53 @@ job_execution.summary:
 assets_mass_upload.steps:
   asset_mass_upload.title: Масс загрузка медиафайлов
 import_asset.steps.channel_configuration_processor.title: Обработать конфигурацию каналов
-mass_upload: Масс загрузка медиафайлов
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Масс загрузка медиафайлов
 pim_assets_collection: Коллекция медиафайлов
+pim_api:
+  acl:
+    asset_category:
+      edit: Создать и обновить категории медиафайлов
+      list: Перечислить категории медиафайлов
+    asset:
+      edit: Редактировать медиафайлы и загрузить ссылки на них в файлы вариантов
+      list: Показать список медиафайлов и загрузить ссылки на них и файлы для вариантов
+  acl_group:
+    asset_category: Категории медиафайлов
+    asset: Медиафайлы
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Преобразования активов
+  asset_transformation:
+    not_found: Преобразования не найдены
+    title:
+      transformation: Преобразование
+      options: Параметры
+    colorspace:
+      title: Цветовое пространство
+      options:
+        colorspace: '%value% цветовое пространство'
+    resize:
+      title: Изменение размера
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+    resolution:
+      title: Разрешение
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Маштабирование
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+        ratio: '%value%% соотношение'
+    thumbnail:
+      title: Миниатюра изображения
+      options:
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'

@@ -48,6 +48,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
 
+    akeneo_referenceentity.application.edit_attribute.attribute_updater.options_updater:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater\OptionsUpdater
+        tags:
+            - { name: akeneo_referenceentity.attribute_updater, priority: 110 }
+
     # Records
     akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry
@@ -70,6 +75,26 @@ services:
             - { name: akeneo_referenceentity.record_value_updater }
 
     akeneo_referenceentity.application.edit_record.record_value_updater.empty_updater:
-            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater
-            tags:
-                - { name: akeneo_referenceentity.record_value_updater }
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\EmptyUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.record_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.record_collection_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\RecordCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.option_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }
+
+    akeneo_referenceentity.application.edit_record.record_value_updater.option_collection_updater:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\OptionCollectionUpdater
+        tags:
+            - { name: akeneo_referenceentity.record_value_updater }

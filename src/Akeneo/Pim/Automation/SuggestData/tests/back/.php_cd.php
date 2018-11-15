@@ -29,16 +29,18 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\Enrichment\Component',
+            'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
+
+            // Events
+            'Akeneo\Tool\Component\StorageUtils\StorageEvents',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            'Symfony\Component\EventDispatcher\GenericEvent',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Application'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
-
-            // TODO: Should be remove APAI-179
-            'Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration',
-            'Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface',
 
             // External dependencies
             'Guzzle',
@@ -51,6 +53,9 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector',
+
+            // TODO: can be removed when we disable the link to product in ProductSubscription
+            'Akeneo\Pim\Enrichment\Component\Product\Repository',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
@@ -72,6 +77,7 @@ $rules = [
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel\Exception',
             'Symfony\Component\Translation',
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller'),
 

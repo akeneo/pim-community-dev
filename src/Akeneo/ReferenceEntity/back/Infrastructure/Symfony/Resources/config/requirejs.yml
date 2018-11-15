@@ -18,6 +18,44 @@ config:
                 denormalize: '@akeneoreferenceentity/domain/model/record/data/text'
                 view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/text.tsx'
                 cell: '@akeneoreferenceentity/application/component/record/index/details/text.tsx'
+            record:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/record'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record.tsx'
+            record_collection:
+                denormalize: '@akeneoreferenceentity/domain/model/record/data/record-collection'
+                view: '@akeneoreferenceentity/application/component/record/edit/enrich/data/record-collection.tsx'
+
+        akeneoreferenceentity/application/configuration/attribute:
+            image:
+                icon: bundles/pimui/images/attribute/icon-image.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/image'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/image'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/image.tsx'
+            text:
+                icon: bundles/pimui/images/attribute/icon-text.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/text'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/text'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/text.tsx'
+            record:
+                icon: bundles/pimui/images/attribute/icon-select.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
+            record_collection:
+                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/record-collection'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/record'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/record.tsx'
+            option:
+                icon: bundles/pimui/images/attribute/icon-select.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
+            option_collection:
+                icon: bundles/pimui/images/attribute/icon-multiselect.svg
+                denormalize: '@akeneoreferenceentity/domain/model/attribute/type/option-collection'
+                reducer: '@akeneoreferenceentity/application/reducer/attribute/type/option'
+                view: '@akeneoreferenceentity/application/component/attribute/edit/option.tsx'
 
         akeneoreferenceentity/application/configuration/sidebar:
             akeneo_reference_entities_reference_entity_edit:
@@ -40,11 +78,15 @@ config:
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
                 akeneo_reference_entity_collection:
-                    create: pim-attribute-form-reference-entity-collection
-                    edit:   pim-attribute-form-reference-entity-collection
+                    create: pim-attribute-form-reference-entity
+                    edit:   pim-attribute-form-reference-entity
+                akeneo_reference_entity:
+                    create: pim-attribute-form-reference-entity
+                    edit:   pim-attribute-form-reference-entity
         pim/form/common/attributes/create-button:
             attribute_icons:
                 akeneo_reference_entity_collection: reference-entity
+                akeneo_reference_entity: reference-entity
 
     paths:
         pim/controller/reference-entity/list: akeneoreferenceentity/infrastructure/controller/reference-entity/list.tsx
@@ -52,4 +94,5 @@ config:
         pim/controller/record/edit: akeneoreferenceentity/infrastructure/controller/record/edit.tsx
 
         pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
-        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.ts
+        pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx
+        pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx

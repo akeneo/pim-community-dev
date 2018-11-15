@@ -15,4 +15,8 @@ describe('akeneo > reference entity > domain > model --- code', () => {
     expect(createCode('michel').equals(createCode('didier'))).toBe(false);
     expect(createCode('didier').equals(createCode('didier'))).toBe(true);
   });
+
+  test('I normalizes itself', () => {
+    expect(createCode('michel').normalize()).toBe('michel');
+  });
 });

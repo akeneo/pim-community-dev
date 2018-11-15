@@ -38,22 +38,21 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     }
 
     /**
-     * @Then /^the "([^"]*)" asset gallery should be empty$/
-     *
-     * @throws ExpectationException
+     * @Then /^the "([^"]*)" asset gallery should not contain (.*)$/
      */
-    public function theAssetGalleryShouldBeEmpty($field)
+    public function theAssetGalleryShouldNotContains($field, $entities)
     {
         $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
+        $entities = $this->getMainContext()->listToArray($entities);
 
-        if (0 !== count($fieldContainer->findAll('css', '.AknAssetCollectionField-listItem'))) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Incorrect item count in asset gallery (expected: %s, current: %s)',
-                    0,
-                    count($fieldContainer->findAll('css', '.AknAssetCollectionField li'))
-                )
-            );
+        $elements = $fieldContainer->findAll('css', '.AknAssetCollectionField-listItem');
+        foreach ($elements as $item) {
+            $assetCode = $item->getAttribute('data-asset');
+            if (in_array($assetCode, $entities)) {
+                throw $this->createExpectationException(
+                    sprintf('Incorrect asset "%s" found in asset gallery', $assetCode)
+                );
+            }
         }
     }
 

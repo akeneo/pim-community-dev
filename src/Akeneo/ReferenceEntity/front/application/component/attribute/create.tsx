@@ -13,11 +13,17 @@ import {
   attributeCreationTypeUpdated,
   attributeCreationValuePerLocaleUpdated,
   attributeCreationValuePerChannelUpdated,
+  attributeCreationRecordTypeUpdated,
 } from 'akeneoreferenceentity/domain/event/attribute/create';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {createAttribute} from 'akeneoreferenceentity/application/action/attribute/create';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import {getAttributeTypes, AttributeType} from 'akeneoreferenceentity/application/configuration/attribute';
+import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+import {isRecordAttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import Key from 'akeneoreferenceentity/tools/key';
 
 interface StateProps {
   context: {
@@ -28,9 +34,10 @@ interface StateProps {
     labels: {
       [localeCode: string]: string;
     };
-    type: AttributeType;
+    type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
+    record_type: string | null;
   };
   errors: ValidationError[];
 }
@@ -40,6 +47,7 @@ interface DispatchProps {
     onCodeUpdated: (value: string) => void;
     onLabelUpdated: (value: string, locale: string) => void;
     onTypeUpdated: (type: string) => void;
+    onRecordTypeUpdated: (recordType: string) => void;
     onValuePerLocaleUpdated: (valuePerLocale: boolean) => void;
     onValuePerChannelUpdated: (valuePerChannel: boolean) => void;
     onCancel: () => void;
@@ -70,14 +78,42 @@ const AttributeTypeItemView = ({
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
-        if (' ' === event.key) onClick(element);
+        if (Key.Space === event.key) onClick(element);
       }}
       tabIndex={isOpen ? 0 : -1}
     >
-      <img
-        className="AknDropdown-menuLinkImage"
-        src={`bundles/pimui/images/attribute/icon-${element.identifier}.svg`}
-      />
+      <img className="AknDropdown-menuLinkImage" src={element.original.icon} />
+      <span>{element.label}</span>
+    </div>
+  );
+};
+
+const RecordTypeItemView = ({
+  isOpen,
+  element,
+  isActive,
+  onClick,
+}: {
+  isOpen: boolean;
+  element: DropdownElement;
+  isActive: boolean;
+  onClick: (element: DropdownElement) => void;
+}) => {
+  const className = `AknDropdown-menuLink AknDropdown-menuLink--withImage ${
+    isActive ? 'AknDropdown-menuLink--active' : ''
+  }`;
+
+  return (
+    <div
+      className={className}
+      data-identifier={element.identifier}
+      onClick={() => onClick(element)}
+      onKeyPress={event => {
+        if (Key.Space === event.key) onClick(element);
+      }}
+      tabIndex={isOpen ? 0 : -1}
+    >
+      <img className="AknDropdown-menuLinkImage" src={getImageShowUrl(element.original.getImage(), 'thumbnail')} />
       <span>{element.label}</span>
     </div>
   );
@@ -86,11 +122,16 @@ const AttributeTypeItemView = ({
 class Create extends React.Component<CreateProps> {
   private labelInput: HTMLInputElement;
   public props: CreateProps;
+  state: {referenceEntities: ReferenceEntity[]} = {referenceEntities: []};
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.labelInput) {
       this.labelInput.focus();
     }
+
+    const referenceEntities = await referenceEntityFetcher.fetchAll();
+    this.setState({referenceEntities: referenceEntities});
+    this.props.events.onRecordTypeUpdated(referenceEntities[0].getIdentifier().stringValue());
   }
 
   private onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,142 +146,176 @@ class Create extends React.Component<CreateProps> {
     this.props.events.onTypeUpdated(value.identifier);
   };
 
+  private onRecordTypeUpdate = (value: DropdownElement) => {
+    this.props.events.onRecordTypeUpdated(value.identifier);
+  };
+
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ('Enter' === event.key) {
-      this.props.events.onSubmit();
-    }
+    if (Key.Enter === event.key) this.props.events.onSubmit();
   };
 
   private getTypeOptions = (): DropdownElement[] => {
-    return Object.values(AttributeType).map((type: string) => {
+    return getAttributeTypes().map((type: AttributeType) => {
       return {
-        identifier: type,
-        label: __(`pim_reference_entity.attribute.type.${type}`),
+        identifier: type.identifier,
+        label: __(type.label),
+        original: type,
       };
     });
   };
 
   render(): JSX.Element | JSX.Element[] | null {
+    const defaultRecordType =
+      undefined !== this.state.referenceEntities[0]
+        ? this.state.referenceEntities[0].getIdentifier().stringValue()
+        : '';
+
     return (
       <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
         <div>
           <div className="AknFullPage AknFullPage--modal">
-            <div className="AknFullPage-content">
+            <div className="AknFullPage-content AknFullPage-content--visible">
               <div className="AknFullPage-left">
                 <img src="bundles/pimui/images/illustrations/Attribute.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
                 <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
                 <div className="AknFullPage-title">{__('pim_reference_entity.attribute.create.title')}</div>
-                <div>
-                  <div className="AknFieldContainer" data-code="label">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.label"
-                      >
-                        {__('pim_reference_entity.attribute.create.input.label')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <input
-                        type="text"
-                        ref={(input: HTMLInputElement) => {
-                          this.labelInput = input;
-                        }}
-                        className="AknTextField AknTextField--light"
-                        id="pim_reference_entity.attribute.create.input.label"
-                        name="label"
-                        value={this.props.data.labels[this.props.context.locale]}
-                        onChange={this.onLabelUpdate}
-                        onKeyPress={this.onKeyPress}
-                      />
-                      <Flag
-                        locale={createLocaleFromCode(this.props.context.locale)}
-                        displayLanguage={false}
-                        className="AknFieldContainer-inputSides"
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'labels')}
+                <div className="AknFieldContainer" data-code="label">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.attribute.create.input.label"
+                    >
+                      {__('pim_reference_entity.attribute.create.input.label')}
+                    </label>
                   </div>
-                  <div className="AknFieldContainer" data-code="code">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.code"
-                      >
-                        {__('pim_reference_entity.attribute.create.input.code')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <input
-                        type="text"
-                        className="AknTextField AknTextField--light"
-                        id="pim_reference_entity.attribute.create.input.code"
-                        name="code"
-                        value={this.props.data.code}
-                        onChange={this.onCodeUpdate}
-                        onKeyPress={this.onKeyPress}
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'code')}
+                  <div className="AknFieldContainer-inputContainer">
+                    <input
+                      type="text"
+                      ref={(input: HTMLInputElement) => {
+                        this.labelInput = input;
+                      }}
+                      className="AknTextField AknTextField--light"
+                      id="pim_reference_entity.attribute.create.input.label"
+                      name="label"
+                      value={this.props.data.labels[this.props.context.locale]}
+                      onChange={this.onLabelUpdate}
+                      onKeyPress={this.onKeyPress}
+                    />
+                    <Flag
+                      locale={createLocaleFromCode(this.props.context.locale)}
+                      displayLanguage={false}
+                      className="AknFieldContainer-inputSides"
+                    />
                   </div>
-                  <div className="AknFieldContainer" data-code="type">
+                  {getErrorsView(this.props.errors, 'labels')}
+                </div>
+                <div className="AknFieldContainer" data-code="code">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.attribute.create.input.code"
+                    >
+                      {__('pim_reference_entity.attribute.create.input.code')}
+                    </label>
+                  </div>
+                  <div className="AknFieldContainer-inputContainer">
+                    <input
+                      type="text"
+                      className="AknTextField AknTextField--light"
+                      id="pim_reference_entity.attribute.create.input.code"
+                      name="code"
+                      value={this.props.data.code}
+                      onChange={this.onCodeUpdate}
+                      onKeyPress={this.onKeyPress}
+                    />
+                  </div>
+                  {getErrorsView(this.props.errors, 'code')}
+                </div>
+                <div className="AknFieldContainer" data-code="type">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.attribute.create.input.type"
+                    >
+                      {__('pim_reference_entity.attribute.create.input.type')}
+                    </label>
+                  </div>
+                  <div className="AknFieldContainer-inputContainer">
+                    <Dropdown
+                      ItemView={AttributeTypeItemView}
+                      label={__('pim_reference_entity.attribute.create.input.type')}
+                      elements={this.getTypeOptions()}
+                      selectedElement={this.props.data.type}
+                      onSelectionChange={this.onTypeUpdate}
+                    />
+                  </div>
+                  {getErrorsView(this.props.errors, 'type')}
+                </div>
+                {isRecordAttributeType(this.props.data.type) ? (
+                  <div className="AknFieldContainer" data-code="record_type">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.type"
+                        htmlFor="pim_reference_entity.attribute.create.input.record_type"
                       >
-                        {__('pim_reference_entity.attribute.create.input.type')}
+                        {__('pim_reference_entity.attribute.create.input.record_type')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
                       <Dropdown
-                        ItemView={AttributeTypeItemView}
-                        label={__('pim_reference_entity.attribute.create.input.type')}
-                        elements={this.getTypeOptions()}
-                        selectedElement={this.props.data.type}
-                        onSelectionChange={this.onTypeUpdate}
+                        ItemView={RecordTypeItemView}
+                        label={__('pim_reference_entity.attribute.create.input.record_type')}
+                        elements={this.state.referenceEntities.map((referenceEntity: ReferenceEntity) => ({
+                          identifier: referenceEntity.getIdentifier().stringValue(),
+                          label: referenceEntity.getLabel(this.props.context.locale),
+                          original: referenceEntity,
+                        }))}
+                        selectedElement={
+                          null === this.props.data.record_type ? defaultRecordType : this.props.data.record_type
+                        }
+                        onSelectionChange={this.onRecordTypeUpdate}
                       />
                     </div>
-                    {getErrorsView(this.props.errors, 'type')}
+                    {getErrorsView(this.props.errors, 'recordType')}
                   </div>
-                  <div className="AknFieldContainer" data-code="valuePerLocale">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.value_per_locale"
-                      >
-                        {__('pim_reference_entity.attribute.create.input.value_per_locale')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <Switch
-                        id="pim_reference_entity.attribute.create.input.value_per_locale"
-                        value={this.props.data.value_per_locale}
-                        onChange={this.props.events.onValuePerLocaleUpdated}
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'valuePerLocale')}
+                ) : null}
+                <div className="AknFieldContainer" data-code="valuePerLocale">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.attribute.create.input.value_per_locale"
+                    >
+                      {__('pim_reference_entity.attribute.create.input.value_per_locale')}
+                    </label>
                   </div>
-                  <div className="AknFieldContainer" data-code="valuePerChannel">
-                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                      <label
-                        className="AknFieldContainer-label"
-                        htmlFor="pim_reference_entity.attribute.create.input.value_per_channel"
-                      >
-                        {__('pim_reference_entity.attribute.create.input.value_per_channel')}
-                      </label>
-                    </div>
-                    <div className="AknFieldContainer-inputContainer">
-                      <Switch
-                        id="pim_reference_entity.attribute.create.input.value_per_channel"
-                        value={this.props.data.value_per_channel}
-                        onChange={this.props.events.onValuePerChannelUpdated}
-                      />
-                    </div>
-                    {getErrorsView(this.props.errors, 'valuePerChannel')}
+                  <div className="AknFieldContainer-inputContainer">
+                    <Switch
+                      id="pim_reference_entity.attribute.create.input.value_per_locale"
+                      value={this.props.data.value_per_locale}
+                      onChange={this.props.events.onValuePerLocaleUpdated}
+                    />
                   </div>
+                  {getErrorsView(this.props.errors, 'valuePerLocale')}
+                </div>
+                <div className="AknFieldContainer" data-code="valuePerChannel">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.attribute.create.input.value_per_channel"
+                    >
+                      {__('pim_reference_entity.attribute.create.input.value_per_channel')}
+                    </label>
+                  </div>
+                  <div className="AknFieldContainer-inputContainer">
+                    <Switch
+                      id="pim_reference_entity.attribute.create.input.value_per_channel"
+                      value={this.props.data.value_per_channel}
+                      onChange={this.props.events.onValuePerChannelUpdated}
+                    />
+                  </div>
+                  {getErrorsView(this.props.errors, 'valuePerChannel')}
                 </div>
               </div>
             </div>
@@ -259,9 +334,7 @@ class Create extends React.Component<CreateProps> {
             onClick={this.props.events.onCancel}
             tabIndex={0}
             onKeyPress={event => {
-              if (' ' === event.key) {
-                this.props.events.onCancel();
-              }
+              if (Key.Space === event.key) this.props.events.onCancel();
             }}
           >
             {__('pim_reference_entity.attribute.create.cancel')}
@@ -295,6 +368,9 @@ export default connect(
         },
         onTypeUpdated: (value: string) => {
           dispatch(attributeCreationTypeUpdated(value));
+        },
+        onRecordTypeUpdated: (value: string) => {
+          dispatch(attributeCreationRecordTypeUpdated(value));
         },
         onValuePerLocaleUpdated: (valuePerLocale: boolean) => {
           dispatch(attributeCreationValuePerLocaleUpdated(valuePerLocale));

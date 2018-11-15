@@ -31,7 +31,7 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $this->product = new Product();
         $this->subscriptionId = 'foobar';
 
-        $this->beConstructedWith($this->product, $this->subscriptionId);
+        $this->beConstructedWith($this->product, $this->subscriptionId, ['sku' => '72527273070']);
     }
 
     public function it_is_a_product_subscription(): void

@@ -32,14 +32,13 @@ class IndexAction
     /** @var SearchRecord */
     private $searchRecord;
 
-    public function __construct(
-        SearchRecord $searchRecord
-    ) {
+    public function __construct(SearchRecord $searchRecord)
+    {
         $this->searchRecord = $searchRecord;
     }
 
     /**
-     * Get all records belonging to an reference entity.
+     * Get all records belonging to a reference entity.
      */
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {

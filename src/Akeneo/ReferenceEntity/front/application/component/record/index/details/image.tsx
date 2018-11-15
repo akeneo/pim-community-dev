@@ -3,8 +3,9 @@ import {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {CellView} from 'akeneoreferenceentity/application/configuration/value';
+const memo = (React as any).memo;
 
-const ImageCellView: CellView = ({value}: {value: NormalizedValue}) => {
+const ImageCellView: CellView = memo(({value}: {value: NormalizedValue}) => {
   return (
     <div className="AknGrid-bodyCellContainer">
       <img
@@ -15,6 +16,6 @@ const ImageCellView: CellView = ({value}: {value: NormalizedValue}) => {
       />
     </div>
   );
-};
+});
 
 export const cell = ImageCellView;

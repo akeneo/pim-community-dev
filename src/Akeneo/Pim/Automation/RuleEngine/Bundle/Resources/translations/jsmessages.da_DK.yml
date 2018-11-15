@@ -67,6 +67,8 @@ flash:
     executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler indstillinger
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Regler udførelse
   default_steps:
     execute_rules: Regler udførelse
   yml_rule_import:
@@ -91,3 +93,8 @@ batch_jobs:
 pim_notification:
   types:
     rule: Regler indstillinger
+pim_menu:
+  item:
+    rule: Regler
+pim_title:
+  pimee_catalog_rule_rule_index: Regler

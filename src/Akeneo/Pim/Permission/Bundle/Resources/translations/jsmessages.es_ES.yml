@@ -1,0 +1,48 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Sólo lectura
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en esta categoría
+      revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en esta categoría
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en este local
+      revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en este local
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> de este grupo de atributos
+      revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> de este grupo de atributos
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
+      view: Autorizado a ver los atributos
+      edit: Autorizado a editar los atributos
+      removed: El grupo {{ group }} no será autorizado a {{ permission }} grupo de atributos
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: El grupo {{ group }} será autorizado a {{ permission }} el perfil de trabajo
+      execute: Autorizado a ejecutar el perfil de trabajo
+      edit: Autorizado a editar el perfil de trabajo
+      removed: El grupo {{ group }} no será autorizado a {{ permission }} el perfil de trabajo
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Agregar el valor de producto con verificación de permisos y aplicación de reglas
+    perform.label: Agregar un valor de producto
+  update_product_value_with_permission_and_rules:
+    label: Actualizar el valor de producto con verificación de permisos y aplicación de reglas
+    perform.label: Actualizar el valor del producto
+  remove_product_value_with_permission_and_rules:
+    label: Quitar el valor del producto con verificación de permisos y aplicación de reglas
+    perform.label: Quitar el valor del producto
+  edit_common_attributes_with_permission_and_rules:
+    label: Editar atributos con verificación de permisos y aplicación de reglas
+    perform.label: Editar atributos
+    cleaner.label: Eliminar archivos temporales

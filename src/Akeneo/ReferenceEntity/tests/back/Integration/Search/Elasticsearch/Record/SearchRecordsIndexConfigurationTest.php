@@ -41,11 +41,10 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function default_search()
+    public function default_search_sorted_by_updated_at()
     {
         $matchingidentifiers = $this->searchRecordIndexHelper->search('brand', 'ecommerce', 'en_US', []);
-        sort($matchingidentifiers);
-        assert::assertsame(['brand_alessi', 'brand_bangolufsen', 'brand_kartell'], $matchingidentifiers);
+        assert::assertsame(['brand_kartell', 'brand_alessi', 'brand_bangolufsen'], $matchingidentifiers);
     }
 
     /**
@@ -160,8 +159,8 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
             'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_kartell',
             'code' => $kartellCode,
-            'record_list_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
-            'updated_at' => date_create('2018-01-01')->format('Y-m-d')
+            'record_full_text_search'          => ['ecommerce' => ['en_US' => $kartellCode . ' ' . $kartellDescriptionEnUs . ' ' . $kartellDesigner]],
+            'updated_at' => date_create('2018-01-01')->getTimestamp()
         ];
 
         // Those properties are not indexed
@@ -171,8 +170,8 @@ class SearchRecordsIndexConfigurationTest extends SearchIntegrationTestCase
         $alessi = [
             'reference_entity_code' => 'brand',
             'identifier'                  => 'brand_alessi',
-            'record_list_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
-            'updated_at' => date_create('2017-01-01')->format('Y-m-d')
+            'record_full_text_search'          => ['ecommerce' => ['en_US' => $alessiCode . ' ' . $alessiDescriptionEnUs . ' ' . $alessiDesigner]],
+            'updated_at' => date_create('2017-01-01')->getTimestamp()
         ];
 
         // Those properties are not indexed
@@ -186,16 +185,16 @@ TEXT;
         $bangolufsen = [
             'reference_entity_code' => 'brand',
             'identifier'            => 'brand_bangolufsen',
-            'record_list_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
-            'updated_at' => date_create('2016-01-01')->format('Y-m-d')
+            'record_full_text_search'    => ['ecommerce' => ['en_US' => $bangolufsenCode . ' ' . $bangolufsenDescriptionEnUs . ' ' . $bangolufsenDesigner]],
+            'updated_at' => date_create('2016-01-01')->getTimestamp()
         ];
 
-        $wrongEnrichedEntity = [
+        $wrongReferenceEntity = [
             'identifier'            => 'another_reference_entity',
             'reference_entity_code' => 'manufacturer',
-            'record_list_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
-            'updated_at' => date_create('2010-01-01')->format('Y-m-d')
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'stark Designer supérieure']],
+            'updated_at' => date_create('2010-01-01')->getTimestamp()
         ];
-        $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongEnrichedEntity]);
+        $this->searchRecordIndexHelper->index([$kartell, $alessi, $bangolufsen, $wrongReferenceEntity]);
     }
 }

@@ -27,20 +27,15 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Вы уверены, что хотите выполнить правило?
-          confirm_ok: Подтвердить
       mass_edit_action:
         confirm_content: Вы уверены, что вы хотите вычислить количество продуктов затрагиваемых правилами?
-        confirm_ok: Подтвердить
       mass_action:
         execute:
-          confirm_ok: Подтвердить
           confirm_content: Вы уверены, что хотите выполнить выбранные правила?
           success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
           error: Произошла ошибка во время выполнения правил.
           empty_selection: Правила не выбраны.
         delete:
-          confirm_ok: Подтвердить
-          confirm_title: Подтвердить удаление
           confirm_content: Вы уверены, что хотите удалить выбранные правила?
           success: Вы успешно удалили правила.
           error: Произошла ошибка при удалении правил.
@@ -53,13 +48,22 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: Вы уверены, что хотите удалить это правило? Это действие отменить невозможно
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Роль успешно удалена
 flash:
   rule:
-    removed: Роль успешно удалена
     impacted_product_count: Вычисление количества продуктов затрагиваемых правилами начато. Вы будете уведомлены, когда это будет сделано.
     executed: Начато выполнение правила. Вы будете уведомлены, когда это будет сделано.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Настройки правил
 batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Выполнение правил
+  default_steps:
+    execute_rules: Выполнение правил
   yml_rule_import:
     label: Импорт правил из YAML
     import.label: Импорт правил
@@ -69,22 +73,21 @@ batch_jobs:
   rule_impacted_product_count:
     label: Затрагиваемые продукты для правил
     perform.label: Вычислить затрагиваемые продукты
-    execute_rules.label: Выполнение правил
   csv_product_import_with_rules:
     label: Импорт продуктов из CSV с правилами
-    execute_rules.label: Выполнение правил
-    validation.label: Проверка файла
     import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций
   csv_product_model_import_with_rules:
-    execute_rules.label: Выполнение правил
-    validation.label: Проверка файла
+    label: Импорт моделей продуктов в CSV с правилами
   xlsx_product_import_with_rules:
     label: Импорт продуктов из XLSX с правилами
-    execute_rules.label: Выполнение правил
-    validation.label: Проверка файла
     import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций
   xlsx_product_model_import_with_rules:
-    execute_rules.label: Выполнение правил
-    validation.label: Проверка файла
+    label: Импорт модели продукта в XLSX с правилами
+pim_notification:
+  types:
+    rule: Настройки правил
+pim_menu:
+  item:
+    rule: Правила
+pim_title:
+  pimee_catalog_rule_rule_index: Правила

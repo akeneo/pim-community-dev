@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Common\Fake\EventDispatcherMock;
+use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -43,9 +46,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
@@ -492,5 +492,37 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_records_by_reference_entity()
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        $this->assertSame(0, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $starck = Record::create(
+            $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('starck')),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('starck'),
+            ['fr_FR' => 'Philippe Starck'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($starck);
+        $this->assertSame(1, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
+
+        $bob = Record::create(
+            $this->repository->nextIdentifier($referenceEntityIdentifier, RecordCode::fromString('bob')),
+            $referenceEntityIdentifier,
+            RecordCode::fromString('bob'),
+            ['fr_FR' => 'Bob'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($bob);
+        $this->assertSame(2, $this->repository->countByReferenceEntity($referenceEntityIdentifier));
     }
 }

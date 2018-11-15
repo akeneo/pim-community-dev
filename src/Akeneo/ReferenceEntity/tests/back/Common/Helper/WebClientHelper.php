@@ -51,12 +51,12 @@ class WebClientHelper
     public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
     {
         $errorMessage = sprintf(
-            'Expected request status code is not the same as the actual. Failed with content %s',
+            'Expected response status code is not the same as the actual. Failed with content %s',
             $response->getContent()
         );
         Assert::assertSame($statusCode, $response->getStatusCode(), $errorMessage);
         if ($expectedContent !== '') {
-            Assert::assertSame($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
+            Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
         }
     }
 
@@ -99,13 +99,13 @@ HTML;
         Assert::assertSame(500, $response->getStatusCode());
     }
 
-    public function assertRequest(Client $client, string $relativeFilePath)
+    public function assertRequest(Client $client, string $relativeFilePath): void
     {
-        $this->callFromFile($client, $relativeFilePath);
-        $this->assertFromFile($client->getResponse(), $relativeFilePath);
+        $response = $this->requestFromFile($client, $relativeFilePath);
+        $this->assertFromFile($response, $relativeFilePath);
     }
 
-    private function assertFromFile(Response $response, string $relativeFilePath): void
+    public function assertJsonFromFile(Response $response, string $relativeFilePath): void
     {
         $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $expectedResponse) {
@@ -114,10 +114,18 @@ HTML;
             );
         }
         $expectedContent = $this->getBody($expectedResponse['response']);
-        $this->assertResponse($response, $expectedResponse['response']['status'], $expectedContent);
+
+        $errorMessage = sprintf(
+            'Expected response status code is not the same as the actual. Failed with content %s',
+            $response->getContent()
+        );
+        Assert::assertSame($expectedResponse['response']['status'], $response->getStatusCode(), $errorMessage);
+        if ($expectedContent !== '') {
+            Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
+        }
     }
 
-    private function callFromFile(Client $client, string $relativeFilePath): void
+    public function requestFromFile(Client $client, string $relativeFilePath): Response
     {
         $requestFile = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
         if (null === $requestFile) {
@@ -133,6 +141,20 @@ HTML;
         $body = $this->getBody($request);
         $url = $this->router->generate($request['route'], $request['query']);
         $client->request($request['method'], $url, [], [], $headers, $body);
+
+        return $client->getResponse();
+    }
+
+    private function assertFromFile(Response $response, string $relativeFilePath): void
+    {
+        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        if (null === $expectedResponse) {
+            throw new \RuntimeException(
+                sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
+            );
+        }
+        $expectedContent = $this->getBody($expectedResponse['response']);
+        $this->assertResponse($response, $expectedResponse['response']['status'], $expectedContent);
     }
 
     private function getBody(array $expectedResponse): string

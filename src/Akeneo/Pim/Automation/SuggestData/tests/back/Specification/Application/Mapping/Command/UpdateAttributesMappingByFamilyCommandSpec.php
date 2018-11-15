@@ -40,9 +40,8 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
     public function it_returns_an_attribute_mapping(): void
     {
         $mapping = ['color' => [
-            'pim_ai_attribute' => ['type' => 'multiselect'],
+            'franklinAttribute' => ['type' => 'multiselect'],
             'attribute' => 'tshirt_style',
-            'status' => 1,
         ]];
         $this->beConstructedWith('family_code', $mapping);
 
@@ -58,7 +57,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_target_key_is_missing(): void
     {
-        $mapping = [['attribute' => 'tshirt_style', 'status' => 1]];
+        $mapping = [['attribute' => 'tshirt_style']];
         $this->beConstructedWith('family_code', $mapping);
 
         $this
@@ -68,7 +67,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_attribute_key_is_missing(): void
     {
-        $mapping = ['color' => ['status' => 1]];
+        $mapping = ['color' => []];
         $this->beConstructedWith('family_code', $mapping);
 
         $this
@@ -76,13 +75,13 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_status_key_is_missing(): void
+    public function it_does_not_keep_in_account_status_key(): void
     {
-        $mapping = ['color' => ['attribute' => 'tshirt_style']];
+        $mapping = ['color' => ['attribute' => 'tshirt_style', 'status' => 1]];
         $this->beConstructedWith('family_code', $mapping);
 
         $this
-            ->shouldThrow(InvalidMappingException::expectedKey('color', 'status'))
+            ->shouldNotThrow(InvalidMappingException::expectedKey('color', 'status'))
             ->duringInstantiation();
     }
 }

@@ -9,12 +9,16 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInter
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -24,12 +28,14 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     public function let(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        DataProviderFactory $dataProviderFactory
+        DataProviderFactory $dataProviderFactory,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ): void {
         $this->beConstructedWith(
             $productRepository,
             $subscriptionRepository,
-            $dataProviderFactory
+            $dataProviderFactory,
+            $identifiersMappingRepository
         );
     }
 
@@ -89,12 +95,20 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider,
-        ProductInterface $product
+        ProductInterface $product,
+        AttributeInterface $ean,
+        ValueInterface $eanValue,
+        $identifiersMappingRepository
     ): void {
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
+        $product->getValue('ean')->willReturn($eanValue);
         $productRepository->find($productId)->willReturn($product);
+
+        $ean->getCode()->willReturn('ean');
+
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping(['upc' => $ean->getWrappedObject()]));
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 

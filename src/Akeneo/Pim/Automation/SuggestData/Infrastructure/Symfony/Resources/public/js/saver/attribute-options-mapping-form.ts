@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2018 Akeneo SAS (http://www.akeneo.com)
@@ -9,6 +9,7 @@
 
 import {NormalizedAttributeOptionsMapping} from '../model/normalized-attribute-options-mapping';
 import AttributeOptionsMappingSaver = require('../saver/attribute-options-mapping');
+
 const BaseSaverForm = require('pim/form/common/save-form');
 
 /**
@@ -29,7 +30,7 @@ class SaverForm extends BaseSaverForm {
 
     return AttributeOptionsMappingSaver
       .setFamilyCode(entity.family)
-      .setFranklinAttributeCode(entity.franklin_attribute_code)
+      .setFranklinAttributeCode(entity.franklinAttributeCode)
       .setUrl(this.config.url)
       .save(null, entity, this.config.method || 'POST')
       .then((data: any) => {

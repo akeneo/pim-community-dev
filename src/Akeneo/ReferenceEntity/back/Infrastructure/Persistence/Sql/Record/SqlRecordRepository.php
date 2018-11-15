@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
+use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -21,9 +24,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordDeletedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\RecordUpdatedEvent;
-use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -247,6 +247,22 @@ SQL;
         );
     }
 
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    {
+        $fetch = <<<SQL
+        SELECT COUNT(*)
+        FROM akeneo_reference_entity_record
+        WHERE reference_entity_identifier = :reference_entity_identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            ['reference_entity_identifier' => $referenceEntityIdentifier,]
+        );
+        $count = $statement->fetchColumn();
+
+        return intval($count);
+    }
+
     private function getSerializedLabels(Record $record): string
     {
         $labels = [];
@@ -260,7 +276,7 @@ SQL;
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
     {
         if (!isset($result['reference_entity_identifier'])) {
-            throw new \LogicException('The record should have an reference entity identifier');
+            throw new \LogicException('The record should have a reference entity identifier');
         }
         $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],

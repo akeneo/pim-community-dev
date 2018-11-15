@@ -7,6 +7,7 @@ parameters:
     pimee_security.repository.product.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductRepository
     pim_catalog.repository.product_mass_action.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository
     pim_catalog.repository.attribute.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\Attribute\AttributeRepository
+    pim_enrich.repository.job_execution.class: Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository
 
 services:
     pimee_security.repository.attribute_group_access:
@@ -52,6 +53,7 @@ services:
             - '@pimee_catalog.security.factory.filtered_product'
             - '@pimee_security.deny_not_granted_categorized_entity'
             - '%pim_catalog.entity.product_model.class%'
+            - '@pimee_security.cached_authorization_checker'
 
     pimee_security.repository.product:
         class: '%pimee_security.repository.product.class%'
@@ -72,3 +74,29 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '@security.token_storage'
             - '%pimee_security.entity.product_category_access.class%'
+
+    pimee_enrich.repository.attribute:
+        class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pimee_catalog.filter.attribute_view_right'
+            - '%pim_catalog.entity.attribute.class%'
+
+    pimee_enrich.repository.attribute.search:
+        class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeSearchableRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pimee_security.entity.attribute_group_access.class%'
+
+    pim_enrich.repository.job_instance:
+        class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\JobInstanceRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_batch.entity.job_instance.class%'
+
+    pim_enrich.repository.job_execution:
+        class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\JobExecutionRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_batch.entity.job_execution.class%'

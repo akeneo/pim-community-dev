@@ -16,21 +16,6 @@ $ vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automatio
 
 To apply the changes to your code, remove the `--dry-run` option.
 
-### PHP Code Sniffer
-
-PHP Code Sniffer is installed in the PIM, but was not used. We have  now a configuration file placed at the root of the PIM in `phpcs.xml.dist`.
-PHP Code Sniffer configuration file must be placed at the root of the project, as it has no option to specify a custom path.
-
-You can run it (no modification will be done to the code) with the following command, from the root of the PIM:
-```bash
-$ vendor/bin/phpcs
-```
-
-To apply the changes to your code, use the code beautifier provided by PHP Code Sniffer:
-```bash
-$ vendor/bin/phpcbf
-```
-
 ### TSLint
 
 The SuggestData bounded context contains a dedicated configuration file for `TSLint`.

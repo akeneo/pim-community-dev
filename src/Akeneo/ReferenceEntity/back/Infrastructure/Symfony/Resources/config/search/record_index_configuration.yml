@@ -16,8 +16,14 @@ mappings:
                 type: 'date'
         dynamic_templates:
             -
-                record_list_search:
-                    path_match: 'record_list_search.*.*'
+                record_full_text_search:
+                    path_match: 'record_full_text_search.*.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                record_code_label_search:
+                    path_match: 'record_code_label_search.*'
                     mapping:
                         type: 'keyword'
                         normalizer: 'text_normalizer'

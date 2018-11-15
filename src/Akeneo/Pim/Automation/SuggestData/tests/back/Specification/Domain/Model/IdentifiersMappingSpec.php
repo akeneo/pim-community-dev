@@ -55,39 +55,51 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
-    public function it_normalizes_identifiers_mapping($manufacturer, $model, $ean, $sku): void
+    public function it_is_valid_if_mapping_is_filled(): void
     {
-        $manufacturer->getCode()->willReturn('brand');
-        $model->getCode()->willReturn('mpn');
-        $ean->getCode()->willReturn('ean');
-        $sku->getCode()->willReturn('sku');
-
-        $this->normalize()->shouldReturn([
-            'brand' => 'brand',
-            'mpn' => 'mpn',
-            'upc' => 'ean',
-            'asin' => 'sku',
-        ]);
+        $this->isValid()->shouldReturn(true);
     }
 
-    public function it_normalizes_empty_identifiers_mapping(): void
+    public function it_is_valid_if_mapping_is_filled_with_upc($ean): void
+    {
+        $this->beConstructedWith(['upc' => $ean]);
+
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_valid_if_mapping_is_filled_with_asin($sku): void
+    {
+        $this->beConstructedWith(['asin' => $sku]);
+
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_valid_if_mapping_is_filled_with_mpn_and_brand($manufacturer, $model): void
+    {
+        $this->beConstructedWith(['mpn' => $model, 'brand' => $manufacturer]);
+
+        $this->isValid()->shouldReturn(true);
+    }
+
+    public function it_is_not_valid_if_mapping_is_not_filled(): void
     {
         $this->beConstructedWith([]);
 
-        $this->normalize()->shouldReturn([]);
+        $this->isValid()->shouldReturn(false);
     }
 
-    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean): void
+    public function it_is_not_valid_if_mapping_is_filled_only_with_brand($manufacturer): void
     {
-        $manufacturer->getCode()->willReturn('brand');
-        $ean->getCode()->willReturn('ean');
+        $this->beConstructedWith(['brand' => $manufacturer]);
 
-        $this->normalize()->shouldReturn([
-            'brand' => 'brand',
-            'mpn' => null,
-            'upc' => 'ean',
-            'asin' => null,
-        ]);
+        $this->isValid()->shouldReturn(false);
+    }
+
+    public function it_is_not_valid_if_mapping_is_filled_only_with_mpn($model): void
+    {
+        $this->beConstructedWith(['mpn' => $model]);
+
+        $this->isValid()->shouldReturn(false);
     }
 
     public function it_is_traversable(): void

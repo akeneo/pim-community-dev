@@ -1,0 +1,31 @@
+services:
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_record_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorRecordContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_records_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorRecordsContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.integration.connector.distribution.not_found_reference_entity_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\NotFoundReferenceEntityContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+        tags:
+            - { name: fob.context_service }

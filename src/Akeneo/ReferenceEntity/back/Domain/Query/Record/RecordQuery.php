@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Object representing a record query
@@ -24,36 +26,51 @@ use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
  */
 class RecordQuery
 {
-    /** @var string */
+    private const PAGINATE_USING_OFFSET = 'offset';
+    private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
+
+    /** @var ChannelIdentifier|null */
     private $channel;
 
-    /** @var string */
+    /** @var LocaleIdentifier|null */
     private $locale;
 
     /** @var array */
     private $filters;
 
-    /** @var int */
+    /** @var int|null */
     private $page;
 
-    /** @var int */
+    /** @var int|null */
     private $size;
 
-    private function __construct(ChannelIdentifier $channel, LocaleIdentifier $locale, array $filters, int $page, int $size)
-    {
-        if (!is_array($filters)) {
-            throw new \InvalidArgumentException('RecordQuery expect an array as filters');
-        } else {
-            foreach ($filters as $filter) {
-                if (!(
-                    key_exists('field', $filter) &&
-                    key_exists('operator', $filter) &&
-                    key_exists('value', $filter) &&
-                    key_exists('context', $filter)
-                )) {
-                    throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
-                }
+    /** @var RecordCode|null */
+    private $searchAfterCode;
+
+    /** @var string */
+    private $paginationMethod;
+
+    private function __construct(
+        ?ChannelIdentifier $channel,
+        ?LocaleIdentifier $locale,
+        array $filters,
+        ?int $page,
+        int $size,
+        ?RecordCode $searchAfterCode,
+        string $paginationMethod
+    ) {
+        foreach ($filters as $filter) {
+            if (!(
+                key_exists('field', $filter) &&
+                key_exists('operator', $filter) &&
+                key_exists('value', $filter)
+            )) {
+                throw new \InvalidArgumentException('RecordQuery expect an array of filters with a field, value, operator and context');
             }
+        }
+
+        if (!in_array($paginationMethod, [self::PAGINATE_USING_OFFSET, self::PAGINATE_USING_SEARCH_AFTER])) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not a supported pagination method', $paginationMethod));
         }
 
         $this->channel = $channel;
@@ -61,6 +78,9 @@ class RecordQuery
         $this->filters = $filters;
         $this->page    = $page;
         $this->size    = $size;
+
+        $this->searchAfterCode  = $searchAfterCode;
+        $this->paginationMethod = $paginationMethod;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -80,7 +100,33 @@ class RecordQuery
             LocaleIdentifier::fromCode($normalizedQuery['locale']),
             $normalizedQuery['filters'],
             $normalizedQuery['page'],
-            $normalizedQuery['size']
+            $normalizedQuery['size'],
+            null,
+            self::PAGINATE_USING_OFFSET
+        );
+    }
+
+    public static function createPaginatedUsingSearchAfter(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        ?RecordCode $searchAfterCode,
+        int $size
+    ): RecordQuery {
+        $filters = [
+            [
+                'field' => 'reference_entity',
+                'operator' => '=',
+                'value' => (string) $referenceEntityIdentifier
+            ]
+        ];
+
+        return new RecordQuery(
+            null,
+            null,
+            $filters,
+            null,
+            $size,
+            $searchAfterCode,
+            self::PAGINATE_USING_SEARCH_AFTER
         );
     }
 
@@ -97,23 +143,49 @@ class RecordQuery
         return $filter;
     }
 
-    public function getSize(): int
+    public function hasFilter(string $field): bool
+    {
+        foreach ($this->filters as $filter) {
+            if ($filter['field'] === $field) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getSize(): ?int
     {
         return $this->size;
     }
 
-    public function getPage(): int
+    public function getPage(): ?int
     {
         return $this->page;
     }
 
-    public function getChannel(): string
+    public function getChannel(): ?string
     {
-        return $this->channel->normalize();
+        return null !== $this->channel ? $this->channel->normalize() : null;
     }
 
-    public function getLocale(): string
+    public function getLocale(): ?string
     {
-        return $this->locale->normalize();
+        return null !== $this->locale ? $this->locale->normalize() : null;
+    }
+
+    public function getSearchAfterCode(): ?string
+    {
+        return null !== $this->searchAfterCode ? (string) $this->searchAfterCode : null;
+    }
+
+    public function isPaginatedUsingOffset()
+    {
+        return $this->paginationMethod === self::PAGINATE_USING_OFFSET;
+    }
+
+    public function isPaginatedUsingSearchAfter()
+    {
+        return $this->paginationMethod === self::PAGINATE_USING_SEARCH_AFTER;
     }
 }

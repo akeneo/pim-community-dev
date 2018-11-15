@@ -1,42 +1,123 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Crea una nuova entità
+  akeneo_reference_entities_record_edit: Modifica riga
 pim_reference_entity:
+  app:
+    image:
+      wide:
+        upload: Drag and drop per caricare un file o fai click qui
+      small:
+        remove: Rimuovere
+        download: Scarica
   reference_entity:
+    validation:
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+        should_be_unique: 'Questo codice è già esistente per questa entità.'
     button:
       save: Salva
       create: Crea
+    title: Entità
+    img: Immagine principale dell'entità di riferimento denominata "{{ label }}"
     tab:
+      records: Record
       attribute: Attributi
       properties: Proprietà
     properties:
+      title: Proprietà dell'entità
       identifier: Codice
       label: Etichetta
       image: Immagine
+    attribute:
+      title: Attributi del record
+    module:
+      delete:
+        button: Elimina entità
+        confirm: Sei sicuro di voler eliminare questa entità?
+    index:
+      grid:
+        count: "{{ count }} risultati"
     create:
       header:
         title: Crea
+      subtitle: Entità
+      title: Crea una nuova entità
       input:
         label: Etichetta
+        code: Codice (richiesto)
       confirm: Salva
+    delete:
+      title: Attributo
+    notification:
+      save:
+        success: Entità di riferimento aggiornata correttamente.
+        fail: Si è verificato un errore durante il salvataggio dell'entità di riferimento
+      create:
+        success: Entità di riferimento creata correttamente.
+        fail: Si è verificato un errore durante la creazione dell'entità di riferimento
+      delete:
+        success: Entità di riferimento eliminata correttamente.
+        fail: Si è verificato un errore durante l'eliminazione dell'entità di riferimento
   record:
+    validation:
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
+        should_be_unique: 'Questo codice è già esistente per questa entità.'
+    no_data:
+      title: Non ci sono record per {{ entityLabel }}
+      subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo record
+    no_result:
+      title: Non ci sono risultati per la tua ricerca
+      subtitle: Riprova con nuovi criteri di ricerca.
     button:
       save: Salva
       create: Aggiungi nuovo
       delete: Eliminare
+      delete_all: Elimina tutti i record
+      back: Torna all'elenco
     enrich:
+      title: Attributi del record
       code: Codice
       label: Etichetta
+    title: Record
     create:
       header:
         title: Crea
+      subtitle: Entità
+      title: Aggiungi nuovo {{ entityLabel }}
       input:
         label: Etichetta
+        code: Codice (richiesto)
       confirm: Salva
+    delete:
+      title: Record
+    delete_all:
+      confirm: Sei sicuro di voler eliminare tutti i record di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
     grid:
+      search: Cerca nell'etichetta, nel codice e nel testo degli attributi
       column:
         code: Codice
         image: Immagine
         label: Etichetta
+        action: Azioni
+      more_result:
+        title: Non è così!
+        description: Hai appena visto i primi 500 risultati di {{ total }} record. Per vederne di più, utilizza criteri di ricerca più specifici.
     tab:
       enrich: Catalogo
+    notification:
+      save:
+        success: Record aggiornato correttamente.
+        fail: Si è verificato un errore durante il salvataggio del record
+      create:
+        success: Record creato correttamente.
+        fail: Si è verificato un errore durante la creazione del record
+      delete:
+        success: Record "{{ code }}" eliminato correttamente.
+        fail: Si è verificato un errore durante l'eliminazione del record
+      delete_all:
+        success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
+        fail: Si è verificato un errore durante la cancellazione di tutti i record dell'entità di riferimento
   attribute:
     default:
       code: Codice
@@ -45,23 +126,38 @@ pim_reference_entity:
     type:
       text: Testo
       image: Immagine
+    is_required: richiesto per la completezza
+    no_data:
+      title: Non ci sono attributi personalizzati per {{ entityLabel }}
+      subtitle: Fai clic sul pulsante "Aggiungi un attributo" per configurare il tuo primo attributo personalizzato
+    button:
+      add: Aggiungi un attributo
     create:
       header:
         title: Crea
+      subtitle: Entità
+      title: Aggiungi un nuovo attributo
       input:
+        code: Codice (richiesto)
         label: Etichetta
         type: Tipo di attributo
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
       confirm: Salva
     edit:
+      delete: Elimina l'attributo
+      save: Salva
+      cancel: Annulla
       input:
+        code: Codice (richiesto)
         label: Etichetta
         type: Tipo di attributo
         value_per_locale: Valore per impostazioni internazionali
         value_per_channel: Valore per canale
+        is_required: Richiesto per la completezza
         max_length: Numero massimo di caratteri
         textarea: Area di testo
+        is_rich_text_editor: Editor di Testi Avanzato
         max_file_size: Dimensione massima del file (MB)
         allowed_extensions: Estensioni consentite
         validation_rule: Regola di convalida
@@ -72,14 +168,27 @@ pim_reference_entity:
             email: E-mail
             regular_expression: Espressione regolare
             url: URL
+    delete:
+      title: Attributo
     notification:
       save:
         success: Attributo aggiornato con successo.
+        fail: Si è verificato un errore durante il salvataggio dell'attributo
       create:
         success: Attributo creato con successo.
+        fail: Si è verificato un errore durante la creazione dell'attributo
       delete:
         success: Attributo eliminato correttamente.
+        fail: Si è verificato un errore durate la cancellazione dell'attributo
+  modal:
+    delete:
+      subtitle: Conferma cancellazione
+      button:
+        cancel: Annulla
+        confirm: Eliminare
 pim_enrich:
+  confirmation:
+    discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'
   entity:
     attribute:
       property:

@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
-    public function it_normalizes_a_family_to_a_pim_ai_array_format(
+    public function it_normalizes_a_family_to_a_franklin_array_format(
         FamilyInterface $family,
         FamilyTranslation $enTranslation,
         FamilyTranslation $frTranslation,

@@ -44,7 +44,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_an_reference_entity_given_an_identifier()
+    public function it_deletes_a_reference_entity_given_an_identifier()
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -206,10 +206,6 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             ValueCollection::fromValues([])
         );
         $recordRepository->create($recordItem);
-
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
 
         $fr = new Locale();
         $fr->setId(1);

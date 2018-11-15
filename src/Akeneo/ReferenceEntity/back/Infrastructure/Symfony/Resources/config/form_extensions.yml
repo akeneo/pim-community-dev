@@ -17,41 +17,41 @@ extensions:
             logout: pim_menu.user.logout
 
     # Attribute custom fields
-    pim-attribute-form-reference-entity-collection:
+    pim-attribute-form-reference-entity:
         module: pim/common/simple-view
         config:
             template: pim/template/common/drop-zone
 
-    pim-attribute-form-reference-entity-collection-useable-as-grid-filter:
+    pim-attribute-form-reference-entity-useable-as-grid-filter:
         module: pim/form/common/fields/boolean
-        parent: pim-attribute-form-reference-entity-collection
+        parent: pim-attribute-form-reference-entity
         targetZone: content
         position: 60
         config:
             fieldName: useable_as_grid_filter
             label: pim_enrich.entity.attribute.property.useable_as_grid_filter
 
-    pim-attribute-form-reference-entity-collection-is-locale-specific:
+    pim-attribute-form-reference-entity-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
-        parent: pim-attribute-form-reference-entity-collection
+        parent: pim-attribute-form-reference-entity
         targetZone: content
         position: 70
         config:
             fieldName: is_locale_specific
             label: pim_enrich.entity.attribute.property.is_locale_specific
 
-    pim-attribute-form-reference-entity-collection-form-available-locales:
+    pim-attribute-form-reference-entity-form-available-locales:
         module: pim/attribute-edit-form/properties/available-locales
-        parent: pim-attribute-form-reference-entity-collection
+        parent: pim-attribute-form-reference-entity
         targetZone: content
         position: 80
         config:
             fieldName: available_locales
             label: pim_enrich.entity.attribute.property.available_locales
 
-    pim-attribute-form-reference-entity-collection-type-specific-params:
+    pim-attribute-form-reference-entity-type-specific-params:
         module: pim/common/simple-view
-        parent: pim-attribute-form-reference-entity-collection
+        parent: pim-attribute-form-reference-entity
         targetZone: content
         position: 100
         config:
@@ -60,9 +60,9 @@ extensions:
                 sectionTitle: pim_enrich.entity.attribute.property.section.type_specific
                 dropZone: content
 
-    pim-attribute-form-reference-entity-collection-type-specific-params-ref-data-name:
+    pim-attribute-form-reference-entity-type-specific-params-ref-data-name:
         module: pim/attribute-edit-form/properties/reference-entity
-        parent: pim-attribute-form-reference-entity-collection-type-specific-params
+        parent: pim-attribute-form-reference-entity-type-specific-params
         targetZone: content
         position: 100
         config:
@@ -70,4 +70,5 @@ extensions:
             label: pim_enrich.entity.attribute.property.reference_entity.identifier
 
 attribute_fields:
+    akeneo-reference-entity-collection-field: pim/reference-entity-collection-field
     akeneo-reference-entity-field: pim/reference-entity-field

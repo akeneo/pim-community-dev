@@ -24,27 +24,27 @@ class IdentifierMapping
     private $id;
 
     /** @var string */
-    private $pimAiCode;
+    private $franklinCode;
 
     /** @var AttributeInterface|null */
     private $attribute;
 
     /**
-     * @param string $pimAiCode
+     * @param string $franklinCode
      * @param AttributeInterface|null $attribute
      */
-    public function __construct(string $pimAiCode, ?AttributeInterface $attribute)
+    public function __construct(string $franklinCode, ?AttributeInterface $attribute)
     {
-        $this->pimAiCode = $pimAiCode;
+        $this->franklinCode = $franklinCode;
         $this->attribute = $attribute;
     }
 
     /**
      * @return mixed
      */
-    public function getPimAiCode(): string
+    public function getFranklinCode(): string
     {
-        return $this->pimAiCode;
+        return $this->franklinCode;
     }
 
     /**

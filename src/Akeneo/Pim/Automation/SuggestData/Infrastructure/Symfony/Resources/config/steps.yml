@@ -27,6 +27,7 @@ services:
             - '@pim_enrich.reader.database.product'
             - '@akeneo.pim.automation.suggest_data.connector.processor.subscription'
             - '@akeneo.pim.automation.suggest_data.connector.writer.subscription'
+            - '%pim_enrich.datagrid.product_batch_size%'
 
     akeneo.pim.automation.suggest_data.connector.step.unsubscribe_products:
         class: '%pim_connector.step.item_step.class%'

@@ -8,22 +8,22 @@
     <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
     <table class="AknGrid AknGrid--unclickable">
         <tr class="AknGrid-header">
-            <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklin_attribute_option %></th>
-            <th class="AknGrid-headerCell"><%- catalog_attribute_option %></th>
-            <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attribute_option_status %></th>
+            <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklinAttributeOption %></th>
+            <th class="AknGrid-headerCell"><%- catalogAttributeOption %></th>
+            <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeOptionStatus %></th>
         </tr>
-        <% Object.keys(mapping).forEach((franklin_attribute_option_code) => { %>
+        <% Object.keys(mapping).forEach((franklinAttributeOptionCode) => { %>
         <tr
                 class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row"
-                data-franklin_attribute_option="<%- mapping[franklin_attribute_option_code].franklin_attribute_option_code.label %>"
-                data-status="<%- mapping[franklin_attribute_option_code].status %>"
+                data-franklin-attribute-option="<%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>"
+                data-status="<%- mapping[franklinAttributeOptionCode].status %>"
         >
             <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
-                <%- mapping[franklin_attribute_option_code].franklin_attribute_option_code.label %>
+                <%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>
             </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklin_attribute_option_code %>"/>
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
-                <%- statuses[mapping[franklin_attribute_option_code].status] %>
+            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklinAttributeOptionCode %>"/>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--big">
+                <%- statuses[mapping[franklinAttributeOptionCode].status] %>
             </td>
         </tr>
         <% }) %>

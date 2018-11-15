@@ -59,26 +59,18 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param int $frequency
-     * @param string $attributeCode
      * @param string $className
      * @param string|null $path
      *
      * @return InvalidMappingException
      */
     public static function duplicateAttributeCode(
-        int $frequency,
-        string $attributeCode,
         string $className,
         string $path = null
     ) {
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'duplicate_attribute_code');
-        $messageParams = [
-            'attributeCode' => $attributeCode,
-            'frequency' => $frequency,
-        ];
 
-        return new static($className, $message, $messageParams, $path);
+        return new static($className, $message, [], $path);
     }
 
     /**

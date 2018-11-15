@@ -1,7 +1,7 @@
 Feature: Show reference entity
-  In order to see the details of an reference entity
+  In order to see the details of a reference entity
   As a user
-  I want see the details of an reference entity
+  I want see the details of a reference entity
 
   @acceptance-front
   Scenario: Getting a single entity

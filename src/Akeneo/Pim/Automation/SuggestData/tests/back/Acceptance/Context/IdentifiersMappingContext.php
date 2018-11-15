@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -28,8 +32,8 @@ use PHPUnit\Framework\Assert;
  */
 class IdentifiersMappingContext implements Context
 {
-    /** @var ManageIdentifiersMapping */
-    private $manageIdentifiersMapping;
+    /** @var GetIdentifiersMappingHandler */
+    private $getIdentifiersMappingHandler;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
@@ -40,19 +44,25 @@ class IdentifiersMappingContext implements Context
     /** @var IdentifiersMappingApiFake */
     private $identifiersMappingApiFake;
 
+    /** @var UpdateIdentifiersMappingHandler */
+    private $updateIdentifiersMappingHandler;
+
     /**
-     * @param ManageIdentifiersMapping $manageIdentifiersMapping
+     * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
+     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingApiFake $identifiersMappingApiFake
      */
     public function __construct(
-        ManageIdentifiersMapping $manageIdentifiersMapping,
+        GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
+        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingApiFake $identifiersMappingApiFake
     ) {
-        $this->manageIdentifiersMapping = $manageIdentifiersMapping;
+        $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
+        $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingApiFake = $identifiersMappingApiFake;
@@ -76,12 +86,16 @@ class IdentifiersMappingContext implements Context
     public function aPredefinedMapping(TableNode $table): void
     {
         $mapped = $this->extractIdentifiersMappingFromTable($table);
-        $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $identifiers = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
 
         $tmp = array_fill_keys($identifiers, null);
         $tmp = array_merge($tmp, $mapped);
+        $tmp = array_map(function ($value) {
+            return '' !== $value ? $value : null;
+        }, $tmp);
 
-        $this->manageIdentifiersMapping->updateIdentifierMapping($tmp);
+        $command = new UpdateIdentifiersMappingCommand($tmp);
+        $this->updateIdentifiersMappingHandler->handle($command);
     }
 
     /**
@@ -94,9 +108,10 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersAreMappedWithValidValues(TableNode $table): bool
     {
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping(
+            $command = new UpdateIdentifiersMappingCommand(
                 $this->extractIdentifiersMappingFromTable($table)
             );
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return true;
         } catch (\Exception $e) {
@@ -114,9 +129,10 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
     {
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping(
+            $command = new UpdateIdentifiersMappingCommand(
                 $this->getTableNodeAsArrayWithoutHeaders($table)
             );
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return false;
         } catch (\Exception $e) {
@@ -132,7 +148,8 @@ class IdentifiersMappingContext implements Context
     public function theIdentifiersMappingIsSavedWithEmptyValues(): bool
     {
         try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping([]);
+            $command = new UpdateIdentifiersMappingCommand([]);
+            $this->updateIdentifiersMappingHandler->handle($command);
 
             return false;
         } catch (\Exception $e) {
@@ -165,7 +182,11 @@ class IdentifiersMappingContext implements Context
     {
         $identifiers = $this->extractIdentifiersMappingFromTable($table);
 
-        Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
+        $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
+        $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
+        $normalizedIdentifiers = $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers());
+
+        Assert::assertEquals($identifiers, $normalizedIdentifiers);
         Assert::assertEquals(
             $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
             $this->identifiersMappingApiFake->get()
@@ -190,7 +211,7 @@ class IdentifiersMappingContext implements Context
         $extractedData = $tableNode->getRowsHash();
         array_shift($extractedData);
 
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $extractedData);
     }
@@ -199,7 +220,7 @@ class IdentifiersMappingContext implements Context
      * Transforms from gherkin table:.
      *
      *                                | Not mandatory  | as much locales as you want ...
-     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | franklin_code | attribute_code | en_US | fr_FR  |
      * | brand       | brand          | Brand | Marque |
      * | mpn         | mpn            | MPN   | MPN    |
      * | upc         | ean            | EAN   | EAN    |
@@ -209,7 +230,8 @@ class IdentifiersMappingContext implements Context
      *
      * [
      *     [
-     *         'from' => ['id' => 'brand'], (pim_ai_code)
+     *         'from' => ['id' => 'brand'], (franklin_code)
+     *         'status' => 'active',
      *         'to' => [
      *             'id' => 'brand', (attribute_code)
      *             'label' => [
@@ -230,7 +252,7 @@ class IdentifiersMappingContext implements Context
         $extractedData = $tableNode->getRows();
         $indexes = array_shift($extractedData);
         $locales = array_filter($indexes, function ($value) {
-            return 'pim_ai_code' !== $value && 'attribute_code' !== $value;
+            return 'franklin_code' !== $value && 'attribute_code' !== $value;
         });
 
         $mappings = [];
@@ -243,23 +265,27 @@ class IdentifiersMappingContext implements Context
                 }
             }
 
-            $mappings[] = [
-                'from' => ['id' => $rawMapping['pim_ai_code']],
-                'to' => [
+            $mappings[$rawMapping['franklin_code']] = [
+                'from' => ['id' => $rawMapping['franklin_code']],
+                'status' => empty($rawMapping['attribute_code']) ? 'inactive' : 'active',
+            ];
+
+            if (!empty($rawMapping['attribute_code'])) {
+                $mappings[$rawMapping['franklin_code']]['to'] = [
                     'id' => $rawMapping['attribute_code'],
                     'label' => $labels,
-                ],
-            ];
+                ];
+            }
         }
 
-        return $mappings;
+        return array_values($mappings);
     }
 
     /**
      * Transforms from gherkin table:.
      *
      *                                | Not mandatory and will not be part of extraction |
-     * | pim_ai_code | attribute_code | en_US | fr_FR  |
+     * | franklin_code | attribute_code | en_US | fr_FR  |
      * | brand       | brand          | Brand | Marque |
      * | mpn         | mpn            | MPN   | MPN    |
      * | upc         | ean            | EAN   | EAN    |
@@ -267,7 +293,7 @@ class IdentifiersMappingContext implements Context
      *
      * to php array with simple identifier mapping:
      *
-     * pim_ai_code => attribute_code
+     * franklin_code => attribute_code
      * [
      *     'brand' => 'brand',
      *     'mpn' => 'mpn',
@@ -283,10 +309,10 @@ class IdentifiersMappingContext implements Context
     {
         $mapping = [];
         foreach ($tableNode->getColumnsHash() as $column) {
-            $mapping[$column['pim_ai_code']] = $column['attribute_code'];
+            $mapping[$column['franklin_code']] = $column['attribute_code'];
         }
 
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $mapping);
     }

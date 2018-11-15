@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normaliz
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
- * Normalizes a PIM family to PIM.ai array format (for subscription purpose for example).
+ * Normalizes a PIM family to Franklin array format (for subscription purpose for example).
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

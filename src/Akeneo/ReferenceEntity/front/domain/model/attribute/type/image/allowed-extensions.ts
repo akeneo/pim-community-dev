@@ -1,5 +1,5 @@
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {InvalidArgumentError} from '../image';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export enum AllowedExtensionsOptions {
   gif = 'gif',
@@ -22,6 +22,7 @@ export class AllowedExtensions implements NormalizableAdditionalProperty {
     }
     Object.freeze(this);
   }
+
   public static isValid(value: any): boolean {
     if (!Array.isArray(value)) {
       return false;
@@ -31,15 +32,19 @@ export class AllowedExtensions implements NormalizableAdditionalProperty {
     );
     return 0 === invalidAllowedExtensions.length;
   }
+
   public static createFromNormalized(normalizedAllowedExtensions: NormalizedAllowedExtensions) {
     return new AllowedExtensions(normalizedAllowedExtensions);
   }
+
   public normalize(): NormalizedAllowedExtensions {
     return this.allowedExtensions;
   }
+
   public static createFromArray(allowedExtensions: string[]) {
     return new AllowedExtensions(allowedExtensions as AllowedExtensionsOptions[]);
   }
+
   public arrayValue(): string[] {
     return this.allowedExtensions;
   }

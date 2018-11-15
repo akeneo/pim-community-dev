@@ -21,6 +21,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -35,21 +36,31 @@ final class CreateReferenceEntityContext implements Context
     /** @var CreateReferenceEntityHandler */
     private $createReferenceEntityHandler;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
     /** @var ExceptionContext */
     private $exceptionContext;
+
+    /** @var ConstraintViolationsContext */
+    private $violationsContext;
 
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         CreateReferenceEntityHandler $createReferenceEntityHandler,
-        ExceptionContext $exceptionContext
+        ValidatorInterface $validator,
+        ExceptionContext $exceptionContext,
+        ConstraintViolationsContext $violationsContext
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->createReferenceEntityHandler = $createReferenceEntityHandler;
+        $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
+        $this->violationsContext = $violationsContext;
     }
 
     /**
-     * @When /^the user creates an reference entity "([^"]+)" with:$/
+     * @When /^the user creates a reference entity "([^"]+)" with:$/
      */
     public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
     {
@@ -57,6 +68,9 @@ final class CreateReferenceEntityContext implements Context
         $command = new CreateReferenceEntityCommand();
         $command->code = $code;
         $command->labels = json_decode($updates['labels'], true);
+
+        $this->violationsContext->addViolations($this->validator->validate($command));
+
         try {
             ($this->createReferenceEntityHandler)($command);
         } catch (\Exception $e) {
@@ -65,7 +79,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^there is an reference entity "([^"]+)" with:$/
+     * @Then /^there is a reference entity "([^"]+)" with:$/
      */
     public function thereIsAnReferenceEntityWith(string $code, TableNode $referenceEntityTable)
     {
@@ -107,5 +121,27 @@ final class CreateReferenceEntityContext implements Context
             $referenceEntityCount,
             sprintf('Expected to have 0 reference entity. %d found.', $referenceEntityCount)
         );
+    }
+
+    /**
+     * @Given /^(\d+) random reference entities$/
+     */
+    public function randomReferenceEntities(int $number)
+    {
+        for ($i = 0; $i < $number; $i++) {
+            $command = new CreateReferenceEntityCommand();
+            $command->code = uniqid();
+            $command->labels = ['en_US' => uniqid('label_')];
+
+            $violations = $this->validator->validate($command);
+            if ($violations->count() > 0) {
+                $errorMessage = $violations->get(0)->getMessage();
+                throw new \RuntimeException(
+                    sprintf('Cannot create the reference entity, command not valid (%s)', $errorMessage)
+                );
+            }
+
+            ($this->createReferenceEntityHandler)($command);
+        }
     }
 }

@@ -69,6 +69,10 @@ pim_dashboard:
         mass_upload: Massatuonti
 pim_title:
   pimee_product_asset_mass_upload: Tuo assetteja
+  pimee_product_asset_index: Resurssit
+  pimee_product_asset_edit: Assetti {{ asset.label }} | Muokkaus
+  pimee_asset_categorytree_index: Kategoriat
+  pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
 batch_jobs:
   apply_assets_mass_upload:
     label: Assettien massatuonti
@@ -101,3 +105,69 @@ asset_grid:
   label: Tuotteen assetit
 create_asset:
   title: Luo assetti
+pim_datagrid:
+  mass_action:
+    mass_edit:
+      asset_edit: Assettien massamuokkaus
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Resurssien muunnokset
+      not_found: Ei muunnosta löydettävissä
+      transformation: Muunnos
+      options: Vaihtoehdot
+      colorspace:
+        title: Väriavaruus
+        options:
+          colorspace: '%value% väriavaruus'
+      resize:
+        title: Muokkaa kokoa
+        options:
+          width: '%value%px leveys'
+          height: '%value%px korkeus'
+      resolution:
+        title: Resoluutio
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Asteikko
+        options:
+          width: '%value%px leveys'
+          height: '%value%px korkeus'
+          ratio: '%value%% suhde'
+      thumbnail:
+        title: Pikkukuva
+        options:
+          width: '%value%px leveys'
+          height: '%value%px korkeus'
+pimee_enrich.mass_edit.asset:
+  step:
+    choose:
+      title: Assettien massatoiminnot
+    configure:
+      label: Konfiguroi
+    confirm:
+      label: Vahvista
+  operation:
+    add_tag:
+      label: Lisää tunnisteita asseteille
+      description: Tunnisteita lisätään assetille.
+      field: Tunnisteet
+    add_to_category:
+      label: Luokittele assetit kategorioihin
+pim_catalog_volume:
+  section:
+    assets:
+      title: Assettien ulottuvuudet
+      hint: Voit seurata tässä katalogin kokoa liittyen assetteihin
+  axis:
+    count_assets: Resurssit
+    count_asset_categories: Assettikategoriat
+    count_asset_category_trees: Assettikategoriapuut
+pim_menu:
+  tab:
+    asset: Resurssit
+  item:
+    asset_category: Assettikategoriat
+    upload_asset: Tuo assetteja

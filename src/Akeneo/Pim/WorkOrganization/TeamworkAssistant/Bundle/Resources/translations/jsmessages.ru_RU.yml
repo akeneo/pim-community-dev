@@ -3,20 +3,24 @@ teamwork_assistant:
     required: Обязательно
   grid:
     view_selector:
-      loading: Загрузка...
+      start_new_project: Начать новый проект
       confirmation:
-        delete: Подтвердить удаление
-      popin_title: Создать
+        remove: Вы действительно хотите удалить этот проект?
+      projects: Проекты
   project:
     label: Имя
     locale: Локаль
-    channel: Канал
     description: Описание
+    due_date_past: Нельзя выбрать прошедшую дату.
   edit_project_modal:
-    confirm: Сохранить
-    cancel: Отмена
-  create_project_modal:
-    confirm: Сохранить
-    cancel: Отмена
+    saved: Проект сохранён.
   widget:
     description: Описание
+    done: ГОТОВО
+pim_datagrid:
+  view_selector:
+    project: Проекты
+pim_notification:
+  types:
+    project_created: Новый проект для вас
+    project_finished: Проект завершён

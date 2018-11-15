@@ -1,9 +1,10 @@
 pim_title:
+  akeneo_suggest_data_connection_edit: 'Connexion à Franklin Insights'
   akeneo_suggest_data_identifiers_mapping_edit: 'Paramètres de Franklin Insights'
   akeneo_suggest_data_attributes_mapping_edit: 'Paramètres de Franklin Insights'
 pim_menu:
   item:
-    pim_ai: Franklin Insights
+    franklin: Franklin Insights
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -27,35 +28,62 @@ akeneo_suggest_data:
           active: Actif
           inactive: Inactif
       constraint:
-        duplicate_attribute_code: "Un attribut ne peut pas être utilisé plus d’une fois. L'attribut \"{{ attributeCode }}\" a été utilisé {{ frequency }} fois."
         missing_or_invalid_identifiers: "Certains mappings d'identifiants sont manquants ou invalides. Attendus: \"{{ expected }}\", trouvé \"{{ given }}\"."
         attribute_not_found: "L'attribut avec le code \"{{ attributeCode }}\" pour le mapping d'identifiants n'existe pas."
-        mandatory_attribute_mapping: "Cet attribut doit être renseigné"
         attribute_type: "Ce type d'attribut ne peux pas être utilisé pour un identifiant"
     attributes_mapping:
       label: Mapping des attributs
       fields:
-        pim_ai_attribute: 'Attribut Franklin'
+        franklin_attribute: 'Attribut Franklin'
         suggest_data:
           label: Statut de l'attribut Franklin
           pending: En attente
           mapped: Actif
           unmapped: Inactif
+        values_summary: "Exemples de valeurs : {{ label }}"
       module:
         subscribe:
-          subscribe: 'Abonner la famille à PIM.ai'
-          subscribed: 'Abonnée à PIM.ai'
+          subscribe: 'Abonner la famille à Franklin'
+          subscribed: 'Famille abonnée à Franlin'
+        index:
+          error: "Vous devez créer une famille dans votre catalogue pour accéder à cette page."
+          family_status:
+            pending: 'Nouveaux attributs de Franklin à réviser'
+            full: 'Tous les attributs Franklin sont passés en revue'
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
-        missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{targetKey }}"'
+        missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'L''attribut de type "{{ targetType }}" ne peut pas être mappé à l''attribut PIM de type "{{ pimType }}"'
     product_subscription:
       flash:
         create:
-          success: 'Produit souscrit avec succès à Franklin'
-          fail: 'Impossible de souscrire le produit à Franklin'
-        delete:
-          success: 'Produit abonné avec succès à Franklin'
+          success: 'Produit désabonné avec succès à Franklin'
           fail: 'Impossible d''abonner le produit à Franklin'
+        delete:
+          success: 'Produit désabonné avec succès à Franklin'
+          fail: 'Impossible de désabonner le produit à Franklin'
+      constraint:
+        invalid_token: 'Désolé, impossible d''abonner des produits à Franklin Insights, car votre token est invalid. Veuillez renseigner un token valide ou contactez-nous.'
+        family_required: 'Désolé, un produit doit appartenir à une famille pour pouvoir s''abonner à Franklin Insights.'
+        no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
+        insufficient_credits: "Désolé, impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
+        invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
+        not_subscribed: 'Le produit n’est pas abonné'
+      module:
+        product_edit_form:
+          family_required: 'Famille de produit requise.'
+          no_identifier_filled: 'Identifiants du produit requis.'
+          invalid_mapping: "Mappings d'identifiants requis."
+    attribute_options_mapping:
+      fields:
+        franklin_attribute_option: Option d'attribut Franklin
+        catalog_attribute_option: Option d'attribut du catalogue
+        attribute_option_status: Statut de l'option Franklin
+      module:
+        edit:
+          title: 'Options de l''attribut {{ familyLabel }} - {{ franklinAttributeLabel }}'
+          sub_title: 'Rencontrez Franklin, votre <span class="AknDescriptionHeader-title--highlight">assistant IA des informations produit</span> !'
+          description: 'Afin de vous aider à enrichir votre catalogue, Franklin doit connaître la correspondance avec les options d''attributs de votre catalogue. <a href="" target="_blank">En savoir plus</a>'
   product:
     edit:
       btn.push: Suggestion de données
@@ -71,7 +99,6 @@ akeneo_suggest_data:
         sub_title: 'Bienvenue dans <span class="AknDescriptionHeader-title--highlight">l''assistant IA des informations produit</span> !'
         description:
           first_step: 'La première étape de la connexion consiste à configurer le token de l''API.'
-          second_step: 'L''étape suivante dans le processus de connexion est de paramètrer le maping des <a class="AknDescriptionHeader-link" href="#">identifiants de votre catalogue</a> avec les identifiants de l''assistant.'
       activation:
         label: 'Connecteur Franklin'
         activation_code: 'Code d''activation'
@@ -88,7 +115,6 @@ akeneo_suggest_data:
           second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
         title: Désolé, rien à afficher pour le moment
-        sub_title: Veuillez activer votre compte dans Système > Connexion PIM.ai puis revenez sur cette page.
   mass_edit:
     product:
       operation:
@@ -98,3 +124,15 @@ akeneo_suggest_data:
           description: Veuillez sélectionner l’action à appliquer sur les produits sélectionnés sur la grille
           subscribe_label: S'abonner
           unsubscribe_label: Se désabonner
+          constraint:
+            franklin_activation: "Vous devez <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activer</a> Franklin Insights avant d'abonner des produits."
+            invalid_mapping: "Veuillez d'abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d'abonner des produits."
+batch_jobs:
+  suggest_data_subscribe_products:
+    label: Abonnement en masse à Franklin Insights
+    validate_configuration.label: Valider la configuration de Franklin Insights
+    subscribe_products.label: S'abnonner aux produits
+  suggest_data_unsubscribe_products:
+    label: Désabonnement en masse à Franklin Insights
+    validate_configuration.label: Valider la configuration de Franklin Insights
+    unsubscribe_products.label: Désabonner des produits

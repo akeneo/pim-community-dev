@@ -70,11 +70,14 @@ pim_dashboard:
         mass_upload: Massuppladdning
 pim_title:
   pimee_product_asset_mass_upload: Ladda upp tillgångar
+  pimee_product_asset_index: Tillgångar
+  pimee_asset_categorytree_index: Kategorier
 batch_jobs:
   apply_assets_mass_upload:
     label: Tillgångar mas uppladdning
     perform.label: Massuppladdning
   yml_asset_channel_configuration_import:
+    import.label: Kanal tillgångar importera konfiguration
     label: Importera tillgångs kanal konfiguration i Yaml
     import_asset.label: Importera tillgångs kanal konfiguration i Yaml
   yml_asset_channel_configuration_export:
@@ -130,3 +133,56 @@ asset_grid:
   label: Produkt tillgångar
 create_asset:
   title: Skapa en tillgång
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Tillgångs transformationer
+      not_found: Ingen transformation hittades
+      transformation: Omvandling
+      options: Inställningar
+      colorspace:
+        title: Färgrymd
+        options:
+          colorspace: '%value% färgrymd'
+      resize:
+        title: Ändra storlek
+        options:
+          width: '%value%px bredd'
+          height: '%value%px höjd'
+      resolution:
+        title: Upplösning
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skala
+        options:
+          width: '%value%px bredd'
+          height: '%value%px höjd'
+          ratio: 'baserat på %value%%'
+      thumbnail:
+        title: Miniatyrbild
+        options:
+          width: '%value%px bredd'
+          height: '%value%px höjd'
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: Välja tillgångar
+    configure:
+      label: Konfigurera
+    confirm:
+      label: Bekräfta
+  operation:
+    add_tag:
+      label: Lägg till taggar till tillgångar
+      field: Taggar
+pim_catalog_volume:
+  axis:
+    count_assets: Tillgångar
+    count_asset_categories: Tillgångskategorier
+pim_menu:
+  tab:
+    asset: Tillgångar
+  item:
+    asset_category: Tillgångskategorier

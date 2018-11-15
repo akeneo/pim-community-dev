@@ -1,5 +1,6 @@
-import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {InvalidArgumentError} from '../image';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+
 export class MaxFileSize implements NormalizableAdditionalProperty {
   private constructor(readonly maxFileSize: string | null) {
     if (!MaxFileSize.isValid(maxFileSize)) {
@@ -7,6 +8,7 @@ export class MaxFileSize implements NormalizableAdditionalProperty {
     }
     Object.freeze(this);
   }
+
   public static isValid(value: any): boolean {
     // Regex: assert that the string start with an optional series of figures, an optional
     // point and ends with an optional series of figures
@@ -20,18 +22,23 @@ export class MaxFileSize implements NormalizableAdditionalProperty {
       null === value || (typeof value === 'string' && value.length > 0 && null !== value.match(/^[0-9]*\.?[0-9]*$/))
     );
   }
+
   public static createFromNormalized(normalizedMaxFileSize: NormalizedMaxFileSize) {
     return new MaxFileSize(normalizedMaxFileSize);
   }
+
   public normalize(): NormalizedMaxFileSize {
     return this.maxFileSize;
   }
+
   public static createFromString(maxFileSize: string) {
     return new MaxFileSize('' === maxFileSize ? null : maxFileSize);
   }
+
   public stringValue(): string {
     return null === this.maxFileSize ? '' : this.maxFileSize.toString();
   }
+
   public isNull(): boolean {
     return null === this.maxFileSize;
   }

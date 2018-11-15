@@ -82,6 +82,14 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): int
+    {
+        return count($this->findByReferenceEntity($referenceEntityIdentifier));
+    }
+
+    /**
      * @return AbstractAttribute[]
      */
     public function getAttributes(): array
@@ -89,14 +97,14 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return $this->attributes;
     }
 
-    public function deleteByIdentifier(AttributeIdentifier $identifier): void
+    public function deleteByIdentifier(AttributeIdentifier $attributeIdentifier): void
     {
-        $attribute = $this->attributes[(string) $identifier] ?? null;
+        $attribute = $this->attributes[(string) $attributeIdentifier] ?? null;
         if (null === $attribute) {
-            throw AttributeNotFoundException::withIdentifier($identifier);
+            throw AttributeNotFoundException::withIdentifier($attributeIdentifier);
         }
 
-        unset($this->attributes[(string) $identifier]);
+        unset($this->attributes[(string) $attributeIdentifier]);
     }
 
     public function nextIdentifier(

@@ -17,10 +17,6 @@ akeneo_suggest_data:
         suggest_data:
           mapped: Activo
           unmapped: Inactivo
-      module:
-        subscribe:
-          subscribe: 'Suscribir familia a PIM.ai'
-          subscribed: 'Suscrito a PIM.ai'
   connection:
     module:
       activation:

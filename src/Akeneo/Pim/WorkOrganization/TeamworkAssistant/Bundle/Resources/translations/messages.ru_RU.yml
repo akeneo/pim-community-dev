@@ -1,4 +1,8 @@
 teamwork_assistant:
+  project:
+    required: Это значение не должно быть пустым.
+    project_identifier: Проект {{ project }} не существует.
+    project_due_date: Нельзя выбрать прошедшую дату.
   notification:
     project_calculation:
       start: Начало
@@ -9,3 +13,7 @@ teamwork_assistant:
   datagrid:
     contributor_in_progress: В процессе
     contributor_done: Готово
+    owner_done: Готово (обзор проекта)
+pim_analytics:
+  info_type:
+    nb_projects: Количество проектов

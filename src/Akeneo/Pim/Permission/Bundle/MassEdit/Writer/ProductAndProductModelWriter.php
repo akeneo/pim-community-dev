@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\MassEdit\Writer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter as BaseWriter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\MassEdit\ProductAndProductModelWriter
+    as BaseWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
@@ -26,7 +27,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
- * Product and product model writer
+ * Product and product model writer.
  *
  * @author Samir Boulil <samir.boulil@akeneo.com>
  */
@@ -42,8 +43,8 @@ class ProductAndProductModelWriter extends BaseWriter
      * @param TokenStorageInterface                 $tokenStorage
      * @param JobLauncherInterface                  $jobLauncher
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param string                                $jobName
      * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param string                                $jobName
      */
     public function __construct(
         BulkSaverInterface $productSaver,
@@ -52,8 +53,8 @@ class ProductAndProductModelWriter extends BaseWriter
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        string $jobName,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        string $jobName
     ) {
         parent::__construct(
             $versionManager,
@@ -70,7 +71,7 @@ class ProductAndProductModelWriter extends BaseWriter
 
     /**
      * Returns true if user is owner of the entity with value or if the entity with value does not exist yet or if the
-     * token does not exist
+     * token does not exist.
      *
      * @param EntityWithFamilyInterface $entityWithValue
      *

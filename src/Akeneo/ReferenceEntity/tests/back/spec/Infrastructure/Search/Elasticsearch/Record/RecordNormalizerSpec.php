@@ -8,12 +8,12 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeysToIndexForChannelAndLocaleInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindValueKeysToIndexForChannelAndLocaleInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SearchableRecordItem;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\Query\SqlFindSearchableRecords;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -25,7 +25,7 @@ use Prophecy\Argument;
 class RecordNormalizerSpec extends ObjectBehavior
 {
     function let(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
@@ -38,7 +38,7 @@ class RecordNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_searchable_record_by_record_identifier(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
@@ -78,7 +78,7 @@ class RecordNormalizerSpec extends ObjectBehavior
         $normalizedRecord['identifier']->shouldBeEqualTo('designer_stark_fingerprint');
         $normalizedRecord['code']->shouldBeEqualTo('stark');
         $normalizedRecord['reference_entity_code']->shouldBeEqualTo('designer');
-        $normalizedRecord['record_list_search']->shouldBeEqualTo([
+        $normalizedRecord['record_full_text_search']->shouldBeEqualTo([
                 'ecommerce' => [
                     'fr_FR' => "stark Philippe Stark Bio",
                 ],
@@ -87,11 +87,11 @@ class RecordNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
-        $normalizedRecord['updated_at']->shouldBeString();
+        $normalizedRecord['updated_at']->shouldBeInt();
      }
 
     function it_normalizes_a_searchable_records_by_reference_entity(
-        SqlFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords,
         \Iterator $searchableRecordItemIterator

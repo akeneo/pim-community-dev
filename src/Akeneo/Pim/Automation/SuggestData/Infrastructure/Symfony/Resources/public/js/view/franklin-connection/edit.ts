@@ -1,37 +1,44 @@
-import {EventsHash} from 'backbone';
-import BaseView = require('pimenrich/js/view/base');
-import * as _ from 'underscore';
-import {ConnectionStatus, getConfiguration, getConnectionStatus} from '../../fetcher/franklin-connection';
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
+import {EventsHash} from 'backbone';
+import BaseView = require('pimui/js/view/base');
+import * as _ from 'underscore';
+import {getConfiguration, getConnectionStatus} from '../../fetcher/franklin-connection';
+import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
 const ConnectionSaver = require('pimee/saver/franklin-connection');
 const Messenger = require('oro/messenger');
 const template = require('pimee/template/franklin-connection/edit');
 
-interface EditConfig {
-  token_label_content: string;
-  token_field_title: string;
-  token_field_placeholder: string;
-  token_save_pre_activation_title: string;
-  token_save_post_activation_title: string;
+interface Config {
+  tokenLabelContent: string;
+  tokenFieldTitle: string;
+  tokenFieldPlaceholder: string;
+  tokenSavePreActivationTitle: string;
+  tokenSavePostActivationTitle: string;
 }
 
 /**
- * Setups the connection to PIM.ai.
+ * Setups the connection to Franklin.
  *
- * @author    Damien Carcel <damien.carcel@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class EditView extends BaseView {
   private readonly template: any = _.template(template);
 
-  private readonly config: EditConfig = {
-    token_label_content: '',
-    token_field_title: '',
-    token_field_placeholder: '',
-    token_save_pre_activation_title: '',
-    token_save_post_activation_title: '',
+  private readonly config: Config = {
+    tokenLabelContent: '',
+    tokenFieldTitle: '',
+    tokenFieldPlaceholder: '',
+    tokenSavePreActivationTitle: '',
+    tokenSavePostActivationTitle: '',
   };
 
   private storedToken: string = '';
@@ -40,7 +47,7 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: EditConfig }) {
+  constructor(options: { config: Config }) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -81,8 +88,8 @@ class EditView extends BaseView {
     getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
       const formData = this.getFormData();
 
-      this.isConnectionActivated = connectionStatus.is_active;
-      true === connectionStatus.is_active
+      this.isConnectionActivated = connectionStatus.isActive;
+      true === connectionStatus.isActive
         ? this.renderActivatedConnection(formData.token)
         : this.renderUnactivatedConnection(formData.token);
     });
@@ -91,7 +98,7 @@ class EditView extends BaseView {
   }
 
   /**
-   * Activates the connection to PIM.ai
+   * Activates the connection to Franklin
    */
   public activate(): void {
     const data = this.getFormData();
@@ -137,11 +144,11 @@ class EditView extends BaseView {
   private renderUnactivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelContent: __(this.config.token_label_content),
-        tokenFieldTitle: __(this.config.token_field_title),
-        tokenFieldPlaceholder: __(this.config.token_field_placeholder),
+        tokenLabelContent: __(this.config.tokenLabelContent),
+        tokenFieldTitle: __(this.config.tokenFieldTitle),
+        tokenFieldPlaceholder: __(this.config.tokenFieldPlaceholder),
         token,
-        activationLabel: __(this.config.token_save_pre_activation_title),
+        activationLabel: __(this.config.tokenSavePreActivationTitle),
         buttonStyle: 'AknButton--slateGrey',
         connectionStatus: 'activate-connection',
       }),
@@ -156,11 +163,11 @@ class EditView extends BaseView {
   private renderActivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelContent: __(this.config.token_label_content),
-        tokenFieldTitle: __(this.config.token_field_title),
-        tokenFieldPlaceholder: __(this.config.token_field_placeholder),
+        tokenLabelContent: __(this.config.tokenLabelContent),
+        tokenFieldTitle: __(this.config.tokenFieldTitle),
+        tokenFieldPlaceholder: __(this.config.tokenFieldPlaceholder),
         token,
-        activationLabel: __(this.config.token_save_post_activation_title),
+        activationLabel: __(this.config.tokenSavePostActivationTitle),
         buttonStyle: 'AknButton--apply AknButton--disabled',
         connectionStatus: 'connection-activated',
       }),
@@ -169,7 +176,7 @@ class EditView extends BaseView {
 
   /**
    * Makes the button grey with text "Activate" so the user knows that connection
-   * to PIM.ai is not active and new token can be submitted.
+   * to Franklin is not active and new token can be submitted.
    */
   private buttonAllowedToActivateConnection() {
     $('.suggest-data-connection')
@@ -178,12 +185,12 @@ class EditView extends BaseView {
       .removeClass('connection-activated')
       .addClass('AknButton--slateGrey')
       .addClass('activate-connection')
-      .html(__(this.config.token_save_pre_activation_title));
+      .html(__(this.config.tokenSavePreActivationTitle));
   }
 
   /**
    * Makes the button green with text "Activated" so the user knows that
-   * connection to PIM.ai is already active.
+   * connection to Franklin is already active.
    */
   private buttonDisallowedToActivateConnection() {
     $('.suggest-data-connection')
@@ -192,7 +199,7 @@ class EditView extends BaseView {
       .addClass('AknButton--apply ')
       .addClass('AknButton--disabled')
       .addClass('connection-activated')
-      .html(__(this.config.token_save_post_activation_title));
+      .html(__(this.config.tokenSavePostActivationTitle));
   }
 }
 

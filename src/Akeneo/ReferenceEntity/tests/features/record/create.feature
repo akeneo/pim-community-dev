@@ -4,9 +4,7 @@ Feature: Create a record
   I want to create a record
 
   Background:
-    Given the following reference entity:
-      | identifier | labels                                       | image |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
+    Given a valid reference entity
 
   @acceptance-back
   Scenario: Creating a record
@@ -33,6 +31,14 @@ Feature: Create a record
       | {}     |
     Then an exception is thrown with message "Record code may contain only letters, numbers and underscores. "invalid/identifier" given"
     And there should be no record
+
+  @acceptance-back
+  Scenario: Cannot create more records for a reference entity than the limit
+    Given 1000 random records for a reference entity
+    When the user creates a record "stark" for entity "designer" with:
+      | labels              |
+      | {"en_US": "Starck"} |
+    Then there should be a validation error with message 'You cannot create the record "Starck" because you have reached the limit of 1000 records for this reference entity'
 
   @acceptance-front
   Scenario: Creating a record

@@ -1,9 +1,9 @@
 services:
     akeneo.pim.automation.suggest_data.repository.configuration:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryConfigurationRepository'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryConfigurationRepository'
 
     akeneo.pim.automation.suggest_data.repository.identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryIdentifiersMappingRepository'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryIdentifiersMappingRepository'
         arguments:
             - !service
               class: Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping
@@ -11,10 +11,10 @@ services:
                   - []
 
     akeneo.pim.automation.suggest_data.repository.product_subscription:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository'
 
     akeneo.pim.automation.suggest_data.repository.search_family:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryFamilySearchableRepository'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilySearchableRepository'
         arguments:
             - '@pim_catalog.repository.family'
 
@@ -22,3 +22,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert'
         arguments:
             - '@pimee_workflow.updater.product_without_permission'
+            - '@event_dispatcher'

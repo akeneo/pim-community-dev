@@ -1,3 +1,12 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
@@ -7,24 +16,24 @@ const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
 const LineTemplate = require('pim/template/attribute/attribute-line');
 
+interface NormalizedAttribute {
+  code: string;
+  labels: { [pimAttributeCode: string]: string };
+  group: string;
+}
+
+interface NormalizedAttributeGroup {
+  labels: { [pimAttributeGroupCode: string]: string };
+}
+
 /**
  * Attributes simple select
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-interface NormalizedAttributeInterface {
-  code: string;
-  labels: { [key: string]: string };
-  group: string;
-}
-
-interface NormalizedAttributeGroupInterface {
-  labels: { [key: string]: string };
-}
-
 class SimpleSelectAttribute extends BaseSimpleSelect {
   private readonly lineView = _.template(LineTemplate);
-  private attributeGroups: { [key: string]: NormalizedAttributeGroupInterface } = {};
+  private attributeGroups: { [pimAttributeGroupCode: string]: NormalizedAttributeGroup } = {};
 
   constructor(options: { config: object, className: string }) {
     super({
@@ -41,7 +50,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       FetcherRegistry
         .getFetcher('attribute-group')
         .fetchAll()
-        .then((attributeGroups: { [key: string]: NormalizedAttributeGroupInterface }) => {
+        .then((attributeGroups: { [pimAttributeGroupCode: string]: NormalizedAttributeGroup }) => {
           this.attributeGroups = attributeGroups;
         }),
     );
@@ -62,7 +71,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   /**
    * {@inheritdoc}
    */
-  protected convertBackendItem(item: NormalizedAttributeInterface): object {
+  protected convertBackendItem(item: NormalizedAttribute): object {
     return {
       id: item.code,
       text: i18n.getLabel(item.labels, UserContext.get('catalog_default_locale'), item.code),

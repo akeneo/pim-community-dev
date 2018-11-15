@@ -39,7 +39,7 @@ class GetConfigurationHandler
      *
      * @return Configuration
      */
-    public function handle(GetConfigurationQuery $query): ?Configuration
+    public function handle(GetConfigurationQuery $query): Configuration
     {
         return $this->repository->find();
     }

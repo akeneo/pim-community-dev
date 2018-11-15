@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepos
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor\SubscriptionProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -35,12 +36,13 @@ class SubscriptionProcessorSpec extends ObjectBehavior
     public function let(
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        ProductRepositoryInterface $productRepository,
         AttributeInterface $asin
     ): void {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(['asin' => $asin->getWrappedObject()])
         );
-        $this->beConstructedWith($productSubscriptionRepository, $identifiersMappingRepository);
+        $this->beConstructedWith($productSubscriptionRepository, $identifiersMappingRepository, $productRepository);
         $this->initialize();
     }
 
@@ -82,7 +84,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id')
+            new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id', ['sku' => '72527273070'])
         );
         $product->getIdentifier()->willReturn('foo');
 
@@ -91,6 +93,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
 
     public function it_does_not_process_a_product_without_identifier_values(
         $productSubscriptionRepository,
+        $productRepository,
         $asin,
         ProductInterface $product,
         FamilyInterface $family
@@ -99,6 +102,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(null);
+        $productRepository->find(42)->willReturn($product);
 
         $asin->getCode()->willReturn('asin');
         $product->getValue('asin')->willReturn(null);
@@ -110,6 +114,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
 
     public function it_successfully_processes_a_product(
         $productSubscriptionRepository,
+        $productRepository,
         $asin,
         ProductInterface $product,
         FamilyInterface $family,
@@ -125,6 +130,8 @@ class SubscriptionProcessorSpec extends ObjectBehavior
 
         $asinValue->hasData()->willReturn(true);
         $asinValue->__toString()->willReturn('ABC123');
+
+        $productRepository->find(42)->willReturn($product);
 
         $request = $this->process($product);
         $request->shouldHaveType(ProductSubscriptionRequest::class);

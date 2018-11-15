@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_attribute_create_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "reference_entity_identifier": "designer",
+      "code": "colors",
+      "type": "option_collection",
+      "labels": {
+        "en_US": "Colors"
+      },
+      "value_per_locale": false,
+      "value_per_channel": false
+    }
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

@@ -40,27 +40,33 @@ class AttributeMapping
     private $status;
 
     /** @var string */
-    private $type;
+    private $targetAttributeType;
+
+    /** @var string[] */
+    private $summary;
 
     /**
      * @param string $targetAttributeCode
      * @param null|string $targetAttributeLabel
+     * @param string $targetAttributeType
      * @param null|string $pimAttributeCode
      * @param int $status
-     * @param string $type
+     * @param string[] $summary
      */
     public function __construct(
         string $targetAttributeCode,
         ?string $targetAttributeLabel,
+        string $targetAttributeType,
         ?string $pimAttributeCode,
         int $status,
-        string $type
+        array $summary
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
         $this->targetAttributeLabel = $targetAttributeLabel;
+        $this->targetAttributeType = $targetAttributeType;
         $this->pimAttributeCode = $pimAttributeCode;
         $this->status = $status;
-        $this->type = $type;
+        $this->summary = $summary;
     }
 
     /**
@@ -98,8 +104,16 @@ class AttributeMapping
     /**
      * @return string
      */
-    public function getTargetType(): string
+    public function getTargetAttributeType(): string
     {
-        return $this->type;
+        return $this->targetAttributeType;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSummary(): array
+    {
+        return $this->summary;
     }
 }

@@ -15,13 +15,15 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
+use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
@@ -75,6 +77,9 @@ class DataFixturesContext implements Context
     /** @var InMemoryCategoryRepository */
     private $categoryRepository;
 
+    /** @var InMemoryAttributeOptionRepository */
+    private $attributeOptionRepository;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param ProductBuilderInterface $productBuilder
@@ -89,6 +94,7 @@ class DataFixturesContext implements Context
      * @param InMemoryProductSubscriptionRepository $subscriptionRepository
      * @param EntityBuilder $categoryBuilder
      * @param InMemoryCategoryRepository $categoryRepository
+     * @param InMemoryAttributeOptionRepository $attributeOptionRepository
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -103,7 +109,8 @@ class DataFixturesContext implements Context
         EntityBuilder $attributeGroupBuilder,
         InMemoryProductSubscriptionRepository $subscriptionRepository,
         EntityBuilder $categoryBuilder,
-        InMemoryCategoryRepository $categoryRepository
+        InMemoryCategoryRepository $categoryRepository,
+        InMemoryAttributeOptionRepository $attributeOptionRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -118,6 +125,7 @@ class DataFixturesContext implements Context
         $this->subscriptionRepository = $subscriptionRepository;
         $this->categoryBuilder = $categoryBuilder;
         $this->categoryRepository = $categoryRepository;
+        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**
@@ -187,13 +195,13 @@ class DataFixturesContext implements Context
     /**
      * @param string $identifier
      *
-     * @Given the product ":identifier" is subscribed to PIM.ai
+     * @Given the product ":identifier" is subscribed to Franklin
      */
-    public function theProductIsSubscribedToPimAi(string $identifier): void
+    public function theProductIsSubscribedToFranklin(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $subscription = new ProductSubscription($product, uniqid());
+        $subscription = new ProductSubscription($product, uniqid(), ['sku' => '72527273070']);
         $this->subscriptionRepository->save($subscription);
     }
 
@@ -204,7 +212,7 @@ class DataFixturesContext implements Context
      */
     public function thereIsSuggestedDataForSubscribedProduct(string $identifier): void
     {
-        $this->theProductIsSubscribedToPimAi($identifier);
+        $this->theProductIsSubscribedToFranklin($identifier);
         $product = $this->productRepository->findOneByIdentifier($identifier);
         $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
 
@@ -272,6 +280,23 @@ class DataFixturesContext implements Context
             }
 
             $this->familyRepository->save($family);
+        }
+    }
+
+    /**
+     * @Given the following attribute options for the attribute :attributeCode:
+     *
+     * @param $attributeCode
+     * @param TableNode $options
+     */
+    public function theFollowingAttributeOptions($attributeCode, TableNode $options): void
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        foreach ($options->getHash() as $option) {
+            $attributeOption = new AttributeOption();
+            $attributeOption->setCode($option['code']);
+            $attributeOption->setAttribute($attribute);
+            $this->attributeOptionRepository->save($attributeOption);
         }
     }
 

@@ -16,9 +16,10 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 
 /**
- * Read model representing an reference entity detailled for display purpose (like a form)
+ * Read model representing a reference entity detailled for display purpose (like a form)
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -29,6 +30,7 @@ class ReferenceEntityDetails
     public const LABELS = 'labels';
     public const IMAGE = 'image';
     public const RECORD_COUNT = 'record_count';
+    public const ATTRIBUTES = 'attributes';
 
     /** @var ReferenceEntityIdentifier */
     public $identifier;
@@ -42,6 +44,9 @@ class ReferenceEntityDetails
     /** @var int */
     public $recordCount;
 
+    /** @var AttributeDetails[] */
+    public $attributes;
+
     public function normalize(): array
     {
         return [
@@ -49,6 +54,9 @@ class ReferenceEntityDetails
             self::LABELS       => $this->labels->normalize(),
             self::IMAGE        => $this->image->normalize(),
             self::RECORD_COUNT => $this->recordCount,
+            self::ATTRIBUTES   => array_map(function (AttributeDetails $attribute) {
+                return $attribute->normalize();
+            }, $this->attributes),
         ];
     }
 }

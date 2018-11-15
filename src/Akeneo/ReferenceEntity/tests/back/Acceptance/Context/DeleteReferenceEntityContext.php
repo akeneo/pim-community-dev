@@ -10,6 +10,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -23,12 +24,22 @@ final class DeleteReferenceEntityContext implements Context
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var ConstraintViolationsContext */
+    private $constraintViolationsContext;
+
     public function __construct(
         DeleteReferenceEntityHandler $deleteReferenceEntityHandler,
-        ReferenceEntityExistsInterface $referenceEntityExists
+        ReferenceEntityExistsInterface $referenceEntityExists,
+        ValidatorInterface $validator,
+        ConstraintViolationsContext $constraintViolationsContext
     ) {
         $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
         $this->referenceEntityExists = $referenceEntityExists;
+        $this->constraintViolationsContext = $constraintViolationsContext;
+        $this->validator = $validator;
     }
 
     /**
@@ -39,7 +50,11 @@ final class DeleteReferenceEntityContext implements Context
         $command = new DeleteReferenceEntityCommand();
         $command->identifier = $identifier;
 
-        ($this->deleteReferenceEntityHandler)($command);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        if (!$this->constraintViolationsContext->hasViolations()) {
+            ($this->deleteReferenceEntityHandler)($command);
+        }
     }
 
     /**

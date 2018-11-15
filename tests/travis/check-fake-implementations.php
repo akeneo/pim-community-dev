@@ -37,7 +37,6 @@ $REFERENCE_FILE = 'src/Akeneo/ReferenceEntity/back/Infrastructure/Symfony/Resour
 
 $FILES_TO_CHECK = [
     'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/fake_services.yml',
-    'src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml',
 ];
 
 $referenceContent = openFileFromRoot($REFERENCE_FILE);

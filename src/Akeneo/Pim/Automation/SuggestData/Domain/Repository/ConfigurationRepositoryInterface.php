@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 interface ConfigurationRepositoryInterface
 {
     /**
-     * Returns PIM.ai configuration.
+     * Returns Franklin configuration.
      *
      * @return Configuration
      */

@@ -60,7 +60,6 @@ pimee_workflow:
     index: Управление опубликованными продуктами
   product:
     permission:
-      label: Права доступа
       own: Обзор / публикация
       edit: Редактировать
       view: Просмотр
@@ -80,21 +79,25 @@ pimee_workflow:
         second: Выберите операцию
         third: Настройка
         fourth: Подтверждение
-pimee_workflow_product_draft_notification_new_proposal: Новое предложение
-pimee_workflow_import_notification_new_proposals: Новые предложения для импорта
-btn.publish: Опубликовать
-btn.unpublish: Снять с публикации
-pimee_workflow_product_draft_notification_partial_approve: Частичное одобрение предложения
-pimee_workflow_product_draft_notification_partial_reject: Предложение частично одобрено
-pimee_workflow_product_draft_notification_partial_remove: Предложение частично удалено
-pimee_workflow_product_draft_notification_approve: Предложение одобрено
-pimee_workflow_product_draft_notification_refuse: Предложение отклонено
-pimee_workflow_product_draft_notification_remove: Предложение удаленo
+btn:
+  publish: Опубликовать
+  unpublish: Снять с публикации
+  save working copy: Сохранить рабочую копию
+  save draft: Сохранить черновик
+  save working copy and next: Сохранить рабочую копию и перейти к следующему
+  save draft and next: Сохранить черновик и перейти к следующему
+  save working copy and finish: Сохранить рабочую копию и закончить
+  save draft and finish: Сохранить черновик и закончить
+  send for approval: Отправить на утверждение
+  sent for approval: Отправлено на утверждение
+  editworkingcopy: Редактировать рабочую копию
 flash:
   product:
+    updated: Рабочая копия продукта была обновлена
     published: Продукт был успешно опубликован.
     unpublished: Продукт был успешно снят с публикации.
   product_draft:
+    updated: Черновик был успешно сохранен
     approve:
       success: Предложение было успешно применено.
       error: Это предложение нельзя применить из-за следующей ошибки. %error%
@@ -106,12 +109,6 @@ pim_menu:
   item:
     published_product: Опубликованные продукты
     proposal: Предложения
-pim_title:
-  published_product:
-    index: Опубликованные продукты
-  proposal:
-    index: Предложения
-btn.editworkingcopy: Редактировать рабочую копию
 confirmation:
   product:
     publish: Вы уверены, что хотите опубликовать этот продукт?
@@ -133,3 +130,36 @@ job_execution.summary:
   proposal_created: созданных предложений
   proposal_skipped: пропущенных предложений (без изменений)
 published products: Опубликованные продукты
+pim_analytics:
+  info_type:
+    nb_published_products: Количество опубликованных продуктов
+    nb_product_drafts: Количество черновиков продуктов
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Предложения для рассмотрения
+      date: Дата
+      author: Автор
+      product: Продукт
+      review: Обзор
+      empty: Нет черновиков для рассмотрения
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Опубликовать
+      description: Опубликовать выбранные продукты, при этом текущие опубликованные данные будут перезаписаны текущей рабочей копией.
+      success_flash: Выбранные продукты были успешно опубликованы.
+      launched_flash: Процесс публикации товара(ов) выполняется в данный момент.
+      message:
+        info: '%nbProducts% выбранных продуктов будет опубликовано.'
+    unpublish:
+      label: Снять с публикации
+      description: Снять выбранные продукты с публикации, текущий опубликованные данные будут удалены.
+      success_flash: Выбранные продукты были успешно сняты с публикации.
+      launched_flash: Процесс снятия товара(ов) с публикации выполняется в данный момент.
+      message:
+        info: '%nbProducts% выбранных продуктов будет снять с публикации.'
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Предложения

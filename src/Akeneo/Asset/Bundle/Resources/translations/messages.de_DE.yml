@@ -196,3 +196,37 @@ pim_api:
   acl_group:
     asset_category: Assetkategorien
     asset: Assets
+pimee_enrich:
+  channel:
+    tab:
+      asset_transformation.title: Assetumwandlungen
+  asset_transformation:
+    not_found: Keine Umwandlung gefunden
+    title:
+      transformation: Umwandlung
+      options: Optionen
+    colorspace:
+      title: Farbraum
+      options:
+        colorspace: '%value% Farbraum'
+    resize:
+      title: Größe anpassen
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+    resolution:
+      title: Auflösung
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skalierung
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'
+        ratio: 'Verhältnis %value%%'
+    thumbnail:
+      title: Miniaturansicht
+      options:
+        width: '%value%px Breite'
+        height: '%value%px Höhe'

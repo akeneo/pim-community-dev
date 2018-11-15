@@ -1,8 +1,18 @@
+/**
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
-import BaseForm = require('pimenrich/js/view/base');
+import BaseView = require('pimui/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
+import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttribute = require('../common/simple-select-attribute');
@@ -11,21 +21,30 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
-const template = require('pimee/template/attributes-mapping/attributes-mapping');
+const template = require('pimee/template/attributes-mapping/table');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
-interface NormalizedAttributeMappingInterface {
-  mapping: {
-    [key: string]: {
-      pim_ai_attribute: {
-        label: string,
-        type: string,
-      },
-      attribute: string,
-      status: number,
+interface AttributesMappingForFamily {
+  [franklinAttribute: string]: {
+    franklinAttribute: {
+      label: string,
+      type: string,
+      summary: string[],
     },
+    attribute: string,
+    status: number,
   };
+}
+
+interface NormalizedAttributesMappingForFamily {
+  code: string;
+  mapping: AttributesMappingForFamily;
+}
+
+interface NormalizedAttribute {
+  code: string;
+  type: string;
 }
 
 interface Config {
@@ -33,14 +52,18 @@ interface Config {
     pending: string,
     mapped: string,
     unmapped: string,
-    pim_ai_attribute: string,
-    catalog_attribute: string,
-    suggest_data: string, // TODO Rename to attribute_mapping_status
+    franklinAttribute: string,
+    catalogAttribute: string,
+    attributeMappingStatus: string,
+    valuesSummary: string,
+    type: string,
+    familyMappingPending: string,
+    familyMappingFull: string,
   };
 }
 
 /**
- * This module will allow user to map the attributes from PIM.ai to the catalog attributes.
+ * This module will allow user to map the attributes from Franklin to the catalog attributes.
  * It displays a grid with all the attributes to map.
  *
  * The attribute types authorized for the mapping are defined in
@@ -48,17 +71,27 @@ interface Config {
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class AttributeMapping extends BaseForm {
+class AttributeMapping extends BaseView {
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family */
+  public static readonly FAMILY_MAPPING_PENDING: number = 0;
+  public static readonly FAMILY_MAPPING_FULL: number = 1;
+  public static readonly FAMILY_MAPPING_EMPTY: number = 2;
+
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
+  /** Duplicated in Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping */
   private static readonly ATTRIBUTE_PENDING: number = 0;
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
-  private static readonly VALID_MAPPING: { [key: string]: string[] } = {
+
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
+  private static readonly VALID_MAPPING: { [attributeType: string]: string[] } = {
     metric: [ 'pim_catalog_metric' ],
     select: [ 'pim_catalog_simpleselect' ],
     multiselect: [ 'pim_catalog_multiselect' ],
     number: [ 'pim_catalog_number' ],
     text: [ 'pim_catalog_text' ],
   };
+  private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
   private readonly template = _.template(template);
   private readonly config: Config = {
@@ -66,13 +99,18 @@ class AttributeMapping extends BaseForm {
       pending: '',
       mapped: '',
       unmapped: '',
-      pim_ai_attribute: '',
-      catalog_attribute: '',
-      suggest_data: '',
+      franklinAttribute: '',
+      catalogAttribute: '',
+      attributeMappingStatus: '',
+      valuesSummary: '',
+      type: '',
+      familyMappingPending: '',
+      familyMappingFull: '',
     },
   };
   private attributeOptionsMappingModal: any = null;
-  private attributeOptionsMappingForm: BaseForm | null = null;
+  private attributeOptionsMappingForm: BaseView | null = null;
+  private scroll: number = 0;
 
   /**
    * {@inheritdoc}
@@ -89,39 +127,65 @@ class AttributeMapping extends BaseForm {
   public configure(): JQueryPromise<any> {
     Filterable.set(this);
 
-    return BaseForm.prototype.configure.apply(this, arguments);
+    this.listenTo(this.getRoot(), 'pim_enrich:form:render:before', this.saveScroll);
+    this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.setScroll);
+
+    return BaseView.prototype.configure.apply(this, arguments);
   }
 
   /**
    * {@inheritdoc}
    */
-  public render(): BaseForm {
-    this.$el.html('');
-    const familyMapping: NormalizedAttributeMappingInterface = this.getFormData();
+  public render(): BaseView {
+    const familyMapping: NormalizedAttributesMappingForFamily = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
+    const familyMappingStatus = this.getFamilyMappingStatus(mapping);
+
     this.$el.html(this.template({
+      __,
       mapping,
+      familyMappingStatus: this.formatFamilyMappingStatus(familyMappingStatus),
+      escapeHtml: EscapeHtml.escapeHtml,
       statuses: this.getMappingStatuses(),
-      pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
-      catalog_attribute: __(this.config.labels.catalog_attribute),
-      suggest_data: __(this.config.labels.suggest_data),
-      edit: __('pim_common.edit'),
+      franklinAttribute: __(this.config.labels.franklinAttribute),
+      catalogAttribute: __(this.config.labels.catalogAttribute),
+      attributeMappingStatus: __(this.config.labels.attributeMappingStatus),
+      type: __(this.config.labels.type),
+      valuesSummaryKey: this.config.labels.valuesSummary,
     }));
 
-    Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
-      this.appendAttributeSelector(mapping, pimAiAttributeCode);
-    });
-
-    this.toggleAttributeOptionButtons(Object.keys(mapping).reduce((acc, pimAiAttributeCode: string) => {
-      acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
+    const catalogAttributes = Object.keys(mapping).reduce((acc, franklinAttributeCode: string) => {
+      const catalogAttribute = mapping[franklinAttributeCode].attribute;
+      if ('' !== catalogAttribute && null !== catalogAttribute) {
+        acc.push(catalogAttribute);
+      }
 
       return acc;
-    }, {} as { [key: string]: string }));
+    }, [] as string[]);
 
-    Filterable.afterRender(this, __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'));
+    FetcherRegistry
+      .getFetcher('attribute')
+      .fetchByIdentifiers(catalogAttributes)
+      .then((attributes: NormalizedAttribute[]) => {
+        Object.keys(mapping).forEach((franklinAttributeCode: string) => {
+          const attribute: NormalizedAttribute | undefined = attributes
+            .find((attr: NormalizedAttribute) => {
+                return attr.code === mapping[franklinAttributeCode].attribute;
+              },
+            );
+          const type = undefined === attribute ? '' : attribute.type;
+          const isAttributeOptionsButtonVisible =
+            AttributeMapping.ATTRIBUTE_TYPES_BUTTONS_VISIBILITY.indexOf(type) >= 0;
 
-    this.renderExtensions();
-    this.delegateEvents();
+          this.appendAttributeSelector(mapping, franklinAttributeCode, isAttributeOptionsButtonVisible);
+        });
+
+        Filterable.afterRender(this, __(this.config.labels.franklinAttribute));
+
+        this.renderExtensions();
+        this.delegateEvents();
+        this.setScroll();
+      });
 
     return this;
   }
@@ -137,32 +201,46 @@ class AttributeMapping extends BaseForm {
 
   /**
    * @param mapping
-   * @param {string} pimAiAttributeCode
+   * @param {string} franklinAttributeCode
+   * @param {boolean} isAttributeOptionsButtonVisible
    */
-  private appendAttributeSelector(mapping: any, pimAiAttributeCode: string) {
+  private appendAttributeSelector(
+    mapping: any,
+    franklinAttributeCode: string,
+    isAttributeOptionsButtonVisible: boolean,
+  ) {
     const $dom = this.$el.find(
-      '.attribute-selector[data-franklin-attribute-code="' + pimAiAttributeCode + '"]',
+      '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]',
     );
     const attributeSelector = new SimpleSelectAttribute({
       config: {
-        fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
+        fieldName: 'mapping.' + franklinAttributeCode + '.attribute',
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
-        types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
+        types: AttributeMapping.VALID_MAPPING[mapping[franklinAttributeCode].franklinAttribute.type],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
     attributeSelector.configure().then(() => {
       attributeSelector.setParent(this);
-      $dom.html(attributeSelector.render().$el);
+      attributeSelector.render();
+      if (isAttributeOptionsButtonVisible) {
+        attributeSelector.$el.find('.icons-container').append(
+          $('<div>')
+            .addClass('AknIconButton AknIconButton--small AknIconButton--edit AknGrid-onHoverElement option-mapping')
+            .attr('data-franklin-attribute-code', franklinAttributeCode)
+            .attr('title', __('pim_common.edit')),
+        );
+      }
+      $dom.prepend(attributeSelector.$el);
     });
   }
 
   /**
-   * @returns { [ key: number ]: string }
+   * @returns { [ status: number ]: string }
    */
-  private getMappingStatuses() {
-    const statuses: { [key: number]: string } = {};
+  private getMappingStatuses(): { [ status: number ]: string } {
+    const statuses: { [status: number]: string } = {};
     statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
     statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
     statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
@@ -171,36 +249,53 @@ class AttributeMapping extends BaseForm {
   }
 
   /**
-   * This method will show or hide the Attribute Option buttons.
-   * The first parameter is the current mapping, from pimAiAttributeCode to pimAttributeCode.
+   * @param {AttributesMappingForFamily} mapping
    *
-   * @param { [pimAiAttributeCode: string]: string | null } mapping
+   * @return {number}
    */
-  private toggleAttributeOptionButtons(mapping: { [pimAiAttributeCode: string]: string | null }) {
-    const pimAttributes = Object.values(mapping).filter((pimAttribute) => {
-      return '' !== pimAttribute && null !== pimAttribute;
+  private getFamilyMappingStatus(mapping: AttributesMappingForFamily): number {
+    const franklinAttributes = Object.keys(mapping);
+    let status = AttributeMapping.FAMILY_MAPPING_FULL;
+
+    if (0 === franklinAttributes.length) {
+      status = AttributeMapping.FAMILY_MAPPING_EMPTY;
+    }
+
+    franklinAttributes.forEach((franklinAttribute: string) => {
+      if (AttributeMapping.ATTRIBUTE_PENDING === mapping[franklinAttribute].status) {
+        status = AttributeMapping.FAMILY_MAPPING_PENDING;
+      }
     });
 
-    FetcherRegistry
-      .getFetcher('attribute')
-      .fetchByIdentifiers(pimAttributes)
-      .then((attributes: Array<{ code: string, type: string }>) => {
-      Object.keys(mapping).forEach((pimAiAttribute) => {
-        const $attributeOptionButton = this.$el.find(
-          '.option-mapping[data-franklin-attribute-code=' + pimAiAttribute + ']',
-        );
-        const attribute: { code: string, type: string } | undefined = attributes
-          .find((attr: { code: string, type: string }) => {
-            return attr.code === mapping[pimAiAttribute];
-          },
-        );
-        const type = undefined === attribute ? '' : attribute.type;
+    return status;
+  }
 
-        ['pim_catalog_simpleselect', 'pim_catalog_multiselect'].indexOf(type) >= 0 ?
-          $attributeOptionButton.show() :
-          $attributeOptionButton.hide();
-      });
-    });
+  /**
+   * Format the message (label and style) that will be display on the view
+   * according to the status of the family mapping.
+   *
+   * @param {number} familyMappingStatus
+   *
+   * @return {object}
+   */
+  private formatFamilyMappingStatus(familyMappingStatus: number): { className: string, label: string } {
+    const formattedFamilyMappingStatus = {
+      className: '',
+      label: '',
+    };
+
+    switch (familyMappingStatus) {
+      case AttributeMapping.FAMILY_MAPPING_PENDING:
+        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--pending';
+        formattedFamilyMappingStatus.label = this.config.labels.familyMappingPending;
+        break;
+      case AttributeMapping.FAMILY_MAPPING_FULL:
+        formattedFamilyMappingStatus.className = 'AknFieldContainer-familyAttributeMapping--full';
+        formattedFamilyMappingStatus.label = this.config.labels.familyMappingFull;
+        break;
+    }
+
+    return formattedFamilyMappingStatus;
   }
 
   /**
@@ -210,7 +305,7 @@ class AttributeMapping extends BaseForm {
    */
   private openAttributeOptionsMappingModal(event: { currentTarget: any }) {
     const $line = $(event.currentTarget).closest('.line');
-    const franklinAttributeLabel = $line.data('pim_ai_attribute') as string;
+    const franklinAttributeLabel = $line.data('franklin-attribute') as string;
     const franklinAttributeCode = $line.find('.attribute-selector').data('franklin-attribute-code');
     const catalogAttributeCode =
         $line.find('input[name="mapping.' + franklinAttributeCode + '.attribute"]').val() as string;
@@ -220,7 +315,7 @@ class AttributeMapping extends BaseForm {
       FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
       FetcherRegistry.getFetcher('family').fetch(familyCode),
     ).then((
-      form: BaseForm,
+      form: BaseView,
       normalizedFamily: any,
     ) => {
       this.attributeOptionsMappingModal = new BootstrapModal({
@@ -238,9 +333,14 @@ class AttributeMapping extends BaseForm {
       this.attributeOptionsMappingModal.open();
       this.attributeOptionsMappingForm = form;
 
+      const familyLabel = i18n.getLabel(
+          normalizedFamily.labels,
+          UserContext.get('catalog_default_locale'),
+          normalizedFamily.code,
+      );
       const formContent = form.getExtension('content') as AttributeOptionsMapping;
       formContent
-        .setFamilyLabel(i18n.getLabel(normalizedFamily.labels, UserContext.get('catalogLocale'), normalizedFamily.code))
+        .setFamilyLabel(familyLabel)
         .setFamilyCode(familyCode)
         .setFranklinAttributeLabel(franklinAttributeLabel)
         .setCatalogAttributeCode(catalogAttributeCode);
@@ -267,6 +367,20 @@ class AttributeMapping extends BaseForm {
       this.attributeOptionsMappingForm.getFormModel().clear();
       this.attributeOptionsMappingForm = null;
     }
+  }
+
+  /**
+   * Saves the scroll top position before the page re-rendering
+   */
+  private saveScroll(): void {
+    this.scroll = $('.edit-form').scrollTop() as number;
+  }
+
+  /**
+   * Puts back the scroll top position after the render.
+   */
+  private setScroll(): void {
+    $('.edit-form').scrollTop(this.scroll);
   }
 }
 
