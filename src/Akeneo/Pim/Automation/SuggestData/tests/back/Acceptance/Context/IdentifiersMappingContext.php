@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMa
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiFake;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -41,31 +41,31 @@ class IdentifiersMappingContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var IdentifiersMappingApiFake */
-    private $identifiersMappingApiFake;
-
     /** @var UpdateIdentifiersMappingHandler */
     private $updateIdentifiersMappingHandler;
+
+    /** @var FakeClient */
+    private $fakeClient;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param IdentifiersMappingApiFake $identifiersMappingApiFake
+     * @param FakeClient $fakeClient
      */
     public function __construct(
         GetIdentifiersMappingHandler $getIdentifiersMappingHandler,
         UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingApiFake $identifiersMappingApiFake
+        FakeClient $fakeClient
     ) {
         $this->getIdentifiersMappingHandler = $getIdentifiersMappingHandler;
         $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->identifiersMappingApiFake = $identifiersMappingApiFake;
+        $this->fakeClient = $fakeClient;
     }
 
     /**
@@ -189,7 +189,7 @@ class IdentifiersMappingContext implements Context
         Assert::assertEquals($identifiers, $normalizedIdentifiers);
         Assert::assertEquals(
             $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
-            $this->identifiersMappingApiFake->get()
+            $this->fakeClient->getIdentifiersMapping()
         );
     }
 
@@ -198,7 +198,7 @@ class IdentifiersMappingContext implements Context
         $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
         Assert::assertEquals([], $identifiers);
-        Assert::assertEquals([], $this->identifiersMappingApiFake->get());
+        Assert::assertEquals([], $this->fakeClient->getIdentifiersMapping());
     }
 
     /**

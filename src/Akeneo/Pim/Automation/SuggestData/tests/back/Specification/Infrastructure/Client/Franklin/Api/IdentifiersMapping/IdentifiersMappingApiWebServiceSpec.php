@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Client;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
 use PhpSpec\ObjectBehavior;
 
@@ -23,7 +23,7 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
 {
     public function let(
         UriGenerator $uriGenerator,
-        Client $httpClient
+        GuzzleClient $httpClient
     ): void {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
@@ -40,7 +40,7 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
 
     public function it_updates_mapping(
         UriGenerator $uriGenerator,
-        Client $httpClient
+        GuzzleClient $httpClient
     ): void {
         $normalizedMapping = ['foo' => 'bar'];
         $generatedRoute = '/api/mapping/identifiers';

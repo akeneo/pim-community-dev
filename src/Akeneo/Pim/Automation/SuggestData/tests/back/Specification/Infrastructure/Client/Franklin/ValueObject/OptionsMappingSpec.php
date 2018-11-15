@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use PhpSpec\ObjectBehavior;
@@ -45,8 +46,7 @@ class OptionsMappingSpec extends ObjectBehavior
 
     public function it_returns_an_iterator_containing_attribute_options_mapping(): void
     {
-        $directory = realpath(__DIR__ . '/../../../../../Resources/fake/franklin-api/attribute-options-mapping/');
-        $filepath = sprintf('%s/%s', $directory, 'get_family_router_attribute_color.json');
+        $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
         $content = json_decode(file_get_contents($filepath), true);
         $this->beConstructedWith($content);
 

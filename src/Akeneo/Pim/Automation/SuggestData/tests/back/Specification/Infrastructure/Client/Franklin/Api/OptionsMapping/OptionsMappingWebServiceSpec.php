@@ -16,9 +16,9 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingWebService;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use GuzzleHttp\Exception\ClientException;
@@ -35,7 +35,7 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
 {
     public function let(
         UriGenerator $uriGenerator,
-        Client $httpClient,
+        GuzzleClient $httpClient,
         ResponseInterface $response,
         StreamInterface $stream
     ): void {

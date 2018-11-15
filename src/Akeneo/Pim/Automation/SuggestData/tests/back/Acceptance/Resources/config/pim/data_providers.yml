@@ -1,18 +1,5 @@
 services:
-    akeneo.pim.automation.suggest_data.franklin_client.authentication:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationFake'
+    akeneo.pim.automation.suggest_data.franklin_client.http_client:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient'
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.uri_generator'
-            - '@akeneo.pim.automation.suggest_data.franklin_client.http_client'
-
-    akeneo.pim.automation.suggest_data.franklin_client.subscription:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionFake'
-
-    akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiFake'
-
-    akeneo.pim.automation.suggest_data.franklin_client.attributes_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingFake'
-
-    akeneo.pim.automation.suggest_data.franklin_client.attribute_options_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingFake'

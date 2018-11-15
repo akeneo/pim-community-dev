@@ -45,6 +45,7 @@ $rules = [
             // External dependencies
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',
+            'Psr\Http\Message\ResponseInterface',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Client'),
 
