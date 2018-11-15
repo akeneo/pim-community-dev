@@ -326,7 +326,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
             'localizable'            => false,
             'auto_option_sorting'    => false,
             'locale_specific'        => false,
-            'options'                => 'Code:optionA,en_US:Option A|Code:optionB,en_US:Option B',
+            'options'                => 'Code:optionA|Code:optionB',
             'scope'                  => 'Global',
             'required'               => false,
         ];
@@ -659,7 +659,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
             'localizable'            => false,
             'auto_option_sorting'    => true,
             'locale_specific'        => false,
-            'options'                => 'Code:optionA,en_US:Option A|Code:optionB,en_US:Option B',
+            'options'                => 'Code:optionA|Code:optionB',
             'scope'                  => 'Global',
             'required'               => false,
         ];

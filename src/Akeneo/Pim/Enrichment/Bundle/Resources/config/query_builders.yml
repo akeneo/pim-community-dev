@@ -54,7 +54,7 @@ parameters:
     pim_enrich.datagrid.product_batch_size: 25
 
     pim_enrich.query.product_and_product_model_search_aggregator.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator
-    pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory
+    pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -669,7 +669,7 @@ services:
     # Services used by the products and product models' grid
     # here, products and product models should be gathered by the most top level product model
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
-        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
         arguments:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
@@ -710,3 +710,10 @@ services:
         class: '%pim_enrich.query.product_and_product_model_search_aggregator.class%'
         arguments:
             - '@pim_catalog.repository.category'
+
+    pim_enrich.query.product_and_product_model_query_sequential_edit_builder_factory:
+        class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
+        arguments:
+        - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+        - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
+        - '@pim_enrich.query.product_and_product_model_search_aggregator'
