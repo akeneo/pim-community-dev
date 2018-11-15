@@ -21,6 +21,7 @@ Feature: Filter products per price
       | pen    |           | yes     |              |                 |
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products by price
     Given I am on the products grid
     Then I should see the filter sku

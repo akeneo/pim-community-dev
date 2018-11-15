@@ -8,6 +8,7 @@ Feature: Filter products by label or identifier field
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully filter products on their label or identifier
     Given I add the "english" locale to the "mobile" channel
     And the following attributes:

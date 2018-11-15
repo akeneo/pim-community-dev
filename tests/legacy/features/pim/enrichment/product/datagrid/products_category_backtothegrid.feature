@@ -15,14 +15,7 @@ Feature: Product category back to the grid
     And I am on the products grid
 
   @unstable
-  Scenario: Successfully restore category filter without hashnav
-    Given I filter by "category" with operator "" and value "summer_collection"
-    And I am on the products grid
-    Then I should see products purple-sneakers and black-sneakers
-    And I should not see products black-boots
-
-  @unstable
-  Scenario: Successfully restore category filter with hashnav
+  Scenario: Successfully restore category filter
     Given I filter by "category" with operator "" and value "winter_collection"
     And I click on the "black-sneakers" row
     And I should be on the product "black-sneakers" edit page
@@ -31,14 +24,7 @@ Feature: Product category back to the grid
     And I should not see products purple-sneakers and black-boots
 
   @unstable
-  Scenario: Successfully restore unclassified category filter without hashnav
-    Given I filter by "category" with operator "unclassified" and value ""
-    And I am on the products grid
-    Then I should see products black-boots
-    And I should not see products purple-sneakers and black-sneakers
-
-  @unstable
-  Scenario: Successfully restore unclassified category filter with hashnav
+  Scenario: Successfully restore unclassified category filter
     Given I filter by "category" with operator "unclassified" and value ""
     And I click on the "black-boots" row
     And I should be on the product "black-boots" edit page

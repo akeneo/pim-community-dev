@@ -28,6 +28,7 @@ Feature: Filter products
     And I should see products BOOK, MUG-1, MUG-2 and POSTIT
     And I should see the filters groups
 
+  @critical
   Scenario: Successfully filter by group
     Given I am on the products grid
     When I filter by "groups" with operator "" and value "Mug"

@@ -30,6 +30,7 @@ Feature: Filter products with multiples text fields filters
     And I show the filter "description"
     And I show the filter "name"
 
+  @critical
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "description" with operator "contains" and value "Red"
     And I should be able to use the following filters:

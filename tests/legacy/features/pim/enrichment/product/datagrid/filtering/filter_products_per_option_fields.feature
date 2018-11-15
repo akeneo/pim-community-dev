@@ -20,6 +20,7 @@ Feature: Filter products per option
     And the "Shirt" product has the "color and size" attributes
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Successfully filter products by a simple option
     Given I am on the products grid
     And the grid should contain 3 elements
@@ -29,6 +30,7 @@ Feature: Filter products per option
       | size   | is empty     |       | Shirt  |
       | size   | is not empty |       | Sweat  |
 
+  @critical
   Scenario: Successfully filter products by a multi option
     Given I am on the products grid
     And the grid should contain 3 elements
