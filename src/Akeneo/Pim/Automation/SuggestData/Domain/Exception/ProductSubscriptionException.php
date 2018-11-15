@@ -21,6 +21,11 @@ final class ProductSubscriptionException extends \Exception
     /** @var string */
     private const CONSTRAINT_KEY = 'akeneo_suggest_data.entity.product_subscription.constraint.%s';
 
+    public function __construct(string $message = '')
+    {
+        parent::__construct($message);
+    }
+
     /**
      * @return ProductSubscriptionException
      */
@@ -50,7 +55,7 @@ final class ProductSubscriptionException extends \Exception
      */
     public static function familyRequired(): ProductSubscriptionException
     {
-        return new static(sprintf(static::CONSTRAINT_KEY, 'family_required'));
+        return new self(sprintf(static::CONSTRAINT_KEY, 'family_required'));
     }
 
     /**

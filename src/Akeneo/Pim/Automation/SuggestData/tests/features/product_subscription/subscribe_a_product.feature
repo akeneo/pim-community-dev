@@ -22,6 +22,7 @@ Feature: Subscribe a product to Franklin
       | upc         | pim_upc        |
     When I subscribe the product "product_without_family" to Franklin
     Then the product "product_without_family" should not be subscribed
+    And an invalid family message should be sent
 
   Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
     Given Franklin is configured with a valid token
@@ -31,6 +32,7 @@ Feature: Subscribe a product to Franklin
       | upc         | pim_upc        |
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
+    And an invalid values message should be sent
 
   Scenario: Fail to subscribe a product that is already subscribed to Franklin
     Given Franklin is configured with a valid token
@@ -41,6 +43,7 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" is subscribed to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should be subscribed
+    And an already subscribed message should be sent
 
   Scenario: Fail to subscribe a product with an invalid token
     Given the product "B00EYZY6AC" of the family "router"
@@ -50,6 +53,7 @@ Feature: Subscribe a product to Franklin
     And Franklin is configured with an expired token
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
+    And a token invalid message should be sent
 
   Scenario: Subscribe a product without enough money on Franklin account
     Given Franklin is configured with a valid token
@@ -60,6 +64,7 @@ Feature: Subscribe a product to Franklin
     And there are no more credits on my Franklin account
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
+    And a not enough credit message should be sent
 
 #  Scenario: Fail to subscribe a product that does not exist
 #    Given Franklin is configured with a valid token
@@ -79,6 +84,7 @@ Feature: Subscribe a product to Franklin
       | brand       | pim_brand      |
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
+    And an invalid MPN and Brand message should be sent
 
   #Scenario: Handle a bad request to Franklin
 
@@ -91,4 +97,4 @@ Feature: Subscribe a product to Franklin
     And Franklin server is down
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
-
+    #And an invalid subscription message should be sent

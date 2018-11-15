@@ -24,8 +24,9 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationEx
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
+use Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\ExceptionCatcher;
 use Behat\Behat\Context\Context;
-use PHPUnit\Framework\Assert;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -43,9 +44,6 @@ final class FranklinConfigurationContext implements Context
 
     /** @var GetConnectionStatusHandler */
     private $getConnectionStatusHandler;
-
-    /** @var ConnectionConfigurationException */
-    private $thrownException;
 
     /**
      * Make this context statefull. Useful for testing configuration retrieval.
@@ -71,7 +69,6 @@ final class FranklinConfigurationContext implements Context
         $this->getConnectionStatusHandler = $getConnectionStatusHandler;
         $this->configurationRepository = $configurationRepository;
         $this->retrievedConfiguration = null;
-        $this->thrownException = null;
     }
 
     /**
@@ -80,8 +77,8 @@ final class FranklinConfigurationContext implements Context
     public function franklinHasNotBeenConfigured(): void
     {
         $configuration = $this->configurationRepository->find();
-        Assert::assertInstanceOf(Configuration::class, $configuration);
-        Assert::assertNull($configuration->getToken());
+        Assert::isInstanceOf($configuration, Configuration::class);
+        Assert::null($configuration->getToken());
     }
 
     /**
@@ -113,7 +110,7 @@ final class FranklinConfigurationContext implements Context
             $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));
             $this->activateConnectionHandler->handle($command);
         } catch (ConnectionConfigurationException $e) {
-            $this->thrownException = $e;
+            ExceptionCatcher::catchException($e);
         }
     }
 
@@ -126,7 +123,7 @@ final class FranklinConfigurationContext implements Context
             $command = new ActivateConnectionCommand(new Token(FakeClient::INVALID_TOKEN));
             $this->activateConnectionHandler->handle($command);
         } catch (ConnectionConfigurationException $e) {
-            $this->thrownException = $e;
+            ExceptionCatcher::catchException($e);
         }
     }
 
@@ -144,7 +141,7 @@ final class FranklinConfigurationContext implements Context
     public function franklinIsActivated(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-        Assert::assertTrue($connectionStatus->isActive());
+        Assert::true($connectionStatus->isActive());
     }
 
     /**
@@ -153,7 +150,7 @@ final class FranklinConfigurationContext implements Context
     public function franklinIsNotActivated(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-        Assert::assertFalse($connectionStatus->isActive());
+        Assert::false($connectionStatus->isActive());
     }
 
     /**
@@ -163,7 +160,7 @@ final class FranklinConfigurationContext implements Context
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
 
-        Assert::assertTrue($connectionStatus->isIdentifiersMappingValid());
+        Assert::true($connectionStatus->isIdentifiersMappingValid());
     }
 
     /**
@@ -173,33 +170,35 @@ final class FranklinConfigurationContext implements Context
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
 
-        Assert::assertFalse($connectionStatus->isIdentifiersMappingValid());
+        Assert::false($connectionStatus->isIdentifiersMappingValid());
     }
 
     /**
-     * @Then a token invalid message is sent
+     * @Then a token invalid message should be sent
      */
-    public function aTokenInvalidMessageIsSent(): void
+    public function aTokenInvalidMessageShouldBeSent(): void
     {
-        Assert::assertInstanceOf(ConnectionConfigurationException::class, $this->thrownException);
-        Assert::assertEquals(
+        $exception = ExceptionCatcher::getCaughtException();
+        Assert::isInstanceOf($exception, ConnectionConfigurationException::class);
+        Assert::eq(
             ConnectionConfigurationException::invalidToken()->getMessage(),
-            $this->thrownException->getMessage()
+            $exception->getMessage()
         );
-        Assert::assertEquals(422, $this->thrownException->getCode());
+        Assert::eq(422, $exception->getCode());
     }
 
     /**
-     * @Then a connection invalid message is sent
+     * @Then a connection invalid message should be sent
      */
-    public function aConnectionInvalidMessageIsSent(): void
+    public function aConnectionInvalidMessageShouldBeSent(): void
     {
-        Assert::assertInstanceOf(ConnectionConfigurationException::class, $this->thrownException);
-        Assert::assertEquals(
+        $exception = ExceptionCatcher::getCaughtException();
+        Assert::isInstanceOf($exception, ConnectionConfigurationException::class);
+        Assert::eq(
             ConnectionConfigurationException::invalidToken()->getMessage(),
-            $this->thrownException->getMessage()
+            $exception->getMessage()
         );
-        Assert::assertEquals(422, $this->thrownException->getCode());
+        Assert::eq(422, $exception->getCode());
     }
 
     /**
@@ -207,7 +206,7 @@ final class FranklinConfigurationContext implements Context
      */
     public function aValidTokenIsRetrieved(): void
     {
-        Assert::assertEquals(FakeClient::VALID_TOKEN, $this->retrievedConfiguration->getToken());
+        Assert::eq(FakeClient::VALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 
     /**
@@ -215,6 +214,6 @@ final class FranklinConfigurationContext implements Context
      */
     public function anExpiredTokenIsRetrieved(): void
     {
-        Assert::assertEquals(FakeClient::INVALID_TOKEN, $this->retrievedConfiguration->getToken());
+        Assert::eq(FakeClient::INVALID_TOKEN, $this->retrievedConfiguration->getToken());
     }
 }

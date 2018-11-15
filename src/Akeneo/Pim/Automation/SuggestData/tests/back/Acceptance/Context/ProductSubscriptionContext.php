@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Un
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
+use Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\ExceptionCatcher;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
@@ -83,7 +84,7 @@ class ProductSubscriptionContext implements Context
             $command = new SubscribeProductCommand($product->getId());
             $this->subscribeProductHandler->handle($command);
         } catch (ProductSubscriptionException $e) {
-            $this->thrownException = $e;
+            ExceptionCatcher::catchException($e);
         }
     }
 
@@ -103,7 +104,7 @@ class ProductSubscriptionContext implements Context
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductSubscriptionException $e) {
-            $this->thrownException = $e;
+            ExceptionCatcher::catchException($e);
         }
     }
 
@@ -165,6 +166,75 @@ class ProductSubscriptionContext implements Context
         $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
 
         Assert::true($subscription->getSuggestedData()->isEmpty());
+    }
+
+    /**
+     * @Then an invalid family message should be sent
+     */
+    public function anInvalidFamilyMessageShouldBeSent(): void
+    {
+        $exception = ExceptionCatcher::getCaughtException();
+
+        Assert::isInstanceOf($exception, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::familyRequired()->getMessage(),
+            $exception->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid values message should be sent
+     */
+    public function anInvalidValuesMessageShouldBeSent(): void
+    {
+        $exception = ExceptionCatcher::getCaughtException();
+        Assert::isInstanceOf($exception, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::invalidMappedValues()->getMessage(),
+            $exception->getMessage()
+        );
+    }
+
+    /**
+     * @Then an already subscribed message should be sent
+     */
+    public function anAlreadySubscribedMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf(ExceptionCatcher::getCaughtException(), ProductSubscriptionException::class);
+    }
+
+    /**
+     * @Then a not enough credit message should be sent
+     */
+    public function aNotEnoughCreditMessageShouldBeSent(): void
+    {
+        $exception = ExceptionCatcher::getCaughtException();
+        Assert::isInstanceOf($exception, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::insufficientCredits()->getMessage(),
+            $exception->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid MPN and Brand message should be sent
+     */
+    public function anInvalidMpnAndBrandMessageShouldBeSent(): void
+    {
+        $exception = ExceptionCatcher::getCaughtException();
+        Assert::isInstanceOf($exception, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::invalidMappedValues()->getMessage(),
+            $exception->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid subscription message should be sent
+     */
+    public function anInvalidSubscriptionMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf(ExceptionCatcher::getCaughtException(), ProductSubscriptionException::class);
     }
 
     /**
