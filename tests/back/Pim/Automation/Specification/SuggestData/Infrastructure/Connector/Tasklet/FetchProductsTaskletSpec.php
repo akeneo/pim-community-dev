@@ -1,0 +1,63 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet;
+
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\FetchProductsTasklet;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use PhpSpec\ObjectBehavior;
+
+/**
+ * @author Damien Carcel <damien.carcel@akeneo.com>
+ */
+class FetchProductsTaskletSpec extends ObjectBehavior
+{
+    public function let(
+        StepExecution $stepExecution,
+        FetchProductsHandler $fetchProductsHandler
+    ) {
+        $this->beConstructedWith($fetchProductsHandler);
+
+        $this->setStepExecution($stepExecution);
+    }
+
+    public function it_is_a_tasklet_for_fetching_product_data_from_franklin(): void
+    {
+        $this->shouldBeAnInstanceOf(FetchProductsTasklet::class);
+        $this->shouldImplement(TaskletInterface::class);
+    }
+
+    public function it_fetches_products($fetchProductsHandler): void
+    {
+        $command = new FetchProductsCommand();
+        $fetchProductsHandler->handle($command)->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    public function it_handles_product_subscription_exception($stepExecution, $fetchProductsHandler): void
+    {
+        $exception = new ProductSubscriptionException('Whatever reason pulling from Franklin failed');
+
+        $command = new FetchProductsCommand();
+        $fetchProductsHandler->handle($command)->willThrow($exception);
+
+        $stepExecution->addError('Whatever reason pulling from Franklin failed')->shouldBeCalled();
+
+        $this->execute();
+    }
+}

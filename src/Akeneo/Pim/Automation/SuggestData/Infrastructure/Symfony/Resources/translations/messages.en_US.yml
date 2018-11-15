@@ -16,3 +16,8 @@ job_execution.summary:
     configuration_validation: Franklin Insights configuration
     subscribed: subscribed
     unsubscribed: unsubscribed
+
+pim_datagrid:
+    cells:
+        type:
+            suggest_data_fetch_products: Franklin Insights

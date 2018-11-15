@@ -1,0 +1,6 @@
+services:
+    akeneo.pim.automation.suggest_data.connector.tasklet.fetch_products:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\FetchProductsTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products'
