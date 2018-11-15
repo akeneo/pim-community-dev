@@ -46,6 +46,9 @@ class ProductSubscriptionContext implements Context
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
+    /** @var null|\Exception */
+    private $thrownException;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
@@ -74,7 +77,14 @@ class ProductSubscriptionContext implements Context
      */
     public function iSubscribeTheProductToFranklin(string $identifier): void
     {
-        $this->subscribeProductToFranklin($identifier, false);
+        $product = $this->findProduct($identifier);
+
+        try {
+            $command = new SubscribeProductCommand($product->getId());
+            $this->subscribeProductHandler->handle($command);
+        } catch (ProductSubscriptionException $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -93,6 +103,7 @@ class ProductSubscriptionContext implements Context
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductSubscriptionException $e) {
+            $this->thrownException = $e;
         }
     }
 
@@ -106,7 +117,10 @@ class ProductSubscriptionContext implements Context
         $this->dataFixturesContext->theFollowingProduct($table);
 
         foreach ($table->getHash() as $productRow) {
-            $this->subscribeProductToFranklin($productRow['identifier'], true);
+            $product = $this->findProduct($productRow['identifier']);
+
+            $command = new SubscribeProductCommand($product->getId());
+            $this->subscribeProductHandler->handle($command);
         }
     }
 
@@ -151,23 +165,6 @@ class ProductSubscriptionContext implements Context
         $subscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
 
         Assert::true($subscription->getSuggestedData()->isEmpty());
-    }
-
-    /**
-     * @param string $identifier
-     * @param bool $throwExceptions
-     */
-    private function subscribeProductToFranklin(string $identifier, bool $throwExceptions = false): void
-    {
-        $product = $this->findProduct($identifier);
-        try {
-            $command = new SubscribeProductCommand($product->getId());
-            $this->subscribeProductHandler->handle($command);
-        } catch (ProductSubscriptionException $e) {
-            if (true === $throwExceptions) {
-                throw $e;
-            }
-        }
     }
 
     /**

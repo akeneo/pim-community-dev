@@ -317,6 +317,14 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @Given Franklin server is down
+     */
+    public function franklinServerIsDown(): void
+    {
+        $this->fakeClient->attackDDOS();
+    }
+
+    /**
      * Loads attributes according to a provided list of attribute codes and a default attribute group.
      * Fixture content is in a file in "Resources/config/fixtures/attributes/".
      *

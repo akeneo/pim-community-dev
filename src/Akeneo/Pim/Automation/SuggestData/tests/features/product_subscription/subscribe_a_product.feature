@@ -61,7 +61,11 @@ Feature: Subscribe a product to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
 
-  #Scenario: Fail to subscribe a product that does not exist
+#  Scenario: Fail to subscribe a product that does not exist
+#    Given Franklin is configured with a valid token
+#    And the product "fake" does not exist
+#    When I subscribe the product "fake" to Franklin
+#    Then the product "fake" should not be subscribed
 
   #Scenario: Fail to subscribe a product that has an incorrect UPC
   # wrong UPC format
@@ -77,3 +81,14 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
 
   #Scenario: Handle a bad request to Franklin
+
+  Scenario: Dealing with error on product subscription when Franklin server is down
+    Given Franklin is configured with a valid token
+    And the product "B00EYZY6AC" of the family "router"
+    And a predefined mapping as follows:
+      | franklin_code | attribute_code |
+      | asin        | asin           |
+    And Franklin server is down
+    When I subscribe the product "B00EYZY6AC" to Franklin
+    Then the product "B00EYZY6AC" should not be subscribed
+

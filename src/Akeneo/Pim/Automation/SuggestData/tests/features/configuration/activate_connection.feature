@@ -26,3 +26,10 @@ Feature: Franklin configuration
     When a system administrator configures Franklin using an invalid token
     Then Franklin is not activated
     And a token invalid message is sent
+
+  Scenario: Dealing with error on activation when Franklin server is down
+    Given Franklin has not been configured
+    And Franklin server is down
+    When a system administrator configures Franklin using a valid token
+    Then Franklin is not activated
+    And a connection invalid message is sent

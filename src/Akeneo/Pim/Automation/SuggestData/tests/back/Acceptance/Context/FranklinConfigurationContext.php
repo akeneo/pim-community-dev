@@ -109,8 +109,12 @@ final class FranklinConfigurationContext implements Context
      */
     public function configuresFranklinUsingValidToken(): void
     {
-        $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));
-        $this->activateConnectionHandler->handle($command);
+        try {
+            $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));
+            $this->activateConnectionHandler->handle($command);
+        } catch (ConnectionConfigurationException $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -121,8 +125,6 @@ final class FranklinConfigurationContext implements Context
         try {
             $command = new ActivateConnectionCommand(new Token(FakeClient::INVALID_TOKEN));
             $this->activateConnectionHandler->handle($command);
-
-            throw new ConnectionConfigurationException();
         } catch (ConnectionConfigurationException $e) {
             $this->thrownException = $e;
         }
@@ -178,6 +180,19 @@ final class FranklinConfigurationContext implements Context
      * @Then a token invalid message is sent
      */
     public function aTokenInvalidMessageIsSent(): void
+    {
+        Assert::assertInstanceOf(ConnectionConfigurationException::class, $this->thrownException);
+        Assert::assertEquals(
+            ConnectionConfigurationException::invalidToken()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+        Assert::assertEquals(422, $this->thrownException->getCode());
+    }
+
+    /**
+     * @Then a connection invalid message is sent
+     */
+    public function aConnectionInvalidMessageIsSent(): void
     {
         Assert::assertInstanceOf(ConnectionConfigurationException::class, $this->thrownException);
         Assert::assertEquals(
