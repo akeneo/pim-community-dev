@@ -192,20 +192,18 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Given /^([\d]+) records for the ([\S]+) reference entity with filled attribute values for the ([\S]+) and the ([\S]+) channels$/
+     * @Given 3 records for the Brand reference entity with filled attribute values for the Ecommerce and the Tablet channels
      */
-    public function theRecordsForTheReferenceEntityWithFilledAttributesValuesForTwoChannels(
-        int $numberOfRecords,
-        string $referenceEntityIdentifier,
-        string $firstChannel,
-        string $secondChannel
-    ): void {
-        $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
+    public function theRecordsForTheBrandReferenceEntityWithFilledAttributesValuesForTwoChannels(): void
+    {
+        $referenceEntityIdentifier = 'brand';
+        $firstChannel = 'ecommerce';
+        $secondChannel = 'tablet';
 
-        $this->channelExists->save(ChannelIdentifier::fromCode(strtolower($firstChannel)));
-        $this->channelExists->save(ChannelIdentifier::fromCode(strtolower($secondChannel)));
+        $this->channelExists->save(ChannelIdentifier::fromCode($firstChannel));
+        $this->channelExists->save(ChannelIdentifier::fromCode($secondChannel));
 
-        for ($i = 1; $i <= $numberOfRecords; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             $rawRecordCode = sprintf('%s_%d', $referenceEntityIdentifier, $i);
             $recordCode = RecordCode::fromString($rawRecordCode);
             $recordIdentifier = RecordIdentifier::fromString(sprintf('%s_fingerprint', $rawRecordCode));
@@ -237,7 +235,7 @@ class GetConnectorRecordsContext implements Context
                     'description' => [
                         [
                             'locale' => 'en_US',
-                            'channel' => strtolower($firstChannel),
+                            'channel' => $firstChannel,
                             'data' => sprintf(
                                 'Description for %s number %d and channel %s',
                                 ucfirst($referenceEntityIdentifier), $i, $firstChannel
@@ -245,7 +243,7 @@ class GetConnectorRecordsContext implements Context
                         ],
                         [
                             'locale' => 'en_US',
-                            'channel' => strtolower($secondChannel),
+                            'channel' => $secondChannel,
                             'data' => sprintf(
                                 'Description for %s number %d and channel %s',
                                 ucfirst($referenceEntityIdentifier), $i, $secondChannel
@@ -274,64 +272,49 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @When /^the connector requests all records of the ([\S]+) reference entity with the information of the ([\S]+) channel$/
+     * @When the connector requests all records of the Brand reference entity with the attribute values of the Ecommerce channel
      */
-    public function theConnectorRequestsAllRecordsOfTheReferenceEntityWithInformationOfTheChannel(
-        string $referenceEntityIdentifier,
-        string $channel
-    ): void {
+    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheAttributeValuesOfTheEcommerceChannel(): void
+    {
         $client = $this->clientFactory->logIn('julia');
         $this->recordPages = [];
 
         $this->recordPages[1] = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . sprintf(
-                "successful_%s_records_for_%s_channel.json",
-                strtolower($referenceEntityIdentifier),
-                strtolower($channel)
-            )
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_ecommerce_channel.json'
         );
     }
 
     /**
-     * @Then /^the PIM returns [\d]+ records of the ([\S]+) reference entity with only the attribute values of the ([\S]+) channel$/
+     * @Then the PIM returns 3 records of the Brand reference entity with only the attribute values of the Ecommerce channel
      */
-    public function thePimReturnsRecordsOfTheReferenceEntityWithOnlyAttributeValuesOfTheChannel(
-        string $referenceEntityIdentifier,
-        string $channel
-    ): void {
+    public function thePimReturnsAllRecordsOfTheBrandReferenceEntityWithOnlyAttributeValuesOfTheEcommerceChannel(): void
+    {
         Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
 
         $this->webClientHelper->assertJsonFromFile(
             $this->recordPages[1],
-            self::REQUEST_CONTRACT_DIR . sprintf(
-                "successful_%s_records_for_%s_channel.json",
-                strtolower($referenceEntityIdentifier),
-                strtolower($channel)
-            )
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_records_for_ecommerce_channel.json'
         );
     }
 
     /**
-     * @When /^the connector requests all records of the ([\S]+) reference entity with the information of a non-existent channel$/
+     * @When the connector requests all records of the Brand reference entity with the attribute values of a non-existent channel
      */
-    public function theConnectorRequestTheInformationForANonExistentChannelForTheReferenceEntity(string $referenceEntityIdentifier): void
+    public function theConnectorRequestAllRecordsOfTheBrandReferenceEntityWithTheAttributeValuesOfANonExistentChannel(): void
     {
         $client = $this->clientFactory->logIn('julia');
 
         $this->unprocessableEntityResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . sprintf(
-                "unprocessable_entity_%s_records_for_non_existent_channel.json",
-                strtolower($referenceEntityIdentifier)
-            )
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_brand_records_for_non_existent_channel.json'
         );
     }
 
     /**
      * @Then the PIM notifies the connector about an error indicating that the provided channel does not exist
      */
-    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheProvidedChannelDoesNotExist()
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheProvidedChannelDoesNotExist(): void
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->unprocessableEntityResponse,

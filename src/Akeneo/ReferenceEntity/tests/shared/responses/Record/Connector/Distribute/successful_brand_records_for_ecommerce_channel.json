@@ -41,7 +41,7 @@
                                 {
                                     "locale": "en_US",
                                     "channel": "ecommerce",
-                                    "data": "Description for Brand number 1 and channel Ecommerce"
+                                    "data": "Description for Brand number 1 and channel ecommerce"
                                 }
                             ],
                             "country": [
@@ -72,7 +72,7 @@
                                 {
                                     "locale": "en_US",
                                     "channel": "ecommerce",
-                                    "data": "Description for Brand number 2 and channel Ecommerce"
+                                    "data": "Description for Brand number 2 and channel ecommerce"
                                 }
                             ],
                             "country": [
@@ -103,7 +103,7 @@
                                 {
                                     "locale": "en_US",
                                     "channel": "ecommerce",
-                                    "data": "Description for Brand number 3 and channel Ecommerce"
+                                    "data": "Description for Brand number 3 and channel ecommerce"
                                 }
                             ],
                             "country": [
