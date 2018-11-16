@@ -65,7 +65,7 @@ class ConnectorReferenceEntityHydratorSpec extends ObjectBehavior
         $this->hydrate($row)->shouldBeLike($expectedReferenceEntity);
     }
 
-    function it_does_not_hydrate_unexpected_values() {
+    function it_hydrates_a_reference_entity_without_image() {
         $row = [
             'identifier'                  => 'designer',
             'image_file_key'              => null,
