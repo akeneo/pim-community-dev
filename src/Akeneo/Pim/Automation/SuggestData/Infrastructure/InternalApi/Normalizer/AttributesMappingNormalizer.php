@@ -33,7 +33,7 @@ class AttributesMappingNormalizer
                 'franklinAttribute' => [
                     'label' => $attribute->getTargetAttributeLabel(),
                     'type' => $attribute->getTargetAttributeType(),
-                    'summary' => $attribute->getSummary(),
+                    'summary' => $attribute->getSummary() ?? [],
                 ],
                 'attribute' => $attribute->getPimAttributeCode(),
                 'status' => $attribute->getStatus(),
