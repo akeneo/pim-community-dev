@@ -15,9 +15,9 @@ define(
                 return $.get(Routing.generate('pim_user_user_rest_get_current'))
                     .then(response => {
                         contextData = response;
-                        contextData['uiLocale'] = contextData['user_default_locale'];
-                        contextData['catalogLocale'] = contextData['catalog_default_locale'];
-                        contextData['catalogScope'] = contextData['catalog_default_scope'];
+                        contextData.uiLocale = contextData.user_default_locale;
+                        contextData.catalogLocale = contextData.catalog_default_locale;
+                        contextData.catalogScope = contextData.catalog_default_scope;
                     });
             },
 

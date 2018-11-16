@@ -22,6 +22,9 @@ $rules = [
         'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
         'Akeneo\Tool\Component\Connector\ArrayConverter', // TODO: Remove that ligne when connector bundle/component will be moved in Tool
         'Oro\Bundle\SecurityBundle\SecurityFacade', // TODO: Should be somewhere else
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider' // TODO: Integration by database
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
         'Doctrine',
@@ -48,7 +51,6 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // TODO: you should not use form type anymore
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // TODO: you should not use form type anymore
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface', //TODO: Link by id
-        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider' // TODO: Integration by database
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 
