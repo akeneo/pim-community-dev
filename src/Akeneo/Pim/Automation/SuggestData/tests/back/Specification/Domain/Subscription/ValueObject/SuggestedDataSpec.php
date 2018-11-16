@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedValue;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedValue;
 use PhpSpec\ObjectBehavior;
 
 /**
