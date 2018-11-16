@@ -24,6 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorRefer
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorReferenceEntityContext implements Context
@@ -109,5 +110,29 @@ class GetConnectorReferenceEntityContext implements Context
             $this->existentReferenceEntity,
             self::REQUEST_CONTRACT_DIR . "successful_brand_reference_entity.json"
         );
+    }
+
+    /**
+     * @When /^the connector requests all reference entities of the PIM$/
+     */
+    public function theConnectorRequestsAllReferenceEntitiesOfThePIM()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given 50 reference entities in the PIM$/
+     */
+    public function referenceEntitiesInThePIM()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^the PIM returns the 50 reference entities of the PIM$/
+     */
+    public function thePIMReturnsTheReferenceEntitiesOfThePIM()
+    {
+        throw new PendingException();
     }
 }
