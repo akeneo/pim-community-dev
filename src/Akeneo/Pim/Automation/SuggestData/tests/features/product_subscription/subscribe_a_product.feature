@@ -97,4 +97,4 @@ Feature: Subscribe a product to Franklin
     And Franklin server is down
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
-    #And an invalid subscription message should be sent
+    And an invalid subscription message should be sent

@@ -321,7 +321,7 @@ class DataFixturesContext implements Context
      */
     public function franklinServerIsDown(): void
     {
-        $this->fakeClient->attackDDOS();
+        $this->fakeClient->makeTheServerDown();
     }
 
     /**

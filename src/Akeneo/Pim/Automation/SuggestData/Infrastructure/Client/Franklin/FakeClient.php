@@ -139,7 +139,7 @@ class FakeClient implements ClientInterface
     /**
      * Define the server as down.
      */
-    public function attackDDOS(): void
+    public function makeTheServerDown(): void
     {
         $this->serverIsDown = true;
     }
