@@ -120,6 +120,13 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iTypeInTheManageFilterInput($text)
     {
+        $gridContainer = $this->getElementFromDatagrid('Grid container');
+        $loadingMask = $gridContainer->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
+
         $this->spin(function () use ($text) {
             $this->getDatagrid()->typeInManageFilterInput($text);
 

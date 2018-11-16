@@ -744,6 +744,10 @@ class Grid extends Index
      */
     protected function clickOnFilterToManage($filterName)
     {
+        $this->spin(function () {
+            return !$this->isLoadingMaskVisible();
+        }, 'Loading mask is still visible');
+
         $manageFilters = $this->getElement('Manage filters');
         if (!$manageFilters->isVisible()) {
             $this->clickFiltersList();

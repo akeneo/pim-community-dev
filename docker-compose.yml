@@ -55,7 +55,7 @@ services:
       - 'behat'
 
   mysql:
-    image: 'mysql:5.7.22'
+    image: 'mysql:5.7'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: 'akeneo_pim'
@@ -65,7 +65,7 @@ services:
       - 'akeneo'
 
   mysql-behat:
-    image: 'mysql:5.7.22'
+    image: 'mysql:5.7'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: 'akeneo_pim'

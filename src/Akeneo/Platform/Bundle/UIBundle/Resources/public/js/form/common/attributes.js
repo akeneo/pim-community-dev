@@ -264,8 +264,8 @@ define(
                         AttributeManager.isOptional(field.attribute, object)
                     );
                 }).then(function (field, channels, isOptional) {
-                    var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
-                    var locale = UserContext.get('catalogLocale');
+                    const scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
+                    const locale = UserContext.get('catalogLocale');
 
                     field.setContext({
                         entity: this.getFormData(),
