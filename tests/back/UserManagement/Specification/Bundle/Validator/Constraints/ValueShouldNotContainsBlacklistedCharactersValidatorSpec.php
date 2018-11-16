@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Pim\Bundle\UserBundle\Validator\Constraints;
+namespace Specification\Akeneo\UserManagement\Bundle\Validator\Constraints;
 
-use Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters;
-use Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharactersValidator;
+use Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharacters;
+use Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharactersValidator;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
