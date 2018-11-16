@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Converter;
+namespace Akeneo\Asset\Component\Converter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Component\Enrich\Converter\ConverterInterface;
 
 /**
  * Converter for Asset Mass Edit.
