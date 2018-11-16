@@ -5,7 +5,7 @@ class InvalidTypeError extends Error {}
 type NormalizedOptionData = string | null;
 
 /**
- * Data representing an Option, used for Record Values for Attribute with type "Option" and "Option Collection"
+ * Data representing an Option, used for Record Values for Attribute with type "Option"
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

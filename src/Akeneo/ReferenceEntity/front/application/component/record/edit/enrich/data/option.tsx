@@ -29,7 +29,7 @@ const View = ({
   attribute.options.map(
     (option: Option) => {
       const normalizedOption: NormalizedOption = option.normalize();
-      availableOptionCodes[normalizedOption.code] = normalizedOption.labels[locale.stringValue()];
+      availableOptionCodes[normalizedOption.code] = option.getLabel(locale.stringValue());
     }
   );
 

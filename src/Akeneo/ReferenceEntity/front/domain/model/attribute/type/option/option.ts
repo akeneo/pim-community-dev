@@ -11,7 +11,7 @@ export type NormalizedOption = {
 };
 
 export class Option implements NormalizableAdditionalProperty {
-  private constructor(readonly option: OptionCode, readonly labels: LabelCollection) {
+  private constructor(readonly code: OptionCode, readonly labels: LabelCollection) {
     Object.freeze(this);
   }
 
@@ -23,9 +23,17 @@ export class Option implements NormalizableAdditionalProperty {
     return new Option(optionCode, labels);
   }
 
+  public getLabel(locale: string, defaultValue: boolean = true) {
+    if (!this.labels.hasLabel(locale)) {
+      return defaultValue ? this.code.stringValue() : '';
+    }
+
+    return this.labels.getLabel(locale);
+  }
+
   public normalize(): NormalizedOption {
     return {
-      code: this.option.normalize(),
+      code: this.code.normalize(),
       labels: this.labels.normalize(),
     };
   }
