@@ -12,5 +12,5 @@ services:
     akeneo.pim.automation.suggest_data.application.configuration.validator.connection:
         class: Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator
         arguments:
-            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.data_provider.authentication'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'

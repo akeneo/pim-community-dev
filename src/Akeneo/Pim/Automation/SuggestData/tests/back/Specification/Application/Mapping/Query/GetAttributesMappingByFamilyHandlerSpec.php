@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
@@ -28,12 +27,10 @@ use PhpSpec\ObjectBehavior;
 class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        AttributesMappingProviderInterface $attributesMappingProvider,
         FamilyRepositoryInterface $familyRepository
     ): void {
-        $this->beConstructedWith($dataProviderFactory, $familyRepository);
-        $dataProviderFactory->create()->willReturn($dataProvider);
+        $this->beConstructedWith($attributesMappingProvider, $familyRepository);
     }
 
     public function it_is_a_get_attributes_mapping_query_handler(): void
@@ -41,10 +38,12 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(GetAttributesMappingByFamilyHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_family_does_not_exist($familyRepository, $dataProvider): void
-    {
+    public function it_throws_an_exception_if_the_family_does_not_exist(
+        $familyRepository,
+        $attributesMappingProvider
+    ): void {
         $familyRepository->findOneByIdentifier('unknown_family')->willReturn(null);
-        $dataProvider->getAttributesMapping('unknown_family')->shouldNotBeCalled();
+        $attributesMappingProvider->getAttributesMapping('unknown_family')->shouldNotBeCalled();
 
         $query = new GetAttributesMappingByFamilyQuery('unknown_family');
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$query]);
@@ -53,12 +52,12 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function it_handles_a_get_attributes_mapping_query(
         FamilyInterface $family,
         $familyRepository,
-        $dataProvider
+        $attributesMappingProvider
     ): void {
         $attributesMappingResponse = new AttributesMappingResponse();
 
         $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);
-        $dataProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
+        $attributesMappingProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
 
         $query = new GetAttributesMappingByFamilyQuery('camcorders');
         $this->handle($query)->shouldReturn($attributesMappingResponse);

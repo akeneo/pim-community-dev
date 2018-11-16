@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
@@ -30,19 +29,19 @@ class UnsubscribeProductHandler
     /** @var ProductSubscriptionRepositoryInterface */
     private $subscriptionRepository;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
 
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository,
-     * @param DataProviderFactory $dataProviderFactory
+     * @param SubscriptionProviderInterface $subscriptionProvider
      */
     public function __construct(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        DataProviderFactory $dataProviderFactory
+        SubscriptionProviderInterface $subscriptionProvider
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
-        $this->dataProvider = $dataProviderFactory->create();
+        $this->subscriptionProvider = $subscriptionProvider;
     }
 
     /**
@@ -55,7 +54,7 @@ class UnsubscribeProductHandler
             throw ProductNotSubscribedException::notSubscribed($command->getProductId());
         }
 
-        $this->dataProvider->unsubscribe($subscription->getSubscriptionId());
+        $this->subscriptionProvider->unsubscribe($subscription->getSubscriptionId());
 
         $this->subscriptionRepository->delete($subscription);
     }

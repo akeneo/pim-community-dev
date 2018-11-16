@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -44,22 +43,22 @@ class UpdateIdentifiersMappingHandler
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var IdentifiersMappingProviderInterface */
+    private $identifiersMappingProvider;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param DataProviderFactory $dataProviderFactory
+     * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        DataProviderFactory $dataProviderFactory
+        IdentifiersMappingProviderInterface $identifiersMappingProvider
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
-        $this->dataProvider = $dataProviderFactory->create();
+        $this->identifiersMappingProvider = $identifiersMappingProvider;
     }
 
     /**
@@ -77,7 +76,7 @@ class UpdateIdentifiersMappingHandler
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingRepository->save($identifiersMapping);
-        $this->dataProvider->updateIdentifiersMapping($identifiersMapping);
+        $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
     }
 
     /**
