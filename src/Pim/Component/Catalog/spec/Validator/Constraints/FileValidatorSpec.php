@@ -13,6 +13,12 @@ class FileValidatorSpec extends ObjectBehavior
 {
     function let(ExecutionContextInterface $context)
     {
+        $extensionsToMimeTypeMapping = [
+            'jfif' => ['image/jpeg'],
+            'csv' => ['text/plain', 'text/csv']
+        ];
+
+        $this->beConstructedWith($extensionsToMimeTypeMapping);
         $this->initialize($context);
     }
 
@@ -21,7 +27,7 @@ class FileValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\FileValidator');
     }
 
-    function it_validates_extensions(
+    function it_validates_extensions_and_mimetype(
         $context,
         File $constraint,
         FileInfoInterface $fileInfo
@@ -31,6 +37,7 @@ class FileValidatorSpec extends ObjectBehavior
         $fileInfo->getUploadedFile()->willReturn(null);
         $fileInfo->getExtension()->willReturn('jpg');
         $fileInfo->getSize()->willReturn(100);
+        $fileInfo->getMimeType()->willReturn('image/jpeg');
 
         $context
             ->buildViolation(Argument::any())
@@ -69,6 +76,7 @@ class FileValidatorSpec extends ObjectBehavior
         $fileInfo->getUploadedFile()->willReturn(null);
         $fileInfo->getExtension()->willReturn('jpg');
         $fileInfo->getSize()->willReturn(100);
+        $fileInfo->getMimeType()->willReturn('image/jpeg');
 
         $context
             ->buildViolation(
@@ -150,6 +158,30 @@ class FileValidatorSpec extends ObjectBehavior
         $context
             ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
+
+        $this->validate($fileInfo, $constraint);
+    }
+
+    function it_does_not_validate_extensions_if_mimetype_is_not_coherent(
+        $context,
+        File $constraint,
+        FileInfoInterface $fileInfo,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $constraint->allowedExtensions = ['jfif', 'docx'];
+        $fileInfo->getId()->willReturn(12);
+        $fileInfo->getUploadedFile()->willReturn(null);
+        $fileInfo->getExtension()->willReturn('jfif');
+        $fileInfo->getSize()->willReturn(100);
+        $fileInfo->getMimeType()->willReturn('application/octet-stream');
+
+        $context
+            ->buildViolation(
+                $constraint->extensionsMessage,
+                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+            )
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($fileInfo, $constraint);
     }

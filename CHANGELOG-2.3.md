@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7775: Check mime type to be coherent with extension file
+
 # 2.3.17 (2018-11-15)
 
 ## Bug fixes

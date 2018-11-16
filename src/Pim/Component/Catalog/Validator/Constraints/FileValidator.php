@@ -16,6 +16,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FileValidator extends ConstraintValidator
 {
+    private $extensionToMimeTypeMapping;
+
     protected static $suffices = [
         1                            => 'bytes',
         BaseFileValidator::KB_BYTES  => 'kB',
@@ -23,6 +25,11 @@ class FileValidator extends ConstraintValidator
         BaseFileValidator::KIB_BYTES => 'KiB',
         BaseFileValidator::MIB_BYTES => 'MiB',
     ];
+
+    public function __construct(array $extensionToMimeTypeMapping = null)
+    {
+        $this->extensionToMimeTypeMapping = $extensionToMimeTypeMapping;
+    }
 
     /**
      * {@inheritdoc}
@@ -32,6 +39,7 @@ class FileValidator extends ConstraintValidator
         if ($value instanceof FileInfoInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
             $this->validateFileSize($value, $constraint);
             $this->validateFileExtension($value, $constraint);
+            $this->validateMimeType($value, $constraint);
         }
     }
 
@@ -132,5 +140,30 @@ class FileValidator extends ConstraintValidator
     protected static function moreDecimalsThan($double, $numberOfDecimals)
     {
         return strlen((string)$double) > strlen(round($double, $numberOfDecimals));
+    }
+
+    protected function validateMimeType(FileInfoInterface $fileInfo, Constraint $constraint)
+    {
+        if (empty($constraint->allowedExtensions) || empty($this->extensionToMimeTypeMapping)) {
+            return;
+        }
+
+        $extension = null !== $fileInfo->getUploadedFile() ?
+            $fileInfo->getUploadedFile()->getClientOriginalExtension() :
+            $fileInfo->getExtension();
+
+
+        $mappedMimeTypes = array_key_exists($extension, $this->extensionToMimeTypeMapping) ? $this->extensionToMimeTypeMapping[$extension] : null;
+
+        $mimeType = null !== $fileInfo->getUploadedFile() ?
+            $fileInfo->getUploadedFile()->getMimeType() :
+            $fileInfo->getMimeType();
+
+        if (!empty($mappedMimeTypes) && !empty($mimeType) && !in_array($mimeType, $mappedMimeTypes)) {
+            $this->context->buildViolation(
+                $constraint->extensionsMessage,
+                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+            )->addViolation();
+        }
     }
 }
