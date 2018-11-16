@@ -60,6 +60,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/MediaField.less
         - bundles/pimui/less/components/product-edit-form/MetricField.less
         - bundles/pimui/less/components/product-edit-form/PriceList.less
+        - bundles/pimui/less/components/product-edit-form/SelectField.less
         - bundles/pimui/less/components/product-edit-form/TabHeader.less
         - bundles/pimui/less/components/product-edit-form/TextareaField.less
         - bundles/pimui/less/components/product-edit-form/TextField.less
