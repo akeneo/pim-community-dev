@@ -68,4 +68,16 @@ class CreateAssetType extends AbstractType
     {
         return 'pimee_product_asset_create';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'validation_groups' => ['upload'],
+            ]
+        );
+    }
 }
