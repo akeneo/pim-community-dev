@@ -50,7 +50,6 @@ class ConnectorReferenceEntityHydrator
 
         $image = Image::createEmpty();
 
-
         if (isset($row['image_file_key'])) {
             $file = new FileInfo();
             $file->setKey($imageKey);
