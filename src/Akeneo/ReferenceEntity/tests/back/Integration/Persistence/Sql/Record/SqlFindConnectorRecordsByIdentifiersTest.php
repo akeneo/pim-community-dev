@@ -41,19 +41,19 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersForQueryInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
-class SqlFindConnectorRecordsByIdentifiersForQueryTest extends SqlIntegrationTestCase
+class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 {
     /** @var RecordRepositoryInterface */
     private $repository;
 
-    /** @var FindConnectorRecordsByIdentifiersForQueryInterface */
+    /** @var FindConnectorRecordsByIdentifiersInterface */
     private $findConnectorRecordsQuery;
 
     /** @var SaverInterface */

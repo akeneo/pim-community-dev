@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiersForQuery;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
@@ -49,7 +49,7 @@ class GetConnectorRecordsContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorRecordsByIdentifiersForQuery */
+    /** @var InMemoryFindConnectorRecordsByIdentifiers */
     private $findConnectorRecords;
 
     /** @var ReferenceEntityRepositoryInterface */
@@ -74,7 +74,7 @@ class GetConnectorRecordsContext implements Context
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         InMemoryFindRecordIdentifiersForQuery $findRecordIdentifiersForQuery,
-        InMemoryFindConnectorRecordsByIdentifiersForQuery $findConnectorRecords,
+        InMemoryFindConnectorRecordsByIdentifiers $findConnectorRecords,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryChannelExists $channelExists

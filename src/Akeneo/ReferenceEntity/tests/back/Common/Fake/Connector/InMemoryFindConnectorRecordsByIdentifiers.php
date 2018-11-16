@@ -15,14 +15,14 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersForQueryInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindConnectorRecordsByIdentifiersForQuery implements FindConnectorRecordsByIdentifiersForQueryInterface
+class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIdentifiersInterface
 {
     /** @var ConnectorRecord[] */
     private $recordsByIdentifier;

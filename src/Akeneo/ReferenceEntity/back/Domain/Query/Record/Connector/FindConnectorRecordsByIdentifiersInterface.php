@@ -16,12 +16,13 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 
 /**
- * Find connector records by identifiers for the given search query.
+ * Find connector records by identifiers.
+ * The record values will be filtered by the filters defined in the search query.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindConnectorRecordsByIdentifiersForQueryInterface
+interface FindConnectorRecordsByIdentifiersInterface
 {
     /**
      * @param string[]    $identifiers
