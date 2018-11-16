@@ -53,7 +53,7 @@ Feature: Subscribe a product to Franklin
     And Franklin is configured with an expired token
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
-    And a token invalid message should be sent
+    And a token invalid message for subscription should be sent
 
   Scenario: Subscribe a product without enough money on Franklin account
     Given Franklin is configured with a valid token

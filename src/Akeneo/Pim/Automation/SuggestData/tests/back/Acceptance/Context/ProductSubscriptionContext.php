@@ -238,6 +238,19 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
+     * @Then a token invalid message for subscription should be sent
+     */
+    public function aTokenInvalidMessageForSubscriptionShouldBeSent(): void
+    {
+        $exception = ExceptionCatcher::getCaughtException();
+        Assert::isInstanceOf($exception, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::invalidToken()->getMessage(),
+            $exception->getMessage()
+        );
+    }
+
+    /**
      * @param string $identifier
      *
      * @return ProductInterface

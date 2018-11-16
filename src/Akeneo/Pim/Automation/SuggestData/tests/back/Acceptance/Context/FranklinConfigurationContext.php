@@ -159,7 +159,6 @@ final class FranklinConfigurationContext implements Context
     public function identifiersMappingShouldBeValid(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-
         Assert::true($connectionStatus->isIdentifiersMappingValid());
     }
 
@@ -169,14 +168,13 @@ final class FranklinConfigurationContext implements Context
     public function identifiersMappingShouldNotBeValid(): void
     {
         $connectionStatus = $this->getConnectionStatusHandler->handle(new GetConnectionStatusQuery());
-
         Assert::false($connectionStatus->isIdentifiersMappingValid());
     }
 
     /**
-     * @Then a token invalid message should be sent
+     * @Then a token invalid message for configuration should be sent
      */
-    public function aTokenInvalidMessageShouldBeSent(): void
+    public function aTokenInvalidMessageForConfigurationShouldBeSent(): void
     {
         $exception = ExceptionCatcher::getCaughtException();
         Assert::isInstanceOf($exception, ConnectionConfigurationException::class);
