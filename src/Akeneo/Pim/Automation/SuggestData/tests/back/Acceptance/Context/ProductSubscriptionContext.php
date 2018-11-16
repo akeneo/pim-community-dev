@@ -46,6 +46,9 @@ class ProductSubscriptionContext implements Context
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
+    /** @var null|\Exception */
+    private $thrownException;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
@@ -74,7 +77,14 @@ class ProductSubscriptionContext implements Context
      */
     public function iSubscribeTheProductToFranklin(string $identifier): void
     {
-        $this->subscribeProductToFranklin($identifier, false);
+        $product = $this->findProduct($identifier);
+
+        try {
+            $command = new SubscribeProductCommand($product->getId());
+            $this->subscribeProductHandler->handle($command);
+        } catch (ProductSubscriptionException $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -93,6 +103,7 @@ class ProductSubscriptionContext implements Context
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductSubscriptionException $e) {
+            $this->thrownException = $e;
         }
     }
 
@@ -106,7 +117,10 @@ class ProductSubscriptionContext implements Context
         $this->dataFixturesContext->theFollowingProduct($table);
 
         foreach ($table->getHash() as $productRow) {
-            $this->subscribeProductToFranklin($productRow['identifier'], true);
+            $product = $this->findProduct($productRow['identifier']);
+
+            $command = new SubscribeProductCommand($product->getId());
+            $this->subscribeProductHandler->handle($command);
         }
     }
 
@@ -154,20 +168,79 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @param string $identifier
-     * @param bool $throwExceptions
+     * @Then an invalid family message should be sent
      */
-    private function subscribeProductToFranklin(string $identifier, bool $throwExceptions = false): void
+    public function anInvalidFamilyMessageShouldBeSent(): void
     {
-        $product = $this->findProduct($identifier);
-        try {
-            $command = new SubscribeProductCommand($product->getId());
-            $this->subscribeProductHandler->handle($command);
-        } catch (ProductSubscriptionException $e) {
-            if (true === $throwExceptions) {
-                throw $e;
-            }
-        }
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::familyRequired()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid values message should be sent
+     */
+    public function anInvalidValuesMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::invalidMappedValues()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an already subscribed message should be sent
+     */
+    public function anAlreadySubscribedMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+    }
+
+    /**
+     * @Then a not enough credit message should be sent
+     */
+    public function aNotEnoughCreditMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::insufficientCredits()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid MPN and Brand message should be sent
+     */
+    public function anInvalidMpnAndBrandMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::invalidMappedValues()->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid subscription message should be sent
+     */
+    public function anInvalidSubscriptionMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+    }
+
+    /**
+     * @Then a token invalid message for subscription should be sent
+     */
+    public function aTokenInvalidMessageForSubscriptionShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductSubscriptionException::class);
+        Assert::eq(
+            ProductSubscriptionException::invalidToken()->getMessage(),
+            $this->thrownException->getMessage()
+        );
     }
 
     /**

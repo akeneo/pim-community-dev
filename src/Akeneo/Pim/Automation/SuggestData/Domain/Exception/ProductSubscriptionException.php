@@ -26,7 +26,7 @@ final class ProductSubscriptionException extends \Exception
      */
     public static function invalidToken(): ProductSubscriptionException
     {
-        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_token'));
+        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_token'), 422);
     }
 
     /**
