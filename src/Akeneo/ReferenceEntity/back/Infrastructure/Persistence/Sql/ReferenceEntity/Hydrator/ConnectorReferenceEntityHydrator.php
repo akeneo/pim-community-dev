@@ -47,13 +47,15 @@ class ConnectorReferenceEntityHydrator
             ->convertToPHPValue($row['image_file_key'], $this->platform);
         $imageFilename = Type::getType(Type::STRING)
             ->convertToPHPValue($row['image_original_filename'], $this->platform);
+
         $image = Image::createEmpty();
+
 
         if (isset($row['image_file_key'])) {
             $file = new FileInfo();
             $file->setKey($imageKey);
             $file->setOriginalFilename($imageFilename);
-            $image =  Image::fromFileInfo($file);
+            $image = Image::fromFileInfo($file);
         }
 
         $connectorReferenceEntity = new ConnectorReferenceEntity(

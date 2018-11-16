@@ -29,19 +29,14 @@ class SqlFindConnectorReferenceEntityByReferenceEntityIdentifier implements Find
     /** @var Connection */
     private $connection;
 
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
-
     /** @var ConnectorReferenceEntityHydrator */
     private $referenceEntityHydrator;
 
     public function __construct(
         Connection $connection,
-        ConnectorReferenceEntityHydrator $hydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection
+        ConnectorReferenceEntityHydrator $hydrator
     ) {
         $this->connection = $connection;
-        $this->findValueKeyCollection = $findValueKeyCollection;
         $this->referenceEntityHydrator = $hydrator;
     }
 
