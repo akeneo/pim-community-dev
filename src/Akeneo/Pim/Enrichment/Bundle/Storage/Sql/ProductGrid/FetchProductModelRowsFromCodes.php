@@ -47,7 +47,7 @@ final class FetchProductModelRowsFromCodes
 
         $rows = array_replace_recursive(
             $this->getProperties($codes),
-            $this->getAttributeAsLabel($codes, $valueCollections, $channelCode, $localeCode),
+            $this->getLabels($codes, $valueCollections, $channelCode, $localeCode),
             $this->getAttributeAsImage($codes, $valueCollections),
             $this->getChildrenCompletenesses($codes, $channelCode, $localeCode),
             $this->getFamilyLabels($codes, $localeCode),
@@ -105,7 +105,7 @@ SQL;
         return $result;
     }
 
-    private function getAttributeAsLabel(array $codes, array $valueCollections, string $channelCode, string $localeCode): array
+    private function getLabels(array $codes, array $valueCollections, string $channelCode, string $localeCode): array
     {
         $result = [];
         foreach ($codes as $code) {
@@ -140,7 +140,7 @@ SQL;
                 $row['is_localizable'] ? $localeCode : null
             );
 
-            if (null !== $label) {
+            if (null !== $label && null !== $label->getData()) {
                 $result[$row['code']]['label'] = $label->getData();
             }
         }

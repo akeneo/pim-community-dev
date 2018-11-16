@@ -197,7 +197,7 @@ SQL;
                 $row['is_localizable'] ? $localeCode : null
             );
 
-            if (null !== $label) {
+            if (null !== $label && null !== $label->getData()) {
                 $result[$row['identifier']]['label'] = $label->getData();
             }
         }
