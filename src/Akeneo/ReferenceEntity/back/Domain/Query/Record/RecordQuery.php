@@ -57,7 +57,7 @@ class RecordQuery
      *
      * @var ChannelReference
      */
-    private $filterValuesChannelReference;
+    private $channelReferenceValuesFilter;
 
     private function __construct(
         ?ChannelIdentifier $channel,
@@ -67,7 +67,7 @@ class RecordQuery
         int $size,
         ?RecordCode $searchAfterCode,
         string $paginationMethod,
-        ChannelReference $filterValuesChannelReference
+        ChannelReference $channelReferenceValuesFilter
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -91,7 +91,7 @@ class RecordQuery
 
         $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = $paginationMethod;
-        $this->filterValuesChannelReference = $filterValuesChannelReference;
+        $this->channelReferenceValuesFilter = $channelReferenceValuesFilter;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -122,7 +122,7 @@ class RecordQuery
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,
         int $size,
-        ChannelReference $filterValuesChannelReference
+        ChannelReference $channelReferenceValuesFilter
     ): RecordQuery {
         $filters = [
             [
@@ -140,7 +140,7 @@ class RecordQuery
             $size,
             $searchAfterCode,
             self::PAGINATE_USING_SEARCH_AFTER,
-            $filterValuesChannelReference
+            $channelReferenceValuesFilter
         );
     }
 
@@ -203,8 +203,8 @@ class RecordQuery
         return $this->paginationMethod === self::PAGINATE_USING_SEARCH_AFTER;
     }
 
-    public function getFilterValuesChannelReference(): ChannelReference
+    public function getChannelReferenceValuesFilter(): ChannelReference
     {
-        return $this->filterValuesChannelReference;
+        return $this->channelReferenceValuesFilter;
     }
 }

@@ -80,12 +80,12 @@ class GetConnectorRecordsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $filterValuesChannelReference = ChannelReference::createfromNormalized($request->get('channel', null));
+            $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $searchAfterCode,
                 $this->limit->intValue(),
-                $filterValuesChannelReference
+                $channelReferenceValuesFilter
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
