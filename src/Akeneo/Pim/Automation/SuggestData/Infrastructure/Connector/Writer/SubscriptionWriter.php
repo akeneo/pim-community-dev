@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -83,10 +84,22 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     public function write(array $items): void
     {
         $collection = $this->subscriptionProvider->bulkSubscribe($items);
+        $warnings = $collection->warnings();
 
         foreach ($items as $item) {
-            $response = $collection->get($item->getProduct()->getId());
+            $productId = $item->getProduct()->getId();
+            $response = $collection->get($productId);
             if (null === $response) {
+                if (isset($warnings[$productId])) {
+                    // TODO: ask POs for error message
+                    $this->stepExecution->addWarning(
+                        'An error was returned by Franklin during subscription: %error%',
+                        ['%error%' => $warnings[$productId]],
+                        new DataInvalidItem(
+                            ['identifier' => $item->getProduct()->getIdentifier()]
+                        )
+                    );
+                }
                 continue;
             }
 

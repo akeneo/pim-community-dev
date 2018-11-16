@@ -22,6 +22,11 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionResponseCollectionSpec extends ObjectBehavior
 {
+    public function let(): void
+    {
+        $this->beConstructedWith([]);
+    }
+
     public function it_is_a_subscription_responses_collection(): void
     {
         $this->shouldHaveType(ProductSubscriptionResponseCollection::class);

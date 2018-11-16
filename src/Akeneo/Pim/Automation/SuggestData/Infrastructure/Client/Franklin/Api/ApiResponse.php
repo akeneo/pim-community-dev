@@ -14,60 +14,45 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
-use Symfony\Component\HttpFoundation\Response;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 
 /**
- * Represents the whole Franklin API response, with the HTTP code and a list of subscriptions (can be an empty list).
+ * Represents a response from Franklin to a subscription request, with a list of subscriptions and a list of warnings
+ * (both lists can be empty).
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 final class ApiResponse
 {
-    /** @var int */
-    private $responseCode;
-
     /** @var SubscriptionCollection */
-    private $subscriptionCollection;
+    private $subscriptions;
+
+    /** @var WarningCollection */
+    private $warnings;
 
     /**
-     * @param int $responseCode
-     * @param SubscriptionCollection $subscriptionCollection
+     * @param SubscriptionCollection $subscriptions
+     * @param WarningCollection $warnings
      */
-    public function __construct(int $responseCode, SubscriptionCollection $subscriptionCollection)
+    public function __construct(SubscriptionCollection $subscriptions, WarningCollection $warnings)
     {
-        $this->responseCode = $responseCode;
-        $this->subscriptionCollection = $subscriptionCollection;
-    }
-
-    /**
-     * @return int
-     */
-    public function code(): int
-    {
-        return $this->responseCode;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSuccess(): bool
-    {
-        return Response::HTTP_OK === $this->code();
+        $this->subscriptions = $subscriptions;
+        $this->warnings = $warnings;
     }
 
     /**
      * @return SubscriptionCollection
      */
-    public function content(): SubscriptionCollection
+    public function subscriptions(): SubscriptionCollection
     {
-        return $this->subscriptionCollection;
+        return $this->subscriptions;
     }
 
     /**
-     * @return bool
+     * @return WarningCollection
      */
-    public function hasSubscriptions()
+    public function warnings(): WarningCollection
     {
-        return count($this->subscriptionCollection) > 0;
+        return $this->warnings;
     }
 }

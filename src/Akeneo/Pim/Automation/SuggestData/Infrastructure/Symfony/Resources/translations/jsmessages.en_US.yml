@@ -72,6 +72,7 @@ akeneo_suggest_data:
                 no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
                 insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
                 invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
+                data_provider_error: 'Franklin returned an error while trying to subscribe the product' # TODO: check with POs
                 not_subscribed: 'The product is not subscribed'
             module:
                 product_edit_form:
