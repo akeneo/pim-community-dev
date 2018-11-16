@@ -30,7 +30,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\Enrichment\Component',
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
-            'Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException',
+            'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
 
             // Events
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
