@@ -757,10 +757,8 @@ config:
         pim/family-edit-form/properties/general/translation:                pimui/js/family/form/properties/general/translation
         pim/family-edit-form/attributes/toolbar/add-select/attribute-group: pimui/js/family/form/attributes/toolbar/add-select/attribute-group/select
         pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimui/js/family/form/attributes/toolbar/add-select/attribute/select
-        pim/family-edit-form/attributes/toolbar:                            pimui/js/family/form/attributes/toolbar
         pim/family-edit-form/attributes/attributes:                         pimui/js/family/form/attributes/attributes
         pim/family-edit-form/attributes/toolbar:                            pimui/js/family/form/attributes/toolbar
-        pim/family-edit-form/attributes:                                    pimui/js/family/form/attributes
         pim/family-edit-form/properties/general:                            pimui/js/family/form/properties/general
         pim/family-edit-form/attributes:                                    pimui/js/family/form/attributes
         pim/family-edit-form/add-family-variant:                            pimui/js/family/form/variants/add-family-variant

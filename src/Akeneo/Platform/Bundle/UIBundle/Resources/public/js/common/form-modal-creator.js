@@ -47,6 +47,7 @@ define(
                             });
 
                             modal.open();
+                            modal.$el.addClass('modal--fullPage modal--topButton');
 
                             form.setElement(modal.$('.modal-body')).render();
 

@@ -77,7 +77,8 @@ define(
                     fields: this.templateInput({
                         placeholder: __('pim_datagrid.view_selector.placeholder'),
                         label: __('pim_datagrid.view_selector.choose_label')
-                    })
+                    }),
+                    saveLabel: __('pim_common.save'),
                 });
 
                 let modal = new Backbone.BootstrapModal({

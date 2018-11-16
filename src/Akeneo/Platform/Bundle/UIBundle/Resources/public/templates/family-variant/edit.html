@@ -1,20 +1,17 @@
-<div class="AknFamilyVariant-header AkntitleContainer">
-    <div class="AknFamilyVariant-leftHeader AknButtonList">
-        <span class="AknButtonList-item AknFullPage-cancel cancel"></span>
-    </div>
-    <div class="AknFamilyVariant-centerHeader AknTitleContainer">
-        <div class="AknFamilyVariant-subTitle AknFullPage-description">
+<div class="AknFullPage">
+    <div class="AknFullPage-top">
+        <div class="AknFullPage-description">
             <%- __('Code') %>: <%- familyVariant.code %>
         </div>
-        <div class="AknFamilyVariant-title AknTitleContainer-title">
+        <div class="AknFullPage-title">
             <%- i18n.getLabel(familyVariant.labels, userContext.get('uiLocale'), familyVariant.code) %>
         </div>
     </div>
-    <div class="AknFamilyVariant-rightHeader">
-        <div class="AknButtonList" data-drop-zone="buttons"></div>
-        <div class="AknButtonList" data-drop-zone="state">
-
-        </div>
-    </div>
+    <div class="AknFullPage-content AknFullPage-content--withTop AknFullPage-content--fullWidth" data-drop-zone="content"></div>
 </div>
-<div data-drop-zone="content"></div>
+<div class="modal-footer">
+    <a href="#" class="AknButtonList-item AknButton AknButton--grey cancel"/>
+    <div class="AknButtonList AknButtonList--right" data-drop-zone="buttons"></div>
+    <div class="" data-drop-zone="state"></div>
+</div>
+
