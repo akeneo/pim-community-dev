@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Search\Elasticsearch\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -322,7 +323,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('alessi'),
             10,
-            null
+            ChannelReference::noReference()
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
@@ -341,7 +342,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             null,
             10,
-            null
+            ChannelReference::noReference()
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);

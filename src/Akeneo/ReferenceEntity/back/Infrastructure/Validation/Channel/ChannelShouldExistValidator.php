@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Channel;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -36,14 +37,14 @@ class ChannelShouldExistValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($channelIdentifier, Constraint $constraint)
+    public function validate($channelReference, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
-        $this->checkChannelIdentifierType($channelIdentifier);
+        $this->checkChannelIdentifierType($channelReference);
 
-        if (null !== $channelIdentifier && false === ($this->channelExists)($channelIdentifier)) {
+        if (!$channelReference->isEmpty() && false === ($this->channelExists)($channelReference->getIdentifier())) {
             $this->context->buildViolation(ChannelShouldExist::ERROR_MESSAGE)
-                ->setParameter('channel_identifier', $channelIdentifier->normalize())
+                ->setParameter('channel_identifier', $channelReference->normalize())
                 ->atPath('channel')
                 ->addViolation();
         }
@@ -64,7 +65,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
      */
     private function checkChannelIdentifierType($channelIdentifier): void
     {
-        if (null !== $channelIdentifier && !$channelIdentifier instanceof ChannelIdentifier) {
+        if (null !== $channelIdentifier && !$channelIdentifier instanceof ChannelReference) {
             throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
                 ChannelIdentifier::class, get_class($channelIdentifier)));
         }

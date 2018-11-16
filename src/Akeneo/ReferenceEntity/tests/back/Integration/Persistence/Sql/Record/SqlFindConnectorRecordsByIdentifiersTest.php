@@ -80,7 +80,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['unexpected_record']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'), null, 100, null
+            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::noReference()
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -130,7 +130,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['unexpected_record']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelIdentifier::fromCode('ecommerce')
+            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::createfromNormalized('ecommerce')
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -174,7 +174,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['starck', 'dyson']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'), null, 100, null
+            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::noReference()
         );
 
         $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar'], $recordQuery);

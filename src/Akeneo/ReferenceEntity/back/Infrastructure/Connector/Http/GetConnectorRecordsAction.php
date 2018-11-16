@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
@@ -80,12 +80,12 @@ class GetConnectorRecordsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $filterValuesChannelIdentifier = $this->getFilterValuesChannelIdentifier($request);
+            $filterValuesChannelReference = ChannelReference::createfromNormalized($request->get('channel', null));
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $searchAfterCode,
                 $this->limit->intValue(),
-                $filterValuesChannelIdentifier
+                $filterValuesChannelReference
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
@@ -135,12 +135,5 @@ class GetConnectorRecordsAction
         ];
 
         return $this->halPaginator->paginate($records, $paginationParameters, count($records));
-    }
-
-    private function getFilterValuesChannelIdentifier(Request $request): ?ChannelIdentifier
-    {
-        $channel = $request->get('channel', null);
-
-        return null !== $channel ? ChannelIdentifier::fromCode($channel) : null;
     }
 }

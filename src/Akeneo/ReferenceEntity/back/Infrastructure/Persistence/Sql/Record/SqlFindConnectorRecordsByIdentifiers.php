@@ -116,9 +116,9 @@ SQL;
 
     private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
     {
-        $channelIdentifier = $recordQuery->getFilterValuesChannelIdentifier();
-        if (null !== $channelIdentifier) {
-            $connectorRecord = $connectorRecord->filterValuesByChannel($channelIdentifier);
+        $channelReference = $recordQuery->getFilterValuesChannelReference();
+        if (!$channelReference->isEmpty()) {
+            $connectorRecord = $connectorRecord->filterValuesByChannel($channelReference->getIdentifier());
         }
 
         return $connectorRecord;

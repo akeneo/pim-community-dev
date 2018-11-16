@@ -55,9 +55,9 @@ class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsB
 
     private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
     {
-        $channelFilter = $recordQuery->getFilterValuesChannelIdentifier();
-        if (null !== $channelFilter) {
-            $connectorRecord = $connectorRecord->filterValuesByChannel($channelFilter);
+        $channelReference = $recordQuery->getFilterValuesChannelReference();
+        if (!$channelReference->isEmpty()) {
+            $connectorRecord = $connectorRecord->filterValuesByChannel($channelReference->getIdentifier());
         }
 
         return $connectorRecord;
