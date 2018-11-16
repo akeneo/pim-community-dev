@@ -15,10 +15,10 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
 use Doctrine\DBAL\Connection;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityByReferenceEntityIdentifierInterface;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -47,7 +47,6 @@ class SqlFindConnectorReferenceEntityByReferenceEntityIdentifier implements Find
 
     public function __invoke(ReferenceEntityIdentifier $identifier): ?ConnectorReferenceEntity
     {
-
         $sql = <<<SQL
         SELECT
             re.identifier,
