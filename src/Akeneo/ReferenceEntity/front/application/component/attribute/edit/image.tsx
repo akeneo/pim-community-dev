@@ -64,12 +64,12 @@ const ImageView = ({
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Select2
-            fieldId="pim_reference_entity.attribute.edit.input.allowed_extensions"
-            fieldName="allowed_extensions"
+            id="pim_reference_entity.attribute.edit.input.allowed_extensions"
+            name="allowed_extensions"
             data={AllowedExtensionsOptions}
             value={attribute.allowedExtensions.arrayValue()}
             multiple={true}
-            readonly={false}
+            readOnly={false}
             onChange={(allowedExtensions: string[]) => {
               onAdditionalPropertyUpdated('allowed_extensions', AllowedExtensions.createFromArray(allowedExtensions));
             }}

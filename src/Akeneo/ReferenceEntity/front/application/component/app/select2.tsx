@@ -1,67 +1,60 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 
 export interface Select2Props {
-  fieldId: string;
-  fieldName: string;
   data: {
     [choiceValue: string]: string;
   };
   value: string[];
   multiple: boolean;
-  readonly: boolean;
-  onSelect: (value: string) => void;
-  onUnselect: (value: string) => void;
+  readOnly: boolean;
+  configuration: any;
+  onChange: (value: string[] | string) => void;
 }
 
 export default class Select2 extends React.Component<Select2Props> {
-  public props: any;
-  private el: any;
-  private events: {[eventName: string]: string} = {
-    change: 'onChange',
-  };
+  public props: Select2Props;
+  private select: React.RefObject<HTMLSelectElement>;
+
+  constructor(props: Select2Props) {
+    super(props);
+
+    this.select = React.createRef<HTMLSelectElement>();
+  }
 
   componentDidMount() {
-    this.el = $(ReactDOM.findDOMNode(this) as Element);
+    const $el = $(this.select.current) as any;
 
-    if (undefined !== this.el.val(this.props.value).select2) {
-      this.el.val(this.props.value).select2({allowClear: true});
-      this.attachEventHandlers();
+    if (undefined !== $el.select2) {
+      $el.val(this.props.value).select2(this.props.configuration);
+      $el.on('change', (event) => {
+        this.props.onChange(event.val);
+      });
     }
   }
 
   componentWillUnmount() {
-    Object.keys(this.events).forEach((eventName: string) => {
-      this.el.off(eventName);
-    });
-  }
+    const $el = $(this.select.current) as any;
 
-  private attachEventHandlers = () => {
-    Object.keys(this.events).forEach((eventName: string) => {
-      this.el.on(eventName, (e: any) => {
-        this.props[this.events[eventName] as string](e.val);
-      });
-    });
-  };
+    $el.off('change');
+  }
 
   render(): JSX.Element | JSX.Element[] {
     const {data, value, ...props} = this.props;
 
     return (
       <select
-        id={props.fieldId}
-        className="select2"
-        name={props.fieldName}
+        {...props}
+        ref={this.select}
         multiple={props.multiple}
-        disabled={props.readonly}
+        disabled={props.readOnly}
         onChange={event => {
-          const newValues = Array.prototype.slice
+          const newValues = Array.prototype.slice // used to convert node list into an array
             .call(event.currentTarget.childNodes)
             .filter((option: HTMLOptionElement) => option.selected)
             .map((option: HTMLOptionElement) => option.value);
 
-          this.props.onChange(newValues);
+          this.props.onChange(this.props.multiple ? newValues : newValues[0]);
         }}
       >
         {Object.keys(data).map((choiceValue: string) => {

@@ -24,6 +24,7 @@ const View = ({
 
   const attribute = value.attribute as OptionAttribute;
   let availableOptionCodes: { [choiceValue: string]: string; } = {};
+  availableOptionCodes[''] = '';
 
   attribute.options.map(
     (option: Option) => {
@@ -33,14 +34,18 @@ const View = ({
   );
 
   return (
-    <div className="option-selector-container">
+    <div className="option-selector-container AknSelectField">
       <Select2
-        fieldId="pim_reference_entity.attribute.edit.input.allowed_extensions"
-        fieldName="allowed_extensions"
+        id=""
+        name="select2"
         data={availableOptionCodes}
         value={value.data.isEmpty() ? '' : value.data.normalize()}
         multiple={false}
-        readonly={false}
+        readOnly={false}
+        configuration={{
+          allowClear: true,
+          placeholder: ''
+        }}
         onChange={(optionCode: string) => {
           const newData = createOptionData(optionCode);
           const newValue = value.setData(newData);
