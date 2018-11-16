@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
+use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**

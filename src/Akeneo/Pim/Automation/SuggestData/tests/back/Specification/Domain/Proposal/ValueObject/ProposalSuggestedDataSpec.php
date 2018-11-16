@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,8 +26,7 @@ class ProposalSuggestedDataSpec extends ObjectBehavior
     public function it_is_a_write_model_for_suggested_data(): void
     {
         $this->beConstructedWith(['abc' => 'def'], new Product());
-        $this->shouldBeAnInstanceOf(
-            \Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData::class);
+        $this->shouldBeAnInstanceOf(ProposalSuggestedData::class);
     }
 
     public function it_exposes_its_properties(ProductInterface $product): void
