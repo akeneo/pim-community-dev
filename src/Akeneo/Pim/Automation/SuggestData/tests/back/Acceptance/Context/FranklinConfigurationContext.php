@@ -24,7 +24,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationEx
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\ExceptionCatcher;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
@@ -46,11 +45,18 @@ final class FranklinConfigurationContext implements Context
     private $getConnectionStatusHandler;
 
     /**
-     * Make this context statefull. Useful for testing configuration retrieval.
+     * Make this context stateful. Useful for testing configuration retrieval.
      *
      * @var Configuration
      */
     private $retrievedConfiguration;
+
+    /**
+     * Make this context stateful. Useful for asserting message thrown.
+     *
+     * @var \Exception
+     */
+    private $thrownException;
 
     /**
      * @param ActivateConnectionHandler $activateConnectionHandler
@@ -110,7 +116,7 @@ final class FranklinConfigurationContext implements Context
             $command = new ActivateConnectionCommand(new Token(FakeClient::VALID_TOKEN));
             $this->activateConnectionHandler->handle($command);
         } catch (ConnectionConfigurationException $e) {
-            ExceptionCatcher::catchException($e);
+            $this->thrownException = $e;
         }
     }
 
@@ -123,7 +129,7 @@ final class FranklinConfigurationContext implements Context
             $command = new ActivateConnectionCommand(new Token(FakeClient::INVALID_TOKEN));
             $this->activateConnectionHandler->handle($command);
         } catch (ConnectionConfigurationException $e) {
-            ExceptionCatcher::catchException($e);
+            $this->thrownException = $e;
         }
     }
 
@@ -176,13 +182,12 @@ final class FranklinConfigurationContext implements Context
      */
     public function aTokenInvalidMessageForConfigurationShouldBeSent(): void
     {
-        $exception = ExceptionCatcher::getCaughtException();
-        Assert::isInstanceOf($exception, ConnectionConfigurationException::class);
+        Assert::isInstanceOf($this->thrownException, ConnectionConfigurationException::class);
         Assert::eq(
             ConnectionConfigurationException::invalidToken()->getMessage(),
-            $exception->getMessage()
+            $this->thrownException->getMessage()
         );
-        Assert::eq(422, $exception->getCode());
+        Assert::eq(422, $this->thrownException->getCode());
     }
 
     /**
@@ -190,13 +195,12 @@ final class FranklinConfigurationContext implements Context
      */
     public function aConnectionInvalidMessageShouldBeSent(): void
     {
-        $exception = ExceptionCatcher::getCaughtException();
-        Assert::isInstanceOf($exception, ConnectionConfigurationException::class);
+        Assert::isInstanceOf($this->thrownException, ConnectionConfigurationException::class);
         Assert::eq(
             ConnectionConfigurationException::invalidToken()->getMessage(),
-            $exception->getMessage()
+            $this->thrownException->getMessage()
         );
-        Assert::eq(422, $exception->getCode());
+        Assert::eq(422, $this->thrownException->getCode());
     }
 
     /**
