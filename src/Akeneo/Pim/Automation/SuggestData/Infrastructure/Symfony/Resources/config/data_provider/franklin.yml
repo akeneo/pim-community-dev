@@ -3,7 +3,6 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\SubscriptionProvider'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
-            - '@akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.family'
             - '@akeneo.pim.automation.suggest_data.franklin_client.subscription'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
@@ -16,14 +15,12 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributesMappingProvider'
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.attributes_mapping'
-            - '@akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.attributes_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
     akeneo.pim.automation.suggest_data.data_provider.identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\IdentifiersMappingProvider'
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping'
-            - '@akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
     akeneo.pim.automation.suggest_data.data_provider.attribute_options_mapping:

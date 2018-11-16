@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
@@ -28,8 +28,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscri
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -45,7 +43,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
 {
     public function let(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        FamilyNormalizer $familyNormalizer,
         SubscriptionApiInterface $subscriptionApi,
         ConfigurationRepositoryInterface $configurationRepo
     ): void {
@@ -55,7 +52,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $identifiersMappingRepository,
-            $familyNormalizer,
             $subscriptionApi,
             $configurationRepo
         );
@@ -118,7 +114,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_subscribes_product_to_franklin(
         $identifiersMappingRepository,
         $subscriptionApi,
-        $familyNormalizer,
         ProductInterface $product,
         AttributeInterface $ean,
         AttributeInterface $sku,
@@ -149,18 +144,11 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $eanValue->__toString()->willReturn('123456789');
         $skuValue->__toString()->willReturn('987654321');
 
-        $normalizedFamily = [
-            'code' => 'tshirt',
-            'label' => [
-                'en_US' => 'T-shirt',
-                'fr_FR' => 'T-shirt',
-            ],
-        ];
-        $familyNormalizer->normalize($family)->willReturn($normalizedFamily);
-
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
 
+        $family->getTranslations()->willReturn([]);
+        $family->getCode()->willReturn('a_family');
         $request = new RequestCollection();
         $request->add(new Request(
             [
@@ -168,14 +156,12 @@ class SubscriptionProviderSpec extends ObjectBehavior
                 'asin' => '987654321',
             ],
             42,
-            $normalizedFamily)
-        );
-        $subscriptionApi->subscribe($request)->willReturn(
-            new ApiResponse(
-                new SubscriptionCollection($this->fakeApiResponse()),
-                new WarningCollection($this->fakeApiResponse())
-            )
-        );
+            [
+                'code' => 'a_family',
+                'label' => [],
+            ]
+        ));
+        $subscriptionApi->subscribe($request)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this
             ->subscribe($productSubscriptionRequest)
@@ -202,31 +188,32 @@ class SubscriptionProviderSpec extends ObjectBehavior
     }
 
     /**
-     * @return array
+     * @return SubscriptionCollection
      */
-    private function fakeApiResponse(): array
+    private function buildFakeApiResponse(): SubscriptionCollection
     {
-        return [
-            '_embedded' => [
-                'subscription' => [
-                    0 => [
-                        'id' => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
-                        'identifiers' => [],
-                        'attributes' => [],
-                        'extra' => [
-                            'tracker_id' => 42,
-                            'family' => [
-                                'code' => 'laptop',
-                                'label' => ['en_US' => 'Laptop'],
+        return new SubscriptionCollection(
+            [
+                '_embedded' => [
+                    'subscription' => [
+                        0 => [
+                            'id' => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
+                            'identifiers' => [],
+                            'attributes' => [],
+                            'extra' => [
+                                'tracker_id' => 42,
+                                'family' => [
+                                    'code' => 'laptop',
+                                    'label' => ['en_US' => 'Laptop'],
+                                ],
                             ],
+                            'mapped_identifiers' => [],
+                            'mapped_attributes' => [],
+                            'misses_mapping' => false,
                         ],
-                        'mapped_identifiers' => [],
-                        'mapped_attributes' => [],
-                        'misses_mapping' => false,
                     ],
                 ],
-                'warnings' => [],
-            ],
-        ];
+            ]
+        );
     }
 }

@@ -29,23 +29,17 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     /** @var AttributesMappingApiInterface */
     private $api;
 
-    /** @var AttributesMappingNormalizer */
-    private $normalizer;
-
     /**
      * @param AttributesMappingApiInterface $api
-     * @param AttributesMappingNormalizer $normalizer
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         AttributesMappingApiInterface $api,
-        AttributesMappingNormalizer $normalizer,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);
 
         $this->api = $api;
-        $this->normalizer = $normalizer;
     }
 
     /**
@@ -78,7 +72,8 @@ class AttributesMappingProvider extends AbstractProvider implements AttributesMa
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
     {
         $this->api->setToken($this->getToken());
-        $mapping = $this->normalizer->normalize($attributesMapping);
+        $normalizer = new AttributesMappingNormalizer();
+        $mapping = $normalizer->normalize($attributesMapping);
 
         $this->api->update($familyCode, $mapping);
     }
