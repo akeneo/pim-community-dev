@@ -131,7 +131,7 @@ services:
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images'
             - '%reference_entity_connector_records_limit_per_page%'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+            - '@validator'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorReferenceEntityAction
