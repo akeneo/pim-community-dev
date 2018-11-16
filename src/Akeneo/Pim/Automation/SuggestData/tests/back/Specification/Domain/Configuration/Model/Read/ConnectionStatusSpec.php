@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model\Read;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\ConnectionStatus;
 use PhpSpec\ObjectBehavior;
 
 /**

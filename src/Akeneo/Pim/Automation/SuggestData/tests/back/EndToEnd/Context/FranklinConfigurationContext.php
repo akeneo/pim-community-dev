@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;

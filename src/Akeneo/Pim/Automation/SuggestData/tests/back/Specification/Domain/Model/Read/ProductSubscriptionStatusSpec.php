@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model\Read;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
 use PhpSpec\ObjectBehavior;
 

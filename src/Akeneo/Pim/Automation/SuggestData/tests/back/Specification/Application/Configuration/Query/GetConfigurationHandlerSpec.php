@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configurat
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 

@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Un
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ProductSubscriptionStatus;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\ProductSubscriptionController;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer as InternalApi;

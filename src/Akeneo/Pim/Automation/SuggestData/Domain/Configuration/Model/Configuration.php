@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 
