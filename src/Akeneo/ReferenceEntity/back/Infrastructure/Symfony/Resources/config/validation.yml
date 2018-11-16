@@ -144,7 +144,9 @@ Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEn
 Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
     properties:
         filterValuesChannelIdentifier:
-            - Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExist: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExist:
+                  payload:
+                      standardPropertyName: channel
 
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:

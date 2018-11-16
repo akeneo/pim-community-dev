@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,26 +80,24 @@ class GetConnectorRecordsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $filterValuesChannel = $this->getFilterValuesChannel($request);
+            $filterValuesChannelIdentifier = $this->getFilterValuesChannelIdentifier($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $searchAfterCode,
                 $this->limit->intValue(),
-                $filterValuesChannel
+                $filterValuesChannelIdentifier
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+        $violations = $this->validator->validate($recordQuery);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'Invalid query parameters');
         }
 
-        $violations = $this->validator->validate($recordQuery);
-
-        if ($violations->count() > 0) {
-            // FIXME: format message for several violations
-            throw new UnprocessableEntityHttpException($violations[0]->getMessage());
+        if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
+            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
         $records = ($this->searchConnectorRecord)($recordQuery);
@@ -138,7 +137,7 @@ class GetConnectorRecordsAction
         return $this->halPaginator->paginate($records, $paginationParameters, count($records));
     }
 
-    private function getFilterValuesChannel(Request $request): ?ChannelIdentifier
+    private function getFilterValuesChannelIdentifier(Request $request): ?ChannelIdentifier
     {
         $channel = $request->get('channel', null);
 
