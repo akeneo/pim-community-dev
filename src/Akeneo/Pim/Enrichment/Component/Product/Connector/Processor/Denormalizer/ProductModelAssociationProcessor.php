@@ -73,7 +73,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      */
     public function process($item)
     {
-        if (!$this->hasImportedAssociations($item)) {
+        if (!$this->hasAssociationToImport($item)) {
             $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_associations');
 
             return null;
@@ -197,13 +197,12 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
 
     /**
      * It there association(s) in new values ?
-     * TODO master: rename to hasAssociationToImport
      *
      * @param array $item
      *
      * @return bool
      */
-    protected function hasImportedAssociations(array $item): bool
+    protected function hasAssociationToImport(array $item): bool
     {
         if (!isset($item['associations'])) {
             return false;

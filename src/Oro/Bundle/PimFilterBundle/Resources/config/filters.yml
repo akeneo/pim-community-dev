@@ -137,7 +137,6 @@ services:
             - '@form.factory'
             - '@pim_filter.product_utility'
             - '@pim_user.context.user'
-            - '%pim_catalog.entity.attribute_option.class%'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_option'
         tags:

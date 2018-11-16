@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class ChoiceFilter extends AjaxChoiceFilter
 {
-    /** @var string */
-    protected $optionRepoClass;
-
     /** @var UserContext */
     protected $userContext;
 
@@ -37,7 +34,6 @@ class ChoiceFilter extends AjaxChoiceFilter
      * @param FormFactoryInterface               $factory
      * @param ProductFilterUtility               $util
      * @param UserContext                        $userContext
-     * @param null|string                        $optionRepoClass
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param AttributeOptionRepositoryInterface $attributeOptionRepository
      */
@@ -45,14 +41,12 @@ class ChoiceFilter extends AjaxChoiceFilter
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
-        $optionRepoClass,
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
         parent::__construct($factory, $util);
 
         $this->userContext = $userContext;
-        $this->optionRepoClass = $optionRepoClass;
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
     }
@@ -69,7 +63,6 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $operator = $this->getOperator($data['type']);
 
-        /* TODO @merge remove null condition on master*/
         if (Operators::IN_LIST === $operator || Operators::NOT_IN_LIST === $operator) {
             $filteredValues = $this->filterOnlyExistingOptions($data['value']);
         } else {
@@ -113,7 +106,6 @@ class ChoiceFilter extends AjaxChoiceFilter
     {
         $attribute = $this->getAttribute();
 
-        /* TODO @merge remove null condition on master, optionRepoClass to delete*/
         return array_merge(
             parent::getFormOptions(),
             [

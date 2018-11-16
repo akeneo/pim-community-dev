@@ -24,7 +24,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         CustomAttributeOptionRepository $attributeOptionRepository
     )
     {
-        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass', $attributeRepository, $attributeOptionRepository);
+        $this->beConstructedWith($factory, $utility, $userContext, $attributeRepository, $attributeOptionRepository);
 
         $this->init(
             'foo',

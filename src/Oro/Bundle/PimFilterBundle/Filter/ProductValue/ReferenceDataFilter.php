@@ -38,7 +38,7 @@ class ReferenceDataFilter extends ChoiceFilter
         ConfigurationRegistryInterface $registry,
         AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
-        parent::__construct($factory, $util, $userContext, null, $attributeRepository, $attributeOptionRepository);
+        parent::__construct($factory, $util, $userContext, $attributeRepository, $attributeOptionRepository);
 
         $this->registry = $registry;
     }
