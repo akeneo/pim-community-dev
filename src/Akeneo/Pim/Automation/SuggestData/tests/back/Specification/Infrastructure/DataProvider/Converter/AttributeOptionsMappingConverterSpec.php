@@ -34,7 +34,7 @@ class AttributeOptionsMappingConverterSpec extends ObjectBehavior
     {
         $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
         $mappingData = json_decode(file_get_contents($filepath), true);
-        $clientMapping = new FranklinAttributeOptionsMapping($mappingData);
+        $clientMapping = new FranklinAttributeOptionsMapping($mappingData['mapping']);
 
         $pimAttributeOptionsMapping = $this
             ->clientToApplication('family_code', 'franklin_id', $clientMapping);

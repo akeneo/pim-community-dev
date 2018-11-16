@@ -48,7 +48,7 @@ class OptionsMappingSpec extends ObjectBehavior
     {
         $filepath = realpath(FakeClient::FAKE_PATH) . '/mapping/router/attributes/color/options.json';
         $content = json_decode(file_get_contents($filepath), true);
-        $this->beConstructedWith($content);
+        $this->beConstructedWith($content['mapping']);
 
         $this->getIterator()->shouldReturnAnInstanceOf(\ArrayIterator::class);
         foreach ($this->getIterator() as $item) {

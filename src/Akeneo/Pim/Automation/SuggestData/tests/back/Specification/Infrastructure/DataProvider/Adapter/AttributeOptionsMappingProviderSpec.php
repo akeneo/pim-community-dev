@@ -54,7 +54,7 @@ class AttributeOptionsMappingProviderSpec extends ObjectBehavior
         $strFranklinAttrId = 'franklin_attr_id';
         $api
             ->fetchByFamilyAndAttribute($strFamilyCode, $strFranklinAttrId)
-            ->willReturn(new OptionsMapping($mappingData));
+            ->willReturn(new OptionsMapping($mappingData['mapping']));
 
         $this
             ->getAttributeOptionsMapping(new FamilyCode($strFamilyCode), new FranklinAttributeId($strFranklinAttrId))

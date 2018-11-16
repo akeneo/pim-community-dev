@@ -54,6 +54,7 @@ class AttributeOptionsMapping extends BaseForm {
   private familyCode: string;
   private catalogAttributeCode: string;
   private franklinAttributeLabel: string;
+  private franklinAttributeCode: string;
 
   /**
    * {@inheritdoc}
@@ -138,6 +139,18 @@ class AttributeOptionsMapping extends BaseForm {
   }
 
   /**
+   * Sets the Franklin attribute code
+   *
+   * @param {string} franklinAttributeCode
+   * @return AttributeOptionsMapping
+   */
+  public setFranklinAttributeCode(franklinAttributeCode: string): AttributeOptionsMapping {
+    this.franklinAttributeCode = franklinAttributeCode;
+
+    return this;
+  }
+
+  /**
    * @returns {{ [ status: number ]: string }}
    */
   private getMappingStatuses() {
@@ -158,7 +171,7 @@ class AttributeOptionsMapping extends BaseForm {
     return $.when(
       FetcherRegistry
         .getFetcher('attribute-options-mapping')
-        .fetch(this.familyCode, {attributeCode: this.catalogAttributeCode, cached: false})
+        .fetch(this.familyCode, {franklinAttributeCode: this.franklinAttributeCode, cached: false})
         .then((attributeOptionMapping: NormalizedAttributeOptionsMapping) => {
           return attributeOptionMapping;
         }),
