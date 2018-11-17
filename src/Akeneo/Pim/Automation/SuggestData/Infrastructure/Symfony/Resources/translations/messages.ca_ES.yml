@@ -1,4 +1,9 @@
 akeneo_suggest_data:
+  acl:
+    suggest_data:
+      index: Subscripció de productes en massa a Franklin Insights
+    settings:
+      mapping: Gestionar la configuració de Franklin Insights
   acl_group:
     suggest_data: Configuració de les estadístiques de Franklin
   mapping_identifier:

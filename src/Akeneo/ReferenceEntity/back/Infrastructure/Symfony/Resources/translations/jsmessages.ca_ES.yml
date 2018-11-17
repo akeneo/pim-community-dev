@@ -1,14 +1,18 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Crear una nova entitat
+  akeneo_reference_entities_reference_entity_edit: Editar una entitat de referència
   akeneo_reference_entities_record_edit: Editar un registre
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Eliminar la imatge
+        download: Descarregar imatge
         upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       small:
         remove: Eliminar
         download: Descarregar
+        upload: Arrossegar i deixar anar per carregar
   reference_entity:
     validation:
       code:
@@ -31,6 +35,10 @@ pim_reference_entity:
       image: Imatge
     attribute:
       title: Registre atributs
+      attribute:
+        error:
+          render_list: 'S''ha produït un error durant la representació de l''atribut "{{ %attribute_code% }}"'
+          render_edit: 'S''ha produït un error durant la representació dels camps addicionals de propietat de l''atribut "{{ %attribute_code% }}"'
     module:
       delete:
         button: Eliminar entitat
@@ -139,6 +147,8 @@ pim_reference_entity:
       image: Imatge
       record: Enllaç simple de l'entitat de referència
       record_collection: Enllaç múltiple d'entitat de referència
+      option: Opció
+      option_collection: Col·lecció d'opció
     is_required: necessaris per a la integritat
     no_data:
       title: No hi ha atributs personalitzats per {{ entityLabel }}
@@ -160,12 +170,14 @@ pim_reference_entity:
       confirm: Desar
     edit:
       delete: Eliminar l'atribut
+      title: Editar atribut {{ code }}
       save: Desar
       cancel: Cancelar
       input:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
+        record_type: Entitat de referència relacionat
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
         is_required: Necessaris per a la integritat
@@ -216,3 +228,6 @@ pim_enrich:
           akeneo_reference_entity: Enllaç simple de l'entitat de referència
         section:
           type_specific: Escriu els paràmetres específics
+        reference_entity:
+          identifier: Entitat de referència relacionat
+          default_label: Si us plau, selecciona una entitat de referència

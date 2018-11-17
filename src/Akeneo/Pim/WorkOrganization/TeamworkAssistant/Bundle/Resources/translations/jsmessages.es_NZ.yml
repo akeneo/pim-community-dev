@@ -1,0 +1,66 @@
+teamwork_assistant:
+  common:
+    required: Required
+    warning: Don't worry, project calculation may take a while, so your project may not be visible right away.
+  grid:
+    view_selector:
+      create: Create project
+      edit: Edit project
+      remove: Delete project
+      create_from_view: Create a project from this view
+      start_new_project: Start a new project
+      confirmation:
+        remove: Are you sure you want to delete this project?
+      projects: Projects
+  project:
+    label: Name
+    locale: Locale
+    label_maxlength: This value is too long. It should have {{ max }} characters or less.
+    description: Description
+    due_date: Due Date
+    due_date_past: You can't select a date in the past.
+    leaving_scope: You're leaving project scope.
+  edit_project_modal:
+    saved: The project has been saved.
+    title: Edit project
+  create_project_modal:
+    saved: The project has been saved, you will be notified when the calculation is done.
+    title: Create project
+  widget:
+    no_project: You have no current project
+    no_project_create: create a new project
+    description: Description
+    due_date: Due date
+    todo: TODO
+    in_progress: IN PROGRESS
+    done: DONE
+    all_contributors: All contributors
+    display_products: Display products
+    placeholder:
+      contributor_selector: Search contributor
+      project_selector: Search project
+    completeness:
+      to_start: PRODUCTS TO START
+      in_progress: PRODUCTS IN PROGRESS
+      done: PRODUCTS DONE
+pim_datagrid:
+  view_selector:
+    project: Projects
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Teamwork Assistant
+        project_calculation: Teamwork Assistant
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Project calculation
+    prepare_project_calculation.label: Prepare the project calculation
+    clean_contributor_group.label: Check users permission on project's locale
+  refresh_project_completeness_calculation:
+    label: Refresh project completeness
+    refresh_project_completeness_calculation.label: Refresh project completeness
+pim_notification:
+  types:
+    project_created: A new project for you
+    project_finished: Project finished
