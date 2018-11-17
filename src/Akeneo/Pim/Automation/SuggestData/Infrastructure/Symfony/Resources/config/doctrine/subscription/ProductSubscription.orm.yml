@@ -1,4 +1,4 @@
-Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription:
+Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription:
     type: entity
     table: pim_suggest_data_product_subscription
     changeTrackingPolicy: DEFERRED_EXPLICIT
