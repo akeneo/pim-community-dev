@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
@@ -22,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscript
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -35,32 +35,29 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
-
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
 
     /** @var IdentifiersMapping */
     private $identifiersMapping;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param SubscriptionProviderInterface $subscriptionProvider
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->subscriptionProvider = $subscriptionProvider;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
@@ -70,7 +67,6 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function initialize(): void
     {
-        $this->dataProvider = $this->dataProviderFactory->create();
         $this->identifiersMapping = $this->identifiersMappingRepository->find();
     }
 
@@ -87,11 +83,23 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
      */
     public function write(array $items): void
     {
-        $collection = $this->dataProvider->bulkSubscribe($items);
+        $collection = $this->subscriptionProvider->bulkSubscribe($items);
+        $warnings = $collection->warnings();
 
         foreach ($items as $item) {
-            $response = $collection->get($item->getProduct()->getId());
+            $productId = $item->getProduct()->getId();
+            $response = $collection->get($productId);
             if (null === $response) {
+                if (isset($warnings[$productId])) {
+                    // TODO: ask POs for error message
+                    $this->stepExecution->addWarning(
+                        'An error was returned by Franklin during subscription: %error%',
+                        ['%error%' => $warnings[$productId]],
+                        new DataInvalidItem(
+                            ['identifier' => $item->getProduct()->getIdentifier()]
+                        )
+                    );
+                }
                 continue;
             }
 

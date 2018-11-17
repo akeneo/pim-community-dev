@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
@@ -28,19 +28,19 @@ class SearchFamiliesHandler
     /** @var FamilySearchableRepositoryInterface */
     private $familyRepository;
 
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var AttributesMappingProviderInterface */
+    private $attributesMappingProvider;
 
     /**
      * @param FamilySearchableRepositoryInterface $familyRepository
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AttributesMappingProviderInterface $attributesMappingProvider
      */
     public function __construct(
         FamilySearchableRepositoryInterface $familyRepository,
-        DataProviderFactory $dataProviderFactory
+        AttributesMappingProviderInterface $attributesMappingProvider
     ) {
         $this->familyRepository = $familyRepository;
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->attributesMappingProvider = $attributesMappingProvider;
     }
 
     /**
@@ -50,8 +50,6 @@ class SearchFamiliesHandler
      */
     public function handle(SearchFamiliesQuery $getFamiliesQuery): FamilyCollection
     {
-        $dataProvider = $this->dataProviderFactory->create();
-
         $families = $this->familyRepository->findBySearch(
             $getFamiliesQuery->getPage(),
             $getFamiliesQuery->getLimit(),
@@ -67,7 +65,7 @@ class SearchFamiliesHandler
                 $labels[$translation->getLocale()] = $translation->getLabel();
             }
 
-            $attributesMappingResponse = $dataProvider->getAttributesMapping($family->getCode());
+            $attributesMappingResponse = $this->attributesMappingProvider->getAttributesMapping($family->getCode());
             $familyCollection->add(
                 new Family(
                     $family->getCode(),

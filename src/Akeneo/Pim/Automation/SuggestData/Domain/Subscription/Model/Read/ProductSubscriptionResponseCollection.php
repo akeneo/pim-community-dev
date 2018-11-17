@@ -21,6 +21,17 @@ final class ProductSubscriptionResponseCollection
     /** @var ProductSubscriptionResponse[] */
     private $responses = [];
 
+    /** @var array */
+    private $warnings = [];
+
+    /**
+     * @param array $warnings
+     */
+    public function __construct(array $warnings)
+    {
+        $this->warnings = $warnings;
+    }
+
     /**
      * @param ProductSubscriptionResponse $response
      */
@@ -37,5 +48,13 @@ final class ProductSubscriptionResponseCollection
     public function get(int $index): ?ProductSubscriptionResponse
     {
         return $this->responses[$index] ?? null;
+    }
+
+    /**
+     * @return array
+     */
+    public function warnings(): array
+    {
+        return $this->warnings;
     }
 }

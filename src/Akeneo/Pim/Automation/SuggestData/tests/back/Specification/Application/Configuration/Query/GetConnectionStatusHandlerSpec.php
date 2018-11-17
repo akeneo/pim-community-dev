@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
@@ -31,18 +30,16 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
 {
     public function let(
         ConfigurationRepositoryInterface $configurationRepository,
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        AuthenticationProviderInterface $authenticationProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ): void {
-        $this->beConstructedWith($configurationRepository, $dataProviderFactory, $identifiersMappingRepository);
-        $dataProviderFactory->create()->willReturn($dataProvider);
+        $this->beConstructedWith($configurationRepository, $authenticationProvider, $identifiersMappingRepository);
     }
 
     public function it_checks_that_a_connection_is_active(
         IdentifiersMapping $identifiersMapping,
         GetConnectionStatusQuery $query,
-        $dataProvider,
+        $authenticationProvider,
         $configurationRepository,
         $identifiersMappingRepository
     ): void {
@@ -50,7 +47,7 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $configuration->setToken(new Token('bar'));
 
         $configurationRepository->find()->willReturn($configuration);
-        $dataProvider->authenticate('bar')->willReturn(true);
+        $authenticationProvider->authenticate('bar')->willReturn(true);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isValid()->willReturn(false);
@@ -61,7 +58,7 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
     public function it_checks_that_a_connection_is_inactive(
         IdentifiersMapping $identifiersMapping,
         GetConnectionStatusQuery $query,
-        $dataProvider,
+        $authenticationProvider,
         $configurationRepository,
         $identifiersMappingRepository
     ): void {
@@ -69,7 +66,7 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $configuration->setToken(new Token('bar'));
 
         $configurationRepository->find()->willReturn($configuration);
-        $dataProvider->authenticate('bar')->willReturn(false);
+        $authenticationProvider->authenticate('bar')->willReturn(false);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isValid()->willReturn(false);

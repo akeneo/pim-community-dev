@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
@@ -24,21 +23,21 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
  */
 class GetAttributeOptionsMappingHandler
 {
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var AttributeOptionsMappingProviderInterface */
+    private $attributeOptionsMappingProvider;
 
     /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider
      * @param FamilyRepositoryInterface $familyRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        AttributeOptionsMappingProviderInterface $attributeOptionsMappingProvider,
         FamilyRepositoryInterface $familyRepository
     ) {
-        $this->dataProvider = $dataProviderFactory->create();
+        $this->attributeOptionsMappingProvider = $attributeOptionsMappingProvider;
         $this->familyRepository = $familyRepository;
     }
 
@@ -55,6 +54,9 @@ class GetAttributeOptionsMappingHandler
             );
         }
 
-        return $this->dataProvider->getAttributeOptionsMapping($query->familyCode(), $query->franklinAttributeId());
+        return $this->attributeOptionsMappingProvider->getAttributeOptionsMapping(
+            $query->familyCode(),
+            $query->franklinAttributeId()
+        );
     }
 }

@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject;
 
 /**
- * Encapsulates a raw subscription list API response returned by Franklin.
- *
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscriptionCollection implements \IteratorAggregate
+final class WarningCollection
 {
-    /** @var Subscription[] */
-    private $collection;
+    /** @var Warning[] */
+    private $collection = [];
 
     /**
      * @param array $rawApiResponse
@@ -33,23 +31,16 @@ class SubscriptionCollection implements \IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function getIterator(): \Traversable
+    public function toArray(): array
     {
-        return new \ArrayIterator($this->collection);
-    }
-
-    /**
-     * @return Subscription|null
-     */
-    public function first(): ?Subscription
-    {
-        if (!array_key_exists(0, $this->collection)) {
-            return null;
+        $warnings = [];
+        foreach ($this->collection as $warning) {
+            $warnings[$warning->trackerId()] = $warning->message();
         }
 
-        return $this->collection[0];
+        return $warnings;
     }
 
     /**
@@ -60,8 +51,8 @@ class SubscriptionCollection implements \IteratorAggregate
     private function buildCollection(array $rawApiResponse): array
     {
         $collection = [];
-        foreach ($rawApiResponse['_embedded']['subscription'] as $rawSubscription) {
-            $collection[] = new Subscription($rawSubscription);
+        foreach ($rawApiResponse['_embedded']['warnings'] as $rawSubscription) {
+            $collection[] = new Warning($rawSubscription);
         }
 
         return $collection;
@@ -74,10 +65,10 @@ class SubscriptionCollection implements \IteratorAggregate
      */
     private function validateResponseFormat(array $rawApiResponse): void
     {
-        if (!isset($rawApiResponse['_embedded']['subscription'])
-            || !is_array($rawApiResponse['_embedded']['subscription'])
+        if (!isset($rawApiResponse['_embedded']['warnings'])
+            || !is_array($rawApiResponse['_embedded']['warnings'])
         ) {
-            throw new \InvalidArgumentException('Missing "_embeded" and/or "subscription" keys in API response');
+            throw new \InvalidArgumentException('Missing "_embeded" and/or "warnings" keys in API response');
         }
     }
 }

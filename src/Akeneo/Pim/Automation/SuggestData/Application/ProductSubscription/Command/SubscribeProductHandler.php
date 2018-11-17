@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
@@ -38,8 +38,8 @@ class SubscribeProductHandler
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
@@ -47,18 +47,18 @@ class SubscribeProductHandler
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param DataProviderFactory $dataProviderFactory
+     * @param SubscriptionProviderInterface $subscriptionProvider
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
-        DataProviderFactory $dataProviderFactory,
+        SubscriptionProviderInterface $subscriptionProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->subscriptionProvider = $subscriptionProvider;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
@@ -80,14 +80,13 @@ class SubscribeProductHandler
     private function subscribe(ProductInterface $product): void
     {
         $subscriptionRequest = new ProductSubscriptionRequest($product);
-        $dataProvider = $this->dataProviderFactory->create();
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw new ProductSubscriptionException('No mapping defined');
         }
 
-        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
+        $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription(
             $product,
             $subscriptionResponse->getSubscriptionId(),

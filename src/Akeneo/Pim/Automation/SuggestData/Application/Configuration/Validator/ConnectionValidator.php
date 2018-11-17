@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
@@ -25,22 +24,22 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
  */
 class ConnectionValidator
 {
-    /** @var DataProviderInterface */
-    private $dataProvider;
-
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
+    /** @var AuthenticationProviderInterface */
+    private $authenticationProvider;
+
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AuthenticationProviderInterface $authenticationProvider
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        AuthenticationProviderInterface $authenticationProvider,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
-        $this->dataProvider = $dataProviderFactory->create();
         $this->configurationRepository = $configurationRepository;
+        $this->authenticationProvider = $authenticationProvider;
     }
 
     /**
@@ -52,7 +51,7 @@ class ConnectionValidator
      */
     public function isTokenValid(Token $token)
     {
-        return $this->dataProvider->authenticate($token);
+        return $this->authenticationProvider->authenticate($token);
     }
 
     /**

@@ -28,6 +28,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscri
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -167,8 +168,14 @@ class SubscriptionProviderSpec extends ObjectBehavior
                 'asin' => '987654321',
             ],
             42,
-            $normalizedFamily));
-        $subscriptionApi->subscribe($request)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
+            $normalizedFamily)
+        );
+        $subscriptionApi->subscribe($request)->willReturn(
+            new ApiResponse(
+                new SubscriptionCollection($this->fakeApiResponse()),
+                new WarningCollection($this->fakeApiResponse())
+            )
+        );
 
         $this
             ->subscribe($productSubscriptionRequest)
@@ -195,32 +202,31 @@ class SubscriptionProviderSpec extends ObjectBehavior
     }
 
     /**
-     * @return SubscriptionCollection
+     * @return array
      */
-    private function buildFakeApiResponse(): SubscriptionCollection
+    private function fakeApiResponse(): array
     {
-        return new SubscriptionCollection(
-            [
-                '_embedded' => [
-                    'subscription' => [
-                        0 => [
-                            'id' => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
-                            'identifiers' => [],
-                            'attributes' => [],
-                            'extra' => [
-                                'tracker_id' => 42,
-                                'family' => [
-                                    'code' => 'laptop',
-                                    'label' => ['en_US' => 'Laptop'],
-                                ],
+        return [
+            '_embedded' => [
+                'subscription' => [
+                    0 => [
+                        'id' => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
+                        'identifiers' => [],
+                        'attributes' => [],
+                        'extra' => [
+                            'tracker_id' => 42,
+                            'family' => [
+                                'code' => 'laptop',
+                                'label' => ['en_US' => 'Laptop'],
                             ],
-                            'mapped_identifiers' => [],
-                            'mapped_attributes' => [],
-                            'misses_mapping' => false,
                         ],
+                        'mapped_identifiers' => [],
+                        'mapped_attributes' => [],
+                        'misses_mapping' => false,
                     ],
                 ],
-            ]
-        );
+                'warnings' => [],
+            ],
+        ];
     }
 }

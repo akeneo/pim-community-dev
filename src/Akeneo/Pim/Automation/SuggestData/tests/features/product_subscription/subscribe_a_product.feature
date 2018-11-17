@@ -72,8 +72,15 @@ Feature: Subscribe a product to Franklin
 #    When I subscribe the product "fake" to Franklin
 #    Then the product "fake" should not be subscribed
 
-  #Scenario: Fail to subscribe a product that has an incorrect UPC
-  # wrong UPC format
+  Scenario: Fail to subscribe a product with an invalid upc
+    Given Franklin is configured with a valid token
+    And the product "invalidupc" of the family "router"
+    And a predefined mapping as follows:
+      | franklin_code | attribute_code |
+      | upc           | pim_upc        |
+    When I subscribe the product "invalidupc" to Franklin
+    Then the product "invalidupc" should not be subscribed
+    And a Franklin subscription error message should be sent
 
   Scenario: Fail to subscribe a product that does not have MPN and Brand filled together
     Given Franklin is configured with a valid token
