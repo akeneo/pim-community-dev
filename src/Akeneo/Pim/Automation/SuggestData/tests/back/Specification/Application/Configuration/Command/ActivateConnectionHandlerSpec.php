@@ -16,9 +16,9 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configurat
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\ActivateConnectionHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -27,8 +27,8 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
  */
 class SaveAttributeOptionsMappingHandler
 {
-    /** @var DataProviderFactory */
-    private $dataProviderFactory;
+    /** @var AttributeOptionsMappingProviderInterface */
+    private $mappingProvider;
 
     /** @var FamilyRepositoryInterface */
     private $familyRepository;
@@ -40,18 +40,18 @@ class SaveAttributeOptionsMappingHandler
     private $attributeOptionRepository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AttributeOptionsMappingProviderInterface $mappingProvider
      * @param FamilyRepositoryInterface $familyRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributeOptionRepositoryInterface $attributeOptionRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        AttributeOptionsMappingProviderInterface $mappingProvider,
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository
     ) {
-        $this->dataProviderFactory = $dataProviderFactory;
+        $this->mappingProvider = $mappingProvider;
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
@@ -74,8 +74,7 @@ class SaveAttributeOptionsMappingHandler
             ));
         }
 
-        $dataProvider = $this->dataProviderFactory->create();
-        $dataProvider->saveAttributeOptionsMapping(
+        $this->mappingProvider->saveAttributeOptionsMapping(
             $command->familyCode(),
             $command->franklinAttributeId(),
             $attributeOptionsMapping

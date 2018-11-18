@@ -20,9 +20,14 @@ class SubscriptionCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(SubscriptionCollection::class);
     }
 
+    public function it_is_iterable(): void
+    {
+        $this->shouldImplement(\IteratorAggregate::class);
+    }
+
     public function it_returns_a_collection_of_subscription(): void
     {
-        $subscriptions = $this->getSubscriptions();
+        $subscriptions = $this->getIterator()->getArrayCopy();
         $subscriptions->shouldBeArray();
         $subscriptions->shouldHaveCount(2);
         $subscriptions[0]->shouldBeAnInstanceOf(Subscription::class);
@@ -31,7 +36,7 @@ class SubscriptionCollectionSpec extends ObjectBehavior
 
     public function it_returns_the_first_subscription(): void
     {
-        $this->getFirst()->shouldReturnAnInstanceOf(Subscription::class);
+        $this->first()->shouldReturnAnInstanceOf(Subscription::class);
     }
 
     public function it_throws_an_exception_if_the_validation_fails(): void
@@ -43,11 +48,6 @@ class SubscriptionCollectionSpec extends ObjectBehavior
         ];
         $this->beConstructedWith($subscriptions);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
-    public function it_is_countable()
-    {
-        return $this->shouldImplement(\Countable::class);
     }
 
     private function buildApiResponse()

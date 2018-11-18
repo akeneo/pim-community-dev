@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Value
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class SubscriptionCollection implements \Countable
+class SubscriptionCollection implements \IteratorAggregate
 {
     /** @var Subscription[] */
     private $collection;
@@ -33,31 +33,23 @@ class SubscriptionCollection implements \Countable
     }
 
     /**
-     * @return Subscription[]
+     * {@inheritdoc}
      */
-    public function getSubscriptions(): array
+    public function getIterator(): \Traversable
     {
-        return $this->collection;
+        return new \ArrayIterator($this->collection);
     }
 
     /**
      * @return Subscription|null
      */
-    public function getFirst(): ?Subscription
+    public function first(): ?Subscription
     {
         if (!array_key_exists(0, $this->collection)) {
             return null;
         }
 
         return $this->collection[0];
-    }
-
-    /**
-     * @return int
-     */
-    public function count()
-    {
-        return count($this->collection);
     }
 
     /**

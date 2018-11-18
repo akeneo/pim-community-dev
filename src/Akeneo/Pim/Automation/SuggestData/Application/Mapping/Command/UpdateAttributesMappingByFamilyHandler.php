@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
@@ -29,22 +28,22 @@ class UpdateAttributesMappingByFamilyHandler
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var AttributesMappingProviderInterface */
+    private $attributesMappingProvider;
 
     /**
      * @param FamilyRepositoryInterface $familyRepository
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AttributesMappingProviderInterface $attributesMappingProvider
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        DataProviderFactory $dataProviderFactory
+        AttributesMappingProviderInterface $attributesMappingProvider
     ) {
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->dataProvider = $dataProviderFactory->create();
+        $this->attributesMappingProvider = $attributesMappingProvider;
     }
 
     /**
@@ -54,7 +53,10 @@ class UpdateAttributesMappingByFamilyHandler
     {
         $this->validate($command);
 
-        $this->dataProvider->updateAttributesMapping($command->getFamilyCode(), $command->getAttributesMapping());
+        $this->attributesMappingProvider->updateAttributesMapping(
+            $command->getFamilyCode(),
+            $command->getAttributesMapping()
+        );
     }
 
     /**

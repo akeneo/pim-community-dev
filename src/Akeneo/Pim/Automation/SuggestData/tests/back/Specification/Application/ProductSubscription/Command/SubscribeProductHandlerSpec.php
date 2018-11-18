@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -28,13 +27,13 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     public function let(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        DataProviderFactory $dataProviderFactory,
+        SubscriptionProviderInterface $subscriptionProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ): void {
         $this->beConstructedWith(
             $productRepository,
             $subscriptionRepository,
-            $dataProviderFactory,
+            $subscriptionProvider,
             $identifiersMappingRepository
         );
     }
@@ -91,10 +90,9 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     }
 
     public function it_subscribes_a_product_to_the_data_provider(
+        $subscriptionProvider,
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue,
@@ -112,9 +110,8 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $response = new ProductSubscriptionResponse(42, 'test-id', [], false);
-        $dataProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
+        $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();
 

@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 
 /**
  * Handles a FetchProducts command.
@@ -27,21 +26,21 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepos
  */
 class FetchProductsHandler
 {
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
 
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param SubscriptionProviderInterface $subscriptionProvider
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory,
+        SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository
     ) {
-        $this->dataProvider = $dataProviderFactory->create();
+        $this->subscriptionProvider = $subscriptionProvider;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
     }
 
@@ -52,7 +51,7 @@ class FetchProductsHandler
     {
         // TODO: Calculate last date (from command or fetch from repository) APAI-170
 
-        foreach ($this->dataProvider->fetch() as $subscriptionResponse) {
+        foreach ($this->subscriptionProvider->fetch() as $subscriptionResponse) {
             $subscription = $this->productSubscriptionRepository->findOneByProductId(
                 $subscriptionResponse->getProductId()
             );

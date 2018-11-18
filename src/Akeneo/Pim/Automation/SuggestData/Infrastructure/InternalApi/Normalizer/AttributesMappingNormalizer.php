@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -33,7 +33,7 @@ class AttributesMappingNormalizer
                 'franklinAttribute' => [
                     'label' => $attribute->getTargetAttributeLabel(),
                     'type' => $attribute->getTargetAttributeType(),
-                    'summary' => $attribute->getSummary(),
+                    'summary' => $attribute->getSummary() ?? [],
                 ],
                 'attribute' => $attribute->getPimAttributeCode(),
                 'status' => $attribute->getStatus(),

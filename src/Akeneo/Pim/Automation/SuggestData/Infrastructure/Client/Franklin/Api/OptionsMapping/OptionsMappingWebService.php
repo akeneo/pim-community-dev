@@ -37,11 +37,10 @@ class OptionsMappingWebService extends AbstractApi implements OptionsMappingInte
         try {
             $response = $this->httpClient->request('GET', $route);
             $responseData = json_decode($response->getBody()->getContents(), true);
-            if (null === $responseData) {
-                throw new FranklinServerException();
-            }
 
-            return new OptionsMapping($responseData);
+            $this->validateResponseData($responseData);
+
+            return new OptionsMapping($responseData['mapping']);
         } catch (ServerException | FranklinServerException $e) {
             throw new FranklinServerException(
                 sprintf(
@@ -76,5 +75,21 @@ class OptionsMappingWebService extends AbstractApi implements OptionsMappingInte
         $this->httpClient->request('PUT', $route, [
             'form_params' => $attributeOptionsMapping,
         ]);
+    }
+
+    /**
+     * @param $responseData
+     *
+     * @throws FranklinServerException
+     */
+    private function validateResponseData($responseData): void
+    {
+        if (null === $responseData) {
+            throw new FranklinServerException();
+        }
+
+        if (!array_key_exists('mapping', $responseData)) {
+            throw new FranklinServerException();
+        }
     }
 }

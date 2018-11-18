@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -24,19 +23,21 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
  */
 class GetAttributesMappingByFamilyHandler
 {
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var AttributesMappingProviderInterface */
+    private $attributesMappingProvider;
 
     /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AttributesMappingProviderInterface $attributesMappingProvider
      * @param FamilyRepositoryInterface $familyRepository
      */
-    public function __construct(DataProviderFactory $dataProviderFactory, FamilyRepositoryInterface $familyRepository)
-    {
-        $this->dataProvider = $dataProviderFactory->create();
+    public function __construct(
+        AttributesMappingProviderInterface $attributesMappingProvider,
+        FamilyRepositoryInterface $familyRepository
+    ) {
+        $this->attributesMappingProvider = $attributesMappingProvider;
         $this->familyRepository = $familyRepository;
     }
 
@@ -49,7 +50,7 @@ class GetAttributesMappingByFamilyHandler
     {
         $this->ensureFamilyExists($query->getFamilyCode());
 
-        return $this->dataProvider->getAttributesMapping($query->getFamilyCode());
+        return $this->attributesMappingProvider->getAttributesMapping($query->getFamilyCode());
     }
 
     /**

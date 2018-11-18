@@ -343,7 +343,8 @@ class AttributeMapping extends BaseView {
         .setFamilyLabel(familyLabel)
         .setFamilyCode(familyCode)
         .setFranklinAttributeLabel(franklinAttributeLabel)
-        .setCatalogAttributeCode(catalogAttributeCode);
+        .setCatalogAttributeCode(catalogAttributeCode)
+        .setFranklinAttributeCode(franklinAttributeCode);
 
       this.listenTo(form, 'pim_enrich:form:entity:post_save', this.closeAttributeOptionsMappingModal.bind(this));
 

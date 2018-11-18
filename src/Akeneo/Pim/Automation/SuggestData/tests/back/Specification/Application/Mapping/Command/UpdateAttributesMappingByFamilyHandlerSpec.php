@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
@@ -33,12 +32,9 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     public function let(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider
+        AttributesMappingProviderInterface $attributesMappingProvider
     ): void {
-        $this->beConstructedWith($familyRepository, $attributeRepository, $dataProviderFactory);
-
-        $dataProviderFactory->create()->willReturn($dataProvider);
+        $this->beConstructedWith($familyRepository, $attributeRepository, $attributesMappingProvider);
     }
 
     public function it_is_initializabel(): void
@@ -106,7 +102,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         AttributeMapping $attributeMapping,
         AttributeInterface $attribute,
-        DataProviderInterface $dataProvider
+        $attributesMappingProvider
     ): void {
         $command->getFamilyCode()->willReturn('router');
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
@@ -122,7 +118,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_multiselect');
 
         $attributeMapping->setAttribute($attribute)->shouldBeCalled();
-        $dataProvider->updateAttributesMapping('router', [$attributeMapping])->shouldBeCalled();
+        $attributesMappingProvider->updateAttributesMapping('router', [$attributeMapping])->shouldBeCalled();
 
         $this->handle($command);
     }

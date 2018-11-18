@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
@@ -37,19 +36,17 @@ use Prophecy\Argument;
 class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
+        AttributeOptionsMappingProviderInterface $mappingProvider,
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        DataProviderInterface $dataProvider,
         AttributeOptionRepositoryInterface $attributeOptionRepository
     ): void {
         $this->beConstructedWith(
-            $dataProviderFactory,
+            $mappingProvider,
             $familyRepository,
             $attributeRepository,
             $attributeOptionRepository
         );
-        $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
     public function it_is_initializabel(): void
@@ -61,7 +58,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $attributeOptionRepository,
-        $dataProvider,
+        $mappingProvider,
         FamilyInterface $family,
         AttributeInterface $attribute,
         AttributeOptionInterface $attributeOption1,
@@ -77,7 +74,7 @@ class SaveAttributeOptionsMappingHandlerSpec extends ObjectBehavior
             $attributeOption2,
         ]);
 
-        $dataProvider->saveAttributeOptionsMapping(
+        $mappingProvider->saveAttributeOptionsMapping(
             Argument::type(FamilyCode::class),
             Argument::type(FranklinAttributeId::class),
             Argument::type(AttributeOptionsMapping::class)

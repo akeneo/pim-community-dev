@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Proposal\ValueObject\ProposalSuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSuggestedData;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>

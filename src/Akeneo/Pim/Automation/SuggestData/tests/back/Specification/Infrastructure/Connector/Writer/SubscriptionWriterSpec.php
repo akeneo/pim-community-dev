@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\SubscriptionWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -37,16 +37,14 @@ use Prophecy\Argument;
 class SubscriptionWriterSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        SubscriptionProviderInterface $subscriptionProvider,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         StepExecution $stepExecution,
         IdentifiersMapping $identifiersMapping
     ): void {
-        $dataProviderFactory->create()->willReturn($dataProvider);
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $this->beConstructedWith($dataProviderFactory, $productSubscriptionRepository, $identifiersMappingRepository);
+        $this->beConstructedWith($subscriptionProvider, $productSubscriptionRepository, $identifiersMappingRepository);
         $this->setStepExecution($stepExecution);
         $this->initialize();
     }
@@ -67,7 +65,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
     }
 
     public function it_subscribes_items(
-        $dataProvider,
+        $subscriptionProvider,
         $productSubscriptionRepository,
         $identifiersMapping,
         $stepExecution,
@@ -86,14 +84,57 @@ class SubscriptionWriterSpec extends ObjectBehavior
             new ProductSubscriptionRequest($product2->getWrappedObject()),
         ];
 
-        $collection = new ProductSubscriptionResponseCollection();
+        $collection = new ProductSubscriptionResponseCollection([]);
         $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false));
         $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
 
-        $dataProvider->bulkSubscribe($items)->willReturn($collection);
+        $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
         $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(2);
         $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(2);
+
+        $this->write($items)->shouldReturn(null);
+    }
+
+    public function it_handles_warnings_returned_during_subscription(
+        $subscriptionProvider,
+        $productSubscriptionRepository,
+        $identifiersMapping,
+        $stepExecution,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        AttributeInterface $upc
+    ): void {
+        $upc->getCode()->willReturn('pim_upc');
+
+        $identifiersMapping->getIterator()->willReturn(new \ArrayIterator(['pim_upc' => $upc]));
+
+        $product1->getId()->willReturn(42);
+        $product1->getIdentifier()->willReturn('sku_for_my_invalid_upc');
+
+        $product2->getId()->willReturn(50);
+
+        $items = [
+            new ProductSubscriptionRequest($product1->getWrappedObject()),
+            new ProductSubscriptionRequest($product2->getWrappedObject()),
+        ];
+
+        $collection = new ProductSubscriptionResponseCollection([
+            42 => 'Invalid UPC: \'123456\'',
+        ]);
+        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
+
+        $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
+        $stepExecution->addWarning(
+            'An error was returned by Franklin during subscription: %error%',
+            ['%error%' => 'Invalid UPC: \'123456\''],
+            new DataInvalidItem([
+                'identifier' => 'sku_for_my_invalid_upc',
+            ])
+        )->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('subscribed')->shouldBeCalledTimes(1);
+        $productSubscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalledTimes(1);
 
         $this->write($items)->shouldReturn(null);
     }

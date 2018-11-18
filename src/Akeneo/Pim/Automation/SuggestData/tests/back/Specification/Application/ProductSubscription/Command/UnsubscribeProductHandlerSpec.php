@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use PhpSpec\ObjectBehavior;
 
 class UnsubscribeProductHandlerSpec extends ObjectBehavior
 {
     public function let(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider
+        SubscriptionProviderInterface $subscriptionProvider
     ): void {
         $this->beConstructedWith(
             $subscriptionRepository,
-            $dataProviderFactory
+            $subscriptionProvider
         );
-        $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
     public function it_is_an_unsubscribe_product_handler(): void
@@ -46,7 +43,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
 
     public function it_unsubscribes_the_product_and_deletes_the_subscription(
         $subscriptionRepository,
-        $dataProvider,
+        $subscriptionProvider,
         ProductSubscription $subscription
     ): void {
         $productId = 42;
@@ -55,7 +52,7 @@ class UnsubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository->findOneByProductId($productId)->willReturn($subscription);
         $subscription->getSubscriptionId()->willReturn($subscriptionId);
 
-        $dataProvider->unsubscribe($subscriptionId)->shouldBeCalled();
+        $subscriptionProvider->unsubscribe($subscriptionId)->shouldBeCalled();
         $subscriptionRepository->delete($subscription)->shouldBeCalled();
 
         $command = new UnsubscribeProductCommand($productId);

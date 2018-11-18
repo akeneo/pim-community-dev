@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\F
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +49,7 @@ class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInter
                 throw new FranklinServerException('Empty response');
             }
 
-            return new ApiResponse($response->getStatusCode(), new SubscriptionCollection($content));
+            return new ApiResponse(new SubscriptionCollection($content), new WarningCollection($content));
         } catch (ServerException | FranklinServerException $e) {
             throw new FranklinServerException(sprintf(
                 'Something went wrong on Franklin side during product subscription: %s',

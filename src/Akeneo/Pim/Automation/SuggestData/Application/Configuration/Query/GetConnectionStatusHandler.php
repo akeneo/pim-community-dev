@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\ConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
@@ -30,25 +29,25 @@ class GetConnectionStatusHandler
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
-    /** @var DataProviderInterface */
-    private $dataProvider;
+    /** @var AuthenticationProviderInterface */
+    private $authenticationProvider;
 
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param DataProviderFactory $dataProviderFactory
+     * @param AuthenticationProviderInterface $authenticationProvider
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        DataProviderFactory $dataProviderFactory,
+        AuthenticationProviderInterface $authenticationProvider,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
         $this->configurationRepository = $configurationRepository;
-        $this->dataProvider = $dataProviderFactory->create();
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->authenticationProvider = $authenticationProvider;
     }
 
     /**
@@ -61,7 +60,7 @@ class GetConnectionStatusHandler
         if (!$configuration->getToken() instanceof Token) {
             return new ConnectionStatus(false, $identifiersMapping->isValid());
         }
-        $isActive = $this->dataProvider->authenticate($configuration->getToken());
+        $isActive = $this->authenticationProvider->authenticate($configuration->getToken());
 
         return new ConnectionStatus($isActive, $identifiersMapping->isValid());
     }

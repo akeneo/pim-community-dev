@@ -38,6 +38,9 @@ class FakeClient implements ClientInterface
     /** @var bool */
     private $hasCredits = true;
 
+    /** @var bool */
+    private $serverIsDown = false;
+
     /** @var string */
     private $lastFetchDate;
 
@@ -66,8 +69,13 @@ class FakeClient implements ClientInterface
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {
-        // Clean base uri
+        // Remove base uri
         $uri = str_replace($this->uriGenerator->getBaseUri() . '/api/', '', $uri);
+
+        // Simulates that Franklin server is down
+        if ($this->serverIsDown) {
+            return new \GuzzleHttp\Psr7\Response(Response::HTTP_GATEWAY_TIMEOUT);
+        }
 
         if ('stats' === $uri) {
             return $this->authenticate($method, $uri, $options);
@@ -126,6 +134,14 @@ class FakeClient implements ClientInterface
     public function defineLastFetchDate(string $lastFetchDate): void
     {
         $this->lastFetchDate = $lastFetchDate;
+    }
+
+    /**
+     * Define the server as down.
+     */
+    public function makeTheServerDown(): void
+    {
+        $this->serverIsDown = true;
     }
 
     /**

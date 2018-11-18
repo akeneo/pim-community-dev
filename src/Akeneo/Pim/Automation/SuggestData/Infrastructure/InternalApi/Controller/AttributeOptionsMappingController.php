@@ -51,15 +51,15 @@ class AttributeOptionsMappingController
 
     /**
      * @param string $identifier
-     * @param string $attributeCode
+     * @param string $franklinAttributeCode
      *
      * @return JsonResponse
      */
-    public function getAction(string $identifier, string $attributeCode): JsonResponse
+    public function getAction(string $identifier, string $franklinAttributeCode): JsonResponse
     {
         $query = new GetAttributeOptionsMappingQuery(
             new FamilyCode($identifier),
-            new FranklinAttributeId($attributeCode)
+            new FranklinAttributeId($franklinAttributeCode)
         );
         $attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle($query);
 

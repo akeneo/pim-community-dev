@@ -1,7 +1,4 @@
 services:
-    akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer'
-
     akeneo.pim.automation.suggest_data.normalizers.suggested_data:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
@@ -9,14 +6,8 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@akeneo_measure.measure_converter'
 
-    akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.family:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer'
-
     akeneo.pim.automation.suggest_data.normalizers.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer'
-
-    akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.attributes_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer'
 
     akeneo.pim.automation.suggest_data.normalizers.families:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer'

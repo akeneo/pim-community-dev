@@ -61,15 +61,17 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
     public function it_fetches_attribute_options_mapping($uriGenerator, $httpClient, $response, $stream): void
     {
         $fakeData = [
-            [
-                'from' => ['id' => 'color_1', 'label' => ['en_US' => 'Color 1']],
-                'to' => null,
-                'status' => 'pending',
-            ],
-            [
-                'from' => ['id' => 'color_2', 'label' => ['en_US' => 'Color 2']],
-                'to' => ['id' => 'pim_color'],
-                'status' => 'active',
+            'mapping' => [
+                [
+                    'from' => ['id' => 'color_1', 'label' => ['en_US' => 'Color 1']],
+                    'to' => null,
+                    'status' => 'pending',
+                ],
+                [
+                    'from' => ['id' => 'color_2', 'label' => ['en_US' => 'Color 2']],
+                    'to' => ['id' => 'pim_color'],
+                    'status' => 'active',
+                ],
             ],
         ];
         $uriGenerator->generate('/api/mapping/foo/attributes/bar/options')->willReturn('foo');
@@ -89,6 +91,23 @@ class OptionsMappingWebServiceSpec extends ObjectBehavior
     ): void {
         $response->getBody()->willReturn($stream);
         $stream->getContents()->willReturn('');
+
+        $uriGenerator->generate('/api/mapping/foo/attributes/bar/options')->willReturn('foo');
+        $httpClient->request('GET', 'foo')->willReturn($response);
+
+        $this
+            ->shouldThrow(FranklinServerException::class)
+            ->during('fetchByFamilyAndAttribute', ['foo', 'bar']);
+    }
+
+    public function it_throws_a_server_exception_when_there_is_no_mapping_key(
+        $uriGenerator,
+        $httpClient,
+        $response,
+        $stream
+    ): void {
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn(json_encode([]));
 
         $uriGenerator->generate('/api/mapping/foo/attributes/bar/options')->willReturn('foo');
         $httpClient->request('GET', 'foo')->willReturn($response);

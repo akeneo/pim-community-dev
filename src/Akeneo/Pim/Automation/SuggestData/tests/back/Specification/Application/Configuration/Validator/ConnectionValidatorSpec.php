@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -27,13 +26,10 @@ use PhpSpec\ObjectBehavior;
 class ConnectionValidatorSpec extends ObjectBehavior
 {
     public function let(
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
+        AuthenticationProviderInterface $authenticationProvider,
         ConfigurationRepositoryInterface $configurationRepository
     ): void {
-        $dataProviderFactory->create()->willReturn($dataProvider);
-
-        $this->beConstructedWith($dataProviderFactory, $configurationRepository);
+        $this->beConstructedWith($authenticationProvider, $configurationRepository);
     }
 
     public function it_is_a_connection_validator(): void
@@ -41,46 +37,46 @@ class ConnectionValidatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ConnectionValidator::class);
     }
 
-    public function it_returns_true_if_a_token_is_valid($dataProvider): void
+    public function it_returns_true_if_a_token_is_valid($authenticationProvider): void
     {
         $token = new Token('valid-token');
-        $dataProvider->authenticate($token)->willReturn(true);
+        $authenticationProvider->authenticate($token)->willReturn(true);
 
         $this->isTokenValid($token)->shouldReturn(true);
     }
 
-    public function it_returns_false_if_a_token_is_invalid($dataProvider): void
+    public function it_returns_false_if_a_token_is_invalid($authenticationProvider): void
     {
         $token = new Token('invalid-token');
-        $dataProvider->authenticate($token)->willReturn(false);
+        $authenticationProvider->authenticate($token)->willReturn(false);
 
         $this->isTokenValid($token)->shouldReturn(false);
     }
 
     public function it_returns_true_if_the_current_saved_token_is_valid(
         $configurationRepository,
-        $dataProvider
+        $authenticationProvider
     ): void {
         $token = new Token('valid-token');
         $configuration = new Configuration();
         $configuration->setToken($token);
         $configurationRepository->find()->willReturn($configuration);
 
-        $dataProvider->authenticate($token)->willReturn(true);
+        $authenticationProvider->authenticate($token)->willReturn(true);
 
         $this->isValid()->shouldReturn(true);
     }
 
     public function it_returns_false_if_the_current_save_token_is_invalid(
         $configurationRepository,
-        $dataProvider
+        $authenticationProvider
     ): void {
         $token = new Token('invalid-token');
         $configuration = new Configuration();
         $configuration->setToken($token);
         $configurationRepository->find()->willReturn($configuration);
 
-        $dataProvider->authenticate($token)->willReturn(false);
+        $authenticationProvider->authenticate($token)->willReturn(false);
 
         $this->isValid()->shouldReturn(false);
     }

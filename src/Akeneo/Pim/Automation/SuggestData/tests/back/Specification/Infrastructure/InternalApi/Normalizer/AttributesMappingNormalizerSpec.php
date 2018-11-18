@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\AttributesMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 
@@ -46,6 +46,35 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                     'label' => 'Product Weight',
                     'type' => 'metric',
                     'summary' => ['23kg', '12kg'],
+                ],
+                'attribute' => null,
+                'status' => AttributeMapping::ATTRIBUTE_PENDING,
+            ],
+        ];
+
+        $this->normalize($attributesMapping)->shouldReturn($expectedMapping);
+    }
+
+    public function it_normalizes_null_summary_as_empty_array(): void
+    {
+        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping->addAttribute(
+            new AttributeMapping(
+                'product_weight',
+                'Product Weight',
+                'metric',
+                null,
+                AttributeMapping::ATTRIBUTE_PENDING,
+                null
+            )
+        );
+
+        $expectedMapping = [
+            'product_weight' => [
+                'franklinAttribute' => [
+                    'label' => 'Product Weight',
+                    'type' => 'metric',
+                    'summary' => [],
                 ],
                 'attribute' => null,
                 'status' => AttributeMapping::ATTRIBUTE_PENDING,

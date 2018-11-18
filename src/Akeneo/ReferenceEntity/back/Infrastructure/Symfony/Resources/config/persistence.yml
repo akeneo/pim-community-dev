@@ -85,7 +85,10 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier:
-        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindConnectorReferenceEntityByReferenceEntityIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
@@ -200,6 +203,11 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator
+        arguments:
+            - '@database_connection'
 
     akeneo_referenceentity.infrastructure.persistence.record.hydrator.value:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator

@@ -26,7 +26,7 @@ final class ProductSubscriptionException extends \Exception
      */
     public static function invalidToken(): ProductSubscriptionException
     {
-        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_token'));
+        return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_token'), 422);
     }
 
     /**
@@ -59,5 +59,13 @@ final class ProductSubscriptionException extends \Exception
     public static function invalidMappedValues(): ProductSubscriptionException
     {
         return new static(sprintf(static::CONSTRAINT_KEY, 'invalid_mapped_values'));
+    }
+
+    /**
+     * @return ProductSubscriptionException
+     */
+    public static function dataProviderError(): ProductSubscriptionException
+    {
+        return new static(sprintf(static::CONSTRAINT_KEY, 'data_provider_error'));
     }
 }
