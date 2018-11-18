@@ -15,12 +15,10 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connect
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\CreateProposalsTasklet;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

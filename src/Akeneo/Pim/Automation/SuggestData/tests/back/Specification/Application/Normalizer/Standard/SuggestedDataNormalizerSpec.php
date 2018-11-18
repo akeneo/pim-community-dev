@@ -7,7 +7,6 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
@@ -35,8 +34,6 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $attributeRepository,
         $measureConverter,
         $attributeOptionRepository,
-        AttributeOptionInterface $option1,
-        AttributeOptionInterface $option2,
         AttributeInterface $attribute
     ): void {
         $suggestedData = [
@@ -46,11 +43,11 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ],
             [
                 'pimAttributeCode' => 'bar',
-                'value' => '0',
+                'value' => 'No',
             ],
             [
                 'pimAttributeCode' => 'baz',
-                'value' => 'option1,option2',
+                'value' => ['option1', 'option2'],
             ],
             [
                 'pimAttributeCode' => 'processor',
@@ -68,13 +65,11 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
         $attributeOptionRepository
             ->findCodesByIdentifiers('baz', ['option1', 'option2'])
-            ->willReturn([$option1, $option2]);
-
-        $option1->getCode()->willReturn('option1');
-        $option2->getCode()->willReturn('option3');
+            ->willReturn(['option1', 'option2']);
 
         $attribute->getMetricFamily()->willReturn('Frequency');
         $attribute->getDefaultMetricUnit()->willReturn('MEGAHERTZ');
+        $attribute->isDecimalsAllowed()->willReturn(false);
         $attributeRepository->findOneByIdentifier('processor')->willReturn($attribute);
 
         $measureConverter->setFamily('Frequency')->shouldBeCalled();
@@ -108,7 +103,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                         'scope' => null,
                         'locale' => null,
                         'data' => [
-                            'amount' => '1000',
+                            'amount' => 1000,
                             'unit' => 'MEGAHERTZ',
                         ],
                     ],
@@ -122,8 +117,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
-            ['pimAttributeCode' => 'bar', 'value' => '0'],
-            ['pimAttributeCode' => 'baz', 'value' => 'option1,option2'],
+            ['pimAttributeCode' => 'bar', 'value' => 'No'],
+            ['pimAttributeCode' => 'baz', 'value' => ['option1', 'option2']],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -158,7 +153,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
-            ['pimAttributeCode' => 'bar', 'value' => '0'],
+            ['pimAttributeCode' => 'bar', 'value' => 'No'],
             ['pimAttributeCode' => 'baz', 'value' => 'option1'],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
@@ -168,7 +163,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                 'baz' => 'pim_catalog_simpleselect',
             ]
         );
-        $attributeOptionRepository->findCodesByIdentifiers('baz', ['option1'])->willReturn([]);
+        $attributeOptionRepository->findOneByIdentifier('baz.option1')->willReturn(null);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -196,8 +191,8 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
-            ['pimAttributeCode' => 'bar', 'value' => '0'],
-            ['pimAttributeCode' => 'baz', 'value' => 'option1,option2'],
+            ['pimAttributeCode' => 'bar', 'value' => 'No'],
+            ['pimAttributeCode' => 'baz', 'value' => ['option1', 'option2']],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -230,14 +225,12 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_suggested_data_ignoring_multi_select_options_that_do_not_exist(
         $attributeRepository,
-        $attributeOptionRepository,
-        AttributeOptionInterface $option1,
-        AttributeOptionInterface $option3
+        $attributeOptionRepository
     ): void {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
-            ['pimAttributeCode' => 'bar', 'value' => '0'],
-            ['pimAttributeCode' => 'baz', 'value' => 'option1,option2,option3'],
+            ['pimAttributeCode' => 'bar', 'value' => 'No'],
+            ['pimAttributeCode' => 'baz', 'value' => ['option1', 'option2', 'option3']],
         ];
         $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
             [
@@ -248,10 +241,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         );
         $attributeOptionRepository
             ->findCodesByIdentifiers('baz', ['option1', 'option2', 'option3'])
-            ->willReturn([$option1, $option3]);
-
-        $option1->getCode()->willReturn('option_is_1');
-        $option3->getCode()->willReturn('option_is_3');
+            ->willReturn(['option1', 'option3']);
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
@@ -273,7 +263,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
                     [
                         'scope' => null,
                         'locale' => null,
-                        'data' => ['option_is_1', 'option_is_3'],
+                        'data' => ['option1', 'option3'],
                     ],
                 ],
             ]
