@@ -54,4 +54,33 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
         $this->normalize($attributesMapping)->shouldReturn($expectedMapping);
     }
+
+    public function it_normalizes_null_summary_as_empty_array(): void
+    {
+        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping->addAttribute(
+            new AttributeMapping(
+                'product_weight',
+                'Product Weight',
+                'metric',
+                null,
+                AttributeMapping::ATTRIBUTE_PENDING,
+                null
+            )
+        );
+
+        $expectedMapping = [
+            'product_weight' => [
+                'franklinAttribute' => [
+                    'label' => 'Product Weight',
+                    'type' => 'metric',
+                    'summary' => [],
+                ],
+                'attribute' => null,
+                'status' => AttributeMapping::ATTRIBUTE_PENDING,
+            ],
+        ];
+
+        $this->normalize($attributesMapping)->shouldReturn($expectedMapping);
+    }
 }
