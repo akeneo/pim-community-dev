@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryI
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributesMappingProvider;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -28,10 +27,9 @@ class AttributesMappingProviderSpec extends ObjectBehavior
 {
     public function let(
         AttributesMappingApiInterface $api,
-        AttributesMappingNormalizer $normalizer,
         ConfigurationRepositoryInterface $configurationRepo
     ): void {
-        $this->beConstructedWith($api, $normalizer, $configurationRepo);
+        $this->beConstructedWith($api, $configurationRepo);
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
         $configurationRepo->find()->willReturn($configuration);
@@ -75,15 +73,13 @@ class AttributesMappingProviderSpec extends ObjectBehavior
         $attributesMappingResponse->shouldHaveCount(2);
     }
 
-    public function it_updates_attributes_mapping($api, $normalizer): void
+    public function it_updates_attributes_mapping($api): void
     {
         $api->setToken(Argument::type('string'))->shouldBeCalled();
         $familyCode = 'foobar';
-        $attributesMapping = ['foo' => 'bar'];
-        $normalizedMapping = ['bar' => 'foo'];
+        $attributesMapping = [];
 
-        $normalizer->normalize($attributesMapping)->willReturn($normalizedMapping);
-        $api->update($familyCode, $normalizedMapping)->shouldBeCalled();
+        $api->update($familyCode, Argument::any())->shouldBeCalled();
 
         $this->updateAttributesMapping($familyCode, $attributesMapping);
     }

@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\IdentifiersMappingProvider;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -28,10 +27,9 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
 {
     public function let(
         IdentifiersMappingApiInterface $api,
-        IdentifiersMappingNormalizer $normalizer,
         ConfigurationRepositoryInterface $configurationRepo
     ): void {
-        $this->beConstructedWith($api, $normalizer, $configurationRepo);
+        $this->beConstructedWith($api, $configurationRepo);
 
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
@@ -44,13 +42,12 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $this->shouldImplement(IdentifiersMappingProviderInterface::class);
     }
 
-    public function it_updates_the_identifiers_mapping($api, $normalizer, IdentifiersMapping $mapping): void
+    public function it_updates_the_identifiers_mapping($api, IdentifiersMapping $mapping): void
     {
         $api->setToken(Argument::type('string'))->shouldBeCalled();
-        $normalizedMapping = ['foo' => 'bar'];
+        $mapping->getIdentifiers()->willReturn([]);
 
-        $normalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
-        $api->update($normalizedMapping)->shouldBeCalled();
+        $api->update(Argument::any())->shouldBeCalled();
 
         $this->updateIdentifiersMapping($mapping);
     }

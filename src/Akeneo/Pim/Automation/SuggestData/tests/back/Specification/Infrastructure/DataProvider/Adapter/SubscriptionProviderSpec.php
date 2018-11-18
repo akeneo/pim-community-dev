@@ -29,7 +29,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscri
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -45,7 +44,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
 {
     public function let(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        FamilyNormalizer $familyNormalizer,
         SubscriptionApiInterface $subscriptionApi,
         ConfigurationRepositoryInterface $configurationRepo
     ): void {
@@ -55,7 +53,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $identifiersMappingRepository,
-            $familyNormalizer,
             $subscriptionApi,
             $configurationRepo
         );
@@ -118,7 +115,6 @@ class SubscriptionProviderSpec extends ObjectBehavior
     public function it_subscribes_product_to_franklin(
         $identifiersMappingRepository,
         $subscriptionApi,
-        $familyNormalizer,
         ProductInterface $product,
         AttributeInterface $ean,
         AttributeInterface $sku,
@@ -149,17 +145,11 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $eanValue->__toString()->willReturn('123456789');
         $skuValue->__toString()->willReturn('987654321');
 
-        $normalizedFamily = [
-            'code' => 'tshirt',
-            'label' => [
-                'en_US' => 'T-shirt',
-                'fr_FR' => 'T-shirt',
-            ],
-        ];
-        $familyNormalizer->normalize($family)->willReturn($normalizedFamily);
-
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
+
+        $family->getTranslations()->willReturn([]);
+        $family->getCode()->willReturn('a_family');
 
         $request = new RequestCollection();
         $request->add(new Request(
@@ -168,8 +158,11 @@ class SubscriptionProviderSpec extends ObjectBehavior
                 'asin' => '987654321',
             ],
             42,
-            $normalizedFamily)
-        );
+            [
+                'code' => 'a_family',
+                'label' => [],
+            ]
+        ));
         $subscriptionApi->subscribe($request)->willReturn(
             new ApiResponse(
                 new SubscriptionCollection($this->fakeApiResponse()),

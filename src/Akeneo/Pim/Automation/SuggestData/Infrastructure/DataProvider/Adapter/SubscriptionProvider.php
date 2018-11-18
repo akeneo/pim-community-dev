@@ -42,28 +42,22 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var FamilyNormalizer */
-    private $familyNormalizer;
-
     /** @var SubscriptionApiInterface */
     private $api;
 
     /**
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param FamilyNormalizer $familyNormalizer
      * @param SubscriptionApiInterface $api
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        FamilyNormalizer $familyNormalizer,
         SubscriptionApiInterface $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);
 
         $this->identifiersMappingRepository = $identifiersMappingRepository;
-        $this->familyNormalizer = $familyNormalizer;
         $this->api = $api;
     }
 
@@ -172,8 +166,8 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
         if (empty($mapped)) {
             throw ProductSubscriptionException::invalidMappedValues();
         }
-
-        $familyInfos = $this->familyNormalizer->normalize($product->getFamily());
+        $normalizer = new FamilyNormalizer();
+        $familyInfos = $normalizer->normalize($product->getFamily());
 
         return new Request($mapped, $product->getId(), $familyInfos);
     }

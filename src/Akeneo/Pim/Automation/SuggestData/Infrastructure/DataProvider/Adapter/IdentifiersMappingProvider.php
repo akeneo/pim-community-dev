@@ -27,23 +27,17 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
     /** @var IdentifiersMappingApiInterface */
     private $api;
 
-    /** @var IdentifiersMappingNormalizer */
-    private $normalizer;
-
     /**
      * @param IdentifiersMappingApiInterface $api
-     * @param IdentifiersMappingNormalizer $normalizer
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         IdentifiersMappingApiInterface $api,
-        IdentifiersMappingNormalizer $normalizer,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);
 
         $this->api = $api;
-        $this->normalizer = $normalizer;
     }
 
     /**
@@ -52,6 +46,8 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
         $this->api->setToken($this->getToken());
-        $this->api->update($this->normalizer->normalize($identifiersMapping));
+        $normalizer = new IdentifiersMappingNormalizer();
+
+        $this->api->update($normalizer->normalize($identifiersMapping));
     }
 }
