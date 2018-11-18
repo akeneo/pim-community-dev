@@ -30,6 +30,7 @@ class AkeneoSuggestDataBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $productMappings = [
+            realpath(__DIR__ . '/Resources/config/doctrine/subscription') => 'Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model',
             realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model',
         ];
         $container->addCompilerPass(

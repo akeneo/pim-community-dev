@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -48,7 +48,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getSummary()->shouldReturn(['Hair care']);
     }
 
-    public function it_can_have_null_target_label_and_summery(): void
+    public function it_can_have_null_target_label_and_summary(): void
     {
         $this->beConstructedWith(
             'series',
