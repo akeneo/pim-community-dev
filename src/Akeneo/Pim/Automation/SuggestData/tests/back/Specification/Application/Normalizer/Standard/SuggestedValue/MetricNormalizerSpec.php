@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedValue;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedValue\MetricNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedValue;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;

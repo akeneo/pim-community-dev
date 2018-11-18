@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedValue;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedValue;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedValue;
 
 /**
  * Normalizes a suggested value to Akeneo standard format for text, textarea, identifier and date attribute types.
