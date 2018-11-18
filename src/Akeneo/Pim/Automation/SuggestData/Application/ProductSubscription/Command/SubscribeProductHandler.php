@@ -15,11 +15,11 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Comm
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 

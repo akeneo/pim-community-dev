@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>

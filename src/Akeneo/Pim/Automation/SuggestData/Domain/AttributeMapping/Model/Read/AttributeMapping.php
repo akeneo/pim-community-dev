@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -42,7 +42,7 @@ class AttributeMapping
     /** @var string */
     private $targetAttributeType;
 
-    /** @var string[] */
+    /** @var null|string[] */
     private $summary;
 
     /**
@@ -51,7 +51,7 @@ class AttributeMapping
      * @param string $targetAttributeType
      * @param null|string $pimAttributeCode
      * @param int $status
-     * @param string[] $summary
+     * @param null|string[] $summary
      */
     public function __construct(
         string $targetAttributeCode,
@@ -59,7 +59,7 @@ class AttributeMapping
         string $targetAttributeType,
         ?string $pimAttributeCode,
         int $status,
-        array $summary
+        ?array $summary
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
         $this->targetAttributeLabel = $targetAttributeLabel;
@@ -110,9 +110,9 @@ class AttributeMapping
     }
 
     /**
-     * @return string[]
+     * @return null|string[]
      */
-    public function getSummary(): array
+    public function getSummary(): ?array
     {
         return $this->summary;
     }

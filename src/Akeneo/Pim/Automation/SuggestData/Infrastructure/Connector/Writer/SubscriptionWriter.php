@@ -15,12 +15,12 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;

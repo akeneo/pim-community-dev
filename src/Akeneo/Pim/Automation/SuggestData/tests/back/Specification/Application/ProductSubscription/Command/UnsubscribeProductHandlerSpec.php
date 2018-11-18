@@ -8,8 +8,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProvi
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use PhpSpec\ObjectBehavior;
 
 class UnsubscribeProductHandlerSpec extends ObjectBehavior

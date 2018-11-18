@@ -19,8 +19,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedV
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedValue\NumberNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedValue\SimpleSelectNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedValue\TextNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedValue;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;

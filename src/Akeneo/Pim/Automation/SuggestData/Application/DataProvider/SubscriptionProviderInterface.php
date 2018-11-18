@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponseCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
