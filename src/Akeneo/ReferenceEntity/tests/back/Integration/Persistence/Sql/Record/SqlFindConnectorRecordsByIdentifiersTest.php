@@ -169,6 +169,52 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_finds_records_from_a_list_of_identifiers_with_values_filtered_by_locales()
+    {
+        $this->loadRecords(['starck', 'dyson', 'newson']);
+        $this->loadRecords(['unexpected_record']);
+
+        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
+            ReferenceEntityIdentifier::fromString('designer'),
+            null,
+            100,
+            ChannelReference::createfromNormalized('ecommerce'),
+            [
+                LocaleReference::createFromNormalized('fr_FR')
+            ]
+        );
+        $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
+
+        $expectedConnectorRecords = [];
+        foreach (['dyson', 'newson', 'starck'] as $code) {
+            $imageInfo = (new FileInfo())
+                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
+                ->setKey(sprintf('test/image_%s.jpg', $code));
+
+            $expectedConnectorRecords[] = new ConnectorRecord(
+                RecordCode::fromString($code),
+                LabelCollection::fromArray(['fr_FR' => ucfirst($code)]),
+                Image::fromFileInfo($imageInfo),
+                [
+                    'name'  => [
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Nom: %s', $code),
+                        ]
+                    ]
+                ]
+            );
+        }
+
+        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers, $recordQuery);
+
+        $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_empty_array_if_no_records_found()
     {
         $this->loadRecords(['starck', 'dyson']);

@@ -52,3 +52,9 @@ Feature: Connection to e-commerce platforms and marketplaces
     When the connector requests all records of the Brand reference entity with their information in English
     Then the PIM returns 3 records of the Brand reference entity with the attribute values in English only
     And the labels in English only
+
+  @integration-back
+  Scenario: Notify about an error when getting the records of a reference entity with there attribute values of a provided locale that does not exist
+    Given the Brand reference entity with some records
+    When the connector requests all records of the Brand reference entity with the attribute values of a provided locale that does not exist
+    Then the PIM notifies the connector about an error indicating that the provided locale does not exist

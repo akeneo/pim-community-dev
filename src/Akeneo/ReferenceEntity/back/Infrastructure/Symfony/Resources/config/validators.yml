@@ -134,3 +134,10 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.channel.channel_should_exist' }
+
+    akeneo_referenceentity.infrastructure.validation.channel.locales_should_be_activated:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Locale\LocalesShouldBeActivatedValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.channel.locales_should_be_activated' }
