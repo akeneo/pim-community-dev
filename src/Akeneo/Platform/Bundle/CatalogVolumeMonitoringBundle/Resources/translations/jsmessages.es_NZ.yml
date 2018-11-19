@@ -1,0 +1,31 @@
+pim_catalog_volume:
+  product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
+  product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
+  section:
+    product_values:
+      hint: 'Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{link}}" target="_blank">browse this article</a>.'
+      title: Axes that leverage the number of product values
+    catalog_structure:
+      hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
+      title: Axes related to the catalog structure
+    variant_modelling:
+      hint: If you are using the variant modeling, here are the axes to help you monitor your volume.
+      title: Axes regarding the variant modeling
+  axis:
+    count_products: Products
+    average_max_attributes_per_family: Attributes per family
+    count_channels: Channels
+    count_locales: Locales (activated)
+    count_scopable_attributes: Scopable attributes
+    count_localizable_and_scopable_attributes: Localizable and scopable attributes
+    count_localizable_attributes: Localizable attributes
+    count_families: Families
+    count_attributes: Attributes
+    average_max_options_per_attribute: Options by attribute
+    count_categories: Categories
+    count_category_trees: Category trees
+    count_variant_products: Variant products
+    count_product_models: Product models
+    warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.
+  mean: 'Mean:'
+  max: 'Max:'
