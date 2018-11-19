@@ -4,10 +4,12 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 
 /**
  * Updated at management
+ * If the translation of the category is updated, the category itself is not considered as changed by Doctrine
  *
  * @author    Aurélien Lavorel <aurelien@lavoweb.net>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +25,7 @@ class CategoryTranslationSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'preUpdate'
+            Events::preUpdate
         ];
     }
 
