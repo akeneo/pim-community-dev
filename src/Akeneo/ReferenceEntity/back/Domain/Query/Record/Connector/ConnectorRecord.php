@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -55,5 +56,27 @@ class ConnectorRecord
             'values' => $this->normalizedValues,
             'main_image' => $this->image->isEmpty() ? null : $this->image->getKey()
         ];
+    }
+
+    public function getRecordWithValuesFilteredOnChannel(ChannelIdentifier $channelIdentifier): ConnectorRecord
+    {
+        $filteredValues = [];
+        foreach ($this->normalizedValues as $key => $normalizedValue) {
+            $filteredValue = array_filter($normalizedValue, function ($value) use ($channelIdentifier) {
+                return null === $value['channel']
+                    || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']));
+            });
+
+            if (!empty($filteredValue)) {
+                $filteredValues[$key] = $filteredValue;
+            }
+        }
+
+        return new self(
+            $this->code,
+            $this->labelCollection,
+            $this->image,
+            $filteredValues
+        );
     }
 }

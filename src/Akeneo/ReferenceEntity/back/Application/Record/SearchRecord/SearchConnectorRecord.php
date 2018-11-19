@@ -33,16 +33,16 @@ class SearchConnectorRecord
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindConnectorRecordsByIdentifiersInterface $findRecordItemsForIdentifiers
+        FindConnectorRecordsByIdentifiersInterface $findConnectorRecordsByIdentifiers
     ) {
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
-        $this->findConnectorRecordsByIdentifiers = $findRecordItemsForIdentifiers;
+        $this->findConnectorRecordsByIdentifiers = $findConnectorRecordsByIdentifiers;
     }
 
     public function __invoke(RecordQuery $query): array
     {
         $result = ($this->findIdentifiersForQuery)($query);
-        $records = empty($result) ? [] : ($this->findConnectorRecordsByIdentifiers)($result->identifiers);
+        $records = empty($result) ? [] : ($this->findConnectorRecordsByIdentifiers)($result->identifiers, $query);
 
         return $records;
     }

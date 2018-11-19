@@ -127,3 +127,10 @@ services:
             - '%reference_entity_option_limit_per_list_attribute%'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.record.attribute_options' }
+
+    akeneo_referenceentity.infrastructure.validation.channel.channel_should_exist:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExistValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.channel.channel_should_exist' }

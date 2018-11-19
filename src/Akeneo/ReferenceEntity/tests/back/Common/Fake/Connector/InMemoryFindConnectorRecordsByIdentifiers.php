@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -39,16 +40,26 @@ class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsB
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers): array
+    public function __invoke(array $identifiers, RecordQuery $recordQuery): array
     {
         $records = [];
 
         foreach ($identifiers as $identifier) {
             if (isset($this->recordsByIdentifier[$identifier])) {
-                $records[] = $this->recordsByIdentifier[$identifier];
+                $records[] = $this->filterRecordValues($this->recordsByIdentifier[$identifier], $recordQuery);
             }
         }
 
         return $records;
+    }
+
+    private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
+    {
+        $channelReference = $recordQuery->getChannelReferenceValuesFilter();
+        if (!$channelReference->isEmpty()) {
+            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
+        }
+
+        return $connectorRecord;
     }
 }

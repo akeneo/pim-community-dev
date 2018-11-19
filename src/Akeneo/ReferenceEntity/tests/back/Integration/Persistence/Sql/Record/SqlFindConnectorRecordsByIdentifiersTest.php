@@ -42,6 +42,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -78,10 +79,89 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['starck', 'dyson', 'newson']);
         $this->loadRecords(['unexpected_record']);
 
-        $expectedConnectorRecords = $this->createConnectorRecords(['dyson', 'newson', 'starck']);
+        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
+            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::noReference()
+        );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
-        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers);
+        $expectedConnectorRecords = [];
+        foreach (['dyson', 'newson', 'starck'] as $code) {
+            $imageInfo = (new FileInfo())
+                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
+                ->setKey(sprintf('test/image_%s.jpg', $code));
+
+            $expectedConnectorRecords[] = new ConnectorRecord(
+                RecordCode::fromString($code),
+                LabelCollection::fromArray(['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)]),
+                Image::fromFileInfo($imageInfo),
+                [
+                    'name'  => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Name: %s', $code),
+                        ],
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'print',
+                            'data'    => sprintf('Name: %s for print channel', $code),
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Nom: %s', $code),
+                        ]
+                    ]
+                ]
+            );
+        }
+
+        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers, $recordQuery);
+
+        $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_records_from_a_list_of_identifiers_with_values_filtered_by_channel()
+    {
+        $this->loadRecords(['starck', 'dyson', 'newson']);
+        $this->loadRecords(['unexpected_record']);
+
+        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
+            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::createfromNormalized('ecommerce')
+        );
+        $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
+
+        $expectedConnectorRecords = [];
+        foreach (['dyson', 'newson', 'starck'] as $code) {
+            $imageInfo = (new FileInfo())
+                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
+                ->setKey(sprintf('test/image_%s.jpg', $code));
+
+            $expectedConnectorRecords[] = new ConnectorRecord(
+                RecordCode::fromString($code),
+                LabelCollection::fromArray(['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)]),
+                Image::fromFileInfo($imageInfo),
+                [
+                    'name'  => [
+                        [
+                            'locale'  => 'en_US',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Name: %s', $code),
+                        ],
+                        [
+                            'locale'  => 'fr_FR',
+                            'channel' => 'ecommerce',
+                            'data'    => sprintf('Nom: %s', $code),
+                        ]
+                    ]
+                ]
+            );
+        }
+
+        $connectorRecordsFound = ($this->findConnectorRecordsQuery)($identifiers, $recordQuery);
 
         $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
     }
@@ -93,7 +173,11 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
     {
         $this->loadRecords(['starck', 'dyson']);
 
-        $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar']);
+        $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
+            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::noReference()
+        );
+
+        $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar'], $recordQuery);
         $this->assertSame([], $recordsFound);
     }
 
@@ -126,12 +210,14 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         ksort($recordValues);
 
         foreach ($recordValues as $attributeCode => $recordValue) {
-            foreach ($recordValue as $key => $value) {
-                if (is_array($value['data'])) {
-                    sort($value['data']);
-                    $recordValues[$attributeCode][$key] = $value['data'];
-                }
-            }
+            usort($recordValue, function ($firstValue, $secondValue) {
+                $firstData = is_array($firstValue['data']) ? implode(',', sort($firstValue['data'])) : $firstValue['data'];
+                $secondData = is_array($secondValue['data']) ? implode(',', sort($secondValue['data'])) : $secondValue['data'];
+
+                return strcasecmp($firstData, $secondData);
+            });
+
+            $recordValues[$attributeCode] = $recordValue;
         }
 
         return $recordValues;
@@ -165,6 +251,12 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
                     ),
                     Value::create(
                         AttributeIdentifier::fromString('name_designer_fingerprint'),
+                        ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('print')),
+                        LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                        TextData::fromString(sprintf('Name: %s for print channel', $code))
+                    ),
+                    Value::create(
+                        AttributeIdentifier::fromString('name_designer_fingerprint'),
                         ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                         TextData::fromString(sprintf('Nom: %s', $code))
@@ -189,43 +281,6 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->fileInfoSaver->save($fileInfo);
 
         return $fileInfo;
-    }
-
-    /**
-     * @param string[] $codes
-     *
-     * @return ConnectorRecord[]
-     */
-    private function createConnectorRecords(array $codes): array
-    {
-        $connectorRecords = [];
-        foreach ($codes as $code) {
-            $imageInfo = (new FileInfo())
-                ->setOriginalFilename(sprintf('image_%s.jpg', $code))
-                ->setKey(sprintf('test/image_%s.jpg', $code));
-
-            $connectorRecords[] = new ConnectorRecord(
-                RecordCode::fromString($code),
-                LabelCollection::fromArray(['en_US' => ucfirst($code), 'fr_FR' => ucfirst($code)]),
-                Image::fromFileInfo($imageInfo),
-                [
-                    'name'  => [
-                        [
-                            'locale'  => 'en_US',
-                            'channel' => 'ecommerce',
-                            'data'    => sprintf('Name: %s', $code),
-                        ],
-                        [
-                            'locale'  => 'fr_FR',
-                            'channel' => 'ecommerce',
-                            'data'    => sprintf('Nom: %s', $code),
-                        ]
-                    ]
-                ]
-            );
-        }
-
-        return $connectorRecords;
     }
 
     private function loadReferenceEntityWithAttributes(): void

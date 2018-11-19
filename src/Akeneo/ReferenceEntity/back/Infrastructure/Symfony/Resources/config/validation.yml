@@ -141,6 +141,13 @@ Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEn
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldExist: ~
 
+Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
+    properties:
+        channelReferenceValuesFilter:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExist:
+                  payload:
+                      standardPropertyName: channel
+
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:

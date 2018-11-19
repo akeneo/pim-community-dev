@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
@@ -50,6 +51,14 @@ class RecordQuery
     /** @var string */
     private $paginationMethod;
 
+    /**
+     * If defined, the record values will be filtered by the given channel.
+     * The values without channel will not be filtered.
+     *
+     * @var ChannelReference
+     */
+    private $channelReferenceValuesFilter;
+
     private function __construct(
         ?ChannelIdentifier $channel,
         ?LocaleIdentifier $locale,
@@ -57,7 +66,8 @@ class RecordQuery
         ?int $page,
         int $size,
         ?RecordCode $searchAfterCode,
-        string $paginationMethod
+        string $paginationMethod,
+        ChannelReference $channelReferenceValuesFilter
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -81,6 +91,7 @@ class RecordQuery
 
         $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = $paginationMethod;
+        $this->channelReferenceValuesFilter = $channelReferenceValuesFilter;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -102,14 +113,16 @@ class RecordQuery
             $normalizedQuery['page'],
             $normalizedQuery['size'],
             null,
-            self::PAGINATE_USING_OFFSET
+            self::PAGINATE_USING_OFFSET,
+            ChannelReference::noReference()
         );
     }
 
-    public static function createPaginatedUsingSearchAfter(
+    public static function createPaginatedQueryUsingSearchAfter(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,
-        int $size
+        int $size,
+        ChannelReference $channelReferenceValuesFilter
     ): RecordQuery {
         $filters = [
             [
@@ -126,7 +139,8 @@ class RecordQuery
             null,
             $size,
             $searchAfterCode,
-            self::PAGINATE_USING_SEARCH_AFTER
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $channelReferenceValuesFilter
         );
     }
 
@@ -187,5 +201,10 @@ class RecordQuery
     public function isPaginatedUsingSearchAfter()
     {
         return $this->paginationMethod === self::PAGINATE_USING_SEARCH_AFTER;
+    }
+
+    public function getChannelReferenceValuesFilter(): ChannelReference
+    {
+        return $this->channelReferenceValuesFilter;
     }
 }
