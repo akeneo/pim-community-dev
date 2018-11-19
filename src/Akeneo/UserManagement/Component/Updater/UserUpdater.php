@@ -88,7 +88,8 @@ class UserUpdater implements ObjectUpdaterInterface
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         string $fileStorageFolder,
-        ?IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
+        ?IdentifiableObjectRepositoryInterface $categoryAssetRepository = null,
+        string ...$properties
     ) {
         $this->userManager = $userManager;
         $this->categoryRepository = $categoryRepository;
