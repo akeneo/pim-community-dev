@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_reference_entities_reference_entity_rest_connector_index",
+    "route": "akeneo_reference_entities_reference_entities_rest_connector_get",
     "query": {
       "search_after": "reference_entity_3"
     }

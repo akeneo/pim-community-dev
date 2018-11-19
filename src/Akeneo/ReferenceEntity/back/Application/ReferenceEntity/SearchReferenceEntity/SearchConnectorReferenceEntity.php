@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -12,36 +13,32 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\SearchReferenceEntity;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\SearchReferenceEntityResult;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
-
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 
 /**
- * This service takes a reference entity search query and will return a collection of reference entity items.
+ * This service takes a reference entity search query and will return a list of connector reference entities
  *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class SearchConnectorReferenceEntity
 {
     /** @var FindConnectorReferenceEntityItemsInterface */
-    private $findConnectorReferenceEntityItemsQuery;
+    private $findConnectorReferenceEntityItems;
 
     public function __construct(
-        FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItemsQuery
+        FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems
     ) {
-        $this->findConnectorReferenceEntityItemsQuery = $findConnectorReferenceEntityItemsQuery;
+        $this->findConnectorReferenceEntityItems = $findConnectorReferenceEntityItems;
     }
 
-    public function __invoke(ReferenceEntityQuery $query): SearchReferenceEntityResult
+    public function __invoke(ReferenceEntityQuery $query): array
     {
-        $records = ($this->findConnectorReferenceEntityItemsQuery)();
+        $result = ($this->findConnectorReferenceEntityItems)($query);
+        // @TODO - This returns empty ?
+        $records = empty($result) ? [] : ($this->findConnectorReferenceEntityItems)($query);
 
-        $queryResult = new SearchReferenceEntityResult();
-        $queryResult->total = $result->total;
-        $queryResult->items = $records;
-
-        return $queryResult;
+        return $records;
     }
 }

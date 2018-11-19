@@ -46,7 +46,7 @@ services:
         arguments:
         - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
         - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
-        - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier'
+        - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items'
         - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
         tags:
         - { name: fob.context_service }

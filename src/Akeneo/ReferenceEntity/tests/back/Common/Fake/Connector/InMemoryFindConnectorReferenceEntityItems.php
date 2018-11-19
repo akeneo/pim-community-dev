@@ -38,6 +38,7 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
      * {@inheritdoc}
      */
     public function __invoke(): array {
+        var_dump('RESULTS INSIDE INMEMORY', count($this->results));
         return $this->results ?? null;
     }
 }

@@ -76,15 +76,14 @@ class GetConnectorReferenceEntitiesAction
         }
 
         $referenceEntities = ($this->searchConnectorReferenceEntity)($referenceEntityQuery);
-        var_dump($referenceEntities);
- /*       $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
+        $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
             return $referenceEntity->normalize();
         }, $referenceEntities);
 
         $referenceEntities = ($this->addHalLinksToImageValues)($referenceEntities);
-        $paginatedRecords = $this->paginateReferenceEntities($referenceEntities, $searchAfter);*/
+        $paginatedRecords = $this->paginateReferenceEntities($referenceEntities, $searchAfter);
 
-        return new JsonResponse([]);
+        return new JsonResponse($paginatedRecords);
     }
 
     private function paginateReferenceEntities(array $records, ?string $searchAfter): array
@@ -101,7 +100,7 @@ class GetConnectorReferenceEntitiesAction
                 'next' => $lastRecordCode
             ],
             'limit'               => $this->limit->intValue(),
-            'item_identifier_key' => 'code',
+            'item_identifier_key' => 'identifier',
             'uri_parameters'      => [],
             'query_parameters'    => [],
         ];

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityItems;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -24,8 +24,6 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorRefer
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
-use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
 class GetConnectorReferenceEntitiesContext implements Context
@@ -38,7 +36,7 @@ class GetConnectorReferenceEntitiesContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier */
+    /** @var InMemoryFindConnectorReferenceEntityItems */
     private $findConnectorReferenceEntity;
 
     /** @var ReferenceEntityRepositoryInterface */
@@ -50,7 +48,7 @@ class GetConnectorReferenceEntitiesContext implements Context
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifier $findConnectorReferenceEntity,
+        InMemoryFindConnectorReferenceEntityItems $findConnectorReferenceEntity,
         ReferenceEntityRepositoryInterface $referenceEntityRepository
     ) {
         $this->clientFactory = $clientFactory;
@@ -64,7 +62,7 @@ class GetConnectorReferenceEntitiesContext implements Context
      */
     public function referenceEntitiesInThePIM()
     {
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $rawIdentifier = sprintf('%s_%d', 'reference_entity', $i);
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
 
@@ -118,6 +116,7 @@ class GetConnectorReferenceEntitiesContext implements Context
      */
     public function thePIMReturnsTheReferenceEntitiesOfThePIM()
     {
+        var_dump($this->referenceEntityPages);
         for ($page = 1; $page <= 4; $page++) {
             Assert::keyExists($this->referenceEntityPages, $page, sprintf('The page %d has not been loaded', $page));
             $this->webClientHelper->assertJsonFromFile(

@@ -145,4 +145,3 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\EventSubscriberStub
         tags:
             - { name: kernel.event_subscriber }
-    class:
