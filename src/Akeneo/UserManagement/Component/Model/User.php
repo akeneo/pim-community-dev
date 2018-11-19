@@ -160,6 +160,9 @@ class User implements UserInterface
     /** @var bool Be notified when the user's proposal has been accepted or rejected */
     protected $proposalsStateNotification = true;
 
+    /** @var array $property bag for proporties extension */
+    private $properties = [];
+
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -1187,5 +1190,23 @@ class User implements UserInterface
         $this->proposalsStateNotification = $proposalsStateNotification;
 
         return $this;
+    }
+
+    /**
+     * @param string $propertyName
+     * @param string $propertyValue
+     */
+    public function addProperty(string $propertyName, string $propertyValue): void
+    {
+        $this->properties[$propertyName] = $propertyValue;
+    }
+
+    public function getProperty(string $propertyName): string
+    {
+        if (!isset($this->properties[$propertyName])) {
+            throw new \InvalidArgumentException(sprintf('The property %s does not exist', $propertyName));
+        }
+
+        return $this->properties[$propertyName];
     }
 }
