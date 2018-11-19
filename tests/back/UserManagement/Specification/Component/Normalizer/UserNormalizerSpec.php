@@ -23,6 +23,6 @@ class UserNormalizerSpec extends ObjectBehavior
 
     function it_is_user_normalizer()
     {
-        $this->normalize()->shouldReturn([])
+        $this->normalize()->shouldReturn([]);
     }
 }
