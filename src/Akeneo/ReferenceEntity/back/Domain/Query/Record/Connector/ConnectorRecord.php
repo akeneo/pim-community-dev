@@ -58,7 +58,7 @@ class ConnectorRecord
         ];
     }
 
-    public function filterValuesByChannel(ChannelIdentifier $channelIdentifier): ConnectorRecord
+    public function getRecordWithValuesFilteredOnChannel(ChannelIdentifier $channelIdentifier): ConnectorRecord
     {
         $filteredValues = [];
         foreach ($this->normalizedValues as $key => $normalizedValue) {

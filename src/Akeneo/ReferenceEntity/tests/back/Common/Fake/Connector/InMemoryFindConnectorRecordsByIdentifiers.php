@@ -57,7 +57,7 @@ class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsB
     {
         $channelReference = $recordQuery->getChannelReferenceValuesFilter();
         if (!$channelReference->isEmpty()) {
-            $connectorRecord = $connectorRecord->filterValuesByChannel($channelReference->getIdentifier());
+            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
         }
 
         return $connectorRecord;

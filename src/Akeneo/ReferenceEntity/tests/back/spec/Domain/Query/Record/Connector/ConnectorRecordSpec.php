@@ -97,7 +97,7 @@ class ConnectorRecordSpec extends ObjectBehavior
          ]);
      }
 
-     function it_filters_values_by_channel()
+     function it_returns_a_record_with_values_filtered_on_channel()
      {
          $recordCode = RecordCode::fromString('starck');
          $labelCollection = LabelCollection::fromArray([
@@ -162,6 +162,6 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          );
 
-         $this->filterValuesByChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedRecord);
+         $this->getRecordWithValuesFilteredOnChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedRecord);
      }
 }
