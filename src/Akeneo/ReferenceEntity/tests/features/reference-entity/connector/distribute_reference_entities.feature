@@ -17,6 +17,6 @@ Feature: Connection to e-commerce platforms and marketplaces
 
   @integration-back
   Scenario: Get all the reference entities
-    Given 50 reference entities in the PIM
+    Given 7 reference entities in the PIM
     When the connector requests all reference entities of the PIM
-    Then the PIM returns the 50 reference entities of the PIM
+    Then the PIM returns the 7 reference entities of the PIM

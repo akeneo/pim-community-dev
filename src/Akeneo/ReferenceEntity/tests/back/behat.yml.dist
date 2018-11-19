@@ -28,6 +28,7 @@ default:
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_records_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.not_found_reference_entity_context
                 - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_reference_entity_context
+                - akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_reference_entities_context
             filters:
                 tags: '@integration-back'
     extensions:
