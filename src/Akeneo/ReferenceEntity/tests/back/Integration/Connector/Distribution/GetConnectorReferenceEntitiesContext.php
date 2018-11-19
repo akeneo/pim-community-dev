@@ -26,6 +26,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 class GetConnectorReferenceEntitiesContext implements Context
 {
@@ -45,9 +46,6 @@ class GetConnectorReferenceEntitiesContext implements Context
 
     /** @var array */
     private $referenceEntityPages;
-
-    /** @var null|Response */
-    private $existentReferenceEntity;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -116,11 +114,11 @@ class GetConnectorReferenceEntitiesContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the 7 reference entities of the PIM$/
+     * @Then /^the PIM returns the [\d]+ reference entities of the PIM$/
      */
     public function thePIMReturnsTheReferenceEntitiesOfThePIM()
     {
-        for ($page = 1; $page <= 7; $page++) {
+        for ($page = 1; $page <= 4; $page++) {
             Assert::keyExists($this->referenceEntityPages, $page, sprintf('The page %d has not been loaded', $page));
             $this->webClientHelper->assertJsonFromFile(
                 $this->referenceEntityPages[$page],
