@@ -5,7 +5,7 @@ confirmation:
     association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
-    family: Oletko varma, että haluat poistaa tämän ryhmän?
+    family: Oletko varma, että haluat poistaa tämän perheen?
     family_variant: Oletko varma, että haluat poistaa tämän varianttiperheen?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
     product_model: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.

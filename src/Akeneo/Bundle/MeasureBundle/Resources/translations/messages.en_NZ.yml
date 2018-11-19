@@ -12,7 +12,7 @@ SQUARE_FURLONG: Square furlong
 SQUARE_HECTOMETER: Square hectometre
 SQUARE_INCH: Square inch
 SQUARE_KILOMETER: Square kilometre
-SQUARE_METER: Square meter
+SQUARE_METER: Square metre
 SQUARE_MIL: Square mil
 SQUARE_MILE: Square mile
 SQUARE_MILLIMETER: Square millimetre
@@ -101,7 +101,7 @@ YEAR: Year
 Speed: Speed
 FOOT_PER_SECOND: Foot per second
 FOOT_PER_HOUR: Foot per hour
-KILOMETER_PER_HOUR: Kilometer per hour
+KILOMETER_PER_HOUR: Kilometre per hour
 METER_PER_HOUR: Metre per hour
 METER_PER_MINUTE: Metre per minute
 METER_PER_SECOND: Metre per second
@@ -148,7 +148,7 @@ MILLIBAR: milli Bar
 ATM: Atmosphere
 PSI: Pound per square inch
 TORR: Torr
-MMHG: millimeter of Mercury
+MMHG: millimetre of Mercury
 Energy: Energy
 KILOCALORIE: kilocalorie
 KILOJOULE: kilojoule
