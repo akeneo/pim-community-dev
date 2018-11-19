@@ -55,8 +55,12 @@ class FetchProductsHandler
             $subscription = $this->productSubscriptionRepository->findOneByProductId(
                 $subscriptionResponse->getProductId()
             );
-
             if (null === $subscription) {
+                continue;
+            }
+            if (true === $subscriptionResponse->isCancelled()) {
+                $this->productSubscriptionRepository->delete($subscription);
+
                 continue;
             }
 

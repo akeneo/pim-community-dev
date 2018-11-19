@@ -46,6 +46,8 @@ class UnsubscribeProductHandler
 
     /**
      * @param UnsubscribeProductCommand $command
+     *
+     * @throws ProductNotSubscribedException If product is not subscribed
      */
     public function handle(UnsubscribeProductCommand $command): void
     {

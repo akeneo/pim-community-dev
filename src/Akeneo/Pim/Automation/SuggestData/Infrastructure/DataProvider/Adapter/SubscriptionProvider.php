@@ -193,7 +193,8 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
             $suggestedValues,
-            $subscription->isMappingMissing()
+            $subscription->isMappingMissing(),
+            $subscription->isCancelled()
         );
     }
 
