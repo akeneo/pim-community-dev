@@ -1,3 +1,6 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Créer une nouvelle entité
+  akeneo_reference_entities_record_edit: Modifier un enregistrement
 pim_reference_entity:
   app:
     image:
@@ -10,11 +13,13 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
+        should_be_unique: 'Ce code existe déjà pour cette entité.'
     button:
       save: Enregistrer
       create: Créer
     title: Entités
     tab:
+      records: Enregistrements
       attribute: Attributs
       properties: Propriétés
     properties:
@@ -22,6 +27,11 @@ pim_reference_entity:
       identifier: Code
       label: Libellé
       image: Image
+    attribute:
+      title: Attributs d’enregistrement
+    module:
+      delete:
+        confirm: Voulez-vous vraiment supprimer cette entité ?
     index:
       grid:
         count: "{{ count }} résultats"
@@ -29,8 +39,10 @@ pim_reference_entity:
       header:
         title: Créer
       subtitle: Entités
+      title: Créer une nouvelle entité
       input:
         label: Libellé
+        code: Code (requis)
       confirm: Enregistrer
     delete:
       title: Attribut
@@ -38,6 +50,7 @@ pim_reference_entity:
     validation:
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
+        should_be_unique: 'Ce code existe déjà pour cette entité.'
     no_result:
       subtitle: Essayez à nouveau avec d'autres critères de recherche.
     button:
@@ -45,14 +58,18 @@ pim_reference_entity:
       create: Créer
       delete: Supprimer
     enrich:
+      title: Attributs d’enregistrement
       code: Code
       label: Libellé
+    title: Enregistrements
     create:
       header:
         title: Créer
       subtitle: Entités
+      title: Ajouter {{ entityLabel }}
       input:
         label: Libellé
+        code: Code (requis)
       confirm: Enregistrer
     grid:
       column:
@@ -62,6 +79,13 @@ pim_reference_entity:
         action: Actions
     tab:
       enrich: Enrichir
+    notification:
+      save:
+        success: Enregistrement mis à jour avec succès.
+        fail: Une erreur s'est produite lors de la sauvegarde de l'enregistrement
+      create:
+        success: Enregistrement créé avec succès.
+        fail: Une erreur s'est produite lors de la création de l'enregistrement
   attribute:
     default:
       code: Code
@@ -70,6 +94,10 @@ pim_reference_entity:
     type:
       text: Texte
       image: Image
+    is_required: requis pour la complétude
+    no_data:
+      title: Il n'y a aucun attribut personnalisé pour {{ entityLabel }}
+      subtitle: Cliquez sur le bouton "Ajouter un attribut" pour ajouter votre premier attribut personnalisé
     button:
       add: Ajouter un attribut
     create:
@@ -78,21 +106,26 @@ pim_reference_entity:
       subtitle: Entités
       title: Ajouter un nouvel attribut
       input:
+        code: Code (requis)
         label: Libellé
         type: Type d'attribut
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
       confirm: Enregistrer
     edit:
+      delete: Supprimer l'attribut
       save: Enregistrer
       cancel: Annuler
       input:
+        code: Code (requis)
         label: Libellé
         type: Type d'attribut
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
+        is_required: Requis pour la complétude
         max_length: Nombre maximum de caractères
         textarea: Zone de texte
+        is_rich_text_editor: Éditeur de texte enrichi
         max_file_size: Taille de fichier maximale (MB)
         allowed_extensions: Extensions autorisées
         validation_rule: Règle de validation

@@ -2,9 +2,6 @@ pim_title:
   akeneo_suggest_data_connection_edit: 'Connexió de les estadístiques de Franklin'
   akeneo_suggest_data_identifiers_mapping_edit: 'Configuració de les estadístiques de Franklin'
   akeneo_suggest_data_attributes_mapping_edit: 'Configuració de les estadístiques de Franklin'
-pim_menu:
-  item:
-    franklin: Estadístiques de Franklin
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -28,13 +25,14 @@ akeneo_suggest_data:
           active: Actiu
           inactive: Inactiu
       constraint:
+        duplicate_attribute_code: "Un mapatge admet l'atribut de catàleg"
         missing_or_invalid_identifiers: "Alguns mapatges d'identificadors clau falten o són invàlids. Esperant: \"{{ expected }}\", que tingui \"{{ given }}\"."
         attribute_not_found: "Atribut amb codi d'atribut \"{{ attributeCode }}\" pels mapatges d'identificadors no existeixen."
+        mandatory_attribute_mapping: "Mapatge de Marca i MPN requerits"
         attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
     attributes_mapping:
       label: Mapatge dels atributs
       fields:
-        franklin_attribute: 'Atribut de Franklin'
         suggest_data:
           label: Estatus d'atribut de Franklin
           pending: Pendent
@@ -99,6 +97,7 @@ akeneo_suggest_data:
         sub_title: 'Benvingut a <span class="AknDescriptionHeader-title--highlight">L''assistent IA d''informació de producte</span>!'
         description:
           first_step: 'El primer pas en la connexió de l''assistent és configurar l''API token.'
+          second_step: 'El següent pas en el procés de connexió és aparellar els <a href="#" class="AknDescriptionHeader-link link">identificadors del catàleg de producte</a> a els identificadors de l''assistent.'
       activation:
         label: 'Connector Franklin'
         activation_code: 'Codi d''activació'
@@ -115,6 +114,7 @@ akeneo_suggest_data:
           second_step: 'Mentre mapeja els vostres identificadors, si us plau, tingueu en compte que la marca i el MPN han d''anar junts. <a href="#" class="AknDescriptionHeader-link">Llegir més</a>'
       inactive_connection:
         title: Ho sentim, no hi ha res que mostrar ara mateix
+        sub_title: Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.
   mass_edit:
     product:
       operation:

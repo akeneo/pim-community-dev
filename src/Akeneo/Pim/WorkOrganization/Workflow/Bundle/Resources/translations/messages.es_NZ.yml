@@ -1,0 +1,165 @@
+pimee_workflow:
+  product_draft:
+    author: Author
+    created: Proposed at
+    changes: Changes
+    locale: Locale context
+    product:
+      label: Product label
+    attribute:
+      label: Attribute
+    status:
+      label: Status
+      working_copy: Working copy
+      in_progress: In progress
+      ready: Waiting for approval
+      can_be_partially_reviewed: Can be partially reviewed
+      can_not_be_approved: Can't be reviewed
+      can_not_be_deleted: Can't be deleted
+    status_message:
+      can_be_partially_reviewed: You can review this proposal only partially because some changes apply on values you can't edit. Please contact your administrator to change your rights.
+      can_not_be_approved: You can't review this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
+      can_not_be_deleted: You can't delete this proposal because all changes apply on values you can't edit. Please contact your administrator to change your rights.
+      in_progress: This proposal is currently in progress and has not been submitted yet.
+    action:
+      approve: Approve all
+      refuse: Reject all
+      remove: Remove
+      partial_approve: Approve changes on attribute %attribute% of the product %product%
+      partial_reject: Reject changes on attribute %attribute% of the product %product%
+    notification:
+      partial_approve: '%owner% has accepted value(s) for %attributes% for the product %product%'
+      partial_approve_number: '%owner% has accepted values for %attributes_count% attributes for the product %product%'
+      partial_reject: '%owner% has rejected value(s) for %attributes% for the product %product%'
+      partial_reject_number: '%owner% has rejected values for %attributes_count% attributes for the product %product%'
+      partial_remove: '%owner% has deleted value(s) for %attributes% for the product %product%'
+      partial_remove_number: '%owner% has deleted values for %attributes_count% attributes for the product %product%'
+      approve: '%owner% has accepted your proposal for the product %product%'
+      refuse: '%owner% has rejected your proposal for the product %product%'
+      remove: '%owner% has deleted your proposal for the product %product%'
+    mass_review_action:
+      approve: Approve all selected
+      refuse: Reject all selected
+      error:
+        draft_not_ready: This proposal is not ready to be approved
+        not_product_owner: You don't own the product related to this proposal
+        cannot_edit_attributes: You can't edit the attributes modified by this proposal
+        invalid_draft: This proposal can't be applied due to the following error. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% has sent a proposal to review for the product %product.label%'
+    individual_import: '%author.firstname% %author.lastname% has sent proposals to review from job import'
+    generic_import: You have proposals to review from job import
+    original_value: Original
+    new_value: New
+    no_diff: The value "%value%" is the same between the proposal and the working copy.
+    draft_in_progress: A draft is in progress by %author% for this product.
+  published_product:
+    index: Published Products
+    title: Published product
+  acl.published_product:
+    index: Manage published products
+  product:
+    permission:
+      own: Review / publish
+      edit: Edit
+      view: View
+  steps:
+    product_draft_processor.title: Proposal processor
+    approve.title: Approve proposal
+    refuse.title: Refuse proposal
+  mass_edit_action:
+    published:
+      page_title: Published products
+      page_subtitle: Mass Edit (1 published product)|Mass Edit (%count% published products)
+      title: Choose operation
+      subtitle: Choose the operation you wish to perform on the selected published product|Choose the operation you wish to perform on the selected %count% published products
+      confirm: You are about to update a published product with the following information, please confirm.|You are about to update %count% published products with the following information, please confirm.
+      steps:
+        first: Choose published products
+        second: Choose operation
+        third: Configure
+        fourth: Confirm
+btn:
+  publish: Publish
+  unpublish: Unpublish
+  save working copy: Save working copy
+  save draft: Save draft
+  save working copy and next: Save working copy and next
+  save draft and next: Save draft and next
+  save working copy and finish: Save working copy and finish
+  save draft and finish: Save draft and finish
+  send for approval: Send for approval
+  sent for approval: Sent for approval
+  editworkingcopy: Edit working copy
+flash:
+  product:
+    updated: Product working copy has been updated
+    published: The product has been successfully published.
+    unpublished: The product has been successfully unpublished.
+  product_draft:
+    updated: Draft has been successfully saved
+    approve:
+      success: The proposal has been applied successfully.
+      error: The proposal can't be applied due to the following error. %error%
+    refuse:
+      success: The proposal has been rejected.
+    remove:
+      success: The proposal has been removed.
+pim_menu:
+  item:
+    published_product: Published products
+    proposal: Proposals
+confirmation:
+  product:
+    publish: Are you sure you want to publish this product ?
+    unpublish: Are you sure you want to unpublish this product ?
+Attributes.title: Attributes
+Completeness.title: Completeness
+publish_product.steps.publish_product_tasklet.title: Publish product
+unpublish_product.steps.unpublish_product_tasklet.title: Unpublish product
+approve_product_draft.steps.approve.title: Approve proposal
+approve_product_draft.steps.refuse.title: Reject proposal
+job_execution.summary:
+  approved: approved
+  refused: rejected
+  mass_published: Product published
+  mass_unpublished: Product unpublished
+  proposal: Proposal created
+  proposal_deleted: deleted proposal
+  proposal_updated: updated proposal
+  proposal_created: created proposal
+  proposal_skipped: skipped proposal (no differences)
+published products: Published products
+pim_analytics:
+  info_type:
+    nb_published_products: Number of published product
+    nb_product_drafts: Number of product drafts
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Proposals to review
+      date: Date
+      author: Author
+      product: Product
+      review: Review
+      empty: No product drafts to review
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publish
+      description: Publish the selected products, the current published data will be erased by the current working copy.
+      success_flash: Selected products have been successfully published.
+      launched_flash: The job publishing product(s) is currently running.
+      message:
+        info: The %nbProducts% selected products will be published.
+    unpublish:
+      label: Unpublish
+      description: Unpublish the selected products, the current published data will be erased.
+      success_flash: Selected products have been successfully unpublished.
+      launched_flash: The job unpublishing product(s) is currently running.
+      message:
+        info: The %nbProducts% selected products will be unpublished.
+pimee_enrich:
+  product:
+    tab:
+      proposal.title: Proposals
