@@ -2,6 +2,7 @@
 
 namespace spec\Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
@@ -11,6 +12,7 @@ use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use Oro\Bundle\PimFilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 
