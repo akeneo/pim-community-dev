@@ -1,54 +1,53 @@
 import * as React from 'react';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
-// import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import Select2 from "akeneoreferenceentity/application/component/app/select2";
-import {OptionAttribute} from "akeneoreferenceentity/domain/model/attribute/type/option";
-import {NormalizedOption, Option} from "akeneoreferenceentity/domain/model/attribute/type/option/option";
-import OptionCollectionData, {create as createOptionCollectionData} from "akeneoreferenceentity/domain/model/record/data/option-collection";
-import {OptionCollectionAttribute} from "akeneoreferenceentity/domain/model/attribute/type/option-collection";
+import Select2 from 'akeneoreferenceentity/application/component/app/select2';
+import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import OptionCollectionData, {
+  denormalize as denormalizeOptionCollectionData,
+} from 'akeneoreferenceentity/domain/model/record/data/option-collection';
+import {OptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
+import __ from 'akeneoreferenceentity/tools/translator';
 
-const View = ({
-  value,
-  onChange,
-  // channel,
-  locale,
-}: {
-  value: Value;
-  // channel: ChannelReference;
-  locale: LocaleReference;
-  onChange: (value: Value) => void;
-}) => {
+const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference; onChange: (value: Value) => void}) => {
   if (!(value.data instanceof OptionCollectionData)) {
     return null;
   }
 
-  const attribute = value.attribute as OptionCollectionAttribute;
-  let availableOptionCodes: { [choiceValue: string]: string; } = {};
-  availableOptionCodes[''] = '';
+  const data = value.data as OptionCollectionData;
 
-  attribute.options.map(
-    (option: Option) => {
-      const normalizedOption: NormalizedOption = option.normalize();
-      availableOptionCodes[normalizedOption.code] = option.getLabel(locale.stringValue());
-    }
-  );
+  const attribute = value.attribute as OptionCollectionAttribute;
+  const options = attribute.options.filter((option: Option) => {
+    return data.contains(option.code);
+  });
+
+  if (options.length !== data.count()) {
+    const newData = denormalizeOptionCollectionData(options.map((option: Option) => option.code.stringValue()));
+    const newValue = value.setData(newData);
+
+    onChange(newValue);
+  }
+
+  const formatedOptions = options.reduce((formatedOptions: {[code: string]: string}, option: Option) => {
+    const normalizedOption: NormalizedOption = option.normalize();
+    formatedOptions[normalizedOption.code] = option.getLabel(locale.stringValue());
+
+    return formatedOptions;
+  }, {});
 
   return (
     <div className="option-collection-selector-container AknSelectField">
       <Select2
-        id=""
-        name="select2"
-        data={availableOptionCodes}
-        value={value.data.isEmpty() ? [] : value.data.normalize()}
+        data={formatedOptions}
+        value={data.isEmpty() ? [] : data.normalize()}
         multiple={true}
         readOnly={false}
         configuration={{
           allowClear: true,
-          placeholder: ''
+          placeholder: __('pim_reference_entity.attribute.options.no_value'),
         }}
-        onChange={(optionCode: string) => {
-          const newData = createOptionCollectionData(optionCode);
+        onChange={(optionCodes: string[]) => {
+          const newData = denormalizeOptionCollectionData(optionCodes);
           const newValue = value.setData(newData);
 
           onChange(newValue);

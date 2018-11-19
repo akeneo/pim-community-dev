@@ -38,6 +38,7 @@ module.exports = async function(cucumber) {
 
     return await listenRequest(this.page, requestContract);
   });
+
   Given('an invalid record', async function() {
     const requestContract = getRequestContract('Record/RecordDetails/not_found.json');
     currentRequestContract = requestContract;

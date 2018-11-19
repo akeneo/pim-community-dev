@@ -411,6 +411,12 @@ Feature: Edit an record
     Then the user should see the validation error on the edit page : "This value is not a valid URL."
 
   @acceptance-front
+  Scenario: Updating a record with a simple option value
+    Given a valid record
+    When the user saves the valid record with a simple option value
+    Then the user should see a success message on the edit page
+
+  @acceptance-front
   Scenario: Display bullet point for the completeness when a required field isn't filled
     Given a valid record
     When the user ask for the record

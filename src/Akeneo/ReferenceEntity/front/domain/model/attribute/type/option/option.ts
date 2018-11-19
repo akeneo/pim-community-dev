@@ -25,7 +25,7 @@ export class Option implements NormalizableAdditionalProperty {
 
   public getLabel(locale: string, defaultValue: boolean = true) {
     if (!this.labels.hasLabel(locale)) {
-      return defaultValue ? this.code.stringValue() : '';
+      return defaultValue ? `[${this.code.stringValue()}]` : '';
     }
 
     return this.labels.getLabel(locale);

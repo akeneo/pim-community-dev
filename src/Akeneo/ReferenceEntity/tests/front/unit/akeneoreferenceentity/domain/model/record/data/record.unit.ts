@@ -14,6 +14,7 @@ describe('akeneo > reference entity > domain > model > record > data --- record'
 
   test('I can normalize a RecordData', () => {
     expect(denormalize('starck').normalize()).toEqual('starck');
+    expect(denormalize(null).normalize()).toEqual(null);
   });
 
   test('I can test if two recordData are equal', () => {

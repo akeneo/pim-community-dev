@@ -66,10 +66,13 @@ const ImageView = ({
           <Select2
             id="pim_reference_entity.attribute.edit.input.allowed_extensions"
             name="allowed_extensions"
-            data={AllowedExtensionsOptions}
+            data={(AllowedExtensionsOptions as any) as {[choiceValue: string]: string}}
             value={attribute.allowedExtensions.arrayValue()}
             multiple={true}
             readOnly={false}
+            configuration={{
+              allowClear: true,
+            }}
             onChange={(allowedExtensions: string[]) => {
               onAdditionalPropertyUpdated('allowed_extensions', AllowedExtensions.createFromArray(allowedExtensions));
             }}

@@ -1,4 +1,5 @@
 import Data from 'akeneoreferenceentity/domain/model/record/data';
+import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
 
 class InvalidTypeError extends Error {}
 
@@ -11,38 +12,53 @@ type NormalizedOptionData = string | null;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class OptionData extends Data {
-  private constructor(private optionData: string) {
+  private constructor(private optionData: OptionCode | null) {
     super();
+    Object.freeze(this);
 
-    if ('string' !== typeof optionData) {
-      throw new InvalidTypeError('OptionData expect a string as parameter to be created');
+    if (null === optionData) {
+      return;
     }
 
-    Object.freeze(this);
+    if (!(optionData instanceof OptionCode)) {
+      throw new InvalidTypeError('OptionData expect an OptionCode as parameter to be created');
+    }
   }
 
-  public static create(optionData: string): OptionData {
+  public static create(optionData: OptionCode): OptionData {
     return new OptionData(optionData);
   }
 
   public static createFromNormalized(optionData: NormalizedOptionData): OptionData {
-    return new OptionData(null === optionData ? '' : optionData);
+    return new OptionData(null === optionData ? null : createCode(optionData));
   }
 
   public isEmpty(): boolean {
-    return 0 === this.optionData.length;
+    return null === this.optionData;
+  }
+
+  public getCode(): OptionCode {
+    if (this.isEmpty()) {
+      throw new Error('Cannot get the option code on an empty OptionData');
+    }
+
+    return this.optionData as OptionCode;
   }
 
   public equals(data: Data): boolean {
-    return data instanceof OptionData && this.optionData === data.optionData;
+    return (
+      data instanceof OptionData &&
+      ((null === this.optionData && null === data.optionData) ||
+        (null !== this.optionData && null !== data.optionData && this.optionData.equals(data.optionData)))
+    );
   }
 
   public stringValue(): string {
-    return this.optionData;
+    return null !== this.optionData ? this.optionData.stringValue() : '';
   }
 
-  public normalize(): string {
-    return this.optionData;
+  public normalize(): string | null {
+    return null !== this.optionData ? this.optionData.normalize() : null;
   }
 }
 
