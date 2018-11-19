@@ -88,7 +88,7 @@ class SubscribeProductHandler
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription(
-            $product,
+            $product->getId(),
             $subscriptionResponse->getSubscriptionId(),
             $subscriptionRequest->getMappedValues($identifiersMapping)
         );
@@ -122,6 +122,8 @@ class SubscribeProductHandler
                 sprintf('The product with id "%d" is already subscribed', $productId)
             );
         }
+
+        // TODO: check that product is not variant
 
         return $product;
     }

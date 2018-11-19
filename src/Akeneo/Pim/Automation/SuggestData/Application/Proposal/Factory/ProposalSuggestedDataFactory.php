@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedD
 use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
@@ -27,12 +28,17 @@ class ProposalSuggestedDataFactory
     /** @var SuggestedDataNormalizer */
     private $normalizer;
 
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
     /**
      * @param SuggestedDataNormalizer $normalizer
+     * @param ProductRepositoryInterface $productRepository
      */
-    public function __construct(SuggestedDataNormalizer $normalizer)
+    public function __construct(SuggestedDataNormalizer $normalizer, ProductRepositoryInterface $productRepository)
     {
         $this->normalizer = $normalizer;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -42,7 +48,9 @@ class ProposalSuggestedDataFactory
      */
     public function fromSubscription(ProductSubscription $subscription): ?ProposalSuggestedData
     {
-        $product = $subscription->getProduct();
+        $product = $this->productRepository->find($subscription->getProductId());
+
+        // TODO APAI-244: remove this test
         if (0 === count($product->getCategoryCodes())) {
             return null;
         }
@@ -80,6 +88,7 @@ class ProposalSuggestedDataFactory
 
         $availableAttributeCodes = $family->getAttributeCodes();
 
+        // TODO APAI-244: add comment
         return array_filter(
             $normalizedData,
             function ($attributeCode) use ($availableAttributeCodes) {

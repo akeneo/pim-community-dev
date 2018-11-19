@@ -40,7 +40,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
         foreach ($this->subscriptions as $subscription) {
-            if ($subscription->getProduct()->getId() === $productId) {
+            if ($subscription->getProductId() === $productId) {
                 return $subscription;
             }
         }
@@ -84,7 +84,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     public function emptySuggestedData(array $productIds): void
     {
         foreach ($this->subscriptions as $subscription) {
-            if (in_array($subscription->getProduct()->getId(), $productIds)) {
+            if (in_array($subscription->getProductId(), $productIds)) {
                 $subscription->setSuggestedData(new SuggestedData([]));
             }
         }
