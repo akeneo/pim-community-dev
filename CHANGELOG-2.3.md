@@ -4,8 +4,8 @@
 
 ## Bug fixes
 
-- PIM-7838: Fix ACL on Mass edit for Asset category classify action
 - PIM-7830: Fix server-side validation for Product Asset creation
+- PIM-7838: Fix ACL on Mass edit for Asset category classify action
 
 # 2.3.16 (2018-11-13)
 
