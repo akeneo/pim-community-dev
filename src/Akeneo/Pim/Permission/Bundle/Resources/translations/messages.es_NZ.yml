@@ -1,0 +1,100 @@
+pimee_enrich.acl.locale.edit_permissions: Manage locale permissions
+pimee_enrich.acl.category.edit_permissions: Manage category permissions
+pimee_enrich.acl.attribute_group.edit_permissions: Manage attribute group permissions
+pimee_importexport.acl.export_profile.edit_permissions: Manage export profile permissions
+pimee_importexport.acl.import_profile.edit_permissions: Manage import profile permissions
+pimee_enrich.groups.label: Owner groups
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Edit attributes
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Remove product value with permission
+edit_common_attributes_with_permission: Edit attributes with permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit attributes with permission
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Number of custom locale accesses
+    nb_custom_category_accesses: Number of custom category accesses
+    nb_custom_attribute_group_accesses: Number of custom attribute group accesses
+job_profile.permissions:
+  execute.label: Allowed to execute job profile
+  edit.label: Allowed to edit job profile
+pim_title.locale:
+  edit: "Locales %locale.code% | Edit"
+attribute group.permissions:
+  view.label: Allowed to view attributes
+  view.help: Allow to view the products in this attribute group
+  edit.label: Allowed to edit attributes
+  edit.help: Allow to edit the products in this attribute group
+  no_access_to_attributes: You don't have access to any attributes of this product. Please contact your administrator.
+category.permissions:
+  view.label: Allowed to view products
+  view.help: Allow to view the products in this category
+  edit.label: Allowed to edit products
+  edit.help: Allow to edit the products in this category (implies the view permission)
+  own.label: Allowed to own products
+  own.help: Allowed to review, publish, unpublish, classify, associate products in this category (implies the edit permission)
+  no_access_to_products: You don't have access to products in any tree, please contact your administrator
+  apply_on_children.label: Apply changes on children
+  apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
+locale.permissions:
+  view.label: Allowed to view product information
+  view.help: Allow to view the product information in this locale
+  edit.label: Allowed to edit product information
+  edit.help: Allow to edit the product information in this locale (implies the view permission)
+  no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
+flash.locale.updated: The locale and permissions have been updated
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: You don't have the permission to edit the products "%identifiers%".
+      page_title: Products
+      page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
+      title: Choose operation
+      subtitle: Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
+      confirm: You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+      steps:
+        first: Choose products
+        second: Choose operation
+        third: Configure
+        fourth: Confirm
+    publish:
+      message:
+        error: You're not the owner of the product, you can't publish it.
+        warning: You're not the owner of all the selected products. You can't publish the products "%notGranted%".
+      not_editable: You don't have the permission to edit the products "%identifiers%".
+    unpublish:
+      message:
+        error: You're not the owner of the product, you can't unpublish it.
+        warning: You're not the owner of all the selected products. You can't unpublish the products "%notGranted%".
+        info: The %nbProducts% selected products will be unpublished.
+      not_editable: You don't have the permission to edit the products "%identifiers%".
+    classify:
+      message:
+        error: You're not the owner of the product, you can't classify it.
+        warning: You're not the owner of all the selected products. You can't classify the products "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: You're not the owner of the product, you can't edit it.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Permissions
+  acl.product_ownership.title: Ownership
+  attributes:
+    empty: none
+  category:
+    tab:
+      permission:
+        title: Permissions
+  groups:
+    label: owner groups
+    empty: none
+add_product_value_with_permission_and_rules:
+  steps.perform: Add product value
+update_product_value_with_permission_and_rules:
+  steps.perform: Update product value
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Edit attributes
+  steps.edit_common_attributes_processor.title: Edit attributes
+pim_enrich_attribute_form:
+  isReadOnly: Read only

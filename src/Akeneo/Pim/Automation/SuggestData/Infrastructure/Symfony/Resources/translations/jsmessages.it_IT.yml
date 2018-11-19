@@ -2,9 +2,6 @@ pim_title:
   akeneo_suggest_data_connection_edit: 'Connessione Franklin Insights'
   akeneo_suggest_data_identifiers_mapping_edit: 'Impostazioni Franklin Insights'
   akeneo_suggest_data_attributes_mapping_edit: 'Impostazioni Franklin Insights'
-pim_menu:
-  item:
-    franklin: Franklin Insights
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -34,7 +31,6 @@ akeneo_suggest_data:
     attributes_mapping:
       label: Mappatura attributi
       fields:
-        franklin_attribute: 'Attributo Franklin'
         suggest_data:
           label: Stato attributo Franklin
           pending: In attesa
