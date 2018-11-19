@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -68,9 +69,12 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
 
         $attributeColor->getCode()->willReturn('color');
         $attributeColor->getTranslations()->willReturn($colorTranslations);
+        $attributeColor->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
         $attributeSize->getCode()->willReturn('size');
         $attributeSize->getTranslations()->willReturn($sizeTranslations);
+        $attributeSize->getType()->willReturn(AttributeTypes::METRIC);
+        $attributeSize->getDefaultMetricUnit()->willReturn('CENTIMETER');
 
         $sizeTranslations->isEmpty()->willReturn(true);
         $colorTranslations->isEmpty()->willReturn(false);
@@ -96,7 +100,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                         'fr_FR' => 'Couleur',
                         'en_US' => 'Color',
                     ],
-                    'type' => 'text',
+                    'type' => 'multiselect',
                 ],
                 'status' => AttributeMapping::STATUS_ACTIVE,
             ],
@@ -105,7 +109,8 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'to' => [
                     'id' => 'size',
                     'label' => [],
-                    'type' => 'text',
+                    'type' => 'metric',
+                    'unit' => 'CENTIMETER',
                 ],
                 'status' => AttributeMapping::STATUS_ACTIVE,
             ],

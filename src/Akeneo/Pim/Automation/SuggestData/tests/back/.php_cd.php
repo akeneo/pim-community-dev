@@ -91,6 +91,7 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider'),
 
