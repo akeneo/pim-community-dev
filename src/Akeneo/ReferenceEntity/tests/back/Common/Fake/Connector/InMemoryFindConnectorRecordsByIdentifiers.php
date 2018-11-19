@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -58,6 +59,16 @@ class InMemoryFindConnectorRecordsByIdentifiers implements FindConnectorRecordsB
         $channelReference = $recordQuery->getChannelReferenceValuesFilter();
         if (!$channelReference->isEmpty()) {
             $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
+        }
+
+        $localeReferences = array_filter($recordQuery->getLocaleReferencesValuesFilter(), function (LocaleReference $localeReference) {
+            return false === $localeReference->isEmpty();
+        });
+        if (!empty($localeReferences)) {
+            $localesIdentifiers = array_map(function (LocaleReference $localeReference) {
+                return $localeReference->getIdentifier();
+            }, $localeReferences);
+            $connectorRecord = $connectorRecord->getRecordWithValuesAndLabelsFilteredOnLocales($localesIdentifiers);
         }
 
         return $connectorRecord;

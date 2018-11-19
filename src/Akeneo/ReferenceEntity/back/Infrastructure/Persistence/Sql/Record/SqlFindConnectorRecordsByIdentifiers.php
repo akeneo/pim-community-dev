@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
@@ -119,6 +120,16 @@ SQL;
         $channelReference = $recordQuery->getChannelReferenceValuesFilter();
         if (!$channelReference->isEmpty()) {
             $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
+        }
+
+        $localeReferences = array_filter($recordQuery->getLocaleReferencesValuesFilter(), function (LocaleReference $localeReference) {
+            return false === $localeReference->isEmpty();
+        });
+        if (!empty($localeReferences)) {
+            $localesIdentifiers = array_map(function (LocaleReference $localeReference) {
+                return $localeReference->getIdentifier();
+            }, $localeReferences);
+            $connectorRecord = $connectorRecord->getRecordWithValuesAndLabelsFilteredOnLocales($localesIdentifiers);
         }
 
         return $connectorRecord;

@@ -70,4 +70,20 @@ class LabelCollection
     {
         return $this->translatedLabels;
     }
+
+    /**
+     * @param LocaleIdentifier[] $localeIdentifiers
+     */
+    public function filterByLocaleIdentifiers(array $localeIdentifiers): LabelCollection
+    {
+        $localeCodes = array_map(function (LocaleIdentifier $localeIdentifier) {
+            return $localeIdentifier->normalize();
+        }, $localeIdentifiers);
+
+        $filteredLabels = array_filter($this->translatedLabels, function ($labelCode) use ($localeCodes) {
+            return in_array($labelCode, $localeCodes);
+        }, ARRAY_FILTER_USE_KEY);
+
+        return new self($filteredLabels);
+    }
 }

@@ -1,0 +1,114 @@
+{
+    "request": {
+        "method": "GET",
+        "route": "akeneo_reference_entities_records_rest_connector_get",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "locales": "en_US"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "_links": {
+                "self": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?locales=en_US"
+                },
+                "first": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?locales=en_US"
+                },
+                "next": {
+                    "href": "http://localhost/api/rest/v1/reference-entities/brand/records?locales=en_US&search_after=brand_3"
+                }
+            },
+            "_embedded": {
+                "items": [
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_1"
+                            }
+                        },
+                        "code": "brand_1",
+                        "labels": {
+                            "en_US": "English label for brand_1"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for the brand number 1"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Italy"
+                                }
+                            ]
+                        },
+                        "main_image": null
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_2"
+                            }
+                        },
+                        "code": "brand_2",
+                        "labels": {
+                            "en_US": "English label for brand_2"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for the brand number 2"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Italy"
+                                }
+                            ]
+                        },
+                        "main_image": null
+                    },
+                    {
+                        "_links": {
+                            "self": {
+                                "href": "http://localhost/api/rest/v1/reference-entities/brand/records/brand_3"
+                            }
+                        },
+                        "code": "brand_3",
+                        "labels": {
+                            "en_US": "English label for brand_3"
+                        },
+                        "values": {
+                            "description": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": "ecommerce",
+                                    "data": "Description for the brand number 3"
+                                }
+                            ],
+                            "country": [
+                                {
+                                    "locale": "en_US",
+                                    "channel": null,
+                                    "data": "Italy"
+                                }
+                            ]
+                        },
+                        "main_image": null
+                    }
+                ]
+            }
+        }
+    }
+}

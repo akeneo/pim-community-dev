@@ -323,7 +323,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('alessi'),
             10,
-            ChannelReference::noReference()
+            ChannelReference::noReference(),
+            []
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
@@ -342,7 +343,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             ReferenceEntityIdentifier::fromString('brand'),
             null,
             10,
-            ChannelReference::noReference()
+            ChannelReference::noReference(),
+            []
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);

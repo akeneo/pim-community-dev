@@ -44,3 +44,11 @@ Feature: Connection to e-commerce platforms and marketplaces
     Given the Brand reference entity with some records
     When the connector requests all records of the Brand reference entity with the attribute values of a non-existent channel
     Then the PIM notifies the connector about an error indicating that the provided channel does not exist
+
+  @integration-back
+  Scenario: Get the records of a reference entity with there information in a provided locale
+    Given 3 records for the Brand reference entity with filled attribute values for the English and the French locales
+    And labels translated in the English and French locale
+    When the connector requests all records of the Brand reference entity with their information in English
+    Then the PIM returns 3 records of the Brand reference entity with the attribute values in English only
+    And the labels in English only

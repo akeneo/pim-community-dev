@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 /**
@@ -75,6 +76,35 @@ class ConnectorRecord
         return new self(
             $this->code,
             $this->labelCollection,
+            $this->image,
+            $filteredValues
+        );
+    }
+
+    /**
+     * @param LocaleIdentifier[] $localeIdentifiers
+     */
+    public function getRecordWithValuesAndLabelsFilteredOnLocales(array $localeIdentifiers): ConnectorRecord
+    {
+        $localeCodes = array_map(function (LocaleIdentifier $localeIdentifier) {
+            return $localeIdentifier->normalize();
+        }, $localeIdentifiers);
+
+        $filteredValues = [];
+        foreach ($this->normalizedValues as $key => $normalizedValue) {
+            $filteredValue = array_filter($normalizedValue, function ($value) use ($localeCodes) {
+                return null === $value['locale']
+                    || in_array($value['locale'], $localeCodes);
+            });
+
+            if (!empty($filteredValue)) {
+                $filteredValues[$key] = array_values($filteredValue);
+            }
+        }
+
+        return new self(
+            $this->code,
+            $this->labelCollection->filterByLocaleIdentifiers($localeIdentifiers),
             $this->image,
             $filteredValues
         );

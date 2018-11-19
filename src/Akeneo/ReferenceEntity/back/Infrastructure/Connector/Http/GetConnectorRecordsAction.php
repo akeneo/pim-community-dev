@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
@@ -81,11 +82,13 @@ class GetConnectorRecordsAction
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
             $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
+            $localeReferencesValuesFilter = $this->getLocalReferencesValuesFilterFromRequest($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $searchAfterCode,
                 $this->limit->intValue(),
-                $channelReferenceValuesFilter
+                $channelReferenceValuesFilter,
+                $localeReferencesValuesFilter
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
@@ -131,9 +134,27 @@ class GetConnectorRecordsAction
             ],
             'query_parameters'    => [
                 'channel' => $request->get('channel', null),
+                'locales' => $request->get('locales', null),
             ],
         ];
 
         return $this->halPaginator->paginate($records, $paginationParameters, count($records));
+    }
+
+    /**
+     * @return LocaleReference[]
+     */
+    private function getLocalReferencesValuesFilterFromRequest(Request $request): array
+    {
+        $locales = $request->get('locales', null);
+        if (null === $locales) {
+            return [];
+        }
+
+        $locales = explode(',', $locales);
+
+        return array_map(function ($locale) {
+            return LocaleReference::createFromNormalized($locale);
+        }, $locales);
     }
 }
