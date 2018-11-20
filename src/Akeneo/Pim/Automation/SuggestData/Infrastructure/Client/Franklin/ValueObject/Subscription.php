@@ -65,6 +65,16 @@ class Subscription
     }
 
     /**
+     * @return bool
+     */
+    public function isCancelled(): bool
+    {
+        return array_key_exists('is_cancelled', $this->rawSubscription) ?
+            $this->rawSubscription['is_cancelled'] :
+            false;
+    }
+
+    /**
      * @param array $rawSubscription
      *
      * @throws \InvalidArgumentException

@@ -39,7 +39,7 @@ class ProductSubscriptionResponseCollectionSpec extends ObjectBehavior
 
     public function it_can_add_and_retrieve_subscription_responses(): void
     {
-        $response = new ProductSubscriptionResponse(42, '123-456-789', [], false);
+        $response = new ProductSubscriptionResponse(42, '123-456-789', [], false, false);
         $this->add($response)->shouldReturn(null);
 
         $this->get(42)->shouldReturn($response);

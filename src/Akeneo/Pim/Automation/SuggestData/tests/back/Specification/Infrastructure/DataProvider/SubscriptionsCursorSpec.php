@@ -44,6 +44,7 @@ class SubscriptionsCursorSpec extends ObjectBehavior
             ]
         );
         $subscription->isMappingMissing()->willReturn(false);
+        $subscription->isCancelled()->willReturn(false);
 
         $productSubscriptionResponse = $this->current();
         $productSubscriptionResponse->shouldBeAnInstanceOf(ProductSubscriptionResponse::class);

@@ -110,7 +110,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
-        $response = new ProductSubscriptionResponse(42, 'test-id', [], false);
+        $response = new ProductSubscriptionResponse(42, 'test-id', [], false, false);
         $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();

@@ -59,7 +59,8 @@ class SubscriptionsCursor implements \Iterator
             $subscription->getTrackerId(),
             $subscription->getSubscriptionId(),
             $suggestedValues,
-            $subscription->isMappingMissing()
+            $subscription->isMappingMissing(),
+            $subscription->isCancelled()
         );
     }
 
