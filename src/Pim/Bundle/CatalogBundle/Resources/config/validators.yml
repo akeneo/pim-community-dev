@@ -101,7 +101,7 @@ services:
         arguments:
             - '%pim_catalog.validator.extension_to_mimetype_mapping%'
         tags:
-        - { name: validator.constraint_validator }
+            - { name: validator.constraint_validator }
 
     pim_catalog.validator.constraint.family_variant_axes:
         class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
