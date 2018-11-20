@@ -37,7 +37,15 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array {
-        return $this->results ?? null;
+    public function __invoke(array $identifiers): array {
+        $referenceEntities = [];
+
+        foreach ($identifiers as $identifier) {
+            if (isset($this->results[$identifier])) {
+                $referenceEntities[] = $this->recordsByIdentifier[$identifier];
+            }
+        }
+
+        return $referenceEntities;
     }
 }

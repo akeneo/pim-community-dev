@@ -38,8 +38,7 @@ class ReferenceEntityQuery
         int $size,
         ?ReferenceEntityIdentifier $searchAfterCode
     ) {
-        $this->size    = $size;
-
+        $this->size = $size;
         $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = self::PAGINATE_USING_SEARCH_AFTER;
     }

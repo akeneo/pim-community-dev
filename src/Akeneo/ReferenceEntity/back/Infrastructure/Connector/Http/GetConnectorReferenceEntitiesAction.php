@@ -70,11 +70,13 @@ class GetConnectorReferenceEntitiesAction
         try {
             $searchAfter = $request->get('search_after', null);
             $searchAfterIdentifier = null !== $searchAfter ? ReferenceEntityIdentifier::fromString($searchAfter) : null;
+            // @TODO - createPaginatedUsingSearch after should be paginated for in memory ?
             $referenceEntityQuery = ReferenceEntityQuery::createPaginatedUsingSearchAfter($this->limit->intValue(), $searchAfterIdentifier);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
+        // @TODO - this should return the number of items matching the limit only
         $referenceEntities = ($this->searchConnectorReferenceEntity)($referenceEntityQuery);
         $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
             $normalizedReferenceEntity = $referenceEntity->normalize();

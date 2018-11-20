@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\SearchReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 
 /**
@@ -24,20 +25,24 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
  */
 class SearchConnectorReferenceEntity
 {
+    /** @var FindReferenceEntityIdentifiersForQueryInterface */
+    private $findIdentifiersForQuery;
+
     /** @var FindConnectorReferenceEntityItemsInterface */
     private $findConnectorReferenceEntityItems;
 
     public function __construct(
+        FindReferenceEntityIdentifiersForQueryInterface $findIdentifiersForQuery,
         FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems
     ) {
+        $this->findIdentifiersForQuery = $findIdentifiersForQuery;
         $this->findConnectorReferenceEntityItems = $findConnectorReferenceEntityItems;
     }
 
     public function __invoke(ReferenceEntityQuery $query): array
     {
-        $result = ($this->findConnectorReferenceEntityItems)($query);
-        // @TODO - This returns empty ?
-        $records = empty($result) ? [] : ($this->findConnectorReferenceEntityItems)($query);
+        $result = ($this->findIdentifiersForQuery)($query);
+        $records = empty($result) ? [] : ($this->findConnectorReferenceEntityItems)($$result->identifiers, query);
 
         return $records;
     }

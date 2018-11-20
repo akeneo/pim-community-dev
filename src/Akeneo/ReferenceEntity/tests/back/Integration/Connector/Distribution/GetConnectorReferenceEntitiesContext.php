@@ -62,7 +62,7 @@ class GetConnectorReferenceEntitiesContext implements Context
      */
     public function referenceEntitiesInThePIM()
     {
-        for ($i = 1; $i <= 4; $i++) {
+        for ($i = 1; $i <= 7; $i++) {
             $rawIdentifier = sprintf('%s_%d', 'reference_entity', $i);
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
 
