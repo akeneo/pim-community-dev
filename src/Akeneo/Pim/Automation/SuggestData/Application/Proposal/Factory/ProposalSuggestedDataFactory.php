@@ -50,11 +50,6 @@ class ProposalSuggestedDataFactory
     {
         $product = $this->productRepository->find($subscription->getProductId());
 
-        // TODO APAI-244: remove this test
-        if (0 === count($product->getCategoryCodes())) {
-            return null;
-        }
-
         $suggestedValues = $this->getSuggestedValues(
             $subscription->getSuggestedData(),
             $product->getFamily()

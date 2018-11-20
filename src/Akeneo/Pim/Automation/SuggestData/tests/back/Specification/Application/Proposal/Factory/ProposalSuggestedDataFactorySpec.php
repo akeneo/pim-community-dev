@@ -37,19 +37,6 @@ class ProposalSuggestedDataFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ProposalSuggestedDataFactory::class);
     }
 
-    // TODO APAI-244: remove this spec
-    public function it_returns_null_if_product_is_not_categorized(
-        $productRepository,
-        ProductInterface $product
-    ): void {
-        $product->getCategoryCodes()->willReturn([]);
-        $productRepository->find(42)->willReturn($product);
-
-        $this->fromSubscription(new ProductSubscription(42, 'fake-id', []))->shouldReturn(
-            null
-        );
-    }
-
     public function it_returns_null_if_suggested_data_cannot_be_normalized(
         $normalizer,
         $productRepository,
