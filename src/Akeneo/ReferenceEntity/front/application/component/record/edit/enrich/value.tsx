@@ -37,16 +37,21 @@ export default (
             className="AknFieldContainer-label"
             htmlFor={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           >
-            {value.attribute.isRequired && value.data.isEmpty() && (
-              <span className="badge-elements-container">
-                <span className="AknBadge AknBadge--small AknBadge--highlight"></span>
-              </span>
-            )}
+            {value.attribute.isRequired &&
+              value.data.isEmpty() && (
+                <span className="badge-elements-container">
+                  <span className="AknBadge AknBadge--small AknBadge--highlight" />
+                </span>
+              )}
             {value.attribute.getLabel(locale.stringValue())}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <ErrorBoundary errorMessage={__('pim_reference_entity.record.error.value', {fieldName: value.attribute.getLabel(locale.stringValue())})}>
+          <ErrorBoundary
+            errorMessage={__('pim_reference_entity.record.error.value', {
+              fieldName: value.attribute.getLabel(locale.stringValue()),
+            })}
+          >
             <DataView
               value={value}
               onChange={onValueChange}

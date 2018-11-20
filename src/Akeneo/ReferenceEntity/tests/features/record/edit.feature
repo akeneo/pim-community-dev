@@ -418,7 +418,6 @@ Feature: Edit an record
     When the user fill the "website_designer_fingerprint" field with : "http://the-website.com"
     Then the user should not see a completeness bullet point on the required field : "website"
 
-
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
 #  Scenario: Updating a record with an image value

@@ -228,10 +228,10 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasDeleteButton, false);
   });
 
-  Then('the user should see a completeness bullet point on the required field : {string}', async function (requiredField) {
+  Then('the user should see a completeness bullet point on the required field : {string}', async function (field) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isFilled = await enrich.isFilled(requiredField);
+    const isFilled = await enrich.isFilled(field);
 
     assert.strictEqual(isFilled, false);
   });
@@ -242,10 +242,10 @@ module.exports = async function(cucumber) {
     await enrich.fillField(fieldId, value);
   });
 
-  Then('the user should not see a completeness bullet point on the required field : {string}', async function (requiredField) {
+  Then('the user should not see a completeness bullet point on the required field : {string}', async function (field) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    const isFilled = await enrich.isFilled(requiredField);
+    const isFilled = await enrich.isFilled(field);
 
     assert.strictEqual(isFilled, true);
   });

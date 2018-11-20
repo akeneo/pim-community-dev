@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-type Props = { errorMessage: string };
+type Props = {errorMessage: string};
 
 export default class ErrorBoundary extends React.Component<Props, {hasError: boolean; error: Error | null}> {
   constructor(props: Props) {
