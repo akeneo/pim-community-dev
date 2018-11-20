@@ -18,6 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentif
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\FindConnectorRecordsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ConnectorRecordHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -55,7 +56,7 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers): array
+    public function __invoke(array $identifiers, RecordQuery $recordQuery): array
     {
         $sql = <<<SQL
             SELECT 
@@ -79,13 +80,13 @@ SQL;
         );
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        return empty($results) ? [] : $this->hydrateRecords($results);
+        return empty($results) ? [] : $this->hydrateRecords($results, $recordQuery);
     }
 
     /**
      * @return ConnectorRecord[]
      */
-    private function hydrateRecords(array $results): array
+    private function hydrateRecords(array $results, RecordQuery $recordQuery): array
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier(current($results));
         $valueKeyCollection = ($this->findValueKeyCollection)($referenceEntityIdentifier);
@@ -93,7 +94,8 @@ SQL;
 
         $hydratedRecords = [];
         foreach ($results as $result) {
-            $hydratedRecords[] = $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+            $hydratedRecord = $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
+            $hydratedRecords[] = $this->filterRecordValues($hydratedRecord, $recordQuery);
         }
 
         return $hydratedRecords;
@@ -110,5 +112,15 @@ SQL;
         );
 
         return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
+    }
+
+    private function filterRecordValues(ConnectorRecord $connectorRecord, RecordQuery $recordQuery): ConnectorRecord
+    {
+        $channelReference = $recordQuery->getChannelReferenceValuesFilter();
+        if (!$channelReference->isEmpty()) {
+            $connectorRecord = $connectorRecord->getRecordWithValuesFilteredOnChannel($channelReference->getIdentifier());
+        }
+
+        return $connectorRecord;
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
@@ -94,5 +95,73 @@ class ConnectorRecordSpec extends ObjectBehavior
              ],
              'main_image' => null,
          ]);
+     }
+
+     function it_returns_a_record_with_values_filtered_on_channel()
+     {
+         $recordCode = RecordCode::fromString('starck');
+         $labelCollection = LabelCollection::fromArray([
+             'en_US' => 'Stark',
+             'fr_FR' => 'Stark'
+         ]);
+         $valueCollection = [
+             'description' => [
+                 [
+                     'channel'   => 'ecommerce',
+                     'locale'    => 'en_US',
+                     'data'      => 'Description for e-commerce channel.',
+                 ],
+                 [
+                     'channel'   => 'tablet',
+                     'locale'    => 'en_US',
+                     'data'      => 'Description for tablet channel.',
+                 ],
+             ],
+             'short_description' => [
+                 [
+                     'channel'   => 'tablet',
+                     'locale'    => 'en_US',
+                     'data'      => 'Short description for tablet channel.',
+                 ],
+             ],
+             'not_scopable_value' => [
+                 [
+                     'channel' => null,
+                     'locale'  => 'en_US',
+                     'data'    => 'Not scopable value.'
+                 ]
+             ]
+         ];
+
+         $this->beConstructedWith(
+             $recordCode,
+             $labelCollection,
+             Image::createEmpty(),
+             $valueCollection
+         );
+
+         $expectedRecord = new ConnectorRecord(
+             $recordCode,
+             $labelCollection,
+             Image::createEmpty(),
+             [
+                 'description' => [
+                     [
+                         'channel' => 'ecommerce',
+                         'locale'  => 'en_US',
+                         'data'    => 'Description for e-commerce channel.',
+                     ],
+                 ],
+                 'not_scopable_value' => [
+                     [
+                         'channel' => null,
+                         'locale'  => 'en_US',
+                         'data'    => 'Not scopable value.'
+                     ]
+                 ]
+             ]
+         );
+
+         $this->getRecordWithValuesFilteredOnChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedRecord);
      }
 }

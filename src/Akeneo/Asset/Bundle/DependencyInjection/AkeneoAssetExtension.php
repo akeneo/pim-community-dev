@@ -41,6 +41,7 @@ class AkeneoAssetExtension extends Extension
         $loader->load('connector/writers.yml');
         $loader->load('context.yml');
         $loader->load('controllers.yml');
+        $loader->load('converters.yml');
         $loader->load('datagrid/attribute_types.yml');
         $loader->load('datagrid/configurators.yml');
         $loader->load('datagrid/data_sources.yml');

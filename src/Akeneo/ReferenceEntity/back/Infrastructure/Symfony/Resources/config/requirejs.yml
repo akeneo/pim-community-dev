@@ -96,3 +96,5 @@ config:
         pim/attribute-edit-form/properties/reference-entity: akeneoreferenceentity/infrastructure/attribute/reference-entity-field.ts
         pim/reference-entity-collection-field: akeneoreferenceentity/infrastructure/product/reference-entity-collection-field.tsx
         pim/reference-entity-field: akeneoreferenceentity/infrastructure/product/reference-entity-field.tsx
+
+        oro/datafilter/reference-entity-collection-filter: akeneoreferenceentity/infrastructure/product_grid/filter/attribute/reference-entity-collection

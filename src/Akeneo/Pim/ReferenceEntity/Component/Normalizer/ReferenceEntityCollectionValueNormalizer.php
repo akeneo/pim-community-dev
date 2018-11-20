@@ -19,6 +19,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
+ * Normalize records in a Reference Entity Collection.
+ *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
@@ -29,14 +31,14 @@ class ReferenceEntityCollectionValueNormalizer extends AbstractProductValueNorma
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ValueInterface $value): string
+    protected function getNormalizedData(ValueInterface $value): array
     {
         $records = $value->getData();
         $recordsCode = array_map(function (Record $record) {
             return $record->getCode()->__toString();
         }, $records);
 
-        return implode($recordsCode, ',');
+        return $recordsCode;
     }
 
     /**

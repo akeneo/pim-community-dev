@@ -50,7 +50,7 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
             [
                 'designer-reference_data_option' => [
                     '<all_channels>' => [
-                        '<all_locales>' => '',
+                        '<all_locales>' => null,
                     ],
                 ],
             ]

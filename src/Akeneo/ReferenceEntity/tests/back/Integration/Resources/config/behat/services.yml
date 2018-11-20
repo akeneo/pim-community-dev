@@ -19,6 +19,7 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
         tags:
             - { name: fob.context_service }
 

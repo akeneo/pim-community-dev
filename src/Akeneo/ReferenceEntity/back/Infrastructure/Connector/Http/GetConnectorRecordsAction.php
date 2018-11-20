@@ -15,17 +15,20 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -48,18 +51,23 @@ class GetConnectorRecordsAction
     /** @var AddHalDownloadLinkToRecordImages */
     private $addHalLinksToImageValues;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         SearchConnectorRecord $searchConnectorRecord,
         PaginatorInterface $halPaginator,
         AddHalDownloadLinkToRecordImages $addHalLinksToImageValues,
-        int $limit
+        int $limit,
+        ValidatorInterface $validator
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->searchConnectorRecord = $searchConnectorRecord;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
+        $this->validator = $validator;
     }
 
     /**
@@ -72,9 +80,20 @@ class GetConnectorRecordsAction
             $searchAfter = $request->get('search_after', null);
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
-            $recordQuery = RecordQuery::createPaginatedUsingSearchAfter($referenceEntityIdentifier, $searchAfterCode, $this->limit->intValue());
+            $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
+            $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
+                $referenceEntityIdentifier,
+                $searchAfterCode,
+                $this->limit->intValue(),
+                $channelReferenceValuesFilter
+            );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $violations = $this->validator->validate($recordQuery);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'Invalid query parameters');
         }
 
         if (false === $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
@@ -87,12 +106,12 @@ class GetConnectorRecordsAction
         }, $records);
 
         $records = ($this->addHalLinksToImageValues)($referenceEntityIdentifier, $records);
-        $paginatedRecords = $this->paginateRecords($records, $searchAfter, $referenceEntityIdentifier);
+        $paginatedRecords = $this->paginateRecords($records, $request, $referenceEntityIdentifier);
 
         return new JsonResponse($paginatedRecords);
     }
 
-    private function paginateRecords(array $records, ?string $searchAfter, ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function paginateRecords(array $records, Request $request, ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $lastRecord = end($records);
         reset($records);
@@ -102,15 +121,17 @@ class GetConnectorRecordsAction
             'list_route_name'     => 'akeneo_reference_entities_records_rest_connector_get',
             'item_route_name'     => 'akeneo_reference_entities_record_rest_connector_get',
             'search_after'        => [
-                'self' => $searchAfter,
+                'self' => $request->get('search_after', null),
                 'next' => $lastRecordCode
             ],
             'limit'               => $this->limit->intValue(),
             'item_identifier_key' => 'code',
             'uri_parameters'      => [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier
+                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
             ],
-            'query_parameters'    => [],
+            'query_parameters'    => [
+                'channel' => $request->get('channel', null),
+            ],
         ];
 
         return $this->halPaginator->paginate($records, $paginationParameters, count($records));
