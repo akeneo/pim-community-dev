@@ -15,8 +15,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionsMapping as ReadAttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOptionsMapping as WriteAttributeOptionsMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttributeId;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>

@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttributeId;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeCodeSpec extends ObjectBehavior
+class FranklinAttributeIdSpec extends ObjectBehavior
 {
-    public function it_is_a_attribute_code(): void
+    public function it_is_a_franklin_attribute_id(): void
     {
         $this->beConstructedWith('foo');
-        $this->shouldBeAnInstanceOf(AttributeCode::class);
+        $this->shouldBeAnInstanceOf(FranklinAttributeId::class);
     }
 
-    public function it_throws_an_exception_when_attribute_code_is_empty(): void
+    public function it_throws_an_exception_when_attribute_id_is_empty(): void
     {
         $this->beConstructedWith('');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_returns_the_attribute_code(): void
+    public function it_returns_the_attribute_id(): void
     {
         $this->beConstructedWith('foo');
         $this->__toString()->shouldReturn('foo');

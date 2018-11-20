@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model\Read;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use PhpSpec\ObjectBehavior;
 
 /**

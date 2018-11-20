@@ -11,26 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class AttributeCode
+final class FranklinAttributeId
 {
     /** @var string */
-    private $attributeCode;
+    private $targetAttributeId;
 
     /**
-     * @param string $attributeCode
+     * @param string $targetAttributeId
      */
-    public function __construct(string $attributeCode)
+    public function __construct(string $targetAttributeId)
     {
-        if (empty($attributeCode)) {
-            throw new \InvalidArgumentException('Attribute code cannot be an empty string');
+        if (empty($targetAttributeId)) {
+            throw new \InvalidArgumentException('Target attribute id cannot be an empty string');
         }
 
-        $this->attributeCode = $attributeCode;
+        $this->targetAttributeId = $targetAttributeId;
     }
 
     /**
@@ -38,6 +38,6 @@ final class AttributeCode
      */
     public function __toString(): string
     {
-        return (string) $this->attributeCode;
+        return $this->targetAttributeId;
     }
 }

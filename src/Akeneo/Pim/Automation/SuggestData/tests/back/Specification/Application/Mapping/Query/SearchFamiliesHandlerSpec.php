@@ -18,8 +18,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHa
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\FamilySearchableRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
