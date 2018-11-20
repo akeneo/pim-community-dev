@@ -282,9 +282,9 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the attribute values of the Ecommerce channel
+     * @When the connector requests all records of the Brand reference entity with the information of the Ecommerce channel
      */
-    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheAttributeValuesOfTheEcommerceChannel(): void
+    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheInformationOfTheEcommerceChannel(): void
     {
         $client = $this->clientFactory->logIn('julia');
         $this->recordPages = [];
@@ -296,7 +296,7 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Then the PIM returns 3 records of the Brand reference entity with only the attribute values of the Ecommerce channel
+     * @Then the PIM returns 3 records of the Brand reference entity with only the information of the Ecommerce channel
      */
     public function thePimReturnsAllRecordsOfTheBrandReferenceEntityWithOnlyAttributeValuesOfTheEcommerceChannel(): void
     {
@@ -309,9 +309,9 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the attribute values of a non-existent channel
+     * @When the connector requests all records of the Brand reference entity with the information of a non-existent channel
      */
-    public function theConnectorRequestAllRecordsOfTheBrandReferenceEntityWithTheAttributeValuesOfANonExistentChannel(): void
+    public function theConnectorRequestAllRecordsOfTheBrandReferenceEntityWithTheInformationOfANonExistentChannel(): void
     {
         $client = $this->clientFactory->logIn('julia');
 
@@ -425,9 +425,9 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with their information in English
+     * @When the connector requests all records of the Brand reference entity with the information in English
      */
-    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheirInformationInEnglish()
+    public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheInformationInEnglish()
     {
         $client = $this->clientFactory->logIn('julia');
         $this->recordPages[1] = $this->webClientHelper->requestFromFile(
@@ -437,9 +437,9 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @Then the PIM returns 3 records of the Brand reference entity with the attribute values in English only
+     * @Then the PIM returns 3 records of the Brand reference entity with the information in English only
      */
-    public function thePimReturnsTheRecordsOfTheBrandReferenceEntityWithTheAttributeValuesInEnglishOnly()
+    public function thePimReturnsTheRecordsOfTheBrandReferenceEntityWithTheInformationInEnglishOnly()
     {
         Assert::keyExists($this->recordPages, 1, 'The page 1 has not been loaded');
 
@@ -465,7 +465,7 @@ class GetConnectorRecordsContext implements Context
     }
 
     /**
-     * @When the connector requests all records of the Brand reference entity with the attribute values of a provided locale that does not exist
+     * @When the connector requests all records of the Brand reference entity with the information of a provided locale that does not exist
      */
     public function theConnectorRequestsAllRecordsOfTheBrandReferenceEntityWithTheAttributesValuesOfAProvidedLocaleThatDoesNotExist()
     {
