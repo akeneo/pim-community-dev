@@ -1,4 +1,4 @@
-Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifierMapping:
+Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifierMapping:
     type: entity
     table: pim_suggest_data_franklin_identifier_mapping
     changeTrackingPolicy: DEFERRED_EXPLICIT

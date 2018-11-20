@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
