@@ -414,9 +414,9 @@ Feature: Edit an record
   Scenario: Display bullet point for the completeness when a required field isn't filled
     Given a valid record
     When the user ask for the record
-    Then the user should see a completeness bullet point on the required field : "website"
-    When the user fill the "website_designer_fingerprint" field with : "http://the-website.com"
-    Then the user should not see a completeness bullet point on the required field : "website"
+    Then the user should see a completeness bullet point on the required field: "website"
+    When the user fill the "website_designer_fingerprint" field with: "http://the-website.com"
+    Then the user should not see a completeness bullet point on the required field: "website"
 
 #  Todo : Fix random call for the preview image
 #  @acceptance-front

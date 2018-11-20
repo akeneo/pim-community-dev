@@ -38,11 +38,11 @@ export default (
             htmlFor={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           >
             {value.attribute.isRequired &&
-              value.data.isEmpty() && (
+              value.data.isEmpty() ? (
                 <span className="badge-elements-container">
                   <span className="AknBadge AknBadge--small AknBadge--highlight" />
                 </span>
-              )}
+              ) : null }
             {value.attribute.getLabel(locale.stringValue())}
           </label>
         </div>
