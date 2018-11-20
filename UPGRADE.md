@@ -149,6 +149,14 @@ TODO: change the link!!
     ```
     
     At this step, most of the configuration files have been updated. But we still miss a few that are detailed in the next steps.
+    
+    In those files, the following changes occurred:
+    
+    * the user provider `oro_user` has been replaced by `pim_user`
+    * the user provider ID `oro_user.security.provider` has been replaced by `pim_user.provider.user`
+    * the route `oro_user_security_check` has been replaced by `pim_user_security_check`
+    * the route `oro_user_security_login` has been replaced by `pim_user_security_login`
+    * the route `oro_user_security_logout` has been replaced by `pim_user_security_logout`
 
 3. Update your **app/config/config.yml**
 
@@ -252,7 +260,7 @@ TODO: change the link!!
             resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
         ```
         
-    * The following have been updated:
+    * The following route configurations have been updated:
         
         ```yaml
         oro_default:
@@ -274,7 +282,7 @@ TODO: change the link!!
 
 5. Update your **app/config/security.yml**:
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own security custom configuration.
 
     * The following have been updated:
     
