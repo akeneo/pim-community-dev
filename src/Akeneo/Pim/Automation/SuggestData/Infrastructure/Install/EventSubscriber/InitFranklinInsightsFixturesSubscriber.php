@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\InitFranklinUserCommand;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\InitJobInstancesCommand;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class InitFranklinUserSubscriber implements EventSubscriberInterface
+class InitFranklinInsightsFixturesSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
@@ -29,7 +30,7 @@ class InitFranklinUserSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_LOAD_FIXTURES => 'initUser',
+            InstallerEvents::POST_LOAD_FIXTURES => 'initFixtures',
         ];
     }
 
@@ -38,7 +39,7 @@ class InitFranklinUserSubscriber implements EventSubscriberInterface
      *
      * @throws \Exception
      */
-    public function initUser(InstallerEvent $event): void
+    public function initFixtures(InstallerEvent $event): void
     {
         $commandExecutor = $event->getCommandExecutor();
         $commandExecutor->runCommand(
@@ -46,6 +47,10 @@ class InitFranklinUserSubscriber implements EventSubscriberInterface
             [
                 '--quiet' => true,
             ]
+        );
+        $commandExecutor->runCommand(
+            InitJobInstancesCommand::getDefaultName(),
+            ['--quiet' => true]
         );
     }
 }
