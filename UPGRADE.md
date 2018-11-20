@@ -282,7 +282,7 @@ TODO: change the link!!
 
 5. Update your **app/config/security.yml**:
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own security custom configuration.
+    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own custom security configuration.
 
     * The following have been updated:
     
