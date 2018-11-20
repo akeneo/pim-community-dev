@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber\InitFranklinUserSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber\InitFranklinInsightsFixturesSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\InitFranklinUserCommand;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command\InitJobInstancesCommand;
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class InitFranklinUserSubscriberSpec extends ObjectBehavior
+class InitFranklinInsightsFixturesSubscriberSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(InitFranklinUserSubscriber::class);
+        $this->shouldHaveType(InitFranklinInsightsFixturesSubscriber::class);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -37,7 +38,11 @@ class InitFranklinUserSubscriberSpec extends ObjectBehavior
                 '--quiet' => true,
             ]
         )->shouldBeCalled();
+        $commandExecutor->runCommand(
+            InitJobInstancesCommand::NAME,
+            ['--quiet' => true]
+        )->shouldBeCalled();
 
-        $this->initUser(new InstallerEvent($commandExecutor->getWrappedObject()));
+        $this->initFixtures(new InstallerEvent($commandExecutor->getWrappedObject()));
     }
 }

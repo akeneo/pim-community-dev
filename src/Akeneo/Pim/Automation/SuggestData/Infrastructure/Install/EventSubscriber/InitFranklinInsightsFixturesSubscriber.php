@@ -49,8 +49,10 @@ class InitFranklinInsightsFixturesSubscriber implements EventSubscriberInterface
             ]
         );
         $commandExecutor->runCommand(
-            InitJobInstancesCommand::getDefaultName(),
-            ['--quiet' => true]
+            InitJobInstancesCommand::NAME,
+            [
+                '--quiet' => true,
+            ]
         );
     }
 }

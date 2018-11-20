@@ -24,9 +24,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InitJobInstancesCommand extends ContainerAwareCommand
 {
-    public const SUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_subscribe_products';
-    public const UNSUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_unsubscribe_products';
-    public const FETCH_PRODUCTS_JOB_NAME = 'suggest_data_fetch_products';
+    public const NAME = 'pimee:suggest-data:init-job-instances';
+
+    private const SUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_subscribe_products';
+    private const UNSUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_unsubscribe_products';
+    private const FETCH_PRODUCTS_JOB_NAME = 'suggest_data_fetch_products';
+
     /** @var CommandLauncher */
     private $commandLauncher;
 
@@ -38,7 +41,7 @@ class InitJobInstancesCommand extends ContainerAwareCommand
      */
     protected function configure(): void
     {
-        $this->setName('pimee:suggest-data:init-job-instances');
+        $this->setName(self::NAME);
     }
 
     /**
@@ -55,25 +58,26 @@ class InitJobInstancesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        if (null === $this->jobInstanceRepository->findOneBy(['code' => 'suggest_data_subscribe_products'])) {
-            $this->createJobInstanceForMassEdit('suggest_data_subscribe_products');
+        if (null === $this->jobInstanceRepository->findOneBy(['code' => self::SUBSCRIBE_PRODUCTS_JOB_NAME])) {
+            $this->createJobInstance(self::SUBSCRIBE_PRODUCTS_JOB_NAME, 'mass_edit');
         }
 
-        if (null === $this->jobInstanceRepository->findOneBy(['code' => 'suggest_data_unsubscribe_products'])) {
-            $this->createJobInstanceForMassEdit('suggest_data_unsubscribe_products');
+        if (null === $this->jobInstanceRepository->findOneBy(['code' => self::UNSUBSCRIBE_PRODUCTS_JOB_NAME])) {
+            $this->createJobInstance(self::UNSUBSCRIBE_PRODUCTS_JOB_NAME, 'mass_edit');
         }
 
-        if (null === $this->jobInstanceRepository->findOneBy(['code' => 'suggest_data_fetch_products'])) {
-            $this->createJobInstanceForMassEdit('suggest_data_fetch_products');
+        if (null === $this->jobInstanceRepository->findOneBy(['code' => self::FETCH_PRODUCTS_JOB_NAME])) {
+            $this->createJobInstance(self::FETCH_PRODUCTS_JOB_NAME, 'franklin_insights');
         }
     }
 
     /**
-     * Launches a command to create job instance for mass edit job name.
+     * Launches a command to create job instance.
      *
      * @param string $jobName
+     * @param string $jobType
      */
-    private function createJobInstanceForMassEdit(string $jobName): void
+    private function createJobInstance(string $jobName, string $jobType): void
     {
         $this->commandLauncher->executeForeground(
             sprintf(
@@ -81,7 +85,7 @@ class InitJobInstancesCommand extends ContainerAwareCommand
                 'akeneo:batch:create-job',
                 'Suggest Data Connector',
                 $jobName,
-                'mass_edit',
+                $jobType,
                 $jobName
             )
         );
