@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\ReferenceEntity\Domain\Model;
 
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\LocaleInterface;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use PhpSpec\ObjectBehavior;
 
 class LabelCollectionSpec extends ObjectBehavior
@@ -91,10 +90,10 @@ class LabelCollectionSpec extends ObjectBehavior
             'de_DE' => 'Eine deutsche label'
         ]]);
 
-        $this->filterByLocaleIdentifiers([
-            LocaleIdentifier::fromCode('en_US'),
-            LocaleIdentifier::fromCode('de_DE'),
-        ])->shouldBeLike(LabelCollection::fromArray([
+        $this->filterByLocaleIdentifiers(LocaleIdentifierCollection::fromNormalized([
+            'en_US',
+            'de_DE',
+        ]))->shouldBeLike(LabelCollection::fromArray([
             'en_US' => 'A US label',
             'de_DE' => 'Eine deutsche label',
         ]));

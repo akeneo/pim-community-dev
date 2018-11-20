@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -41,24 +40,13 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
     {
         $this->checkConstraintType($constraint);
 
-        $localeIdentifiers = [];
-        foreach ($localeReferences as $localeReference) {
-            $this->checkLocaleReferenceType($localeReference);
-            if (!$localeReference->isEmpty()) {
-                $localeIdentifiers[] = $localeReference->getIdentifier();
-            }
+        $localeIdentifiers = LocaleIdentifierCollection::fromLocaleReferences($localeReferences);
+        if ($localeIdentifiers->isEmpty()) {
+            return;
         }
 
-        if (empty($localeIdentifiers)) {
-            return null;
-        }
-
-        $localeCodes = array_map(function (LocaleIdentifier $localeIdentifier) {
-            return $localeIdentifier->normalize();
-        }, $localeIdentifiers);
-
-        $activatedLocales = ($this->findActivatedLocales)($localeIdentifiers);
-        $notActivatedLocales = array_diff($localeCodes, $activatedLocales);
+        $activatedLocaleIdentifiers = ($this->findActivatedLocales)($localeIdentifiers);
+        $notActivatedLocales = array_diff($localeIdentifiers->normalize(), $activatedLocaleIdentifiers->normalize());
 
         if (!empty($notActivatedLocales)) {
             $errorMessage = count($notActivatedLocales) > 1
@@ -79,17 +67,6 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
     {
         if (!$constraint instanceof LocalesShouldBeActivated) {
             throw new UnexpectedTypeException($constraint, self::class);
-        }
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    private function checkLocaleReferenceType($localeReference): void
-    {
-        if (null !== $localeReference && !$localeReference instanceof LocaleReference) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                LocaleReference::class, get_class($localeReference)));
         }
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -35,12 +35,21 @@ class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIden
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $localeIdentifiers): array
+    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
     {
-        $localeCodes = array_map(function (LocaleIdentifier $localeIdentifier) {
-            return $localeIdentifier->normalize();
-        }, $localeIdentifiers);
+        $activatedLocaleCodes = [];
+        if (!$localeIdentifiers->isEmpty()) {
+            $activatedLocaleCodes = $this->fetchActivatedLocaleCodesFromIdentifiers($localeIdentifiers);
+        }
 
+        return LocaleIdentifierCollection::fromNormalized($activatedLocaleCodes);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function fetchActivatedLocaleCodesFromIdentifiers(LocaleIdentifierCollection $localeIdentifiers): array
+    {
         $query = <<<SQL
           SELECT code
           FROM pim_catalog_locale 
@@ -48,7 +57,7 @@ class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIden
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
-            'locale_codes' => $localeCodes,
+            'locale_codes' => $localeIdentifiers->normalize(),
         ], [
             'locale_codes' => Connection::PARAM_STR_ARRAY,
         ]);

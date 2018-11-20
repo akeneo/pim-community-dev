@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -29,10 +29,8 @@ class InMemoryFindActivatedLocalesByIdentifiers implements FindActivatedLocalesB
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $localeIdentifiers): array
+    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
     {
-        Assert::allIsInstanceOf($localeIdentifiers, LocaleIdentifier::class);
-
         $activatedLocales = [];
         foreach ($localeIdentifiers as $localeIdentifier) {
             $localeCode = $localeIdentifier->normalize();
@@ -41,7 +39,7 @@ class InMemoryFindActivatedLocalesByIdentifiers implements FindActivatedLocalesB
             }
         }
 
-        return $activatedLocales;
+        return LocaleIdentifierCollection::fromNormalized($activatedLocales);
     }
 
     public function save(LocaleIdentifier $localeIdentifier): void

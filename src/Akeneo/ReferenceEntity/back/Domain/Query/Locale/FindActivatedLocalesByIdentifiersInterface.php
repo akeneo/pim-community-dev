@@ -13,20 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Locale;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 
 /**
- * Find a list of activated locale codes by their identifiers.
+ * Find a list of activated locale identifiers from a given list of locale identifiers.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 interface FindActivatedLocalesByIdentifiersInterface
 {
-    /**
-     * @param LocaleIdentifier[] $localeIdentifiers
-     *
-     * @return string[]
-     */
-    public function __invoke(array $localeIdentifiers): array;
+    public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection;
 }

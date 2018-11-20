@@ -16,7 +16,7 @@ namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use PhpSpec\ObjectBehavior;
@@ -245,10 +245,9 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          );
 
-         $this->getRecordWithValuesAndLabelsFilteredOnLocales([
-             LocaleIdentifier::fromCode('en_US'),
-             LocaleIdentifier::fromCode('de_DE'),
-
-         ])->shouldBeLike($expectedRecord);
+         $this->getRecordWithValuesAndLabelsFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([
+             'en_US',
+             'de_DE',
+         ]))->shouldBeLike($expectedRecord);
      }
 }
