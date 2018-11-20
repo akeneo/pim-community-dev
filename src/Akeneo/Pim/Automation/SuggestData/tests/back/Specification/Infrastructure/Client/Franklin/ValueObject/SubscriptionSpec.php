@@ -135,4 +135,57 @@ class SubscriptionSpec extends ObjectBehavior
 
         $this->isMappingMissing()->shouldReturn(false);
     }
+
+    public function it_marks_the_subscription_as_cancelled(): void
+    {
+        $this->beConstructedWith([
+            'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+            'identifiers' => [],
+            'attributes' => [],
+            'extra' => [
+                'tracker_id' => '42',
+            ],
+            'misses_mapping' => true,
+            'mapped_identifiers' => [],
+            'mapped_attributes' => [],
+            'is_cancelled' => true,
+        ]);
+
+        $this->isCancelled()->shouldReturn(true);
+    }
+
+    public function it_marks_the_subscription_as_not_cancelled(): void
+    {
+        $this->beConstructedWith([
+            'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+            'identifiers' => [],
+            'attributes' => [],
+            'extra' => [
+                'tracker_id' => '42',
+            ],
+            'misses_mapping' => true,
+            'mapped_identifiers' => [],
+            'mapped_attributes' => [],
+            'is_cancelled' => false,
+        ]);
+
+        $this->isCancelled()->shouldReturn(false);
+    }
+
+    public function it_marks_the_subscription_as_not_cancelled_if_there_is_no_info_about_it(): void
+    {
+        $this->beConstructedWith([
+            'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
+            'identifiers' => [],
+            'attributes' => [],
+            'extra' => [
+                'tracker_id' => '42',
+            ],
+            'misses_mapping' => true,
+            'mapped_identifiers' => [],
+            'mapped_attributes' => [],
+        ]);
+
+        $this->isCancelled()->shouldReturn(false);
+    }
 }

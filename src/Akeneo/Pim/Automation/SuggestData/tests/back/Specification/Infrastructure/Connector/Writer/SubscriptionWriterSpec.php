@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
@@ -85,8 +85,8 @@ class SubscriptionWriterSpec extends ObjectBehavior
         ];
 
         $collection = new ProductSubscriptionResponseCollection([]);
-        $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false));
-        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
+        $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false, false));
+        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
@@ -122,7 +122,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $collection = new ProductSubscriptionResponseCollection([
             42 => 'Invalid UPC: \'123456\'',
         ]);
-        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
+        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
         $stepExecution->addWarning(

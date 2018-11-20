@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProvi
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
@@ -110,7 +110,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
-        $response = new ProductSubscriptionResponse(42, 'test-id', [], false);
+        $response = new ProductSubscriptionResponse(42, 'test-id', [], false, false);
         $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();

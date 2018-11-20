@@ -33,20 +33,30 @@ final class ProductSubscriptionResponse
     /** @var bool */
     private $isMappingMissing;
 
+    /** @var bool */
+    private $isCancelled;
+
     /**
      * @param int $productId
      * @param string $subscriptionId
      * @param array $suggestedData
      * @param bool $isMappingMissing
+     * @param bool $isCancelled
      */
-    public function __construct(int $productId, string $subscriptionId, array $suggestedData, bool $isMappingMissing)
-    {
+    public function __construct(
+        int $productId,
+        string $subscriptionId,
+        array $suggestedData,
+        bool $isMappingMissing,
+        bool $isCancelled
+    ) {
         $this->validate($subscriptionId, $suggestedData);
 
         $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
         $this->suggestedData = $suggestedData;
         $this->isMappingMissing = $isMappingMissing;
+        $this->isCancelled = $isCancelled;
     }
 
     /**
@@ -79,6 +89,14 @@ final class ProductSubscriptionResponse
     public function isMappingMissing(): bool
     {
         return $this->isMappingMissing;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled(): bool
+    {
+        return $this->isCancelled;
     }
 
     /**
