@@ -104,9 +104,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $parentProductModelCode = $item['parent'] ?? '';
 
         try {
-            $item = $this->productAttributeFilter->filter($item);
-
             $familyCode = $this->getFamilyCode($item);
+            $item['family'] = $familyCode;
+
+            $item = $this->productAttributeFilter->filter($item);
             $filteredItem = $this->filterItemData($item);
 
             $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $parentProductModelCode);
@@ -188,7 +189,22 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     protected function getFamilyCode(array $item): string
     {
-        return $item['family'] ?? '';
+        if (key_exists('family', $item)) {
+            return $item['family'];
+        }
+
+        /** @var ProductInterface $product */
+        $product = $this->repository->findOneByIdentifier($item['identifier']);
+        if (null === $product) {
+            return '';
+        }
+
+        $family = $product->getFamily();
+        if (null === $family) {
+            return '';
+        }
+
+        return $family->getCode();
     }
 
     /**
