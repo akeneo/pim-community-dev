@@ -49,7 +49,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             [
                 'designer-reference_data_options' => [
                     '<all_channels>' => [
-                        '<all_locales>' => '',
+                        '<all_locales>' => [],
                     ],
                 ],
             ]
@@ -84,7 +84,7 @@ class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
             [
                 'designer-reference_data_options' => [
                     '<all_channels>' => [
-                        '<all_locales>' => 'starck,dyson',
+                        '<all_locales>' => ['starck', 'dyson'],
                     ],
                 ],
             ]

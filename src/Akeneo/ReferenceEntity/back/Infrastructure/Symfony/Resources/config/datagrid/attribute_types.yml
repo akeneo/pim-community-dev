@@ -1,0 +1,26 @@
+parameters:
+    pim_datagrid.product.attribute_type.akeneo_reference_entity_collection:
+        column:
+            type:          reference_entity_collection
+        filter:
+            type:     reference_entity_collection
+            ftype:    reference_entity_collection
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter: ~
+
+    pim_datagrid.product.attribute_type.akeneo_reference_entity:
+        column:
+            type:          reference_entity
+        filter:
+            type:     reference_entity_collection
+            ftype:    reference_entity_single
+            options:
+                field_options:
+                    multiple: false
+                    attr:
+                        empty_choice: true
+        sorter: ~

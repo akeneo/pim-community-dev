@@ -45,5 +45,9 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
         $loader->load('search/services.yml');
+
+        $loader->load('datagrid/attribute_types.yml');
+        $loader->load('datagrid/formatters.yml');
+        $loader->load('datagrid/filters.yml');
     }
 }
