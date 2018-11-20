@@ -177,8 +177,12 @@ class FileValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                $constraint->extensionsMessage,
-                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+                $constraint->mimeTypeMessage,
+                [
+                    '%extension%' => 'jfif',
+                    '%types%'     => 'image/jpeg',
+                    '%type%'      => 'application/octet-stream',
+                ]
             )
             ->shouldBeCalled()
             ->willReturn($violation);
