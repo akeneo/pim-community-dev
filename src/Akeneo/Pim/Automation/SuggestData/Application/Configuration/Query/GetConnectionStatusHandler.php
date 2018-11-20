@@ -15,9 +15,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Read\ConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
  * Checks if a suggest data connection is active or not.

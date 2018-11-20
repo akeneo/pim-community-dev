@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 
 /**
  * In memory implementation of the configuration repository.

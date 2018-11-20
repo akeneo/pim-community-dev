@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\IdentifiersMappingProvider;
 use PhpSpec\ObjectBehavior;

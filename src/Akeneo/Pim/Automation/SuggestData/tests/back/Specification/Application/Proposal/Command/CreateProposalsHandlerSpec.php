@@ -10,8 +10,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSugge
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
