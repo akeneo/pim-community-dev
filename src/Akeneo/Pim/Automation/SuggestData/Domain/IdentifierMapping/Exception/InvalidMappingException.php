@@ -11,20 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception;
 
 /**
- * Exception thrown when trying to save a not valid mapping.
- *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-final class InvalidMappingException extends \Exception
+class InvalidMappingException extends \Exception
 {
     /** @var string */
     private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
-
-    /** @var string */
-    private const ATTRIBUTE_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.attributes_mapping.constraint.%s';
 
     /** @var string */
     private $className;
@@ -62,7 +57,7 @@ final class InvalidMappingException extends \Exception
      * @param string $className
      * @param string|null $path
      *
-     * @return InvalidMappingException
+     * @return static
      */
     public static function duplicateAttributeCode(
         string $className,
@@ -79,7 +74,7 @@ final class InvalidMappingException extends \Exception
      * @param string $className
      * @param string|null $path
      *
-     * @return InvalidMappingException
+     * @return static
      */
     public static function missingOrInvalidIdentifiersInMapping(
         array $expectedIdentifiers,
@@ -140,29 +135,6 @@ final class InvalidMappingException extends \Exception
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'attribute_type');
 
         return new static($className, $message, [], $attributeCode);
-    }
-
-    /**
-     * @return InvalidMappingException
-     */
-    public static function expectedTargetKey()
-    {
-        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'missing_target_key');
-
-        return new self(null, $message, [], '', 400);
-    }
-
-    /**
-     * @param mixed $targetKey
-     * @param mixed $expectedKey
-     *
-     * @return InvalidMappingException
-     */
-    public static function expectedKey($targetKey, $expectedKey)
-    {
-        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'missing_attribute_key');
-
-        return new self(null, $message, ['expectedKey' => $expectedKey, 'targetKey' => $targetKey], '', 400);
     }
 
     /**
