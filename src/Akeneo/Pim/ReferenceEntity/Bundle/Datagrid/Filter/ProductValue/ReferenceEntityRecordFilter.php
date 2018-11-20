@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\ReferenceEntity\Bundle\Datagrid\Filter\ProductValue;
 
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -46,9 +47,10 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
         ProductFilterUtility $util,
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository,
         ReferenceEntityRepositoryInterface $referenceEntityRepository
     ) {
-        parent::__construct($factory, $util, $userContext, null, $attributeRepository);
+        parent::__construct($factory, $util, $userContext, $attributeRepository, $attributeOptionRepository);
 
         $this->referenceEntityRepository = $referenceEntityRepository;
     }
