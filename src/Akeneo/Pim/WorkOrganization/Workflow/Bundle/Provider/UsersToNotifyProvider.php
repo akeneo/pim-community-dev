@@ -46,7 +46,7 @@ class UsersToNotifyProvider
         $users = $this->userRepository->findByGroupIds($groupIds);
 
         return array_filter($users, function ($user) {
-            return $user->hasProposalsToReviewNotification();
+            return $user->getProperty('proposals_to_review_notification');
         });
     }
 }

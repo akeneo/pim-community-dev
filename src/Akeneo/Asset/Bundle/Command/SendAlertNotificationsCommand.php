@@ -84,7 +84,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
 
         foreach ($users as $user) {
             $assets = $this->getAssetRepository()
-                ->findExpiringAssets(new \DateTime(), $user->getAssetDelayReminder());
+                ->findExpiringAssets(new \DateTime(), $user->getProperty('asset_delay_reminder'));
 
             foreach ($assets as &$asset) {
                 $uri = $this->getRouter()->generate('pimee_product_asset_edit', ['id' => $asset['id']]);
@@ -96,7 +96,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
                     'user'    => $user,
                     'assets'  => $assets,
                     'baseUrl' => $baseUrl,
-                    'nb'      => $user->getAssetDelayReminder(),
+                    'nb'      => $user->getProperty('asset_delay_reminder'),
                     'unit'    => 'days',
                     'locale'  => 'en_US'
                 ];

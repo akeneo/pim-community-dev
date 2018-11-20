@@ -24,20 +24,17 @@ class ConfigureUserServicesPassSpec extends ObjectBehavior
     function it_registers_the_user_preferences_subscriber(
         ContainerBuilder $container,
         Definition $userUpdater,
-        Definition $assetCategoryRepository,
-        Definition $userFactory
+        Definition $userNormalizer
     ) {
-        $container->getDefinition('pim_user.updater.user')
-            ->willreturn($userUpdater);
+        $container->getDefinition('pim_user.updater.user')->willReturn($userUpdater);
+        $userUpdater->addArgument('asset_delay_reminder')->shouldBeCalled();
+        $userUpdater->addArgument('default_asset_tree')->shouldBeCalled();
+        $userUpdater->addArgument('email_notifications')->shouldBeCalled();
 
-        $container->getDefinition('pimee_product_asset.repository.asset_category')
-            ->willreturn($assetCategoryRepository);
-
-        $userUpdater->addArgument($assetCategoryRepository)->shouldBeCalled();
-
-        $container->getDefinition('pim_user.factory.user')->willReturn($userFactory);
-        $userFactory->addArgument($assetCategoryRepository)->shouldBeCalled();
-
+        $container->getDefinition('pim_user.normalizer.user')->willReturn($userNormalizer);
+        $userNormalizer->addArgument('asset_delay_reminder')->shouldBeCalled();
+        $userNormalizer->addArgument('default_asset_tree')->shouldBeCalled();
+        $userNormalizer->addArgument('email_notifications')->shouldBeCalled();
 
         $this->process($container)->shouldReturn(null);
     }

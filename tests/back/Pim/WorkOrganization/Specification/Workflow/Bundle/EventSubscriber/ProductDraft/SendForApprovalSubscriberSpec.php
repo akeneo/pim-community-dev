@@ -68,9 +68,9 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $author->getUsername()->willReturn('mary');
         $author->getCatalogLocale()->willReturn($catalogLocale);
 
-        $owner1->hasProposalsToReviewNotification()->willReturn(true);
-        $owner2->hasProposalsToReviewNotification()->willReturn(false);
-        $owner3->hasProposalsToReviewNotification()->willReturn(true);
+        $owner1->getProperty('proposals_to_review_notification')->willReturn(true);
+        $owner2->getProperty('proposals_to_review_notification')->willReturn(false);
+        $owner3->getProperty('proposals_to_review_notification')->willReturn(true);
 
         $ownerGroupsProvider->getOwnerGroupIds($product)->willReturn([2, 4]);
 

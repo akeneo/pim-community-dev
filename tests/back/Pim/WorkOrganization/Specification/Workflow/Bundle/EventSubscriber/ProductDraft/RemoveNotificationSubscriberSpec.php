@@ -92,7 +92,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(false);
+        $author->getProperty('proposals_state_notifications')->willReturn(false);
 
         $notifier->notify(Argument::cetera())->shouldNotBeCalled();
         $context->getUser()->willReturn(null);
@@ -135,7 +135,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $event->getArgument('isPartial')->willReturn(false);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(true);
+        $author->getProperty('proposals_state_notifications')->willReturn(true);
 
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
@@ -192,7 +192,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $event->getArgument('comment')->willReturn('Nope Mary.');
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(true);
+        $author->getProperty('proposals_state_notifications')->willReturn(true);
 
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');

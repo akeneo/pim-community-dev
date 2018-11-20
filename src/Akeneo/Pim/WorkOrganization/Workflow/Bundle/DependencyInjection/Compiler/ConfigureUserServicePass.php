@@ -23,6 +23,18 @@ class ConfigureUserServicePass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $userNormalizer = $container->getDefinition('pim_user.normalizer.user');
-        $userNormalizer->addArgument($container->getDefinition('pimee_security.repository.category_access'));
+        $userNormalizer->addArgument('proposals_to_review_notification');
+        $userNormalizer->addArgument('proposals_state_notifications');
+
+        $userWorkflowNormalizer = $container->getDefinition('pimee_workflow.normalizer.user');
+        $userExtraNormalizers = $userNormalizer->getArgument(5);
+
+        $userExtraNormalizers[] = $userWorkflowNormalizer;
+
+        $userNormalizer->replaceArgument(5, $userExtraNormalizers);
+
+        $userUpdater = $container->getDefinition('pim_user.updater.user');
+        $userUpdater->addArgument('proposals_to_review_notification');
+        $userUpdater->addArgument('proposals_state_notifications');
     }
 }

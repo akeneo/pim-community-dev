@@ -57,3 +57,10 @@ services:
             - '%pim_reference_data.value.reference_data_collection.class%'
         tags:
             - { name: pim_catalog.factory.value }
+
+    pimee_user.factory.user:
+        class: 'Akeneo\Asset\Component\Factory\UserFactory'
+        decorates: pim_user.factory.user
+        arguments:
+            - '@pimee_user.factory.user.inner'
+            - '@pimee_product_asset.repository.asset_category'

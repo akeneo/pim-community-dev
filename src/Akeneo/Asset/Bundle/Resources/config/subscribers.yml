@@ -28,8 +28,3 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_subscriber }
-
-    pimee_product_asset.doctrine.event_subscriber.add_field_to_user:
-        class: 'Akeneo\Asset\Bundle\Doctrine\ORM\EventListener\UpdateUserMapping'
-        tags:
-            - { name: doctrine.event_subscriber }
