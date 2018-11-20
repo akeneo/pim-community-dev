@@ -1187,3 +1187,5 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader`, remove arguments `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager` and last argument `bool`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader`, remove argument `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductAndProductModelReader`, remove arguments `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager` and fifth argument `bool`
+- Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ChoiceFilter`, add argument `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface` and remove fourth argument `string`
+- Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter`, add argument `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface`

@@ -1,12 +1,20 @@
 # 2.3.x
 
+# 2.3.17 (2018-11-15)
+
 ## Bug fixes
 
 - PIM-7774: Fix refresh of grid date filter
 - PIM-7778: Fix ACL on Catalog Volume Monitoring
-- PIM-7773: Fix routing issues with product status toggle 
+- PIM-7773: Fix routing issues with product status toggle
 - PIM-7776: Fix injection in the job's label in notification area
 - PIM-7828: Fix ACL on System Info
+- PIM-7824: Fix filter on view with attribute option deleted
+- PIM-7852: Increase product import performances and fixes model association import when comparison is disabled
+- PIM-7853: Fix unwanted automatic reload of the user page even if there were errors on the form
+- PIM-7841: Allow users to set regional locales for UI (en_NZ, pt_PT and pt_BR)
+- PIM-7791: Suppress warning on attribute option in case of case sensitive codes
+- PIM-7831: Blacklist some characters in user form inputs in order to prevent from malicious injection
 
 # 2.3.16 (2018-11-13)
 
