@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSubscribedException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
  * Handles an UnsubscribeProduct command.
@@ -46,6 +46,8 @@ class UnsubscribeProductHandler
 
     /**
      * @param UnsubscribeProductCommand $command
+     *
+     * @throws ProductNotSubscribedException If product is not subscribed
      */
     public function handle(UnsubscribeProductCommand $command): void
     {

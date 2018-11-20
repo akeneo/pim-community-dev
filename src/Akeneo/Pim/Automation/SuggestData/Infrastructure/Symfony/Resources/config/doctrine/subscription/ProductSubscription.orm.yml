@@ -6,6 +6,9 @@ Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription:
         suggest_data_subscription_idx:
             columns:
                 - subscription_id
+        suggest_data_product_idx:
+            columns:
+                - product_id
     fields:
         id:
             type: integer
@@ -15,6 +18,10 @@ Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription:
         subscriptionId:
             type: string
             column: subscription_id
+            nullable: false
+        productId:
+            type: integer
+            column: product_id
             nullable: false
         rawSuggestedData:
             type: native_json
@@ -40,11 +47,3 @@ Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription:
             type: string
             column: requested_mpn
             nullable: true
-
-    oneToOne:
-        product:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
-            joinColumns:
-                product_id:
-                    referencedColumnName: id
-                    onDelete: 'CASCADE'

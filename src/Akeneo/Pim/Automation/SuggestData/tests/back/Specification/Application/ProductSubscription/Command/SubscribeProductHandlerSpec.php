@@ -7,13 +7,13 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSub
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -110,7 +110,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
-        $response = new ProductSubscriptionResponse(42, 'test-id', [], false);
+        $response = new ProductSubscriptionResponse(42, 'test-id', [], false, false);
         $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();

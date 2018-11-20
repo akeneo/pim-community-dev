@@ -7,9 +7,9 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSub
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use PhpSpec\ObjectBehavior;
@@ -32,7 +32,7 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(FetchProductsHandler::class);
     }
 
-    public function it_fetches_products_through_the_data_provider(
+    public function it_fetches_subscriptions_through_the_data_provider_and_saves_them(
         $subscriptionProvider,
         $subscriptionRepository,
         FetchProductsCommand $command,
@@ -46,12 +46,14 @@ class FetchProductsHandlerSpec extends ObjectBehavior
             42,
             'an-id',
             [['pimAttributeCode' => 'foo', 'value' => 'bar']],
-            true
+            true,
+            false
         );
         $subscriptionResponse2 = new ProductSubscriptionResponse(
             84,
             'another-id',
             [['pimAttributeCode' => 'foo', 'value' => 'bar']],
+            false,
             false
         );
 
@@ -64,12 +66,53 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         $subscriptionRepository->findOneByProductId(84)->willReturn($subscription2);
         $subscriptionRepository->save($subscription1)->shouldBeCalled();
         $subscriptionRepository->save($subscription2)->shouldBeCalled();
+        $subscriptionRepository->delete(Argument::any())->shouldNotBeCalled();
 
         $subscription1->setSuggestedData(Argument::type(SuggestedData::class))->shouldBeCalled();
         $subscription1->markAsMissingMapping(true)->shouldBeCalled();
 
         $subscription2->setSuggestedData(Argument::type(SuggestedData::class))->shouldBeCalled();
         $subscription2->markAsMissingMapping(false)->shouldBeCalled();
+
+        $this->handle($command)->shouldReturn(null);
+    }
+
+    public function it_fetches_subscriptions_through_the_data_provider_and_removes_cancelled_ones(
+        $subscriptionProvider,
+        $subscriptionRepository,
+        FetchProductsCommand $command,
+        ProductSubscription $subscription1,
+        ProductSubscription $subscription2,
+        SubscriptionsCursor $cursor
+    ): void {
+        $subscriptionProvider->fetch()->willReturn($cursor);
+
+        $subscriptionResponse1 = new ProductSubscriptionResponse(
+            42,
+            'an-id',
+            [['pimAttributeCode' => 'foo', 'value' => 'bar']],
+            true,
+            true
+        );
+        $subscriptionResponse2 = new ProductSubscriptionResponse(
+            84,
+            'another-id',
+            [['pimAttributeCode' => 'foo', 'value' => 'bar']],
+            false,
+            true
+        );
+
+        $cursor->valid()->willReturn(true, true, false);
+        $cursor->current()->willReturn($subscriptionResponse1, $subscriptionResponse2);
+        $cursor->next()->shouldBeCalledTimes(2);
+        $cursor->rewind()->shouldBeCalledTimes(1);
+
+        $subscriptionRepository->findOneByProductId(42)->willReturn($subscription1);
+        $subscriptionRepository->findOneByProductId(84)->willReturn($subscription2);
+        $subscriptionRepository->save($subscription1)->shouldNotBeCalled();
+        $subscriptionRepository->save($subscription2)->shouldNotBeCalled();
+        $subscriptionRepository->delete($subscription1)->shouldBeCalled();
+        $subscriptionRepository->delete($subscription2)->shouldBeCalled();
 
         $this->handle($command)->shouldReturn(null);
     }

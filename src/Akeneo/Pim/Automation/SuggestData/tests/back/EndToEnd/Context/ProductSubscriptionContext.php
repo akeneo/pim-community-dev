@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;

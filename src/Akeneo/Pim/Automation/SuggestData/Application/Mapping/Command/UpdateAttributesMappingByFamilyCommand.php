@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>

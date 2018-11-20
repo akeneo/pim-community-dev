@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor\SubscriptionProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -83,8 +83,9 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         $product->isVariant()->willReturn(false);
         $product->getFamily()->willReturn($family);
         $product->getId()->willReturn(42);
+
         $productSubscriptionRepository->findOneByProductId(42)->willReturn(
-            new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id', ['sku' => '72527273070'])
+            new ProductSubscription(42, 'fake-subscription-id', ['sku' => '72527273070'])
         );
         $product->getIdentifier()->willReturn('foo');
 

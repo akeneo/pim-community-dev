@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\E
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\Subscriber\FranklinProposalsCreationSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

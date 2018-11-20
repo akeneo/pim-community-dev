@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\FamiliesNormalizer;
 use PhpSpec\ObjectBehavior;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Persistence\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;

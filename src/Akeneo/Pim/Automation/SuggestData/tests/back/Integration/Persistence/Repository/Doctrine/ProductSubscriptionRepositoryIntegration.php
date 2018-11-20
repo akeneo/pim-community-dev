@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Persistence\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -31,7 +31,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product');
         $subscriptionId = 'a-random-string';
         $subscription = new ProductSubscription(
-            $product,
+            $product->getId(),
             $subscriptionId,
             ['upc' => '72527273070', 'asin' => 'B00005N5PF', 'mpn' => 'AS4561AD142', 'brand' => 'intel']
         );
@@ -96,7 +96,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     public function test_it_saves_empty_suggested_data_as_null(): void
     {
         $subscription1 = new ProductSubscription(
-            $this->createProduct('a_product'),
+            $this->createProduct('a_product')->getId(),
             'subscription-1',
             ['sku' => '72527273070']
         );
@@ -104,9 +104,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $this->getRepository()->save($subscription1);
 
         $subscription2 = new ProductSubscription(
-            $this->createProduct(
-                'another_product'
-            ),
+            $this->createProduct('another_product')->getId(),
             'subscription-2',
             ['sku' => '72527273070']
         );

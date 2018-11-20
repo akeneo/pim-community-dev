@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use PhpSpec\ObjectBehavior;
 
 /**

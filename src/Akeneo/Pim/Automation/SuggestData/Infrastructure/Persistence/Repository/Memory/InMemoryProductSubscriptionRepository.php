@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 
 /**
@@ -40,7 +40,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
         foreach ($this->subscriptions as $subscription) {
-            if ($subscription->getProduct()->getId() === $productId) {
+            if ($subscription->getProductId() === $productId) {
                 return $subscription;
             }
         }
@@ -84,7 +84,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     public function emptySuggestedData(array $productIds): void
     {
         foreach ($this->subscriptions as $subscription) {
-            if (in_array($subscription->getProduct()->getId(), $productIds)) {
+            if (in_array($subscription->getProductId(), $productIds)) {
                 $subscription->setSuggestedData(new SuggestedData([]));
             }
         }

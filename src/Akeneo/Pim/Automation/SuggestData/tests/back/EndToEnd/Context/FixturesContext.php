@@ -17,8 +17,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifi
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Common\EntityWithValue\Builder;

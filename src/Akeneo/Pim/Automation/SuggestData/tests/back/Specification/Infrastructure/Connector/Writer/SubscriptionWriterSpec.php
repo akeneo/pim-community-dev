@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\SubscriptionWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -85,8 +85,8 @@ class SubscriptionWriterSpec extends ObjectBehavior
         ];
 
         $collection = new ProductSubscriptionResponseCollection([]);
-        $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false));
-        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
+        $collection->add(new ProductSubscriptionResponse(42, '123-465-789', [], false, false));
+        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
 
@@ -122,7 +122,7 @@ class SubscriptionWriterSpec extends ObjectBehavior
         $collection = new ProductSubscriptionResponseCollection([
             42 => 'Invalid UPC: \'123456\'',
         ]);
-        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false));
+        $collection->add(new ProductSubscriptionResponse(50, 'abc-def-987', [], false, false));
 
         $subscriptionProvider->bulkSubscribe($items)->willReturn($collection);
         $stepExecution->addWarning(

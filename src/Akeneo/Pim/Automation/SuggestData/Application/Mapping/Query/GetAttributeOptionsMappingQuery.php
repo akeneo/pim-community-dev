@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttributeId;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

@@ -76,7 +76,27 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  return {isLoaded, getLabel, setLabel, getTabCode, fillField, fillUploadField, clickOnDeleteButton, hasDeleteButton};
+  const isFilled = async (field) => {
+    try {
+      await page.waitForSelector(`div[data-code="${field}"] .AknBadge--small`, {timeout: 2000});
+    } catch (error) {
+      return true;
+    }
+
+    return false;
+  }
+
+  return {
+    isLoaded,
+    getLabel,
+    setLabel,
+    getTabCode,
+    fillField,
+    fillUploadField,
+    clickOnDeleteButton,
+    hasDeleteButton,
+    isFilled
+  };
 };
 
 module.exports = Enrich;

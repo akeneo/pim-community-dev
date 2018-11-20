@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normaliz
 
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping as DomainAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Prepare AttributesMapping model from Domain layer in order to be used by Franklin client.
@@ -32,34 +33,51 @@ class AttributesMappingNormalizer
     {
         $result = [];
         foreach ($attributesMapping as $attributeMapping) {
-            $attribute = $attributeMapping->getAttribute();
-
-            $normalizedPimAttribute = null;
-            if (null !== $attribute) {
-                $labels = [];
-                $translations = $attribute->getTranslations();
-                if (!$translations->isEmpty()) {
-                    foreach ($translations as $translation) {
-                        $labels[$translation->getLocale()] = $translation->getLabel();
-                    }
-                }
-
-                $normalizedPimAttribute = [
-                    'id' => $attribute->getCode(),
-                    'label' => $labels,
-                    'type' => 'text', // TODO: Should be managed in APAI-174
-                ];
-            }
-
             $status = DomainAttributeMapping::ATTRIBUTE_MAPPED === $attributeMapping->getStatus()
                 ? AttributeMapping::STATUS_ACTIVE : AttributeMapping::STATUS_INACTIVE;
+
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
-                'to' => $normalizedPimAttribute,
+                'to' => $this->computeNormalizedAttribute($attributeMapping),
                 'status' => $status,
             ];
         }
 
         return $result;
+    }
+
+    /**
+     * @param DomainAttributeMapping $attributeMapping
+     *
+     * @return array|null
+     */
+    private function computeNormalizedAttribute(DomainAttributeMapping $attributeMapping): ?array
+    {
+        $attribute = $attributeMapping->getAttribute();
+
+        $normalizedPimAttribute = null;
+        if (null !== $attribute) {
+            $labels = [];
+            $translations = $attribute->getTranslations();
+            if (!$translations->isEmpty()) {
+                foreach ($translations as $translation) {
+                    $labels[$translation->getLocale()] = $translation->getLabel();
+                }
+            }
+
+            $attributeTypes = array_flip(DomainAttributeMapping::ATTRIBUTE_TYPES_MAPPING);
+
+            $normalizedPimAttribute = [
+                'id' => $attribute->getCode(),
+                'label' => $labels,
+                'type' => $attributeTypes[$attribute->getType()],
+            ];
+
+            if (AttributeTypes::METRIC === $attribute->getType()) {
+                $normalizedPimAttribute['unit'] = $attribute->getDefaultMetricUnit();
+            }
+        }
+
+        return $normalizedPimAttribute;
     }
 }

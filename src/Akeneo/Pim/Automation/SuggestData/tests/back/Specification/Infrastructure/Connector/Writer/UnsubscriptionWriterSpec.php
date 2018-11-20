@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connect
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\UnsubscriptionWriter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;

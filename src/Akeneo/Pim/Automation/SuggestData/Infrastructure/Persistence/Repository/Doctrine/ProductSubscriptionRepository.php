@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -47,7 +47,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
      */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
-        return $this->em->getRepository(ProductSubscription::class)->findOneByProduct($productId);
+        return $this->em->getRepository(ProductSubscription::class)->findOneByProductId($productId);
     }
 
     /**
@@ -91,7 +91,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
         $qb->update(ProductSubscription::class, 'subscription')
            ->set('subscription.rawSuggestedData', ':rawSuggestedData')
            ->where(
-               $qb->expr()->in('subscription.product', ':productIds')
+               $qb->expr()->in('subscription.productId', ':productIds')
            )
            ->setParameter('rawSuggestedData', null)
            ->setParameter('productIds', $productIds);

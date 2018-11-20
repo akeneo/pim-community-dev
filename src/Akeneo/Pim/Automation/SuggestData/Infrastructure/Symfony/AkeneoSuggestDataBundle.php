@@ -31,7 +31,7 @@ class AkeneoSuggestDataBundle extends Bundle
     {
         $productMappings = [
             realpath(__DIR__ . '/Resources/config/doctrine/subscription') => 'Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model',
-            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model',
+            realpath(__DIR__ . '/Resources/config/doctrine/identifier_mapping') => 'Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model',
         ];
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -88,7 +88,7 @@ class SubscribeProductHandler
 
         $subscriptionResponse = $this->subscriptionProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription(
-            $product,
+            $product->getId(),
             $subscriptionResponse->getSubscriptionId(),
             $subscriptionRequest->getMappedValues($identifiersMapping)
         );
@@ -122,6 +122,8 @@ class SubscribeProductHandler
                 sprintf('The product with id "%d" is already subscribed', $productId)
             );
         }
+
+        // TODO: check that product is not variant
 
         return $product;
     }

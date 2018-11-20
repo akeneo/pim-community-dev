@@ -15,7 +15,6 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Mo
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,15 +22,9 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionSpec extends ObjectBehavior
 {
-    private $product;
-    private $subscriptionId;
-
     public function let(): void
     {
-        $this->product = new Product();
-        $this->subscriptionId = 'foobar';
-
-        $this->beConstructedWith($this->product, $this->subscriptionId, ['sku' => '72527273070']);
+        $this->beConstructedWith(42, 'foobar', ['sku' => '72527273070']);
     }
 
     public function it_is_a_product_subscription(): void
@@ -40,14 +33,14 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $this->shouldImplement(ProductSubscription::class);
     }
 
-    public function it_gets_the_product(): void
+    public function it_gets_the_product_id(): void
     {
-        $this->getProduct()->shouldReturn($this->product);
+        $this->getProductId()->shouldReturn(42);
     }
 
     public function it_gets_the_subscription_id(): void
     {
-        $this->getSubscriptionId()->shouldReturn($this->subscriptionId);
+        $this->getSubscriptionId()->shouldReturn('foobar');
     }
 
     public function it_sets_the_suggested_data(): void

@@ -19,7 +19,7 @@ describe('akeneo > attribute > domain > model > attribute > type > record --- re
     expect(RecordType.createFromString('').stringValue()).toEqual('');
     expect(() => RecordType.createFromString({my: 'object'})).toThrow();
   });
-  });
+
   test('I can get the reference entity identifier', () => {
     expect(RecordType.createFromString('brand').getReferenceEntityIdentifier()).toEqual(createIdentifier('brand'));
     expect(() => RecordType.createFromNormalized(null).getReferenceEntityIdentifier()).toThrow();

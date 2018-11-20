@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
