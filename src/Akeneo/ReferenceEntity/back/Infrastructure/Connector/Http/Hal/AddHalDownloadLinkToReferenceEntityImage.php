@@ -21,7 +21,7 @@ class AddHalDownloadLinkToReferenceEntityImage
 {
     /** @var Router */
     private $router;
-    
+
     public function __construct(
         Router $router
     ) {

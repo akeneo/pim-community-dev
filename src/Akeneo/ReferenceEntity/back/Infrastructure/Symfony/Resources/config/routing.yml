@@ -84,7 +84,7 @@ akeneo_reference_entities_attribute_edit_rest:
 
 # API Connector
 akeneo_reference_entities_reference_entity_rest_connector_get:
-    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}'
+    path: '/api/rest/v1/reference-entities/{code}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity.get }
     methods: [GET]
 

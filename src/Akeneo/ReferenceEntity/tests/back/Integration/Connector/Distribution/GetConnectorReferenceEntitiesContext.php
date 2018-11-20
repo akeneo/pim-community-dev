@@ -116,9 +116,9 @@ class GetConnectorReferenceEntitiesContext implements Context
      */
     public function thePIMReturnsTheReferenceEntitiesOfThePIM()
     {
-        var_dump($this->referenceEntityPages);
         for ($page = 1; $page <= 4; $page++) {
             Assert::keyExists($this->referenceEntityPages, $page, sprintf('The page %d has not been loaded', $page));
+
             $this->webClientHelper->assertJsonFromFile(
                 $this->referenceEntityPages[$page],
                 self::REQUEST_CONTRACT_DIR . sprintf(

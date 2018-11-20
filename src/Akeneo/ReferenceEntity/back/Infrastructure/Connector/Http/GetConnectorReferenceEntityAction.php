@@ -35,18 +35,18 @@ class GetConnectorReferenceEntityAction
      * @throws UnprocessableEntityHttpException
      * @throws NotFoundHttpException
      */
-    public function __invoke(string $referenceEntityIdentifier): JsonResponse
+    public function __invoke(string $code): JsonResponse
     {
         try {
-            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
+            $code = ReferenceEntityIdentifier::fromString($code);
         } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntity = ($this->findConnectorReferenceEntity)($referenceEntityIdentifier);
+        $referenceEntity = ($this->findConnectorReferenceEntity)($code);
 
         if (null === $referenceEntity) {
-            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
+            throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $code));
         }
 
         $normalizedReferenceEntity = $referenceEntity->normalize();
