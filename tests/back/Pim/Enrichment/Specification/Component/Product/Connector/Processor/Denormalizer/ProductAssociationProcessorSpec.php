@@ -319,16 +319,13 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productAssocFilter,
         $stepExecution,
-        $productDetacher,
-        ProductInterface $product,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
-        $product->getId()->willReturn(42);
+        $productRepository->getIdentifierProperties()->shouldNotBeCalled();
+        $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -342,12 +339,11 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             'associations' => []
         ];
 
-        $productAssocFilter->filter(Argument::any())->shouldNotBeCalled()->willReturn([]);
+        $productAssocFilter->filter(Argument::any())->shouldNotBeCalled();
         $productUpdater->update(Argument::any())->shouldNotBeCalled();
 
         $stepExecution->incrementSummaryInfo('product_skipped_no_associations')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
-        $productDetacher->detach($product)->shouldBeCalled();
         $this->process($convertedData)->shouldReturn(null);
     }
 }

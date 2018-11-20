@@ -117,6 +117,32 @@ Feature: Execute a job
     And I should see the text "skipped product (no differences) 1"
 
   @javascript
+  Scenario: Successfully skip associations if no association defined
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+    And I am logged in as "Julia"
+    When I edit the "SKU-001" product
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    And I press the "Add associations" button
+    Then I check the rows "SKU-002"
+    And I press the "Confirm" button in the popin
+    And the following CSV file to import:
+      """
+      sku
+      SKU-001
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then there should be 2 products
+    And I should see the text "skipped product (no associations detected) 1"
+
+  @javascript
   Scenario: Successfully remove associations
     Given the following product:
       | sku     | name-en_US |
@@ -142,6 +168,43 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
+
+  @javascript
+  Scenario: Successfully remove one association without removing the other
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+    And I am logged in as "Julia"
+    When I edit the "SKU-001" product
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    And I press the "Add associations" button
+    Then I check the rows "SKU-002"
+    And I press the "Confirm" button in the popin
+    When I edit the "SKU-001" product
+    And I visit the "Associations" column tab
+    And I visit the "Upsell" association type
+    And I press the "Add associations" button
+    Then I check the rows "SKU-002"
+    And I press the "Confirm" button in the popin
+    And the following CSV file to import:
+      """
+      sku;UPSELL-products
+      SKU-001;
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    When I edit the "SKU-001" product
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    Then I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
+    And I visit the "Associations" column tab
+    And I visit the "Upsell" association type
     Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6019

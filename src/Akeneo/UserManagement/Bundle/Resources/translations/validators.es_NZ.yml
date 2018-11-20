@@ -1,3 +1,0 @@
-pim_user:
-  min_role: "You must select at least {{ limit }} role.|You must select at least {{ limit }} roles."
-  password_match: "The password fields must match."

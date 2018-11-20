@@ -2,6 +2,7 @@
 
 namespace spec\Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
@@ -11,14 +12,21 @@ use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use Oro\Bundle\PimFilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext, CustomAttributeRepository $repository)
+    function let(
+        FormFactoryInterface $factory,
+        ProductFilterUtility $utility,
+        UserContext $userContext,
+        CustomAttributeRepository $attributeRepository,
+        CustomAttributeOptionRepository $attributeOptionRepository
+    )
     {
-        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass', $repository);
+        $this->beConstructedWith($factory, $utility, $userContext, $attributeRepository, $attributeOptionRepository);
 
         $this->init(
             'foo',
@@ -40,8 +48,13 @@ class ChoiceFilterSpec extends ObjectBehavior
 
     function it_applies_choice_filter_on_datasource_for_array_value(
         FilterDatasourceAdapterInterface $datasource,
-        $utility
+        AttributeInterface $attribute,
+        $utility,
+        $attributeRepository,
+        $attributeOptionRepository
     ) {
+        $attributeRepository->findOneByCode('data_name_key')->willReturn($attribute);
+        $attributeOptionRepository->findCodesByIdentifiers(Argument::any(), ['foo', 'bar'])->willReturn([['code' => 'foo'], ['code' => 'bar']]);
         $utility->applyFilter($datasource, 'data_name_key', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
@@ -55,11 +68,19 @@ class ChoiceFilterSpec extends ObjectBehavior
 
     function it_applies_choice_filter_on_datasource_for_collection_value(
         FilterDatasourceAdapterInterface $datasource,
+        AttributeInterface $attribute,
         Collection $collection,
-        $utility
+        $utility,
+        $attributeRepository,
+        $attributeOptionRepository
     ) {
+        $attributeRepository->findOneByCode('data_name_key')->willReturn($attribute);
+
         $collection->count()->willReturn(2);
         $collection->getValues()->willReturn(['foo', 'bar']);
+
+        $attributeOptionRepository->findCodesByIdentifiers(Argument::any(), ['foo', 'bar'])->willReturn([['code' => 'foo'], ['code' => 'bar']]);
+
         $utility->applyFilter($datasource, 'data_name_key', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
@@ -73,8 +94,14 @@ class ChoiceFilterSpec extends ObjectBehavior
 
     function it_applies_choice_filter_on_datasource_for_array_value_with_not_contains_type(
         FilterDatasourceAdapterInterface $datasource,
-        $utility
+        AttributeInterface $attribute,
+        $utility,
+        $attributeRepository,
+        $attributeOptionRepository
     ) {
+        $attributeRepository->findOneByCode('data_name_key')->willReturn($attribute);
+        $attributeOptionRepository->findCodesByIdentifiers(Argument::any(), ['foo', 'bar'])->willReturn([['code' => 'foo'], ['code' => 'bar']]);
+
         $utility->applyFilter($datasource, 'data_name_key', 'NOT IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
@@ -88,8 +115,14 @@ class ChoiceFilterSpec extends ObjectBehavior
 
     function it_falbacks_on_contains_type_if_type_is_unknown(
         FilterDatasourceAdapterInterface $datasource,
-        $utility
+        AttributeInterface $attribute,
+        $utility,
+        $attributeRepository,
+        $attributeOptionRepository
     ) {
+        $attributeRepository->findOneByCode('data_name_key')->willReturn($attribute);
+        $attributeOptionRepository->findCodesByIdentifiers(Argument::any(), ['foo', 'bar'])->willReturn([['code' => 'foo'], ['code' => 'bar']]);
+
         $utility->applyFilter($datasource, 'data_name_key', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
@@ -108,10 +141,12 @@ class ChoiceFilterSpec extends ObjectBehavior
         Form $form,
         AttributeInterface $attribute,
         $factory,
-        $repository,
+        $attributeRepository,
+        $attributeOptionRepository,
         $userContext
     ) {
-        $repository->findOneByCode('data_name_key')->willReturn($attribute);
+        $attributeRepository->findOneByCode('data_name_key')->willReturn($attribute);
+        $attributeOptionRepository->getClassName()->willReturn('attributeOptionClass');
         $userContext->getCurrentLocaleCode()->willReturn('en_US');
 
         $factory->create(AjaxChoiceFilterType::class, [], [
@@ -134,6 +169,14 @@ class ChoiceFilterSpec extends ObjectBehavior
 class CustomAttributeRepository extends AttributeRepository
 {
     function findOneByCode()
+    {
+        return null;
+    }
+}
+
+class CustomAttributeOptionRepository extends AttributeOptionRepository
+{
+    function findCodesByIdentifiers($code, array $optionCodes)
     {
         return null;
     }

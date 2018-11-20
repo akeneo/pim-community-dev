@@ -73,6 +73,12 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      */
     public function process($item)
     {
+        if (!$this->hasAssociationToImport($item)) {
+            $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_associations');
+
+            return null;
+        }
+
         $item = array_merge(
             ['associations' => []],
             $item
@@ -98,11 +104,6 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
 
                 return null;
             }
-        } elseif (!$this->hasImportedAssociations($item)) {
-            $this->detach($entity);
-            $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_associations');
-
-            return null;
         }
 
         try {
@@ -201,16 +202,16 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      *
      * @return bool
      */
-    protected function hasImportedAssociations(array $item): bool
+    protected function hasAssociationToImport(array $item): bool
     {
         if (!isset($item['associations'])) {
             return false;
         }
 
         foreach ($item['associations'] as $association) {
-            $hasProductAssoc = !empty($association['products']);
-            $hasGroupAssoc = !empty($association['groups']);
-            $hasProductModelAssoc = !empty($association['product_models']);
+            $hasProductAssoc = isset($association['products']);
+            $hasGroupAssoc = isset($association['groups']);
+            $hasProductModelAssoc = isset($association['product_models']);
 
             if ($hasProductAssoc || $hasGroupAssoc || $hasProductModelAssoc) {
                 return true;
