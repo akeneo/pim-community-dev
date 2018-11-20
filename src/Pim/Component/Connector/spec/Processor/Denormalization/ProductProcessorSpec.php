@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
@@ -882,6 +883,99 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $this
             ->process($convertedData)
+            ->shouldReturn($product);
+    }
+
+    function it_fetches_family_of_the_product_if_the_column_is_not_set(
+        $productRepository,
+        $productToImport,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        $stepExecution,
+        $productAttributeFilter,
+        $addParent,
+        ProductInterface $product,
+        ProductInterface $productInDB,
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters,
+        FamilyInterface $family
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($productInDB);
+        $productInDB->getFamily()->willReturn($family);
+        $family->getCode()->willReturn('Tshirt');
+
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+
+        $addParent->to($product, '')->willReturn($product);
+
+        $originalItem = [
+            'identifier' => 'tshirt',
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+                'not_in_family' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'test',
+                    ],
+                ],
+            ],
+            'enabled' => true,
+        ];
+
+        $filteredAttributesItem = [
+            'identifier' => 'tshirt',
+            'family' => 'Tshirt',
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+            ],
+            'enabled' => true,
+        ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($filteredAttributesItem);
+
+        $filteredData = [
+            'family' => 'Tshirt',
+            'enabled' => true,
+            'values' => [],
+        ];
+
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($originalItem)
             ->shouldReturn($product);
     }
 }

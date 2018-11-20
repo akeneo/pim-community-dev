@@ -193,7 +193,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             return $item['family'];
         }
 
-        /** @var ProductInterface $product */
         $product = $this->repository->findOneByIdentifier($item['identifier']);
         if (null === $product) {
             return '';
