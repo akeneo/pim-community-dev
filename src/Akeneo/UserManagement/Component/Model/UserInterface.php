@@ -494,18 +494,6 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setDefaultTree(CategoryInterface $defaultTree);
 
     /**
-     * @return bool
-     */
-    public function isEmailNotifications();
-
-    /**
-     * @param bool $emailNotifications
-     *
-     * @return UserInterface
-     */
-    public function setEmailNotifications($emailNotifications);
-
-    /**
      * @param string the view alias
      *
      * @return DatagridView|null
@@ -554,59 +542,15 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setTimezone(string $timezone): UserInterface;
 
     /**
-     * @return int
+     * @param string $propertyName
+     * @param mixed $propertyValue
      */
-    public function getAssetDelayReminder();
+    public function addProperty(string $propertyName, $propertyValue): void;
 
     /**
-     * Set delay
+     * @param string $propertyName
      *
-     * @param int $assetDelayReminder
-     *
-     * @return UserInterface
+     * @return mixed
      */
-    public function setAssetDelayReminder($assetDelayReminder);
-
-    /**
-     * @return CategoryInterface
-     */
-    public function getDefaultAssetTree();
-
-    /**
-     * @param CategoryInterface $defaultAssetTree
-     *
-     * @return UserInterface
-     */
-    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree);
-
-    /**
-     * Does the user want to be notified of new proposals to review?
-     *
-     * @return bool
-     */
-    public function hasProposalsToReviewNotification();
-    /**
-     * Set whether the user wants to be notified of new proposals.
-     *
-     * @param bool $proposalsToReviewNotification
-     *
-     * @return UserInterface
-     */
-    public function setProposalsToReviewNotification($proposalsToReviewNotification);
-
-    /**
-     * Does the user want to be notified when his proposals are accepted or rejected?
-     *
-     * @return bool
-     */
-    public function hasProposalsStateNotification();
-
-    /**
-     * Set whether the user wants to be notified when his proposals are accepted or rejected.
-     *
-     * @param bool $proposalsStateNotification
-     *
-     * @return UserInterface
-     */
-    public function setProposalsStateNotification($proposalsStateNotification);
+    public function getProperty(string $propertyName);
 }

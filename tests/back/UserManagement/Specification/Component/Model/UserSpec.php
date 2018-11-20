@@ -17,9 +17,4 @@ class UserSpec extends ObjectBehavior
         $this->addProperty('propertyName', 'value')->shouldReturn(null);
         $this->getProperty('propertyName')->shouldReturn('value');
     }
-
-    function it_throws_an_exception_if_the_property_does_not_exist()
-    {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('getProperty', ['unknown_property']);
-    }
 }

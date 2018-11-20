@@ -160,7 +160,7 @@ class User implements UserInterface
     /** @var bool Be notified when the user's proposal has been accepted or rejected */
     protected $proposalsStateNotification = true;
 
-    /** @var array $property bag for proporties extension */
+    /** @var array $property bag for properties extension */
     private $properties = [];
 
     public function __construct()
@@ -1008,24 +1008,6 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isEmailNotifications()
-    {
-        return $this->emailNotifications;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEmailNotifications($emailNotifications)
-    {
-        $this->emailNotifications = $emailNotifications;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getProductGridFilters()
     {
         return $this->productGridFilters;
@@ -1123,90 +1105,16 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssetDelayReminder()
-    {
-        return $this->assetDelayReminder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAssetDelayReminder($assetDelayReminder)
-    {
-        $this->assetDelayReminder = (int) $assetDelayReminder;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultAssetTree()
-    {
-        return $this->defaultAssetTree;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree)
-    {
-        $this->defaultAssetTree = $defaultAssetTree;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProposalsToReviewNotification()
-    {
-        return $this->proposalsToReviewNotification;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProposalsToReviewNotification($proposalsToReviewNotification)
-    {
-        $this->proposalsToReviewNotification = $proposalsToReviewNotification;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProposalsStateNotification()
-    {
-        return $this->proposalsStateNotification;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProposalsStateNotification($proposalsStateNotification)
-    {
-        $this->proposalsStateNotification = $proposalsStateNotification;
-
-        return $this;
-    }
-
-    /**
-     * @param string $propertyName
-     * @param string $propertyValue
-     */
-    public function addProperty(string $propertyName, string $propertyValue): void
+    public function addProperty(string $propertyName, $propertyValue): void
     {
         $this->properties[$propertyName] = $propertyValue;
     }
 
-    public function getProperty(string $propertyName): string
+    /**
+     * {@inheritdoc}
+     */
+    public function getProperty(string $propertyName)
     {
-        if (!isset($this->properties[$propertyName])) {
-            throw new \InvalidArgumentException(sprintf('The property %s does not exist', $propertyName));
-        }
-
-        return $this->properties[$propertyName];
+        return $this->properties[$propertyName] ?? null;
     }
 }

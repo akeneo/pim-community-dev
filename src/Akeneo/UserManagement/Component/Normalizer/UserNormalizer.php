@@ -35,11 +35,14 @@ class UserNormalizer implements NormalizerInterface
     /** @var DatagridViewRepositoryInterface */
     private $datagridViewRepo;
 
-    /** @var IdentifiableObjectRepositoryInterface|null */
-    private $categoryAccessRepository;
+    /** @var array */
+    private $properties;
 
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
+
+    /** @var array */
+    private $userNormalizers;
 
     /**
      * @param DateTimeNormalizer $dateTimeNormalizer
@@ -47,7 +50,8 @@ class UserNormalizer implements NormalizerInterface
      * @param SecurityFacade $securityFacade
      * @param TokenStorageInterface $tokenStorage
      * @param DatagridViewRepositoryInterface $datagridViewRepo
-     * @param IdentifiableObjectRepositoryInterface|null $categoryAccessRepository
+     * @param array $userNormalizers
+     * @param string[] $properties
      */
     public function __construct(
         DateTimeNormalizer $dateTimeNormalizer,
@@ -55,14 +59,16 @@ class UserNormalizer implements NormalizerInterface
         SecurityFacade $securityFacade,
         TokenStorageInterface $tokenStorage,
         DatagridViewRepositoryInterface $datagridViewRepo,
-        ?IdentifiableObjectRepositoryInterface $categoryAccessRepository = null
+        array $userNormalizers = [],
+        string ...$properties
     ) {
         $this->dateTimeNormalizer = $dateTimeNormalizer;
         $this->fileNormalizer = $fileNormalizer;
         $this->securityFacade = $securityFacade;
         $this->tokenStorage = $tokenStorage;
         $this->datagridViewRepo = $datagridViewRepo;
-        $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->properties = $properties;
+        $this->userNormalizers = $userNormalizers;
     }
 
     /**
@@ -89,13 +95,6 @@ class UserNormalizer implements NormalizerInterface
             'user_default_locale'       => $user->getUiLocale()->getCode(),
             'catalog_default_scope'     => $user->getCatalogScope()->getCode(),
             'default_category_tree'     => $user->getDefaultTree()->getCode(),
-            'email_notifications'       => $user->isEmailNotifications(),
-            'asset_delay_reminder'      => $user->getAssetDelayReminder(),
-            'default_asset_tree'        => $user->getDefaultAssetTree() ? $user->getDefaultAssetTree()->getCode() : null,
-            'display_proposals_to_review_notification' => $this->displayProposalsToReviewNotification($user),
-            'proposals_to_review_notification' => $user->hasProposalsToReviewNotification(),
-            'display_proposals_state_notifications' => $this->displayProposalsStateNotification($user),
-            'proposals_state_notifications' => $user->hasProposalsStateNotification(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
             'roles'                     => $this->getRoleNames($user),
@@ -123,7 +122,15 @@ class UserNormalizer implements NormalizerInterface
                 = $defaultView === null ? null : $defaultView->getId();
         }
 
-        return $result;
+        $normalizedProperties = array_reduce($this->properties, function ($result, string $propertyName) use ($user) {
+            return $result + [$propertyName => $user->getProperty($propertyName)];
+        }, []);
+
+        $normalizedCompound = array_map(function ($normalizer) use ($user, $format, $context) {
+            return $normalizer->normalize($user, $format, $context);
+        }, $this->userNormalizers);
+
+        return array_merge($result, $normalizedProperties, ...$normalizedCompound);
     }
 
     /**
@@ -163,30 +170,5 @@ class UserNormalizer implements NormalizerInterface
         $currentUser = $token ? $token->getUser() : null;
 
         return ($user->getId() && is_object($currentUser) && $currentUser->getId() == $user->getId());
-    }
-
-    private function displayProposalsToReviewNotification($user): bool
-    {
-        if ($this->categoryAccessRepository === null) {
-            return false;
-        }
-
-        return $this->categoryAccessRepository->isOwner($user);
-    }
-
-    private function displayProposalsStateNotification($user): bool
-    {
-        if ($this->categoryAccessRepository === null) {
-            return false;
-        }
-
-        $editableCategories = $this->categoryAccessRepository
-            ->getGrantedCategoryCodes($user, constant('Akeneo\Pim\Permission\Component\Attributes::EDIT_ITEMS'));
-        $ownedCategories = $this->categoryAccessRepository
-            ->getGrantedCategoryCodes($user, constant('Akeneo\Pim\Permission\Component\Attributes::OWN_PRODUCTS'));
-
-        $editableButNotOwned = array_diff($editableCategories, $ownedCategories);
-
-        return !empty($editableCategories) && !empty($editableButNotOwned);
     }
 }
