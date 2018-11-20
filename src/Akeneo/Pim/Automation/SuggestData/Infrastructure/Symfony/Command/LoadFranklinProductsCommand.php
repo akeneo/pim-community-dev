@@ -19,6 +19,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -36,7 +37,9 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
     protected function configure(): void
     {
         $this
-            ->setName('pimee:suggest-data:load-franklin-products');
+            ->setName('pimee:suggest-data:load-franklin-products')
+            ->addArgument('filename', InputArgument::REQUIRED)
+            ->addArgument('familyCode', InputArgument::REQUIRED);
     }
 
     /**
@@ -44,7 +47,7 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $filepath = realpath(__DIR__) . '/homedepot_light_bulbs.csv';
+        $filepath = realpath(__DIR__) . '/' . $input->getArgument('filename');
 
         if (!is_file($filepath)) {
             throw new \LogicException(sprintf('Incorrect filepath "%s"', $filepath));
@@ -61,7 +64,7 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
         $headers[3] = 'pim_brand';
         $headers[4] = 'mpn';
 
-        $family = $this->createFamily('bulbs', $headers);
+        $family = $this->createFamily($input->getArgument('familyCode'), $headers);
 
         while ($dataRow = fgetcsv($fd)) {
             $this->createProduct(array_combine($headers, $dataRow), $family);
@@ -133,6 +136,9 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
 
         $valueFactory = $this->getContainer()->get('pim_catalog.factory.value');
         foreach ($rawValues as $attrCode => $rawValue) {
+            if (empty($rawValue)) {
+                continue;
+            }
             if ('UPC' === $attrCode) {
                 $rawValue = str_pad($rawValue, 12, '0', STR_PAD_LEFT);
             }

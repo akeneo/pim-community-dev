@@ -147,16 +147,14 @@ $rules = [
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\StorageUtils',
+            'Akeneo\Pim\Enrichment',
+            'Akeneo\Pim\Structure',
 
             // external dependencies
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
             // TODO: the next line could be removed with lazy-loaded commands
             'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
-            'Symfony\Component\Console',
-            'Symfony\Component\Config',
-            'Symfony\Component\DependencyInjection',
-            'Symfony\Component\HttpKernel',
-            'Symfony\Component\Validator',
+            'Symfony\Component',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony'),
 ];
