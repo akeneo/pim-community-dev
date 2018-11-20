@@ -7,5 +7,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.repository.attribute'
             - '@pim_reference_data.registry'
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: pim_assets_collection }

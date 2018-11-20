@@ -1,9 +1,17 @@
 # 2.3.x
 
+# 2.3.17 (2018-11-15)
+
+## Bug fixes
+
+- PIM-7830: Fix server-side validation for Product Asset creation
+- PIM-7838: Fix ACL on Mass edit for Asset category classify action
+
 # 2.3.16 (2018-11-13)
 
 ## Bug fixes
 
+- PIM-7852: Increase product import performances and fixes model association import when comparison is disabled
 - PIM-7812: Fix command that generate missing asset variation files
 
 # 2.3.15 (2018-11-06)

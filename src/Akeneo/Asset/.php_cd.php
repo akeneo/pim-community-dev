@@ -106,6 +106,10 @@ $rules = [
         // TODO: we should not repository from the other BC
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
+        // TODO: we must not depend on PIM BC
+        'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
     ])->in('Akeneo\Asset\Component'),
 ];
 
