@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidSuggestedValueException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\InvalidSuggestedValueException;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>

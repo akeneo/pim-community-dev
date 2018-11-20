@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator\ConnectionValidator;
-use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Exception\ConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
 
 /**
  * Handles a "SaveConfiguration" command.

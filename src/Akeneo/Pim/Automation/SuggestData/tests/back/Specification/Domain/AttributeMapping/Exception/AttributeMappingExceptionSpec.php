@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\AttributeMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
 use PhpSpec\ObjectBehavior;
 
 /**

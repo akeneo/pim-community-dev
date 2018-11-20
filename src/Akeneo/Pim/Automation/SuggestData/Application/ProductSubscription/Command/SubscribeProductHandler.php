@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;

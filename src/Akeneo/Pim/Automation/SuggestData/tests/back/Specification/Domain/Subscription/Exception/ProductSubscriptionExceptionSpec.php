@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use PhpSpec\ObjectBehavior;
 
 /**

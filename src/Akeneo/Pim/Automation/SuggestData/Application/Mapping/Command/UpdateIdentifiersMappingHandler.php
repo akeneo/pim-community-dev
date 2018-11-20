@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

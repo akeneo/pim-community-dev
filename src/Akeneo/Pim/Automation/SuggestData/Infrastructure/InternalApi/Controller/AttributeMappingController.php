@@ -121,7 +121,7 @@ class AttributeMappingController
      * @param string $identifier
      * @param Request $request
      *
-     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException
+     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException
      *
      * @return Response
      */

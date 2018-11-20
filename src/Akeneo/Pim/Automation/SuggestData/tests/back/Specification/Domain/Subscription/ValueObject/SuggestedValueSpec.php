@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidSuggestedValueException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\InvalidSuggestedValueException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedValue;
 use PhpSpec\ObjectBehavior;
 

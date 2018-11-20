@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Exception;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Exception\ConnectionConfigurationException;
 use PhpSpec\ObjectBehavior;
 
 /**
