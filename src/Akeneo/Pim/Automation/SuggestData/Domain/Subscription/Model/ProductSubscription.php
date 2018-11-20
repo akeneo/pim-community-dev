@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -30,8 +29,8 @@ class ProductSubscription
     /** @var SuggestedData */
     private $suggestedData;
 
-    /** @var ProductInterface */
-    private $product;
+    /** @var int */
+    private $productId;
 
     /** @var array */
     private $rawSuggestedData;
@@ -52,25 +51,25 @@ class ProductSubscription
     private $requestedMpn;
 
     /**
-     * @param ProductInterface $product
+     * @param int $productId
      * @param string $subscriptionId
      * @param array $productIdentifiers
      */
-    public function __construct(ProductInterface $product, string $subscriptionId, array $productIdentifiers)
+    public function __construct(int $productId, string $subscriptionId, array $productIdentifiers)
     {
+        $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
-        $this->product = $product;
         $this->isMappingMissing = false;
 
         $this->fillProductIdentifiers($productIdentifiers);
     }
 
     /**
-     * @return ProductInterface
+     * @return int
      */
-    public function getProduct(): ProductInterface
+    public function getProductId(): int
     {
-        return $this->product;
+        return $this->productId;
     }
 
     /**

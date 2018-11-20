@@ -17,8 +17,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscript
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -39,9 +37,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_saves_a_product_subscription(): void
     {
-        $product = new Product();
-        $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription', ['sku' => '72527273070']);
+        $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);
         $this->save($subscription);
 
         $this->findOneByProductId(42)->shouldReturn($subscription);
@@ -54,16 +50,12 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_finds_product_subscriptions_with_suggested_data(): void
     {
-        $product = new Product();
-        $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription', ['sku' => '72527273070']);
+        $subscription = new ProductSubscription(42, 'a-fake-subscription', ['sku' => '72527273070']);
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription);
 
-        $otherProduct = new Product();
-        $otherProduct->setId(44);
         $otherSubscription = new ProductSubscription(
-            $otherProduct,
+            44,
             'another-fake-subscription',
             ['sku' => '72527273070']
         );
@@ -74,13 +66,13 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 
     public function it_searches_pending_subscriptions(): void
     {
-        $subscription1 = new ProductSubscription(new Product(), 'fake-id', ['asin' => 'ABC']);
+        $subscription1 = new ProductSubscription(42, 'fake-id', ['asin' => 'ABC']);
         $subscription1->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription1);
-        $subscription2 = new ProductSubscription(new Product(), 'abc', ['asin' => 'ABC']);
+        $subscription2 = new ProductSubscription(44, 'abc', ['asin' => 'ABC']);
         $subscription2->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription2);
-        $subscription3 = new ProductSubscription(new Product(), 'def', ['asin' => 'ABC']);
+        $subscription3 = new ProductSubscription(56, 'def', ['asin' => 'ABC']);
         $subscription3->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
         $this->save($subscription3);
 
@@ -89,14 +81,9 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findPendingSubscriptions(10, 'abc')->shouldReturn([$subscription3, $subscription1]);
     }
 
-    public function it_deletes_a_product_susbcription(
-        ProductSubscription $subscription,
-        ProductInterface $product
-    ): void {
-        $product->getId()->willReturn(42);
-        $subscription->getProduct()->willReturn($product);
-        $subscription->getSubscriptionId()->willReturn('abc-def');
-
+    public function it_deletes_a_product_susbcription(): void
+    {
+        $subscription = new ProductSubscription(42, 'fake-id', ['asin' => 'ABC']);
         $this->save($subscription);
         $this->findOneByProductId(42)->shouldReturn($subscription);
 
@@ -104,11 +91,9 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->findOneByProductId(42)->shouldReturn(null);
     }
 
-    public function it_empties_suggested_data_for_specified_ids(
-        ProductInterface $product
-    ): void {
-        $product->getId()->willReturn(42);
-        $subscription = new ProductSubscription($product->getWrappedObject(), 'fake-subscription-id', []);
+    public function it_empties_suggested_data_for_specified_ids(): void
+    {
+        $subscription = new ProductSubscription(42, 'fake-subscription-id', []);
         $subscription->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
 
         $this->save($subscription);

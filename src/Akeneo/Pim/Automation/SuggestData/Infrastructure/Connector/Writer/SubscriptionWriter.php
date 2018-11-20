@@ -120,7 +120,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
         ProductSubscriptionResponse $response
     ): ProductSubscription {
         $subscription = new ProductSubscription(
-            $request->getProduct(),
+            $request->getProduct()->getId(),
             $response->getSubscriptionId(),
             $request->getMappedValues($this->identifiersMapping)
         );

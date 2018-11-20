@@ -47,7 +47,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
      */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
-        return $this->em->getRepository(ProductSubscription::class)->findOneByProduct($productId);
+        return $this->em->getRepository(ProductSubscription::class)->findOneByProductId($productId);
     }
 
     /**
@@ -91,7 +91,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
         $qb->update(ProductSubscription::class, 'subscription')
            ->set('subscription.rawSuggestedData', ':rawSuggestedData')
            ->where(
-               $qb->expr()->in('subscription.product', ':productIds')
+               $qb->expr()->in('subscription.productId', ':productIds')
            )
            ->setParameter('rawSuggestedData', null)
            ->setParameter('productIds', $productIds);

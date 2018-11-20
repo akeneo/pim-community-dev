@@ -12,3 +12,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
         arguments:
             - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
+            - '@pim_catalog.repository.product_without_permission'
