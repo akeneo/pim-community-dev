@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Query\Product\SelectProductFamilyIdQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\ORM\EntityManager;
 

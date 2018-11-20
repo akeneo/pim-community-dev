@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Validator;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**
  * Validate that the provided token is valid.

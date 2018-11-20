@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributesMappingProvider;

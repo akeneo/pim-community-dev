@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Query\Product;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product;
 
 /**
  * Fetches current product family id directly from the DB.

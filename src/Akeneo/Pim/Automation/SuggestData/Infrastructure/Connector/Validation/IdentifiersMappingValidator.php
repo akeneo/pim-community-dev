@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Validation;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
 

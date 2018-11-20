@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subs
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductNotSubscribedException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Query\Product\SelectProductFamilyIdQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
