@@ -91,10 +91,6 @@ Akeneo\UserManagement\Component\Model\User:
             type: json_array
             nullable: true
             column: product_grid_filters
-        emailNotifications:
-            type: boolean
-            options:
-                default: false
         phone:
             type: string
             nullable: true
@@ -103,6 +99,8 @@ Akeneo\UserManagement\Component\Model\User:
             type: string
             nullable: false
             length: 30
+        properties:
+            type: json_array
     manyToMany:
         roles:
             targetEntity: Akeneo\UserManagement\Component\Model\Role

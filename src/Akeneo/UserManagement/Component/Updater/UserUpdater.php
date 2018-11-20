@@ -61,8 +61,8 @@ class UserUpdater implements ObjectUpdaterInterface
     /** @var string */
     protected $fileStorageFolder;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $categoryAssetRepository;
+    /** @var string[] */
+    private $properties;
 
     /**
      * @param UserManager                           $userManager
@@ -75,7 +75,6 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param FileInfoRepositoryInterface           $fileInfoRepository
      * @param FileStorerInterface                   $fileStorer
      * @param string                                $fileStorageFolder
-     * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository|null
      */
     public function __construct(
         UserManager $userManager,
@@ -88,7 +87,6 @@ class UserUpdater implements ObjectUpdaterInterface
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         string $fileStorageFolder,
-        ?IdentifiableObjectRepositoryInterface $categoryAssetRepository = null,
         string ...$properties
     ) {
         $this->userManager = $userManager;
@@ -101,7 +99,7 @@ class UserUpdater implements ObjectUpdaterInterface
         $this->fileInfoRepository = $fileInfoRepository;
         $this->fileStorer = $fileStorer;
         $this->fileStorageFolder = $fileStorageFolder;
-        $this->categoryAssetRepository = $categoryAssetRepository;
+        $this->properties = $properties;
     }
 
     /**
@@ -177,9 +175,6 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'birthday':
                 $user->setBirthday(new \DateTime($data));
                 break;
-            case 'email_notifications':
-                $user->setEmailNotifications($data);
-                break;
             case 'catalog_default_locale':
                 $user->setCatalogLocale($this->findLocale('catalog_default_locale', $data));
                 break;
@@ -219,18 +214,6 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'timezone':
                 $user->setTimezone($data);
                 break;
-            case 'asset_delay_reminder':
-                $user->setAssetDelayReminder($data);
-                break;
-            case 'default_asset_tree':
-                $user->setDefaultAssetTree($this->findAssetCategory($data));
-                break;
-            case 'proposals_to_review_notification':
-                $user->setProposalsToReviewNotification($data);
-                break;
-            case 'proposals_state_notifications':
-                $user->setProposalsStateNotification($data);
-                break;
             case 'avatar':
                 $this->setAvatar($user, $data);
                 break;
@@ -247,6 +230,12 @@ class UserUpdater implements ObjectUpdaterInterface
                 $user->setProductGridFilters([]);
                 break;
             default:
+                if (in_array($field, $this->properties)) {
+                    $user->addProperty($field, $data);
+
+                    return;
+                }
+
                 $matches = null;
                 // Example: default_product_grid_view
                 if (preg_match('/^default_(?P<alias>[a-z_]+)_view$/', $field, $matches)) {
@@ -412,38 +401,6 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         return $group;
-    }
-
-    /**
-     * Get tree entity from category code
-     *
-     * @param string $code
-     *
-     * @throws InvalidPropertyException
-     *
-     * @return CategoryInterface
-     */
-    private function findAssetCategory($code)
-    {
-        if (null === $this->categoryAssetRepository) {
-            throw new \LogicException(
-                'The category asset repository is not configured yet. Please update the user updater service.'
-            );
-        }
-
-        $category = $this->categoryAssetRepository->findOneByIdentifier($code);
-
-        if (null === $category) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                'default_asset_tree',
-                'category code',
-                'The category does not exist',
-                static::class,
-                $code
-            );
-        }
-
-        return $category;
     }
 
     /**
