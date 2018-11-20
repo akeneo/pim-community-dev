@@ -17,8 +17,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeO
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\OptionsMappingNormalizer;

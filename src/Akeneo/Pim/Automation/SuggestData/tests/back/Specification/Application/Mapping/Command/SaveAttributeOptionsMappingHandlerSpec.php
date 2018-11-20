@@ -16,11 +16,11 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Co
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributeOptionsMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeCode;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\FranklinAttributeId;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOptionsMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

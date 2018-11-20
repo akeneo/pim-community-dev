@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

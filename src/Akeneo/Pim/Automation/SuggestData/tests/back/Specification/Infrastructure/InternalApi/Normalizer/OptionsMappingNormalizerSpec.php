@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use PhpSpec\ObjectBehavior;
 
 /**

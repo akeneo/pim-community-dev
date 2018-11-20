@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeOption;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOption;
 use PhpSpec\ObjectBehavior;
 
 /**
