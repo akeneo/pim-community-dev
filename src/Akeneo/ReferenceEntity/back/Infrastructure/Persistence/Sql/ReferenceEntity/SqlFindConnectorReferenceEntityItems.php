@@ -59,7 +59,7 @@ SQL;
         $statement = $this->connection->executeQuery(
             $sql,
             [
-                'search_after_identifier' => $query->getSearchAfterCode(),
+                'search_after_identifier' => $query->getSearchAfterIdentifier(),
                 'search_after_limit' => $query->getSize()
             ],
             [
@@ -85,6 +85,6 @@ SQL;
 
     private function queryIsFirstPage(ReferenceEntityQuery $query): bool
     {
-        return empty($query->getSearchAfterCode());
+        return empty($query->getSearchAfterIdentifier());
     }
 }

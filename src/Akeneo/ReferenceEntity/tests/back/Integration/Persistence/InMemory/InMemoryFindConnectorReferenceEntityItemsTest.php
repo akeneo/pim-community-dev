@@ -11,34 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityItems;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use PHPUnit\Framework\TestCase;
 
-class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
+class InMemoryFindConnectorReferenceEntityItemsTest extends TestCase
 {
-    /** @var ReferenceEntityRepositoryInterface */
-    private $referenceEntityRepository;
-
-    /** @var FindConnectorReferenceEntityItemsInterface*/
+    /** @var InMemoryFindConnectorReferenceEntityItems */
     private $findConnectorReferenceEntityItems;
 
-    protected function setUp(): void
+    public function setup()
     {
-        parent::setUp();
-
-        $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
-        $this->findConnectorReferenceEntityItems = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items');
-        $this->resetDB();
+        $this->findConnectorReferenceEntityItems = new InMemoryFindConnectorReferenceEntityItems();
     }
 
     /**
@@ -50,11 +42,13 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
 
         for ($i = 1; $i <= 3; $i++) {
             $referenceEntity = $this->createReferenceEntity(sprintf('reference_entity_%s', $i));
-            $referenceEntities[] = new ConnectorReferenceEntity(
+            $connectorReferenceEntity = new ConnectorReferenceEntity(
                 $referenceEntity->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('reference_entity_%s', $i)]),
                 Image::createEmpty()
             );
+            $referenceEntities[] = $connectorReferenceEntity;
+            $this->findConnectorReferenceEntityItems->save($referenceEntity->getIdentifier(), $connectorReferenceEntity);
         }
 
         $findReferenceEntitiesQuery = ReferenceEntityQuery::createPaginatedQuery(3, null);
@@ -80,13 +74,15 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
     {
         $referenceEntities = [];
 
-        for ($i = 1; $i <= 7; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             $referenceEntity = $this->createReferenceEntity(sprintf('reference_entity_%s', $i));
-            $referenceEntities[] = new ConnectorReferenceEntity(
+            $connectorReferenceEntity = new ConnectorReferenceEntity(
                 $referenceEntity->getIdentifier(),
                 LabelCollection::fromArray(['en_US' => sprintf('reference_entity_%s', $i)]),
                 Image::createEmpty()
             );
+            $referenceEntities[] = $connectorReferenceEntity;
+            $this->findConnectorReferenceEntityItems->save($referenceEntity->getIdentifier(), $connectorReferenceEntity);
         }
 
         $searchAfterIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_3');
@@ -117,11 +113,6 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
         $this->assertSame([], $foundReferenceEntities);
     }
 
-    private function resetDB(): void
-    {
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
-    }
-
     private function createReferenceEntity(string $rawIdentifier): ReferenceEntity
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
@@ -136,8 +127,6 @@ class SqlFindConnectorReferenceEntityItemsTest extends SqlIntegrationTestCase
             ['en_US' => $rawIdentifier],
             Image::fromFileInfo($imageInfo)
         );
-
-        $this->referenceEntityRepository->create($referenceEntity);
 
         return $referenceEntity;
     }

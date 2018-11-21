@@ -39,7 +39,7 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
      */
     public function __invoke($query): array
     {
-        $searchAfterCode = $query->getSearchAfterCode();
+        $searchAfterCode = $query->getSearchAfterIdentifier();
         $referenceEntities = array_values(array_filter($this->results, function (ConnectorReferenceEntity $referenceEntity) use ($searchAfterCode): bool {
             return null === $searchAfterCode
                 || strcasecmp((string) $referenceEntity->getIdentifier(), $searchAfterCode) > 0;

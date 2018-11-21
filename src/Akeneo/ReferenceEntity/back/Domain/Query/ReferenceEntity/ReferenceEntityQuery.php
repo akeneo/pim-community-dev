@@ -27,23 +27,23 @@ class ReferenceEntityQuery
     private $size;
 
     /** @var ReferenceEntityIdentifier|null */
-    private $searchAfterCode;
+    private $searchAfterIdentifier;
 
     private function __construct(
         int $size,
-        ?ReferenceEntityIdentifier $searchAfterCode
+        ?ReferenceEntityIdentifier $searchAfterIdentifier
     ) {
         $this->size = $size;
-        $this->searchAfterCode  = $searchAfterCode;
+        $this->searchAfterIdentifier  = $searchAfterIdentifier;
     }
 
     public static function createPaginatedQuery(
         int $size,
-        ?ReferenceEntityIdentifier $searchAfterCode
+        ?ReferenceEntityIdentifier $searchAfterIdentifier
     ): ReferenceEntityQuery {
         return new ReferenceEntityQuery(
             $size,
-            $searchAfterCode
+            $searchAfterIdentifier
         );
     }
 
@@ -52,8 +52,8 @@ class ReferenceEntityQuery
         return $this->size;
     }
 
-    public function getSearchAfterCode(): ?string
+    public function getSearchAfterIdentifier(): ?string
     {
-        return null !== $this->searchAfterCode ? (string) $this->searchAfterCode : null;
+        return null !== $this->searchAfterIdentifier ? (string) $this->searchAfterIdentifier : null;
     }
 }
