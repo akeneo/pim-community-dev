@@ -17,7 +17,6 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorR
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
 use Doctrine\DBAL\Connection;
-use function GuzzleHttp\Psr7\parse_header;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -49,10 +48,13 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
             fi.original_filename as image_original_filename
         FROM akeneo_reference_entity_reference_entity as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
-        WHERE re.identifier > :search_after_identifier
+        %s
         ORDER BY identifier ASC
         LIMIT :search_after_limit
 SQL;
+        $sql = $this->queryIsFirstPage($query) ?
+            sprintf($sql, '') :
+            sprintf($sql, 'WHERE re.identifier > :search_after_identifier');
 
         $statement = $this->connection->executeQuery(
             $sql,
@@ -63,7 +65,6 @@ SQL;
             [
                 'search_after_identifier' => \PDO::PARAM_STR,
                 'search_after_limit' => \PDO::PARAM_INT
-
             ]
         );
 
@@ -75,10 +76,15 @@ SQL;
 
         $hydratedReferenceEntities = [];
 
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $hydratedReferenceEntities[] = $this->referenceEntityHydrator->hydrate($result);
         }
 
         return $hydratedReferenceEntities;
+    }
+
+    private function queryIsFirstPage(ReferenceEntityQuery $query): bool
+    {
+        return empty($query->getSearchAfterCode());
     }
 }
