@@ -1,4 +1,5 @@
 imports:
+    - { resource: '../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
     - { resource: '../../src/Akeneo/Platform/config/pimee.yml' }
     - { resource: pim_parameters.yml }
     - { resource: parameters.yml }

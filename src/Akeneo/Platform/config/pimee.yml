@@ -1,5 +1,4 @@
 imports:
-    - { resource: '../../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/config/pim.yml' }
     - { resource: '@AkeneoAssetBundle/Resources/config/external_api/config.yml' }
     - { resource: 'bundles/monolog.yml' }
     - { resource: 'bundles/oneup_flysystem.yml' }
