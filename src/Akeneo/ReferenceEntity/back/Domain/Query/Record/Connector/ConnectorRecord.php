@@ -63,10 +63,10 @@ class ConnectorRecord
     {
         $filteredValues = [];
         foreach ($this->normalizedValues as $key => $normalizedValue) {
-            $filteredValue = array_filter($normalizedValue, function ($value) use ($channelIdentifier) {
+            $filteredValue = array_values(array_filter($normalizedValue, function ($value) use ($channelIdentifier) {
                 return null === $value['channel']
                     || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']));
-            });
+            }));
 
             if (!empty($filteredValue)) {
                 $filteredValues[$key] = $filteredValue;
