@@ -1,36 +1,36 @@
 extensions:
-    pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection:
+    akeneo-suggest-data-mappings-index-inactive-connection:
         module: pim/common/simple-view
         config:
             template: pim/template/common/default-template
 
-    pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection-breadcrumb:
+    akeneo-suggest-data-mappings-index-inactive-connection-breadcrumb:
         module: pim/common/breadcrumbs
-        parent: pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection
+        parent: akeneo-suggest-data-mappings-index-inactive-connection
         targetZone: breadcrumbs
         config:
             tab: pim-menu-settings
             item: pimee-suggest-data-menu-settings-mapping
 
-    pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection-user-navigation:
+    akeneo-suggest-data-mappings-index-inactive-connection-user-navigation:
         module: pim/menu/user-navigation
-        parent: pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection
+        parent: akeneo-suggest-data-mappings-index-inactive-connection
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection-title:
+    akeneo-suggest-data-mappings-index-inactive-connection-title:
         module: pim/common/grid-title
-        parent: pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection
+        parent: akeneo-suggest-data-mappings-index-inactive-connection
         targetZone: title
         config:
             title: akeneo_suggest_data.settings.page_title
             countable: false
 
-    pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection-content:
+    akeneo-suggest-data-mappings-index-inactive-connection-content:
         module: pim/common/simple-view
-        parent: pimee-suggest-data-settings-identifiers-mapping-index-inactive-connection
+        parent: akeneo-suggest-data-mappings-index-inactive-connection
         targetZone: content
         config:
             template: pim/template/common/no-data
