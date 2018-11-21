@@ -107,6 +107,11 @@
 
   &--hidden {
     display: none;
+
+    &.AknBadge--floating {
+      display: inline-block;
+      opacity: 0;
+    }
   }
 
   &--medium {
@@ -138,6 +143,13 @@
     height: 8px;
     padding: 0 4px;
     margin-bottom: 0;
+  }
+
+  &--floating {
+    margin-left: -12px;
+    margin-top: 6px;
+    position: absolute;
+    transition: opacity .3s ease-in-out;
   }
 
   &--topRight {
