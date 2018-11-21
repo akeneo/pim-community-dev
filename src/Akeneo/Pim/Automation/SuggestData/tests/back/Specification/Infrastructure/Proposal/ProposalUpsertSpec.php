@@ -102,4 +102,32 @@ class ProposalUpsertSpec extends ObjectBehavior
             'Franklin'
         )->shouldReturn(null);
     }
+
+    public function it_skips_the_proposal_creation_if_there_is_an_error(
+        $productUpdater,
+        $draftBuilder,
+        $eventDispatcher,
+        ProductInterface $product,
+        ProductInterface $otherProduct
+    ): void {
+        $product->getId()->willReturn(42);
+        $suggestedData = ['foo' => 'bar'];
+        $productUpdater->update($product, ['values' => $suggestedData])->willThrow(new \LogicException());
+        $draftBuilder->build($product, 'Franklin')->shouldNotBeCalled();
+
+        $otherProduct->getId()->willReturn(56);
+        $otherSuggestedData = ['test' => 42];
+        $productUpdater->update($otherProduct, ['values' => $otherSuggestedData])->willReturn($otherProduct);
+        $draftBuilder->build($otherProduct, 'Franklin')->willThrow(new \LogicException());
+
+        $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
+
+        $this->process(
+            [
+                new ProposalSuggestedData($suggestedData, $product->getWrappedObject()),
+                new ProposalSuggestedData($otherSuggestedData, $otherProduct->getWrappedObject()),
+            ],
+            'Franklin'
+        )->shouldReturn(null);
+    }
 }

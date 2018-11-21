@@ -73,8 +73,13 @@ final class ProposalUpsert implements ProposalUpsertInterface
     {
         $processed = [];
         foreach ($suggestedData as $data) {
-            if (true === $this->doProcess($data->getProduct(), $data->getSuggestedValues(), $author)) {
-                $processed[] = $data->getProduct()->getId();
+            try {
+                $wasProposalCreated = $this->doProcess($data->getProduct(), $data->getSuggestedValues(), $author);
+                if (true === $wasProposalCreated) {
+                    $processed[] = $data->getProduct()->getId();
+                }
+            } catch (\LogicException $e) {
+                continue;
             }
         }
         if (!empty($processed)) {
