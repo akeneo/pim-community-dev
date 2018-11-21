@@ -23,12 +23,9 @@ class ConfigureUserServicesPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $userUpdater = $container->getDefinition('pim_user.updater.user');
-        $userUpdater->addArgument($container->getDefinition('pimee_product_asset.repository.category'));
+        $userUpdater->addArgument($container->getDefinition('pimee_product_asset.repository.asset_category'));
 
-        $userFormType = $container->getDefinition('pim_user.form.type.user');
-        $userFormType->addMethodCall(
-            'addEventSubscribers',
-            [$container->getDefinition('pimee_product_asset.form_event_listener.user_preference_subscriber')]
-        );
+        $userFactory = $container->getDefinition('pim_user.factory.user');
+        $userFactory->addArgument($container->getDefinition('pimee_product_asset.repository.asset_category'));
     }
 }

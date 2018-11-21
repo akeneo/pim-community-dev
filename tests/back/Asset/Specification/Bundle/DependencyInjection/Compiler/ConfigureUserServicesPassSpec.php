@@ -23,29 +23,21 @@ class ConfigureUserServicesPassSpec extends ObjectBehavior
 
     function it_registers_the_user_preferences_subscriber(
         ContainerBuilder $container,
-        Definition $userFormType,
-        Definition $userSubscriberPreference,
         Definition $userUpdater,
-        Definition $assetCategoryRepository
+        Definition $assetCategoryRepository,
+        Definition $userFactory
     ) {
         $container->getDefinition('pim_user.updater.user')
             ->willreturn($userUpdater);
 
-        $container->getDefinition('pimee_product_asset.repository.category')
+        $container->getDefinition('pimee_product_asset.repository.asset_category')
             ->willreturn($assetCategoryRepository);
 
         $userUpdater->addArgument($assetCategoryRepository)->shouldBeCalled();
 
-        $container->getDefinition('pim_user.form.type.user')
-            ->willreturn($userFormType);
+        $container->getDefinition('pim_user.factory.user')->willReturn($userFactory);
+        $userFactory->addArgument($assetCategoryRepository)->shouldBeCalled();
 
-        $container->getDefinition('pimee_product_asset.form_event_listener.user_preference_subscriber')
-            ->willreturn($userSubscriberPreference);
-
-        $userFormType->addMethodCall(
-            'addEventSubscribers',
-            [$userSubscriberPreference]
-        )->shouldBeCalled();
 
         $this->process($container)->shouldReturn(null);
     }

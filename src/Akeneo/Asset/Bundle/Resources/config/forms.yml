@@ -71,8 +71,3 @@ services:
             - '@pim_user.context.user'
         tags:
             - { name: form.type, alias: pim_assets_collection }
-
-    pimee_product_asset.form_event_listener.user_preference_subscriber:
-        class: 'Akeneo\Asset\Bundle\Form\EventListener\UserPreferencesSubscriber'
-        arguments:
-            - '@pimee_enrich.repository.asset_category_choices'

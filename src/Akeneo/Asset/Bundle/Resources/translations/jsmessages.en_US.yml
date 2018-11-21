@@ -1,3 +1,6 @@
+user:
+    asset_delay_reminder: Asset delay reminder (in days)
+
 pimee_product_asset:
     form:
         product:

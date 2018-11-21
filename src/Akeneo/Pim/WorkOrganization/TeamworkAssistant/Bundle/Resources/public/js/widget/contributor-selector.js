@@ -160,7 +160,7 @@ define(
              */
             toSelect2Format: function (contributor) {
                 return {
-                    text: contributor.firstName + ' ' + contributor.lastName,
+                    text: contributor.first_name + ' ' + contributor.last_name,
                     id: contributor.username
                 };
             },

@@ -1,0 +1,24 @@
+extensions:
+  pimee-user-show-default-category-tree:
+    module: pimee/asset/fields/asset-category-tree
+    parent: pim-user-show-additional-tab-content
+    targetZone: content
+    position: 35
+    config:
+      fieldName: default_asset_tree
+      label: pim_user_management.entity.user.properties.default_asset_tree
+      required: true
+      isMultiple: false
+      allowClear: false
+      isReadOnly: true
+
+  pimee-user-show-asset-delay-reminder:
+    module: pim/form/common/fields/number
+    parent: pim-user-show-groups-and-roles-tab-content
+    targetZone: content
+    position: 40
+    config:
+      fieldName: asset_delay_reminder
+      label: user.asset_delay_reminder
+      required: true
+      isReadOnly: true

@@ -40,7 +40,8 @@ config:
         pimee/product-edit-form/proposal-add-comment:      akeneopimworkflow/js/product/form/proposal-add-comment
         pimee/product-edit-form/abstract-add-notification-comment: akeneopimworkflow/js/product/form/abstract-add-notification-comment
         pimee/proposal/partial-approve-proposal-comment:   akeneopimworkflow/js/proposal/form/partial-approve-proposal-comment
-        pimee/dashboard/proposal-widget: akeneopimworkflow/js/proposal/widget/proposal-widget
+        pimee/dashboard/proposal-widget:                   akeneopimworkflow/js/proposal/widget/proposal-widget
+        pimee/user/fields/visible-boolean:                 akeneopimworkflow/js/user/fields/visible-boolean.ts
 
         # Templates
         pimee/template/product/meta/published:                  akeneopimworkflow/templates/product/meta/published.html

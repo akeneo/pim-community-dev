@@ -254,7 +254,11 @@ define(
                         var channel = model.get('channel');
 
                         localeValue = model.get('locale').label;
-                        channelValue = i18n.getLabel(channel.labels, UserContext.get('catalogLocale'), channel.code);
+                        channelValue = i18n.getLabel(
+                            channel.labels,
+                            UserContext.get('catalogLocale'),
+                            channel.code
+                        );
                     }
 
                     this.$el.html(this.templateModal({

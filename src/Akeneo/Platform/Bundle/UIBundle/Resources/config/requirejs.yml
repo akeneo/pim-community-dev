@@ -21,11 +21,6 @@ config:
                         warmup: false
                         urls:
                             list: pimee_security_permissions_rest
-                asset-category:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: pimee_enrich_asset_category_rest_list
         pim/controller-registry:
             defaultController:
                 module: pim/controller/template
@@ -45,17 +40,6 @@ config:
                 pimee_product_asset_variation_reset:
                     module: pim/controller/redirect
                 pimee_product_asset_variations_reset:
-                    module: pim/controller/redirect
-                pimee_asset_categorytree_create:
-                    module: pim/controller/form
-                    aclResourceId: pimee_product_asset_category_create
-                pimee_asset_categorytree_edit:
-                    module: pim/controller/form
-                    aclResourceId: pimee_product_asset_category_edit
-                pimee_asset_categorytree_remove:
-                    module: pim/controller/template
-                    aclResourceId: pimee_asset_categorytree_remove
-                pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect
                 pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect

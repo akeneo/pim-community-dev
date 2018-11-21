@@ -1,5 +1,0 @@
-PimEnterprise\Bundle\UserBundle\Entity\User:
-    properties:
-        assetDelayReminder:
-            - NotBlank:     ~
-            - Type: int

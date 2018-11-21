@@ -14,13 +14,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    pimee_security.twig_extension.visible_user_preferences:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\VisibleUserPreferencesExtension'
-        arguments:
-            - '@pimee_security.repository.category_access'
-        tags:
-            - { name: twig.extension }
-
     pimee_enrich.twig.attribute_extension:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension'
         arguments:
