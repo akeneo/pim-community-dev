@@ -161,9 +161,15 @@ class FileValidator extends ConstraintValidator
 
         $mappedMimeTypes = $this->extensionToMimeTypeMapping[$this->getExtension($fileInfo)];
 
-        $mimeType = null !== $fileInfo->getUploadedFile() ?
-            $fileInfo->getUploadedFile()->getMimeType() :
-            $fileInfo->getMimeType();
+        try {
+            $mimeType = null !== $fileInfo->getUploadedFile() ?
+                $fileInfo->getUploadedFile()->getMimeType() :
+                $fileInfo->getMimeType();
+        } catch (\LogicException $e) {
+            // TODO Add requirement for fileinfo extension on merge master
+            // TODO Remove this try-catch on merge master
+            return;
+        }
 
         if (null !== $mimeType && !in_array($mimeType, $mappedMimeTypes)) {
             $this->context->buildViolation(
