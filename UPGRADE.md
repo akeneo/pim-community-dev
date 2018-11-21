@@ -399,7 +399,7 @@ TODO: change the link!!
 8. Then re-generate the PIM assets:
 
     ```bash
-    bin/console pim:installer:assets --symlink --clean --env=prod
+    bin/console pim:installer:assets --clean --env=prod
     yarn run webpack
     ```
 
