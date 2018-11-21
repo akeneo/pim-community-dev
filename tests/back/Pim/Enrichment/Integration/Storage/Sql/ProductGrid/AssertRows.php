@@ -36,7 +36,7 @@ final class AssertRows
         Assert::assertNotNull($row->created());
 
         null !== $expectedRow->image() ?
-            Assert::assertTrue($expectedRow->image()->isEqual($row->image())):
+            Assert::assertTrue($expectedRow->image()->getData()->getHash() === $row->image()->getData()->getHash()):
             Assert::assertNull($row->image());
 
         Assert::assertSame($expectedRow->label(), $row->label());
