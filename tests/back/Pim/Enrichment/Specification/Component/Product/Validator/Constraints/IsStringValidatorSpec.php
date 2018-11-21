@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsStringValidator;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Prophecy\Argument;
@@ -68,12 +67,9 @@ class IsStringValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_string_product_value(
         $context,
         IsString $stringConstraint,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ValueInterface $value
     ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('text');
+        $value->getAttributeCode()->willReturn('foo');
         $value->getData()->willReturn('bar');
 
         $context
@@ -87,12 +83,9 @@ class IsStringValidatorSpec extends ObjectBehavior
         $context,
         IsString $stringConstraint,
         ValueInterface $value,
-        AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('integer');
+        $value->getAttributeCode()->willReturn('foo');
         $value->getData()->willReturn(666);
 
         $context

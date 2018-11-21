@@ -4,187 +4,100 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use PhpSpec\ObjectBehavior;
 
 class OptionValueSpec extends ObjectBehavior
 {
-    function it_returns_data(AttributeInterface $attribute, AttributeOptionInterface $option)
+    function it_returns_data()
     {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'option_a', 'ecommerce', 'en_US']);
 
-        $this->getData()->shouldBeAnInstanceOf(AttributeOptionInterface::class);
-        $this->getData()->shouldReturn($option);
+        $this->getData()->shouldReturn('option_a');
     }
 
-    function it_can_be_formatted_as_string_when_there_is_no_translation(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
-
-        $option->getOptionValue()->willReturn(null);
-        $option->getCode()->willReturn('red');
+    function it_can_be_formatted_as_string() {
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'red', 'ecommerce', 'en_US']);
 
         $this->__toString()->shouldReturn('[red]');
-    }
-
-    function it_can_be_formatted_as_string_when_there_is_no_value(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option,
-        AttributeOptionValueInterface $value
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
-
-        $option->getOptionValue()->willReturn($value);
-        $value->getValue()->willReturn(null);
-        $option->getCode()->willReturn('red');
-
-        $this->__toString()->shouldReturn('[red]');
-    }
-
-    function it_can_be_formatted_as_string_when_there_is_a_translation(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option,
-        AttributeOptionValueInterface $translation
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
-
-        $translation->getValue()->willReturn('Blue');
-
-        $option->getOptionValue()->willReturn($translation);
-        $option->getCode()->shouldNotBeCalled();
-
-        $this->__toString()->shouldReturn('Blue');
     }
 
     function it_compares_itself_to_the_same_option_value(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option,
-        OptionValueInterface $sameOptionValue,
-        AttributeOptionInterface $sameOption
+        OptionValueInterface $sameOptionValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'optionA', 'ecommerce', 'en_US']);
 
-        $sameOptionValue->getLocale()->willReturn('en_US');
-        $sameOptionValue->getScope()->willReturn('ecommerce');
-        $sameOptionValue->getData()->willReturn($sameOption);
-
-        $option->getCode()->willReturn('optionA');
-        $sameOption->getCode()->willReturn('optionA');
-
-        $option->getLocale()->willReturn('en_US');
-        $sameOption->getLocale()->willReturn('en_US');
+        $sameOptionValue->getLocaleCode()->willReturn('en_US');
+        $sameOptionValue->getScopeCode()->willReturn('ecommerce');
+        $sameOptionValue->getData()->willReturn('optionA');
 
         $this->isEqual($sameOptionValue)->shouldReturn(true);
     }
 
     function it_compares_itself_to_another_value_type(
-        AttributeInterface $attribute,
         MetricValueInterface $metricValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US');
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'optionA', 'ecommerce', 'en_US']);
 
         $this->isEqual($metricValue)->shouldReturn(false);
     }
 
     function it_compares_itself_with_null_option_to_an_option_value_with_null_option(
-        AttributeInterface $attribute,
         OptionValueInterface $sameOptionValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', null);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', null, 'ecommerce', 'en_US']);
 
-        $sameOptionValue->getScope()->willReturn('ecommerce');
-        $sameOptionValue->getLocale()->willReturn('en_US');
+        $sameOptionValue->getScopeCode()->willReturn('ecommerce');
+        $sameOptionValue->getLocaleCode()->willReturn('en_US');
         $sameOptionValue->getData()->willReturn(null);
 
         $this->isEqual($sameOptionValue)->shouldReturn(true);
     }
 
     function it_compares_itself_with_null_option_to_a_different_option_value_with_null_option(
-        AttributeInterface $attribute,
-        OptionValueInterface $sameOptionValue
+        OptionValueInterface $otherOptionValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', null);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', null, 'ecommerce', 'en_US']);
 
-        $sameOptionValue->getScope()->willReturn('mobile');
-        $sameOptionValue->getLocale()->willReturn('en_US');
-        $sameOptionValue->getData()->willReturn(null);
+        $otherOptionValue->getScopeCode()->willReturn('mobile');
+        $otherOptionValue->getLocaleCode()->willReturn('en_US');
+        $otherOptionValue->getData()->willReturn(null);
 
-        $this->isEqual($sameOptionValue)->shouldReturn(false);
+        $this->isEqual($otherOptionValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_an_option_value_with_null_option(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option,
-        OptionValueInterface $sameOptionValue
+        OptionValueInterface $otherOptionValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'optionA', 'ecommerce', 'en_US']);
 
-        $sameOptionValue->getScope()->willReturn('ecommerce');
-        $sameOptionValue->getLocale()->willReturn('en_US');
-        $sameOptionValue->getData()->willReturn(null);
+        $otherOptionValue->getScopeCode()->willReturn('ecommerce');
+        $otherOptionValue->getLocaleCode()->willReturn('en_US');
+        $otherOptionValue->getData()->willReturn(null);
 
-        $this->isEqual($sameOptionValue)->shouldReturn(false);
+        $this->isEqual($otherOptionValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_an_option_value_with_different_option(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option,
-        OptionValueInterface $sameOptionValue,
-        AttributeOptionInterface $differentOption
+        OptionValueInterface $otherOptionValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'optionA', 'ecommerce', 'en_US']);
 
-        $sameOptionValue->getScope()->willReturn('ecommerce');
-        $sameOptionValue->getLocale()->willReturn('en_US');
-        $sameOptionValue->getData()->willReturn($differentOption);
+        $otherOptionValue->getScopeCode()->willReturn('ecommerce');
+        $otherOptionValue->getLocaleCode()->willReturn('en_US');
+        $otherOptionValue->getData()->willReturn('the_A_option');
 
-        $option->getCode()->willReturn('optionA');
-        $differentOption->getCode()->willReturn('the_A_option');
-
-        $option->getLocale()->willReturn('en_US');
-        $differentOption->getLocale()->willReturn('en_US');
-
-        $this->isEqual($sameOptionValue)->shouldReturn(false);
+        $this->isEqual($otherOptionValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_a_different_option_value(
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option,
-        OptionValueInterface $sameOptionValue,
-        AttributeOptionInterface $sameOption
+        OptionValueInterface $otherOptionValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $option);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_option', 'optionA', 'ecommerce', 'en_US']);
 
-        $sameOptionValue->getScope()->willReturn('mobile');
-        $sameOptionValue->getLocale()->willReturn('en_US');
-        $sameOptionValue->getData()->willReturn($sameOption);
+        $otherOptionValue->getScopeCode()->willReturn('mobile');
+        $otherOptionValue->getLocaleCode()->willReturn('en_US');
+        $otherOptionValue->getData()->willReturn('optionA');
 
-        $this->isEqual($sameOptionValue)->shouldReturn(false);
+        $this->isEqual($otherOptionValue)->shouldReturn(false);
     }
 }

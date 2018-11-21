@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValue;
@@ -34,14 +33,12 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
         $context,
         $localeRepository,
         ValueInterface $value,
-        AttributeInterface $localizableAttribute,
         LocaleInterface $existingLocale,
         LocalizableValue $constraint
     ) {
-        $value->getAttribute()->willReturn($localizableAttribute);
-        $localizableAttribute->isLocalizable()->willReturn(true);
-        $value->getLocale()->willReturn('mobile');
-        $localeRepository->findOneByIdentifier('mobile')->willReturn($existingLocale);
+        $value->isLocalizable()->willReturn(true);
+        $value->getLocaleCode()->willReturn('en_US');
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($existingLocale);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($value, $constraint);
@@ -50,14 +47,12 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
     function it_adds_violations_if_value_is_localizable_and_does_not_have_locale(
         $context,
         ValueInterface $value,
-        AttributeInterface $localizableAttribute,
         LocalizableValue $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($localizableAttribute);
-        $localizableAttribute->isLocalizable()->willReturn(true);
-        $value->getLocale()->willReturn(null);
-        $localizableAttribute->getCode()->willReturn('attributeCode');
+        $value->isLocalizable()->willReturn(true);
+        $value->getLocaleCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('attributeCode');
 
         $violationData = [
             '%attribute%' => 'attributeCode'
@@ -72,14 +67,12 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
     function it_adds_violations_if_value_is_not_localizable_and_a_locale_is_provided(
         $context,
         ValueInterface $value,
-        AttributeInterface $notLocalizableAttribute,
         LocalizableValue $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($notLocalizableAttribute);
-        $notLocalizableAttribute->isLocalizable()->willReturn(false);
-        $value->getLocale()->willReturn('aLocale');
-        $notLocalizableAttribute->getCode()->willReturn('attributeCode');
+        $value->isLocalizable()->willReturn(false);
+        $value->getLocaleCode()->willReturn('aLocale');
+        $value->getAttributeCode()->willReturn('attributeCode');
 
         $violationData = [
             '%attribute%' => 'attributeCode'
@@ -95,14 +88,12 @@ class LocalizableValueValidatorSpec extends ObjectBehavior
         $context,
         $localeRepository,
         ValueInterface $value,
-        AttributeInterface $localizableAttribute,
         LocalizableValue $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($localizableAttribute);
-        $localizableAttribute->isLocalizable()->willReturn(true);
-        $value->getLocale()->willReturn('inexistingLocale');
-        $localizableAttribute->getCode()->willReturn('attributeCode');
+        $value->isLocalizable()->willReturn(true);
+        $value->getLocaleCode()->willReturn('inexistingLocale');
+        $value->getAttributeCode()->willReturn('attributeCode');
         $localeRepository->findOneByIdentifier('inexistingLocale')->willReturn(null);
 
         $violationData = [

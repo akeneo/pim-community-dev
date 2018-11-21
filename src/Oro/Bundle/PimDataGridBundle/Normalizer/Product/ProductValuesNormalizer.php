@@ -46,7 +46,7 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
         foreach ($data as $value) {
             $normalizedValue = $this->serializer->normalize($value, $format, $context);
 
-            $attributeCode = $value->getAttribute()->getCode();
+            $attributeCode = $value->getAttributeCode();
             $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeCode);
             if (null !== $presenter) {
                 $normalizedValue['data'] = $presenter->present($normalizedValue['data'], [

@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
@@ -14,6 +15,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(MetricNormalizer::class);
@@ -28,11 +34,14 @@ class MetricNormalizerSpec extends ObjectBehavior
         MetricValueInterface $metricValue,
         ValueInterface $textValue,
         AttributeInterface $metricAttribute,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $metricValue->getAttribute()->willReturn($metricAttribute);
+        $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
+        $attributeRepository->findOneByidentifier('my_metric_attribute')->willReturn($metricAttribute);
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+        $attributeRepository->findOneByidentifier('my_text_attribute')->willReturn($textAttribute);
 
-        $textValue->getAttribute()->willReturn($textAttribute);
         $textAttribute->getBackendType()->willReturn('text');
 
         $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
@@ -54,15 +63,17 @@ class MetricNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_empty_metric_product_value_with_no_locale_and_no_channel(
         MetricValueInterface $metricValue,
-        AttributeInterface $metricAttribute
+        AttributeInterface $metricAttribute,
+        $attributeRepository
     ) {
-        $metricValue->getAttribute()->willReturn($metricAttribute);
-        $metricValue->getLocale()->willReturn(null);
-        $metricValue->getScope()->willReturn(null);
+        $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
+        $metricValue->getLocaleCode()->willReturn(null);
+        $metricValue->getScopeCode()->willReturn(null);
         $metricValue->getData()->willReturn(null);
 
         $metricAttribute->getCode()->willReturn('weight');
         $metricAttribute->getBackendType()->willReturn('metric');
+        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
         $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'weight-metric' => [
@@ -76,20 +87,22 @@ class MetricNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_metric_product_value_with_no_locale_and_no_channel(
         ValueInterface $metricValue,
         AttributeInterface $metricAttribute,
-        MetricInterface $metric
+        MetricInterface $metric,
+        $attributeRepository
     ) {
         $metric->getData()->willReturn(125.12);
         $metric->getBaseData()->willReturn(0.12512);
         $metric->getUnit()->willReturn('GRAM');
         $metric->getBaseUnit()->willReturn('KILOGRAM');
 
-        $metricValue->getAttribute()->willReturn($metricAttribute);
-        $metricValue->getLocale()->willReturn(null);
-        $metricValue->getScope()->willReturn(null);
+        $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
+        $metricValue->getLocaleCode()->willReturn(null);
+        $metricValue->getScopeCode()->willReturn(null);
         $metricValue->getData()->willReturn($metric);
 
         $metricAttribute->getCode()->willReturn('weight');
         $metricAttribute->getBackendType()->willReturn('metric');
+        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
         $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'weight-metric' => [
@@ -108,20 +121,22 @@ class MetricNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_metric_product_value_with_locale(
         ValueInterface $metricValue,
         AttributeInterface $metricAttribute,
-        MetricInterface $metric
+        MetricInterface $metric,
+        $attributeRepository
     ) {
         $metric->getData()->willReturn(125.12);
         $metric->getBaseData()->willReturn(0.12512);
         $metric->getUnit()->willReturn('GRAM');
         $metric->getBaseUnit()->willReturn('KILOGRAM');
 
-        $metricValue->getAttribute()->willReturn($metricAttribute);
-        $metricValue->getLocale()->willReturn('en_US');
-        $metricValue->getScope()->willReturn(null);
+        $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
+        $metricValue->getLocaleCode()->willReturn('en_US');
+        $metricValue->getScopeCode()->willReturn(null);
         $metricValue->getData()->willReturn($metric);
 
         $metricAttribute->getCode()->willReturn('weight');
         $metricAttribute->getBackendType()->willReturn('metric');
+        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
         $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'weight-metric' => [
@@ -140,21 +155,23 @@ class MetricNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_integer_product_value_with_locale_and_channel(
         ValueInterface $metricValue,
         AttributeInterface $metricAttribute,
-        MetricInterface $metric
+        MetricInterface $metric,
+        $attributeRepository
     ) {
         $metric->getData()->willReturn(125.12);
         $metric->getBaseData()->willReturn(0.12512);
         $metric->getUnit()->willReturn('GRAM');
         $metric->getBaseUnit()->willReturn('KILOGRAM');
 
-        $metricValue->getAttribute()->willReturn($metricAttribute);
-        $metricValue->getLocale()->willReturn('fr_FR');
-        $metricValue->getScope()->willReturn('ecommerce');
+        $metricValue->getAttributeCode()->willReturn('my_metric_attribute');
+        $metricValue->getLocaleCode()->willReturn('fr_FR');
+        $metricValue->getScopeCode()->willReturn('ecommerce');
         $metricValue->getData()->willReturn($metric);
 
         $metricAttribute->isDecimalsAllowed()->willReturn(false);
         $metricAttribute->getCode()->willReturn('weight');
         $metricAttribute->getBackendType()->willReturn('metric');
+        $attributeRepository->findOneByIdentifier('my_metric_attribute')->willReturn($metricAttribute);
 
         $this->normalize($metricValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'weight-metric' => [

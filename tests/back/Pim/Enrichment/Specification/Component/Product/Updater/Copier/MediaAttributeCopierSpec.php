@@ -113,10 +113,9 @@ class MediaAttributeCopierSpec extends ObjectBehavior
             ->willReturn($fileInfo);
 
         $fileInfo->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
-
         $fileInfo->getKey()->willReturn('key');
 
-        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, 'key');
+        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, 'key')->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,
@@ -163,7 +162,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $fileInfo->getKey()->shouldNotBeCalled();
 
-        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, null);
+        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, null)->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,
@@ -217,12 +216,15 @@ class MediaAttributeCopierSpec extends ObjectBehavior
             ->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)
             ->willReturn($fileInfo);
 
+        $fileInfo->setOriginalFilename('akeneo.jpg')->shouldBeCalled();
+        $fileInfo->getKey()->willReturn('key');
+
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
 
         $toValue->getData()->willReturn($toMedia);
 
-        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, $fileInfo);
+        $builder->addOrReplaceValue($product, $toAttribute, $toLocale, $toScope, 'key')->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,

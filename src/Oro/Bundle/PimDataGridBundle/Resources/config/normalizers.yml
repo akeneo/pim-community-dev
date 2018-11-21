@@ -39,11 +39,15 @@ services:
 
     pim_datagrid.normalizer.product.option:
         class: '%pim_datagrid.normalizer.product.option.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 
     pim_datagrid.normalizer.product.options:
         class: '%pim_datagrid.normalizer.product.options.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 
@@ -91,11 +95,17 @@ services:
 
     pim_reference_data.datagrid.normalizer.reference_data:
         class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 
     pim_reference_data.datagrid.normalizer.reference_data_collection:
         class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pim_datagrid_serializer.normalizer }
 

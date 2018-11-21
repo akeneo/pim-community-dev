@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -12,6 +13,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TextNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(TextNormalizer::class);
@@ -26,13 +32,17 @@ class TextNormalizerSpec extends ObjectBehavior
         ValueInterface $numberValue,
         ValueInterface $textValue,
         AttributeInterface $numberAttribute,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $numberValue->getAttribute()->willReturn($numberAttribute);
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+        $numberValue->getAttributeCode()->willReturn('my_number_attribute');
 
         $textAttribute->getBackendType()->willReturn('text');
         $numberAttribute->getBackendType()->willReturn('decimal');
+
+        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
+        $attributeRepository->findOneByIdentifier('my_number_attribute')->willReturn($numberAttribute);
 
         $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(false);
@@ -53,15 +63,17 @@ class TextNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_text_product_value_with_no_locale_and_no_channel(
         ValueInterface $textValue,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $textValue->getLocale()->willReturn(null);
-        $textValue->getScope()->willReturn(null);
+        $textValue->getAttributeCode()->willReturn('name');
+        $textValue->getLocaleCode()->willReturn(null);
+        $textValue->getScopeCode()->willReturn(null);
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
 
         $this->normalize($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'name-text' => [
@@ -74,15 +86,17 @@ class TextNormalizerSpec extends ObjectBehavior
 
     function it_keeps_the_string_as_is_during_normalization(
         ValueInterface $textValue,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $textValue->getLocale()->willReturn(null);
-        $textValue->getScope()->willReturn(null);
+        $textValue->getAttributeCode()->willReturn('name');
+        $textValue->getLocaleCode()->willReturn(null);
+        $textValue->getScopeCode()->willReturn(null);
         $textValue->getData()->willReturn('<h1>My <strong>ProDucT</strong> is awesome</h1>');
 
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
 
         $this->normalize($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'name-text' => [
@@ -95,15 +109,17 @@ class TextNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_empty_text_with_no_locale_and_channel(
         ValueInterface $textValue,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $textValue->getLocale()->willReturn(null);
-        $textValue->getScope()->willReturn(null);
+        $textValue->getAttributeCode()->willReturn('name');
+        $textValue->getLocaleCode()->willReturn(null);
+        $textValue->getScopeCode()->willReturn(null);
         $textValue->getData()->willReturn(null);
 
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
 
         $this->normalize($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'name-text' => [
@@ -116,15 +132,17 @@ class TextNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_text_product_value_with_locale_and_no_scope(
         ValueInterface $textValue,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $textValue->getLocale()->willReturn('fr_FR');
-        $textValue->getScope()->willReturn(null);
+        $textValue->getAttributeCode()->willReturn('name');
+        $textValue->getLocaleCode()->willReturn('fr_FR');
+        $textValue->getScopeCode()->willReturn(null);
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
 
         $this->normalize($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'name-text' => [
@@ -137,15 +155,17 @@ class TextNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_text_product_value_with_scope_and_no_locale(
         ValueInterface $textValue,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $textValue->getLocale()->willReturn(null);
-        $textValue->getScope()->willReturn('ecommerce');
+        $textValue->getAttributeCode()->willReturn('name');
+        $textValue->getLocaleCode()->willReturn(null);
+        $textValue->getScopeCode()->willReturn('ecommerce');
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
 
         $this->normalize($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'name-text' => [
@@ -158,15 +178,17 @@ class TextNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_text_product_value_with_locale_and_scope(
         ValueInterface $textValue,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $textValue->getLocale()->willReturn('fr_FR');
-        $textValue->getScope()->willReturn('ecommerce');
+        $textValue->getAttributeCode()->willReturn('name');
+        $textValue->getLocaleCode()->willReturn('fr_FR');
+        $textValue->getScopeCode()->willReturn('ecommerce');
         $textValue->getData()->willReturn('a product name');
 
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getBackendType()->willReturn('text');
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
 
         $this->normalize($textValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'name-text' => [

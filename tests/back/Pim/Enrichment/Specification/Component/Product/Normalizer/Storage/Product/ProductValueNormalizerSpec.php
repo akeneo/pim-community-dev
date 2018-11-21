@@ -29,10 +29,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($value, 'storage')->shouldReturn(true);
     }
 
-    function it_normalizes_simple_values($stdNormalizer, ValueInterface $value, AttributeInterface $attribute)
+    function it_normalizes_simple_values($stdNormalizer, ValueInterface $value)
     {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('attribute');
+        $value->getAttributeCode()->willReturn('attribute');
 
         $stdNormalizer->normalize($value, 'storage', ['context'])->willReturn([
             'scope' => null,
@@ -46,10 +45,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'storage', ['context'])->shouldReturn($storageValue);
     }
 
-    function it_normalizes_scopable_values($stdNormalizer, ValueInterface $value, AttributeInterface $attribute)
+    function it_normalizes_scopable_values($stdNormalizer, ValueInterface $value)
     {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('attribute');
+        $value->getAttributeCode()->willReturn('attribute');
 
         $stdNormalizer->normalize($value, 'storage', ['context'])->willReturn([
             'scope' => 'ecommerce',
@@ -65,11 +63,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_localizable_values(
         $stdNormalizer,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ValueInterface $value
     ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('attribute');
+        $value->getAttributeCode()->willReturn('attribute');
 
         $stdNormalizer->normalize($value, 'storage', ['context'])->willReturn([
             'scope' => null,
@@ -83,13 +79,8 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'storage', ['context'])->shouldReturn($storageValue);
     }
 
-    function it_normalizes_scopable_and_localizable_values(
-        $stdNormalizer,
-        ValueInterface $value,
-        AttributeInterface $attribute
-    ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('attribute');
+    function it_normalizes_scopable_and_localizable_values( $stdNormalizer, ValueInterface $value) {
+        $value->getAttributeCode()->willReturn('attribute');
 
         $stdNormalizer->normalize($value, 'storage', ['context'])->willReturn([
             'scope' => 'ecommerce',

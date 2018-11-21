@@ -69,9 +69,9 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
 
         if (null !== $value) {
             $newOptionCodes = [];
-            foreach ($value->getData() as $originalOption) {
-                if (!in_array($originalOption->getCode(), $optionCodes)) {
-                    $newOptionCodes[] = $originalOption->getCode();
+            foreach ($value->getData() as $originalOptionCode) {
+                if (!in_array($originalOptionCode, $optionCodes)) {
+                    $newOptionCodes[] = $originalOptionCode;
                 }
             }
 

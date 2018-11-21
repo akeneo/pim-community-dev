@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -52,16 +53,16 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     public function addOrReplaceValue(
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
-        $locale,
-        $scope,
+        ?string $localeCode,
+        ?string $scopeCode,
         $data
-    ) {
-        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
+    ) : ValueInterface {
+        $value = $entityWithValues->getValue($attribute->getCode(), $localeCode, $scopeCode);
         if (null !== $value) {
             $entityWithValues->removeValue($value);
         }
 
-        $value = $this->productValueFactory->create($attribute, $scope, $locale, $data);
+        $value = $this->productValueFactory->create($attribute, $scopeCode, $localeCode, $data);
         $entityWithValues->addValue($value);
 
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field

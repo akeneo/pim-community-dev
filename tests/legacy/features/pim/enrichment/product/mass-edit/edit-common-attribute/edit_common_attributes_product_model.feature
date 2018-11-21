@@ -50,10 +50,10 @@ Feature: Edit common attributes of many products and product models at once
     And I change the "Weight" to "500 Gram"
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the product model value brand of "model-col" should be "[Nyke]"
-    And the product model value brand of "model-col-white" should be "[Nyke]"
+    Then the product model value brand of "model-col" should be "Nyke"
+    And the product model value brand of "model-col-white" should be "Nyke"
     And the product model value composition of "model-col-white" should be "100% cotton"
-    And the product value brand of "col-white-m" should be "[Nyke]"
+    And the product value brand of "col-white-m" should be "Nyke"
     And the product "col-white-m" should have the following values:
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
@@ -95,8 +95,8 @@ Feature: Edit common attributes of many products and product models at once
     And I change the "Composition" to "100% cotton"
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the product model value brand of "model-nin" should be "[Nyke]"
-    And the product value brand of "nin-s" should be "[Nyke]"
+    Then the product model value brand of "model-nin" should be "Nyke"
+    And the product value brand of "nin-s" should be "Nyke"
     And the product value composition of "nin-s" should be "100% cotton"
     When I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "COMPLETED"
@@ -116,8 +116,8 @@ Feature: Edit common attributes of many products and product models at once
     And I change the "Weight" to "500 Gram"
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the product model value brand of "model-col" should be "[Nyke]"
-    And the product value brand of "tool-tee" should be "[Nyke]"
+    Then the product model value brand of "model-col" should be "Nyke"
+    And the product value brand of "tool-tee" should be "Nyke"
     And the product model value composition of "model-col-white" should be "100% cotton"
     And the product value composition of "tool-tee" should be "100% cotton"
     And the product "col-white-m" should have the following values:
@@ -144,8 +144,8 @@ Feature: Edit common attributes of many products and product models at once
     And I change the "Weight" to "500 gram"
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the product model value brand of "model-col" should be "[Abibas]"
-    And the product model value brand of "model-col-white" should be "[Abibas]"
+    Then the product model value brand of "model-col" should be "Abibas"
+    And the product model value brand of "model-col-white" should be "Abibas"
     And the product model value composition of "model-col-white" should be "cotton 90%, viscose 10%"
     And the product model "model-col" should not have the following values "composition, weight"
     And the product model "model-col-white" should not have the following values weight
@@ -168,9 +168,9 @@ Feature: Edit common attributes of many products and product models at once
     And I change the "Weight" to "500 Gram"
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the product model value brand of "model-col" should be "[Nyke]"
+    Then the product model value brand of "model-col" should be "Nyke"
     And the product model value composition of "model-col-white" should be "100% cotton"
-    And the product model value brand of "model-col-white" should be "[Nyke]"
+    And the product model value brand of "model-col-white" should be "Nyke"
     And the product "col-white-m" should have the following values:
       | brand       | [Nyke]        |
       | composition | 100% cotton   |
@@ -179,7 +179,7 @@ Feature: Edit common attributes of many products and product models at once
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
       | brand       | [Nyke]        |
-    And the product model value brand of "model-nin" should be "[Nyke]"
+    And the product model value brand of "model-nin" should be "Nyke"
     And the product "nin-s" should have the following values:
       | weight      | 500.0000 GRAM |
       | composition | 100% cotton   |
@@ -203,9 +203,9 @@ Feature: Edit common attributes of many products and product models at once
     And I change the "Weight" to "500 Gram"
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the product model value brand of "model-col" should be "[Nyke]"
+    Then the product model value brand of "model-col" should be "Nyke"
     And the product model value composition of "model-col-white" should be "100% cotton"
-    And the product model value brand of "model-col-white" should be "[Nyke]"
+    And the product model value brand of "model-col-white" should be "Nyke"
     And the product "col-white-m" should have the following values:
       | brand       | [Nyke]        |
       | composition | 100% cotton   |

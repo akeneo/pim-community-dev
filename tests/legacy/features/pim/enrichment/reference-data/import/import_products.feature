@@ -32,25 +32,25 @@ Feature: Execute a job
     And the family of the product "SKU-001" should be "new_heels"
     And product "SKU-002" should be enabled
     And the product "SKU-001" should have the following values:
-      | heel_color               | Red        |
-      | sole_fabric              | Nylon, PVC |
-      | lace_fabric-en_US-tablet |            |
-      | lace_fabric-en_US-mobile | Kevlar     |
+      | heel_color               | [Red]          |
+      | sole_fabric              | [Nylon], [PVC] |
+      | lace_fabric-en_US-tablet |                |
+      | lace_fabric-en_US-mobile | [Kevlar]       |
     And the product "SKU-002" should have the following values:
-      | heel_color               |               |
-      | sole_fabric              |               |
-      | lace_fabric-en_US-tablet | Jute, Spandex |
-      | lace_fabric-en_US-mobile | Kevlar, Wool  |
+      | heel_color               |                   |
+      | sole_fabric              |                   |
+      | lace_fabric-en_US-tablet | [Jute], [Spandex] |
+      | lace_fabric-en_US-mobile | [Kevlar], [Wool]  |
     And the product "SKU-003" should have the following values:
-      | heel_color               | Magenta  |
-      | sole_fabric              | Neoprene |
-      | lace_fabric-en_US-tablet | Wool     |
-      | lace_fabric-en_US-mobile | Jute     |
+      | heel_color               | [Magenta]  |
+      | sole_fabric              | [Neoprene] |
+      | lace_fabric-en_US-tablet | [Wool]     |
+      | lace_fabric-en_US-mobile | [Jute]     |
     And the product "SKU-004" should have the following values:
-      | heel_color               | Black    |
-      | sole_fabric              | Neoprene |
-      | lace_fabric-en_US-tablet | Spandex  |
-      | lace_fabric-en_US-mobile | Spandex  |
+      | heel_color               | [Black]    |
+      | sole_fabric              | [Neoprene] |
+      | lace_fabric-en_US-tablet | [Spandex]  |
+      | lace_fabric-en_US-mobile | [Spandex]  |
 
   Scenario: Successfully update an existing product with reference data
     Given the following product:
@@ -68,10 +68,10 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And the product "SKU-001" should have the following values:
-      | heel_color               | Magenta      |
-      | sole_fabric              |              |
-      | lace_fabric-en_US-tablet | Jute, Kevlar |
-      | lace_fabric-en_US-mobile | Jute, Kevlar |
+      | heel_color               | [Magenta]        |
+      | sole_fabric              |                  |
+      | lace_fabric-en_US-tablet | [Jute], [Kevlar] |
+      | lace_fabric-en_US-mobile | [Jute], [Kevlar] |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6433
   Scenario: Successfully update an existing product with duplicate reference data code
@@ -92,4 +92,4 @@ Feature: Execute a job
     And I should see the text "skipped product (no associations detected) 1"
     And there should be 1 product
     And the product "SKU-001" should have the following values:
-      | sole_fabric | PVC |
+      | sole_fabric | [PVC] |

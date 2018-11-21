@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -182,17 +181,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes(): array
+    public function hasAttribute(string $attributeCode): bool
     {
-        return $this->getValues()->getAttributes();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAttribute(AttributeInterface $attribute): bool
-    {
-        return in_array($attribute, $this->getValues()->getAttributes(), true);
+        return in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
     }
 
     /**
@@ -200,7 +191,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getUsedAttributeCodes(): array
     {
-        return $this->getValues()->getAttributesKeys();
+        return $this->getValues()->getAttributeCodes();
     }
 
     /**

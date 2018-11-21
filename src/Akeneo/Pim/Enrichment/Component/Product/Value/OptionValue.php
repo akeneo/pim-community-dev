@@ -4,8 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 /**
  * Product value for "pim_catalog_simpleselect" attribute type
@@ -16,32 +14,25 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
  */
 class OptionValue extends AbstractValue implements OptionValueInterface
 {
-    /** @var AttributeOptionInterface|null */
+    /** @var string Option code */
     protected $data;
 
     /**
-     * @param AttributeInterface            $attribute
-     * @param string                        $channel
-     * @param string                        $locale
-     * @param AttributeOptionInterface|null $data
+     * {@inheritdoc}
      */
-    public function __construct(
-        AttributeInterface $attribute,
-        $channel,
-        $locale,
-        AttributeOptionInterface $data = null
+    protected function __construct(
+        string $attributeCode,
+        ?string $data,
+        ?string $scopeCode,
+        ?string $localeCode
     ) {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->data = $data;
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }
@@ -49,43 +40,22 @@ class OptionValue extends AbstractValue implements OptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        if (null !== $option = $this->getData()) {
-            $optionValue = $option->getOptionValue();
-
-            if (null === $optionValue || null === $optionValue->getValue()) {
-                return '['.$option->getCode().']';
-            }
-
-            return (string) $optionValue->getValue();
-        }
-
-        return '';
+        return null !== $this->data ? '['.$this->data.']' : '';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value)
+    public function isEqual(ValueInterface $value): bool
     {
         if (!$value instanceof OptionValueInterface ||
-            $this->getScope() !== $value->getScope() ||
-            $this->getLocale() !== $value->getLocale()) {
+            $this->getScopeCode() !== $value->getScopeCode() ||
+            $this->getLocaleCode() !== $value->getLocaleCode()) {
             return false;
         }
 
-        $comparedOption = $value->getData();
-        $thisOption = $this->getData();
-
-        if (null === $thisOption && null === $comparedOption) {
-            return true;
-        }
-        if (null === $thisOption || null === $comparedOption) {
-            return false;
-        }
-
-        return $comparedOption->getCode() === $thisOption->getCode() &&
-            $comparedOption->getLocale() === $thisOption->getLocale();
+        return $this->getData() === $value->getData();
     }
 }

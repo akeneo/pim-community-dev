@@ -26,6 +26,8 @@ services:
 
     pim_api.normalizer.exception.violation:
         class: '%pim_api.normalizer.exception.violation.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
 

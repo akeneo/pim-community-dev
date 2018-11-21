@@ -51,8 +51,6 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
         $valueCollection,
         ValueInterface $value1,
         ValueInterface $value2,
-        AttributeInterface $attribute1,
-        AttributeInterface $attribute2,
         \ArrayIterator $valueCollectionIterator,
         SerializerInterface $serializer
     ) {
@@ -62,12 +60,6 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
         $valueCollectionIterator->current()->willReturn($value1, $value2);
 
         $valueCollectionIterator->next()->shouldBeCalled();
-
-        $value1->getAttribute()->willReturn($attribute1);
-        $value2->getAttribute()->willReturn($attribute2);
-
-        $attribute1->getType()->willReturn('pim_catalog_number');
-        $attribute2->getType()->willReturn('pim_catalog_text');
 
         $serializer->normalize($value1, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [

@@ -3,9 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -18,15 +16,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_constraint_violation_with_scope_and_locale(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn('mobile');
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('description');
-
         $violation->getPropertyPath()->willReturn('values[description-mobile-en_US].text');
         $violation->getMessage()->willReturn('The text is too long.');
 
@@ -40,15 +31,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_localization_constraint_violation_with_scope_and_locale(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn('mobile');
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('description');
-
         $violation->getPropertyPath()->willReturn(
             'values[{"code":"description","locale":"en_US","scope":"mobile"}].text'
         );
@@ -64,15 +48,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_constraint_violation_with_locale(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn('fr_FR');
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('movie_title');
-
         $violation->getPropertyPath()->willReturn('values[movie_title-<all_channels>-fr_FR].text');
         $violation->getMessage()->willReturn('This movie title is very bad.');
 
@@ -86,15 +63,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_localization_constraint_violation_with_locale(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn('fr_FR');
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('movie_title');
-
         $violation->getPropertyPath()->willReturn('values[{"code":"movie_title","locale":"fr_FR","scope":null}].text');
         $violation->getMessage()->willReturn('This movie title is very bad.');
 
@@ -108,15 +78,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_constraint_violation_with_scope(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
-
         $violation->getPropertyPath()->willReturn('values[name-ecommerce-<all_locales>].text');
         $violation->getMessage()->willReturn('The text is too short.');
 
@@ -130,15 +93,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_localization_constraint_violation_with_scope(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('name');
-
         $violation->getPropertyPath()->willReturn('values[{"code":"name","locale":null,"scope":"ecommerce"}].text');
         $violation->getMessage()->willReturn('The text is too short.');
 
@@ -152,15 +108,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_constraint_violation(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('price');
-
         $violation->getPropertyPath()->willReturn('values[price-<all_channels>-<all_locales>].float');
         $violation->getMessage()->willReturn('The price should be above 10.');
 
@@ -174,15 +123,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_constraint_violation_without_channel_and_locale(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('price');
-
         $violation->getPropertyPath()->willReturn('values[price]');
         $violation->getMessage()->willReturn('The price should be above 10.');
 
@@ -196,15 +138,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_localization_constraint_violation(
         ConstraintViolationInterface $violation,
-        ProductInterface $product,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('price');
-
         $violation->getPropertyPath()->willReturn('values[{"code":"price","locale":null,"scope":null}].float');
         $violation->getMessage()->willReturn('The price should be above 10.');
 

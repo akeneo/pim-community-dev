@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -20,19 +21,34 @@ abstract class AbstractProductValueNormalizer implements NormalizerInterface, Se
 {
     use SerializerAwareTrait;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function normalize($productValue, $format = null, array $context = [])
     {
-        $locale = (null === $productValue->getLocale()) ? '<all_locales>' : $productValue->getLocale();
-        $channel = (null === $productValue->getScope()) ? '<all_channels>' : $productValue->getScope();
+        $locale = (null === $productValue->getLocaleCode()) ? '<all_locales>' : $productValue->getLocaleCode();
+        $channel = (null === $productValue->getScopeCode()) ? '<all_channels>' : $productValue->getScopeCode();
 
-        $key = $productValue->getAttribute()->getCode() . '-' . $productValue->getAttribute()->getBackendType();
-        $structure = [];
-        $structure[$key][$channel][$locale] = $this->getNormalizedData($productValue);
+        $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
 
-        return $structure;
+        if ($attribute !== null) {
+            $key = $attribute->getCode() . '-' . $attribute->getBackendType();
+            $structure = [];
+            $structure[$key][$channel][$locale] = $this->getNormalizedData($productValue);
+
+            return $structure;
+        } else {
+            return null;
+        }
     }
 
     /**

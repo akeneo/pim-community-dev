@@ -5,16 +5,17 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 
 class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
 {
-    function let()
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $currentLocale = 'en_US';
-        $this->beConstructedWith($currentLocale);
+        $this->beConstructedWith($currentLocale, $attributeRepository);
     }
 
     function it_is_an_event_subscriber()
@@ -35,11 +36,15 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ValueInterface $taxValue,
-        AttributeInterface $taxAttribute
+        AttributeInterface $taxAttribute,
+        $attributeRepository
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
-        $taxValue->getAttribute()->willReturn($taxAttribute);
+
+        $taxValue->getAttributeCode()->willReturn('tax_attribute');
+        $attributeRepository->findOneByIdentifier('tax_attribute')->willReturn($taxAttribute);
+
         $fr = new Locale();
         $fr->setCode('fr_FR');
         $taxAttribute->isLocaleSpecific()->willReturn(true);
@@ -55,11 +60,15 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ValueInterface $taxValue,
-        AttributeInterface $taxAttribute
+        AttributeInterface $taxAttribute,
+        $attributeRepository
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['tax' => $taxValue]);
-        $taxValue->getAttribute()->willReturn($taxAttribute);
+
+        $taxValue->getAttributeCode()->willReturn('tax_attribute');
+        $attributeRepository->findOneByIdentifier('tax_attribute')->willReturn($taxAttribute);
+
         $fr = new Locale();
         $fr->setCode('fr_FR');
         $en = new Locale();
@@ -78,11 +87,15 @@ class FilterLocaleSpecificValueSubscriberSpec extends ObjectBehavior
         FormInterface $field,
         FormInterface $rootForm,
         ValueInterface $nameValue,
-        AttributeInterface $nameAttribute
+        AttributeInterface $nameAttribute,
+        $attributeRepository
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn(['name' => $nameValue]);
-        $nameValue->getAttribute()->willReturn($nameAttribute);
+
+        $nameValue->getAttributeCode()->willReturn('name_attribute');
+        $attributeRepository->findOneByIdentifier('name_attribute')->willReturn($nameAttribute);
+
         $nameAttribute->isLocaleSpecific()->willReturn(false);
         $form->remove('name')->shouldNotBeCalled();
 

@@ -35,8 +35,8 @@ class ScopableValueValidator extends ConstraintValidator
     {
         /** @var ValueInterface */
         if ($productValue instanceof ValueInterface) {
-            $isScopable = $productValue->getAttribute()->isScopable();
-            $channelCode = $productValue->getScope();
+            $isScopable = $productValue->isScopable();
+            $channelCode = $productValue->getScopeCode();
 
             if ($isScopable && null === $channelCode) {
                 $this->addExpectedScopeViolation($constraint, $productValue);
@@ -69,7 +69,7 @@ class ScopableValueValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->expectedScopeMessage,
             [
-                '%attribute%' => $value->getAttribute()->getCode()
+                '%attribute%' => $value->getAttributeCode()
             ]
         )->addViolation();
     }
@@ -87,7 +87,7 @@ class ScopableValueValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->inexistingScopeMessage,
             [
-                '%attribute%' => $value->getAttribute()->getCode(),
+                '%attribute%' => $value->getAttributeCode(),
                 '%channel%'   => $channelCode
             ]
         )->addViolation();
@@ -102,7 +102,7 @@ class ScopableValueValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->unexpectedScopeMessage,
             [
-                '%attribute%' => $value->getAttribute()->getCode()
+                '%attribute%' => $value->getAttributeCode()
             ]
         )->addViolation();
     }

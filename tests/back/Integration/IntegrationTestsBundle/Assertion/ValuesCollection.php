@@ -38,7 +38,7 @@ final class ValuesCollection
     {
         $expectedIdentityIdentifiers = $this->expectedEntityCodes;
         $actualIdentityIdentifiers = array_map(function(ValueInterface $value) {
-            return $value->getAttribute()->getCode();
+            return $value->getAttributeCode();
         }, $this->actualValueCollection->toArray());
 
         sort($actualIdentityIdentifiers);

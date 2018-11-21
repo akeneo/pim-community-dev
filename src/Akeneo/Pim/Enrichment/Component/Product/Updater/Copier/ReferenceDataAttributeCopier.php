@@ -106,7 +106,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $fromValue->getData()->getCode()
+                $fromValue->getData()
             );
         }
     }

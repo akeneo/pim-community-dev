@@ -39,10 +39,8 @@ class KeepOnlyValuesForVariation
 
             $entityValues = $entity->getValues();
             foreach ($entityValues as $value) {
-                $attribute = $value->getAttribute();
-
-                if (!in_array($attribute->getCode(), $attributeCodesToKeep)) {
-                    $entityValues->removeByAttribute($attribute);
+                if (!in_array($value->getAttributeCode(), $attributeCodesToKeep)) {
+                    $entityValues->removeByAttributeCode($value->getAttributeCode());
                 }
             }
 

@@ -82,9 +82,15 @@ class AddParent
             $familyVariant->getNumberOfLevel()
         )->getAttributes();
 
+        $attributeCodes = [];
+
+        foreach ($variantAttributes as $attribute) {
+            $attributeCodes[] = $attribute->getCode();
+        }
+
         $filteredValues = $product->getValues()->filter(
-            function (ValueInterface $value) use ($variantAttributes) {
-                return $variantAttributes->contains($value->getAttribute());
+            function (ValueInterface $value) use ($attributeCodes) {
+                return in_array($value->getAttributeCode(), $attributeCodes);
             }
         );
 

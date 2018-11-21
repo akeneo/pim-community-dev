@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -41,6 +42,9 @@ class ProductPdfRenderer implements RendererInterface
     /** @var FilterManager */
     protected $filterManager;
 
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
     /** @var string */
     protected $template;
 
@@ -50,31 +54,23 @@ class ProductPdfRenderer implements RendererInterface
     /** @var string */
     protected $customFont;
 
-    /**
-     * @param EngineInterface     $templating
-     * @param PdfBuilderInterface $pdfBuilder
-     * @param DataManager         $dataManager
-     * @param CacheManager        $cacheManager
-     * @param FilterManager       $filterManager
-     * @param string              $template
-     * @param string              $uploadDirectory
-     * @param string|null         $customFont
-     */
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
-        $template,
-        $uploadDirectory,
-        $customFont = null
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        string $template,
+        string $uploadDirectory,
+        ?string $customFont = null
     ) {
         $this->templating = $templating;
         $this->pdfBuilder = $pdfBuilder;
         $this->dataManager = $dataManager;
         $this->cacheManager = $cacheManager;
         $this->filterManager = $filterManager;
+        $this->attributeRepository = $attributeRepository;
         $this->template = $template;
         $this->uploadDirectory = $uploadDirectory;
         $this->customFont = $customFont;
@@ -117,16 +113,16 @@ class ProductPdfRenderer implements RendererInterface
     }
 
     /**
-     * Get attributes to display
+     * Get attributes codes to display
      *
      * @param ProductInterface $product
      * @param string           $locale
      *
-     * @return AttributeInterface[]
+     * @return
      */
-    protected function getAttributes(ProductInterface $product, $locale)
+    protected function getAttributeCodes(ProductInterface $product, $locale)
     {
-        return $product->getAttributes();
+        return $product->getUsedAttributeCodes();
     }
 
     /**
@@ -141,13 +137,17 @@ class ProductPdfRenderer implements RendererInterface
     {
         $groups = [];
 
-        foreach ($this->getAttributes($product, $locale) as $attribute) {
-            $groupLabel = $attribute->getGroup()->getLabel();
-            if (!isset($groups[$groupLabel])) {
-                $groups[$groupLabel] = [];
-            }
+        foreach ($this->getAttributeCodes($product, $locale) as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            $groups[$groupLabel][$attribute->getCode()] = $attribute;
+            if (null !== $attribute) {
+                $groupLabel = $attribute->getGroup()->getLabel();
+                if (!isset($groups[$groupLabel])) {
+                    $groups[$groupLabel] = [];
+                }
+
+                $groups[$groupLabel][$attribute->getCode()] = $attribute;
+            }
         }
 
         return $groups;
@@ -166,8 +166,10 @@ class ProductPdfRenderer implements RendererInterface
     {
         $imagePaths = [];
 
-        foreach ($this->getAttributes($product, $locale) as $attribute) {
-            if (AttributeTypes::IMAGE === $attribute->getType()) {
+        foreach ($this->getAttributeCodes($product, $locale) as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+
+            if (null !== $attribute && AttributeTypes::IMAGE === $attribute->getType()) {
                 $mediaValue = $product->getValue(
                     $attribute->getCode(),
                     $attribute->isLocalizable() ? $locale : null,

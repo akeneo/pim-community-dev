@@ -35,8 +35,8 @@ class LocalizableValueValidator extends ConstraintValidator
     {
         /** @var ValueInterface */
         if ($productValue instanceof ValueInterface) {
-            $isLocalizable = $productValue->getAttribute()->isLocalizable();
-            $localeCode = $productValue->getLocale();
+            $isLocalizable = $productValue->isLocalizable();
+            $localeCode = $productValue->getLocaleCode();
 
             if ($isLocalizable && null === $localeCode) {
                 $this->addExpectedLocaleViolation($constraint, $productValue);
@@ -69,7 +69,7 @@ class LocalizableValueValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->expectedLocaleMessage,
             [
-                '%attribute%' => $value->getAttribute()->getCode()
+                '%attribute%' => $value->getAttributeCode()
             ]
         )->addViolation();
     }
@@ -87,7 +87,7 @@ class LocalizableValueValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->inexistingLocaleMessage,
             [
-                '%attribute%' => $value->getAttribute()->getCode(),
+                '%attribute%' => $value->getAttributeCode(),
                 '%locale%'    => $localeCode
             ]
         )->addViolation();
@@ -102,7 +102,7 @@ class LocalizableValueValidator extends ConstraintValidator
         $this->context->buildViolation(
             $constraint->unexpectedLocaleMessage,
             [
-                '%attribute%' => $value->getAttribute()->getCode()
+                '%attribute%' => $value->getAttributeCode()
             ]
         )->addViolation();
     }

@@ -30,9 +30,9 @@ Feature: Mass edit common attributes for reference data
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the product "heels" should have the following values:
-      | heel_color | Light green |
+      | heel_color | [Light green] |
     And the product "platform_shoes" should have the following values:
-      | heel_color | Light green |
+      | heel_color | [Light green] |
 
   Scenario: Successfully update multi-valued reference data at once
     Given I select rows heels and platform_shoes
@@ -43,6 +43,6 @@ Feature: Mass edit common attributes for reference data
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the product "heels" should have the following values:
-      | sole_fabric | Jute, Kevlar, Wool|
+      | sole_fabric | [Jute], [Kevlar], [Wool]|
     Then the product "platform_shoes" should have the following values:
-      | sole_fabric | Jute, Kevlar, Wool|
+      | sole_fabric | [Jute], [Kevlar], [Wool]|

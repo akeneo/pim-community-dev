@@ -14,8 +14,5 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
  */
 interface MediaValueInterface extends ValueInterface
 {
-    /**
-     * @return FileInfoInterface|null
-     */
-    public function getData();
+    public function getData(): ?FileInfoInterface;
 }

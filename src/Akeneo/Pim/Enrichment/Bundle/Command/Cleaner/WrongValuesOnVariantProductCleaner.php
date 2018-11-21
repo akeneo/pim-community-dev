@@ -53,7 +53,7 @@ class WrongValuesOnVariantProductCleaner
         $familyVariant = $variantProduct->getFamilyVariant();
         $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
         $hasAttributeInParentLevel = $attributeLevel !== $familyVariant->getNumberOfLevel();
-        $attributeCodesInLastLevel = $variantProduct->getValuesForVariation()->getAttributesKeys();
+        $attributeCodesInLastLevel = $variantProduct->getValuesForVariation()->getAttributeCodes();
         $hasValueForThisAttributeInLastLevel = in_array($attribute->getCode(), $attributeCodesInLastLevel);
 
         return $hasAttributeInParentLevel && $hasValueForThisAttributeInLastLevel;
@@ -67,7 +67,7 @@ class WrongValuesOnVariantProductCleaner
     private function cleanProductForAttribute(ProductInterface $variantProduct, AttributeInterface $attribute): void
     {
         $values = $variantProduct->getValuesForVariation();
-        $values->removeByAttribute($attribute);
+        $values->removeByAttributeCode($attribute->getCode());
         $variantProduct->setValues($values);
     }
 }

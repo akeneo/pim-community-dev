@@ -13,8 +13,5 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 interface DateValueInterface extends ValueInterface
 {
-    /**
-     * @return \DateTime|null
-     */
-    public function getData();
+    public function getData(): ?\DateTime;
 }

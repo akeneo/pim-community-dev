@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -37,8 +37,7 @@ class AddParentSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         ValueCollectionInterface $values,
         ValueCollectionInterface $filteredValues,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributes
+        VariantAttributeSetInterface $attributeSet
     ) {
         $product->getId()->willReturn(40);
         $product->getFamilyVariant()->willReturn($familyVariant);
@@ -46,7 +45,7 @@ class AddParentSpec extends ObjectBehavior
         $values->filter(Argument::any())->willReturn($filteredValues);
         $familyVariant->getVariantAttributeSet(2)->willReturn($attributeSet);
         $familyVariant->getNumberOfLevel()->willReturn(2);
-        $attributeSet->getAttributes()->willReturn($attributes);
+        $attributeSet->getAttributes()->willReturn(new ArrayCollection());
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModelRepository->findOneByIdentifier('parent')->willReturn()->willReturn($productModel);
 

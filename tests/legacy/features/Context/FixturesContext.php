@@ -1268,8 +1268,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
-            $actualCode = $value instanceof OptionValueInterface && $value->getData()
-                ? $value->getData()->getCode() : null;
+            $actualCode = $value->getData();
             Assert::assertEquals($optionCode, $actualCode);
         }
     }
@@ -1287,13 +1286,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $options      = $productValue->getData();
-            $optionCodes  = array_map(
-                function ($option) {
-                    return $option->getCode();
-                },
-                $options
-            );
+            $optionCodes  = $productValue->getData();
 
             $values = array_map(
                 function ($row) {
@@ -1303,7 +1296,7 @@ class FixturesContext extends BaseFixturesContext
             );
             $values = array_filter($values);
 
-            Assert::assertEquals(count($values), count($options));
+            Assert::assertEquals(count($values), count($optionCodes));
             foreach ($values as $value) {
                 Assert::assertContains(
                     $value,
@@ -1912,8 +1905,12 @@ class FixturesContext extends BaseFixturesContext
         $product      = $this->getProduct($productName);
         $mountManager = $this->getMountManager();
 
+        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
+
         foreach ($product->getValues() as $value) {
-            if (in_array($value->getAttribute()->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
+            $attribute = $attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+            if (in_array($attribute->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
                 $media = $value->getData();
                 if (null !== $media) {
                     $fs = $mountManager->getFilesystem($media->getStorage());

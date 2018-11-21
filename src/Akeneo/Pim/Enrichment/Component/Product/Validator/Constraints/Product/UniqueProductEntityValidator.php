@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -27,16 +28,17 @@ class UniqueProductEntityValidator extends ConstraintValidator
     /** @var UniqueValuesSet */
     private $uniqueValuesSet;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param UniqueValuesSet                       $uniqueValuesSet
-     */
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
-        UniqueValuesSet $uniqueValuesSet
+        UniqueValuesSet $uniqueValuesSet,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->productRepository = $productRepository;
         $this->uniqueValuesSet = $uniqueValuesSet;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -94,14 +96,14 @@ class UniqueProductEntityValidator extends ConstraintValidator
      */
     private function getIdentifierValue(EntityWithValuesInterface $entity): ?ValueInterface
     {
-        $filteredValueCollection = $entity->getValues()->filter(function (ValueInterface $value) {
-            return $value->getAttribute()->getType() === AttributeTypes::IDENTIFIER;
-        });
+        $identifier = $this->attributeRepository->getIdentifier();
 
-        if ($filteredValueCollection->isEmpty()) {
+        if (null === $identifier) {
             return null;
         }
 
-        return $filteredValueCollection->first();
+        $identifierCode = $identifier->getCode();
+
+        return $entity->getValues()->getByCodes($identifierCode);
     }
 }

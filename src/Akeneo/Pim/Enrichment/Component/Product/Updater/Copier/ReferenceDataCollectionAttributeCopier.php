@@ -108,25 +108,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $this->getReferenceDataCodes($fromValue)
+                $fromValue->getData()
             );
         }
-    }
-
-    /**
-     * Gets the list of reference data codes contained in a product value collection.
-     *
-     * @param ValueInterface $fromValue
-     *
-     * @return string[]
-     */
-    protected function getReferenceDataCodes(ValueInterface $fromValue)
-    {
-        $referenceDataCodes = [];
-        foreach ($fromValue->getData() as $referenceData) {
-            $referenceDataCodes[] = $referenceData->getCode();
-        }
-
-        return $referenceDataCodes;
     }
 }

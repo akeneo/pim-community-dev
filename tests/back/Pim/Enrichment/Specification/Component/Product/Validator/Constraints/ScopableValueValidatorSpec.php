@@ -34,13 +34,11 @@ class ScopableValueValidatorSpec extends ObjectBehavior
         $context,
         $channelRepository,
         ValueInterface $value,
-        AttributeInterface $scopableAttribute,
         ChannelInterface $existingChannel,
         ScopableValue $constraint
     ) {
-        $value->getAttribute()->willReturn($scopableAttribute);
-        $scopableAttribute->isScopable()->willReturn(true);
-        $value->getScope()->willReturn('mobile');
+        $value->isScopable()->willReturn(true);
+        $value->getScopeCode()->willReturn('mobile');
         $channelRepository->findOneByIdentifier('mobile')->willReturn($existingChannel);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -50,14 +48,12 @@ class ScopableValueValidatorSpec extends ObjectBehavior
     function it_adds_violations_if_value_is_scopable_and_does_not_have_scope(
         $context,
         ValueInterface $value,
-        AttributeInterface $scopableAttribute,
         ScopableValue $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($scopableAttribute);
-        $scopableAttribute->isScopable()->willReturn(true);
-        $value->getScope()->willReturn(null);
-        $scopableAttribute->getCode()->willReturn('attributeCode');
+        $value->isScopable()->willReturn(true);
+        $value->getScopeCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('attributeCode');
 
         $violationData = [
             '%attribute%' => 'attributeCode'
@@ -72,14 +68,12 @@ class ScopableValueValidatorSpec extends ObjectBehavior
     function it_adds_violations_if_value_is_not_scopable_and_a_scope_is_provided(
         $context,
         ValueInterface $value,
-        AttributeInterface $notScopableAttribute,
         ScopableValue $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($notScopableAttribute);
-        $notScopableAttribute->isScopable()->willReturn(false);
-        $value->getScope()->willReturn('aScope');
-        $notScopableAttribute->getCode()->willReturn('attributeCode');
+        $value->isScopable()->willReturn(false);
+        $value->getScopeCode()->willReturn('aScope');
+        $value->getAttributeCode()->willReturn('attributeCode');
 
         $violationData = [
             '%attribute%' => 'attributeCode'
@@ -95,14 +89,12 @@ class ScopableValueValidatorSpec extends ObjectBehavior
         $context,
         $channelRepository,
         ValueInterface $value,
-        AttributeInterface $scopableAttribute,
         ScopableValue $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($scopableAttribute);
-        $scopableAttribute->isScopable()->willReturn(true);
-        $value->getScope()->willReturn('inexistingChannel');
-        $scopableAttribute->getCode()->willReturn('attributeCode');
+        $value->isScopable()->willReturn(true);
+        $value->getScopeCode()->willReturn('inexistingChannel');
+        $value->getAttributeCode()->willReturn('attributeCode');
         $channelRepository->findOneByIdentifier('inexistingChannel')->willReturn(null);
 
         $violationData = [

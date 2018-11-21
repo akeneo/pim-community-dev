@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -25,9 +26,10 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         Form $form,
         ProductInterface $product,
-        ValueInterface $value
+        ValueInterface $value,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($uniqueDataRepository, $uniqueValuesSet);
+        $this->beConstructedWith($uniqueDataRepository, $uniqueValuesSet, $attributeRepository);
 
         $product->getValue('unique_attribute')->willReturn($value);
 
@@ -51,13 +53,15 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         $context,
-        $uniqueDataRepository
+        $uniqueDataRepository,
+        $attributeRepository
     ) {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
         $releaseDate->getCode()->willReturn('release_date');
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
 
-        $value->getAttribute()->willReturn($releaseDate);
+        $value->getAttributeCode()->willReturn('release_date');
         $value->__toString()->willReturn('2015-16-03');
 
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(true);
@@ -75,13 +79,15 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         $context,
-        $uniqueValuesSet
+        $uniqueValuesSet,
+        $attributeRepository
     ) {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
         $releaseDate->getCode()->willReturn('release_date');
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
 
-        $value->getAttribute()->willReturn($releaseDate);
+        $value->getAttributeCode()->willReturn('release_date');
         $value->__toString()->willReturn('2015-16-03');
 
         $uniqueValuesSet->addValue($value, $product)->willReturn(false);
@@ -127,11 +133,13 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         AttributeInterface $releaseDate,
         $context,
         $uniqueDataRepository,
-        $uniqueValuesSet
+        $uniqueValuesSet,
+        $attributeRepository
     ) {
         $releaseDate->isUnique()->willReturn(false);
 
-        $value->getAttribute()->willReturn($releaseDate);
+        $value->getAttributeCode()->willReturn('release_date');
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
 
         $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
         $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
@@ -148,13 +156,15 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ProductInterface $product,
         $context,
         $uniqueDataRepository,
-        $uniqueValuesSet
+        $uniqueValuesSet,
+        $attributeRepository
     ) {
         $context->getRoot()->willReturn($product);
         $releaseDate->isUnique()->willReturn(true);
         $releaseDate->getCode()->willReturn('release_date');
+        $attributeRepository->findOneByIdentifier('release_date')->willReturn($releaseDate);
 
-        $value->getAttribute()->willReturn($releaseDate);
+        $value->getAttributeCode()->willReturn('release_date');
         $value->__toString()->willReturn('2015-16-03');
 
         $uniqueValuesSet->addValue($value, $product)->willReturn(true);

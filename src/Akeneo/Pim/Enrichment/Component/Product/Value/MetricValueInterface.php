@@ -14,18 +14,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 interface MetricValueInterface extends ValueInterface
 {
-    /**
-     * @return MetricInterface|null
-     */
-    public function getData();
+    public function getData(): ?MetricInterface;
 
-    /**
-     * @return float|null
-     */
-    public function getAmount();
+    public function getAmount(): ?string;
 
-    /**
-     * @return string|null
-     */
-    public function getUnit();
+    public function getUnit(): ?string;
 }

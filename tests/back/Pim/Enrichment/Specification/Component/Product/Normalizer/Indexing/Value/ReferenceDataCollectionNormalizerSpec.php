@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -14,6 +15,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ReferenceDataCollectionNormalizer::class);
@@ -28,10 +34,14 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
         ReferenceDataCollectionValue $referenceDataCollectionProductValue,
         ValueInterface $textValue,
         AttributeInterface $referenceData,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $referenceDataCollectionProductValue->getAttribute()->willReturn($referenceData);
-        $textValue->getAttribute()->willReturn($textAttribute);
+        $referenceDataCollectionProductValue->getAttributeCode()->willReturn('my_referencedata_attribute');
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_referencedata_attribute')->willReturn($referenceData);
+        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
 
         $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(false);
@@ -56,13 +66,15 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_an_empty_reference_data_collection_product_value(
         ReferenceDataCollectionValue $referenceDataCollectionProductValue,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        $attributeRepository
     ) {
-        $referenceDataCollectionProductValue->getAttribute()->willReturn($referenceData);
+        $referenceDataCollectionProductValue->getAttributeCode()->willReturn('color');
         $referenceData->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($referenceData);
 
-        $referenceDataCollectionProductValue->getLocale()->willReturn(null);
-        $referenceDataCollectionProductValue->getScope()->willReturn(null);
+        $referenceDataCollectionProductValue->getLocaleCode()->willReturn(null);
+        $referenceDataCollectionProductValue->getScopeCode()->willReturn(null);
 
         $referenceData->getCode()->willReturn('color');
 
@@ -82,13 +94,15 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_a_reference_data_collection_product_value_with_no_locale_and_no_channel(
         ReferenceDataCollectionValue $referenceDataCollectionProductValue,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        $attributeRepository
     ) {
-        $referenceDataCollectionProductValue->getAttribute()->willReturn($referenceData);
+        $referenceDataCollectionProductValue->getAttributeCode()->willReturn('color');
         $referenceData->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($referenceData);
 
-        $referenceDataCollectionProductValue->getLocale()->willReturn(null);
-        $referenceDataCollectionProductValue->getScope()->willReturn(null);
+        $referenceDataCollectionProductValue->getLocaleCode()->willReturn(null);
+        $referenceDataCollectionProductValue->getScopeCode()->willReturn(null);
 
         $referenceData->getCode()->willReturn('color');
 
@@ -111,13 +125,15 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_a_reference_data_collection_product_value_with_locale(
         ReferenceDataCollectionValue $referenceDataCollectionProductValue,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        $attributeRepository
     ) {
-        $referenceDataCollectionProductValue->getAttribute()->willReturn($referenceData);
+        $referenceDataCollectionProductValue->getAttributeCode()->willReturn('color');
         $referenceData->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($referenceData);
 
-        $referenceDataCollectionProductValue->getLocale()->willReturn('en_US');
-        $referenceDataCollectionProductValue->getScope()->willReturn(null);
+        $referenceDataCollectionProductValue->getLocaleCode()->willReturn('en_US');
+        $referenceDataCollectionProductValue->getScopeCode()->willReturn(null);
 
         $referenceData->getCode()->willReturn('color');
 
@@ -140,13 +156,15 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_a_reference_data_collection_product_value_with_channel(
         ReferenceDataCollectionValue $referenceDataCollectionProductValue,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        $attributeRepository
     ) {
-        $referenceDataCollectionProductValue->getAttribute()->willReturn($referenceData);
+        $referenceDataCollectionProductValue->getAttributeCode()->willReturn('color');
         $referenceData->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($referenceData);
 
-        $referenceDataCollectionProductValue->getLocale()->willReturn(null);
-        $referenceDataCollectionProductValue->getScope()->willReturn('ecommerce');
+        $referenceDataCollectionProductValue->getLocaleCode()->willReturn(null);
+        $referenceDataCollectionProductValue->getScopeCode()->willReturn('ecommerce');
 
         $referenceData->getCode()->willReturn('color');
 
@@ -169,13 +187,15 @@ class ReferenceDataCollectionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_a_reference_data_collection_product_value_with_locale_and_channel(
         ReferenceDataCollectionValue $referenceDataCollectionProductValue,
-        AttributeInterface $referenceData
+        AttributeInterface $referenceData,
+        $attributeRepository
     ) {
-        $referenceDataCollectionProductValue->getAttribute()->willReturn($referenceData);
+        $referenceDataCollectionProductValue->getAttributeCode()->willReturn('color');
         $referenceData->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($referenceData);
 
-        $referenceDataCollectionProductValue->getLocale()->willReturn('en_US');
-        $referenceDataCollectionProductValue->getScope()->willReturn('ecommerce');
+        $referenceDataCollectionProductValue->getLocaleCode()->willReturn('en_US');
+        $referenceDataCollectionProductValue->getScopeCode()->willReturn('ecommerce');
 
         $referenceData->getCode()->willReturn('color');
 

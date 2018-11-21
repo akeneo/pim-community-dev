@@ -9,14 +9,14 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MediaValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Prophecy\Argument;
 
 class MediaValueFactorySpec extends ObjectBehavior
 {
     function let(FileInfoRepositoryInterface $fileInfoRepository)
     {
-        $this->beConstructedWith($fileInfoRepository, ScalarScalarProductValue::class, Argument::any());
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, Argument::any());
     }
 
     function it_is_initializable()
@@ -26,7 +26,7 @@ class MediaValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_file_product_value($fileInfoRepository, AttributeInterface $attribute)
     {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_file');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -47,7 +47,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('file_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -58,7 +58,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         $fileInfoRepository,
         AttributeInterface $attribute
     ) {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_file');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -79,7 +79,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('file_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -93,7 +93,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute,
         FileInfoInterface $file
     ) {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_file');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -114,7 +114,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('file_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -126,7 +126,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute,
         FileInfoInterface $file
     ) {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_file');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_file');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('pim_catalog_image')->shouldReturn(false);
@@ -147,7 +147,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('file_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -158,7 +158,7 @@ class MediaValueFactorySpec extends ObjectBehavior
 
     function it_creates_an_empty_image_product_value($fileInfoRepository, AttributeInterface $attribute)
     {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -179,7 +179,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('image_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -190,7 +190,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         $fileInfoRepository,
         AttributeInterface $attribute
     ) {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -211,7 +211,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('image_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -225,7 +225,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute,
         FileInfoInterface $image
     ) {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -246,7 +246,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('image_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -258,7 +258,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute,
         FileInfoInterface $image
     ) {
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -279,7 +279,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MediaValue::class);
         $productValue->shouldHaveAttribute('image_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -293,7 +293,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
 
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -323,7 +323,7 @@ class MediaValueFactorySpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
 
-        $this->beConstructedWith($fileInfoRepository, ScalarValue::class, 'pim_catalog_image');
+        $this->beConstructedWith($fileInfoRepository, MediaValue::class, 'pim_catalog_image');
         $this->supports('foo')->shouldReturn(false);
         $this->supports('pim_catalog_file')->shouldReturn(false);
         $this->supports('pim_catalog_image')->shouldReturn(true);
@@ -354,19 +354,19 @@ class MediaValueFactorySpec extends ObjectBehavior
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable' => function ($subject) {
-                return null !== $subject->getLocale();
+                return $subject->isLocalizable();
             },
             'haveLocale'    => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable'    => function ($subject) {
-                return null !== $subject->getScope();
+                return $subject->isScopable();
             },
             'haveChannel'   => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty'       => function ($subject) {
                 return null === $subject->getData();

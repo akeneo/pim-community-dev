@@ -34,8 +34,8 @@ class FileNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($fileInfo);
         $fileInfo->getOriginalFilename()->willReturn('cat.jpg');
         $fileInfo->getKey()->willReturn('1/2/3/4/zertyj_cat.jpg');
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
 
         $data =  [
             'locale' => null,

@@ -13,10 +13,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  *      name-<all_channels>-en_US       for a localizable attribute
  *      price-ecommerce-<all_locales>   for a scopable attribute
  *
- * This collection also contains the list of attributes used in the collection. The attributes
- * are indexed by attribute codes.
- *
- * The collection also contains the list of unique values.
+ * This collection also contains the list of attribute codes used in the collection. This list is indexed by
+ * the attribute codes for fast access.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -27,11 +25,8 @@ class ValueCollection implements ValueCollectionInterface
     /** @var ValueInterface[] */
     private $values;
 
-    /** @var ValueInterface[] */
-    private $uniqueValues;
-
-    /** @var AttributeInterface[] */
-    private $attributes;
+    /** @var string[] */
+    private $attributeCodes;
 
     /** @var int[] */
     private $valuesNumberPerAttribute;
@@ -42,8 +37,7 @@ class ValueCollection implements ValueCollectionInterface
     public function __construct(array $values = [])
     {
         $this->values = [];
-        $this->uniqueValues = [];
-        $this->attributes = [];
+        $this->attributeCodes = [];
         $this->valuesNumberPerAttribute = [];
 
         foreach ($values as $value) {
@@ -119,13 +113,12 @@ class ValueCollection implements ValueCollectionInterface
         }
 
         $removed = $this->values[$key];
-        $attributeCode = $removed->getAttribute()->getCode();
+        $attributeCode = $removed->getAttributeCode();
         unset($this->values[$key]);
-        unset($this->uniqueValues[$key]);
 
         $this->valuesNumberPerAttribute[$attributeCode]--;
         if (0 === $this->valuesNumberPerAttribute[$attributeCode]) {
-            unset($this->attributes[$attributeCode]);
+            unset($this->attributeCodes[$attributeCode]);
             unset($this->valuesNumberPerAttribute[$attributeCode]);
         }
 
@@ -151,11 +144,11 @@ class ValueCollection implements ValueCollectionInterface
     /**
      * {@inheritDoc}
      */
-    public function removeByAttribute(AttributeInterface $attribute)
+    public function removeByAttributeCode(string $attributeCode)
     {
         $removed = false;
         foreach ($this->values as $value) {
-            if ($attribute === $value->getAttribute()) {
+            if ($attributeCode === $value->getAttributeCode()) {
                 $this->remove($value);
                 $removed = true;
             }
@@ -185,7 +178,7 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function getSame(ValueInterface $value)
     {
-        $key = $this->generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
+        $key = $this->generateKey($value->getAttributeCode(), $value->getScopeCode(), $value->getLocaleCode());
 
         return $this->getByKey($key);
     }
@@ -237,8 +230,9 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function add(ValueInterface $value)
     {
-        $attribute = $value->getAttribute();
-        $key = $this->generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
+        $attributeCode = $value->getAttributeCode();
+
+        $key = $this->generateKey($attributeCode, $value->getScopeCode(), $value->getLocaleCode());
 
         if (isset($this->values[$key])) {
             return false;
@@ -246,14 +240,10 @@ class ValueCollection implements ValueCollectionInterface
 
         $this->values[$key] = $value;
 
-        if ($attribute->isUnique() && null !== $value->getData()) {
-            $this->uniqueValues[$key] = $value;
-        }
+        $this->attributeCodes[$attributeCode] = $attributeCode;
 
-        $this->attributes[$attribute->getCode()] = $attribute;
-
-        $valuesNumber = $this->valuesNumberPerAttribute[$attribute->getCode()] ?? 0;
-        $this->valuesNumberPerAttribute[$attribute->getCode()] = $valuesNumber + 1;
+        $valuesNumber = $this->valuesNumberPerAttribute[$attributeCode] ?? 0;
+        $this->valuesNumberPerAttribute[$attributeCode] = $valuesNumber + 1;
 
         return true;
     }
@@ -280,32 +270,15 @@ class ValueCollection implements ValueCollectionInterface
     public function clear()
     {
         $this->values = [];
-        $this->uniqueValues = [];
-        $this->attributes = [];
+        $this->attributeCodes = [];
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getAttributesKeys()
+    public function getAttributeCodes()
     {
-        return array_keys($this->attributes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAttributes()
-    {
-        return array_values($this->attributes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getUniqueValues()
-    {
-        return $this->uniqueValues;
+        return array_values($this->attributeCodes);
     }
 
     /**
@@ -318,13 +291,6 @@ class ValueCollection implements ValueCollectionInterface
         return new self($filteredValues);
     }
 
-    /**
-     * @param string $attributeCode
-     * @param string $channelCode
-     * @param string $localeCode
-     *
-     * @return string
-     */
     private function generateKey(string $attributeCode, ?string $channelCode, ?string $localeCode): string
     {
         $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';

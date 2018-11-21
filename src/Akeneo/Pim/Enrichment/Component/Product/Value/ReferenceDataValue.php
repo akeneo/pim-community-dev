@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Product value for a reference data
@@ -16,22 +15,15 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class ReferenceDataValue extends AbstractValue implements ReferenceDataValueInterface
 {
-    /** @var ReferenceDataInterface|null */
+    /** @var string */
     protected $data;
 
     /**
-     * @param AttributeInterface          $attribute
-     * @param string                      $channel
-     * @param string                      $locale
-     * @param ReferenceDataInterface|null $data
+     * {@inheritdoc}
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, ReferenceDataInterface $data = null)
+    protected function __construct(string $attributeCode, ?string $data, ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->data = $data;
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
@@ -45,32 +37,22 @@ class ReferenceDataValue extends AbstractValue implements ReferenceDataValueInte
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return null !== $this->data ? (string) $this->data : '';
+        return null !== $this->data ? '['.$this->data.']' : '';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value)
+    public function isEqual(ValueInterface $value): bool
     {
         if (!$value instanceof ReferenceDataValueInterface ||
-            $this->getScope() !== $value->getScope() ||
-            $this->getLocale() !== $value->getLocale()) {
+            $this->getScopeCode() !== $value->getScopeCode() ||
+            $this->getLocaleCode() !== $value->getLocaleCode()) {
             return false;
         }
 
-        $thisData = $this->getData();
-        $comparedData = $value->getData();
-
-        if (null === $comparedData && null === $thisData) {
-            return true;
-        }
-        if (null === $comparedData || null === $thisData) {
-            return false;
-        }
-
-        return $thisData->getCode() === $comparedData->getCode();
+        return $this->getData() === $value->getData();
     }
 }

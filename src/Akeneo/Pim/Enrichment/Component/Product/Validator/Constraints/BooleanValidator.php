@@ -28,7 +28,7 @@ class BooleanValidator extends ConstraintValidator
         $checkedValue = $value;
 
         if ($value instanceof ValueInterface) {
-            $code = $value->getAttribute()->getCode();
+            $code = $value->getAttributeCode();
             $checkedValue = $value->getData();
         }
 

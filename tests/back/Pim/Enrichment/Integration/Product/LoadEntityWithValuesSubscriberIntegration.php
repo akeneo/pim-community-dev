@@ -175,17 +175,17 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
         $this->assertSameSize($expectedValues, $product->getValues());
 
         foreach ($expectedValues as $expectedValue) {
-            $attribute = $expectedValue->getAttribute();
-            $localeCode = $expectedValue->getLocale();
-            $channelCode = $expectedValue->getScope();
+            $attributeCode = $expectedValue->getAttributeCode();
+            $localeCode = $expectedValue->getLocaleCode();
+            $channelCode = $expectedValue->getScopeCode();
 
-            $actualValue = $product->getValue($attribute->getCode(), $localeCode, $channelCode);
+            $actualValue = $product->getValue($attributeCode, $localeCode, $channelCode);
 
             $this->assertNotNull(
                 $actualValue,
                 sprintf(
                     'No product value found the attribute "%s", the channel "%s" and the locale "%s"',
-                    $attribute,
+                    $attributeCode,
                     $channelCode,
                     $localeCode
                 )

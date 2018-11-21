@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -14,15 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 interface PriceCollectionValueInterface extends ValueInterface
 {
-    /**
-     * @return PriceCollectionInterface|null
-     */
-    public function getData();
+    public function getData(): ?PriceCollectionInterface;
 
-    /**
-     * @param string $currency
-     *
-     * @return PriceCollectionInterface|null
-     */
-    public function getPrice($currency);
+    public function getPrice(string $currency): ?ProductPriceInterface;
 }

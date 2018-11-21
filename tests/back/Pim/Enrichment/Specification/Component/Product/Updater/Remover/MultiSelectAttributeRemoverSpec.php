@@ -47,26 +47,13 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $entityWithValuesBuilder,
         AttributeInterface $attribute,
         EntityWithValuesInterface $entityWithValues,
-        ValueInterface $value,
-        ArrayCollection $options,
-        AttributeOptionInterface $vneck,
-        AttributeOptionInterface $round,
-        \ArrayIterator $optionsIterator
+        ValueInterface $value
     ) {
         $attribute->getCode()->willReturn('tshirt_style');
 
         $entityWithValues->getValue('tshirt_style', 'fr_FR', 'mobile')->willReturn($value);
 
-        $value->getData()->willReturn($options);
-
-        $options->getIterator()->willReturn($optionsIterator);
-        $optionsIterator->rewind()->shouldBeCalled();
-        $optionsIterator->valid()->willReturn(true, true, false);
-        $optionsIterator->current()->willReturn($vneck, $round);
-        $optionsIterator->next()->shouldBeCalled();
-
-        $round->getCode()->willReturn('round');
-        $vneck->getCode()->willReturn('vneck');
+        $value->getData()->willReturn(['round', 'vneck']);
 
         $entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, 'fr_FR', 'mobile', ['round'])->shouldBeCalled();
 

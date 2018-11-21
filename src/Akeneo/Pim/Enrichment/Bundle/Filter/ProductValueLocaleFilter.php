@@ -24,11 +24,10 @@ class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilte
         }
 
         $localeCodes = isset($options['locales']) ? $options['locales'] : [];
-        $attribute = $value->getAttribute();
 
         return !empty($localeCodes) &&
-            $attribute->isLocalizable() &&
-            !in_array($value->getLocale(), $localeCodes);
+            $value->isLocalizable() &&
+            !in_array($value->getLocaleCode(), $localeCodes);
     }
 
     /**

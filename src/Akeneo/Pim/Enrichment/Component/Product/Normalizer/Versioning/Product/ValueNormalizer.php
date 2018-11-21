@@ -4,6 +4,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,6 +21,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -28,11 +33,10 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var int */
     protected $precision;
 
-    /**
-     * @param int $precision
-     */
-    public function __construct($precision = 4)
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository, IdentifiableObjectRepositoryInterface $attributeOptionRepository, int $precision = 4)
     {
+        $this->attributeRepository = $attributeRepository;
+        $this->attributeOptionRepository = $attributeOptionRepository;
         $this->precision = $precision;
     }
 
@@ -51,7 +55,9 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
     {
         $data = $entity->getData();
         $fieldName = $this->getFieldName($entity);
-        if ($this->filterLocaleSpecific($entity)) {
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($entity->getAttributeCode());
+        if ($this->filterLocaleSpecific($entity, $attribute)) {
             return [];
         }
 
@@ -61,8 +67,9 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
             $data = new ArrayCollection($data);
         }
 
-        $type = $entity->getAttribute()->getType();
-        $backendType = $entity->getAttribute()->getBackendType();
+
+        $type = $attribute->getType();
+        $backendType = $attribute->getBackendType();
 
         if (AttributeTypes::BOOLEAN === $type) {
             $result = [$fieldName => (string) (int) $data];
@@ -73,8 +80,8 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
             }
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
-        } elseif (is_float($data) || 'decimal' === $entity->getAttribute()->getBackendType()) {
-            $pattern = $entity->getAttribute()->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
+        } elseif (is_float($data) || 'decimal' === $attribute->getBackendType()) {
+            $pattern = $attribute->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
             $result = [$fieldName => sprintf($pattern, $data)];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
@@ -84,13 +91,13 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
                 $result = [];
             } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
-                $data = $this->sortOptions($data);
+                $data = $this->sortOptions($data, $attribute);
                 $context['field_name'] = $fieldName;
                 $result = $this->serializer->normalize($data, $format, $context);
             } else {
                 $context['field_name'] = $fieldName;
                 if ('metric' === $backendType) {
-                    $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
+                    $context['decimals_allowed'] = $attribute->isDecimalsAllowed();
                 } elseif ('media' === $backendType) {
                     $context['value'] = $entity;
                 }
@@ -132,28 +139,23 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
         // TODO : should be extracted
         $suffix = '';
 
-        if ($value->getAttribute()->isLocalizable()) {
-            $suffix = sprintf('-%s', $value->getLocale());
+        if ($value->isLocalizable()) {
+            $suffix = sprintf('-%s', $value->getLocaleCode());
         }
-        if ($value->getAttribute()->isScopable()) {
-            $suffix .= sprintf('-%s', $value->getScope());
+        if ($value->isScopable()) {
+            $suffix .= sprintf('-%s', $value->getScopeCode());
         }
 
-        return $value->getAttribute()->getCode() . $suffix;
+        return $value->getAttributeCode() . $suffix;
     }
 
     /**
      * Check if the attribute is locale specific and check if the given local exist in available locales
-     *
-     * @param ValueInterface $value
-     *
-     * @return bool
      */
-    protected function filterLocaleSpecific(ValueInterface $value)
+    protected function filterLocaleSpecific(ValueInterface $value, AttributeInterface $attribute): bool
     {
-        $attribute = $value->getAttribute();
         if ($attribute->isLocaleSpecific()) {
-            $currentLocale = $value->getLocale();
+            $currentLocale = $value->getLocaleCode();
             $availableLocales = $attribute->getLocaleSpecificCodes();
             if (!in_array($currentLocale, $availableLocales)) {
                 return true;
@@ -170,9 +172,16 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return Collection
      */
-    protected function sortOptions(Collection $optionsCollection)
+    protected function sortOptions(Collection $optionsCollection, AttributeInterface $attribute)
     {
-        $options = $optionsCollection->toArray();
+        $options = [];
+        foreach ($optionsCollection as $optionCode) {
+            $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode().'.'.$optionCode);
+            if (null !== $option) {
+                $options[] = $option;
+            }
+        }
+
         usort(
             $options,
             function ($first, $second) {

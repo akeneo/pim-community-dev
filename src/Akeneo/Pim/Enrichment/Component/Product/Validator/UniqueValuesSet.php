@@ -46,7 +46,7 @@ class UniqueValuesSet
     {
         $identifier = $this->getProductId($product);
         $data = $productValue->__toString();
-        $attributeCode = $productValue->getAttribute()->getCode();
+        $attributeCode = $productValue->getAttributeCode();
 
         if (isset($this->uniqueValues[$attributeCode][$data])) {
             $storedIdentifier = $this->uniqueValues[$attributeCode][$data];

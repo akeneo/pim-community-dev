@@ -357,7 +357,7 @@ class ProductController
         }
 
         foreach ($product->getValues() as $value) {
-            if ($attribute === $value->getAttribute()) {
+            if ($attribute->getCode() === $value->getAttributeCode()) {
                 $product->removeValue($value);
             }
         }

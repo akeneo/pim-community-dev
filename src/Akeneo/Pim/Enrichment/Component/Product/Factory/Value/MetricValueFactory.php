@@ -15,73 +15,31 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class MetricValueFactory implements ValueFactoryInterface
+class MetricValueFactory extends AbstractValueFactory
 {
     /** @var MetricFactory */
     protected $metricFactory;
 
-    /** @var string */
-    protected $productValueClass;
+    public function __construct(
+        MetricFactory $metricFactory,
+        string $productValueClass,
+        string $supportedAttributeType
+    ) {
+        parent::__construct($productValueClass, $supportedAttributeType);
 
-    /** @var string */
-    protected $supportedAttributeType;
-
-    /**
-     * @param MetricFactory $metricFactory
-     * @param string        $productValueClass
-     * @param string        $supportedAttributeType
-     */
-    public function __construct(MetricFactory $metricFactory, $productValueClass, $supportedAttributeType)
-    {
         $this->metricFactory = $metricFactory;
-        $this->productValueClass = $productValueClass;
-        $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        $this->checkData($attribute, $data);
-
         if (null === $data) {
             $data = [
                 'amount' => null,
                 'unit'   => $attribute->getDefaultMetricUnit(),
             ];
-        }
-
-        $value = new $this->productValueClass(
-            $attribute,
-            $channelCode,
-            $localeCode,
-            $this->metricFactory->createMetric($attribute->getMetricFamily(), $data['unit'], $data['amount'])
-        );
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return $attributeType === $this->supportedAttributeType;
-    }
-
-    /**
-     * Checks if metric data are valid.
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (null === $data) {
-            return;
         }
 
         if (!is_array($data)) {
@@ -109,5 +67,7 @@ class MetricValueFactory implements ValueFactoryInterface
                 $data
             );
         }
+
+        return $this->metricFactory->createMetric($attribute->getMetricFamily(), $data['unit'], $data['amount']);
     }
 }

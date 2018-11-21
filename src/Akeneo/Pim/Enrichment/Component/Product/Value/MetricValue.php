@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Product value for "pim_catalog_metric" attribute type
@@ -20,56 +19,37 @@ class MetricValue extends AbstractValue implements MetricValueInterface
     protected $data;
 
     /**
-     * @param AttributeInterface   $attribute
-     * @param string               $channel
-     * @param string               $locale
-     * @param MetricInterface|null $data
+     * {@inheritdoc}
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, MetricInterface $data = null)
+    protected function __construct(string $attributeCode, ?MetricInterface $data, ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->data = $data;
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
-     * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): ?MetricInterface
     {
         return $this->data;
     }
 
-    /**
-     * @return float
-     */
-    public function getAmount()
+    public function getAmount(): ?string
     {
-        if (null === $this->data) {
-            return null;
-        }
-
         return $this->data->getData();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUnit()
+    public function getUnit(): ?string
     {
-        if (null === $this->data) {
-            return null;
-        }
-
         return $this->data->getUnit();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (null !== $this->data && (null !== $data = $this->data->getData())) {
             return sprintf('%.4F %s', $data, $this->data->getUnit());
@@ -81,11 +61,11 @@ class MetricValue extends AbstractValue implements MetricValueInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value)
+    public function isEqual(ValueInterface $value): bool
     {
         if (!$value instanceof MetricValueInterface ||
-            $this->getScope() !== $value->getScope() ||
-            $this->getLocale() !== $value->getLocale()) {
+            $this->getScopeCode() !== $value->getScopeCode() ||
+            $this->getLocaleCode() !== $value->getLocaleCode()) {
             return false;
         }
 

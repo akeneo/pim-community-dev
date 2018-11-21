@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -14,28 +15,14 @@ interface EntityWithValuesBuilderInterface
 {
     /**
      * Creates required value(s) to add the attribute to entity
-     *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param AttributeInterface        $attribute
      */
     public function addAttribute(EntityWithValuesInterface $entityWithValues, AttributeInterface $attribute);
 
-    /**
-     * Add or replace a value to an entity
-     *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param AttributeInterface        $attribute
-     * @param string                    $locale
-     * @param string                    $scope
-     * @param mixed                     $data
-     *
-     * @return EntityWithValuesInterface
-     */
     public function addOrReplaceValue(
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
-        $locale,
-        $scope,
+        ?string $localeCode,
+        ?string $scopeCode,
         $data
-    );
+    ): ValueInterface;
 }

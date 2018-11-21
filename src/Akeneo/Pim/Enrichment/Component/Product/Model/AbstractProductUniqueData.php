@@ -17,29 +17,23 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /** @var ProductInterface */
     protected $product;
 
-    /** @var ValueInterface */
-    protected $value;
-
     /** @var AttributeInterface */
     protected $attribute;
 
-    /** @var mixed */
+    /** @var string */
     protected $rawData;
 
-    /**
-     * @param ProductInterface $product
-     * @param ValueInterface   $value
-     */
-    public function __construct(ProductInterface $product, ValueInterface $value)
+    public function __construct(ProductInterface $product, AttributeInterface $attribute, string $rawData)
     {
         $this->product = $product;
-        $this->setProductValue($value);
+        $this->attribute = $attribute;
+        $this->rawData = $rawData;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -47,7 +41,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct()
+    public function getProduct(): Productinterface
     {
         return $this->product;
     }
@@ -55,7 +49,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute()
+    public function getAttribute(): AttributeInterface
     {
         return $this->attribute;
     }
@@ -63,25 +57,31 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getRawData()
+    public function getRawData(): string
     {
-        return $this->rawData;
+        return $this->rawdata;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setProductValue(ValueInterface $value)
+    public function setAttribute(AttributeInterface $attribute): void
     {
-        $this->value = $value;
-        $this->attribute = $value->getAttribute();
-        $this->rawData = $value->__toString();
+        $this->attribute = $attribute;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ProductUniqueDataInterface $uniqueValue)
+    public function setRawData(string $rawData): void
+    {
+        $this->rawData = $rawData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ProductUniqueDataInterface $uniqueValue): bool
     {
         return $this->getAttribute() === $uniqueValue->getAttribute() &&
             $this->getRawData() === $uniqueValue->getRawData();

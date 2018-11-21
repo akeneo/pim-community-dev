@@ -2,37 +2,30 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use PhpSpec\ObjectBehavior;
 
 class PriceCollectionValueSpec extends ObjectBehavior
 {
     function it_returns_data(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $this->getData()->shouldBeAnInstanceOf(PriceCollectionInterface::class);
         $this->getData()->shouldReturn($priceCollection);
     }
 
     function it_returns_a_price(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         \ArrayIterator $pricesIterator,
         ProductPriceInterface $priceUSD,
         ProductPriceInterface $priceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $priceUSD->getCurrency()->willReturn('USD');
         $priceEUR->getCurrency()->willReturn('EUR');
@@ -47,15 +40,12 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_formats_prices_as_strings_with_two_decimals(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         \ArrayIterator $pricesIterator,
         ProductPriceInterface $priceUSD,
         ProductPriceInterface $priceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $priceUSD->getData()->willReturn(34);
         $priceUSD->getCurrency()->willReturn('USD');
@@ -73,15 +63,12 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_formats_prices_as_strings_with_two_decimals_and_omits_price_without_amount(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         \ArrayIterator $pricesIterator,
         ProductPriceInterface $priceUSD,
         ProductPriceInterface $priceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $priceUSD->getData()->willReturn(34);
         $priceUSD->getCurrency()->willReturn('USD');
@@ -98,15 +85,12 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_returns_true_if_there_is_data(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         \ArrayIterator $pricesIterator,
         ProductPriceInterface $priceUSD,
         ProductPriceInterface $priceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $priceUSD->getData()->willReturn(34);
         $priceUSD->getCurrency()->willReturn('USD');
@@ -123,15 +107,12 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_returns_false_if_there_is_no_data(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         \ArrayIterator $pricesIterator,
         ProductPriceInterface $priceUSD,
         ProductPriceInterface $priceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $priceUSD->getData()->willReturn(null);
         $priceEUR->getData()->willReturn(null);
@@ -146,7 +127,6 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_compares_itself_to_the_same_price_collection_value(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         PriceCollectionValueInterface $samePriceCollValue,
         PriceCollectionInterface $samePriceCollection,
@@ -158,13 +138,11 @@ class PriceCollectionValueSpec extends ObjectBehavior
         ProductPriceInterface $samePriceUSD,
         ProductPriceInterface $samePriceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $samePriceCollValue->getData()->willReturn($samePriceCollection);
-        $samePriceCollValue->getLocale()->willReturn('en_US');
-        $samePriceCollValue->getScope()->willReturn('ecommerce');
+        $samePriceCollValue->getLocaleCode()->willReturn('en_US');
+        $samePriceCollValue->getScopeCode()->willReturn('ecommerce');
 
         $priceCollection->count()->willReturn(2);
         $samePriceCollection->count()->willReturn(2);
@@ -191,76 +169,61 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_compares_itself_with_null_collection_to_a_price_collection_value_with_null_collection(
-        AttributeInterface $attribute,
         PriceCollectionValueInterface $samePriceCollection
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', null);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', null, 'ecommerce', 'en_US']);
 
         $samePriceCollection->getData()->willReturn(null);
-        $samePriceCollection->getLocale()->willReturn('en_US');
-        $samePriceCollection->getScope()->willReturn('ecommerce');
+        $samePriceCollection->getLocaleCode()->willReturn('en_US');
+        $samePriceCollection->getScopeCode()->willReturn('ecommerce');
 
         $this->isEqual($samePriceCollection)->shouldReturn(true);
     }
 
     function it_compares_itself_to_a_price_collection_value_with_null_collection(
-        AttributeInterface $attribute,
         PriceCollectionValueInterface $samePriceCollection,
         PriceCollectionInterface $priceCollection
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $samePriceCollection->getData()->willReturn(null);
-        $samePriceCollection->getLocale()->willReturn('en_US');
-        $samePriceCollection->getScope()->willReturn('ecommerce');
+        $samePriceCollection->getLocaleCode()->willReturn('en_US');
+        $samePriceCollection->getScopeCode()->willReturn('ecommerce');
 
         $this->isEqual($samePriceCollection)->shouldReturn(false);
     }
 
     function it_compares_itself_to_another_value_type(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         MetricValueInterface $metricValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $this->isEqual($metricValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_a_different_price_collection_value(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         PriceCollectionValueInterface $differentPriceCollValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
-        $differentPriceCollValue->getLocale()->willReturn('fr_FR');
-        $differentPriceCollValue->getScope()->willReturn('ecommerce');
+        $differentPriceCollValue->getLocaleCode()->willReturn('fr_FR');
+        $differentPriceCollValue->getScopeCode()->willReturn('ecommerce');
 
         $this->isEqual($differentPriceCollValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_a_price_collection_value_with_different_collection_count(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         PriceCollectionInterface $differentPriceCollection,
         PriceCollectionValueInterface $differentPriceCollValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $differentPriceCollValue->getData()->willReturn($differentPriceCollection);
-        $differentPriceCollValue->getLocale()->willReturn('en_US');
-        $differentPriceCollValue->getScope()->willReturn('ecommerce');
+        $differentPriceCollValue->getLocaleCode()->willReturn('en_US');
+        $differentPriceCollValue->getScopeCode()->willReturn('ecommerce');
 
         $differentPriceCollection->count()->willReturn(1);
         $priceCollection->count()->willReturn(2);
@@ -269,7 +232,6 @@ class PriceCollectionValueSpec extends ObjectBehavior
     }
 
     function it_compares_itself_to_a_price_collection_value_with_different_price_collection(
-        AttributeInterface $attribute,
         PriceCollectionInterface $priceCollection,
         PriceCollectionValueInterface $samePriceCollValue,
         PriceCollectionInterface $samePriceCollection,
@@ -281,13 +243,11 @@ class PriceCollectionValueSpec extends ObjectBehavior
         ProductPriceInterface $differentPriceUSD,
         ProductPriceInterface $samePriceEUR
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $priceCollection);
+        $this->beConstructedThrough('scopableLocalizableValue', ['my_prices', $priceCollection, 'ecommerce', 'en_US']);
 
         $samePriceCollValue->getData()->willReturn($samePriceCollection);
-        $samePriceCollValue->getLocale()->willReturn('en_US');
-        $samePriceCollValue->getScope()->willReturn('ecommerce');
+        $samePriceCollValue->getLocaleCode()->willReturn('en_US');
+        $samePriceCollValue->getScopeCode()->willReturn('ecommerce');
 
         $priceCollection->count()->willReturn(2);
         $samePriceCollection->count()->willReturn(2);

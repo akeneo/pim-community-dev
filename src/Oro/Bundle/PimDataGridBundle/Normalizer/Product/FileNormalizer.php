@@ -27,8 +27,8 @@ class FileNormalizer implements NormalizerInterface
         }
 
         return [
-            'locale' => $file->getLocale(),
-            'scope'  => $file->getScope(),
+            'locale' => $file->getLocaleCode(),
+            'scope'  => $file->getScopeCode(),
             'data'   => $fileData,
         ];
     }

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Normalizer\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,15 +13,26 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class OptionsNormalizer implements NormalizerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeOptionRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeOptionRepository)
+    {
+        $this->attributeOptionRepository = $attributeOptionRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function normalize($options, $format = null, array $context = [])
+    public function normalize($optionsValue, $format = null, array $context = [])
     {
         $locale = isset($context['data_locale']) ? $context['data_locale'] : null;
+        $attributeCode = $optionsValue->getAttributeCode();
 
         $labels = [];
-        foreach ($options->getData() as $option) {
+        foreach ($optionsValue->getData() as $optionCode) {
+            $option = $this->attributeOptionRepository->findOneByIdentifier($attributeCode.'.'.$optionCode);
+
             $translation = $option->getTranslation($locale);
             $labels[] = null !== $translation->getValue() ? $translation->getValue() : sprintf('[%s]', $option->getCode());
         }
@@ -28,8 +40,8 @@ class OptionsNormalizer implements NormalizerInterface
         sort($labels);
 
         return [
-            'locale' => $options->getLocale(),
-            'scope'  => $options->getScope(),
+            'locale' => $optionsValue->getLocaleCode(),
+            'scope'  => $optionsValue->getScopeCode(),
             'data'   => implode(', ', $labels)
         ];
     }

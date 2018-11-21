@@ -17,13 +17,12 @@ class UniqueValuesSetSpec extends ObjectBehavior
 
     function it_could_add_two_times_the_same_value(
         ValueInterface $value,
-        ProductInterface $product,
-        AttributeInterface $attribute
+        ProductInterface $product
     ) {
         $product->getId()->willReturn('jean');
         $value->__toString()->willReturn('jean');
-        $attribute->getCode()->willReturn('identifier');
-        $value->getAttribute()->willReturn($attribute);
+
+        $value->getAttributeCode()->willReturn('identifier');
 
         $this->addValue($value, $product)->shouldReturn(true);
         $this->addValue($value, $product)->shouldReturn(true);
@@ -33,16 +32,14 @@ class UniqueValuesSetSpec extends ObjectBehavior
         ValueInterface $value1,
         ProductInterface $product1,
         ValueInterface $value2,
-        ProductInterface $product2,
-        AttributeInterface $attribute
+        ProductInterface $product2
     ) {
         $product1->getId()->willReturn(null);
         $product2->getId()->willReturn(null);
         $value1->__toString()->willReturn('jean');
         $value2->__toString()->willReturn('jean');
-        $attribute->getCode()->willReturn('identifier');
-        $value1->getAttribute()->willReturn($attribute);
-        $value2->getAttribute()->willReturn($attribute);
+        $value1->getAttributeCode()->willReturn('identifier');
+        $value2->getAttributeCode()->willReturn('identifier');
 
         $this->addValue($value1, $product1)->shouldReturn(true);
         $this->addValue($value2, $product2)->shouldReturn(false);

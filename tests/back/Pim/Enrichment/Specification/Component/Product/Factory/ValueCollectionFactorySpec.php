@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
@@ -21,7 +21,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
         ValueFactory $valueFactory,
-        CachedObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger
     ) {
         $this->beConstructedWith($valueFactory, $attributeRepository, $logger);
@@ -47,18 +47,19 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $description->getCode()->willReturn('description');
         $description->isUnique()->willReturn(false);
 
-        $value1->getLocale()->willReturn(null);
-        $value1->getScope()->willReturn(null);
-        $value1->getAttribute()->willReturn($sku);
-        $value2->getScope()->willReturn('ecommerce');
-        $value2->getLocale()->willReturn('en_US');
-        $value2->getAttribute()->willReturn($description);
-        $value3->getScope()->willReturn('tablet');
-        $value3->getLocale()->willReturn('en_US');
-        $value3->getAttribute()->willReturn($description);
-        $value4->getScope()->willReturn('tablet');
-        $value4->getLocale()->willReturn('fr_FR');
-        $value4->getAttribute()->willReturn($description);
+        $value1->getLocaleCode()->willReturn(null);
+        $value1->getScopeCode()->willReturn(null);
+        $value1->getAttributeCode()->willReturn('sku');
+
+        $value2->getScopeCode()->willReturn('ecommerce');
+        $value2->getLocaleCode()->willReturn('en_US');
+        $value2->getAttributeCode()->willReturn('description');
+        $value3->getScopeCode()->willReturn('tablet');
+        $value3->getLocaleCode()->willReturn('en_US');
+        $value3->getAttributeCode()->willReturn('description');
+        $value4->getScopeCode()->willReturn('tablet');
+        $value4->getLocaleCode()->willReturn('fr_FR');
+        $value4->getAttributeCode()->willReturn('description');
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
         $attributeRepository->findOneByIdentifier('description')->willReturn($description);
@@ -175,9 +176,9 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             )
         );
 
-        $purpleColor->getAttribute()->willReturn($color);
-        $purpleColor->getLocale()->willReturn(null);
-        $purpleColor->getScope()->willReturn(null);
+        $purpleColor->getAttributeCode()->willReturn('color');
+        $purpleColor->getLocaleCode()->willReturn(null);
+        $purpleColor->getScopeCode()->willReturn(null);
         $purpleColor->getData()->willReturn('purple');
         $valueFactory->create($color, null, null, [1 => 'purple'])->willReturn($purpleColor);
         $logger->warning('Tried to load a product value with the options "red, yellow" that do not exist.')->shouldBeCalled();
@@ -256,9 +257,9 @@ class ValueCollectionFactorySpec extends ObjectBehavior
     ) {
         $image->getCode()->willReturn('image');
         $image->isUnique()->willReturn(false);
-        $value1->getLocale()->willReturn(null);
-        $value1->getScope()->willReturn(null);
-        $value1->getAttribute()->willReturn($image);
+        $value1->getLocaleCode()->willReturn(null);
+        $value1->getScopeCode()->willReturn(null);
+        $value1->getAttributeCode()->willReturn('image');
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'my_image', true)->willThrow(

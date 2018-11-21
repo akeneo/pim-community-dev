@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCh
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -15,6 +16,11 @@ use Prophecy\Argument;
 
 class PriceCompleteCheckerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     public function it_is_a_completeness_checker()
     {
         $this->shouldImplement(ValueCompleteCheckerInterface::class);
@@ -24,9 +30,11 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         AttributeInterface $attribute,
         ChannelInterface $channel,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        $attributeRepository
     ) {
-        $value->getAttribute()->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('my_price')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_price');
         $attribute->getType()->willReturn('pim_catalog_price_collection');
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
 

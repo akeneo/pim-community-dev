@@ -6,17 +6,22 @@ use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 
+
 class MetricConverterSpec extends ObjectBehavior
 {
-    function let(MeasureConverter $converter, EntityWithValuesBuilderInterface $productBuilder)
-    {
-        $this->beConstructedWith($converter, $productBuilder);
+    function let(
+        MeasureConverter $converter,
+        EntityWithValuesBuilderInterface $productBuilder,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
+        $this->beConstructedWith($converter, $productBuilder, $attributeRepository);
     }
 
     function it_converts_metric_values_given_the_configured_base_unit_in_the_channel(
@@ -31,34 +36,35 @@ class MetricConverterSpec extends ObjectBehavior
         MetricInterface $weightMetric,
         MetricInterface $surfaceMetric,
         ProductInterface $product,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        $attributeRepository
     ) {
         $channel->getConversionUnits()->willReturn(['weight' => 'GRAM']);
 
-        $weightValue->getAttribute()->willReturn($weight);
+        $weightValue->getAttributeCode()->willReturn('weight');
         $weightValue->getData()->willReturn($weightMetric);
-        $weightValue->getLocale()->willReturn(null);
-        $weightValue->getScope()->willReturn(null);
+        $weightValue->getLocaleCode()->willReturn(null);
+        $weightValue->getScopeCode()->willReturn(null);
         $weight->getCode()->willReturn('weight');
 
         $weightMetric->getFamily()->willReturn('Weight');
         $weightMetric->getUnit()->willReturn('KILOGRAM');
         $weightMetric->getData()->willReturn(1);
 
-        $surfaceValue->getAttribute()->willReturn($surface);
+        $surfaceValue->getAttributeCode()->willReturn('surface');
         $surfaceValue->getData()->willReturn($surfaceMetric);
-        $surfaceValue->getLocale()->shouldNotBeCalled();
-        $surfaceValue->getScope()->shouldNotBeCalled();
+        $surfaceValue->getLocaleCode()->shouldNotBeCalled();
+        $surfaceValue->getScopeCode()->shouldNotBeCalled();
         $surface->getCode()->willReturn('surface');
 
         $surfaceMetric->getFamily()->willReturn('Surface');
         $surfaceMetric->getUnit()->willReturn('METER_SQUARE');
         $surfaceMetric->getData()->willReturn(10);
 
-        $nameValue->getAttribute()->willReturn($name);
+        $nameValue->getAttributeCode()->willReturn('name');
         $nameValue->getData()->willReturn('foobar');
-        $nameValue->getLocale()->shouldNotBeCalled();
-        $nameValue->getScope()->shouldNotBeCalled();
+        $nameValue->getLocaleCode()->shouldNotBeCalled();
+        $nameValue->getScopeCode()->shouldNotBeCalled();
 
         $product->getValues()->willReturn([$weightValue, $surfaceValue, $nameValue]);
 
@@ -66,6 +72,8 @@ class MetricConverterSpec extends ObjectBehavior
         $converter->convert('KILOGRAM', 'GRAM', 1)->willReturn(1000);
 
         $converter->setFamily('Surface')->shouldNotBeCalled();
+
+        $attributeRepository->findOneByIdentifier('weight')->willReturn($weight);
 
         $productBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(1);
         $productBuilder
@@ -79,14 +87,12 @@ class MetricConverterSpec extends ObjectBehavior
         $converter,
         $productBuilder,
         ValueInterface $weightValue,
-        AttributeInterface $weight,
         MetricInterface $weightMetric,
         ProductInterface $product,
         ChannelInterface $channel
     ) {
-        $weightValue->getAttribute()->willReturn($weight);
+        $weightValue->getAttributeCode()->willReturn('weight');
         $weightValue->getData()->willReturn($weightMetric);
-        $weight->getCode()->willReturn('weight');
 
         $weightMetric->getFamily()->willReturn('Weight');
         $weightMetric->getUnit()->willReturn(null);

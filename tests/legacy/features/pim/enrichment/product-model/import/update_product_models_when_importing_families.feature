@@ -7,7 +7,7 @@ Feature: Update product models when importing families
   Scenario: Successfully update an existing family computes all product models data in a dedicated step for csv
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
-    And the product model value material of "model-braided-hat" should be "[wool]"
+    And the product model value material of "model-braided-hat" should be "wool"
       # Removed the 'material' attributes from the 'accessories' + remove 'collection' attribute requirement for ecommerce
     And the following CSV file to import:
       """
@@ -32,7 +32,7 @@ Feature: Update product models when importing families
   Scenario: Successfully update an existing family computes of product models in a dedicated step for xlsx
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
-    And the product model value material of "model-braided-hat" should be "[wool]"
+    And the product model value material of "model-braided-hat" should be "wool"
       # Removed the 'material' attributes from the 'accessories' + remove 'collection' attribute requirement for ecommerce
     And the following XLSX file to import:
       """

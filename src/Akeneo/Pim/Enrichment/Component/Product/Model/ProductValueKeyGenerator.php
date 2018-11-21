@@ -28,8 +28,8 @@ class ProductValueKeyGenerator
      */
     public static function getKey(ValueInterface $value, $separator = '-')
     {
-        $attribute = $value->getAttribute();
-        $key = $attribute->getCode();
+        $key = $value->getAttributeCode();
+
         if ($attribute->isLocalizable()) {
             $key .= $separator . $value->getLocale();
         }

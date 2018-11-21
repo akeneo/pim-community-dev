@@ -94,13 +94,6 @@ interface ProductInterface extends
     public function removeGroup(GroupInterface $group);
 
     /**
-     * Get ordered group
-     *
-     * @return array
-     */
-    public function getOrderedGroups();
-
-    /**
      * Get groups code
      *
      * @return array

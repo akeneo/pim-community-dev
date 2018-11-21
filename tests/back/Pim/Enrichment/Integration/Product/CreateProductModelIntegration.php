@@ -48,8 +48,8 @@ class CreateProductModelIntegration extends TestCase
         $this->assertEquals($productModel->getCategoryCodes(), ['tshirts']);
 
         $sku = $productModel->getValues()->first();
-        $this->assertEquals($sku->getLocale(), 'fr_FR');
-        $this->assertEquals($sku->getScope(), 'mobile');
+        $this->assertEquals($sku->getLocaleCode(), 'fr_FR');
+        $this->assertEquals($sku->getScopeCode(), 'mobile');
         $this->assertEquals($sku->getData(), 'T-shirt super beau');
     }
 

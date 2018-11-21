@@ -56,58 +56,78 @@ services:
 
     pim_catalog.normalizer.indexing_product.product.number:
         class: '%pim_catalog.normalizer.indexing_product.product.number.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.options:
         class: '%pim_catalog.normalizer.indexing_product.product.options.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.dummy:
         class: '%pim_catalog.normalizer.indexing_product.product.dummy.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 80 }
 
     pim_catalog.normalizer.indexing_product.date:
         class: '%pim_catalog.normalizer.indexing_product.date.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 100 }
 
     pim_catalog.normalizer.indexing_product.product.text:
         class: '%pim_catalog.normalizer.indexing_product.product.text.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.text_area:
         class: '%pim_catalog.normalizer.indexing_product.product.text_area.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.option:
         class: '%pim_catalog.normalizer.indexing_product.product.option.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.price_collection:
         class: '%pim_catalog.normalizer.indexing_product.product.price_collection.class%'
         arguments:
-            - '@pim_catalog.normalizer.standard.product.product_value'
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.metric:
         class: '%pim_catalog.normalizer.indexing_product.product.metric.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.media:
         class: '%pim_catalog.normalizer.indexing_product.product.media.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.indexing_product.product.boolean:
         class: '%pim_catalog.normalizer.indexing_product.product.boolean.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
@@ -156,10 +176,14 @@ services:
 
     pim_reference_data.normalizer.indexing.product.reference_data:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     pim_reference_data_collection.normalizer.indexing.product.reference_data:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }

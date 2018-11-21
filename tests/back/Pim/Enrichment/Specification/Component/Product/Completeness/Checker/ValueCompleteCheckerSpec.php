@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Completeness\Che
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -11,6 +12,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCh
 
 class ValueCompleteCheckerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_a_completeness_checker()
     {
         $this->shouldImplement(ValueCompleteCheckerInterface::class);
@@ -28,11 +34,14 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $value->getScope()->willReturn(null);
-        $value->getLocale()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getScopeCode()->willReturn(null);
+        $value->getLocaleCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('my_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_attribute')->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
@@ -42,11 +51,17 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $value->getScope()->willReturn(null);
-        $value->getLocale()->willReturn($locale);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getScopeCode()->willReturn(null);
+
+        $locale->getCode()->willReturn('my_locale');
+        $value->getLocaleCode()->willReturn('my_locale');
+
+        $value->getAttributeCode()->willReturn('my_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_attribute')->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
@@ -56,11 +71,16 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $value->getScope()->willReturn(null);
-        $value->getLocale()->willReturn($locale);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getScopeCode()->willReturn(null);
+
+        $locale->getCode()->willReturn('my_locale');
+        $value->getLocaleCode()->willReturn('my_locale');
+        $value->getAttributeCode()->willReturn('my_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_attribute')->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(true);
         $attribute->hasLocaleSpecific($locale)->willReturn(true);
 
@@ -71,11 +91,15 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $value->getScope()->willReturn($channel);
-        $value->getLocale()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $channel->getCode()->willReturn('my_channel');
+        $value->getScopeCode()->willReturn('my_channel');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('my_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_attribute')->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
@@ -85,11 +109,18 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $value->getScope()->willReturn($channel);
-        $value->getLocale()->willReturn($locale);
-        $value->getAttribute()->willReturn($attribute);
+        $channel->getCode()->willReturn('my_channel');
+        $value->getScopeCode()->willReturn('my_channel');
+
+        $locale->getCode()->willReturn('my_locale');
+        $value->getLocaleCode()->willReturn('my_locale');
+
+        $value->getAttributeCode()->willReturn('my_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_attribute')->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
@@ -102,9 +133,12 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         LocaleInterface $locale,
         AttributeInterface $attribute
     ) {
-        $value->getScope()->willReturn(null);
-        $value->getLocale()->willReturn($localeValue);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getScopeCode()->willReturn(null);
+
+        $localeValue->getCode()->willReturn('my_locale');
+        $value->getLocaleCode()->willReturn('my_locale');
+        $value->getAttributeCode()->willReturn('my_attribute');
+
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->supportsValue($value, $channel, $locale)->shouldReturn(false);
@@ -114,11 +148,17 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $value->getScope()->willReturn(null);
-        $value->getLocale()->willReturn($locale);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getScopeCode()->willReturn(null);
+
+        $locale->getCode()->willReturn('my_locale');
+        $value->getLocaleCode()->willReturn('my_locale');
+
+        $value->getAttributeCode()->willReturn('my_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_attribute')->willReturn($attribute);
         $attribute->isLocaleSpecific()->willReturn(true);
         $attribute->hasLocaleSpecific($locale)->willReturn(false);
 
@@ -132,9 +172,10 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         LocaleInterface $locale,
         AttributeInterface $attribute
     ) {
-        $value->getScope()->willReturn($channelValue);
-        $value->getLocale()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $channelValue->getCode()->willReturn('my_channel');
+        $value->getScopeCode()->willReturn('my_channel');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('my_attribute');
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->supportsValue($value, $channel, $locale)->shouldReturn(false);
@@ -152,7 +193,7 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
 
         $this->addProductValueChecker($completenessChecker);
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_attribute');
         $value->getData()->willReturn('foo');
 
         $this->isComplete($value, $channel, $locale)->shouldReturn(false);
@@ -165,7 +206,7 @@ class ValueCompleteCheckerSpec extends ObjectBehavior
         ValueCompleteCheckerInterface $completenessChecker,
         AttributeInterface $attribute
     ) {
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_attribute');
         $value->getData()->willReturn('foo');
 
         $this->addProductValueChecker($completenessChecker);
