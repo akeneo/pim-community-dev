@@ -137,6 +137,8 @@ pim_reference_entity:
       delete_all:
         success: All "{{ entityIdentifier }}" records successfully deleted.
         fail: An error occured during the deletion of all this reference entity's records
+    completeness:
+      label: Complete
   attribute:
     validation:
       limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this reference entity'

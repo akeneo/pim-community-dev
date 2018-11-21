@@ -27,6 +27,9 @@ import Channel from 'akeneoreferenceentity/domain/model/channel';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import Key from 'akeneoreferenceentity/tools/key';
+import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
 
 interface StateProps {
   sidebar: {
@@ -110,11 +113,35 @@ class RecordEditView extends React.Component<EditProps> {
     return null;
   };
 
+  private getCompletenessValue = (record: Record): number => {
+    let nbCompletedValues: number = 0;
+    let nbRequiredValues: number = 0;
+    const values: Value[] = record
+      .getValueCollection()
+      .getValuesForChannelAndLocale(
+        createChannelReference(this.props.context.channel),
+        createLocaleReference(this.props.context.locale)
+      );
+
+    return values.reduce((_previousValue: number, currentValue: Value) => {
+      if (currentValue.isComplete()) {
+        nbCompletedValues++;
+      }
+
+      if (currentValue.isRequired()) {
+        nbRequiredValues++;
+      }
+
+      return (100 * nbCompletedValues) / nbRequiredValues;
+    }, 0);
+  };
+
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
     const record = denormalizeRecord(this.props.record);
     const label = record.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_reference_entities_record_edit', this.props.sidebar.currentTab);
+    const completenessValue = this.getCompletenessValue(record);
 
     return (
       <React.Fragment>
@@ -203,6 +230,11 @@ class RecordEditView extends React.Component<EditProps> {
                             onLocaleChange={this.props.events.onLocaleChanged}
                           />
                         </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="AknBadge AknBadge--big AknBadge--warning completeness-badge">
+                        {__('pim_reference_entity.record.completeness.label')}: {completenessValue}%
                       </div>
                     </div>
                   </div>
