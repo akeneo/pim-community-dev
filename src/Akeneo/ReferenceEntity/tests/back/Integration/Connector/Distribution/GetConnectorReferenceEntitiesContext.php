@@ -128,5 +128,4 @@ class GetConnectorReferenceEntitiesContext implements Context
             );
         }
     }
-
 }

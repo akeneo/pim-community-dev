@@ -41,7 +41,6 @@ class ReferenceEntityQuery
         int $size,
         ?ReferenceEntityIdentifier $searchAfterCode
     ): ReferenceEntityQuery {
-
         return new ReferenceEntityQuery(
             $size,
             $searchAfterCode
@@ -57,5 +56,4 @@ class ReferenceEntityQuery
     {
         return null !== $this->searchAfterCode ? (string) $this->searchAfterCode : null;
     }
-
 }

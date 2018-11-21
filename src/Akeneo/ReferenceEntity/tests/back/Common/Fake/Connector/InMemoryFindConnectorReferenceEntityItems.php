@@ -37,22 +37,20 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
     /**
      * {@inheritdoc}
      */
-    public function __invoke($query): array {
-        // @TODO - do pagination here using size from query
-        // Filter on search after then apply limit
+    public function __invoke($query): array
+    {
+        $searchAfterCode = $query->getSearchAfterCode();
+        $referenceEntities = array_values(array_filter($this->results, function (ConnectorReferenceEntity $referenceEntity) use ($searchAfterCode): bool {
+            return null === $searchAfterCode
+                || strcasecmp((string) $referenceEntity->getIdentifier(), $searchAfterCode) > 0;
+        }));
 
-//        $searchAfterCode = $query->getSearchAfterCode();
-//        $records = array_values(array_filter($records, function (Record $record) use ($searchAfterCode): bool {
-//            return null === $searchAfterCode
-//                || strcasecmp((string) $record->getCode(), $searchAfterCode) > 0;
-//        }));
-//
-//        usort($records, function ($firstRecord, $secondRecord) {
-//            return strcasecmp((string) $firstRecord->getCode(), (string) $secondRecord->getCode());
-//        });
-//
-//        $records = array_slice($records, 0, $query->getSize());
+        usort($referenceEntities, function (ConnectorReferenceEntity $first, ConnectorReferenceEntity $second) {
+            return strcasecmp((string) $first->getIdentifier(), (string) $second->getIdentifier());
+        });
 
-        return $this->results;
+        $referenceEntities = array_slice($referenceEntities, 0, $query->getSize());
+
+        return $referenceEntities;
     }
 }

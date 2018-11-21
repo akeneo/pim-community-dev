@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToReferenceEntityImage;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
@@ -23,7 +24,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -75,29 +75,29 @@ class GetConnectorReferenceEntitiesAction
             return ($this->addHalLinksToImageValues)($normalizedReferenceEntity);
         }, $referenceEntities);
 
-        $paginatedRecords = $this->paginateReferenceEntities($referenceEntities, $searchAfter);
+        $paginatedReferenceEntities = $this->paginateReferenceEntities($referenceEntities, $searchAfter);
 
-        return new JsonResponse($paginatedRecords);
+        return new JsonResponse($paginatedReferenceEntities);
     }
 
-    private function paginateReferenceEntities(array $records, ?string $searchAfter): array
+    private function paginateReferenceEntities(array $referenceEntities, ?string $searchAfter): array
     {
-        $lastRecord = end($records);
-        reset($records);
-        $lastRecordCode = $lastRecord['code'] ?? null;
+        $lastReferenceEntity = end($referenceEntities);
+        reset($referenceEntities);
+        $lastReferenceEntityCode = $lastReferenceEntity['code'] ?? null;
 
         $paginationParameters = [
             'list_route_name'     => 'akeneo_reference_entities_reference_entities_rest_connector_get',
             'item_route_name'     => 'akeneo_reference_entities_reference_entity_rest_connector_get',
             'search_after'        => [
                 'self' => $searchAfter,
-                'next' => $lastRecordCode
+                'next' => $lastReferenceEntityCode
             ],
             'limit'               => $this->limit->intValue(),
             'item_identifier_key' => 'code',
             'query_parameters'    => [],
         ];
 
-        return $this->halPaginator->paginate($records, $paginationParameters, count($records));
+        return $this->halPaginator->paginate($referenceEntities, $paginationParameters, count($referenceEntities));
     }
 }

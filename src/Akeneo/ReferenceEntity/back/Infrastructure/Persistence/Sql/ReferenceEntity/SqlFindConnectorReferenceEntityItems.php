@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
 use Doctrine\DBAL\Connection;
 
@@ -37,7 +38,7 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
         $this->referenceEntityHydrator = $hydrator;
     }
 
-    public function __invoke(): array
+    public function __invoke(ReferenceEntityQuery $query): array
     {
 //        $sql = <<<SQL
 //        SELECT
@@ -48,7 +49,7 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
 //        FROM akeneo_reference_entity_reference_entity as re
 //        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
 //        WHERE re.identifier = :identifier;
-//SQL;
+        //SQL;
 //
 //        $statement = $this->connection->executeQuery(
 //            $sql,
