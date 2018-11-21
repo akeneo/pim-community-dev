@@ -4,30 +4,30 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_suggest_data_connection_edit:
-                    module: pimee/controller/index
+                    module: akeneo/suggest-data/controller/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: franklin-connection
                 akeneo_suggest_data_identifiers_mapping_edit:
-                    module: pimee/controller/identifiers-mapping
+                    module: akeneo/suggest-data/controller/identifiers-mapping
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-identifiers-mapping
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
                 akeneo_suggest_data_attributes_mapping_index:
-                    module: pimee/controller/attributes-mapping-index
+                    module: akeneo/suggest-data/controller/attributes-mapping-index
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-attributes-mapping
                 akeneo_suggest_data_attributes_mapping_edit:
-                    module: pimee/controller/attributes-mapping-edit
+                    module: akeneo/suggest-data/controller/attributes-mapping-edit
                     aclResourceId: akeneo_suggest_data_settings_mapping
 
         # Savers configuration
-        pimee/saver/franklin-connection:
+        akeneo/suggest-data/saver/franklin-connection:
             url: akeneo_suggest_data_connection_post
 
-        pimee/saver/identifiers-mapping:
+        akeneo/suggest-data/saver/identifiers-mapping:
             url: akeneo_suggest_data_identifiers_mapping_save
 
         # Fetchers
@@ -54,44 +54,44 @@ config:
         pimee/common/filterable: akeneosuggestdata/js/common/filterable.ts
 
         # Controller
-        pimee/controller/index: akeneosuggestdata/js/controller/index.ts
-        pimee/controller/identifiers-mapping: akeneosuggestdata/js/controller/identifiers-mapping.ts
-        pimee/controller/attributes-mapping-index: akeneosuggestdata/js/controller/attributes-mapping-index.ts
-        pimee/controller/attributes-mapping-edit: akeneosuggestdata/js/controller/attributes-mapping-edit.ts
+        akeneo/suggest-data/controller/index: akeneosuggestdata/js/controller/index.ts
+        akeneo/suggest-data/controller/identifiers-mapping: akeneosuggestdata/js/controller/identifiers-mapping.ts
+        akeneo/suggest-data/controller/attributes-mapping-index: akeneosuggestdata/js/controller/attributes-mapping-index.ts
+        akeneo/suggest-data/controller/attributes-mapping-edit: akeneosuggestdata/js/controller/attributes-mapping-edit.ts
 
         # Savers
-        pimee/saver/franklin-connection: akeneosuggestdata/js/saver/franklin-connection
-        pimee/saver/identifiers-mapping: akeneosuggestdata/js/saver/identifiers-mapping
-        pimee/saver/identifiers-mapping-form: akeneosuggestdata/js/saver/identifiers-mapping-form.ts
-        pimee/saver/attribute-options-mapping: akeneosuggestdata/js/saver/attribute-options-mapping.ts
-        pimee/saver/attribute-options-mapping-form: akeneosuggestdata/js/saver/attribute-options-mapping-form.ts
+        akeneo/suggest-data/saver/franklin-connection: akeneosuggestdata/js/saver/franklin-connection
+        akeneo/suggest-data/saver/identifiers-mapping: akeneosuggestdata/js/saver/identifiers-mapping
+        akeneo/suggest-data/saver/identifiers-mapping-form: akeneosuggestdata/js/saver/identifiers-mapping-form.ts
+        akeneo/suggest-data/saver/attribute-options-mapping: akeneosuggestdata/js/saver/attribute-options-mapping.ts
+        akeneo/suggest-data/saver/attribute-options-mapping-form: akeneosuggestdata/js/saver/attribute-options-mapping-form.ts
 
         # View
-        pimee/view/attribute-options-mapping/edit: akeneosuggestdata/js/view/attribute-options-mapping/edit.ts
-        pimee/view/attributes-mapping/state: akeneosuggestdata/js/view/attributes-mapping/state.ts
-        pimee/view/attributes-mapping/family-selector: akeneosuggestdata/js/view/attributes-mapping/family-selector.ts
-        pimee/view/attributes-mapping/table: akeneosuggestdata/js/view/attributes-mapping/table.ts
+        akeneo/suggest-data/view/settings/attributes-mapping/state: akeneosuggestdata/js/view/attributes-mapping/state.ts
+        akeneo/suggest-data/view/settings/attributes-mapping/family-selector: akeneosuggestdata/js/view/attributes-mapping/family-selector.ts
+        akeneo/suggest-data/view/settings/attributes-mapping/table: akeneosuggestdata/js/view/attributes-mapping/table.ts
+        akeneo/suggest-data/view/settings/identifiers-mapping/table: akeneosuggestdata/js/view/identifiers-mapping/table.ts
+        akeneo/suggest-data/view/settings/attribute-options-mapping/edit: akeneosuggestdata/js/view/attribute-options-mapping/edit.ts
+        akeneo/suggest-data/view/settings/mapping/common/tabs: akeneosuggestdata/js/view/common/tabs.ts
         akeneo/suggest-data/view/common/description-header: akeneosuggestdata/js/view/common/description-header.ts
-        pimee/view/common/front-search-filter: akeneosuggestdata/js/view/common/front-search-filter.ts
+        akeneo/suggest-data/view/common/front-search-filter: akeneosuggestdata/js/view/common/front-search-filter.ts
         pimee/view/common/simple-select-attribute: akeneosuggestdata/js/view/common/simple-select-attribute.ts
-        pimee/view/common/status-filter: akeneosuggestdata/js/view/common/status-filter.ts
-        pimee/view/common/tabs: akeneosuggestdata/js/view/common/tabs.ts
+        akeneo/suggest-data/view/common/status-filter: akeneosuggestdata/js/view/common/status-filter.ts
         akeneo/suggest-data/view/franklin-connection/edit: akeneosuggestdata/js/view/franklin-connection/edit.ts
-        pimee/view/identifiers-mapping/table: akeneosuggestdata/js/view/identifiers-mapping/table.ts
         akeneo/suggest-data/view/mass-edit/suggest-data-operation: akeneosuggestdata/js/view/mass-edit/suggest-data-operation.ts
         akeneo/suggest-data/view/product-edit-form/subscription-status-switcher: akeneosuggestdata/js/view/product-edit-form/subscription-status-switcher.ts
 
         # Templates
-        pimee/template/attribute-options-mapping/edit: akeneosuggestdata/templates/attribute-options-mapping/edit.html
-        pimee/template/attribute-options-mapping/modal: akeneosuggestdata/templates/attribute-options-mapping/modal.html
-        pimee/template/attributes-mapping/table: akeneosuggestdata/templates/attributes-mapping/table.html
-        pimee/template/attributes-mapping/family-mapping: akeneosuggestdata/templates/attributes-mapping/family-mapping.html
-        pimee/template/attributes-mapping/family-line: akeneosuggestdata/templates/attributes-mapping/family-line.html
+        akeneo/suggest-data/template/settings/identifiers-mapping/table: akeneosuggestdata/templates/identifiers-mapping/table.html
+        akeneo/suggest-data/template/settings/attribute-options-mapping/edit: akeneosuggestdata/templates/attribute-options-mapping/edit.html
+        akeneo/suggest-data/template/settings/attribute-options-mapping/modal: akeneosuggestdata/templates/attribute-options-mapping/modal.html
+        akeneo/suggest-data/template/settings/attributes-mapping/table: akeneosuggestdata/templates/attributes-mapping/table.html
+        akeneo/suggest-data/template/settings/attributes-mapping/family-mapping: akeneosuggestdata/templates/attributes-mapping/family-mapping.html
+        akeneo/suggest-data/template/settings/attributes-mapping/family-line: akeneosuggestdata/templates/attributes-mapping/family-line.html
         pimee/template/common/status-filter: akeneosuggestdata/templates/common/status-filter.html
         pimee/template/common/tabs: akeneosuggestdata/templates/common/tabs.html
         pimee/template/common/simple-select-attribute: akeneosuggestdata/templates/common/simple-select-attribute.html
         pimee/template/franklin-connection/edit: akeneosuggestdata/templates/franklin-connection/edit.html
-        pimee/template/identifiers-mapping/table: akeneosuggestdata/templates/identifiers-mapping/table.html
         pimee/template/mass-edit/suggest-data-operation: akeneosuggestdata/templates/mass-edit/suggest-data-operation.html
         pimee/template/product-edit-form/subscription-status-switcher: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher.html
         pimee/template/product-edit-form/subscription-status-switcher-read-only: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher-read-only.html

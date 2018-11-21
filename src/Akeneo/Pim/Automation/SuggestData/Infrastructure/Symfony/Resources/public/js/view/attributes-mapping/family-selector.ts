@@ -13,7 +13,7 @@ import AttributeMapping = require('./table');
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
-const lineTemplate = require('pimee/template/attributes-mapping/family-line');
+const lineTemplate = require('akeneo/suggest-data/template/settings/attributes-mapping/family-line');
 
 interface Config {
   fieldName: string;

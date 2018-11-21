@@ -44,7 +44,7 @@ class EditAttributeMappingController extends BaseController {
           return;
         }
 
-        return FormBuilder.build('pim-suggest-data-settings-attributes-mapping-edit')
+        return FormBuilder.build('akeneo-suggest-data-settings-attributes-mapping-edit')
           .then((form: BaseView) => {
             this.on('pim:controller:can-leave', (event: CanLeaveEvent) => {
               form.trigger('pim_enrich:form:can-leave', event);

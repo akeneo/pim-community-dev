@@ -21,7 +21,7 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
-const template = require('pimee/template/attributes-mapping/table');
+const template = require('akeneo/suggest-data/template/settings/attributes-mapping/table');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
@@ -312,7 +312,7 @@ class AttributeMapping extends BaseView {
     const familyCode = Router.match(window.location.hash).params.familyCode;
 
     $.when(
-      FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit'),
+      FormBuilder.build('akeneo-suggest-data-settings-attribute-options-mapping-edit'),
       FetcherRegistry.getFetcher('family').fetch(familyCode),
     ).then((
       form: BaseView,

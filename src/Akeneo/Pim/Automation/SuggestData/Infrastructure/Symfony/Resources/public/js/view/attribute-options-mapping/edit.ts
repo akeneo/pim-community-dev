@@ -20,7 +20,7 @@ const __ = require('oro/translator');
 const SimpleSelectAsync = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Routing = require('routing');
-const template = require('pimee/template/attribute-options-mapping/edit');
+const template = require('akeneo/suggest-data/template/settings/attribute-options-mapping/edit');
 
 interface Config {
   labels: {

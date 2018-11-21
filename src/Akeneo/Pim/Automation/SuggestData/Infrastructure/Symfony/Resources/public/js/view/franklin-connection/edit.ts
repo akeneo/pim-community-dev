@@ -13,7 +13,7 @@ import * as _ from 'underscore';
 import {getConfiguration, getConnectionStatus} from '../../fetcher/franklin-connection';
 import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
-const ConnectionSaver = require('pimee/saver/franklin-connection');
+const ConnectionSaver = require('akeneo/suggest-data/saver/franklin-connection');
 const Messenger = require('oro/messenger');
 const template = require('pimee/template/franklin-connection/edit');
 
