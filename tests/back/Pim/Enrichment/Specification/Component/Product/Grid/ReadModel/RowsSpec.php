@@ -16,12 +16,6 @@ class RowsSpec extends ObjectBehavior
 {
     function let()
     {
-        $scalarAttribute = new Attribute();
-        $scalarAttribute->setCode('scalar_attribute');
-
-        $mediaAttribute = new Attribute();
-        $mediaAttribute->setCode('media_attribute');
-
         $row = Row::fromProduct(
             'identifier',
             'family label',
@@ -30,11 +24,11 @@ class RowsSpec extends ObjectBehavior
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             'data',
-            new MediaValue($mediaAttribute, null, null, new FileInfo()),
+            MediaValue::value('media_attribute', new FileInfo()),
             90,
             1,
             'parent_code',
-            new ValueCollection([new ScalarValue($scalarAttribute, null, null, 'data')])
+            new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );
 
         $this->beConstructedWith([$row], 100);
@@ -47,12 +41,6 @@ class RowsSpec extends ObjectBehavior
 
     function it_has_the_product_and_product_model_rows()
     {
-        $scalarAttribute = new Attribute();
-        $scalarAttribute->setCode('scalar_attribute');
-
-        $mediaAttribute = new Attribute();
-        $mediaAttribute->setCode('media_attribute');
-
         $row = Row::fromProduct(
             'identifier',
             'family label',
@@ -61,11 +49,11 @@ class RowsSpec extends ObjectBehavior
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             'data',
-            new MediaValue($mediaAttribute, null, null, new FileInfo()),
+            MediaValue::value('media_attribute', new FileInfo()),
             90,
             1,
             'parent_code',
-            new ValueCollection([new ScalarValue($scalarAttribute, null, null, 'data')])
+            new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );
 
         $this->rows()->shouldBeLike([$row]);

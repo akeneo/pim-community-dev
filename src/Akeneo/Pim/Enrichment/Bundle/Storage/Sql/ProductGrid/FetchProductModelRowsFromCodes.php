@@ -315,8 +315,8 @@ SQL;
 
             $result[$row['code']]['value_collection'] = $valueCollection->filter(
                 function (ValueInterface $value) use ($channelCode, $localeCode) {
-                    return ($value->getScope() === $channelCode || $value->getScope() === null)
-                        && ($value->getLocale() === $localeCode || $value->getLocale() === null);
+                    return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
+                        && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);
                 }
             );
         }

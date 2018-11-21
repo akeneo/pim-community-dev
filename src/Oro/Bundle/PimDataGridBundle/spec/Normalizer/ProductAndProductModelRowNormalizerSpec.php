@@ -64,12 +64,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
         $normalizer,
         $imageNormalizer
     ) {
-        $scalarAttribute = new Attribute();
-        $scalarAttribute->setCode('scalar_attribute');
-
-        $mediaAttribute = new Attribute();
-        $mediaAttribute->setCode('media_attribute');
-        $values = new ValueCollection([new ScalarValue($scalarAttribute, null, null, 'data')]);
+        $values = new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]);
 
         $row = Row::fromProduct(
             'identifier',
@@ -79,7 +74,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             'data',
-            new MediaValue($mediaAttribute, null, null, new FileInfo()),
+            MediaValue::value('media_attribute', new FileInfo()),
             90,
             1,
             'parent_code',

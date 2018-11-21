@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -37,23 +36,6 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers');
         $rows = $query(['baz', 'foo'], ['sku', 'a_localizable_image', 'a_scopable_image'], 'ecommerce', 'en_US', $userId);
 
-        $sku = new Attribute();
-        $sku->setCode('sku');
-
-        $yesNo = new Attribute();
-        $yesNo->setCode('a_yes_no');
-
-        $anImage = new Attribute();
-        $anImage->setCode('an_image');
-
-        $aLocalizableImage = new Attribute();
-        $aLocalizableImage->setCode('a_localizable_image');
-        $aLocalizableImage->setLocalizable(true);
-
-        $aScopableImage = new Attribute();
-        $aScopableImage->setCode('a_scopable_image');
-        $aScopableImage->setScopable(true);
-
         $akeneoImage = current($this
             ->get('akeneo_file_storage.repository.file_info')
             ->findAll($this->getFixturePath('akeneo.jpg')));
@@ -67,13 +49,13 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 $product1->getCreated(),
                 $product1->getUpdated(),
                 'foo',
-                new MediaValue($anImage, null, null, $akeneoImage),
+                MediaValue::value('an_image', $akeneoImage),
                 31,
                 $product1->getId(),
                 'sub_product_model',
                 new ValueCollection([
-                    new ScalarValue($sku, null, null, 'foo'),
-                    new MediaValue($anImage, null, null, $akeneoImage)
+                    ScalarValue::value('sku', 'foo'),
+                    MediaValue::value('an_image', $akeneoImage)
                 ])
             ),
             Row::fromProduct(
@@ -89,9 +71,9 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
                 $product2->getId(),
                 null,
                 new ValueCollection([
-                    new ScalarValue($sku, null, null, 'baz'),
-                    new MediaValue($aLocalizableImage, null, 'en_US', $akeneoImage),
-                    new MediaValue($aScopableImage, 'ecommerce', null, $akeneoImage),
+                    ScalarValue::value('sku', 'baz'),
+                    MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'en_US'),
+                    MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
                 ])
             ),
         ];

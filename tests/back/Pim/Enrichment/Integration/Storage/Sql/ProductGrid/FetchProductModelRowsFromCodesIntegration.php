@@ -8,12 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use PHPUnit\Framework\Assert;
 
 class FetchProductModelRowsFromCodesIntegration extends TestCase
 {
@@ -40,12 +36,6 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
         $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes');
         $rows = $query(['root_product_model', 'sub_product_model'], ['sku', 'an_image', 'a_text'], 'ecommerce', 'en_US', $userId);
 
-        $aText = new Attribute();
-        $aText->setCode('a_text');
-
-        $anImage = new Attribute();
-        $anImage->setCode('an_image');
-
         $akeneoImage = current($this
             ->get('akeneo_file_storage.repository.file_info')
             ->findAll($this->getFixturePath('akeneo.jpg')));
@@ -58,12 +48,12 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $rootProductModel->getCreated(),
                 $rootProductModel->getUpdated(),
                 '[root_product_model]',
-                new MediaValue($anImage, null, null, $akeneoImage),
+                MediaValue::value('an_image', $akeneoImage),
                 $rootProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 null,
                 new ValueCollection([
-                    new MediaValue($anImage, null, null, $akeneoImage)
+                    MediaValue::value('an_image', $akeneoImage)
                 ])
             ),
             Row::fromProductModel(
@@ -72,13 +62,13 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
                 $subProductModel->getCreated(),
                 $subProductModel->getUpdated(),
                 '[sub_product_model]',
-                new MediaValue($anImage, null, null, $akeneoImage),
+                MediaValue::value('an_image', $akeneoImage),
                 $subProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 'root_product_model',
                 new ValueCollection([
-                    new MediaValue($anImage, null, null, $akeneoImage),
-                    new ScalarValue($aText, null, null, 'a_text')
+                    MediaValue::value('an_image', $akeneoImage),
+                    ScalarValue::value('a_text', 'a_text')
                 ])
             ),
         ];

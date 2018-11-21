@@ -57,10 +57,6 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         $anImage = new Attribute();
         $anImage->setCode('an_image');
 
-        $aLocalizableImage = new Attribute();
-        $aLocalizableImage->setCode('a_localizable_image');
-        $aLocalizableImage->setLocalizable(true);
-
         $aScopableImage = new Attribute();
         $aScopableImage->setCode('a_scopable_image');
         $aScopableImage->setScopable(true);
@@ -86,9 +82,9 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 $product2->getId(),
                 null,
                 new ValueCollection([
-                    new ScalarValue($sku, null, null, 'baz'),
-                    new MediaValue($aLocalizableImage, null, 'en_US', $akeneoImage),
-                    new MediaValue($aScopableImage, 'ecommerce', null, $akeneoImage),
+                    ScalarValue::value('sku', 'baz'),
+                    MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'en_US'),
+                    MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
                 ])
             ),
             Row::fromProductModel(
@@ -97,12 +93,12 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 $rootProductModel->getCreated(),
                 $rootProductModel->getUpdated(),
                 '[root_product_model]',
-                new MediaValue($anImage, null, null, $akeneoImage),
+                MediaValue::value('an_image', $akeneoImage),
                 $rootProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 null,
                 new ValueCollection([
-                    new MediaValue($anImage, null, null, $akeneoImage)
+                    MediaValue::value('an_image', $akeneoImage),
                 ])
             ),
         ];
