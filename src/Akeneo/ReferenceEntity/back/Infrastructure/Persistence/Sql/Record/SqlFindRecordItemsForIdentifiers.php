@@ -35,6 +35,7 @@ class SqlFindRecordItemsForIdentifiers implements FindRecordItemsForIdentifiersI
         $this->sqlConnection = $sqlConnection;
     }
 
+
     /**
      * @return string[]
      */

@@ -17,6 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorR
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\Hydrator\ConnectorReferenceEntityHydrator;
 use Doctrine\DBAL\Connection;
+use function GuzzleHttp\Psr7\parse_header;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -48,16 +49,28 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
             fi.original_filename as image_original_filename
         FROM akeneo_reference_entity_reference_entity as re
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
+        WHERE re.identifier > :search_after_identifier
+        ORDER BY identifier ASC
+        LIMIT :search_after_limit
 SQL;
 
         $statement = $this->connection->executeQuery(
-            $sql
+            $sql,
+            [
+                'search_after_identifier' => $query->getSearchAfterCode(),
+                'search_after_limit' => $query->getSize()
+            ],
+            [
+                'search_after_identifier' => \PDO::PARAM_STR,
+                'search_after_limit' => \PDO::PARAM_INT
+
+            ]
         );
 
         $results = $statement->fetchAll();
 
         if (empty($results)) {
-            return null;
+            return [];
         }
 
         $hydratedReferenceEntities = [];
