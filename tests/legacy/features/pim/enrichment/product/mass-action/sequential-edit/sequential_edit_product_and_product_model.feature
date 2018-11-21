@@ -21,7 +21,6 @@ Feature: Edit sequentially some products
     And I should see the text "Save and next"
 
   Scenario: Successfully sequentially edit some product modelsGiven I type "color" in the manage filter input
-And I show the filter "color"
     Given I type "color" in the manage filter input
     And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
