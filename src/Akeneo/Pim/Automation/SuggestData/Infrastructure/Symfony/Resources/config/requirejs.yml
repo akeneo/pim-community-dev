@@ -78,8 +78,8 @@ config:
         pimee/view/common/tabs: akeneosuggestdata/js/view/common/tabs.ts
         pimee/view/franklin-connection/edit: akeneosuggestdata/js/view/franklin-connection/edit.ts
         pimee/view/identifiers-mapping/table: akeneosuggestdata/js/view/identifiers-mapping/table.ts
-        pimee/view/mass-edit/suggest-data-operation: akeneosuggestdata/js/view/mass-edit/suggest-data-operation.ts
-        pimee/view/product-edit-form/subscription-status-switcher: akeneosuggestdata/js/view/product-edit-form/subscription-status-switcher.ts
+        akeneo/suggest-data/view/mass-edit/suggest-data-operation: akeneosuggestdata/js/view/mass-edit/suggest-data-operation.ts
+        akeneo/suggest-data/view/product-edit-form/subscription-status-switcher: akeneosuggestdata/js/view/product-edit-form/subscription-status-switcher.ts
 
         # Templates
         pimee/template/attribute-options-mapping/edit: akeneosuggestdata/templates/attribute-options-mapping/edit.html
