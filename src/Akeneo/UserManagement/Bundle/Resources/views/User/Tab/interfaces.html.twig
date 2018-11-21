@@ -1,6 +1,0 @@
-<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    <div class="AknFormContainer AknFormContainer--withPadding">
-        {{ form_row(form.uiLocale) }}
-        {{ form_row(form.timezone) }}
-    </div>
-</div>

@@ -147,8 +147,8 @@ class AttributeController
     {
         $options = [];
 
-        if ($request->request->has('identifiers')) {
-            $options['identifiers'] = array_unique(explode(',', $request->request->get('identifiers')));
+        if ($request->get('identifiers', null) !== null) {
+            $options['identifiers'] = array_unique(explode(',', $request->get('identifiers')));
         }
 
         if ($request->get('types', null) !== null) {
@@ -171,6 +171,10 @@ class AttributeController
 
         if ($request->get('is_locale_specific', null) !== null) {
             $options['is_locale_specific'] = $request->get('is_locale_specific') === 'true';
+        }
+
+        if ($request->get('useable_as_grid_filter', null) !== null) {
+            $options['useable_as_grid_filter'] = $request->get('useable_as_grid_filter') === 'true';
         }
 
         if (empty($options)) {

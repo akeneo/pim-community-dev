@@ -1,0 +1,37 @@
+<div class="AknMediaField<%- media.filePath ? ' has-file' : '' %><%- readOnly ? ' AknMediaField--disabled' : '' %>" >
+    <% if (media.filePath === null) { %>
+        <input class="AknMediaField-fileUploaderInput<%- readOnly ? ' AknMediaField-fileUploaderInput--disabled' : '' %>" type="file" />
+        <div class="AknMediaField-emptyContainer">
+            <span title="upload icon" class="AknMediaField-uploadIcon"/>
+            <span><%- uploadLabel %></span>
+        </div>
+    <% } else { %>
+        <div class="AknMediaField-preview preview">
+            <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(media.filePath, 'thumbnail_small') %>
+            <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(media.filePath, 'preview') %>
+            <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(media.filePath) %>
+            <% if (null != mediaThumbnailUrl) { %>
+                <div class="AknMediaField-thumb file"><img src="<%- mediaThumbnailUrl %>" class="AknMediaField-image"/></div>
+            <% } else { %>
+                <div class="AknMediaField-thumb file">
+                    <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                </div>
+            <% } %>
+            <div class="AknMediaField-info info">
+                <div class="filename" title="Filename"><%- media.originalFilename %></div>
+                <div class="AknButtonList AknButtonList--centered actions">
+                    <% if (null != mediaPreviewUrl) { %>
+                        <span class="AknButtonList-item AknIconButton AknIconButton--grey open-media"><i class="icon icon-eye-open"></i></span>
+                    <% } %>
+                    <% if (!readOnly) { %>
+                        <a href="<%- mediaDownloadUrl %>" class="AknButtonList-item AknIconButton AknIconButton--grey download-file" download><i class="icon icon-cloud-download"></i></a>
+                        <span class="AknButtonList-item AknIconButton AknIconButton--grey clear-field %>"><i class="icon icon-trash"></i></span>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    <% } %>
+    <div class="AknMediaField-progress AknProgress AknProgress--micro progress">
+        <div class="AknProgress-bar bar"></div>
+    </div>
+</div>

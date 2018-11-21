@@ -8,6 +8,7 @@ Feature: Navigate to product model and product edit pages
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
     And I am on the products page
+    And I type "color" in the manage filter input
     And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     When I click on the "tshirt-unique-size-crimson-red" row

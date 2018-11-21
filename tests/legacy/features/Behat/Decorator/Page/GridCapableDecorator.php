@@ -127,6 +127,8 @@ class GridCapableDecorator extends ElementDecorator
 
     /**
      * Remove the current view
+     *
+     * @throws TimeoutException
      */
     public function removeView()
     {
@@ -137,7 +139,16 @@ class GridCapableDecorator extends ElementDecorator
             return $this->find('css', $selector);
         }, sprintf('Remove view button not found (%s).', $selector));
 
-        $button->click();
+        $this->spin(function () use ($button) {
+            $modal = $this->find('css', '.modal');
+            if ($modal !== null && $modal->isVisible()) {
+                return true;
+            };
+
+            $button->click();
+
+            return false;
+        }, 'Can not show the validation modal after click on remove view');
     }
 
     /**

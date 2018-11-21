@@ -238,7 +238,7 @@ class GroupTypeController
         }
 
         if (count($normalizedViolations) > 0) {
-            return new JsonResponse(['values' => $normalizedViolations], 400);
+            return new JsonResponse(['values' => $normalizedViolations], Response::HTTP_BAD_REQUEST);
         }
 
         $this->saver->save($groupType);

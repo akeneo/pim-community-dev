@@ -21,9 +21,3 @@ services:
             - '%kernel.root_dir%'
         tags:
             - { name: doctrine.event_subscriber }
-
-    pim_user.change_password.subscriber:
-        class: 'Akeneo\UserManagement\Bundle\Form\Subscriber\ChangePasswordSubscriber'
-        arguments:
-            - '@form.factory'
-            - '@security.token_storage'

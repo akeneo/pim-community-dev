@@ -16,6 +16,35 @@
 
 ## BC breaks
 
+
+- Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Akeneo\Tool\Component\FileStorage\File\FileStorerInterface`
+- Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface`
+- Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Doctrine\Common\Persistence\ObjectRepository`
+- Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Oro\Bundle\PimDataGridBundle\Entity\DatagridView`
+- Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface`
+- Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Oro\Bundle\SecurityBundle\SecurityFacade`
+- Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
+- Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add `Symfony\Component\Serializer\Normalizer\DateTimeNormalizer`
+- Add methods `setAvatar`, `getAvatar`, `setGroups` to `Akeneo\UserManagement\Component\Model\UserInterface` 
+- Remove `Akeneo\UserManagement\Bundle\Controller\UserController`
+- Remove `Akeneo\UserManagement\Bundle\Form\Handler\AbstractUserHandler`
+- Remove `Akeneo\UserManagement\Bundle\Form\Handler\UserHandler`
+- Remove `Akeneo\UserManagement\Bundle\Form\Subscriber\ChangePasswordSubscriber`
+- Remove `Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber`
+- Remove `Akeneo\UserManagement\Bundle\Form\Type\ChangePasswordType`
+- Remove `Akeneo\UserManagement\Bundle\Form\Type\UserType`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Doctrine\Common\Persistence\ObjectManager`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Oro\Bundle\SecurityBundle\Annotation\AclAncestor`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Symfony\Component\HttpFoundation\Session\Session`
+- Change constructor of `Akeneo\UserManagement\Bundle\Controller\Rest\UserController` to add `Symfony\Component\Validator\Validator\ValidatorInterface`
+- Change constructor of `Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider` to add `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface` argument
+- Remove `Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType`
 - Remove `Pim\Bundle\EnrichBundle\PimEnrichBundle`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController` to `Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController` to `Akeneo\UserManagement\Bundle\Controller\ApiClientController`
@@ -565,7 +594,6 @@
 - Move `Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber` to `Akeneo\UserManagement\Bundle\EventSubscriber\UploadedImageSubscriber`
 - Move `Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler` to `Akeneo\UserManagement\Bundle\Form\Handler\AbstractUserHandler`
 - Move `Oro\Bundle\UserBundle\Form\Handler\GroupHandler` to `Akeneo\UserManagement\Bundle\Form\Handler\GroupHandler`
-- Move `Oro\Bundle\UserBundle\Form\Type\ChangePasswordType` to `Akeneo\UserManagement\Bundle\Form\Type\ChangePasswordType`
 - Move `Oro\Bundle\UserBundle\Form\Type\GroupApiType` to `Akeneo\UserManagement\Bundle\Form\Type\GroupApiType`
 - Move `Oro\Bundle\UserBundle\Form\Type\GroupType` to `Akeneo\UserManagement\Bundle\Form\Type\GroupType`
 - Move `Oro\Bundle\UserBundle\Form\Type\ResetType` to `Akeneo\UserManagement\Bundle\Form\Type\ResetType`
@@ -581,6 +609,7 @@
 
 - Remove `Oro\Bundle\UserBundle\OroUserBundle`
 - Remove `Oro\Bundle\UserBundle\DependencyInjection`
+- Remove `Oro\Bundle\UserBundle\Form\Type\ChangePasswordType`
 - Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Remove `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet`\
 - Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\

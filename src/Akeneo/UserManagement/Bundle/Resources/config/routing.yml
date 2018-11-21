@@ -1,3 +1,7 @@
+user:
+    resource: '@PimUserBundle/Resources/config/routing/user.yml'
+    prefix: /user
+
 user_rest:
     resource: '@PimUserBundle/Resources/config/routing/user_rest.yml'
     prefix: /rest/user
@@ -5,6 +9,10 @@ user_rest:
 user_group_rest:
     resource: '@PimUserBundle/Resources/config/routing/user_group_rest.yml'
     prefix: /rest/user_group
+
+user_role_rest:
+    resource: '@PimUserBundle/Resources/config/routing/user_role_rest.yml'
+    prefix: /rest/user_role
 
 security_rest:
     resource: '@PimUserBundle/Resources/config/routing/security_rest.yml'

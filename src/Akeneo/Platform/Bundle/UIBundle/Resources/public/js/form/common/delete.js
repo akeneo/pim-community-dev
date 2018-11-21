@@ -103,7 +103,7 @@ define(
                     }.bind(this))
                     .fail(function (xhr) {
                         var message = xhr.responseJSON && xhr.responseJSON.message ?
-                            xhr.responseJSON.message : __(config.trans.failed);
+                            xhr.responseJSON.message : __(config.trans.fail);
 
                         messenger.notify('error', message);
                     }.bind(this))

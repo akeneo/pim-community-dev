@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Component\Localization\Provider;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+
 /**
  * Interface LocaleProviderInterface
  *
@@ -14,7 +16,7 @@ interface LocaleProviderInterface
     /**
      * Return a set of locales
      *
-     * @return array
+     * @return LocaleInterface[]
      */
     public function getLocales();
 }

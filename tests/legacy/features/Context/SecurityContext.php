@@ -56,7 +56,7 @@ class SecurityContext extends PimContext
      */
     public function iMakeADirectCallToDeleteTheUser($username)
     {
-        $routeName = 'pim_user_user_delete';
+        $routeName = 'pim_user_user_rest_delete';
 
         $user = $this
             ->getService('pim_user.repository.user')
@@ -64,7 +64,7 @@ class SecurityContext extends PimContext
 
         $url = $this
             ->getService('router')
-            ->generate($routeName, ['id' => $user->getId()]);
+            ->generate($routeName, ['identifier' => $user->getId()]);
 
         $this->doCall('DELETE', $url);
     }

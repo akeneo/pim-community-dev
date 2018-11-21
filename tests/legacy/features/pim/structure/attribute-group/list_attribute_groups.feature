@@ -113,7 +113,7 @@ Feature: List attribute groups
     And I edit the "Julia" user
     And I visit the "Additional" tab
     And I fill in the following information:
-      | Catalog locale       | de_DE             |
+      | Catalog locale | German (Germany) |
     And I save the user
     When I am on the attribute groups page
     Then I should see the text "[marketing]"

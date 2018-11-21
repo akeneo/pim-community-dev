@@ -13,3 +13,7 @@ datagrid_view:
 pim_datagrid_mass_action:
     path: /datagrid/{gridName}/massAction/{actionName}
     defaults: { _controller: pim_datagrid.controller.mass_action:massActionAction }
+
+product_grid_filter:
+    resource: '@PimDataGridBundle/Resources/config/routing/product_grid_filter.yml'
+    prefix: /enrich/product-grid-filter

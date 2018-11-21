@@ -182,6 +182,7 @@ pim_common:
     label_translations: Label translations
     less_than: Less than
     loading: Loading...
+    media_upload: Drag and drop to upload or click here
     more_than: More than
     next: Next
     "no": "No"

@@ -120,6 +120,13 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iTypeInTheManageFilterInput($text)
     {
+        $gridContainer = $this->getElementFromDatagrid('Grid container');
+        $loadingMask = $gridContainer->find('css', '.loading-mask .loading-mask');
+
+        $this->spin(function () use ($loadingMask) {
+            return (null === $loadingMask) || !$loadingMask->isVisible();
+        }, 'Loading mask is still visible');
+
         $this->spin(function () use ($text) {
             $this->getDatagrid()->typeInManageFilterInput($text);
 
@@ -504,12 +511,10 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        // Temporary solution waiting for Category tree moving (PIM-6574)
-        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
-
+        //Wait for the JS action to be linked to the button because it will do the default action of the row otherwise
+        $this->getSession()->wait(6000, false);
         $action = ucfirst(strtolower($actionName));
         $this->getDatagrid()->clickOnAction($element, $action);
-        $this->wait();
     }
 
     /**
@@ -726,7 +731,12 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iFilterBy($filterName, $operator, $value)
     {
-        $this->getDatagrid()->filterBy($filterName, $operator, $value);
+        $this->spin(function () use ($filterName, $operator, $value) {
+            $this->getDatagrid()->filterBy($filterName, $operator, $value);
+
+            return true;
+        }, sprintf('Can\'t filter by %s with operator %s and value %s', $filterName, $operator, $value));
+
 
         $gridContainer = $this->getElementFromDatagrid('Grid container');
 

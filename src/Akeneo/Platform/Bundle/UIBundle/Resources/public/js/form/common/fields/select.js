@@ -42,16 +42,27 @@ function (
                 choices: this.formatChoices(this.config.choices || []),
                 multiple: this.config.isMultiple,
                 labels: {
-                    defaultLabel: ''
+                    defaultLabel: this.getDefaultLabel()
                 }
             }));
+        },
+
+        /**
+         * Returns the default label for empty value
+         *
+         * @returns {string}
+         */
+        getDefaultLabel: function () {
+            return '';
         },
 
         /**
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('select.select2').select2({allowClear: true});
+            this.$('select.select2').select2({
+                allowClear: this.config.allowClear !== undefined ? this.config.allowClear : true
+            });
         },
 
         /**

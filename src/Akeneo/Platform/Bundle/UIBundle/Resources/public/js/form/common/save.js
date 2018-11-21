@@ -85,9 +85,11 @@ define(
 
             /**
              * What to do after a save
+             *
+             * @param {any} data
              */
-            postSave: function () {
-                this.getRoot().trigger('pim_enrich:form:entity:post_save');
+            postSave: function (data) {
+                this.getRoot().trigger('pim_enrich:form:entity:post_save', data);
 
                 messenger.notify(
                     'success',
@@ -111,7 +113,7 @@ define(
                         break;
                     case 500:
                         /* global console */
-                        var message = response.responseJSON ? response.responseJSON : response;
+                        const message = response.responseJSON ? response.responseJSON : response;
 
                         console.error('Errors:', message);
                         this.getRoot().trigger('pim_enrich:form:entity:error:save', message);

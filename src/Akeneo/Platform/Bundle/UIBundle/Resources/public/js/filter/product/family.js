@@ -66,7 +66,11 @@ define([
                                 callback(_.map(families, function (family) {
                                     return {
                                         id: family.code,
-                                        text: i18n.getLabel(family.labels, userContext.get('uiLocale'), family.code)
+                                        text: i18n.getLabel(
+                                            family.labels,
+                                            userContext.get('uiLocale'),
+                                            family.code
+                                        )
                                     };
                                 }));
                             });

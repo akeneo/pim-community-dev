@@ -1,11 +1,30 @@
 pim_user_user_rest_get_current:
     path: /
     defaults: { _controller: pim_user.controller.user_rest:getCurrentAction }
-    requirements:
-        method: GET
+    methods: [GET]
 
 pim_user_user_rest_get:
     path: /{identifier}
     defaults: { _controller: pim_user.controller.user_rest:getAction }
+    methods: [GET]
     requirements:
-        method: GET
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_user_user_rest_post:
+    path: /{identifier}
+    defaults: { _controller: pim_user.controller.user_rest:postAction }
+    methods: [POST]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_user_user_rest_create:
+    path: /
+    defaults: { _controller: pim_user.controller.user_rest:createAction }
+    methods: [POST]
+
+pim_user_user_rest_delete:
+    path: /{identifier}
+    defaults: { _controller: pim_user.controller.user_rest:deleteAction }
+    methods: [DELETE]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'

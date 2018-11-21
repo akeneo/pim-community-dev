@@ -10,6 +10,15 @@ services:
             - '@security.token_storage'
             - '@pim_internal_api_serializer'
             - '@pim_user.repository.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_user.factory.user'
+            - '@security.password_encoder'
+            - '@event_dispatcher'
+            - '@session'
+            - '@doctrine.orm.entity_manager'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
@@ -28,3 +37,10 @@ services:
             - '@fos_oauth_server.client_manager.default'
             - '@validator'
             - '@pim_internal_api_serializer'
+
+    pim_user.controller.user_role_rest:
+        class: 'Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController'
+        arguments:
+            - '@pim_user.repository.role'
+            - '@serializer'
+            - '@pim_user.context.user'

@@ -11,7 +11,8 @@ Feature: Edit sequentially some products
 
   @ce
   Scenario: Successfully sequentially edit some products but not the product models 1/2
-    Given I show the filter "color"
+    Given I type "color" in the manage filter input
+    And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     And I sort by "ID" value ascending
     And I select rows model-tshirt-divided-crimson-red, running-shoes-xxs-crimson-red
@@ -19,8 +20,10 @@ Feature: Edit sequentially some products
     Then I should see the text "Divided crimson red"
     And I should see the text "Save and next"
 
-  Scenario: Successfully sequentially edit some product models
-    Given I show the filter "color"
+  Scenario: Successfully sequentially edit some product modelsGiven I type "color" in the manage filter input
+And I show the filter "color"
+    Given I type "color" in the manage filter input
+    And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     And I sort by "ID" value ascending
     And I select rows model-tshirt-divided-crimson-red, model-tshirt-unique-color-kurt

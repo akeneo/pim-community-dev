@@ -1,0 +1,5 @@
+pim_user_user_role_rest_index:
+    path: /
+    defaults: { _controller: pim_user.controller.user_role_rest:indexAction }
+    requirements:
+        method: GET

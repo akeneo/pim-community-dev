@@ -146,7 +146,11 @@ define(
                             cancelText: __('pim_common.cancel'),
                             title: __(
                                 'pim_enrich.entity.product.module.show_group.title',
-                                { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
+                                { group: i18n.getLabel(
+                                    group.labels,
+                                    UserContext.get('catalogLocale'),
+                                    group.code
+                                )}
                             ),
                             content: this.modalTemplate({
                                 products:     productList.products,

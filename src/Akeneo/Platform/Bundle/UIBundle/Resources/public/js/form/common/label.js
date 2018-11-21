@@ -8,18 +8,25 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/form', 'pim/user-context', 'pim/i18n'],
-    function (BaseForm, UserContext, i18n) {
+    ['pim/form', 'pim/user-context', 'pim/i18n', 'underscore'],
+    function (BaseForm, UserContext, i18n, _) {
         return BaseForm.extend({
             tagName: 'h1',
             className: 'AknTitleContainer-title',
+
+            /**
+             * @param {Object} meta
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, meta.config);
+            },
 
             /**
              * {@inheritdoc}
              */
             configure: function () {
                 UserContext.off('change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
+                this.listenTo(UserContext, 'change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -43,6 +50,10 @@ define(
              */
             getLabel: function () {
                 var data = this.getFormData();
+
+                if (this.config.field) {
+                    return data[this.config.field];
+                }
 
                 if (undefined === data.labels) {
                     return '';

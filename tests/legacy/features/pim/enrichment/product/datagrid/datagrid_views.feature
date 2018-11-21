@@ -118,9 +118,8 @@ Feature: Datagrid views
       | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    When I am on the User profile show page
-    And I press the "Edit" button
-    Then I should see the text "Mary Smith"
+    When I edit the "Mary" user
+    Then I should see the text "Mary"
     And I should see the text "Save"
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
@@ -132,10 +131,7 @@ Feature: Datagrid views
     And I am logged in as "Julia"
     And I am on the products grid
     Then I should see products black-boots, purple-sneakers and black-sneakers
-    When I am on the User profile show page
-    And I press the "Edit" button
-    Then I should see the text "Julia Stark"
-    And I should see the text "Save"
+    When I edit the "Julia" user
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     And I fill in the following information:
@@ -159,16 +155,14 @@ Feature: Datagrid views
       | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    When I am on the User profile show page
-    And I press the "Edit" button
-    Then I should see the text "Mary Smith"
-    And I should see the text "Save"
+    When I edit the "Mary" user
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     And I fill in the following information:
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
+    And I should see the text "Sneakers only"
     When I am on the products grid
     Then I should see the text "Sneakers only"
     When I delete the view
@@ -186,8 +180,7 @@ Feature: Datagrid views
       | new-view-label | With name |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    When I am on the my account page
-    And I press the "Edit" button
+    When I edit the "Mary" user
     And I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     When I fill in the following information:
@@ -232,8 +225,7 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     When I logout
     And I am logged in as "Julia"
-    And I am on the my account page
-    And I press the "Edit" button
+    And I edit the "Julia" user
     And I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     When I fill in the following information:

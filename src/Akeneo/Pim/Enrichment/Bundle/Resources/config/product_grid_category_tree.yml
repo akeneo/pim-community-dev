@@ -9,6 +9,15 @@ services:
             - '@pim_user.context.user'
             - '@oro_security.security_facade'
 
+    akeneo.pim.enrichment.controller.product_grid_filter:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductGridFilterController'
+        arguments:
+            - '@oro_datagrid.datagrid.manager'
+            - '@security.token_storage'
+            - '@pim_enrich.repository.attribute.search'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_user.context.user'
+
     akeneo.pim.enrichment.category.category_tree.list_root_categories_with_count_handler:
         class: 'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCountHandler'
         arguments:

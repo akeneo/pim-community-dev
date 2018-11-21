@@ -5,6 +5,7 @@ namespace Akeneo\UserManagement\Component\Model;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
@@ -210,6 +211,16 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setImageFile(UploadedFile $imageFile);
 
     /**
+     * @return FileInfoInterface|null
+     */
+    public function getAvatar(): ?FileInfoInterface;
+
+    /**
+     * @param FileInfoInterface|null $avatar
+     */
+    public function setAvatar(?FileInfoInterface $avatar = null): void;
+
+    /**
      * @param  bool $enabled User state
      *
      * @return UserInterface
@@ -385,6 +396,13 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return UserInterface
      */
     public function removeGroup(GroupInterface $group);
+
+    /**
+     * @param GroupInterface[] $groups
+     *
+     * @return UserInterface
+     */
+    public function setGroups(array $groups);
 
     /**
      * Get groups ids

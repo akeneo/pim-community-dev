@@ -42,16 +42,15 @@ Feature: Update user preferences
   Scenario: Successfully disable a locale used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab
-    And I change the "Catalog locale" to "fr_FR"
+    And I change the "Catalog locale" to "French (France)"
     And I save the user
     Then I should see the flash message "User saved"
     And I should not see the text "There are unsaved changes."
     When I visit the "Additional" tab
-    Then I should see the text "Catalog locale"
-    And I should see the text "fr_FR"
+    Then the field Catalog locale should contain "French (France)"
     When I am on the "ecommerce" channel page
     And I press the secondary action "Delete"
     And I confirm the deletion
     And I edit the "Julia" user
     And I visit the "Additional" tab
-    Then I should see the text "Catalog locale (required) de_DE"
+    Then the field Catalog locale should contain "German (Germany)"

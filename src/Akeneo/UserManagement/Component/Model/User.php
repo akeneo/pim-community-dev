@@ -5,6 +5,7 @@ namespace Akeneo\UserManagement\Component\Model;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -54,6 +55,9 @@ class User implements UserInterface
      * @var string
      */
     protected $image;
+
+    /** @var FileInfoInterface */
+    protected $avatar;
 
     /**
      * Image filename
@@ -313,6 +317,22 @@ class User implements UserInterface
     public function getImageFile()
     {
         return $this->imageFile;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvatar(): ?FileInfoInterface
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAvatar(?FileInfoInterface $avatar = null): void
+    {
+        $this->avatar = $avatar;
     }
 
     /**
@@ -808,6 +828,20 @@ class User implements UserInterface
     {
         if ($this->getGroups()->contains($group)) {
             $this->getGroups()->removeElement($group);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setGroups(array $groups)
+    {
+        $this->groups->clear();
+
+        foreach ($groups as $group) {
+            $this->addGroup($group);
         }
 
         return $this;

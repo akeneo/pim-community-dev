@@ -278,6 +278,7 @@ class Form extends Base
      *
      * @param string $name
      *
+     * @throws TimeoutException
      * @throws ElementNotFoundException
      *
      * @return NodeElement
@@ -286,13 +287,9 @@ class Form extends Base
     {
         $label = $this->spin(function () use ($name) {
             return $this->find('css', sprintf('label:contains("%s")', $name));
-        }, sprintf('Label containing text "%s" not found'), $name);
+        }, sprintf('Label containing text "%s" not found', $name));
 
-        $field = $this->spin(function () use ($label) {
-            return $label->getParent()->find('css', 'input,textarea');
-        }, sprintf('Can not find any input or textearea sibling of "%s" label', $name));
-
-        return $field->getParent();
+        return $this->getClosest($label, 'AknFieldContainer');
     }
 
     /**
@@ -357,24 +354,13 @@ class Form extends Base
      * @param string $path
      *
      * @throws ElementNotFoundException
+     * @throws TimeoutException
      */
     public function attachFileToField($locator, $path)
     {
-        $field = $this->spin(function () use ($locator) {
-            $field = $this->findField($locator);
-            if (null === $field) {
-                return false;
-            }
-            if ($field->getAttribute('type') === 'file') {
-                $field = $field->getParent()->find('css', 'input[type="file"]');
-            }
-            if ($field !== null) {
-                return $field;
-            }
-            echo "retry find file input" . PHP_EOL;
-        }, sprintf('Cannot find "%s" file field', $locator));
-
-        $field->attachFile($path);
+        $this->spin(function () use ($locator) {
+            return $this->findFieldContainer($locator)->find('css', 'input[type="file"]');
+        }, sprintf('Cannot find "%s" file field', $locator))->attachFile($path);
     }
 
     /**

@@ -5,6 +5,10 @@ namespace Akeneo\UserManagement\Component\Updater;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -14,7 +18,9 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 
 /**
  * Updates an user
@@ -43,6 +49,18 @@ class UserUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
+    /** @var ObjectRepository */
+    protected $gridViewRepository;
+
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
+
+    /** @var FileStorerInterface */
+    protected $fileStorer;
+
+    /** @var string */
+    protected $fileStorageFolder;
+
     /** @var IdentifiableObjectRepositoryInterface */
     private $categoryAssetRepository;
 
@@ -53,7 +71,11 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $roleRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository
+     * @param ObjectRepository                      $gridViewRepository
+     * @param FileInfoRepositoryInterface           $fileInfoRepository
+     * @param FileStorerInterface                   $fileStorer
+     * @param string                                $fileStorageFolder
+     * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository|null
      */
     public function __construct(
         UserManager $userManager,
@@ -62,7 +84,11 @@ class UserUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
+        ObjectRepository $gridViewRepository,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FileStorerInterface $fileStorer,
+        string $fileStorageFolder,
+        ?IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
     ) {
         $this->userManager = $userManager;
         $this->categoryRepository = $categoryRepository;
@@ -70,6 +96,10 @@ class UserUpdater implements ObjectUpdaterInterface
         $this->channelRepository = $channelRepository;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
+        $this->gridViewRepository = $gridViewRepository;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->fileStorer = $fileStorer;
+        $this->fileStorageFolder = $fileStorageFolder;
         $this->categoryAssetRepository = $categoryAssetRepository;
     }
 
@@ -82,8 +112,7 @@ class UserUpdater implements ObjectUpdaterInterface
      *     'label': 'Ecommerce',
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
-     *     'tree': 'master',
-     *     'color': 'orange'
+     *     'tree': 'master'
      * }
      */
     public function update($user, array $data, array $options = [])
@@ -96,7 +125,9 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
-            $this->setData($user, $field, $value);
+            if ($value !== null) {
+                $this->setData($user, $field, $value);
+            }
         }
 
         if (!$user->hasGroup('all')) {
@@ -143,7 +174,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 $this->userManager->updatePassword($user);
                 break;
             case 'birthday':
-                $user->setBirthday(new \DateTime($data, \DateTime::ISO8601));
+                $user->setBirthday(new \DateTime($data));
                 break;
             case 'email_notifications':
                 $user->setEmailNotifications($data);
@@ -161,15 +192,21 @@ class UserUpdater implements ObjectUpdaterInterface
                 $user->setDefaultTree($this->findCategory($data));
                 break;
             case 'roles':
+                $roles = [];
                 foreach ($data as $code) {
-                    $role = $this->findRole($code);
-                    $user->addRole($role);
+                    $roles[] = $this->findRole($code);
+                }
+                if (count($roles) > 0) {
+                    $user->setRoles($roles);
                 }
                 break;
             case 'groups':
+                $groups = [];
                 foreach ($data as $code) {
-                    $role = $this->findGroup($code);
-                    $user->addGroup($role);
+                    $groups[] = $this->findGroup($code);
+                }
+                if (count($groups) > 0) {
+                    $user->setGroups($groups);
                 }
                 break;
             case 'phone':
@@ -181,6 +218,9 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'timezone':
                 $user->setTimezone($data);
                 break;
+            case 'asset_delay_reminder':
+                $user->setAssetDelayReminder($data);
+                break;
             case 'default_asset_tree':
                 $user->setDefaultAssetTree($this->findAssetCategory($data));
                 break;
@@ -190,13 +230,37 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'proposals_state_notifications':
                 $user->setProposalsStateNotification($data);
                 break;
+            case 'avatar':
+                $this->setAvatar($user, $data);
+                break;
+            case 'product_grid_filters':
+                if (is_string($data) && '' !== $data) {
+                    $user->setProductGridFilters(explode(',', $data));
+                    break;
+                }
+                if (is_array($data) && [] !== $data) {
+                    $user->setProductGridFilters($data);
+                    break;
+                }
+
+                $user->setProductGridFilters([]);
+                break;
             default:
+                $matches = null;
+                // Example: default_product_grid_view
+                if (preg_match('/^default_(?P<alias>[a-z_]+)_view$/', $field, $matches)) {
+                    $alias = str_replace('_', '-', $matches['alias']);
+                    $user->setDefaultGridView($alias, $this->findDefaultGridView($alias, $data));
+
+                    return;
+                }
+
                 throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
     /**
-     * @param string $code
+     * @param string        $code
      *
      * @throws InvalidPropertyException
      *
@@ -217,6 +281,39 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         return $category;
+    }
+
+    /**
+     * @param string $alias
+     * @param string $code
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return DatagridView|null
+     */
+    protected function findDefaultGridView($alias, $code): ?DatagridView
+    {
+        if ($code === '') {
+            return null;
+        }
+
+        $defaultGridView = $this->gridViewRepository->findOneBy([
+            'type' => DatagridView::TYPE_PUBLIC,
+            'datagridAlias' => $alias,
+            'id' => $code
+        ]);
+
+        if (null === $defaultGridView) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                sprintf('default_%s_view', $alias),
+                'grid view code',
+                'The grid view does not exist',
+                static::class,
+                $code
+            );
+        }
+
+        return $defaultGridView;
     }
 
     /**
@@ -329,7 +426,7 @@ class UserUpdater implements ObjectUpdaterInterface
     {
         if (null === $this->categoryAssetRepository) {
             throw new \LogicException(
-                'The catagory asset repository is not configured yet. Please update the user updater service.'
+                'The category asset repository is not configured yet. Please update the user updater service.'
             );
         }
 
@@ -346,5 +443,38 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         return $category;
+    }
+
+    /**
+     * @param $user UserInterface
+     * @param $data array
+     *
+     * @throws FileRemovalException
+     * @throws FileTransferException
+     * @throws \Exception
+     */
+    private function setAvatar($user, $data)
+    {
+        if ($data['filePath'] === null || $data['filePath'] === '') {
+            return;
+        }
+
+        $fileInfo = $this->fileInfoRepository->findOneBy([
+            'key' => str_replace($this->fileStorageFolder, '', $data['filePath']),
+        ]);
+
+        if (null === $fileInfo) {
+            $rawFile = new \SplFileInfo($data['filePath']);
+            if (!$rawFile->isFile()) {
+                throw InvalidPropertyException::validPathExpected(
+                    'avatar',
+                    static::class,
+                    $data['filePath']
+                );
+            }
+            $fileInfo = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
+        }
+
+        $user->setAvatar($fileInfo);
     }
 }

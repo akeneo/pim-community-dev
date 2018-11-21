@@ -59,7 +59,7 @@ define(
                     urlParams,
                     this.config.alias,
                     this.config.categoryTreeName,
-                    '.filter-item',
+                    this.$el,
                     (value) => {
                         this.valueUpdated(value);
                     }
