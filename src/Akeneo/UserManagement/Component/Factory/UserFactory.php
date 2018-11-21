@@ -38,25 +38,31 @@ class UserFactory implements SimpleFactoryInterface
     /** @var string */
     protected $userClass;
 
+    /** @var DefaultProperty[] */
+    private $defaultProperties;
+
     /**
      * @param LocaleRepositoryInterface $localeRepository
      * @param ChannelRepositoryInterface $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param GroupRepositoryInterface $groupRepository
      * @param string $userClass
+     * @param DefaultProperty[] $defaultProperties
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         GroupRepositoryInterface $groupRepository,
-        string $userClass
+        string $userClass,
+        DefaultProperty ...$defaultProperties
     ) {
         $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
         $this->categoryRepository = $categoryRepository;
         $this->groupRepository = $groupRepository;
         $this->userClass = $userClass;
+        $this->defaultProperties = $defaultProperties;
     }
 
     /**
@@ -81,7 +87,9 @@ class UserFactory implements SimpleFactoryInterface
             $user->addGroup($group);
         }
 
-        return $user;
+        return array_reduce($this->defaultProperties, function ($user, DefaultProperty $defaultProperty) {
+            return $defaultProperty->mutate($user);
+        }, $user);
     }
 
     /**
