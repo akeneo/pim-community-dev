@@ -22,5 +22,5 @@ class File extends BaseFile
     public $extensionsMessage = 'The file extension is not allowed (allowed extensions: %extensions%).';
 
     /** @var string */
-    public $mimeTypeMessage = 'The MIME type is not allowed for %extension% (allowed types: %types%).';
+    public $mimeTypeMessage = 'The MIME type is not allowed for %extension% (allowed types: %types%, found %type%).';
 }

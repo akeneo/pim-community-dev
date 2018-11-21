@@ -126,7 +126,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "The MIME type is not allowed for jpg (allowed types: image/jpeg).",
+            "message": "The MIME type is not allowed for jpg (allowed types: image/jpeg, found text/plain).",
             "attribute": "an_image",
             "locale": null,
             "scope": null

@@ -170,7 +170,8 @@ class FileValidator extends ConstraintValidator
                 $constraint->mimeTypeMessage,
                 [
                     '%extension%' => $this->getExtension($fileInfo),
-                    '%types%' => implode(', ', $mappedMimeTypes)
+                    '%types%' => implode(', ', $mappedMimeTypes),
+                    '%type%' => $mimeType
                 ]
             )->addViolation();
         }
