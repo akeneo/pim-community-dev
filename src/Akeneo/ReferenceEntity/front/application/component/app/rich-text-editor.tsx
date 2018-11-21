@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {EditorState, ContentState, convertToRaw} from 'draft-js';
-import {Editor} from 'react-draft-wysiwyg';
-import * as draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
+const {Editor} = require('react-draft-wysiwyg');
+const htmlToDraft = require('html-to-draftjs').default;
+const draftToHtml = require('draftjs-to-html');
 
 type RichTextEditorProps = {value: string; onChange: (value: string) => void};
 type RichTextEditorState = {editorState?: any};
