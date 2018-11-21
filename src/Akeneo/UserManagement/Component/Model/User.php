@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -1095,6 +1096,8 @@ class User implements UserInterface
      */
     public function addProperty(string $propertyName, $propertyValue): void
     {
+        $propertyName = Inflector::tableize($propertyName);
+
         $this->properties[$propertyName] = $propertyValue;
     }
 
@@ -1103,6 +1106,8 @@ class User implements UserInterface
      */
     public function getProperty(string $propertyName)
     {
+        $propertyName = Inflector::tableize($propertyName);
+
         return $this->properties[$propertyName] ?? null;
     }
 }

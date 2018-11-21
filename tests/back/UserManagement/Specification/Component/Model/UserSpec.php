@@ -16,5 +16,6 @@ class UserSpec extends ObjectBehavior
     {
         $this->addProperty('propertyName', 'value')->shouldReturn(null);
         $this->getProperty('propertyName')->shouldReturn('value');
+        $this->getProperty('property_name')->shouldReturn('value');
     }
 }
