@@ -1,0 +1,13 @@
+Akeneo\UserManagement\Component\Model\User:
+    properties:
+        properties:
+            - Collection:
+                  fields:
+                      default_asset_tree:
+                          - NotBlank: ~
+                      asset_delay_reminder:
+                          - NotBlank: ~
+                          - Length:
+                                min: 1
+                  allowMissingFields: true
+                  allowExtraFields: true
