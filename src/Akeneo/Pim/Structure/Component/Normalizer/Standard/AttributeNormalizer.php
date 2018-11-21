@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,23 +14,23 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer */
+    /** @var NormalizerInterface */
     private $translationNormalizer;
 
-    /** @var DateTimeNormalizer */
+    /** @var NormalizerInterface */
     private $dateTimeNormalizer;
 
     /** @var array */
     private $properties;
 
     /**
-     * @param TranslationNormalizer $translationNormalizer
-     * @param DateTimeNormalizer    $dateTimeNormalizer
-     * @param array                 $properties
+     * @param NormalizerInterface $translationNormalizer
+     * @param NormalizerInterface $dateTimeNormalizer
+     * @param array               $properties
      */
     public function __construct(
-        TranslationNormalizer $translationNormalizer,
-        DateTimeNormalizer $dateTimeNormalizer,
+        NormalizerInterface $translationNormalizer,
+        NormalizerInterface $dateTimeNormalizer,
         array $properties
     ) {
         $this->translationNormalizer = $translationNormalizer;

@@ -1,11 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
+namespace Specification\Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CommonAttributeCollectionSpec extends ObjectBehavior
 {

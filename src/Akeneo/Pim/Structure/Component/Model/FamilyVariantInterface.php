@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\Collection;
 
