@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+
 /**
  * Helper for sorting product values
  *
@@ -18,6 +20,14 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
  */
 class SortProductValuesHelper
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * Sorts the provided values by attribute group and sort order
      *
@@ -30,15 +40,18 @@ class SortProductValuesHelper
         usort(
             $values,
             function ($first, $second) {
-                $firstGroupOrder = $first->getAttribute()->getGroup()->getSortOrder();
-                $secondGroupOrder = $second->getAttribute()->getGroup()->getSortOrder();
+                $firstAttribute = $this->attributeRepository->findOneByIdentifier($first->getAttributeCode());
+                $secondAttribute = $this->attributeRepository->findOneByIdentifier($second->getAttributeCode());
+
+                $firstGroupOrder = $firstAttribute->getGroup()->getSortOrder();
+                $secondGroupOrder = $secondAttribute->getGroup()->getSortOrder();
 
                 if ($firstGroupOrder !== $secondGroupOrder) {
                     return $firstGroupOrder > $secondGroupOrder ? 1 : -1;
                 }
 
-                $firstAttrOrder = $first->getAttribute()->getSortOrder();
-                $secondAttrOrder = $second->getAttribute()->getSortOrder();
+                $firstAttrOrder = $firstAttribute->getSortOrder();
+                $secondAttrOrder = $secondAttribute->getSortOrder();
 
                 return $firstAttrOrder === $secondAttrOrder ? 0 : ($firstAttrOrder > $secondAttrOrder ? 1 : -1);
             }
@@ -47,7 +60,8 @@ class SortProductValuesHelper
         $sortedValues = [];
 
         foreach ($values as $value) {
-            $group = $value->getAttribute()->getGroup();
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+            $group = $attribute->getGroup();
 
             $sortedValues[$group->getCode()]['groupLabel'] = $group->getLabel();
             $sortedValues[$group->getCode()]['values'][] = $value;

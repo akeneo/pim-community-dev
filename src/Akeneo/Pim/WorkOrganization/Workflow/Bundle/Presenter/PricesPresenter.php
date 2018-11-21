@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Present changes on prices
@@ -28,12 +29,13 @@ class PricesPresenter extends AbstractProductValuePresenter
     /** @var LocaleResolver */
     protected $localeResolver;
 
-    /**
-     * @param BasePresenterInterface $pricesPresenter
-     * @param LocaleResolver         $localeResolver
-     */
-    public function __construct(BasePresenterInterface $pricesPresenter, LocaleResolver $localeResolver)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        BasePresenterInterface $pricesPresenter,
+        LocaleResolver $localeResolver
+    ) {
+        parent::__construct($attributeRepository);
+
         $this->pricesPresenter = $pricesPresenter;
         $this->localeResolver = $localeResolver;
     }

@@ -11,6 +11,7 @@ services:
             - '@liip_imagine.data.manager'
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
+            - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'

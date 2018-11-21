@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\ReferenceEntity\Component\Factory;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
@@ -91,7 +90,9 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $recordRepository,
         AttributeInterface $attribute,
         Record $starck,
-        Record $dyson
+        Record $dyson,
+        RecordCode $starckCode,
+        RecordCode $dysonCode
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -102,10 +103,17 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $starckCode = RecordCode::fromString('starck');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
-        $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
+
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier, RecordCode::fromString('starck')
+        )->willReturn($starck);
+
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier, RecordCode::fromString('dyson')
+        )->willReturn($dyson);
+
+        $starck->getCode()->willReturn($starckCode);
+        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -118,14 +126,16 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveRecord([$starck, $dyson]);
+        $productValue->shouldHaveRecord([$starckCode, $dysonCode]);
     }
 
     function it_creates_a_localizable_and_scopable_reference_entity_collection_product_value(
         $recordRepository,
         AttributeInterface $attribute,
         Record $starck,
-        Record $dyson
+        Record $dyson,
+        RecordCode $starckCode,
+        RecordCode $dysonCode
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -136,10 +146,17 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $starckCode = RecordCode::fromString('starck');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
-        $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
+
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier, RecordCode::fromString('starck')
+        )->willReturn($starck);
+
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier, RecordCode::fromString('dyson')
+        )->willReturn($dyson);
+
+        $starck->getCode()->willReturn($starckCode);
+        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -152,7 +169,7 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldBeLocalizable();
         $productValue->shouldBeScopable();
-        $productValue->shouldHaveRecord([$starck, $dyson]);
+        $productValue->shouldHaveRecord([$starckCode, $dysonCode]);
     }
 
     function it_throws_an_exception_when_provided_data_is_not_an_array(AttributeInterface $attribute)
@@ -229,32 +246,27 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
     {
         return [
             'haveAttribute'     => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable'     => function ($subject) {
-                return null !== $subject->getLocale();
+                return $subject->isLocalizable();
             },
             'haveLocale'        => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable'        => function ($subject) {
-                return null !== $subject->getScope();
+                return $subject->isScopable();
             },
             'haveChannel'       => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty'           => function ($subject) {
                 return is_array($subject->getData()) && 0 === count($subject->getData());
             },
             'haveRecord' => function ($subject, $expected) {
-                $records = $subject->getData();
+                $recordIdentifiers = $subject->getData();
 
-                $hasRecords = false;
-                foreach ($records as $record) {
-                    $hasRecords = in_array($record, $expected);
-                }
-
-                return $hasRecords;
+                return $recordIdentifiers == $expected;
             },
         ];
     }

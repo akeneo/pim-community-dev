@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -24,18 +25,21 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FilePresenter implements PresenterInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     /** @var UrlGeneratorInterface */
     protected $generator;
 
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
-    /**
-     * @param UrlGeneratorInterface $generator
-     * @param FileInfoRepositoryInterface $fileInfoRepository
-     */
-    public function __construct(UrlGeneratorInterface $generator, FileInfoRepositoryInterface $fileInfoRepository)
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        UrlGeneratorInterface $generator,
+        FileInfoRepositoryInterface $fileInfoRepository)
     {
+        $this->attributeRepository = $attributeRepository;
         $this->generator = $generator;
         $this->fileInfoRepository = $fileInfoRepository;
     }
@@ -45,8 +49,12 @@ class FilePresenter implements PresenterInterface
      */
     public function supports($data)
     {
-        return $data instanceof ValueInterface
-            && AttributeTypes::FILE === $data->getAttribute()->getType();
+        if ($data instanceof ValueInterface) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+            return null !== $attribute && AttributeTypes::FILE === $attribute->getType();
+        }
+
+        return false;
     }
 
     /**

@@ -163,6 +163,7 @@ services:
         arguments:
             - '@pim_catalog.completeness.checker'
             - '@pimee_teamwork_assistant.repository.family_requirement'
+            - '@pim_catalog.repository.cached_attribute'
 
     pimee_teamwork_assistant.calculator.contributor_group:
         class: '%pimee_teamwork_assistant.calculator.contributor_group.class%'

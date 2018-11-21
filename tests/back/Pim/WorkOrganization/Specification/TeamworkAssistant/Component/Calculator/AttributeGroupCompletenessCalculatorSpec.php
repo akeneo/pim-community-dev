@@ -15,12 +15,14 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\Attribute
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\AttributeGroupCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
 {
     function let(
         FamilyRequirementRepositoryInterface $familyRequirementRepository,
         ValueCompleteCheckerInterface $productValueChecker,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         FamilyInterface $family,
         ProductInterface $product,
         ChannelInterface $projectChannel,
@@ -41,7 +43,8 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $productValueChecker,
-            $familyRequirementRepository
+            $familyRequirementRepository,
+            $attributeRepository
         );
 
         $projectChannel->getCode()->willReturn('ecommerce');
@@ -50,16 +53,16 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('camcorder');
 
-        $skuAttribute->isScopable()->willReturn(false);
-        $skuAttribute->isLocalizable()->willReturn(false);
-        $nameAttribute->isScopable()->willReturn(false);
-        $nameAttribute->isLocalizable()->willReturn(false);
-        $weightAttribute->isScopable()->willReturn(false);
-        $weightAttribute->isLocalizable()->willReturn(false);
-        $heightAttribute->isScopable()->willReturn(false);
-        $heightAttribute->isLocalizable()->willReturn(false);
-        $documentationAttribute->isScopable()->willReturn(false);
-        $documentationAttribute->isLocalizable()->willReturn(false);
+        $skuValue->isScopable()->willReturn(false);
+        $skuValue->isLocalizable()->willReturn(false);
+        $nameValue->isScopable()->willReturn(false);
+        $nameValue->isLocalizable()->willReturn(false);
+        $weightValue->isScopable()->willReturn(false);
+        $weightValue->isLocalizable()->willReturn(false);
+        $heightValue->isScopable()->willReturn(false);
+        $heightValue->isLocalizable()->willReturn(false);
+        $documentationValue->isScopable()->willReturn(false);
+        $documentationValue->isLocalizable()->willReturn(false);
 
         $skuAttribute->getCode()->willReturn('sku');
         $nameAttribute->getCode()->willReturn('name');
@@ -77,11 +80,17 @@ class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
         $heightAttribute->getGroup()->willReturn($marketing);
         $documentationAttribute->getGroup()->willReturn($media);
 
-        $skuValue->getAttribute()->willReturn($skuAttribute);
-        $nameValue->getAttribute()->willReturn($nameAttribute);
-        $weightValue->getAttribute()->willReturn($weightAttribute);
-        $heightValue->getAttribute()->willReturn($heightAttribute);
-        $documentationValue->getAttribute()->willReturn($documentationAttribute);
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $nameValue->getAttributeCode()->willReturn('name');
+        $weightValue->getAttributeCode()->willReturn('weight');
+        $heightValue->getAttributeCode()->willReturn('height');
+        $documentationValue->getAttributeCode()->willReturn('documentation');
+
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $attributeRepository->findOneByIdentifier('weight')->willReturn($weightAttribute);
+        $attributeRepository->findOneByIdentifier('height')->willReturn($heightAttribute);
+        $attributeRepository->findOneByIdentifier('documentation')->willReturn($documentationAttribute);
     }
 
     function it_is_initializable()

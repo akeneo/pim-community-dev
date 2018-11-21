@@ -109,6 +109,9 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
+        $silk->getCode()->willReturn('silk');
+        $cotton->getCode()->willReturn('cotton');
+
         $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
         $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn($cotton);
@@ -124,7 +127,7 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveAttribute('assets_collection_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveReferenceData([$silk, $cotton]);
+        $productValue->shouldHaveReferenceData(['silk', 'cotton']);
     }
 
     function it_creates_a_localizable_and_scopable_assets_collection_product_value(
@@ -142,6 +145,9 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('fabrics');
 
+        $silk->getCode()->willReturn('silk');
+        $cotton->getCode()->willReturn('cotton');
+
         $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
         $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn($cotton);
@@ -153,13 +159,16 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
             ['silk', 'cotton']
         );
 
+        $silk->getCode()->willReturn('silk');
+        $cotton->getCode()->willReturn('cotton');
+
         $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
         $productValue->shouldHaveAttribute('assets_collection_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldHaveReferenceData([$silk, $cotton]);
+        $productValue->shouldHaveReferenceData(['silk', 'cotton']);
     }
 
     function it_throws_an_exception_when_provided_data_is_not_an_array(AttributeInterface $attribute)
@@ -246,6 +255,8 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
         $referenceDataRepository->findOneBy(['code' => 'foobar'])->willReturn(null);
 
+        $silk->getCode()->willReturn('silk');
+
         $productValue = $this->create(
             $attribute,
             'ecommerce',
@@ -260,39 +271,32 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveLocale('en_US');
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldHaveReferenceData([$silk]);
+        $productValue->shouldHaveReferenceData(['silk']);
     }
 
     public function getMatchers()
     {
         return [
             'haveAttribute'     => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable'     => function ($subject) {
-                return null !== $subject->getLocale();
+                return null !== $subject->getLocaleCode();
             },
             'haveLocale'        => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable'        => function ($subject) {
-                return null !== $subject->getScope();
+                return null !== $subject->getScopeCode();
             },
             'haveChannel'       => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty'           => function ($subject) {
                 return is_array($subject->getData()) && 0 === count($subject->getData());
             },
             'haveReferenceData' => function ($subject, $expected) {
-                $fabrics = $subject->getData();
-
-                $hasFabrics = false;
-                foreach ($fabrics as $fabric) {
-                    $hasFabrics = in_array($fabric, $expected);
-                }
-
-                return $hasFabrics;
+                return $subject->getData() == $expected;
             },
         ];
     }

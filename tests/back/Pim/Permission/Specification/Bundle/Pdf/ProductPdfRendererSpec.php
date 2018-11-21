@@ -20,6 +20,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -32,6 +33,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         FilterProductValuesHelper $filterHelper,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository
@@ -44,6 +46,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $dataManager,
             $cacheManager,
             $filterManager,
+            $attributeRepository,
             $channelRepository,
             $localeRepository,
             self::TEMPLATE_NAME,
@@ -58,13 +61,17 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ArrayCollection $blenderValues,
         AttributeGroupInterface $design,
         AttributeInterface $color,
-        ValueInterface $blue
+        ValueInterface $blue,
+        $attributeRepository
     ) {
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
+
         $blender->getValues()->willReturn($blenderValues);
+        $blender->getUsedAttributeCodes()->willReturn(['color']);
         $blenderValues->toArray()->willReturn([$blue]);
 
-        $blue->getAttribute()->willReturn($color);
+        $blue->getAttributeCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $color->getCode()->willReturn('color');
 
         $color->getGroup()->willReturn($design);
@@ -101,7 +108,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
         ValueInterface $productValue,
-        FileInfoInterface $fileInfo
+        FileInfoInterface $fileInfo,
+        $attributeRepository
     ) {
         $mainImage->isScopable()->willReturn(true);
         $mainImage->isLocalizable()->willReturn(true);
@@ -110,10 +118,11 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$productValue]);
 
-        $blender->getAttributes()->willReturn([$mainImage]);
+        $blender->getUsedAttributeCodes()->willReturn(['main_image']);
         $blender->getValue('main_image', 'en_US', 'ecommerce')->willReturn($productValue);
 
-        $productValue->getAttribute()->willReturn($mainImage);
+        $productValue->getAttributeCode()->willReturn('main_image');
+        $attributeRepository->findOneByIdentifier('main_image')->willReturn($mainImage);
         $productValue->getData()->willReturn($fileInfo);
 
         $mainImage->getGroup()->willReturn($media);
@@ -168,7 +177,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         LocaleInterface $localeFr,
         ChannelInterface $channelMobile,
         BinaryInterface $srcFile,
-        BinaryInterface $thumbnailFile
+        BinaryInterface $thumbnailFile,
+        $attributeRepository
     ) {
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($localeFr);
@@ -177,10 +187,13 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$productValue]);
 
-        $blender->getAttributes()->willReturn([$assetCollectionAttr]);
+        $blender->getUsedAttributeCodes()->willReturn(['front_view']);
         $blender->getValue('front_view', 'fr_FR', 'mobile')->willReturn($productValue);
 
-        $productValue->getAttribute()->willReturn($assetCollectionAttr);
+        $productValue->getAttributeCode()->willReturn('front_view');
+
+        $attributeRepository->findOneByIdentifier('front_view')->willReturn($assetCollectionAttr);
+
         $assetCollectionAttr->getCode()->willReturn('front_view');
         $assetCollectionAttr->getType()->willReturn('pim_assets_collection');
         $assetCollectionAttr->isScopable()->willReturn(true);
@@ -246,7 +259,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         LocaleInterface $localeFr,
         ChannelInterface $channelMobile,
         BinaryInterface $srcFile,
-        BinaryInterface $thumbnailFile
+        BinaryInterface $thumbnailFile,
+        $attributeRepository
     ) {
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($localeFr);
@@ -255,10 +269,13 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$productValue]);
 
-        $blender->getAttributes()->willReturn([$assetCollectionAttr]);
+        $blender->getUsedAttributeCodes()->willReturn(['front_view']);
         $blender->getValue('front_view', 'fr_FR', 'mobile')->willReturn($productValue);
 
-        $productValue->getAttribute()->willReturn($assetCollectionAttr);
+        $productValue->getAttributeCode()->willReturn('front_view');
+
+        $attributeRepository->findOneByIdentifier('front_view')->willReturn($assetCollectionAttr);
+
         $assetCollectionAttr->getCode()->willReturn('front_view');
         $assetCollectionAttr->getType()->willReturn('pim_assets_collection');
         $assetCollectionAttr->isScopable()->willReturn(true);

@@ -31,7 +31,7 @@ class ReferenceDataPresenter extends AbstractReferenceDataPresenter
      */
     protected function normalizeData($data)
     {
-        return (string) $data;
+        return $data;
     }
 
     /**

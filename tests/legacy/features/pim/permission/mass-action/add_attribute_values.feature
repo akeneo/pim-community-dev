@@ -85,6 +85,6 @@ Feature: Mass add product value to products at once via a form
     When I confirm mass edit
     And I wait for the "add_attribute_value" job to finish
     Then the product "super_watch" should have the following values:
-      | assets | video_3, video_1, video_2 |
+      | assets | [video_3], [video_1], [video_2] |
     And the product "super_hat" should have the following values:
-      | assets | video_3 |
+      | assets | [video_3] |

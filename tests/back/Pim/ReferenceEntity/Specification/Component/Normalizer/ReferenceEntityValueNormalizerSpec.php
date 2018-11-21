@@ -12,10 +12,16 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ReferenceEntityValueNormalizer::class);
@@ -33,13 +39,15 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_null_reference_data_product_value(
         ReferenceEntityValue $designerValue,
-        AttributeInterface $designer
+        AttributeInterface $designer,
+        $attributeRepository
     ) {
-        $designerValue->getAttribute()->willReturn($designer);
+        $designerValue->getAttributeCode()->willReturn('designer');
+        $attributeRepository->findOneByIdentifier('designer')->willReturn($designer);
         $designer->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION);
 
-        $designerValue->getLocale()->willReturn(null);
-        $designerValue->getScope()->willReturn(null);
+        $designerValue->getLocaleCode()->willReturn(null);
+        $designerValue->getScopeCode()->willReturn(null);
 
         $designer->getCode()->willReturn('designer');
 
@@ -61,20 +69,22 @@ class ReferenceEntityValueNormalizerSpec extends ObjectBehavior
         ReferenceEntityValue $designerValue,
         AttributeInterface $designer,
         Record $dyson,
-        RecordCode $dysonCode
+        RecordCode $dysonCode,
+        $attributeRepository
     ) {
-        $designerValue->getAttribute()->willReturn($designer);
+        $designerValue->getAttributeCode()->willReturn('designer');
+        $attributeRepository->findOneByIdentifier('designer')->willReturn($designer);
         $designer->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTION);
 
-        $designerValue->getLocale()->willReturn(null);
-        $designerValue->getScope()->willReturn(null);
+        $designerValue->getLocaleCode()->willReturn(null);
+        $designerValue->getScopeCode()->willReturn(null);
 
         $designer->getCode()->willReturn('designer');
 
         $dysonCode->__toString()->willReturn('dyson');
         $dyson->getCode()->willReturn($dysonCode);
 
-        $designerValue->getData()->willReturn($dyson);
+        $designerValue->getData()->willReturn($dysonCode);
 
         $this->normalize($designerValue,
             ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(

@@ -70,7 +70,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $fullProduct->getValue('sku')->willReturn($identifierValue);
-        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierValue->getAttributeCode()->willReturn('sku');
 
         $valuesMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
         $associationMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
@@ -137,7 +137,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $fullProduct->getValue('sku')->willReturn($identifierValue);
-        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierValue->getAttributeCode()->willReturn('sku');
 
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
@@ -184,7 +184,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $fullProduct->getValue('sku')->willReturn($identifierValue);
         $fullProduct->isVariant()->willReturn(false);
-        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierValue->getAttributeCode()->willReturn('sku');
 
         $valuesMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
         $associationMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
@@ -234,7 +234,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $fullVariantProduct->getValue('sku')->willReturn($identifierValue);
-        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierValue->getAttributeCode()->willReturn('sku');
 
         $fullVariantProduct->isVariant()->willReturn(true);
         $fullVariantProduct->setEnabled(true)->shouldBeCalled();

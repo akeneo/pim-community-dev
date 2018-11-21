@@ -26,8 +26,12 @@ class ImagePresenter extends FilePresenter
      */
     public function supports($data)
     {
-        return $data instanceof ValueInterface &&
-            AttributeTypes::IMAGE === $data->getAttribute()->getType();
+        if ($data instanceof ValueInterface) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+            return null !== $attribute && AttributeTypes::IMAGE === $attribute->getType();
+        }
+
+        return false;
     }
 
     /**

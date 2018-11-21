@@ -69,6 +69,8 @@ services:
     pimee_catalog.filter.product_value_attribute_group_right:
         class: '%pimee_catalog.filter.product_value_attribute_group_right.class%'
         parent: pimee_catalog.filter.abstract_authorization
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
@@ -80,6 +82,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
@@ -182,6 +185,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
 
     pimee_catalog.security.filter.not_granted_parent:
         class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedParentFilter'

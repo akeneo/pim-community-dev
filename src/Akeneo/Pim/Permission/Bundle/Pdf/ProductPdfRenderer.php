@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer as Pi
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -42,19 +43,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /**
-     * @param EngineInterface            $templating
-     * @param PdfBuilderInterface        $pdfBuilder
-     * @param FilterProductValuesHelper  $filterHelper
-     * @param DataManager                $dataManager
-     * @param CacheManager               $cacheManager
-     * @param FilterManager              $filterManager
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param string                     $template
-     * @param string                     $uploadDirectory
-     * @param null                       $customFont
-     */
     public function __construct(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
@@ -62,11 +50,12 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        $template,
-        $uploadDirectory,
-        $customFont = null
+        string $template,
+        string $uploadDirectory,
+        ?string $customFont = null
     ) {
         parent::__construct(
             $templating,
@@ -74,6 +63,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
             $dataManager,
             $cacheManager,
             $filterManager,
+            $attributeRepository,
             $template,
             $uploadDirectory,
             $customFont
@@ -93,7 +83,10 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         $attributes = [];
 
         foreach ($values as $value) {
-            $attributes[$value->getAttribute()->getCode()] = $value->getAttribute();
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+            if ($attribute !== null) {
+                $attributes[$value->getAttributeCode()] = $attribute;
+            }
         }
 
         return $attributes;

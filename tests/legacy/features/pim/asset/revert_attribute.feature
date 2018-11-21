@@ -41,4 +41,4 @@ Feature: Revert an assets collection in a product
       | 3       | gallery  | chicagoskyline |
     When I revert the product version number 2
     Then the product "jeans" should have the following values:
-      | gallery | paint, chicagoskyline |
+      | gallery | [paint], [chicagoskyline] |

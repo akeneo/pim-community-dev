@@ -77,8 +77,8 @@ class AddAssetToEntityWithValues
         $previousAssetCodes = [];
         $previousValue = $entityWithValues->getValue($attributeCode);
         if (null !== $previousValue) {
-            $previousAssetCodes = array_map(function (AssetInterface $asset) {
-                return $asset->getCode();
+            $previousAssetCodes = array_map(function (string $assetCode) {
+                return $assetCode;
             }, $previousValue->getData());
         }
 

@@ -105,6 +105,8 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $productRepository->find($productId)->willReturn($product);
 
         $ean->getCode()->willReturn('ean');
+        $eanValue->hasData()->willReturn(true);
+        $eanValue->__toString()->willReturn('an_ean');
 
         $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping(['upc' => $ean->getWrappedObject()]));
 

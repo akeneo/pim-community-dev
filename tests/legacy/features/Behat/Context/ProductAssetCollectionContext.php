@@ -103,8 +103,8 @@ class ProductAssetCollectionContext implements Context
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
         $assetCollectionValue = $product->getValue($attributeCode);
 
-        foreach ($assetCollectionValue->getData() as $asset) {
-            $currentAssetCodes[] = $asset->getCode();
+        foreach ($assetCollectionValue->getData() as $assetCode) {
+            $currentAssetCodes[] = $assetCode;
         }
 
         Assert::same($currentAssetCodes, $expectedAssetCodes);

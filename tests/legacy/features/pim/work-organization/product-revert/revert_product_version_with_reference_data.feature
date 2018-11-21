@@ -74,4 +74,4 @@ Feature: Revert a product to a previous version
       | 3       | Main fabric | cashmerewool,neoprene |
     When I revert the product version number 2
     Then the product "red-heels" should have the following values:
-      | main_fabric | Cashmerewool, [neoprene], Silk |
+      | main_fabric | [cashmerewool], [neoprene], [silk] |

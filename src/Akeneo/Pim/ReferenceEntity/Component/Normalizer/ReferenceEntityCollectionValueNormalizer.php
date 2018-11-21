@@ -15,7 +15,7 @@ namespace Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -34,8 +34,8 @@ class ReferenceEntityCollectionValueNormalizer extends AbstractProductValueNorma
     protected function getNormalizedData(ValueInterface $value): array
     {
         $records = $value->getData();
-        $recordsCode = array_map(function (Record $record) {
-            return $record->getCode()->__toString();
+        $recordsCode = array_map(function (RecordCode $recordCode) {
+            return $recordCode->__toString();
         }, $records);
 
         return $recordsCode;

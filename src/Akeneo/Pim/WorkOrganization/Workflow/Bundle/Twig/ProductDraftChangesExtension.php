@@ -17,7 +17,6 @@ use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TwigAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -170,10 +169,6 @@ class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Exten
 
                 if ($presenter instanceof RendererAwareInterface) {
                     $presenter->setRenderer($this->renderer);
-                }
-
-                if ($presenter instanceof TwigAwareInterface) {
-                    $presenter->setTwig($this->twig);
                 }
 
                 return $presenter->present($object, $change);

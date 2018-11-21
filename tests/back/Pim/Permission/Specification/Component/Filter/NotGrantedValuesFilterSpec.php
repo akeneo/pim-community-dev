@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
@@ -25,9 +25,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class NotGrantedValuesFilterSpec extends ObjectBehavior
 {
-    function let(AuthorizationCheckerInterface $authorizationChecker, CachedObjectRepositoryInterface $localeRepository)
-    {
-        $this->beConstructedWith($authorizationChecker, $localeRepository);
+    function let(
+        AuthorizationCheckerInterface $authorizationChecker,
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
+        $this->beConstructedWith($authorizationChecker, $localeRepository, $attributeRepository);
     }
 
     function it_implements_a_filter_interface()
@@ -42,6 +45,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
 
     function it_removes_not_granted_values_from_an_entity_with_values_without_variation(
         $authorizationChecker,
+        $attributeRepository,
         EntityWithValuesInterface $entityWithValues,
         ValueCollectionInterface $values,
         ValueInterface $textValue,
@@ -58,14 +62,16 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $valuesIterator->current()->willReturn($textValue, $colorValue);
         $valuesIterator->next()->shouldBeCalled();
 
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $colorValue->getAttribute()->willReturn($colorAttribute);
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
+        $colorValue->getAttributeCode()->willReturn('my_color_attribute');
+        $attributeRepository->findOneByIdentifier('my_color_attribute')->willReturn($colorAttribute);
 
         $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $textAttribute)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $colorAttribute)->willReturn(true);
         $values->remove($textValue)->shouldBeCalled();
         $values->remove($colorValue)->shouldNotBeCalled();
-        $colorValue->getLocale()->willReturn(null);
+        $colorValue->getLocaleCode()->willReturn(null);
 
         $entityWithValues->setValues($values)->shouldBeCalled();
 
@@ -75,6 +81,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
     function it_removes_not_granted_localizable_values_from_an_entity_with_values_without_variation(
         $authorizationChecker,
         $localeRepository,
+        $attributeRepository,
         EntityWithValuesInterface $entityWithValues,
         ValueCollectionInterface $values,
         ValueInterface $descriptionFrValue,
@@ -92,14 +99,15 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $valuesIterator->current()->willReturn($descriptionFrValue, $descriptionEnValue);
         $valuesIterator->next()->shouldBeCalled();
 
-        $descriptionFrValue->getAttribute()->willReturn($descriptionAttribute);
-        $descriptionEnValue->getAttribute()->willReturn($descriptionAttribute);
+        $descriptionFrValue->getAttributeCode()->willReturn('description');
+        $descriptionEnValue->getAttributeCode()->willReturn('description');
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
 
         $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $descriptionAttribute)->willReturn(true);
         $values->remove($descriptionFrValue)->shouldNotBeCalled();
         $values->remove($descriptionEnValue)->shouldNotBeCalled();
-        $descriptionFrValue->getLocale()->willReturn('fr_FR');
-        $descriptionEnValue->getLocale()->willReturn('en_US');
+        $descriptionFrValue->getLocaleCode()->willReturn('fr_FR');
+        $descriptionEnValue->getLocaleCode()->willReturn('en_US');
 
         $frLocale->getCode()->willReturn('fr_FR');
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
@@ -118,6 +126,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
 
     function it_removes_not_granted_values_from_an_entity_with_values_with_variation(
         $authorizationChecker,
+        $attributeRepository,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         ValueCollectionInterface $values,
         ValueInterface $textValue,
@@ -136,14 +145,16 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $valuesIterator->current()->willReturn($textValue, $colorValue);
         $valuesIterator->next()->shouldBeCalled();
 
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $colorValue->getAttribute()->willReturn($colorAttribute);
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
+        $colorValue->getAttributeCode()->willReturn('my_color_attribute');
+        $attributeRepository->findOneByIdentifier('my_color_attribute')->willReturn($colorAttribute);
 
         $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $textAttribute)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $colorAttribute)->willReturn(true);
         $values->remove($textValue)->shouldBeCalled();
         $values->remove($colorValue)->shouldNotBeCalled();
-        $colorValue->getLocale()->willReturn(null);
+        $colorValue->getLocaleCode()->willReturn(null);
 
         $entityWithFamilyVariant->setValues($values)->shouldBeCalled();
 

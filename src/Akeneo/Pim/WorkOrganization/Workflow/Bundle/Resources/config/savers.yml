@@ -22,8 +22,7 @@ services:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'
         arguments:
             - '@pimee_workflow.factory.published_product_unique_data'
-            - '@pim_catalog.repository.product_unique_data'
-            - '%pimee_workflow.entity.published_product_unique_data.class%'
+            - '@pim_catalog.repository.cached_attribute'
 
     # product draft saver
     pimee_workflow.saver.product_draft:

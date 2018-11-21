@@ -20,7 +20,7 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $family->getId()->willReturn(42);
@@ -29,7 +29,7 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(true);
 
         $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn('Petit outil agricole authentique');
@@ -49,7 +49,7 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $family->getId()->willReturn(42);
@@ -58,7 +58,7 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn('Petit outil agricole authentique');
@@ -78,7 +78,7 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $family->getId()->willReturn(42);
@@ -87,7 +87,7 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(true);
 
         $values->getByCodes('name', 'mobile', 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn('Petite pelle');
@@ -106,9 +106,9 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
 
         $this->setFamily(null);
@@ -128,9 +128,9 @@ class PublishedProductSpec extends ObjectBehavior
         $family->getId()->willReturn(42);
 
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
 
         $this->setFamily($family);
@@ -147,7 +147,7 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $family->getId()->willReturn(42);
@@ -155,7 +155,7 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
         $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
 
@@ -174,7 +174,7 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
-        $identifier->getAttribute()->willReturn($attributeAsLabel);
+        $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $family->getId()->willReturn(42);
@@ -183,7 +183,7 @@ class PublishedProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->removeByAttributeCode('name')->shouldBeCalled();
         $values->add($identifier)->shouldBeCalled();
 
         $nameValue->getData()->willReturn(null);
@@ -240,15 +240,15 @@ class PublishedProductSpec extends ObjectBehavior
 
         $valueAttribute->getCode()->willReturn('value');
         $valueAttribute->isUnique()->willReturn(false);
-        $value->getAttribute()->willReturn($valueAttribute);
-        $value->getScope()->willReturn(null);
-        $value->getLocale()->willReturn(null);
+        $value->getAttributeCode()->willReturn('value');
+        $value->getScopeCode()->willReturn(null);
+        $value->getLocaleCode()->willReturn(null);
 
         $otherValueAttribute->getCode()->willReturn('otherValue');
         $otherValueAttribute->isUnique()->willReturn(false);
-        $otherValue->getAttribute()->willReturn($otherValueAttribute);
-        $otherValue->getScope()->willReturn(null);
-        $otherValue->getLocale()->willReturn(null);
+        $otherValue->getAttributeCode()->willReturn('otherValue');
+        $otherValue->getScopeCode()->willReturn(null);
+        $otherValue->getLocaleCode()->willReturn(null);
 
         $productModel->getParent()->willReturn(null);
         $productModel->getValuesForVariation()->willReturn($parentValuesCollection);

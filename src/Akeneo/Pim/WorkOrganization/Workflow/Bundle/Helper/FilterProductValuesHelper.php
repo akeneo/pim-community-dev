@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -22,14 +23,17 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class FilterProductValuesHelper
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->attributeRepository = $attributeRepository;
         $this->authorizationChecker = $authorizationChecker;
     }
 
@@ -48,9 +52,10 @@ class FilterProductValuesHelper
         $filteredValues = [];
 
         foreach ($values as $value) {
-            $attribute = $value->getAttribute();
+            $attributeCode = $value->getAttributeCode();
+            $attribute = $this->findOneByIdentifier($attributeCode);
 
-            if (null !== $locale && $attribute->isLocalizable() && $value->getLocale() !== $locale) {
+            if (null !== $locale && $attribute->isLocalizable() && $value->getLocaleCode() !== $locale) {
                 continue;
             }
 

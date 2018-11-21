@@ -11,11 +11,34 @@
 - PAV3-4: Regroup PAM Classes
 - Composer use Packagist to retrieve pim-community-dev
 - Uses centralized community edition technical requirements
-- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
+- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less complete utf8
+- TIP-883: In order to have a clean and independant product aggregate, ProductValue only provides attribute code and no more direct attribute access.
 
 ## BC breaks
 - Remove `Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType`
 - Remove bundle `PimEnterpriseUserBundle`
+- The service `pim_catalog.repository.cached_attribute`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:
+  - `Akeneo/Pim/Asset/Component/Completeness/Checker/AssetCollectionCompleteChecker`
+  - `Akeneo/Pim/Permission/Bundle/Filter/ProductValueAttributeGroupRightFilter`
+  - `Akeneo/Pim/Permission/Bundle/Filter/ProductValueLocaleRightFilter`
+  - `Akeneo/Pim/Permission/Bundle/Pdf/ProductPdfRenderer`
+  - `Akeneo/Pim/Permission/Component/Filter/NotGrantedValuesFilter`
+  - `Akeneo/Pim/WorkOrganization/TeamworkAssistant/Component/Calculator/AttributeGroupCompletenessCalculator`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Helper/FilterProductValuesHelper`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/AbstractProductValuePresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/AssetsCollectionPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/DatePresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/FilePresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/MetricPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/NumberPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/OptionPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/OptionsPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/PricesPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Presenter/ReferenceData/AbstractReferenceDataPresenter`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Bundle/Twig/SortProductValuesHelper`
+  - `Akeneo/Pim/WorkOrganization/Workflow/Component/Normalizer/Indexing/LabelNormalizer`
+  - `Akeneo\Asset\Component\Normalizer\InternalApi\ImageNormalizer`
+
 - Move `PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\AttributeExtension`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductModelNormalizer`
 - Move `Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryItemsCounter`

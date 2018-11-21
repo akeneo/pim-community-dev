@@ -5,16 +5,17 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class OptionsPresenterSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $repository)
-    {
-        $this->beConstructedWith($repository);
+    function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $optionRepository
+    ) {
+        $this->beConstructedWith($attributeRepository, $optionRepository);
     }
 
     function it_is_a_translator_aware_presenter()
@@ -28,20 +29,19 @@ class OptionsPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_options_change_using_the_injected_renderer(
-        $repository,
+        $optionRepository,
         RendererInterface $renderer,
         ValueInterface $value,
-        AttributeInterface $attribute,
         AttributeOptionInterface $red,
         AttributeOptionInterface $green,
         AttributeOptionInterface $blue
     ) {
-        $repository->findOneByIdentifier('color.red')->willReturn($red);
-        $repository->findOneByIdentifier('color.green')->willReturn($green);
-        $repository->findOneByIdentifier('color.blue')->willReturn($blue);
-        $value->getData()->willReturn([$red, $green]);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('color');
+        $optionRepository->findOneByIdentifier('color.red')->willReturn($red);
+        $optionRepository->findOneByIdentifier('color.green')->willReturn($green);
+        $optionRepository->findOneByIdentifier('color.blue')->willReturn($blue);
+        $value->getData()->willReturn(['red', 'green']);
+        $value->getAttributeCode()->willReturn('color');
+        $blue->__toString()->willReturn('blue');
         $red->__toString()->willReturn('Red');
         $green->__toString()->willReturn('Green');
         $blue->__toString()->willReturn('Blue');

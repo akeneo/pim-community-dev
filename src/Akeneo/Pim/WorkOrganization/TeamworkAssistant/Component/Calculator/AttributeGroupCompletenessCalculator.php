@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCh
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\AttributeGroupCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -29,16 +30,17 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
     /** @var FamilyRequirementRepositoryInterface */
     protected $familyRequirementRepository;
 
-    /**
-     * @param ValueCompleteCheckerInterface        $productValueChecker
-     * @param FamilyRequirementRepositoryInterface $familyRequirementRepository
-     */
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     public function __construct(
         ValueCompleteCheckerInterface $productValueChecker,
-        FamilyRequirementRepositoryInterface $familyRequirementRepository
+        FamilyRequirementRepositoryInterface $familyRequirementRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->productValueChecker = $productValueChecker;
         $this->familyRequirementRepository = $familyRequirementRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -104,15 +106,18 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
     ) {
         $filledAttributes = [];
         foreach ($product->getValues() as $value) {
-            $attribute = $value->getAttribute();
-            if ($attribute->isScopable() && $value->getScope() !== $channel->getCode() ||
-                $attribute->isLocalizable() && $value->getLocale() !== $locale->getCode()
+            if ($value->isScopable() && $value->getScopeCode() !== $channel->getCode() ||
+                $value->isLocalizable() && $value->getLocaleCode() !== $locale->getCode()
             ) {
                 continue;
             }
 
             if ($this->productValueChecker->isComplete($value, $channel, $locale)) {
-                $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
+                $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+                if (null !== $attribute) {
+                    $filledAttributes[$attribute->getGroup()->getId()][] = $attribute->getCode();
+                }
             }
         }
 

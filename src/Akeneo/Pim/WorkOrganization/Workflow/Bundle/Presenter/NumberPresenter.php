@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Present changes on numbers
@@ -28,12 +29,13 @@ class NumberPresenter extends AbstractProductValuePresenter
     /** @var LocaleResolver */
     protected $localeResolver;
 
-    /**
-     * @param BasePresenterInterface $numberPresenter
-     * @param LocaleResolver         $localeResolver
-     */
-    public function __construct(BasePresenterInterface $numberPresenter, LocaleResolver $localeResolver)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        BasePresenterInterface $numberPresenter,
+        LocaleResolver $localeResolver
+    ) {
+        parent::__construct($attributeRepository);
+
         $this->numberPresenter = $numberPresenter;
         $this->localeResolver = $localeResolver;
     }

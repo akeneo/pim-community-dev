@@ -16,6 +16,9 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Product Value filter
@@ -26,9 +29,21 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
     CollectionFilterInterface,
     ObjectFilterInterface
 {
-
     /** @var array */
     protected $attributeGroupAccess = [];
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
+        IdentifiableObjectRepositoryInterface $attributeRepository
+    ) {
+        parent::__construct($tokenStorage, $authorizationChecker);
+
+        $this->attributeRepository = $attributeRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -53,16 +68,20 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
             throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
-        $groupId = $value->getAttribute()->getGroup()->getId();
+        $attribute  = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
 
-        if (!isset($this->attributeGroupAccess[$groupId])) {
-            $this->attributeGroupAccess[$groupId] = $this->authorizationChecker->isGranted(
-                Attributes::VIEW_ATTRIBUTES,
-                $value->getAttribute()->getGroup()
-            );
+        if ($attribute !== null) {
+            $groupId = $attribute->getGroup()->getId();
+
+            if (!isset($this->attributeGroupAccess[$groupId])) {
+                $this->attributeGroupAccess[$groupId] = $this->authorizationChecker->isGranted(
+                    Attributes::VIEW_ATTRIBUTES,
+                    $attribute->getGroup()
+                );
+            }
+
+            return !$this->attributeGroupAccess[$groupId];
         }
-
-        return !$this->attributeGroupAccess[$groupId];
     }
 
     /**

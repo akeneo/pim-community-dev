@@ -31,7 +31,7 @@ class ReferenceEntityValueNormalizer extends AbstractProductValueNormalizer impl
      */
     protected function getNormalizedData(ValueInterface $value): ?string
     {
-        return (null !== $value->getData()) ? (string) $value->getData()->getCode() : null;
+        return (null !== $value->getData()) ? (string) $value->getData() : null;
     }
 
     /**

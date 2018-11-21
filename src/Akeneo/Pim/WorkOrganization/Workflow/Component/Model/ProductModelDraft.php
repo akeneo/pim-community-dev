@@ -440,9 +440,9 @@ class ProductModelDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsedAttributeCodes()
+    public function getUsedAttributeCodes(): array
     {
-        return $this->values->getAttributesKeys();
+        return $this->values->getAttributeCodes();
     }
 
     /**
@@ -456,8 +456,8 @@ class ProductModelDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttribute(AttributeInterface $attribute)
+    public function hasAttribute(string $attributeCode): bool
     {
-        return in_array($attribute, $this->getValues()->getAttributes(), true);
+        return in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
     }
 }
