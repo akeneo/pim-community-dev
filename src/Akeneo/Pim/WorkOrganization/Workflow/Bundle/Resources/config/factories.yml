@@ -17,3 +17,18 @@ services:
         class: '%pim_catalog.factory.product_unique_data.class%'
         arguments:
             - '%pimee_workflow.entity.published_product_unique_data.class%'
+
+    ##User factory
+    pimee_workflow.factory.user.default_proposals_to_review_notification:
+        class: Akeneo\UserManagement\Component\Factory\SimpleDefaultProperty
+        public: false
+        arguments:
+            $propertyName: 'proposals_to_review_notification'
+            $defaultPropertyValue: true
+
+    pimee_workflow.factory.user.default_proposals_state_notifications:
+        class: Akeneo\UserManagement\Component\Factory\SimpleDefaultProperty
+        public: false
+        arguments:
+            $propertyName: 'proposals_state_notifications'
+            $defaultPropertyValue: true

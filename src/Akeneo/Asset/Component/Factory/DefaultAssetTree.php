@@ -11,46 +11,31 @@
 
 namespace Akeneo\Asset\Component\Factory;
 
-use Akeneo\Asset\Component\Model\CategoryInterface;
 use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\UserManagement\Component\Factory\DefaultProperty;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
- * Creates and configures a user instance.
- *
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserFactory implements SimpleFactoryInterface
+class DefaultAssetTree implements DefaultProperty
 {
-    /** @var SimpleFactoryInterface */
-    private $userFactory;
-
     /** @var AssetCategoryRepositoryInterface */
     private $assetCategoryRepository;
 
-    /**
-     * SimpleFactoryInterface $userFactory
-     * AssetCategoryRepositoryInterface $assetCategoryRepository
-     */
-    public function __construct(
-        SimpleFactoryInterface $userFactory,
-        AssetCategoryRepositoryInterface $assetCategoryRepository)
+    public function __construct(AssetCategoryRepositoryInterface $assetCategoryRepository)
     {
-        $this->userFactory = $userFactory;
         $this->assetCategoryRepository = $assetCategoryRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function mutate(UserInterface $user): UserInterface
     {
-        /** @var UserInterface $user */
-        $user = $this->userFactory->create();
-
         if (null !== $defaultAssetTree = $this->getDefaultAssetTree()) {
             $user->addProperty('default_asset_tree', $defaultAssetTree->getCode());
         }

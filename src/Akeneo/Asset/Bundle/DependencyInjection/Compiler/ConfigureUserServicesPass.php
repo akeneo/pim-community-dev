@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\DependencyInjection\Compiler;
 
+use Akeneo\Asset\Component\Factory\DefaultAssetTree;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -31,5 +32,12 @@ class ConfigureUserServicesPass implements CompilerPassInterface
         $userNormalizer->addArgument('asset_delay_reminder');
         $userNormalizer->addArgument('default_asset_tree');
         $userNormalizer->addArgument('email_notifications');
+
+        $userFactory = $container->getDefinition('pim_user.factory.user');
+        $defaultAssetTree = $container->getDefinition(DefaultAssetTree::class);
+        $defaultAssetDelayReminder = $container->getDefinition('pimee_asset.factory.user.default_asset_delay_reminder');
+
+        $userFactory->addArgument($defaultAssetTree);
+        $userFactory->addArgument($defaultAssetDelayReminder);
     }
 }

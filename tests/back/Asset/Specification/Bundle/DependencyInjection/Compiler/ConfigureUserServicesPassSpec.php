@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Asset\Bundle\DependencyInjection\Compiler;
 
 use Akeneo\Asset\Bundle\DependencyInjection\Compiler\ConfigureUserServicesPass;
+use Akeneo\Asset\Component\Factory\DefaultAssetTree;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -24,7 +25,10 @@ class ConfigureUserServicesPassSpec extends ObjectBehavior
     function it_registers_the_user_preferences_subscriber(
         ContainerBuilder $container,
         Definition $userUpdater,
-        Definition $userNormalizer
+        Definition $userNormalizer,
+        Definition $userFactory,
+        Definition $defaultAssetTree,
+        Definition $defaultAssetDelayReminder
     ) {
         $container->getDefinition('pim_user.updater.user')->willReturn($userUpdater);
         $userUpdater->addArgument('asset_delay_reminder')->shouldBeCalled();
@@ -35,6 +39,13 @@ class ConfigureUserServicesPassSpec extends ObjectBehavior
         $userNormalizer->addArgument('asset_delay_reminder')->shouldBeCalled();
         $userNormalizer->addArgument('default_asset_tree')->shouldBeCalled();
         $userNormalizer->addArgument('email_notifications')->shouldBeCalled();
+
+        $container->getDefinition('pim_user.factory.user')->willReturn($userFactory);
+        $container->getDefinition(DefaultAssetTree::class)->willReturn($defaultAssetTree);
+        $container->getDefinition('pimee_asset.factory.user.default_asset_delay_reminder')->willReturn($defaultAssetDelayReminder);
+
+        $userFactory->addArgument($defaultAssetTree)->shouldBeCalled();
+        $userFactory->addArgument($defaultAssetDelayReminder)->shouldBeCalled();
 
         $this->process($container)->shouldReturn(null);
     }

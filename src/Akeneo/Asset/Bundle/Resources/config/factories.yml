@@ -58,9 +58,15 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
-    pimee_user.factory.user:
-        class: 'Akeneo\Asset\Component\Factory\UserFactory'
-        decorates: pim_user.factory.user
+    ##### User Factory
+    pimee_asset.factory.user.default_asset_delay_reminder:
+        class: Akeneo\UserManagement\Component\Factory\SimpleDefaultProperty
+        public: false
         arguments:
-            - '@pimee_user.factory.user.inner'
-            - '@pimee_product_asset.repository.asset_category'
+            $propertyName: 'asset_delay_reminder'
+            $defaultPropertyValue: 5
+
+    Akeneo\Asset\Component\Factory\DefaultAssetTree:
+        public: false
+        arguments:
+            $assetCategoryRepository: '@pimee_product_asset.repository.asset_category'

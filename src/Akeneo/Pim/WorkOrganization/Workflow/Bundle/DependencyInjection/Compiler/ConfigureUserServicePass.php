@@ -36,5 +36,13 @@ class ConfigureUserServicePass implements CompilerPassInterface
         $userUpdater = $container->getDefinition('pim_user.updater.user');
         $userUpdater->addArgument('proposals_to_review_notification');
         $userUpdater->addArgument('proposals_state_notifications');
+
+        $userFactory = $container->getDefinition('pim_user.factory.user');
+
+        $defaultProposalsToReviewNotification = $container->getDefinition('pimee_workflow.factory.user.default_proposals_to_review_notification');
+        $defaultProposalsStateNotifications = $container->getDefinition('pimee_workflow.factory.user.default_proposals_state_notifications');
+
+        $userFactory->addArgument($defaultProposalsToReviewNotification);
+        $userFactory->addArgument($defaultProposalsStateNotifications);
     }
 }
