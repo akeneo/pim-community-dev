@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -42,6 +46,19 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
      */
     public function execute(): void
     {
+        $pimAttributeCode = 'pim_color';
+        $familyCode = 'router';
+
+        $response = $this->getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery($familyCode));
+
+        if (! $response->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
+            return;
+        }
+
+        $mapping = $this->buildNewAttributeMapping($response, $pimAttributeCode);
+
+        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $mapping);
+        $this->updateAttributesMappingHandler->handle($command);
     }
 
     /**
@@ -50,5 +67,27 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    private function buildNewAttributeMapping(AttributesMappingResponse $response, string $pimAttributeCode)
+    {
+        $mapping = [];
+
+        foreach ($response as $attributeMapping) {
+
+            $pimAttribute = $attributeMapping->getPimAttributeCode();
+            if ($attributeMapping->getPimAttributeCode() === $pimAttributeCode) {
+                $pimAttribute = null;
+            }
+
+            $mapping[$attributeMapping->getTargetAttributeCode()] = [
+                'franklinAttribute' => [
+                    'type' => $attributeMapping->getTargetAttributeType(),
+                ],
+                'attribute' => $pimAttribute,
+            ];
+        }
+
+        return $mapping;
     }
 }

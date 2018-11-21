@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -36,5 +40,64 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(RemoveAttributeFromAttributeMappingTasklet::class);
         $this->shouldImplement(TaskletInterface::class);
+    }
+
+    public function it_calls_franklin_with_the_new_mapping(
+        $getAttributesMappingHandler,
+        $updateAttributesMappingHandler
+    ) {
+        $franklinResponse = new AttributesMappingResponse();
+        $franklinResponse
+            ->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', 1, null))
+            ->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null))
+            ->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', 1, null));
+
+        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn($franklinResponse);
+
+        $updateAttributesMappingHandler->handle(new UpdateAttributesMappingByFamilyCommand('router', [
+            'franklin_size' => [
+                'franklinAttribute' => ['type' => 'text'],
+                'attribute' => 'pim_size',
+            ],
+            'franklin_color' => [
+                'franklinAttribute' => ['type' => 'text'],
+                'attribute' => null,
+            ],
+            'franklin_weight' => [
+                'franklinAttribute' => ['type' => 'text'],
+                'attribute' => 'pim_weight',
+            ],
+        ]))->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    public function it_does_not_calls_franklin_if_the_attribute_is_not_in_family_attribute_mapping(
+        $getAttributesMappingHandler,
+        $updateAttributesMappingHandler
+    ) {
+        $franklinResponse = new AttributesMappingResponse();
+        $franklinResponse->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', 1, null));
+
+        $getAttributesMappingHandler
+            ->handle(new GetAttributesMappingByFamilyQuery('router'))
+            ->willReturn($franklinResponse);
+
+        $updateAttributesMappingHandler->handle()->shouldNotBeCalled();
+
+        $this->execute();
+    }
+
+    public function it_does_not_update_the_mapping_if_the_mapping_is_empty(
+        $getAttributesMappingHandler,
+        $updateAttributesMappingHandler
+    ) {
+        $getAttributesMappingHandler
+            ->handle(new GetAttributesMappingByFamilyQuery('router'))
+            ->willReturn(new AttributesMappingResponse());
+
+        $updateAttributesMappingHandler->handle()->shouldNotBeCalled();
+
+        $this->execute();
     }
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -36,6 +37,22 @@ class AttributesMappingResponse implements \IteratorAggregate
         $this->attributes[] = $attribute;
 
         return $this;
+    }
+
+    /**
+     * @param AttributeCode $attributeCode
+     *
+     * @return bool
+     */
+    public function hasPimAttribute(AttributeCode $attributeCode): bool
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getPimAttributeCode() === (string) $attributeCode) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
