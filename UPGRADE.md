@@ -168,7 +168,7 @@ TODO: change the link!!
 
 3. Update your **app/config/config.yml**
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
     ```bash
     cp app/config/config.yml $PIM_DIR/app/config
@@ -237,7 +237,7 @@ TODO: change the link!!
 
 4. Update your **app/config/routing.yml**
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
     ```bash
     cp app/config/routing.yml $PIM_DIR/app/config
@@ -290,7 +290,7 @@ TODO: change the link!!
 
 5. Update your **app/config/security.yml**:
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own custom security configuration.
+    An easy way to update it is to copy/paste from the latest standard edition and add your own custom security configuration.
 
     * The following have been updated:
     
@@ -310,7 +310,7 @@ TODO: change the link!!
         
 5. Update your **app/AppKernel.php**:
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+    An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
 
     ```bash
     cp app/AppKernel.php $PIM_DIR/app/
