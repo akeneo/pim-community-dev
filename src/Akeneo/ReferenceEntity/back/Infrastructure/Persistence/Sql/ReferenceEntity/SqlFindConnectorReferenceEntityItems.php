@@ -40,31 +40,32 @@ class SqlFindConnectorReferenceEntityItems implements FindConnectorReferenceEnti
 
     public function __invoke(ReferenceEntityQuery $query): array
     {
-//        $sql = <<<SQL
-//        SELECT
-//            re.identifier,
-//            re.labels,
-//            fi.file_key as image_file_key,
-//            fi.original_filename as image_original_filename
-//        FROM akeneo_reference_entity_reference_entity as re
-//        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
-//        WHERE re.identifier = :identifier;
-        //SQL;
-//
-//        $statement = $this->connection->executeQuery(
-//            $sql,
-//            [
-//                'size' => (string) $size,
-//            ]
-//        );
-//
-//        $result = $statement->fetch();
-//
-//        if (empty($result)) {
-//            return null;
-//        }
-//
-//        return $this->referenceEntityHydrator->hydrate($result);
-        return [];
+        $sql = <<<SQL
+        SELECT
+            re.identifier,
+            re.labels,
+            fi.file_key as image_file_key,
+            fi.original_filename as image_original_filename
+        FROM akeneo_reference_entity_reference_entity as re
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = re.image
+SQL;
+
+        $statement = $this->connection->executeQuery(
+            $sql
+        );
+
+        $results = $statement->fetchAll();
+
+        if (empty($results)) {
+            return null;
+        }
+
+        $hydratedReferenceEntities = [];
+
+        foreach($results as $result) {
+            $hydratedReferenceEntities[] = $this->referenceEntityHydrator->hydrate($result);
+        }
+
+        return $hydratedReferenceEntities;
     }
 }
