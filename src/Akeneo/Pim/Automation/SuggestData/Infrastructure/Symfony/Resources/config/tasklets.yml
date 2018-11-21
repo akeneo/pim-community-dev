@@ -10,3 +10,10 @@ services:
         public: false
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.create_proposals'
+
+    akeneo.pim.automation.suggest_data.connector.tasklet.remove_attribute_from_attribute_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'

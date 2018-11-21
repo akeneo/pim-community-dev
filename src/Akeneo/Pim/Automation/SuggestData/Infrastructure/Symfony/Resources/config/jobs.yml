@@ -37,6 +37,17 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'suggest_data_fetch_products' }
 
+    akeneo.pim.automation.suggest_data.job.remove_attribute_from_attribute_mapping:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'suggest_data_remove_attribute_from_mapping'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.suggest_data.connector.step.remove_attribute_from_attribute_mapping'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'suggest_data' }
+
     # constraint collection providers
     akeneo.pim.automation.suggest_data.connector.job_parameters.constraint_collection_provider.product_mass_edit:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit'
@@ -55,6 +66,14 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
+    akeneo.pim.automation.suggest_data.connector.job_parameters.constraint_collection_provider.remove_attribute_from_attribute_mapping:
+        class: '%akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class%'
+        arguments:
+            -
+                - 'suggest_data_remove_attribute_from_mapping'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
     # default values providers
     akeneo.pim.automation.suggest_data.connector.job_parameters.default_values_provider.product_mass_edit:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductMassEdit'
@@ -70,5 +89,13 @@ services:
         arguments:
             -
                 - 'suggest_data_fetch_products'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo.pim.automation.suggest_data.connector.job_parameters.default_values_provider.remove_attribute_from_attribute_mapping:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - 'suggest_data_remove_attribute_from_mapping'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
