@@ -110,7 +110,10 @@
 
     {% set filters = [] %}
     {% for filter in entity.productGridFilters %}
-      {% set filters = filters|merge([filter_label(filter)]) %}
+      {% set label = filter_label(filter) %}
+      {% if label is not null %}
+        {% set filters = filters|merge([label]) %}
+      {% endif %}
     {% endfor %}
 
     {% set additionalData = [
