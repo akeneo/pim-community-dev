@@ -96,7 +96,8 @@ Feature: Apply a mass action on products only (and not product models)
       | category |          | master_women | watch, tshirt-unique-size-navy-blue, model-tshirt-divided-navy-blue |
 
   Scenario: Mass edits remove categories of products and product models
-    Given I show the filter "color"
+    Given I type "col" in the manage filter input
+    And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Black"
     And I select rows another-watch, cult-of-luna-black-m and model-nin-black
     And I press the "Bulk actions" button
