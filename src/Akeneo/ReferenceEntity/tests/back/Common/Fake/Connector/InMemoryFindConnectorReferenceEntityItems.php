@@ -37,15 +37,22 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers): array {
-        $referenceEntities = [];
+    public function __invoke($query): array {
+        // @TODO - do pagination here using size from query
+        // Filter on search after then apply limit
 
-        foreach ($identifiers as $identifier) {
-            if (isset($this->results[$identifier])) {
-                $referenceEntities[] = $this->recordsByIdentifier[$identifier];
-            }
-        }
+//        $searchAfterCode = $query->getSearchAfterCode();
+//        $records = array_values(array_filter($records, function (Record $record) use ($searchAfterCode): bool {
+//            return null === $searchAfterCode
+//                || strcasecmp((string) $record->getCode(), $searchAfterCode) > 0;
+//        }));
+//
+//        usort($records, function ($firstRecord, $secondRecord) {
+//            return strcasecmp((string) $firstRecord->getCode(), (string) $secondRecord->getCode());
+//        });
+//
+//        $records = array_slice($records, 0, $query->getSize());
 
-        return $referenceEntities;
+        return $this->results;
     }
 }

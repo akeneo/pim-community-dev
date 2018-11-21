@@ -23,16 +23,11 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
  */
 class ReferenceEntityQuery
 {
-    private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
-
     /** @var int|null */
     private $size;
 
     /** @var ReferenceEntityIdentifier|null */
     private $searchAfterCode;
-
-    /** @var string */
-    private $paginationMethod;
 
     private function __construct(
         int $size,
@@ -40,24 +35,9 @@ class ReferenceEntityQuery
     ) {
         $this->size = $size;
         $this->searchAfterCode  = $searchAfterCode;
-        $this->paginationMethod = self::PAGINATE_USING_SEARCH_AFTER;
     }
 
-//    public static function createFromNormalized(array $normalizedQuery): ReferenceEntityQuery
-//    {
-//        if (!(
-//            key_exists('size', $normalizedQuery)
-//        )) {
-//            throw new \InvalidArgumentException('ReferenceEntityQuery expect a size');
-//        }
-//
-//        return new ReferenceEntityQuery(
-//            $normalizedQuery['size'],
-//            null
-//        );
-//    }
-
-    public static function createPaginatedUsingSearchAfter(
+    public static function createPaginatedQuery(
         int $size,
         ?ReferenceEntityIdentifier $searchAfterCode
     ): ReferenceEntityQuery {
@@ -78,8 +58,4 @@ class ReferenceEntityQuery
         return null !== $this->searchAfterCode ? (string) $this->searchAfterCode : null;
     }
 
-    public function isPaginatedUsingSearchAfter()
-    {
-        return $this->paginationMethod === self::PAGINATE_USING_SEARCH_AFTER;
-    }
 }

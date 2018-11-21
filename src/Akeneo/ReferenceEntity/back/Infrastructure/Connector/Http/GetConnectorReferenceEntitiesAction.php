@@ -13,18 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\SearchReferenceEntity\SearchConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToReferenceEntityImage;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
 
 /**
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
@@ -32,14 +31,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class GetConnectorReferenceEntitiesAction
 {
-    /** @var ReferenceEntityExistsInterface */
-    private $referenceEntityExists;
-
     /** @var Limit */
     private $limit;
 
-    /** @var SearchConnectorReferenceEntity */
-    private $searchConnectorReferenceEntity;
+    /** @var FindConnectorReferenceEntityItemsInterface */
+    private $findConnectorReferenceEntityItems;
 
     /** @var PaginatorInterface */
     private $halPaginator;
@@ -48,14 +44,12 @@ class GetConnectorReferenceEntitiesAction
     private $addHalLinksToImageValues;
 
     public function __construct(
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        SearchConnectorReferenceEntity $searchConnectorReferenceEntity,
+        FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems,
         PaginatorInterface $halPaginator,
         AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues,
         int $limit
     ) {
-        $this->referenceEntityExists = $referenceEntityExists;
-        $this->searchConnectorReferenceEntity = $searchConnectorReferenceEntity;
+        $this->findConnectorReferenceEntityItems = $findConnectorReferenceEntityItems;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
         $this->addHalLinksToImageValues = $addHalLinksToImageValues;
@@ -70,14 +64,12 @@ class GetConnectorReferenceEntitiesAction
         try {
             $searchAfter = $request->get('search_after', null);
             $searchAfterIdentifier = null !== $searchAfter ? ReferenceEntityIdentifier::fromString($searchAfter) : null;
-            // @TODO - createPaginatedUsingSearch after should be paginated for in memory ?
-            $referenceEntityQuery = ReferenceEntityQuery::createPaginatedUsingSearchAfter($this->limit->intValue(), $searchAfterIdentifier);
+            $referenceEntityQuery = ReferenceEntityQuery::createPaginatedQuery($this->limit->intValue(), $searchAfterIdentifier);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
         }
 
-        // @TODO - this should return the number of items matching the limit only
-        $referenceEntities = ($this->searchConnectorReferenceEntity)($referenceEntityQuery);
+        $referenceEntities = ($this->findConnectorReferenceEntityItems)($referenceEntityQuery);
         $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
             $normalizedReferenceEntity = $referenceEntity->normalize();
             return ($this->addHalLinksToImageValues)($normalizedReferenceEntity);

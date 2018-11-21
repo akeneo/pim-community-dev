@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector;
 
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
+
 interface FindConnectorReferenceEntityItemsInterface
 {
-    public function __invoke(): array;
+    public function __invoke(ReferenceEntityQuery $query): array;
 }

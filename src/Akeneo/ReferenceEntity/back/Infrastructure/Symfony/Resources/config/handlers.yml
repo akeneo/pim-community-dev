@@ -16,11 +16,6 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
-    akeneo_referenceentity.application.reference_entity.search_connector_reference_entity:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\SearchReferenceEntity\SearchConnectorReferenceEntity
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items'
-
     # Attributes
     akeneo_referenceentity.application.attribute.create_attribute_handler:
         class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler

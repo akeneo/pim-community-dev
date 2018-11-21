@@ -3,7 +3,7 @@
     "method": "GET",
     "route": "akeneo_reference_entities_reference_entity_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "wrong_reference_entity"
+      "code": "wrong_reference_entity"
     }
   },
   "response": {
