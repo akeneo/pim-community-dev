@@ -997,6 +997,24 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function isEmailNotifications()
+    {
+        return $this->emailNotifications;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmailNotifications($emailNotifications)
+    {
+        $this->emailNotifications = $emailNotifications;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getProductGridFilters()
     {
         return $this->productGridFilters;

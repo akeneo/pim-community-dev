@@ -187,6 +187,9 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'default_category_tree':
                 $user->setDefaultTree($this->findCategory($data));
                 break;
+            case 'email_notifications':
+                $user->setEmailNotifications($data);
+                break;
             case 'roles':
                 $roles = [];
                 foreach ($data as $code) {

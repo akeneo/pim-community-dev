@@ -91,6 +91,10 @@ Akeneo\UserManagement\Component\Model\User:
             type: json_array
             nullable: true
             column: product_grid_filters
+        emailNotifications:
+            type: boolean
+            options:
+                default: false
         phone:
             type: string
             nullable: true

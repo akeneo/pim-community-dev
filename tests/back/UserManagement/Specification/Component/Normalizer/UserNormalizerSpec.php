@@ -73,6 +73,7 @@ class UserNormalizerSpec extends ObjectBehavior
             'user_default_locale'       => null,
             'catalog_default_scope'     => null,
             'default_category_tree'     => null,
+            'email_notifications'       => false,
             'timezone'                  => 'UTC',
             'groups'                    => [],
             'roles'                     => [],
