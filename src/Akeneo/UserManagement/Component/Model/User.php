@@ -148,18 +148,6 @@ class User implements UserInterface
     /** @var string */
     protected $timezone;
 
-    /** @var int The delay in days to send an email before the expiration of an asset */
-    protected $assetDelayReminder = 5;
-
-    /** @var CategoryInterface */
-    protected $defaultAssetTree;
-
-    /** @var bool Be notified when the user receives a proposal to review */
-    protected $proposalsToReviewNotification = true;
-
-    /** @var bool Be notified when the user's proposal has been accepted or rejected */
-    protected $proposalsStateNotification = true;
-
     /** @var array $property bag for properties extension */
     private $properties = [];
 
