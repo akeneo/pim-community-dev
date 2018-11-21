@@ -146,7 +146,7 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony',
 
             // Akeneo external bounded contexts
-            'Akeneo\Tool\Component\StorageUtils',
+            'Akeneo\Tool',
             'Akeneo\Pim\Enrichment',
             'Akeneo\Pim\Structure',
 
