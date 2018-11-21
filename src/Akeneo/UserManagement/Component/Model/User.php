@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -147,18 +148,6 @@ class User implements UserInterface
 
     /** @var string */
     protected $timezone;
-
-    /** @var int The delay in days to send an email before the expiration of an asset */
-    protected $assetDelayReminder = 5;
-
-    /** @var CategoryInterface */
-    protected $defaultAssetTree;
-
-    /** @var bool Be notified when the user receives a proposal to review */
-    protected $proposalsToReviewNotification = true;
-
-    /** @var bool Be notified when the user's proposal has been accepted or rejected */
-    protected $proposalsStateNotification = true;
 
     /** @var array $property bag for properties extension */
     private $properties = [];
@@ -1107,6 +1096,8 @@ class User implements UserInterface
      */
     public function addProperty(string $propertyName, $propertyValue): void
     {
+        $propertyName = Inflector::tableize($propertyName);
+
         $this->properties[$propertyName] = $propertyValue;
     }
 
@@ -1115,6 +1106,8 @@ class User implements UserInterface
      */
     public function getProperty(string $propertyName)
     {
+        $propertyName = Inflector::tableize($propertyName);
+
         return $this->properties[$propertyName] ?? null;
     }
 }
