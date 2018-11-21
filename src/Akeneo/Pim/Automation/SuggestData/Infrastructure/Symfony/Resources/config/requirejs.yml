@@ -71,12 +71,12 @@ config:
         pimee/view/attributes-mapping/state: akeneosuggestdata/js/view/attributes-mapping/state.ts
         pimee/view/attributes-mapping/family-selector: akeneosuggestdata/js/view/attributes-mapping/family-selector.ts
         pimee/view/attributes-mapping/table: akeneosuggestdata/js/view/attributes-mapping/table.ts
-        pimee/view/common/description-header: akeneosuggestdata/js/view/common/description-header.ts
+        akeneo/suggest-data/view/common/description-header: akeneosuggestdata/js/view/common/description-header.ts
         pimee/view/common/front-search-filter: akeneosuggestdata/js/view/common/front-search-filter.ts
         pimee/view/common/simple-select-attribute: akeneosuggestdata/js/view/common/simple-select-attribute.ts
         pimee/view/common/status-filter: akeneosuggestdata/js/view/common/status-filter.ts
         pimee/view/common/tabs: akeneosuggestdata/js/view/common/tabs.ts
-        pimee/view/franklin-connection/edit: akeneosuggestdata/js/view/franklin-connection/edit.ts
+        akeneo/suggest-data/view/franklin-connection/edit: akeneosuggestdata/js/view/franklin-connection/edit.ts
         pimee/view/identifiers-mapping/table: akeneosuggestdata/js/view/identifiers-mapping/table.ts
         akeneo/suggest-data/view/mass-edit/suggest-data-operation: akeneosuggestdata/js/view/mass-edit/suggest-data-operation.ts
         akeneo/suggest-data/view/product-edit-form/subscription-status-switcher: akeneosuggestdata/js/view/product-edit-form/subscription-status-switcher.ts
