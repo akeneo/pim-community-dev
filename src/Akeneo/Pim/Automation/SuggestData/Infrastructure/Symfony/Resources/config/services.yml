@@ -2,6 +2,7 @@ services:
     akeneo.pim.automation.suggest_data.proposal.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert'
         arguments:
+            - '@pim_catalog.repository.product_without_permission'
             - '@pimee_workflow.updater.product_without_permission'
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.saver.product_draft'
@@ -12,4 +13,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
         arguments:
             - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
-            - '@pim_catalog.repository.product_without_permission'
+            

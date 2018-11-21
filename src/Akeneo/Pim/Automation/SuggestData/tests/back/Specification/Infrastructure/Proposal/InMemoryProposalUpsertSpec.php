@@ -10,6 +10,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSugges
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,9 +22,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class InMemoryProposalUpsertSpec extends ObjectBehavior
 {
-    public function let(ObjectUpdaterInterface $productUpdater, EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->beConstructedWith($productUpdater, $eventDispatcher);
+    public function let(
+        ProductRepositoryInterface $productRepository,
+        ObjectUpdaterInterface $productUpdater,
+        EventDispatcherInterface $eventDispatcher
+    ): void {
+        $this->beConstructedWith($productRepository, $productUpdater, $eventDispatcher);
     }
 
     public function it_is_an_in_memory_proposal_upsert(): void
@@ -32,24 +37,30 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
     }
 
     public function it_stores_updated_values(
+        $productRepository,
         $productUpdater,
         $eventDispatcher,
         ProductInterface $product,
         Productinterface $product2,
+        FamilyInterface $family,
         ValueCollectionInterface $values,
         ValueCollectionInterface $values2
     ): void {
+        $family->getAttributeCodes()->willReturn(['foo', 'test']);
+
+        $productRepository->find(343)->willReturn($product);
         $values->toArray()->willReturn(['foo' => 'bar', 'bar' => 'baz']);
         $product->getIdentifier()->willReturn('test');
-        $product->getId()->willReturn(343);
         $product->getValues()->willReturn($values);
-        $suggestedData = new ProposalSuggestedData(['foo' => 'bar'], $product->getWrappedObject());
+        $product->getFamily()->willReturn($family);
+        $suggestedData = new ProposalSuggestedData(343, ['foo' => 'bar']);
 
+        $productRepository->find(1556)->willReturn($product2);
         $values2->toArray()->willReturn(['test' => 0]);
         $product2->getIdentifier()->willReturn('test2');
-        $product2->getId()->willReturn(1556);
         $product2->getValues()->willReturn($values2);
-        $suggestedData2 = new ProposalSuggestedData(['test' => 42], $product2->getWrappedObject());
+        $product2->getFamily()->willReturn($family);
+        $suggestedData2 = new ProposalSuggestedData(1556, ['test' => 42]);
 
         $productUpdater->update($product, ['values' => ['foo' => 'bar']])->shouldBeCalled();
         $productUpdater->update($product2, ['values' => ['test' => 42]])->shouldBeCalled();

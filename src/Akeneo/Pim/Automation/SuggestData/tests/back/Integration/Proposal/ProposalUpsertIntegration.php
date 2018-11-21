@@ -61,7 +61,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($suggestedValues, $product)],
+            [new ProposalSuggestedData($product->getId(), $suggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -91,7 +91,7 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($suggestedValues, $product)],
+            [new ProposalSuggestedData($product->getId(), $suggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -136,7 +136,7 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($newSuggestedValues, $product)],
+            [new ProposalSuggestedData($product->getId(), $newSuggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -165,7 +165,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
         $this->proposalUpsert->process(
             [
-                new ProposalSuggestedData($invalidValues, $product),
+                new ProposalSuggestedData($product->getId(), $invalidValues),
             ],
             ProposalAuthor::USERNAME
         );

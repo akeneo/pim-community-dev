@@ -16,6 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -30,6 +32,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class ProposalUpsert implements ProposalUpsertInterface
 {
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
@@ -46,6 +51,7 @@ final class ProposalUpsert implements ProposalUpsertInterface
     private $cacheClearer;
 
     /**
+     * @param ProductRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface $productUpdater
      * @param EntityWithValuesDraftBuilderInterface $draftBuilder
      * @param SaverInterface $draftSaver
@@ -53,12 +59,14 @@ final class ProposalUpsert implements ProposalUpsertInterface
      * @param EntityManagerClearerInterface $cacheClearer
      */
     public function __construct(
+        ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
         EventDispatcherInterface $eventDispatcher,
         EntityManagerClearerInterface $cacheClearer
     ) {
+        $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
         $this->draftBuilder = $draftBuilder;
         $this->draftSaver = $draftSaver;
@@ -73,10 +81,19 @@ final class ProposalUpsert implements ProposalUpsertInterface
     {
         $processed = [];
         foreach ($suggestedData as $data) {
+            $product = $this->productRepository->find($data->getproductId());
+            if (null === $product) {
+                continue;
+            }
+
             try {
-                $wasProposalCreated = $this->doProcess($data->getProduct(), $data->getSuggestedValues(), $author);
+                $wasProposalCreated = $this->doProcess(
+                    $product,
+                    $this->filterAttributesNotBelongingToTheFamily($product->getFamily(), $data->getSuggestedValues()),
+                    $author
+                );
                 if (true === $wasProposalCreated) {
-                    $processed[] = $data->getProduct()->getId();
+                    $processed[] = $data->getProductId();
                 }
             } catch (\LogicException $e) {
                 continue;
@@ -127,5 +144,25 @@ final class ProposalUpsert implements ProposalUpsertInterface
         }
 
         return false;
+    }
+
+    /**
+     * Removes values for attributes that do not belong to the provided family.
+     *
+     * @param FamilyInterface $family
+     * @param array $values
+     *
+     * @return array
+     */
+    private function filterAttributesNotBelongingToTheFamily(FamilyInterface $family, array $values): array
+    {
+        $familyAttributeCodes = $family->getAttributeCodes();
+        foreach ($values as $attributeCode => $data) {
+            if (!in_array($attributeCode, $familyAttributeCodes)) {
+                unset($values[$attributeCode]);
+            }
+        }
+
+        return $values;
     }
 }
