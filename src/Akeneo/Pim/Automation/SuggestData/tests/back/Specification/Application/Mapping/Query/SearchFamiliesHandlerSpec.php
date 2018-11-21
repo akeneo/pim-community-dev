@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Query\GetAttributeMappingStatusesFromFamilyCodesQueryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
@@ -33,9 +31,9 @@ class SearchFamiliesHandlerSpec extends ObjectBehavior
 {
     public function let(
         FamilySearchableRepositoryInterface $familyRepository,
-        AttributesMappingProviderInterface $attributesMappingProvider
+        GetAttributeMappingStatusesFromFamilyCodesQueryInterface $getAttributeMappingStatusesFromFamilyCodesQuery
     ): void {
-        $this->beConstructedWith($familyRepository, $attributesMappingProvider);
+        $this->beConstructedWith($familyRepository, $getAttributeMappingStatusesFromFamilyCodesQuery);
     }
 
     public function it_is_a_get_families_query(): void
@@ -45,7 +43,7 @@ class SearchFamiliesHandlerSpec extends ObjectBehavior
 
     public function it_handles_a_get_families_query_with_pending_attributes(
         $familyRepository,
-        $attributesMappingProvider,
+        $getAttributeMappingStatusesFromFamilyCodesQuery,
         FamilyInterface $family1,
         FamilyTranslationInterface $family1Translation,
         \Iterator $family1TranslationsIterator,
@@ -55,19 +53,6 @@ class SearchFamiliesHandlerSpec extends ObjectBehavior
         \Iterator $family2TranslationsIterator,
         Collection $family2Translations
     ): void {
-        $nameAttrMapping = new AttributeMapping('name', null, 'text', null, AttributeMapping::ATTRIBUTE_PENDING, []);
-        $titleAttrMapping = new AttributeMapping('title', null, 'text', null, AttributeMapping::ATTRIBUTE_PENDING, []);
-        $routerAttributesMappingResponse = new AttributesMappingResponse();
-        $routerAttributesMappingResponse->addAttribute($nameAttrMapping);
-        $routerAttributesMappingResponse->addAttribute($titleAttrMapping);
-        $camcordersAttributesMappingResponse = new AttributesMappingResponse();
-        $camcordersAttributesMappingResponse->addAttribute($nameAttrMapping);
-
-        $attributesMappingProvider->getAttributesMapping('router')->willReturn($routerAttributesMappingResponse);
-        $attributesMappingProvider
-            ->getAttributesMapping('camcorders')
-            ->willReturn($camcordersAttributesMappingResponse);
-
         $family1Translations->getIterator()->willReturn($family1TranslationsIterator);
         $family1TranslationsIterator->rewind()->shouldBeCalled();
         $family1TranslationsIterator->valid()->willReturn(true, false);
@@ -90,195 +75,19 @@ class SearchFamiliesHandlerSpec extends ObjectBehavior
         $family2Translation->getLabel()->willReturn('camcorders');
         $family2->getTranslations()->willReturn($family2Translations);
 
-        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
+        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([$family1, $family2]);
 
-        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([
-            $family1,
-            $family2,
+        $getAttributeMappingStatusesFromFamilyCodesQuery->execute(['router', 'camcorders'])->willReturn([
+            'router' => Family::MAPPING_PENDING,
+            'camcorders' => Family::MAPPING_FULL,
         ]);
+
+        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
 
         $familyCollection = $this->handle($query);
         $familyCollection->shouldHaveFamilyTimes(2);
         $familyCollection->shouldHaveFamilyWithMappingStatus('router', Family::MAPPING_PENDING);
-        $familyCollection->shouldHaveFamilyWithMappingStatus('camcorders', Family::MAPPING_PENDING);
-    }
-
-    public function it_handles_a_get_families_query_with_at_least_one_pending_attribute(
-        $familyRepository,
-        $attributesMappingProvider,
-        FamilyInterface $family,
-        FamilyTranslationInterface $familyTranslation,
-        \Iterator $familyTranslationsIterator,
-        Collection $familyTranslations
-    ): void {
-        $nameAttrMapping = new AttributeMapping('name', null, 'text', null, AttributeMapping::ATTRIBUTE_MAPPED, []);
-        $titleAttrMapping = new AttributeMapping('title', null, 'text', null, AttributeMapping::ATTRIBUTE_UNMAPPED, []);
-        $descAttrMapping = new AttributeMapping('desc', null, 'text', null, AttributeMapping::ATTRIBUTE_PENDING, []);
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute($nameAttrMapping);
-        $attributesMappingResponse->addAttribute($titleAttrMapping);
-        $attributesMappingResponse->addAttribute($descAttrMapping);
-
-        $attributesMappingProvider->getAttributesMapping('router')->willReturn($attributesMappingResponse);
-
-        $familyTranslations->getIterator()->willReturn($familyTranslationsIterator);
-        $familyTranslationsIterator->rewind()->shouldBeCalled();
-        $familyTranslationsIterator->valid()->willReturn(true, false);
-        $familyTranslationsIterator->current()->willReturn($familyTranslation);
-        $familyTranslationsIterator->next()->shouldBeCalled();
-
-        $family->getCode()->willReturn('router');
-        $familyTranslation->getLocale()->willReturn('en_US');
-        $familyTranslation->getLabel()->willReturn('router');
-        $family->getTranslations()->willReturn($familyTranslations);
-
-        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
-
-        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([$family]);
-
-        $familyCollection = $this->handle($query);
-        $familyCollection->shouldHaveFamilyTimes(1);
-        $familyCollection->shouldHaveFamilyWithMappingStatus('router', Family::MAPPING_PENDING);
-    }
-
-    public function it_handles_a_get_families_query_with_mapped_attributes(
-        $familyRepository,
-        $attributesMappingProvider,
-        FamilyInterface $family,
-        FamilyTranslationInterface $familyTranslation,
-        \Iterator $familyTranslationsIterator,
-        Collection $familyTranslations
-    ): void {
-        $nameAttrMapping = new AttributeMapping('name', null, 'text', null, AttributeMapping::ATTRIBUTE_MAPPED, []);
-        $titleAttrMapping = new AttributeMapping('title', null, 'text', null, AttributeMapping::ATTRIBUTE_MAPPED, []);
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute($nameAttrMapping);
-        $attributesMappingResponse->addAttribute($titleAttrMapping);
-
-        $attributesMappingProvider->getAttributesMapping('router')->willReturn($attributesMappingResponse);
-
-        $familyTranslations->getIterator()->willReturn($familyTranslationsIterator);
-        $familyTranslationsIterator->rewind()->shouldBeCalled();
-        $familyTranslationsIterator->valid()->willReturn(true, false);
-        $familyTranslationsIterator->current()->willReturn($familyTranslation);
-        $familyTranslationsIterator->next()->shouldBeCalled();
-
-        $family->getCode()->willReturn('router');
-        $familyTranslation->getLocale()->willReturn('en_US');
-        $familyTranslation->getLabel()->willReturn('router');
-        $family->getTranslations()->willReturn($familyTranslations);
-
-        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
-
-        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([$family]);
-
-        $familyCollection = $this->handle($query);
-        $familyCollection->shouldHaveFamilyTimes(1);
-        $familyCollection->shouldHaveFamilyWithMappingStatus('router', Family::MAPPING_FULL);
-    }
-
-    public function it_handles_a_get_families_query_with_unmapped_attributes(
-        $familyRepository,
-        $attributesMappingProvider,
-        FamilyInterface $family,
-        FamilyTranslationInterface $familyTranslation,
-        \Iterator $familyTranslationsIterator,
-        Collection $familyTranslations
-    ): void {
-        $nameAttrMapping = new AttributeMapping('name', null, 'text', null, AttributeMapping::ATTRIBUTE_UNMAPPED, []);
-        $titleAttrMapping = new AttributeMapping('title', null, 'text', null, AttributeMapping::ATTRIBUTE_UNMAPPED, []);
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute($nameAttrMapping);
-        $attributesMappingResponse->addAttribute($titleAttrMapping);
-
-        $attributesMappingProvider->getAttributesMapping('router')->willReturn($attributesMappingResponse);
-
-        $familyTranslations->getIterator()->willReturn($familyTranslationsIterator);
-        $familyTranslationsIterator->rewind()->shouldBeCalled();
-        $familyTranslationsIterator->valid()->willReturn(true, false);
-        $familyTranslationsIterator->current()->willReturn($familyTranslation);
-        $familyTranslationsIterator->next()->shouldBeCalled();
-
-        $family->getCode()->willReturn('router');
-        $familyTranslation->getLocale()->willReturn('en_US');
-        $familyTranslation->getLabel()->willReturn('router');
-        $family->getTranslations()->willReturn($familyTranslations);
-
-        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
-
-        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([$family]);
-
-        $familyCollection = $this->handle($query);
-        $familyCollection->shouldHaveFamilyTimes(1);
-        $familyCollection->shouldHaveFamilyWithMappingStatus('router', Family::MAPPING_FULL);
-    }
-
-    public function it_handles_a_get_families_query_with_mapped_and_unmapped_attributes(
-        $familyRepository,
-        $attributesMappingProvider,
-        FamilyInterface $family,
-        FamilyTranslationInterface $familyTranslation,
-        \Iterator $familyTranslationsIterator,
-        Collection $familyTranslations
-    ): void {
-        $nameAttrMapping = new AttributeMapping('name', null, 'text', null, AttributeMapping::ATTRIBUTE_MAPPED, []);
-        $titleAttrMapping = new AttributeMapping('title', null, 'text', null, AttributeMapping::ATTRIBUTE_UNMAPPED, []);
-        $attributesMappingResponse = new AttributesMappingResponse();
-        $attributesMappingResponse->addAttribute($nameAttrMapping);
-        $attributesMappingResponse->addAttribute($titleAttrMapping);
-
-        $attributesMappingProvider->getAttributesMapping('router')->willReturn($attributesMappingResponse);
-
-        $familyTranslations->getIterator()->willReturn($familyTranslationsIterator);
-        $familyTranslationsIterator->rewind()->shouldBeCalled();
-        $familyTranslationsIterator->valid()->willReturn(true, false);
-        $familyTranslationsIterator->current()->willReturn($familyTranslation);
-        $familyTranslationsIterator->next()->shouldBeCalled();
-
-        $family->getCode()->willReturn('router');
-        $familyTranslation->getLocale()->willReturn('en_US');
-        $familyTranslation->getLabel()->willReturn('router');
-        $family->getTranslations()->willReturn($familyTranslations);
-
-        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
-
-        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([$family]);
-
-        $familyCollection = $this->handle($query);
-        $familyCollection->shouldHaveFamilyTimes(1);
-        $familyCollection->shouldHaveFamilyWithMappingStatus('router', Family::MAPPING_FULL);
-    }
-
-    public function it_handles_a_get_families_query_with_no_attribute(
-        $familyRepository,
-        $attributesMappingProvider,
-        FamilyInterface $family,
-        FamilyTranslationInterface $familyTranslation,
-        \Iterator $familyTranslationsIterator,
-        Collection $familyTranslations
-    ): void {
-        $attributesMappingResponse = new AttributesMappingResponse();
-
-        $attributesMappingProvider->getAttributesMapping('router')->willReturn($attributesMappingResponse);
-
-        $familyTranslations->getIterator()->willReturn($familyTranslationsIterator);
-        $familyTranslationsIterator->rewind()->shouldBeCalled();
-        $familyTranslationsIterator->valid()->willReturn(true, false);
-        $familyTranslationsIterator->current()->willReturn($familyTranslation);
-        $familyTranslationsIterator->next()->shouldBeCalled();
-
-        $family->getCode()->willReturn('router');
-        $familyTranslation->getLocale()->willReturn('en_US');
-        $familyTranslation->getLabel()->willReturn('router');
-        $family->getTranslations()->willReturn($familyTranslations);
-
-        $query = new SearchFamiliesQuery(10, 1, [], 'search_text');
-
-        $familyRepository->findBySearch(1, 10, 'search_text', [])->willReturn([$family]);
-
-        $familyCollection = $this->handle($query);
-        $familyCollection->shouldHaveFamilyTimes(1);
-        $familyCollection->shouldHaveFamilyWithMappingStatus('router', Family::MAPPING_EMPTY);
+        $familyCollection->shouldHaveFamilyWithMappingStatus('camcorders', Family::MAPPING_FULL);
     }
 
     /**

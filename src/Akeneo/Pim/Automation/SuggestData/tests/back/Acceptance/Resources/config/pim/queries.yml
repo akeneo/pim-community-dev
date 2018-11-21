@@ -1,0 +1,3 @@
+services:
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.attribute_mapping.get_statuses_for_families:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\AttributeMapping\InMemoryGetAttributeMappingStatusesFromFamilyCodesQuery'
