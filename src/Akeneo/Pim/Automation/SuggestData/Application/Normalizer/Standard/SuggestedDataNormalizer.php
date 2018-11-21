@@ -131,9 +131,8 @@ class SuggestedDataNormalizer
                 ))->normalize($suggestedValue);
                 break;
             default:
-                throw new \InvalidArgumentException(
-                    sprintf('Unsupported attribute type "%s"', $attributeType)
-                );
+                // Unsupported attribute type, do not normalize this data
+                $normalizedValue = [];
         }
 
         return $normalizedValue;
