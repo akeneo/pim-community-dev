@@ -12,9 +12,17 @@
 
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
-## PHP Version
+## Requirements
 
-Akeneo PIM v3.0 is now using PHP 7.2.
+Please, see the complete [list of requirements](https://docs.akeneo.com/3.0/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.0.
+
+### PHP Version
+
+Akeneo PIM v3.0 now expects PHP 7.2.
+
+### MySQL version
+
+Akeneo PIM v3.0 now expects MySQL 5.7.22.
 
 ## Database charset migration
 
