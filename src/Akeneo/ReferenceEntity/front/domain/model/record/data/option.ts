@@ -1,5 +1,6 @@
-import Data from 'akeneoreferenceentity/domain/model/record/data';
+import ValueData from 'akeneoreferenceentity/domain/model/record/data';
 import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
+import {OptionAttribute} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/type/option';
 
 class InvalidTypeError extends Error {}
 
@@ -11,7 +12,7 @@ type NormalizedOptionData = string | null;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class OptionData extends Data {
+class OptionData extends ValueData {
   private constructor(private optionData: OptionCode | null) {
     super();
     Object.freeze(this);
@@ -29,8 +30,13 @@ class OptionData extends Data {
     return new OptionData(optionData);
   }
 
-  public static createFromNormalized(optionData: NormalizedOptionData): OptionData {
-    return new OptionData(null === optionData ? null : createCode(optionData));
+  public static createFromNormalized(optionData: NormalizedOptionData, attribute: OptionAttribute): OptionData {
+    // We have to handle the case where the previous value has an option not in the attribute anymore
+    if (null === optionData || !attribute.hasOption(createCode(optionData))) {
+      return new OptionData(null);
+    }
+
+    return new OptionData(createCode(optionData));
   }
 
   public isEmpty(): boolean {
@@ -45,7 +51,7 @@ class OptionData extends Data {
     return this.optionData as OptionCode;
   }
 
-  public equals(data: Data): boolean {
+  public equals(data: ValueData): boolean {
     return (
       data instanceof OptionData &&
       ((null === this.optionData && null === data.optionData) ||

@@ -412,23 +412,41 @@ Feature: Edit an record
 
   @acceptance-front
   Scenario: Updating a record with a simple option value
-    Given a valid record
+    Given a valid record with an option attribute
     When the user saves the valid record with a simple option value
     Then the user should see a success message on the edit page
+
+  @acceptance-front
+  Scenario: Updating a record with an invalid simple option value
+    Given a valid record with an option attribute
+    When the user saves the valid record with an invalid simple option value
+    Then the user should see the validation error on the edit page : "The option with code \"red\" does not exist for this attribute"
+
+  @acceptance-front
+  Scenario: Updating a record with a multiple option value
+    Given a valid record with an option collection attribute
+    When the user saves the valid record with a multiple option value
+    Then the user should see a success message on the edit page
+
+  @acceptance-front
+  Scenario: Updating a record with an invalid multiple option value
+    Given a valid record with an option collection attribute
+    When the user saves the valid record with an invalid multiple option value
+    Then the user should see the validation error on the edit page : "The option with code \"red\" does not exist for this attribute"
 
   @acceptance-front
   Scenario: Display bullet point for the completeness when a required field isn't filled
     Given a valid record
     When the user ask for the record
     Then the user should see a completeness bullet point on the required field: "website"
-    When the user fill the "website_designer_fingerprint" field with: "http://the-website.com"
+    When the user fill the "website" field with: "http://the-website.com"
     Then the user should not see a completeness bullet point on the required field: "website"
 
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
 #  Scenario: Updating a record with an image value
 #    Given a valid record
-#    When  the user updates the valid record with an image value
+#    When the user updates the valid record with an image value
 #    Then the user should see a success message after the update record
 #
 #  @acceptance-front

@@ -1,5 +1,32 @@
 import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/option-collection';
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
+import {denormalize as denormalizeOptionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+
+const designer = denormalizeOptionAttribute({
+  identifier: 'designer_1234',
+  reference_entity_identifier: 'designer',
+  code: 'designer',
+  labels: {en_US: 'Designer'},
+  type: 'option',
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: false,
+  is_required: true,
+  options: [
+    {
+      code: 'starck',
+      labels: {
+        en_US: 'Dyson',
+      },
+    },
+    {
+      code: 'dyson',
+      labels: {
+        en_US: 'Dyson',
+      },
+    },
+  ],
+});
 
 describe('akeneo > reference entity > domain > model > record > data --- option collection', () => {
   test('I can create a new OptionData with a OptionCode collection value', () => {
@@ -18,45 +45,37 @@ describe('akeneo > reference entity > domain > model > record > data --- option 
   });
 
   test('I can normalize an OptionData', () => {
-    expect(denormalize(null).normalize()).toEqual([]);
-    expect(denormalize(['starck']).normalize()).toEqual(['starck']);
-    expect(denormalize(['starck', 'dyson']).normalize()).toEqual(['starck', 'dyson']);
+    expect(denormalize(null, designer).normalize()).toEqual([]);
+    expect(denormalize(['starck'], designer).normalize()).toEqual(['starck']);
+    expect(denormalize(['starck', 'dyson'], designer).normalize()).toEqual(['starck', 'dyson']);
+    expect(denormalize(['red', 'dyson'], designer).normalize()).toEqual(['dyson']);
   });
 
   test('I can get the string value of an OptionData', () => {
-    expect(denormalize(null).stringValue()).toEqual('');
-    expect(denormalize([]).stringValue()).toEqual('');
-    expect(denormalize(['starck']).stringValue()).toEqual('starck');
-    expect(denormalize(['starck', 'dyson']).stringValue()).toEqual('starck, dyson');
+    expect(denormalize(null, designer).stringValue()).toEqual('');
+    expect(denormalize([], designer).stringValue()).toEqual('');
+    expect(denormalize(['starck'], designer).stringValue()).toEqual('starck');
+    expect(denormalize(['starck', 'dyson'], designer).stringValue()).toEqual('starck, dyson');
   });
 
   test('I can count the number of options in an OptionData', () => {
-    expect(denormalize(null).count()).toBe(0);
-    expect(denormalize([]).count()).toBe(0);
-    expect(denormalize(['starck']).count()).toBe(1);
-    expect(denormalize(['starck', 'dyson']).count()).toBe(2);
-  });
-
-  test('I can test if the optionData contains an OptionCode', () => {
-    expect(denormalize(null).contains(createCode('red'))).toBe(false);
-    expect(denormalize([]).contains(createCode('red'))).toBe(false);
-    expect(denormalize(['starck']).contains(createCode('starck'))).toBe(true);
-    expect(denormalize(['dyson']).contains(createCode('starck'))).toBe(false);
-    expect(denormalize(['starck', 'dyson']).contains(createCode('dyson'))).toBe(true);
+    expect(denormalize(null, designer).count()).toBe(0);
+    expect(denormalize([], designer).count()).toBe(0);
+    expect(denormalize(['starck'], designer).count()).toBe(1);
+    expect(denormalize(['starck', 'dyson'], designer).count()).toBe(2);
   });
 
   test('I can test if two optionData are equal', () => {
-    expect(denormalize(['starck']).equals(denormalize(['starck']))).toEqual(true);
-    expect(denormalize(['starck', 'dyson']).equals(denormalize(['starck', 'dyson']))).toEqual(true);
-    expect(denormalize(['dyson', 'starck']).equals(denormalize(['starck', 'dyson']))).toEqual(false);
-    expect(denormalize(['starck']).equals(denormalize(['dyson']))).toEqual(false);
-    expect(denormalize(['starck']).equals(['starck'])).toEqual(false);
-    expect(denormalize(null).equals(denormalize(null))).toEqual(true);
-    expect(denormalize(null).equals(denormalize(['dyson']))).toEqual(false);
+    expect(denormalize(['starck'], designer).equals(denormalize(['starck'], designer))).toEqual(true);
+    expect(denormalize(['starck', 'dyson'], designer).equals(denormalize(['starck', 'dyson'], designer))).toEqual(true);
+    expect(denormalize(['dyson', 'starck'], designer).equals(denormalize(['starck', 'dyson'], designer))).toEqual(true);
+    expect(denormalize(['starck'], designer).equals(denormalize(['dyson'], designer))).toEqual(false);
+    expect(denormalize(null, designer).equals(denormalize(null, designer))).toEqual(true);
+    expect(denormalize(null, designer).equals(denormalize(['dyson'], designer))).toEqual(false);
   });
 
   test('I can test if the option data is empty', () => {
-    expect(denormalize(['starck']).isEmpty()).toEqual(false);
-    expect(denormalize(null).isEmpty()).toEqual(true);
+    expect(denormalize(['starck'], designer).isEmpty()).toEqual(false);
+    expect(denormalize(null, designer).isEmpty()).toEqual(true);
   });
 });

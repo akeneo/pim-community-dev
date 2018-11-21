@@ -17,18 +17,8 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
   const data = value.data as OptionCollectionData;
 
   const attribute = value.attribute as OptionCollectionAttribute;
-  const options = attribute.options.filter((option: Option) => {
-    return data.contains(option.code);
-  });
 
-  if (options.length !== data.count()) {
-    const newData = denormalizeOptionCollectionData(options.map((option: Option) => option.code.stringValue()));
-    const newValue = value.setData(newData);
-
-    onChange(newValue);
-  }
-
-  const formatedOptions = options.reduce((formatedOptions: {[code: string]: string}, option: Option) => {
+  const formatedOptions = attribute.options.reduce((formatedOptions: {[code: string]: string}, option: Option) => {
     const normalizedOption: NormalizedOption = option.normalize();
     formatedOptions[normalizedOption.code] = option.getLabel(locale.stringValue());
 
@@ -38,6 +28,8 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
   return (
     <div className="option-collection-selector-container AknSelectField">
       <Select2
+        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+        className="AknSelectField"
         data={formatedOptions}
         value={data.isEmpty() ? [] : data.normalize()}
         multiple={true}
@@ -47,7 +39,7 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
           placeholder: __('pim_reference_entity.attribute.options.no_value'),
         }}
         onChange={(optionCodes: string[]) => {
-          const newData = denormalizeOptionCollectionData(optionCodes);
+          const newData = denormalizeOptionCollectionData(optionCodes, attribute);
           const newValue = value.setData(newData);
 
           onChange(newValue);

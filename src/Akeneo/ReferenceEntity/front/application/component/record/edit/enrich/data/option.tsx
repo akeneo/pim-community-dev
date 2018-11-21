@@ -14,27 +14,21 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
   const data = value.data as OptionData;
 
   const attribute = value.attribute as OptionAttribute;
-  const availableOptions = attribute.options.reduce((availableOptions: {[choiceValue: string]: string}, option: Option) => {
-    const normalizedOption: NormalizedOption = option.normalize();
-    availableOptions[normalizedOption.code] = option.getLabel(locale.stringValue());
+  const availableOptions = attribute.options.reduce(
+    (availableOptions: {[choiceValue: string]: string}, option: Option) => {
+      const normalizedOption: NormalizedOption = option.normalize();
+      availableOptions[normalizedOption.code] = option.getLabel(locale.stringValue());
 
-    return availableOptions;
-  }, {});
-
-  // We have to handle the case where the previous value has an option not in the attribute anymore
-  if (!data.isEmpty() &&
-    undefined === attribute.options.find((option: Option) => option.code.equals(data.getCode()))
-  ) {
-    // If the value was not found in the option list, we dispatch a change on the value
-    const newData = denormalizeOptionData(null);
-    const newValue = value.setData(newData);
-
-    onChange(newValue);
-  }
+      return availableOptions;
+    },
+    {}
+  );
 
   return (
-    <div className="option-selector-container AknSelectField">
+    <div className="option-selector-container">
       <Select2
+        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+        className="AknSelectField"
         data={availableOptions}
         value={data.stringValue()}
         multiple={false}
@@ -44,7 +38,7 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
           placeholder: __('pim_reference_entity.attribute.options.no_value'),
         }}
         onChange={(optionCode: string) => {
-          const newData = denormalizeOptionData(optionCode);
+          const newData = denormalizeOptionData(optionCode, attribute);
           const newValue = value.setData(newData);
 
           onChange(newValue);

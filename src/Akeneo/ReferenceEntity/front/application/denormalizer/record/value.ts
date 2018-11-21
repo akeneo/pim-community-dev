@@ -16,14 +16,14 @@ export const getValueDenormalizer = (
   getAttributeDenormalizer: (normalizedAttribute: NormalizedAttribute) => AttributeDenormalizer
 ) => (normalizedValue: NormalizedValue): Value => {
   const denormalizeAttribute = getAttributeDenormalizer(normalizedValue.attribute);
+  const denormalizedAttribute = denormalizeAttribute(normalizedValue.attribute);
 
   const denormalizeData = getDataDenormalizer(normalizedValue);
-
   return createValue(
-    denormalizeAttribute(normalizedValue.attribute),
+    denormalizedAttribute,
     denormalizeChannelReference(normalizedValue.channel),
     denormalizeLocaleReference(normalizedValue.locale),
-    denormalizeData(normalizedValue.data)
+    denormalizeData(normalizedValue.data, denormalizedAttribute)
   );
 };
 

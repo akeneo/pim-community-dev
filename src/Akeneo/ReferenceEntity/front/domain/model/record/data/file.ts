@@ -1,11 +1,11 @@
 import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
-import Data from 'akeneoreferenceentity/domain/model/record/data';
+import ValueData from 'akeneoreferenceentity/domain/model/record/data';
 
 class InvalidTypeError extends Error {}
 
 export type NormalizedFileData = NormalizedFile;
 
-class FileData extends Data {
+class FileData extends ValueData {
   private constructor(readonly fileData: File) {
     super();
 
@@ -32,7 +32,7 @@ class FileData extends Data {
     return this.fileData.isEmpty();
   }
 
-  public equals(data: Data): boolean {
+  public equals(data: ValueData): boolean {
     return data instanceof FileData && this.fileData.equals(data.fileData);
   }
 

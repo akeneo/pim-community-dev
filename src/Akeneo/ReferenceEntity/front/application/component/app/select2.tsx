@@ -50,21 +50,23 @@ export default class Select2 extends React.Component<Select2Props & any> {
 
     return (
       <select
-      {...props}
+        {...props}
         ref={this.select}
         multiple={props.multiple}
         disabled={props.readOnly}
         onChange={event => {
           const newValues = Array.prototype.slice // used to convert node list into an array
-          .call(event.currentTarget.childNodes)
-          .filter((option: HTMLOptionElement) => option.selected)
-          .map((option: HTMLOptionElement) => option.value);
+            .call(event.currentTarget.childNodes)
+            .filter((option: HTMLOptionElement) => option.selected)
+            .map((option: HTMLOptionElement) => option.value);
 
           this.props.onChange(this.props.multiple ? newValues : newValues[0]);
         }}
-        >
+      >
         {/*In case of simple select and allow clear, we need to add an empty option for Select2*/}
-        {undefined !== configuration && true === configuration.allowClear && false === props.multiple ? <option></option> : null}
+        {undefined !== configuration && true === configuration.allowClear && false === props.multiple ? (
+          <option />
+        ) : null}
         {Object.keys(data).map((choiceValue: string) => {
           return (
             <option key={choiceValue} value={choiceValue}>

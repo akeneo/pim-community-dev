@@ -1,5 +1,7 @@
-import Data from 'akeneoreferenceentity/domain/model/record/data';
-import OptionCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
+import ValueData from 'akeneoreferenceentity/domain/model/record/data';
+import OptionCode from 'akeneoreferenceentity/domain/model/attribute/type/option/option-code';
+import {OptionCollectionAttribute} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/type/option-collection';
+import {Option} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/type/option/option';
 
 class InvalidTypeError extends Error {}
 
@@ -11,7 +13,7 @@ type NormalizedOptionCollectionData = string[];
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class OptionCollectionData extends Data {
+class OptionCollectionData extends ValueData {
   private constructor(private optionData: OptionCode[]) {
     super();
 
@@ -32,14 +34,22 @@ class OptionCollectionData extends Data {
     return new OptionCollectionData(optionData);
   }
 
-  public static createFromNormalized(optionData: NormalizedOptionCollectionData): OptionCollectionData {
-    return new OptionCollectionData(
-      null === optionData ? [] : optionData.map((optionCode: string) => createCode(optionCode))
-    );
-  }
+  public static createFromNormalized(
+    optionData: NormalizedOptionCollectionData,
+    attribute: OptionCollectionAttribute
+  ): OptionCollectionData {
+    if (null === optionData) {
+      return new OptionCollectionData([]);
+    }
 
-  public contains(code: OptionCode) {
-    return undefined !== this.optionData.find((optionCode: OptionCode) => optionCode.equals(code));
+    // We remove old options that are not present in the attribute anymore
+    const options = attribute.options
+      .filter((option: Option) => {
+        return optionData.some((optionCode: string) => optionCode === option.code.stringValue());
+      })
+      .map((option: Option) => option.code);
+
+    return new OptionCollectionData(options);
   }
 
   public count() {
@@ -50,7 +60,7 @@ class OptionCollectionData extends Data {
     return 0 === this.optionData.length;
   }
 
-  public equals(data: Data): boolean {
+  public equals(data: ValueData): boolean {
     return (
       data instanceof OptionCollectionData &&
       this.optionData.length === data.optionData.length &&

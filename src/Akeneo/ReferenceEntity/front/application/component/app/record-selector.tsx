@@ -24,7 +24,7 @@ export interface RecordSelectorProps {
 
 type Select2Item = {id: string; text: string; original: NormalizedRecord};
 
-export default class RecordSelector extends React.Component<RecordSelectorProps> {
+export default class RecordSelector extends React.Component<RecordSelectorProps & any> {
   PAGE_SIZE = 200;
   static defaultProps = {
     multiple: false,
@@ -194,6 +194,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps>
   }
 
   render(): JSX.Element | JSX.Element[] {
-    return <input className="record-selector" type="hidden" value={this.normalizeValue(this.props.value)} />;
+    return (
+      <input className="record-selector" {...this.props} type="hidden" value={this.normalizeValue(this.props.value)} />
+    );
   }
 }

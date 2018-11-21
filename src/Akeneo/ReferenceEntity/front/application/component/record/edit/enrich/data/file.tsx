@@ -12,7 +12,7 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
 
   return (
     <Image
-      id={value.attribute.identifier.stringValue()}
+      id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
       alt={__('pim_reference_entity.record.value.file', {
         '{{ attribute_code }}': value.attribute.getLabel(value.locale.stringValue()),
       })}
