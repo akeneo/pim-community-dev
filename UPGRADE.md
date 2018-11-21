@@ -12,9 +12,21 @@
 
 > Please perform a backup of your codebase if you don't use a VCS (Version Control System).
 
-## PHP Version
+## Requirements
 
-Akeneo PIM v3.0 is now using PHP 7.2.
+Please, see the complete [list of requirements](https://docs.akeneo.com/3.0/install_pim/manual/system_requirements/system_requirements.html) for PIM v3.0.
+
+### PHP Version
+
+Akeneo PIM v3.0 now expects PHP 7.2.
+
+### MySQL version
+
+Akeneo PIM v3.0 now expects MySQL 5.7.22.
+
+## Database charset migration
+
+MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 
 ## The main changes of the 3.0 version
 
@@ -145,10 +157,18 @@ TODO: change the link!!
     ```
     
     At this step, most of the configuration files have been updated. But we still miss a few that are detailed in the next steps.
+    
+    In those files, the following changes occurred:
+    
+    * the user provider `oro_user` has been replaced by `pim_user`
+    * the user provider ID `oro_user.security.provider` has been replaced by `pim_user.provider.user`
+    * the route `oro_user_security_check` has been replaced by `pim_user_security_check`
+    * the route `oro_user_security_login` has been replaced by `pim_user_security_login`
+    * the route `oro_user_security_logout` has been replaced by `pim_user_security_logout`
 
 3. Update your **app/config/config.yml**
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
     ```bash
     cp app/config/config.yml $PIM_DIR/app/config
@@ -217,7 +237,7 @@ TODO: change the link!!
 
 4. Update your **app/config/routing.yml**
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your custom changes.
+    An easy way to update it is to copy/paste from the latest standard edition and add your custom changes.
 
     ```bash
     cp app/config/routing.yml $PIM_DIR/app/config
@@ -248,7 +268,7 @@ TODO: change the link!!
             resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
         ```
         
-    * The following have been updated:
+    * The following route configurations have been updated:
         
         ```yaml
         oro_default:
@@ -270,7 +290,7 @@ TODO: change the link!!
 
 5. Update your **app/config/security.yml**:
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+    An easy way to update it is to copy/paste from the latest standard edition and add your own custom security configuration.
 
     * The following have been updated:
     
@@ -290,7 +310,7 @@ TODO: change the link!!
         
 5. Update your **app/AppKernel.php**:
 
-    Maybe the easiest way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
+    An easy way to update it is to copy/paste from the latest standard edition and add your own bundles in the `registerProjectBundles` method.
 
     ```bash
     cp app/AppKernel.php $PIM_DIR/app/
@@ -379,13 +399,9 @@ TODO: change the link!!
 8. Then re-generate the PIM assets:
 
     ```bash
-    bin/console pim:installer:assets --symlink --clean --env=prod
+    bin/console pim:installer:assets --clean --env=prod
     yarn run webpack
     ```
-    
-## Database charset migration
-
-MySQL charset for Akeneo is now utf8mb4, instead of the [flawed utf8](https://www.eversql.com/mysql-utf8-vs-utf8mb4-whats-the-difference-between-utf8-and-utf8mb4/). If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 
 ## Migrate your custom code
 
