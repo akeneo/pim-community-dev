@@ -21,9 +21,9 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorRefer
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryFindConnectorReferenceEntityByReferenceEntityCodeTest extends TestCase
+class InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityCodeTest */
+    /** @var InMemoryFindConnectorReferenceEntityByReferenceEntityIdentifierTest */
     private $query;
 
     public function setup()

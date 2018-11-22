@@ -90,6 +90,12 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlFindConnectorReferenceEntityItems
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
         arguments:

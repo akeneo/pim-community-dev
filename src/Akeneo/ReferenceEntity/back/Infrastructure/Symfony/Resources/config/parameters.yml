@@ -9,3 +9,5 @@ parameters:
     reference_entity_option_limit_per_list_attribute: 100
     # Number of records per page for the connector
     reference_entity_connector_records_limit_per_page: 100
+    # Number of reference entities per page for the connector
+    reference_entity_connector_reference_entities_limit_per_page: 200

@@ -50,4 +50,9 @@ class ConnectorReferenceEntity
             'image' => $this->image->isEmpty() ? null : $this->image->getKey()
         ];
     }
+
+    public function getIdentifier(): ReferenceEntityIdentifier
+    {
+        return $this->identifier;
+    }
 }

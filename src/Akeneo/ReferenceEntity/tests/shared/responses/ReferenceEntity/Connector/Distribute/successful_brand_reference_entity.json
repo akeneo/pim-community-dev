@@ -3,7 +3,7 @@
     "method": "GET",
     "route": "akeneo_reference_entities_reference_entity_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "brand"
+      "code": "brand"
     }
   },
   "response": {
