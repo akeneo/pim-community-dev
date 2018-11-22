@@ -38,7 +38,7 @@ config:
                     options:
                         urls:
                             list: akeneo_suggest_data_identifiers_mapping_get
-                suggest_data_attribute_mapping_by_family:
+                attributes-mapping-by-family:
                     module: pim/base-fetcher
                     options:
                         urls:
@@ -75,7 +75,6 @@ config:
         akeneo/suggest-data/view/settings/mapping/common/tabs: akeneosuggestdata/js/view/common/tabs.ts
         akeneo/suggest-data/view/common/description-header: akeneosuggestdata/js/view/common/description-header.ts
         akeneo/suggest-data/view/common/front-search-filter: akeneosuggestdata/js/view/common/front-search-filter.ts
-        pimee/view/common/simple-select-attribute: akeneosuggestdata/js/view/common/simple-select-attribute.ts
         akeneo/suggest-data/view/common/status-filter: akeneosuggestdata/js/view/common/status-filter.ts
         akeneo/suggest-data/view/franklin-connection/edit: akeneosuggestdata/js/view/franklin-connection/edit.ts
         akeneo/suggest-data/view/mass-edit/suggest-data-operation: akeneosuggestdata/js/view/mass-edit/suggest-data-operation.ts
@@ -88,10 +87,10 @@ config:
         akeneo/suggest-data/template/settings/attributes-mapping/table: akeneosuggestdata/templates/attributes-mapping/table.html
         akeneo/suggest-data/template/settings/attributes-mapping/family-mapping: akeneosuggestdata/templates/attributes-mapping/family-mapping.html
         akeneo/suggest-data/template/settings/attributes-mapping/family-line: akeneosuggestdata/templates/attributes-mapping/family-line.html
-        pimee/template/common/status-filter: akeneosuggestdata/templates/common/status-filter.html
-        pimee/template/common/tabs: akeneosuggestdata/templates/common/tabs.html
-        pimee/template/common/simple-select-attribute: akeneosuggestdata/templates/common/simple-select-attribute.html
-        pimee/template/franklin-connection/edit: akeneosuggestdata/templates/franklin-connection/edit.html
-        pimee/template/mass-edit/suggest-data-operation: akeneosuggestdata/templates/mass-edit/suggest-data-operation.html
-        pimee/template/product-edit-form/subscription-status-switcher: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher.html
-        pimee/template/product-edit-form/subscription-status-switcher-read-only: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher-read-only.html
+        akeneo/suggest-data/template/common/status-filter: akeneosuggestdata/templates/common/status-filter.html
+        akeneo/suggest-data/template/common/tabs: akeneosuggestdata/templates/common/tabs.html
+        akeneo/suggest-data/template/common/simple-select-attribute: akeneosuggestdata/templates/common/simple-select-attribute.html
+        akeneo/suggest-data/template/franklin-connection/edit: akeneosuggestdata/templates/franklin-connection/edit.html
+        akeneo/suggest-data/template/mass-edit/suggest-data-operation: akeneosuggestdata/templates/mass-edit/suggest-data-operation.html
+        akeneo/suggest-data/template/product-edit-form/subscription-status-switcher: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher.html
+        akeneo/suggest-data/template/product-edit-form/subscription-status-switcher-read-only: akeneosuggestdata/templates/product-edit-form/subscription-status-switcher-read-only.html

@@ -34,7 +34,7 @@ class FamilySelector extends BaseSelect {
     super(config);
     this.events = {
       'change input': (event: { target: any }) => {
-        FetcherRegistry.getFetcher('suggest_data_attribute_mapping_by_family')
+        FetcherRegistry.getFetcher('attributes-mapping-by-family')
           .fetch(this.getFieldValue(event.target), {cached: false})
           .then((family: { code: string }) => {
             const hasRedirected = Router.redirectToRoute('akeneo_suggest_data_attributes_mapping_edit', {

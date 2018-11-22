@@ -15,7 +15,7 @@ import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
 const ConnectionSaver = require('akeneo/suggest-data/saver/franklin-connection');
 const Messenger = require('oro/messenger');
-const template = require('pimee/template/franklin-connection/edit');
+const template = require('akeneo/suggest-data/template/franklin-connection/edit');
 
 interface Config {
   tokenLabelContent: string;

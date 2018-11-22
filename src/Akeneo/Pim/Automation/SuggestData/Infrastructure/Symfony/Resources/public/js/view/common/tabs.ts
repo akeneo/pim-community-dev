@@ -14,7 +14,7 @@ import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const Router = require('pim/router');
-const template = require('pimee/template/common/tabs');
+const template = require('akeneo/suggest-data/template/common/tabs');
 
 interface Config {
   tabs: Array<{ label: string, route: string, checkAllowed: boolean }>;

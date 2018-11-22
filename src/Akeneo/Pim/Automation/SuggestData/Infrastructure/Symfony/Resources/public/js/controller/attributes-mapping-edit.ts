@@ -37,7 +37,7 @@ interface CanLeaveEvent {
 class EditAttributeMappingController extends BaseController {
   public renderForm(route: Route): BaseView {
     return FetcherRegistry
-      .getFetcher('suggest_data_attribute_mapping_by_family')
+      .getFetcher('attributes-mapping-by-family')
       .fetch(route.params.familyCode, {cached: false})
       .then((familyMapping: FamilyMapping) => {
         if (!this.active) {

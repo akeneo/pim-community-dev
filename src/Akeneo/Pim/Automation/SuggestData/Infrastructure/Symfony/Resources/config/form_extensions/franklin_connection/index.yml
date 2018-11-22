@@ -52,7 +52,7 @@ extensions:
     akeneo-suggest-data-franklin-connection-edit:
         module: akeneo/suggest-data/view/franklin-connection/edit
         parent: akeneo-suggest-data-franklin-connection-index
-        template: pimee/template/franklin-connection/edit
+        template: akeneo/suggest-data/template/franklin-connection/edit
         targetZone: content
         position: 90
         config:
