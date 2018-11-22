@@ -34,7 +34,7 @@ class ReferenceEntityQuery
         ?ReferenceEntityIdentifier $searchAfterIdentifier
     ) {
         $this->size = $size;
-        $this->searchAfterIdentifier  = $searchAfterIdentifier;
+        $this->searchAfterIdentifier = $searchAfterIdentifier;
     }
 
     public static function createPaginatedQuery(
