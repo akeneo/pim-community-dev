@@ -85,10 +85,10 @@ class GetConnectorRecordsAction
             $localeIdentifiersValuesFilter = $this->getLocaleIdentifiersValuesFilterFromRequest($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
-                $searchAfterCode,
-                $this->limit->intValue(),
                 $channelReferenceValuesFilter,
-                $localeIdentifiersValuesFilter
+                $localeIdentifiersValuesFilter,
+                $this->limit->intValue(),
+                $searchAfterCode
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());

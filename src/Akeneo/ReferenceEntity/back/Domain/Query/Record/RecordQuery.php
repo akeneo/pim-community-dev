@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
@@ -31,10 +30,10 @@ class RecordQuery
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
 
-    /** @var ChannelIdentifier|null */
+    /** @var ChannelReference */
     private $channel;
 
-    /** @var LocaleIdentifier|null */
+    /** @var LocaleReference */
     private $locale;
 
     /** @var array */
@@ -68,15 +67,15 @@ class RecordQuery
     private $localeIdentifiersValuesFilter;
 
     private function __construct(
-        ?ChannelIdentifier $channel,
-        ?LocaleIdentifier $locale,
+        ChannelReference $channel,
+        LocaleReference $locale,
         array $filters,
-        ?int $page,
-        int $size,
-        ?RecordCode $searchAfterCode,
-        string $paginationMethod,
         ChannelReference $channelReferenceValuesFilter,
-        LocaleIdentifierCollection $localeIdentifiersValuesFilter
+        LocaleIdentifierCollection $localeIdentifiersValuesFilter,
+        string $paginationMethod,
+        int $size,
+        ?int $page,
+        ?RecordCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -118,24 +117,24 @@ class RecordQuery
         }
 
         return new RecordQuery(
-            ChannelIdentifier::fromCode($normalizedQuery['channel']),
-            LocaleIdentifier::fromCode($normalizedQuery['locale']),
+            ChannelReference::createfromNormalized($normalizedQuery['channel']),
+            LocaleReference::createFromNormalized($normalizedQuery['locale']),
             $normalizedQuery['filters'],
-            $normalizedQuery['page'],
-            $normalizedQuery['size'],
-            null,
-            self::PAGINATE_USING_OFFSET,
             ChannelReference::noReference(),
-            LocaleIdentifierCollection::empty()
+            LocaleIdentifierCollection::empty(),
+            self::PAGINATE_USING_OFFSET,
+            $normalizedQuery['size'],
+            $normalizedQuery['page'],
+            null
         );
     }
 
     public static function createPaginatedQueryUsingSearchAfter(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
-        ?RecordCode $searchAfterCode,
-        int $size,
         ChannelReference $channelReferenceValuesFilter,
-        LocaleIdentifierCollection $localeIdentifiersValuesFilter
+        LocaleIdentifierCollection $localeIdentifiersValuesFilter,
+        int $size,
+        ?RecordCode $searchAfterCode
     ): RecordQuery {
         $filters = [
             [
@@ -146,15 +145,15 @@ class RecordQuery
         ];
 
         return new RecordQuery(
-            null,
-            null,
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
             $filters,
-            null,
-            $size,
-            $searchAfterCode,
-            self::PAGINATE_USING_SEARCH_AFTER,
             $channelReferenceValuesFilter,
-            $localeIdentifiersValuesFilter
+            $localeIdentifiersValuesFilter,
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $size,
+            null,
+            $searchAfterCode
         );
     }
 
@@ -194,12 +193,12 @@ class RecordQuery
 
     public function getChannel(): ?string
     {
-        return null !== $this->channel ? $this->channel->normalize() : null;
+        return $this->channel->normalize();
     }
 
     public function getLocale(): ?string
     {
-        return null !== $this->locale ? $this->locale->normalize() : null;
+        return $this->locale->normalize();
     }
 
     public function getSearchAfterCode(): ?string
