@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Attribu
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping as WriteAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
@@ -34,6 +35,11 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     ): void {
         $this->beConstructedWith($getAttributesMappingHandler, $updateAttributesMappingHandler);
 
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'pim_attribute_code' => 'pim_color',
+            'family_code' => 'router',
+        ]));
+
         $this->setStepExecution($stepExecution);
     }
 
@@ -41,6 +47,22 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(RemoveAttributeFromAttributeMappingTasklet::class);
         $this->shouldImplement(TaskletInterface::class);
+    }
+
+    public function it_throw_an_exception_if_there_is_no_job_parameters($stepExecution): void
+    {
+        $stepExecution->getJobParameters()->willReturn(null);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
+    }
+
+    public function it_throw_an_exception_if_one_parameter_is_missing($stepExecution): void
+    {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'wrong_key' => 'wrong_value',
+        ]));
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
     }
 
     public function it_calls_franklin_with_the_new_mapping(

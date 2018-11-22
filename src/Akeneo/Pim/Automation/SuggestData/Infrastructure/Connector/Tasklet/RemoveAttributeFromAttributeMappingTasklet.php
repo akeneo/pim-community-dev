@@ -47,8 +47,8 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
      */
     public function execute(): void
     {
-        $pimAttributeCode = 'pim_color';
-        $familyCode = 'router';
+        $pimAttributeCode = $this->getJobParameterValue('pim_attribute_code');
+        $familyCode = $this->getJobParameterValue('family_code');
 
         $response = $this->getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery($familyCode));
 
@@ -91,5 +91,30 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
         }
 
         return $newMapping;
+    }
+
+    /**
+     * @param string $parameterName
+     *
+     * @return string
+     */
+    private function getJobParameterValue(string $parameterName): string
+    {
+        if (null === $this->stepExecution->getJobParameters()) {
+            throw new \InvalidArgumentException(sprintf(
+                'Missing job parameters for tasklet "%s"',
+                self::class
+            ));
+        }
+
+        if (!$this->stepExecution->getJobParameters()->has($parameterName)) {
+            throw new \InvalidArgumentException(sprintf(
+                'The job parameter "%" is missing for the tasklet "%s"',
+                $parameterName,
+                self::class
+            ));
+        }
+
+        return $this->stepExecution->getJobParameters()->get($parameterName);
     }
 }
