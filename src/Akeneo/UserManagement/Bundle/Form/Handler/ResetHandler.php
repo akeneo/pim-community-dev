@@ -2,7 +2,9 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Overridden ResetHandler in order to manage the reset password
@@ -13,6 +15,22 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ResetHandler
 {
+    /** @var FormInterface */
+    private $form;
+
+    /** @var UserManager */
+    private $manager;
+
+    /**
+     * @param FormInterface $form
+     * @param UserManager   $manager
+     */
+    public function __construct(FormInterface $form, UserManager $manager)
+    {
+        $this->form = $form;
+        $this->manager = $manager;
+    }
+
     /**
      * {@inheritdoc}
      */
