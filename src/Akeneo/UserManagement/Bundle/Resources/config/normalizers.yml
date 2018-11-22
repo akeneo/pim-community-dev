@@ -10,5 +10,6 @@ services:
             - '@oro_security.security_facade'
             - '@security.token_storage'
             - '@pim_datagrid.repository.datagrid_view'
+            - []
         tags:
             - { name: pim_internal_api_serializer.normalizer }

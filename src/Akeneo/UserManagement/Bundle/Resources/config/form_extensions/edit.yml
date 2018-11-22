@@ -54,7 +54,7 @@ extensions:
             updateFailureMessage: pim_user_management.entity.user.flash.update.fail
             notReadyMessage: pim_user_management.entity.user.flash.update.fields_not_ready
             url: pim_user_user_rest_post
-            excludedProperties: ['display_proposals_to_review_notification', 'display_proposals_state_notifications', 'last_login', 'login_count', 'password']
+            excludedProperties: ['last_login', 'login_count', 'password']
 
     pim-user-edit-form-secondary-actions:
         module: pim/form/common/secondary-actions

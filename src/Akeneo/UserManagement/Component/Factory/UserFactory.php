@@ -38,8 +38,8 @@ class UserFactory implements SimpleFactoryInterface
     /** @var string */
     protected $userClass;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $assetCategoryRepositoryInterface;
+    /** @var DefaultProperty[] */
+    private $defaultProperties;
 
     /**
      * @param LocaleRepositoryInterface $localeRepository
@@ -47,7 +47,7 @@ class UserFactory implements SimpleFactoryInterface
      * @param CategoryRepositoryInterface $categoryRepository
      * @param GroupRepositoryInterface $groupRepository
      * @param string $userClass
-     * @param IdentifiableObjectRepositoryInterface $assetCategoryRepositoryInterface
+     * @param DefaultProperty[] $defaultProperties
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
@@ -55,14 +55,14 @@ class UserFactory implements SimpleFactoryInterface
         CategoryRepositoryInterface $categoryRepository,
         GroupRepositoryInterface $groupRepository,
         string $userClass,
-        ?IdentifiableObjectRepositoryInterface $assetCategoryRepositoryInterface = null
+        DefaultProperty ...$defaultProperties
     ) {
         $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
         $this->categoryRepository = $categoryRepository;
         $this->groupRepository = $groupRepository;
         $this->userClass = $userClass;
-        $this->assetCategoryRepositoryInterface = $assetCategoryRepositoryInterface;
+        $this->defaultProperties = $defaultProperties;
     }
 
     /**
@@ -86,11 +86,10 @@ class UserFactory implements SimpleFactoryInterface
         if (null !== $group = $this->getDefaultGroup()) {
             $user->addGroup($group);
         }
-        if (null !== $defaultAssetTree = $this->getDefaultAssetTree()) {
-            $user->setDefaultAssetTree($defaultAssetTree);
-        }
 
-        return $user;
+        return array_reduce($this->defaultProperties, function ($user, DefaultProperty $defaultProperty) {
+            return $defaultProperty->mutate($user);
+        }, $user);
     }
 
     /**
@@ -141,22 +140,5 @@ class UserFactory implements SimpleFactoryInterface
     private function getDefaultGroup(): ?Group
     {
         return $this->groupRepository->findOneByIdentifier('all');
-    }
-
-    /**
-     * @return CategoryInterface|null when we install the pim
-     */
-    private function getDefaultAssetTree(): ?CategoryInterface
-    {
-        if (null === $this->assetCategoryRepositoryInterface) {
-            return null;
-        }
-
-        $roots = $this->assetCategoryRepositoryInterface->findRoot();
-        if (count($roots) === 0) {
-            return null;
-        }
-
-        return array_values($roots)[0];
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -148,17 +149,8 @@ class User implements UserInterface
     /** @var string */
     protected $timezone;
 
-    /** @var int The delay in days to send an email before the expiration of an asset */
-    protected $assetDelayReminder = 5;
-
-    /** @var CategoryInterface */
-    protected $defaultAssetTree;
-
-    /** @var bool Be notified when the user receives a proposal to review */
-    protected $proposalsToReviewNotification = true;
-
-    /** @var bool Be notified when the user's proposal has been accepted or rejected */
-    protected $proposalsStateNotification = true;
+    /** @var array $property bag for properties extension */
+    private $properties = [];
 
     public function __construct()
     {
@@ -1120,72 +1112,20 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssetDelayReminder()
+    public function addProperty(string $propertyName, $propertyValue): void
     {
-        return $this->assetDelayReminder;
+        $propertyName = Inflector::tableize($propertyName);
+
+        $this->properties[$propertyName] = $propertyValue;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAssetDelayReminder($assetDelayReminder)
+    public function getProperty(string $propertyName)
     {
-        $this->assetDelayReminder = (int) $assetDelayReminder;
+        $propertyName = Inflector::tableize($propertyName);
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultAssetTree()
-    {
-        return $this->defaultAssetTree;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree)
-    {
-        $this->defaultAssetTree = $defaultAssetTree;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProposalsToReviewNotification()
-    {
-        return $this->proposalsToReviewNotification;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProposalsToReviewNotification($proposalsToReviewNotification)
-    {
-        $this->proposalsToReviewNotification = $proposalsToReviewNotification;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProposalsStateNotification()
-    {
-        return $this->proposalsStateNotification;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProposalsStateNotification($proposalsStateNotification)
-    {
-        $this->proposalsStateNotification = $proposalsStateNotification;
-
-        return $this;
+        return $this->properties[$propertyName] ?? null;
     }
 }

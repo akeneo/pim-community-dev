@@ -14,8 +14,11 @@
 ## Enhancements
 
 - TIP-832: Enable regional languages for UI
+- TIP-898: Allow extension for user via a property named "properties", used on the EE by example
 
 ## BC breaks
+- Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add an Array of `Symfony\Component\Serializer\Normalizer\NormalizerInterface` and a variadic of properties (designed for User)
+- Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add a variadic of properties (designed for User)
 - `AbstractValue->getAttribute()` has been replaced by `AbstractValue->getAttributeCode()`. You will need to inject the AttributeRepository in your service if you need to access the full Attribute object related to the provided attribute code.
 - `AbstractValue->getLocale()` has been renamed to `AbstractValue->getLocaleCode()` to better represent its behaviour
 - `AbstractValue->getScope()` has been renamed to `AbstractValue->getScopeCode()` to better represent its behaviour
