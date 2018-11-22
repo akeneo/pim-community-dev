@@ -5,7 +5,7 @@ extensions:
     targetZone: content
     position: 35
     config:
-      fieldName: default_asset_tree
+      fieldName: properties.default_asset_tree
       label: pim_user_management.entity.user.properties.default_asset_tree
       required: true
       isMultiple: false
@@ -17,6 +17,6 @@ extensions:
     targetZone: content
     position: 40
     config:
-      fieldName: asset_delay_reminder
+      fieldName: properties.asset_delay_reminder
       label: user.asset_delay_reminder
       required: true

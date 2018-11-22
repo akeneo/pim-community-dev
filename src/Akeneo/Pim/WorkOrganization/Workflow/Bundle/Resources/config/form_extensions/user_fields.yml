@@ -24,8 +24,9 @@ extensions:
         targetZone: content
         position: 10
         config:
-            fieldName: proposals_to_review_notification
+            fieldName: properties.proposals_to_review_notification
             label: pim_user_management.entity.user.properties.proposals_to_review_notification
+            visibilityField: display_proposals_to_review_notification
 
     pimee-user-edit-form-proposals-state-notifications:
         module: pimee/user/fields/visible-boolean
@@ -33,5 +34,6 @@ extensions:
         targetZone: content
         position: 20
         config:
-            fieldName: proposals_state_notifications
+            fieldName: properties.proposals_state_notifications
             label: pim_user_management.entity.user.properties.proposals_state_notifications
+            visibilityField: display_proposals_state_notifications

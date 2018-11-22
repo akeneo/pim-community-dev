@@ -26,12 +26,10 @@ class ConfigureUserServicesPass implements CompilerPassInterface
         $userUpdater = $container->getDefinition('pim_user.updater.user');
         $userUpdater->addArgument('asset_delay_reminder');
         $userUpdater->addArgument('default_asset_tree');
-        $userUpdater->addArgument('email_notifications');
 
         $userNormalizer = $container->getDefinition('pim_user.normalizer.user');
         $userNormalizer->addArgument('asset_delay_reminder');
         $userNormalizer->addArgument('default_asset_tree');
-        $userNormalizer->addArgument('email_notifications');
 
         $userFactory = $container->getDefinition('pim_user.factory.user');
         $defaultAssetTree = $container->getDefinition(DefaultAssetTree::class);
