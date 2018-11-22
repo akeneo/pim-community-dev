@@ -33,12 +33,10 @@ class ConfigureUserServicesPassSpec extends ObjectBehavior
         $container->getDefinition('pim_user.updater.user')->willReturn($userUpdater);
         $userUpdater->addArgument('asset_delay_reminder')->shouldBeCalled();
         $userUpdater->addArgument('default_asset_tree')->shouldBeCalled();
-        $userUpdater->addArgument('email_notifications')->shouldBeCalled();
 
         $container->getDefinition('pim_user.normalizer.user')->willReturn($userNormalizer);
         $userNormalizer->addArgument('asset_delay_reminder')->shouldBeCalled();
         $userNormalizer->addArgument('default_asset_tree')->shouldBeCalled();
-        $userNormalizer->addArgument('email_notifications')->shouldBeCalled();
 
         $container->getDefinition('pim_user.factory.user')->willReturn($userFactory);
         $container->getDefinition(DefaultAssetTree::class)->willReturn($defaultAssetTree);

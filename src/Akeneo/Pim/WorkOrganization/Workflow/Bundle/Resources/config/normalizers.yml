@@ -97,4 +97,4 @@ services:
     pimee_workflow.normalizer.user:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\UserNormalizer'
         arguments:
-        - '@pimee_security.repository.category_access'
+            $categoryAccessRepository: '@pimee_security.repository.category_access'
