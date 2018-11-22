@@ -17,7 +17,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -69,7 +69,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
         $userGroups = $options['user']->getGroups();
         if (!$userGroups->isEmpty()) {
             $userGroupsId = array_map(
-                function (Group $userGroup) {
+                function (GroupInterface $userGroup) {
                     return $userGroup->getId();
                 },
                 $userGroups->toArray()

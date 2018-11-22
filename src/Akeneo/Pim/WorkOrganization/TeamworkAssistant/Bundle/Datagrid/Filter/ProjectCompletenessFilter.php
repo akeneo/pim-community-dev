@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
@@ -112,7 +111,7 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         $this->util->applyFilter(
             $datasource,
             $this->attributeRepository->getIdentifierCode(),
-            Operators::IN_LIST,
+            'IN',
             $productIdentifiers
         );
 
