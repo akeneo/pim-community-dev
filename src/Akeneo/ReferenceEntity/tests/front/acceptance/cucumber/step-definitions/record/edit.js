@@ -38,6 +38,21 @@ module.exports = async function(cucumber) {
 
     return await listenRequest(this.page, requestContract);
   });
+
+  Given('a valid record with an option attribute', async function() {
+    const requestContract = getRequestContract('Record/RecordDetails/ok/option.json');
+    currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
+  });
+
+  Given('a valid record with an option collection attribute', async function() {
+    const requestContract = getRequestContract('Record/RecordDetails/ok/option_collection.json');
+    currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
+  });
+
   Given('an invalid record', async function() {
     const requestContract = getRequestContract('Record/RecordDetails/not_found.json');
     currentRequestContract = requestContract;
@@ -128,7 +143,7 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('name_designer_fingerprint', 'Starck');
+    await enrich.fillField('pim_reference_entity.record.enrich.name', 'Starck');
     await editPage.save();
   });
 
@@ -146,7 +161,42 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillUploadField('portrait_designer_fingerprint', './../../../../common/ressource/philippe_starck.png');
+    await enrich.fillUploadField(
+      'pim_reference_entity.record.enrich.portrait',
+      './../../../../common/ressource/philippe_starck.png'
+    );
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with a simple option value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/option_value_ok.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillSelectField('pim_reference_entity.record.enrich.option', 'red');
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with a multiple option value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/option_collection_value_ok.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillSelectField('pim_reference_entity.record.enrich.option_collection', 'red');
     await editPage.save();
   });
 
@@ -163,7 +213,39 @@ module.exports = async function(cucumber) {
 
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField('website_designer_fingerprint', 'hello world');
+    await enrich.fillField('pim_reference_entity.record.enrich.website', 'hello world');
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with an invalid simple option value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/invalid_option_value.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillSelectField('pim_reference_entity.record.enrich.option', 'red');
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with an invalid multiple option value', async function() {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/invalid_option_collection_value.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillSelectField('pim_reference_entity.record.enrich.option_collection', 'red');
     await editPage.save();
   });
 
@@ -180,7 +262,10 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillUploadField('portrait_designer_fingerprint', './../../../../common/ressource/invalid_image.png');
+    await enrich.fillUploadField(
+      'pim_reference_entity.record.enrich.portrait',
+      './../../../../common/ressource/invalid_image.png'
+    );
     await editPage.save();
   });
 
@@ -236,10 +321,10 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isFilled, false);
   });
 
-  When('the user fill the {string} field with: {string}', async function (fieldId, value) {
+  When('the user fill the {string} field with: {string}', async function (fieldCode, value) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
-    await enrich.fillField(fieldId, value);
+    await enrich.fillField('pim_reference_entity.record.enrich.' + fieldCode, value);
   });
 
   Then('the user should not see a completeness bullet point on the required field: {string}', async function (field) {

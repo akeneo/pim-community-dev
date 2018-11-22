@@ -30,6 +30,7 @@ const View = ({
     //I didn't found a better way to fix it. So we need this class
     <div className="record-selector-container">
       <RecordSelector
+        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
         value={value.data.recordCollectionData}
         multiple={true}
         locale={locale}

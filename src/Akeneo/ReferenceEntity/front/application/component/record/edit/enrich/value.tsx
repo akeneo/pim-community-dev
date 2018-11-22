@@ -37,12 +37,11 @@ export default (
             className="AknFieldContainer-label"
             htmlFor={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           >
-            {value.attribute.isRequired &&
-              value.data.isEmpty() ? (
-                <span className="badge-elements-container">
-                  <span className="AknBadge AknBadge--small AknBadge--highlight" />
-                </span>
-              ) : null }
+            <span
+              className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${
+                value.attribute.isRequired && value.data.isEmpty() ? '' : 'AknBadge--hidden'
+              }`}
+            />
             {value.attribute.getLabel(locale.stringValue())}
           </label>
         </div>

@@ -1,11 +1,11 @@
-import Data from 'akeneoreferenceentity/domain/model/record/data';
+import ValueData from 'akeneoreferenceentity/domain/model/record/data';
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 
 class InvalidTypeError extends Error {}
 
 export type NormalizedRecordCollectionData = string[] | null;
 
-class RecordCollectionData extends Data {
+class RecordCollectionData extends ValueData {
   private constructor(readonly recordCollectionData: RecordCode[]) {
     super();
     Object.freeze(this);
@@ -39,7 +39,7 @@ class RecordCollectionData extends Data {
     return 0 === this.recordCollectionData.length;
   }
 
-  public equals(data: Data): boolean {
+  public equals(data: ValueData): boolean {
     return (
       data instanceof RecordCollectionData &&
       this.recordCollectionData.length === data.recordCollectionData.length &&

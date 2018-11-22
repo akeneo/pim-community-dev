@@ -1,69 +1,72 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 
 export interface Select2Props {
-  fieldId: string;
-  fieldName: string;
   data: {
     [choiceValue: string]: string;
   };
-  value: string[];
+  value: string[] | string;
   multiple: boolean;
-  readonly: boolean;
-  onSelect: (value: string) => void;
-  onUnselect: (value: string) => void;
+  readOnly: boolean;
+  configuration?: any;
+  onChange: (value: string[] | string) => void;
 }
 
-export default class Select2 extends React.Component<Select2Props> {
-  public props: any;
-  private el: any;
-  private events: {[eventName: string]: string} = {
-    change: 'onChange',
-  };
+export default class Select2 extends React.Component<Select2Props & any> {
+  public props: Select2Props & any;
+  private select: React.RefObject<HTMLSelectElement>;
+
+  constructor(props: Select2Props & any) {
+    super(props);
+
+    this.select = React.createRef<HTMLSelectElement>();
+  }
 
   componentDidMount() {
-    this.el = $(ReactDOM.findDOMNode(this) as Element);
+    if (null === this.select.current) {
+      return;
+    }
+    const $el = $(this.select.current) as any;
 
-    if (undefined !== this.el.val(this.props.value).select2) {
-      this.el.val(this.props.value).select2({allowClear: true});
-      this.attachEventHandlers();
+    if (undefined !== $el.select2) {
+      $el.val(this.props.value).select2(this.props.configuration);
+      $el.on('change', (event: any) => {
+        this.props.onChange(event.val);
+      });
     }
   }
 
   componentWillUnmount() {
-    Object.keys(this.events).forEach((eventName: string) => {
-      this.el.off(eventName);
-    });
+    if (null === this.select.current) {
+      return;
+    }
+    const $el = $(this.select.current) as any;
+
+    $el.off('change');
   }
 
-  private attachEventHandlers = () => {
-    Object.keys(this.events).forEach((eventName: string) => {
-      this.el.on(eventName, (e: any) => {
-        this.props[this.events[eventName] as string](e.val);
-      });
-    });
-  };
-
   render(): JSX.Element | JSX.Element[] {
-    const {data, value, ...props} = this.props;
+    const {data, value, configuration, ...props} = this.props;
 
     return (
       <select
-        id={props.fieldId}
-        className="select2"
-        name={props.fieldName}
+        {...props}
+        ref={this.select}
         multiple={props.multiple}
-        disabled={props.readonly}
+        disabled={props.readOnly}
         onChange={event => {
-          const newValues = Array.prototype.slice
+          const newValues = Array.prototype.slice // used to convert node list into an array
             .call(event.currentTarget.childNodes)
             .filter((option: HTMLOptionElement) => option.selected)
             .map((option: HTMLOptionElement) => option.value);
 
-          this.props.onChange(newValues);
+          this.props.onChange(this.props.multiple ? newValues : newValues[0]);
         }}
       >
+        {/*In case of simple select and allow clear, we need to add an empty option for Select2*/}
+        {undefined !== configuration && true === configuration.allowClear && false === props.multiple ? (
+          <option />
+        ) : null}
         {Object.keys(data).map((choiceValue: string) => {
           return (
             <option key={choiceValue} value={choiceValue}>

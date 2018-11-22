@@ -1,10 +1,11 @@
 import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import {Attribute} from 'web/bundles/akeneoreferenceentity/domain/model/attribute/attribute';
 
 export class InvalidArgument extends Error {}
 
-export type Denormalizer = (normalizedValue: NormalizedValue) => Value;
+export type Denormalizer = (normalizedValue: NormalizedValue, attribute: Attribute) => Value;
 export type ViewGenerator = React.SFC<{
   value: Value;
   channel: ChannelReference;

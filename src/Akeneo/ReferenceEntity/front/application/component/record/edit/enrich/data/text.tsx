@@ -30,7 +30,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} />
         ) : (
           <textarea
-            id={value.attribute.identifier.stringValue()}
+            id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
             className={`AknTextareaField AknTextareaField--light ${
               value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''
             }`}
@@ -42,7 +42,7 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
         )
       ) : (
         <input
-          id={value.attribute.identifier.stringValue()}
+          id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           className={`AknTextField AknTextField--narrow AknTextField--light ${
             value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''
           }`}

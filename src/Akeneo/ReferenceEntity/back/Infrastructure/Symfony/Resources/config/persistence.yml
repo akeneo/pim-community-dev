@@ -235,6 +235,16 @@ services:
         tags:
             - { name: akeneo_referenceentity.data_hydrator }
 
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.option_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\OptionDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
+    akeneo_referenceentity.infrastructure.persistence.record.hydrator.option_collection_data:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\OptionCollectionDataHydrator
+        tags:
+            - { name: akeneo_referenceentity.data_hydrator }
+
     # Record value transformers
     akeneo_referenceentity.infrastructure.persistence.record.transformer.connector_value_registry:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\ConnectorValueTransformerRegistry

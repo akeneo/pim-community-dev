@@ -24,6 +24,10 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     await field.type(value);
   };
 
+  const fillSelectField = async (id, value) => {
+    await page.select(`.AknSelectField[id="${id}"]`, value);
+  };
+
   const fillUploadField = async (id, value) => {
     const field = await nodeElement.$(`.AknImage-updater[id="${id}"]`);
     await page.evaluate(
@@ -64,7 +68,7 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
 
     const deleteButton = await nodeElement.$('.AknDropdown-menuLink:first-child');
     await deleteButton.click();
-  }
+  };
 
   const hasDeleteButton = async () => {
     try {
@@ -76,15 +80,15 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const isFilled = async (field) => {
+  const isFilled = async field => {
     try {
-      await page.waitForSelector(`div[data-code="${field}"] .AknBadge--small`, {timeout: 2000});
+      await page.waitForSelector(`div[data-code="${field}"] .AknBadge--small:not(.AknBadge--hidden)`, {timeout: 2000});
     } catch (error) {
       return true;
     }
 
     return false;
-  }
+  };
 
   return {
     isLoaded,
@@ -93,9 +97,12 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     getTabCode,
     fillField,
     fillUploadField,
+    fillSelectField,
     clickOnDeleteButton,
     hasDeleteButton,
-    isFilled
+    isFilled,
+    clickOnDeleteButton,
+    hasDeleteButton,
   };
 };
 

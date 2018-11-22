@@ -212,6 +212,9 @@ pim_reference_entity:
             delete:
                 success: Attribute successfully deleted.
                 fail: An error occured during the deletion of the attribute
+        options:
+            title: Manage options
+            no_value: Click here to select an option.
     modal:
         delete:
             subtitle: Confirm deletion

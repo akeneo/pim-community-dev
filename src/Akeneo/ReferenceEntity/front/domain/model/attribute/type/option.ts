@@ -10,6 +10,7 @@ import {
   NormalizedAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import OptionCode from 'web/bundles/akeneoreferenceentity/domain/model/attribute/type/option/option-code';
 
 export interface NormalizedOptionAttribute extends NormalizedAttribute {
   type: 'option';
@@ -22,6 +23,7 @@ export type OptionAdditionalProperty = Option;
 export interface OptionAttribute extends Attribute {
   options: Option[];
   normalize(): NormalizedOptionAttribute;
+  hasOption(optionCode: OptionCode): boolean;
 }
 
 export class InvalidArgumentError extends Error {}
@@ -71,6 +73,10 @@ export class ConcreteOptionAttribute extends ConcreteAttribute implements Option
       normalizedOptionAttribute.is_required,
       normalizedOptionAttribute.options.map(Option.createFromNormalized)
     );
+  }
+
+  public hasOption(optionCode: OptionCode) {
+    return this.options.some((option: Option) => option.code.equals(optionCode));
   }
 
   public normalize(): NormalizedOptionAttribute {

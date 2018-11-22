@@ -28,6 +28,7 @@ const View = ({
   return (
     <div className="record-selector-container">
       <RecordSelector
+        id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
         value={value.data.recordData}
         locale={locale}
         channel={channel}
