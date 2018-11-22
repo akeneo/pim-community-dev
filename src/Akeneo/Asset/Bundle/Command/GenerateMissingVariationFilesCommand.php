@@ -14,7 +14,7 @@ namespace Akeneo\Asset\Bundle\Command;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
-use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

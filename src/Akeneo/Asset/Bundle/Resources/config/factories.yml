@@ -50,7 +50,7 @@ services:
             - { name: pim_notification.factory.notification }
 
     pimee_product_asset.factory.product_value.asset_collection:
-        class: 'Akeneo\Pim\Asset\Component\AssetCollectionValueFactory'
+        class: 'Akeneo\Pim\Enrichment\Asset\Component\AssetCollectionValueFactory'
         public: false
         arguments:
             - '@pim_reference_data.repository_resolver'

@@ -1,8 +1,0 @@
-services:
-    pimee_catalog.comparator.attribute.assets_collection:
-        public:    false
-        class:     'Akeneo\Pim\Asset\Component\Comparator\Attribute\AssetCollectionComparator'
-        arguments:
-            - ['pim_assets_collection']
-        tags:
-            - { name: 'pim_catalog.attribute.comparator' }

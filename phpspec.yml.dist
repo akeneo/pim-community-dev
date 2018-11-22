@@ -49,10 +49,10 @@ suites:
         spec_prefix: Specification
 
     AssetExtension:
-        namespace: Akeneo\Pim\Asset
-        psr4_prefix: Akeneo\Pim\Asset
-        spec_path: tests/back/Pim/Asset
-        src_path: src/Akeneo/Pim/Asset
+        namespace: Akeneo\Pim\Enrichment\Asset
+        psr4_prefix: Akeneo\Pim\Enrichment\Asset
+        spec_path: tests/back/Pim/Enrichment/Asset
+        src_path: src/Akeneo/Pim/Enrichment/Asset
         spec_prefix: Specification
 
     ## Asset BC

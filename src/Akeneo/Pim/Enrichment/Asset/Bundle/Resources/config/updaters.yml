@@ -1,0 +1,11 @@
+parameters:
+    pimee_catalog.updater.adder.asset_collection_value.class: Akeneo\Pim\Enrichment\Asset\Component\Updater\Adder\AssetCollectionAdder
+
+services:
+    pimee_catalog.updater.adder.asset_collection_value:
+        class: '%pimee_catalog.updater.adder.asset_collection_value.class%'
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
