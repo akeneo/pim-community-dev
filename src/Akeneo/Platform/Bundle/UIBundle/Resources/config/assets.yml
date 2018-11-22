@@ -72,6 +72,7 @@ css:
         - bundles/pimui/less/components/Breadcrumb.less
         - bundles/pimui/less/components/Caret.less
         - bundles/pimui/less/components/CenteredBox.less
+        - bundles/pimui/less/components/OptionEditor.less
         - bundles/pimui/less/components/Checkbox.less
         - bundles/pimui/less/components/Column.less
         - bundles/pimui/less/components/ColumnConfigurator.less
