@@ -232,7 +232,14 @@ class UserUpdater implements ObjectUpdaterInterface
 
                 $user->setProductGridFilters([]);
                 break;
+            case 'properties':
+                foreach ($data as $propertyName => $propertyValue) {
+                    $user->addProperty($propertyName, $propertyValue);
+                }
+
+                break;
             default:
+                // For compatibilty
                 if (in_array($field, $this->properties)) {
                     $user->addProperty($field, $data);
 

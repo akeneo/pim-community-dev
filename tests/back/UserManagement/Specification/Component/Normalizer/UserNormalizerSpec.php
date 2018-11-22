@@ -89,12 +89,14 @@ class UserNormalizerSpec extends ObjectBehavior
                     'filePath' => null
                 ]
             ],
-            'property_name' => 'value',
-            'property_one' => 'valueOne',
+            'properties' => [
+                'property_name' => 'value',
+                'property_one' => 'valueOne'
+            ],
             'property_two' => 'valueTwo',
         ];
 
-        $normalizerOne->normalize($user, Argument::cetera())->willReturn(['property_one' => 'valueOne']);
+        $normalizerOne->normalize($user, Argument::cetera())->willReturn(['properties' => ['property_one' => 'valueOne']]);
         $normalizerTwo->normalize($user, Argument::cetera())->willReturn(['property_two' => 'valueTwo']);
 
 

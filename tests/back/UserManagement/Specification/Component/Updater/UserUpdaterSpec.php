@@ -70,6 +70,22 @@ class UserUpdaterSpec extends ObjectBehavior
         Assert::eq( 'value', $user->getProperty('property_name'));
     }
 
+    function it_updates_user_properties_prefixed_by_properties()
+    {
+        $user = new User();
+        $user->addGroup(new Group('all'));
+
+        $this->update(
+            $user,
+            [
+                'properties.property_name' => 'value',
+                'other_property_name' => 'other_value',
+            ]
+        )->shouldReturn($this);
+
+        Assert::eq( 'value', $user->getProperty('property_name'));
+    }
+
     function it_throws_an_exception_if_it_is_not_a_whitelisted_property()
     {
         $user = new User();

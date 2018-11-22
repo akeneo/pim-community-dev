@@ -131,7 +131,9 @@ class UserNormalizer implements NormalizerInterface
             return $normalizer->normalize($user, $format, $context);
         }, $this->userNormalizers);
 
-        return array_merge($result, $normalizedProperties, ...$normalizedCompound);
+        $result['properties'] = $normalizedProperties;
+
+        return array_merge_recursive($result, ...$normalizedCompound);
     }
 
     /**
