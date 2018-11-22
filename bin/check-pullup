@@ -200,6 +200,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/PimEnterprise/Bundle/WorkflowBundle', new Moved('src/Akeneo/Pim/WorkOrganization')),
         new ForbiddenDirectory('src/PimEnterprise/Bundle/InstallerBundle', new Moved('src/Akeneo/Platform')),
         new ForbiddenDirectory('src/PimEnterprise/Bundle/DataGridBundle', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Bundle/UserBundle', Dispatched::mainEnterpriseBusinessTopics()),
 
         // Enterprise Components
         new ForbiddenDirectory('src/PimEnterprise/Component/Api', Dispatched::mainEnterpriseBusinessTopics()),
