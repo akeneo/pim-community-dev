@@ -106,7 +106,6 @@ class SuggestedDataNormalizer
             case AttributeTypes::IDENTIFIER:
             case AttributeTypes::TEXT:
             case AttributeTypes::TEXTAREA:
-            case AttributeTypes::DATE:
                 $normalizedValue = (new TextNormalizer())->normalize($suggestedValue);
                 break;
             case AttributeTypes::NUMBER:
