@@ -122,7 +122,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   const hasError = async code => {
     await page.waitForSelector(
-      `.AknOptionEditor-translator tr[data-code="${code}"] + tr .AknFieldContainer-validationErrors`,
+      `.AknOptionEditor-translator tr[data-code="${code}"] .AknFieldContainer-validationErrors`,
       {timeout: 2000}
     );
 

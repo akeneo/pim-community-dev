@@ -30,7 +30,7 @@ Feature: Edit the options of a list attribute
 
     Examples:
       | invalid_option_code | property_path  | message                                                       |
-      | null                | options        | This value should not be blank.                               |
+      | null                | options        | The code of the option should not be blank                    |
       | 255                 | options.255    | This value should be of type string.                          |
       | "gre-en"            | options.gre-en | This field may only contain letters, numbers and underscores. |
 

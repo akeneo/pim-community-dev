@@ -21,12 +21,12 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "This value should not be blank.",
+        "messageTemplate": "The code of the option should not be blank",
         "parameters": {
           "{{ value }}": "\"\""
         },
         "plural": null,
-        "message": "This value should not be blank.",
+        "message": "The code of the option should not be blank",
         "root": {
           "editCommands": [
             {
