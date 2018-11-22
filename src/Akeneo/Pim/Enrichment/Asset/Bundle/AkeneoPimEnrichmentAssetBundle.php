@@ -13,6 +13,6 @@ namespace Akeneo\Pim\Enrichment\Asset\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AkeneoPimAssetBundle extends Bundle
+class AkeneoPimEnrichmentAssetBundle extends Bundle
 {
 }

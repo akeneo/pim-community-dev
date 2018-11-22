@@ -563,7 +563,7 @@ TODO: change the link!!
         - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
         - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
         - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
-        - `Akeneo\Pim\Enrichment\Asset\Bundle\AkeneoPimAssetBundle`
+        - `Akeneo\Pim\Enrichment\Asset\Bundle\AkeneoPimEnrichmentAssetBundle`
         - `Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle`
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
