@@ -96,7 +96,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
         $draft->getAuthor()->willReturn('author');
         $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(false);
+        $author->getProperty('proposals_state_notifications')->willReturn(false);
         $context->getUser()->willReturn(null);
 
         $values = [
@@ -140,7 +140,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $event->getArgument('isPartial')->willReturn(false);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(true);
+        $author->getProperty('proposals_state_notifications')->willReturn(true);
 
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
@@ -196,7 +196,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
 
         $userRepository->findOneByIdentifier('author')->willReturn($author);
-        $author->hasProposalsStateNotification()->willReturn(true);
+        $author->getProperty('proposals_state_notifications')->willReturn(true);
 
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');

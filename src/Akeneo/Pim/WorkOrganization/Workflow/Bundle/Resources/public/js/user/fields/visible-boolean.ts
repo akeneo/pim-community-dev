@@ -14,15 +14,8 @@ class VisibleBoolean extends BaseBoolean {
    */
   render() {
     if (this.visible === null) {
-      this.visible = UserContext.get('display_' + this.config.fieldName);
+      this.visible = UserContext.get(this.config.visibilityField);
       this.render();
-      // const username = this.getFormData().username;
-      // $.get(Routing.generate('pimee_workflow_rest_user_fields_visibility', { identifier: username }))
-      //   .then((result: { [key:string] : boolean }) => {
-      //     this.visible = result[this.config.fieldName];
-      //
-      //     this.render();
-      //   })
     } else {
       BaseBoolean.prototype.render.apply(this, arguments);
     }

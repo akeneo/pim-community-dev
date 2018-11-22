@@ -87,7 +87,7 @@ abstract class AbstractProposalStateNotificationSubscriber
             return false;
         }
 
-        return $author->hasProposalsStateNotification();
+        return $author->getProperty('proposals_state_notifications');
     }
 
     /**

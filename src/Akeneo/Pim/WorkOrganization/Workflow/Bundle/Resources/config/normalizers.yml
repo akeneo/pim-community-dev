@@ -37,7 +37,7 @@ services:
         lazy: true
 
     pimee_enrich.normalizer.published_product:
-        class: '\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer'
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer'
         arguments:
             - '@pimee_enrich.normalizer.product'
         tags:
@@ -93,3 +93,8 @@ services:
             - '@pim_catalog.repository.product_model'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_workflow.normalizer.user:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\UserNormalizer'
+        arguments:
+            $categoryAccessRepository: '@pimee_security.repository.category_access'

@@ -5,7 +5,7 @@
         'listCategoriesRoute': 'pimee_asset_categorytree_listtree',
         'listCategoryChildrenRoute': 'pimee_asset_categorytree_children',
         'domTreeId': 'tree',
-        'defaultTreeCode': null != app.user.defaultAssetTree ? app.user.defaultAssetTree.code : ''
+        'defaultTreeCode': null != app.user.getProperty('default_asset_tree') ? app.user.getProperty('default_asset_tree') : ''
     }
 %}
 

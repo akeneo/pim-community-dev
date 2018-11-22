@@ -94,6 +94,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer',
+        'Akeneo\UserManagement\Component\Factory\DefaultProperty',
         // Todo: Remove pim dependencies
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security

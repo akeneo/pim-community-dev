@@ -734,7 +734,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $user = $this->getUser($username);
         $value = $this->spin(function () use ($user, $delay) {
             $this->getEntityManager()->refresh($user);
-            $value = $user->getAssetDelayReminder();
+            $value = $user->getProperty('asset_delay_reminder');
 
             return (int) $value === (int) $delay ? $value : null;
         }, sprintf('Asset delay reminder of %s does not change to %s', $username, $delay));
