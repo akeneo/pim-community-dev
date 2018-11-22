@@ -405,7 +405,7 @@ class UserContext
             $user = $token->getUser();
             $method = sprintf('get%s', ucfirst($optionName));
 
-            if (null === $user) {
+            if (null === $user || !is_object($user)) {
                 return null;
             }
 
