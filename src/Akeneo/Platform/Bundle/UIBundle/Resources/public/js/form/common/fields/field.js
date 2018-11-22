@@ -83,6 +83,9 @@ define([
             return errors.filter((error) => {
                 const fieldNameParts = this.fieldName.split('.');
                 const lastPart = fieldNameParts[fieldNameParts.length - 1];
+                if (error.path === undefined) {
+                    return lastPart === error.attribute || lastPart === undefined;
+                }
                 const splittedParts = error.path.split(/\[|\]/).filter(part => {
                     return part !== '';
                 });
