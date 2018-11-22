@@ -241,7 +241,7 @@ class RecordEditView extends React.Component<EditProps> {
                     {null !== completenessValue ? (
                       <div>
                         <div className="AknBadge AknBadge--big AknBadge--warning completeness-badge">
-                          {__('pim_reference_entity.record.completeness.label')}: {completenessValue}%
+                          {__('pim_reference_entity.record.completeness.label')}: <span>{completenessValue}%</span>
                         </div>
                       </div>
                     ) : null}

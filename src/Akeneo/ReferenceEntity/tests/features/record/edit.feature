@@ -442,6 +442,14 @@ Feature: Edit an record
     When the user fill the "website" field with: "http://the-website.com"
     Then the user should not see a completeness bullet point on the required field: "website"
 
+  @acceptance-front
+  Scenario: Display completeness percentage on a record with required fields
+    Given a valid record
+    When the user ask for the record
+    Then the user should see the completeness percentage with a value of "0%"
+    When the user fill the "website" field with: "http://the-website.com"
+    Then the user should see the completeness percentage with a value of "100%"
+
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
 #  Scenario: Updating a record with an image value
