@@ -155,7 +155,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     protected function validateAttributeRequirements($data)
     {
         if (!is_array($data)) {
-            throw InvalidPropertyTypeException::arrayExpected('attribute_requirements', 'update', 'family', $data);
+            throw InvalidPropertyTypeException::arrayExpected('attribute_requirements', static::class, $data);
         }
         foreach ($data as $channel => $attributes) {
             if (!is_array($attributes)) {

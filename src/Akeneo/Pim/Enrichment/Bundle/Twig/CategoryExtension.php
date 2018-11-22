@@ -159,7 +159,7 @@ class CategoryExtension extends \Twig_Extension
             $selectedIds[] = $selectedCategory->getId();
         }
 
-        return $this->formatCategoriesAndCount($categories, $selectedIds, true, $relatedEntity);
+        return $this->formatCategoriesAndCount($categories, $selectedIds, $relatedEntity);
     }
 
     /**
@@ -181,8 +181,6 @@ class CategoryExtension extends \Twig_Extension
 
     /**
      * Return the linked products limit for category removal
-     *
-     * @param string $relatedEntity
      *
      * @return int
      */

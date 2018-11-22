@@ -45,7 +45,7 @@ class CommentBuilder
      */
     public function buildComment(CommentSubjectInterface $subject, UserInterface $user)
     {
-        $now = new \Datetime();
+        $now = new \DateTime();
 
         /** @var CommentInterface $comment */
         $comment = new $this->className();
@@ -66,7 +66,7 @@ class CommentBuilder
      */
     public function buildCommentWithoutSubject(UserInterface $user)
     {
-        $now = new \Datetime();
+        $now = new \DateTime();
 
         /** @var CommentInterface $comment */
         $comment = new $this->className();
@@ -86,7 +86,7 @@ class CommentBuilder
      */
     public function buildReply(CommentInterface $comment, UserInterface $user)
     {
-        $now = new \Datetime();
+        $now = new \DateTime();
 
         /** @var CommentInterface $reply */
         $reply = new $this->className();

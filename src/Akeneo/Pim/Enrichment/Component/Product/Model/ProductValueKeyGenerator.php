@@ -23,6 +23,7 @@ class ProductValueKeyGenerator
      * a product value in a collection of values
      *
      * @param ValueInterface $value
+     * @param string         $separator
      *
      * @return string
      */

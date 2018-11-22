@@ -17,7 +17,7 @@ class DompdfBuilder implements PdfBuilderInterface
     protected $rootDir;
 
     /**
-     * @var DOMPDF
+     * @var \DOMPDF
      */
     protected $dompdf;
 

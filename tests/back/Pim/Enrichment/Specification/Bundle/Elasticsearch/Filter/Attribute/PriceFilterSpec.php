@@ -437,7 +437,6 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidPropertyTypeException::numericExpected(
                 'a_price',
                 sprintf('key "amount" has to be a numeric, "%s" given', gettype('NOT_AN_AMOUNT')),
-                PriceFilter::class,
                 ['amount' => 'NOT_AN_AMOUNT']
             )
         )->during(
@@ -449,7 +448,6 @@ class PriceFilterSpec extends ObjectBehavior
             InvalidPropertyTypeException::numericExpected(
                 'a_price',
                 sprintf('key "amount" has to be a numeric, "%s" given', gettype(null)),
-                PriceFilter::class,
                 ['amount' => null]
             )
         )->during(

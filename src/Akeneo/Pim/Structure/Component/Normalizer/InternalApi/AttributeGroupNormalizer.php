@@ -19,7 +19,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var AttributeRepository */
+    /** @var ObjectRepository */
     protected $attributeRepository;
 
     /**

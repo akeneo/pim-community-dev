@@ -250,7 +250,7 @@ class FamilyVariant implements FamilyVariantInterface
     {
         if (!$this->getFamily()->hasAttributeCode($attributeCode)) {
             throw new \InvalidArgumentException(sprintf(
-                'Impossible to get variation level for attribute "%s", as family "%" does not contain it.',
+                'Impossible to get variation level for attribute "%s", as family "%s" does not contain it.',
                 $attributeCode,
                 $this->getFamily()->getCode()
             ));

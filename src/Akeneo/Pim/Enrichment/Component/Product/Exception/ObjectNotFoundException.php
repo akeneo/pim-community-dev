@@ -18,8 +18,6 @@ class ObjectNotFoundException extends \Exception
      */
     public function __construct($message = 'Object was not found.', $code = 0, $previous = null)
     {
-        $this->message = $message;
-        $this->code = $code;
-        $this->previous = $previous;
+        parent::__construct($message, $code, $previous);
     }
 }

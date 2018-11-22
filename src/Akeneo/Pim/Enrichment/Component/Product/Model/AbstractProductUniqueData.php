@@ -59,7 +59,7 @@ abstract class AbstractProductUniqueData implements ProductUniqueDataInterface
      */
     public function getRawData(): string
     {
-        return $this->rawdata;
+        return $this->rawData;
     }
 
     /**

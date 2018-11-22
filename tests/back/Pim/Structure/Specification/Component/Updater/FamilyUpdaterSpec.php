@@ -660,7 +660,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('attribute_requirements', 'update', 'family', 'foo')
+                InvalidPropertyTypeException::arrayExpected('attribute_requirements', FamilyUpdater::class, 'foo')
             )
             ->during('update', [$family, $data, []]);
     }
