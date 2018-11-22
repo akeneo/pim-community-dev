@@ -20,7 +20,24 @@ const normalizedDescription = {
   validation_rule: 'email',
   regular_expression: null,
 };
+const normalizedWebsite = {
+  identifier: 'website_1234',
+  reference_entity_identifier: 'designer',
+  code: 'website',
+  labels: {en_US: 'Website'},
+  type: 'text',
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: false,
+  is_required: false,
+  max_length: 0,
+  is_textarea: false,
+  is_rich_text_editor: false,
+  validation_rule: 'url',
+  regular_expression: null,
+};
 const description = denormalizeTextAttribute(normalizedDescription);
+const website = denormalizeTextAttribute(normalizedWebsite);
 const ecommerce = denormalizeChannelReference('ecommerce');
 const enUS = denormalizeLocaleReference('en_US');
 const data = denormalizeTextData('a nice description');
@@ -115,6 +132,29 @@ describe('akeneo > reference entity > domain > model > record --- value', () => 
         )
       )
     ).toBe(false);
+  });
+
+  test('I can check if a value is complete', () => {
+    expect(
+      createValue(
+        description,
+        denormalizeChannelReference(null),
+        enUS,
+        denormalizeTextData('test description')
+      ).isComplete()
+    ).toBe(true);
+    expect(
+      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isComplete()
+    ).toBe(false);
+  });
+
+  test('I can check if a value is required', () => {
+    expect(
+      createValue(description, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isRequired()
+    ).toBe(true);
+    expect(createValue(website, denormalizeChannelReference(null), enUS, denormalizeTextData('')).isRequired()).toBe(
+      false
+    );
   });
 
   test("I can normalize a value to it's minimal value", () => {

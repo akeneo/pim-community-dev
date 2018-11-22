@@ -113,15 +113,15 @@ class RecordEditView extends React.Component<EditProps> {
     return null;
   };
 
-  private getCompletenessValue = (record: Record): number => {
+  private hasRequiredValues = (values: Value[]): boolean => {
+    const requiredValues = values.filter((value: Value) => value.isRequired());
+
+    return requiredValues.length > 0;
+  };
+
+  private getCompletenessValue = (values: Value[]): number => {
     let nbCompletedValues: number = 0;
     let nbRequiredValues: number = 0;
-    const values: Value[] = record
-      .getValueCollection()
-      .getValuesForChannelAndLocale(
-        createChannelReference(this.props.context.channel),
-        createLocaleReference(this.props.context.locale)
-      );
 
     return values.reduce((_previousValue: number, currentValue: Value) => {
       if (currentValue.isComplete()) {
@@ -141,7 +141,13 @@ class RecordEditView extends React.Component<EditProps> {
     const record = denormalizeRecord(this.props.record);
     const label = record.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_reference_entities_record_edit', this.props.sidebar.currentTab);
-    const completenessValue = this.getCompletenessValue(record);
+    const values: Value[] = record
+      .getValueCollection()
+      .getValuesForChannelAndLocale(
+        createChannelReference(this.props.context.channel),
+        createLocaleReference(this.props.context.locale)
+      );
+    const completenessValue = this.hasRequiredValues(values) ? this.getCompletenessValue(values) : null;
 
     return (
       <React.Fragment>
@@ -232,11 +238,13 @@ class RecordEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <div className="AknBadge AknBadge--big AknBadge--warning completeness-badge">
-                        {__('pim_reference_entity.record.completeness.label')}: {completenessValue}%
+                    {null !== completenessValue ? (
+                      <div>
+                        <div className="AknBadge AknBadge--big AknBadge--warning completeness-badge">
+                          {__('pim_reference_entity.record.completeness.label')}: {completenessValue}%
+                        </div>
                       </div>
-                    </div>
+                    ) : null}
                   </div>
                 </div>
               </header>
