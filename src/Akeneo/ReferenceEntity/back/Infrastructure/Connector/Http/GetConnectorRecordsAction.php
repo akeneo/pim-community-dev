@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
 
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -81,11 +82,13 @@ class GetConnectorRecordsAction
             $searchAfterCode = null !== $searchAfter ? RecordCode::fromString($searchAfter) : null;
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
             $channelReferenceValuesFilter = ChannelReference::createfromNormalized($request->get('channel', null));
+            $localeIdentifiersValuesFilter = $this->getLocaleIdentifiersValuesFilterFromRequest($request);
             $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
                 $referenceEntityIdentifier,
                 $searchAfterCode,
                 $this->limit->intValue(),
-                $channelReferenceValuesFilter
+                $channelReferenceValuesFilter,
+                $localeIdentifiersValuesFilter
             );
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
@@ -131,9 +134,19 @@ class GetConnectorRecordsAction
             ],
             'query_parameters'    => [
                 'channel' => $request->get('channel', null),
+                'locales' => $request->get('locales', null),
             ],
         ];
 
         return $this->halPaginator->paginate($records, $paginationParameters, count($records));
+    }
+
+    private function getLocaleIdentifiersValuesFilterFromRequest(Request $request): LocaleIdentifierCollection
+    {
+        $locales = $request->get('locales', '');
+        $locales = '' === $locales ? [] : explode(',', $locales);
+
+
+        return LocaleIdentifierCollection::fromNormalized($locales);
     }
 }

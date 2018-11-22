@@ -40,7 +40,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
     public function validate($channelReference, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
-        $this->checkChannelIdentifierType($channelReference);
+        $this->checkChannelReferenceType($channelReference);
 
         if (!$channelReference->isEmpty() && false === ($this->channelExists)($channelReference->getIdentifier())) {
             $this->context->buildViolation(ChannelShouldExist::ERROR_MESSAGE)
@@ -63,11 +63,11 @@ class ChannelShouldExistValidator extends ConstraintValidator
     /**
      * @throws \InvalidArgumentException
      */
-    private function checkChannelIdentifierType($channelIdentifier): void
+    private function checkChannelReferenceType($channelReference): void
     {
-        if (null !== $channelIdentifier && !$channelIdentifier instanceof ChannelReference) {
+        if (null !== $channelReference && !$channelReference instanceof ChannelReference) {
             throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                ChannelIdentifier::class, get_class($channelIdentifier)));
+                ChannelIdentifier::class, get_class($channelReference)));
         }
     }
 }

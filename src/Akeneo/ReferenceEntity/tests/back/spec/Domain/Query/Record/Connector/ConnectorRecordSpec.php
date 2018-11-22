@@ -16,6 +16,7 @@ namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record\Connector;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use PhpSpec\ObjectBehavior;
@@ -163,5 +164,90 @@ class ConnectorRecordSpec extends ObjectBehavior
          );
 
          $this->getRecordWithValuesFilteredOnChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedRecord);
+     }
+
+     function it_filters_values_and_labels_by_locales()
+     {
+         $recordCode = RecordCode::fromString('starck');
+         $labelCollection = LabelCollection::fromArray([
+             'en_US' => 'English Starck label',
+             'fr_FR' => 'French Starck label',
+             'de_DE' => 'German Starck label',
+         ]);
+         $valueCollection = [
+             'description' => [
+                 [
+                     'channel'   => 'ecommerce',
+                     'locale'    => 'en_US',
+                     'data'      => 'English description.',
+                 ],
+                 [
+                     'channel'   => 'ecommerce',
+                     'locale'    => 'fr_FR',
+                     'data'      => 'French description.',
+                 ],
+                 [
+                     'channel'   => 'ecommerce',
+                     'locale'    => 'de_DE',
+                     'data'      => 'German description.',
+                 ],
+             ],
+             'short_description' => [
+                 [
+                     'channel'   => 'tablet',
+                     'locale'    => 'fr_FR',
+                     'data'      => 'French short description.',
+                 ],
+             ],
+             'not_localizable_value' => [
+                 [
+                     'channel' => 'ecommerce',
+                     'locale'  => null,
+                     'data'    => 'Not localizable value.'
+                 ]
+             ]
+         ];
+
+         $this->beConstructedWith(
+             $recordCode,
+             $labelCollection,
+             Image::createEmpty(),
+             $valueCollection
+         );
+
+         $expectedRecord = new ConnectorRecord(
+             $recordCode,
+             LabelCollection::fromArray([
+                 'en_US' => 'English Starck label',
+                 'de_DE' => 'German Starck label',
+             ]),
+             Image::createEmpty(),
+             [
+                 'description' => [
+                     [
+                         'channel' => 'ecommerce',
+                         'locale'  => 'en_US',
+                         'data'    => 'English description.',
+                     ],
+                     [
+                         'channel'   => 'ecommerce',
+                         'locale'    => 'de_DE',
+                         'data'      => 'German description.',
+                     ],
+                 ],
+                 'not_localizable_value' => [
+                     [
+                         'channel' => 'ecommerce',
+                         'locale'  => null,
+                         'data'    => 'Not localizable value.'
+                     ],
+                 ],
+             ]
+         );
+
+         $this->getRecordWithValuesAndLabelsFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([
+             'en_US',
+             'de_DE',
+         ]))->shouldBeLike($expectedRecord);
      }
 }

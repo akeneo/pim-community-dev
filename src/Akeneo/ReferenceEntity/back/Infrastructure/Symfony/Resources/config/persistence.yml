@@ -286,3 +286,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
         arguments:
             - '@database_connection'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocalesByIdentifiers
+        arguments:
+            - '@database_connection'

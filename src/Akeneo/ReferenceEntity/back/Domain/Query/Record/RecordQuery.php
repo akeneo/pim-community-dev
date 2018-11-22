@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -59,6 +60,13 @@ class RecordQuery
      */
     private $channelReferenceValuesFilter;
 
+    /**
+     * To filter the values by locales. The values without locale will not be filtered.
+     *
+     * @var LocaleIdentifierCollection
+     */
+    private $localeIdentifiersValuesFilter;
+
     private function __construct(
         ?ChannelIdentifier $channel,
         ?LocaleIdentifier $locale,
@@ -67,7 +75,8 @@ class RecordQuery
         int $size,
         ?RecordCode $searchAfterCode,
         string $paginationMethod,
-        ChannelReference $channelReferenceValuesFilter
+        ChannelReference $channelReferenceValuesFilter,
+        LocaleIdentifierCollection $localeIdentifiersValuesFilter
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -91,7 +100,9 @@ class RecordQuery
 
         $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = $paginationMethod;
-        $this->channelReferenceValuesFilter = $channelReferenceValuesFilter;
+
+        $this->channelReferenceValuesFilter  = $channelReferenceValuesFilter;
+        $this->localeIdentifiersValuesFilter = $localeIdentifiersValuesFilter;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -114,7 +125,8 @@ class RecordQuery
             $normalizedQuery['size'],
             null,
             self::PAGINATE_USING_OFFSET,
-            ChannelReference::noReference()
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty()
         );
     }
 
@@ -122,7 +134,8 @@ class RecordQuery
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         ?RecordCode $searchAfterCode,
         int $size,
-        ChannelReference $channelReferenceValuesFilter
+        ChannelReference $channelReferenceValuesFilter,
+        LocaleIdentifierCollection $localeIdentifiersValuesFilter
     ): RecordQuery {
         $filters = [
             [
@@ -140,7 +153,8 @@ class RecordQuery
             $size,
             $searchAfterCode,
             self::PAGINATE_USING_SEARCH_AFTER,
-            $channelReferenceValuesFilter
+            $channelReferenceValuesFilter,
+            $localeIdentifiersValuesFilter
         );
     }
 
@@ -206,5 +220,10 @@ class RecordQuery
     public function getChannelReferenceValuesFilter(): ChannelReference
     {
         return $this->channelReferenceValuesFilter;
+    }
+
+    public function getLocaleIdentifiersValuesFilter(): LocaleIdentifierCollection
+    {
+        return $this->localeIdentifiersValuesFilter;
     }
 }

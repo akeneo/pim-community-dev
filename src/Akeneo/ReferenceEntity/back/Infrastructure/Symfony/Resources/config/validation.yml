@@ -147,6 +147,10 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExist:
                   payload:
                       standardPropertyName: channel
+        localeIdentifiersValuesFilter:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Locale\LocalesShouldBeActivated:
+                  payload:
+                      standardPropertyName: locales
 
 # Attributes
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
