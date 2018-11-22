@@ -58,6 +58,9 @@ final class FetchProductModelRowsFromCodes
 
         $productModels = [];
         foreach ($rows as $row) {
+            if (!$this->isExistingProductModel($row)) {
+                continue;
+            }
             $productModels[] = ReadModel\Row::fromProductModel(
                 $row['code'],
                 $row['family_label'],
@@ -322,5 +325,21 @@ SQL;
         }
 
         return $result;
+    }
+
+    /**
+     * A product model can exist in Elasticsearch but not in Mysql.
+     *
+     * It occurs, for example, when deleting a product model in the datagrid.
+     * In that case, the product model is deleted in Mysql (which trigger deletion in ES) and then the datagrid is refreshed.
+     *
+     * The problem is that the refresh of the datagrid still search in ES the products and the product models.
+     * The deleted product model is still in the ES index because the index is not yet up to date with the deleted product model.
+     * Therefore, the code of this deleted product model is returned but it does not exist anymore in Mysql.
+     *
+     */
+    private function isExistingProductModel(array $row): bool
+    {
+        return isset($row['code']);
     }
 }
