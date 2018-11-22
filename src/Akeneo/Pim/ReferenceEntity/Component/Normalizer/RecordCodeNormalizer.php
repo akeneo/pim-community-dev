@@ -13,25 +13,23 @@ declare(strict_types=1);
 namespace Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @author    Julien Sanchez <julien@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordNormalizer implements NormalizerInterface
+class RecordCodeNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @param RecordCode $recordCode
      */
-    public function normalize($record, $format = null, array $context = [])
+    public function normalize($recordCode, $format = null, array $context = [])
     {
-        $code = $record->getCode()->__toString();
-        if (key_exists('field_name', $context)) {
-            return [$context['field_name'] => $code];
-        }
-
-        return $code;
+        return $recordCode->normalize();
     }
 
     /**
@@ -39,6 +37,6 @@ class RecordNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof Record && ('standard' === $format || 'storage' === $format || 'flat' === $format);
+        return $data instanceof RecordCode && ('standard' === $format || 'storage' === $format || 'flat' === $format);
     }
 }

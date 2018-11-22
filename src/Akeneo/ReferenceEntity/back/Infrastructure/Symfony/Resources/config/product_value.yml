@@ -117,10 +117,10 @@ services:
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
-    akeneo_referenceentity.infrastructure.catalog.normalizer.record:
-        class: Akeneo\Pim\ReferenceEntity\Component\Normalizer\RecordNormalizer
+    akeneo_referenceentity.infrastructure.catalog.normalizer.record_code:
+        class: Akeneo\Pim\ReferenceEntity\Component\Normalizer\RecordCodeNormalizer
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
-            - { name: pim_storage_serializer.normalizer, priority: 90 }
-            - { name: pim_versioning.serializer.normalizer, priority: 100 }
+        - { name: pim_serializer.normalizer, priority: 90 }
+        - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+        - { name: pim_storage_serializer.normalizer, priority: 90 }
+        - { name: pim_versioning.serializer.normalizer, priority: 100 }
