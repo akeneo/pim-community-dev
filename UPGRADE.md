@@ -236,6 +236,14 @@ TODO: change the link!!
     * the route `oro_user_security_check` has been replaced by `pim_user_security_check`
     * the route `oro_user_security_login` has been replaced by `pim_user_security_login`
     * the route `oro_user_security_logout` has been replaced by `pim_user_security_logout`
+    * the Elasticsearch configuration files are now: 
+    
+    ```yaml
+    elasticsearch_index_configuration_files:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/index_configuration.yml'
+        - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Resources/elasticsearch/index_configuration.yml'
+    ```
+    
 
 3. Update your **app/config/config.yml**
 
