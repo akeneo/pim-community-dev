@@ -70,6 +70,12 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
+    /**
+     * @param AttributesMappingResponse $response
+     * @param string $pimAttributeCode
+     *
+     * @return array
+     */
     private function buildNewAttributeMapping(AttributesMappingResponse $response, string $pimAttributeCode)
     {
         $newMapping = [];

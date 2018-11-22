@@ -12,6 +12,7 @@ declare(strict_types=1);
  */
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read;
+
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 
 /**

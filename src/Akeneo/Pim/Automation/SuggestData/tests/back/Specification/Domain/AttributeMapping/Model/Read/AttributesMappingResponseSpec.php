@@ -35,7 +35,7 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
     }
 
-    public function it_can_check_if_attribute_exist()
+    public function it_can_check_if_attribute_exist(): void
     {
         $this->hasPimAttribute(new AttributeCode('color'))->shouldReturn(false);
 
