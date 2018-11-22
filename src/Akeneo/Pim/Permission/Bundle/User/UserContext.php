@@ -142,6 +142,11 @@ class UserContext extends BaseUserContext
     public function getAccessibleUserTree()
     {
         $defaultTree = $this->getUserOption($this->treeOptionKey);
+
+        if (is_string($defaultTree)) {
+            $defaultTree = $this->categoryRepository->findOneBy(['code' => $defaultTree]);
+        }
+
         if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
             return $defaultTree;
         }
@@ -199,6 +204,10 @@ class UserContext extends BaseUserContext
 
         if (is_string($defaultTree)) {
             return $this->categoryRepository->findOneBy(['code' => $defaultTree]);
+        }
+
+        if ($defaultTree instanceof CategoryInterface) {
+            return $defaultTree;
         }
 
         return current($this->categoryRepository->getTrees());
