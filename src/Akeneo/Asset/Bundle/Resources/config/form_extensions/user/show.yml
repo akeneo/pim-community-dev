@@ -14,9 +14,9 @@ extensions:
 
   pimee-user-show-asset-delay-reminder:
     module: pim/form/common/fields/number
-    parent: pim-user-show-groups-and-roles-tab-content
+    parent: pim-user-show-additional-tab-content
     targetZone: content
-    position: 40
+    position: 38
     config:
       fieldName: properties.asset_delay_reminder
       label: user.asset_delay_reminder

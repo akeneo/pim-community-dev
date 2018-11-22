@@ -13,9 +13,9 @@ extensions:
 
   pimee-user-edit-form-asset-delay-reminder:
     module: pim/form/common/fields/number
-    parent: pim-user-edit-form-groups-and-roles-tab-content
+    parent: pim-user-edit-form-additional-tab-content
     targetZone: content
-    position: 40
+    position: 38
     config:
       fieldName: properties.asset_delay_reminder
       label: user.asset_delay_reminder

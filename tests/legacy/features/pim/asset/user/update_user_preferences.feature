@@ -22,7 +22,7 @@ Feature: Update user preferences
 
   Scenario: Successfully set the delay before to send an asset expiration notification
     Given I edit the "Julia" user
-    And I visit the "Groups and roles" tab
+    And I visit the "Additional" tab
     And I fill in "Asset delay reminder (in days)" with "12"
     And I save the user
     Then the user "Julia" should have an asset delay notification set to 12

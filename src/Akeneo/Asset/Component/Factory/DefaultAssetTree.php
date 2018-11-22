@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -26,6 +28,9 @@ class DefaultAssetTree implements DefaultProperty
     /** @var AssetCategoryRepositoryInterface */
     private $assetCategoryRepository;
 
+    /**
+     * @param AssetCategoryRepositoryInterface $assetCategoryRepository
+     */
     public function __construct(AssetCategoryRepositoryInterface $assetCategoryRepository)
     {
         $this->assetCategoryRepository = $assetCategoryRepository;
