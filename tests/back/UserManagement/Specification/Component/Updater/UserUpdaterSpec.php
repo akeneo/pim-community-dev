@@ -70,7 +70,7 @@ class UserUpdaterSpec extends ObjectBehavior
         Assert::eq( 'value', $user->getProperty('property_name'));
     }
 
-    function it_updates_user_properties_prefixed_by_properties()
+    function it_updates_user_properties_in_properties_array()
     {
         $user = new User();
         $user->addGroup(new Group('all'));
@@ -78,7 +78,7 @@ class UserUpdaterSpec extends ObjectBehavior
         $this->update(
             $user,
             [
-                'properties.property_name' => 'value',
+                'properties' => [ 'property_name' => 'value'],
                 'other_property_name' => 'other_value',
             ]
         )->shouldReturn($this);
