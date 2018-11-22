@@ -138,17 +138,16 @@ $filterByAttributeGroupPermissions
 GROUP BY `completeness_per_attribute_group`.`product_id`
 SQL;
 
-        // Todo
         if ($status === ProjectCompletenessFilter::CONTRIBUTOR_TODO) {
             $sql .= <<<SQL
-HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND COUNT(`completeness_per_attribute_group`.`product_id`) = 0)
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) = 0)
 SQL;
         }
 
         // IN PROGRESS
         if ($status === ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS) {
             $sql .= <<<SQL
-HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR COUNT(`completeness_per_attribute_group`.`product_id`) > 0)
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) > 0)
 AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
 SQL;
         }
@@ -194,17 +193,16 @@ AND `locale`.`code` = :locale_code
 GROUP BY `completeness_per_attribute_group`.`product_id`
 SQL;
 
-        // Todo
         if ($status === ProjectCompletenessFilter::OWNER_TODO) {
             $sql .= <<<SQL
-HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND COUNT(`completeness_per_attribute_group`.`product_id`) = 0)
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) = 0 AND SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) = 0)
 SQL;
         }
 
         // IN PROGRESS
         if ($status === ProjectCompletenessFilter::OWNER_IN_PROGRESS) {
             $sql .= <<<SQL
-HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR COUNT(`completeness_per_attribute_group`.`product_id`) > 0)
+HAVING (SUM(`completeness_per_attribute_group`.`is_complete`) > 0 OR SUM(`completeness_per_attribute_group`.`has_at_least_one_required_attribute_filled`) > 0)
 AND SUM(`completeness_per_attribute_group`.`is_complete`) <> COUNT(`completeness_per_attribute_group`.`product_id`)
 SQL;
         }

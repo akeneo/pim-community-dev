@@ -11,8 +11,10 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\Project;
 
+use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\TeamworkAssistantTestCase;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
+use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 {
@@ -47,6 +49,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $projectCompleteness = $this->getProjectCompleteness($project);
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Julia');
         $this->checkProjectCompleteness($projectCompleteness, 0, 4, 0, 'Julia');
+        $this->checkProjectCompletenessFilterForOwner($project, $projectCompleteness, 'Julia');
 
         /**
          * Mary is a project contributor, she can edit the marking attribute group
@@ -55,6 +58,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Mary');
         $this->checkProjectCompleteness($projectCompleteness, 2, 1, 1, 'Mary');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Mary');
 
         /**
          * Peter is administrator, he does not enrich product but he can see products
@@ -81,6 +85,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 2, 'Teddy');
         $this->checkProjectCompleteness($projectCompleteness, 2, 0, 0, 'Teddy');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Teddy');
 
         /**
          * Claude
@@ -91,6 +96,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Claude');
         $this->checkProjectCompleteness($projectCompleteness, 3, 0, 1, 'Claude');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Claude');
 
         /**
          * Marc
@@ -101,6 +107,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Marc');
         $this->checkProjectCompleteness($projectCompleteness, 3, 0, 1, 'Marc');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Marc');
     }
 
     /**
@@ -128,6 +135,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 6, 'Julia');
         $this->checkProjectCompleteness($projectCompleteness, 0, 6, 0, 'Julia');
+        $this->checkProjectCompletenessFilterForOwner($project, $projectCompleteness, 'Julia');
 
         /**
          * Marc
@@ -138,6 +146,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 6, 'Marc');
         $this->checkProjectCompleteness($projectCompleteness, 3, 0, 3, 'Marc');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Marc');
 
         /**
          * Mary is a project contributor, she can edit the marking attribute group
@@ -147,6 +156,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 6, 'Mary');
         $this->checkProjectCompleteness($projectCompleteness, 3, 2, 1, 'Mary');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Mary');
 
         /**
          * Claude
@@ -157,6 +167,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Claude');
         $this->checkProjectCompleteness($projectCompleteness, 3, 0, 1, 'Claude');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Claude');
     }
 
     /**
@@ -183,6 +194,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $projectCompleteness = $this->getProjectCompleteness($project);
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Julia');
         $this->checkProjectCompleteness($projectCompleteness, 0, 4, 0, 'Julia');
+        $this->checkProjectCompletenessFilterForOwner($project, $projectCompleteness, 'Julia');
 
         /**
          * Mary is a project contributor, she can edit the marking attribute group
@@ -191,6 +203,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Mary');
         $this->checkProjectCompleteness($projectCompleteness, 0, 3, 1, 'Mary');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Mary');
 
         /**
          * Peter is administrator, he does not enrich product but he can see products
@@ -217,6 +230,8 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 2, 'Teddy');
         $this->checkProjectCompleteness($projectCompleteness, 1, 0, 1, 'Teddy');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Teddy');
+
 
         /**
          * Claude
@@ -227,6 +242,8 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Claude');
         $this->checkProjectCompleteness($projectCompleteness, 2, 0, 2, 'Claude');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Claude');
+
 
         /**
          * Marc
@@ -237,6 +254,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Marc');
         $this->checkProjectCompleteness($projectCompleteness, 2, 0, 2, 'Marc');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Marc');
     }
 
 
@@ -264,6 +282,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $projectCompleteness = $this->getProjectCompleteness($project);
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Julia');
         $this->checkProjectCompleteness($projectCompleteness, 0, 4, 0, 'Julia');
+        $this->checkProjectCompletenessFilterForOwner($project, $projectCompleteness, 'Julia');
 
         /**
          * Mary is a project contributor, she can edit the marking attribute group
@@ -272,6 +291,7 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Mary');
         $this->checkProjectCompleteness($projectCompleteness, 4, 0, 0, 'Mary');
+        $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Mary');
 
         /**
          * Peter is administrator, he does not enrich product but he can see products
@@ -340,19 +360,91 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $this->assertEquals(
             $expectedTodo,
             $projectCompleteness->getProductsCountTodo(),
-            sprintf('Product count to do are invalid for %s', $username)
+            sprintf('Product count to do is invalid for %s', $username)
         );
 
         $this->assertEquals(
             $expectedInProgress,
             $projectCompleteness->getProductsCountInProgress(),
-            sprintf('Product count in progress are invalid for %s', $username)
+            sprintf('Product count in progress is invalid for %s', $username)
         );
 
         $this->assertEquals(
             $expectedDone,
             $projectCompleteness->getProductsCountDone(),
-            sprintf('Product count done are invalid for %s', $username)
+            sprintf('Product count done is invalid for %s', $username)
+        );
+    }
+
+    /**
+     * Check the number of products returned done, in progress and to do, by using completeness filter
+     *
+     * @param ProjectInterface    $project
+     * @param ProjectCompleteness $projectCompleteness
+     * @param string              $username
+     */
+    private function checkProjectCompletenessFilterForOwner(
+        ProjectInterface $project,
+        ProjectCompleteness $projectCompleteness,
+        string $username
+    ) {
+        $repository = $this->get('pimee_teamwork_assistant.repository.project_completeness');
+        $todo = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_TODO, $username));
+        $inProgress = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_IN_PROGRESS, $username));
+        $done = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_DONE, $username));
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountTodo(),
+            $todo,
+            sprintf('Product count with filter to do is invalid for %s', $username)
+        );
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountInProgress(),
+            $inProgress,
+            sprintf('Product count with filter progress is invalid for %s', $username)
+        );
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountDone(),
+            $done,
+            sprintf('Product count with filter done is invalid for %s', $username)
+        );
+    }
+
+    /**
+     * Check the number of products returned done, in progress and to do, by using completeness filter
+     *
+     * @param ProjectInterface    $project
+     * @param ProjectCompleteness $projectCompleteness
+     * @param string              $username
+     */
+    private function checkProjectCompletenessFilterForContributor(
+        ProjectInterface $project,
+        ProjectCompleteness $projectCompleteness,
+        string $username
+    ) {
+        $repository = $this->get('pimee_teamwork_assistant.repository.project_completeness');
+        $todo = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_TODO, $username));
+        $inProgress = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS, $username));
+        $done = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_DONE, $username));
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountTodo(),
+            $todo,
+            sprintf('Product count with filter to do is invalid for %s', $username)
+        );
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountInProgress(),
+            $inProgress,
+            sprintf('Product count with filter progress is invalid for %s', $username)
+        );
+
+        $this->assertEquals(
+            $projectCompleteness->getProductsCountDone(),
+            $done,
+            sprintf('Product count with filter done is invalid for %s', $username)
         );
     }
 
