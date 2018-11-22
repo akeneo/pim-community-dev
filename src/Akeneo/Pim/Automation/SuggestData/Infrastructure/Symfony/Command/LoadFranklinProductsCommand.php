@@ -38,8 +38,11 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pimee:suggest-data:load-franklin-products')
-            ->addArgument('filename', InputArgument::REQUIRED)
-            ->addArgument('familyCode', InputArgument::REQUIRED);
+            ->addArgument(
+                'family',
+                InputArgument::REQUIRED,
+                '(fridges, hardware, light_bulbs, shelves or watches)'
+            );
     }
 
     /**
@@ -47,10 +50,10 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $filepath = realpath(__DIR__) . '/' . $input->getArgument('filename');
+        $filepath = realpath(__DIR__) . '/franklin_' . $input->getArgument('family') . '.csv';
 
         if (!is_file($filepath)) {
-            throw new \LogicException(sprintf('Incorrect filepath "%s"', $filepath));
+            throw new \LogicException(sprintf('Incorrect family "%s"', $input->getArgument('family')));
         }
 
         $this->createAttribute('pim_asin', AttributeTypes::TEXT);
@@ -64,7 +67,7 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
         $headers[3] = 'pim_brand';
         $headers[4] = 'mpn';
 
-        $family = $this->createFamily($input->getArgument('familyCode'), $headers);
+        $family = $this->createFamily($input->getArgument('family'), $headers);
 
         while ($dataRow = fgetcsv($fd)) {
             $this->createProduct(array_combine($headers, $dataRow), $family);
