@@ -165,6 +165,10 @@ class UserContext extends BaseUserContext
     {
         $defaultTree = $this->getUserOption($this->treeOptionKey);
 
+        if (is_string($defaultTree)) {
+            return $this->categoryRepository->findOneBy(['code' => $defaultTree]);
+        }
+
         return $defaultTree;
     }
 
@@ -193,6 +197,10 @@ class UserContext extends BaseUserContext
     {
         $defaultTree = $this->getUserOption($this->treeOptionKey);
 
-        return $defaultTree ?: current($this->categoryRepository->getTrees());
+        if (is_string($defaultTree)) {
+            return $this->categoryRepository->findOneBy(['code' => $defaultTree]);
+        }
+
+        return current($this->categoryRepository->getTrees());
     }
 }
