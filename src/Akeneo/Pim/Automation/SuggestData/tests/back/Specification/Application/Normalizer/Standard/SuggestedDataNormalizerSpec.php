@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard;
 
+use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -273,19 +277,48 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
     public function it_normalizes_suggested_data_ignoring_unsupported_attribute_types($attributeRepository): void
     {
         $suggestedData = [
-            ['pimAttributeCode' => 'foo', 'value' => 'bar'],
-            ['pimAttributeCode' => 'bar', 'value' => 'baz'],
+            ['pimAttributeCode' => 'a_text', 'value' => 'bar'],
+            ['pimAttributeCode' => 'a_date', 'value' => '2018-12-25 00:00:00'],
+            ['pimAttributeCode' => 'a_file', 'value' => '/some/file/path.csv'],
+            ['pimAttributeCode' => 'an_image', 'value' => '/images/unicorn.png'],
+            ['pimAttributeCode' => 'a_price', 'value' => ['25 €', '30 $']],
+            ['pimAttributeCode' => 'a_simple_referencedata', 'value' => 'black'],
+            ['pimAttributeCode' => 'a_multi_referencedata', 'value' => ['white', 'purple']],
+            ['pimAttributeCode' => 'an_asset_collection', 'value' => ['asset1', 'asset2']],
+            ['pimAttributeCode' => 'a_simple_referenceentity', 'value' => 'philippestarck'],
+            ['pimAttributeCode' => 'a_multi_referenceentity', 'value' => ['nantes', 'boston', 'telaviv', 'dusseldorf']],
         ];
-        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
+        $attributeRepository->getAttributeTypeByCodes(
             [
-                'foo' => 'pim_catalog_text',
-                'bar' => 'pim_catalog_price_collection',
+                'a_text',
+                'a_date',
+                'a_file',
+                'an_image',
+                'a_price',
+                'a_simple_referencedata',
+                'a_multi_referencedata',
+                'an_asset_collection',
+                'a_simple_referenceentity',
+                'a_multi_referenceentity',
+            ]
+        )->willReturn(
+            [
+                'a_text' => AttributeTypes::TEXT,
+                'a_date' => AttributeTypes::DATE,
+                'a_file' => AttributeTypes::FILE,
+                'an_image' => AttributeTypes::IMAGE,
+                'a_price' => AttributeTypes::PRICE_COLLECTION,
+                'a_simple_referencedata' => AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+                'a_multi_referencedata' => AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
+                'an_asset_collection' => EnterpriseAttributeTypes::ASSETS_COLLECTION,
+                'a_simple_referenceentity' => ReferenceEntityType::REFERENCE_ENTITY,
+                'a_multi_referenceentity' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
             ]
         );
 
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
             [
-                'foo' => [
+                'a_text' => [
                     [
                         'scope' => null,
                         'locale' => null,
