@@ -2,4 +2,9 @@ services:
     akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_family_id_query:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product\SelectProductFamilyIdQuery'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.attribute_mapping.get_statuses_for_families:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\AttributeMapping\GetAttributeMappingStatusesFromFamilyCodesQuery'
+        arguments:
+            - '@database_connection'

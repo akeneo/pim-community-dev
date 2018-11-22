@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Query\GetAttributeMappingStatusesFromFamilyCodesQueryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -28,19 +27,19 @@ class SearchFamiliesHandler
     /** @var FamilySearchableRepositoryInterface */
     private $familyRepository;
 
-    /** @var AttributesMappingProviderInterface */
-    private $attributesMappingProvider;
+    /** @var GetAttributeMappingStatusesFromFamilyCodesQueryInterface */
+    private $getAttributeMappingStatusesFromFamilyCodesQuery;
 
     /**
      * @param FamilySearchableRepositoryInterface $familyRepository
-     * @param AttributesMappingProviderInterface $attributesMappingProvider
+     * @param GetAttributeMappingStatusesFromFamilyCodesQueryInterface $getAttributeMappingStatusesFromFamilyCodesQuery
      */
     public function __construct(
         FamilySearchableRepositoryInterface $familyRepository,
-        AttributesMappingProviderInterface $attributesMappingProvider
+        GetAttributeMappingStatusesFromFamilyCodesQueryInterface $getAttributeMappingStatusesFromFamilyCodesQuery
     ) {
         $this->familyRepository = $familyRepository;
-        $this->attributesMappingProvider = $attributesMappingProvider;
+        $this->getAttributeMappingStatusesFromFamilyCodesQuery = $getAttributeMappingStatusesFromFamilyCodesQuery;
     }
 
     /**
@@ -57,6 +56,8 @@ class SearchFamiliesHandler
             $getFamiliesQuery->getFamilyIdentifiers()
         );
 
+        $attributeMappingStatuses = $this->getAttributeMappingStatusesPerFamily($families);
+
         $familyCollection = new FamilyCollection();
 
         foreach ($families as $family) {
@@ -65,12 +66,11 @@ class SearchFamiliesHandler
                 $labels[$translation->getLocale()] = $translation->getLabel();
             }
 
-            $attributesMappingResponse = $this->attributesMappingProvider->getAttributesMapping($family->getCode());
             $familyCollection->add(
                 new Family(
                     $family->getCode(),
                     $labels,
-                    $this->getMappingStatus($attributesMappingResponse)
+                    $attributeMappingStatuses[$family->getCode()]
                 )
             );
         }
@@ -79,25 +79,17 @@ class SearchFamiliesHandler
     }
 
     /**
-     * @param AttributesMappingResponse $attributesMappingResponse
+     * @param FamilyInterface[] $families
      *
-     * @return int
+     * @return array
      */
-    private function getMappingStatus(AttributesMappingResponse $attributesMappingResponse): int
+    private function getAttributeMappingStatusesPerFamily(array $families): array
     {
-        $attributeStatuses = [];
-        foreach ($attributesMappingResponse as $attributeMapping) {
-            $attributeStatuses[] = $attributeMapping->getStatus();
+        $familyCodes = [];
+        foreach ($families as $family) {
+            $familyCodes[] = $family->getCode();
         }
 
-        if (empty($attributeStatuses)) {
-            return Family::MAPPING_EMPTY;
-        }
-
-        if (in_array(AttributeMapping::ATTRIBUTE_PENDING, $attributeStatuses)) {
-            return Family::MAPPING_PENDING;
-        }
-
-        return Family::MAPPING_FULL;
+        return $this->getAttributeMappingStatusesFromFamilyCodesQuery->execute($familyCodes);
     }
 }

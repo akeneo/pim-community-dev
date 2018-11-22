@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Product;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Connection;
 
 /**
  * Checks if a product has a family in the data stored in MySQL.
@@ -24,15 +23,15 @@ use Doctrine\ORM\EntityManager;
  */
 class SelectProductFamilyIdQuery implements SelectProductFamilyIdQueryInterface
 {
-    /** @var EntityManager */
-    private $entityManager;
+    /** @var Connection */
+    private $connection;
 
     /**
-     * @param EntityManager $entityManager
+     * @param Connection $connection
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -45,11 +44,8 @@ SELECT family_id
 FROM pim_catalog_product
 WHERE id = :product_id 
 SQL;
-        $bindParams = [
-            'tableName' => $this->entityManager->getClassMetadata(ProductInterface::class)->getTableName(),
-            'product_id' => $productId,
-        ];
-        $statement = $this->entityManager->getConnection()->executeQuery($query, $bindParams);
+        $bindParams = ['product_id' => $productId];
+        $statement = $this->connection->executeQuery($query, $bindParams);
         $result = $statement->fetch();
 
         return (null === $result['family_id']) ? null : (int) $result['family_id'];
