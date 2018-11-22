@@ -41,18 +41,18 @@ class GetConnectorReferenceEntitiesAction
     private $halPaginator;
 
     /** @var AddHalDownloadLinkToReferenceEntityImage */
-    private $addHalLinksToImageValues;
+    private $addHalDownloadLinkToImage;
 
     public function __construct(
         FindConnectorReferenceEntityItemsInterface $findConnectorReferenceEntityItems,
         PaginatorInterface $halPaginator,
-        AddHalDownloadLinkToReferenceEntityImage $addHalLinksToImageValues,
+        AddHalDownloadLinkToReferenceEntityImage $addHalDownloadLinkToImage,
         int $limit
     ) {
         $this->findConnectorReferenceEntityItems = $findConnectorReferenceEntityItems;
         $this->limit = new Limit($limit);
         $this->halPaginator = $halPaginator;
-        $this->addHalLinksToImageValues = $addHalLinksToImageValues;
+        $this->addHalDownloadLinkToImage = $addHalDownloadLinkToImage;
     }
 
     /**
@@ -72,7 +72,7 @@ class GetConnectorReferenceEntitiesAction
         $referenceEntities = ($this->findConnectorReferenceEntityItems)($referenceEntityQuery);
         $referenceEntities = array_map(function (ConnectorReferenceEntity $referenceEntity) {
             $normalizedReferenceEntity = $referenceEntity->normalize();
-            return ($this->addHalLinksToImageValues)($normalizedReferenceEntity);
+            return ($this->addHalDownloadLinkToImage)($normalizedReferenceEntity);
         }, $referenceEntities);
 
         $paginatedReferenceEntities = $this->paginateReferenceEntities($referenceEntities, $searchAfter);

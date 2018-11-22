@@ -58,7 +58,7 @@ class GetConnectorReferenceEntitiesContext implements Context
     }
 
     /**
-     * @Given /^(\d+) reference entities in the PIM$/
+     * @Given /^7 reference entities in the PIM$/
      */
     public function referenceEntitiesInThePIM()
     {
@@ -100,7 +100,7 @@ class GetConnectorReferenceEntitiesContext implements Context
         $client = $this->clientFactory->logIn('julia');
         $this->referenceEntityPages = [];
 
-        for ($page = 1; $page <= 4; $page++) {
+        for ($page = 1; $page <= 3; $page++) {
             $this->referenceEntityPages[$page] = $this->webClientHelper->requestFromFile(
                 $client,
                 self::REQUEST_CONTRACT_DIR . sprintf(
@@ -112,11 +112,11 @@ class GetConnectorReferenceEntitiesContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the [\d]+ reference entities of the PIM$/
+     * @Then /^the PIM returns the 7 reference entities of the PIM$/
      */
     public function thePIMReturnsTheReferenceEntitiesOfThePIM()
     {
-        for ($page = 1; $page <= 4; $page++) {
+        for ($page = 1; $page <= 3; $page++) {
             Assert::keyExists($this->referenceEntityPages, $page, sprintf('The page %d has not been loaded', $page));
 
             $this->webClientHelper->assertJsonFromFile(

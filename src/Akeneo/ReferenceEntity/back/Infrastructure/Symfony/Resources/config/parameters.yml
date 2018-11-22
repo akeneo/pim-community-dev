@@ -10,4 +10,4 @@ parameters:
     # Number of records per page for the connector
     reference_entity_connector_records_limit_per_page: 100
     # Number of reference entities per page for the connector
-    reference_entity_connector_reference_entities_limit_per_page: 100
+    reference_entity_connector_reference_entities_limit_per_page: 200
