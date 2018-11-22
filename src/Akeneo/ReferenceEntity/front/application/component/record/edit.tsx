@@ -29,7 +29,6 @@ import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/applicat
 import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
-import Value from 'akeneoreferenceentity/domain/model/record/value';
 
 interface StateProps {
   sidebar: {
@@ -113,41 +112,15 @@ class RecordEditView extends React.Component<EditProps> {
     return null;
   };
 
-  private hasRequiredValues = (values: Value[]): boolean => {
-    const requiredValues = values.filter((value: Value) => value.isRequired());
-
-    return requiredValues.length > 0;
-  };
-
-  private getCompletenessValue = (values: Value[]): number => {
-    let nbCompletedValues: number = 0;
-    let nbRequiredValues: number = 0;
-
-    return values.reduce((_previousValue: number, currentValue: Value) => {
-      if (currentValue.isComplete()) {
-        nbCompletedValues++;
-      }
-
-      if (currentValue.isRequired()) {
-        nbRequiredValues++;
-      }
-
-      return (100 * nbCompletedValues) / nbRequiredValues;
-    }, 0);
-  };
-
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
     const record = denormalizeRecord(this.props.record);
     const label = record.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_reference_entities_record_edit', this.props.sidebar.currentTab);
-    const values: Value[] = record
-      .getValueCollection()
-      .getValuesForChannelAndLocale(
-        createChannelReference(this.props.context.channel),
-        createLocaleReference(this.props.context.locale)
-      );
-    const completenessValue = this.hasRequiredValues(values) ? this.getCompletenessValue(values) : null;
+    const completeness = record.getCompleteness(
+      createChannelReference(this.props.context.channel),
+      createLocaleReference(this.props.context.locale)
+    );
 
     return (
       <React.Fragment>
@@ -238,10 +211,17 @@ class RecordEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
-                    {null !== completenessValue ? (
+                    {0 !== completeness.getRequired() ? (
                       <div>
-                        <div className="AknBadge AknBadge--big AknBadge--warning completeness-badge">
-                          {__('pim_reference_entity.record.completeness.label')}: <span>{completenessValue}%</span>
+                        <div
+                          className={`AknBadge AknBadge--big completeness-badge ${
+                            completeness.getRequired() === completeness.getComplete()
+                              ? 'AknBadge--success '
+                              : 'AknBadge--warning'
+                          }`}
+                        >
+                          {__('pim_reference_entity.record.completeness.label')}:{' '}
+                          <span>{completeness.getRatio()}%</span>
                         </div>
                       </div>
                     ) : null}
