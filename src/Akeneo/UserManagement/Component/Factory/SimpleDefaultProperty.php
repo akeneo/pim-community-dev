@@ -19,6 +19,10 @@ class SimpleDefaultProperty implements DefaultProperty
     /** @var mixed */
     private $defaultPropertyValue;
 
+    /**
+     * @param string $propertyName
+     * @param mixed $defaultPropertyValue
+     */
     public function __construct(string $propertyName, $defaultPropertyValue)
     {
         $this->propertyName = $propertyName;
