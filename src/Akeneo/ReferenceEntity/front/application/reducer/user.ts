@@ -1,4 +1,5 @@
 export interface UserState {
+  defaultCatalogLocale?: string;
   catalogLocale?: string;
   catalogChannel?: string;
   uiLocale?: string;
@@ -11,6 +12,14 @@ export default (
   action: {type: string; target: string; locale?: string; channel?: string}
 ): UserState => {
   switch (action.type) {
+    case 'DEFAULT_LOCALE_CHANGED':
+      if ('string' !== typeof action.locale) {
+        throw new InvalidArgumentError(
+          'The user reducer needs a string as locale for the event "DEFAULT_LOCALE_CHANGED"'
+        );
+      }
+      state = {...state, [`${action.target}Locale`]: action.locale};
+      break;
     case 'LOCALE_CHANGED':
       if ('string' !== typeof action.locale) {
         throw new InvalidArgumentError('The user reducer needs a string as locale for the event "LOCALE_CHANGED"');

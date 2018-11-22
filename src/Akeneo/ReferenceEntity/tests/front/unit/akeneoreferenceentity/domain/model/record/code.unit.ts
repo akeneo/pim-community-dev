@@ -16,6 +16,10 @@ describe('akeneo > reference entity > domain > model --- code', () => {
     expect(createCode('didier').equals(createCode('didier'))).toBe(true);
   });
 
+  test('It has a string representation', () => {
+    expect(createCode('michel').stringValue()).toBe('michel');
+  });
+
   test('I normalizes itself', () => {
     expect(createCode('michel').normalize()).toBe('michel');
   });

@@ -91,6 +91,30 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     await allowedExtensions.type(value);
   };
 
+  const showManageOptionModal = async () => {
+    page.waitForSelector('.AknButton[data-code="manageOption"]');
+    await page.evaluate(edit => {
+      const button = edit.querySelector('.AknButton[data-code="manageOption"]');
+
+      button.style.width = '100px';
+      button.style.height = '100px';
+    }, nodeElement);
+
+    const button = await nodeElement.$('.AknButton[data-code="manageOption"]');
+    await button.click();
+    await page.waitForSelector('.AknFullPage--modal');
+  };
+
+  const hasSuccessNotification = async () => {
+    try {
+      await page.waitForSelector('.AknFlash--success', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const isVisible = async property => {
     return null !== (await nodeElement.$(`.AknFieldContainer[data-code="${property}"]`));
   };
@@ -107,6 +131,8 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     setMaxFileSize,
     setAllowedExtensions,
     isLoaded,
+    showManageOptionModal,
+    hasSuccessNotification,
   };
 };
 

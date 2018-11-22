@@ -184,11 +184,13 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function getValidationErrorsRequests(): array
     {
         return [
-            'Invalid allowed extension'               => ['allowed_extensions_is_invalid.json'],
-            'Max file size is invalid'                => ['max_file_size_is_invalid.json'],
-            'Invalid option codes regular expression' => ['invalid_option_code_regular_expression.json'],
-            'Option code is blank'                    => ['invalid_option_code_blank.json'],
-            'Some options are duplicated'             => ['options_duplicated.json'],
+            'Invalid allowed extension'                 => ['allowed_extensions_is_invalid.json'],
+            'Max file size is invalid'                  => ['max_file_size_is_invalid.json'],
+            'Invalid option codes regular expression'   => ['Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_regular_expression.json'],
+            'Option code is blank'                      => ['Option' . DIRECTORY_SEPARATOR . 'invalid_option_code_blank.json'],
+            'Some options are duplicated'               => ['Option' . DIRECTORY_SEPARATOR . 'invalid_options_duplicated.json'],
+            // Todo: Override parameter 'reference_entity_option_limit_per_list_attribute' in kernel
+            // 'Limit of options per attribute is reached' => ['Option' . DIRECTORY_SEPARATOR . 'limit_of_options_reached.json'],
         ];
     }
 

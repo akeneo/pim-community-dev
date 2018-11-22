@@ -18,6 +18,19 @@ describe('akeneo > reference entity > application > reducer --- user', () => {
     expect(newState).toBe(state);
   });
 
+  test('I can change a default locale for a given target', () => {
+    const state = {};
+    const newState = reducer(state, {
+      type: 'DEFAULT_LOCALE_CHANGED',
+      target: 'catalog',
+      locale: 'fr_FR',
+    });
+
+    expect(newState).toEqual({
+      catalogLocale: 'fr_FR',
+    });
+  });
+
   test('I can change a locale for a given target', () => {
     const state = {};
     const newState = reducer(state, {
@@ -45,6 +58,14 @@ describe('akeneo > reference entity > application > reducer --- user', () => {
   });
 
   test('I throw an error if the event is malformed', () => {
+    expect(() => {
+      reducer(state, {
+        type: 'DEFAULT_LOCALE_CHANGED',
+        target: 'catalog',
+        locale: 123,
+      });
+    }).toThrow();
+
     const state = {};
     expect(() => {
       reducer(state, {

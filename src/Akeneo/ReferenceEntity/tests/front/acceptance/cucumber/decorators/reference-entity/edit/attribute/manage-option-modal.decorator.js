@@ -1,0 +1,157 @@
+const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
+  const $ = null;
+
+  const isLockedOptionCode = async code => {
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+    const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);
+
+    return null !== codeInput.$('.AknTextField--disabled');
+  };
+
+  const newOptionCode = async code => {
+    const newCodeInput = await nodeElement.$('tr[data-code=""] input[name="code"]');
+    newCodeInput.type(code);
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+  };
+
+  const newOptionLabel = async label => {
+    const newLabelInput = await nodeElement.$('tr[data-code=""] input[name="label"]');
+    await newLabelInput.type(label);
+  };
+
+  const getOptionCodeValue = async code => {
+    const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);
+    const codeInputProperty = await codeInput.getProperty('value');
+
+    return await codeInputProperty.jsonValue();
+  };
+
+  const hasOption = async () => {
+    try {
+      await page.waitForSelector('tr[data-code="${code}"]', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const removeOption = async code => {
+    const removeOptionButton = await nodeElement.$(`tr[data-code="${code}"] .AknOptionEditor-remove`);
+    await removeOptionButton.click();
+  };
+
+  const save = async () => {
+    await page.evaluate(edit => {
+      const button = edit.querySelector('.AknButton.AknButton--apply.AknButtonList-item');
+
+      button.style.width = '100px';
+      button.style.height = '100px';
+    }, nodeElement);
+
+    const saveButton = await nodeElement.$('.AknButton.AknButton--apply');
+    await saveButton.click();
+  };
+
+  const cancel = async () => {
+    const cancelButton = await nodeElement.$('.AknButtonList-item.cancel');
+    await cancelButton.click();
+  };
+
+  const codeHasLabel = async (code, expectedLabel) => {
+    const option = await nodeElement.$(`tr[data-code="${code}"] input[name="label"]`);
+    if (null === option) {
+      throw new Error(`Row for code ${code} not found`);
+    }
+    const label = await option.getProperty('value');
+    const actualLabel = await label.jsonValue();
+
+    return expectedLabel === actualLabel;
+  };
+
+  const helperContains = async expectedLabel => {
+    await page.waitForSelector('.AknOptionEditor-helper input', {timeout: 2000});
+    const translations = await nodeElement.$$('.AknOptionEditor-helper input');
+
+    for (const label of translations) {
+      const elem = await label.getProperty('value');
+      const actualLabel = await elem.jsonValue();
+      if (actualLabel === expectedLabel) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  const labelHasFocus = async code => {
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+
+    return await page.evaluate(code => {
+      const isLabelInputFocused = 'label' === document.activeElement.name;
+      const isRightRowFocused =
+        code ===
+        $(document.activeElement)
+          .closest('[data-code]')
+          .data('code');
+
+      return isLabelInputFocused && isRightRowFocused;
+    }, code);
+  };
+
+  const codeHasFocus = async code => {
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+
+    return await page.evaluate(code => {
+      const isCodeInputFocused = 'code' === document.activeElement.name;
+      const isRightRowFocused =
+        code ===
+        $(document.activeElement)
+          .closest('[data-code]')
+          .data('code');
+
+      return isCodeInputFocused && isRightRowFocused;
+    }, code);
+  };
+
+  const focusCode = async code => {
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+    const option = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);
+    option.focus();
+  };
+
+  const hasError = async code => {
+    await page.waitForSelector(
+      `.AknOptionEditor-translator tr[data-code="${code}"] .AknFieldContainer-validationErrors`,
+      {timeout: 2000}
+    );
+
+    return true;
+  };
+
+  const hasGeneralError = async () => {
+    await page.waitForSelector('tr:last-child .AknFieldContainer-validationErrors', {timeout: 2000});
+
+    return true;
+  };
+
+  return {
+    isLockedOptionCode,
+    newOptionCode,
+    newOptionLabel,
+    getOptionCodeValue,
+    removeOption,
+    hasOption,
+    save,
+    cancel,
+    codeHasLabel,
+    helperContains,
+    labelHasFocus,
+    codeHasFocus,
+    focusCode,
+    hasError,
+    hasGeneralError,
+  };
+};
+
+module.exports = ManageOptionModal;

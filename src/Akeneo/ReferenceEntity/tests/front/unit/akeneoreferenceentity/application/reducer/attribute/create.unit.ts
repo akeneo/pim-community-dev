@@ -272,7 +272,7 @@ describe('akeneo > reference entity > application > reducer > attribute --- crea
     });
   });
 
-  test('If I updated manually the code, the label is not sanitized', () => {
+  test('If I updated manually the code, the label is not updated', () => {
     const state = {
       active: true,
       data: {

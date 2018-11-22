@@ -13,4 +13,5 @@ use Symfony\Component\Validator\Constraint;
 class AttributeOptionCode extends Constraint
 {
     public const MESSAGE_WRONG_PATTERN = 'pim_reference_entity.attribute.validation.options.code.pattern';
+    public const CODE_SHOULD_NOT_BE_BLANK = 'pim_reference_entity.attribute.validation.options.code.should_not_be_blank';
 }

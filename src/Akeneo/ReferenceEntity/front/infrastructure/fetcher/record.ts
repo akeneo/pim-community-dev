@@ -13,10 +13,6 @@ const routing = require('routing');
 class InvalidArgument extends Error {}
 
 export class RecordFetcherImplementation implements RecordFetcher {
-  constructor(private hydrator: (backendRecord: any) => Record) {
-    Object.freeze(this);
-  }
-
   async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<Record> {
     const backendRecord = await getJSON(
       routing.generate('akeneo_reference_entities_record_get_rest', {
@@ -27,7 +23,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
 
     const image = undefined === backendRecord.image ? null : backendRecord.image;
 
-    return this.hydrator({
+    return hydrator({
       ...backendRecord,
       image,
     });
@@ -38,7 +34,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
       routing.generate('akeneo_reference_entities_record_index_rest', {referenceEntityIdentifier})
     ).catch(errorHandler);
 
-    return hydrateAll<Record>(this.hydrator)(backendRecords.items);
+    return hydrateAll<Record>(hydrator)(backendRecords.items);
   }
 
   async search(query: Query): Promise<{items: NormalizedRecord[]; total: number}> {
@@ -58,4 +54,4 @@ export class RecordFetcherImplementation implements RecordFetcher {
   }
 }
 
-export default new RecordFetcherImplementation(hydrator);
+export default new RecordFetcherImplementation();

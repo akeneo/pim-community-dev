@@ -1,8 +1,6 @@
-import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
-import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 const normalizedColors = {
   code: 'red',
@@ -21,6 +19,13 @@ describe('akeneo > attribute > domain > model > attribute > type > option --- Op
     expect(Option.create(createCode('red'), createLabelCollection({en_US: 'Red'})).getLabel('fr_FR', false)).toEqual(
       ''
     );
+  });
+
+  test('I can create an empty Option', () => {
+    expect(Option.createEmpty().normalize()).toEqual({
+      code: '',
+      labels: {},
+    });
   });
 
   test('I can create an Option from normalized', () => {

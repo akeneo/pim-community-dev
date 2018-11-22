@@ -14,7 +14,7 @@ Feature: Edit the options of a list attribute
   Scenario: Set too many options
     Given a reference entity with an option attribute 'favorite_color' and the label 'en_US' equal to 'Favorite color'
     When the user adds 101 options to this attribute
-    Then there should be a validation error on the property 'options' with message 'Expected to have 100 at most, found 101'
+    Then there should be a validation error on the property 'options' with message 'You have reached the limit of 100 attribute options per attribute.'
 
   @acceptance-back
   Scenario: Set duplicated options
@@ -30,7 +30,7 @@ Feature: Edit the options of a list attribute
 
     Examples:
       | invalid_option_code | property_path  | message                                                       |
-      | null                | options        | This value should not be blank.                               |
+      | null                | options        | The code of the option should not be blank                    |
       | 255                 | options.255    | This value should be of type string.                          |
       | "gre-en"            | options.gre-en | This field may only contain letters, numbers and underscores. |
 

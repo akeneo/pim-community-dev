@@ -7,6 +7,7 @@ describe('akeneo > attribute > domain > model > attribute > type > record --- re
     expect(RecordType.createFromNormalized(null).normalize()).toEqual(null);
     expect(() => new RecordType({my: 'object'})).toThrow();
   });
+
   test('I can validate a RecordType', () => {
     expect(RecordType.isValid('test')).toEqual(true);
     expect(RecordType.isValid(null)).toEqual(false);
@@ -14,6 +15,7 @@ describe('akeneo > attribute > domain > model > attribute > type > record --- re
     expect(RecordType.isValid(null)).toEqual(false);
     expect(RecordType.isValid({test: 'toto'})).toEqual(false);
   });
+
   test('I can create a RecordType from string', () => {
     expect(RecordType.createFromString('brand').stringValue()).toEqual('brand');
     expect(RecordType.createFromString('').stringValue()).toEqual('');

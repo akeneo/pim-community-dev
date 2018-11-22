@@ -23,23 +23,16 @@ export type ReferenceEntityResult = {
 };
 
 export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetcher {
-  constructor(
-    private hydrator: (backendReferenceEntity: any) => ReferenceEntity,
-    private attributeHydrator: (normalizedAttribute: any) => Attribute
-  ) {
-    Object.freeze(this);
-  }
-
   async fetch(identifier: ReferenceEntityIdentifier): Promise<ReferenceEntityResult> {
     const backendReferenceEntity = await getJSON(
       routing.generate('akeneo_reference_entities_reference_entity_get_rest', {identifier: identifier.stringValue()})
     ).catch(errorHandler);
 
     return {
-      referenceEntity: this.hydrator(backendReferenceEntity),
+      referenceEntity: hydrator(backendReferenceEntity),
       recordCount: backendReferenceEntity.record_count,
       attributes: backendReferenceEntity.attributes.map((normalizedAttribute: NormalizedAttribute) =>
-        this.attributeHydrator(normalizedAttribute)
+        hydrateAttribute(normalizedAttribute)
       ),
     };
   }
@@ -49,7 +42,7 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
       routing.generate('akeneo_reference_entities_reference_entity_index_rest')
     ).catch(errorHandler);
 
-    return hydrateAll<ReferenceEntity>(this.hydrator)(backendReferenceEntities.items);
+    return hydrateAll<ReferenceEntity>(hydrator)(backendReferenceEntities.items);
   }
 
   async search(): Promise<{items: ReferenceEntity[]; total: number}> {
@@ -57,7 +50,7 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
       routing.generate('akeneo_reference_entities_reference_entity_index_rest')
     ).catch(errorHandler);
 
-    const items = hydrateAll<ReferenceEntity>(this.hydrator)(backendReferenceEntities.items);
+    const items = hydrateAll<ReferenceEntity>(hydrator)(backendReferenceEntities.items);
 
     return {
       items,
@@ -66,4 +59,4 @@ export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetc
   }
 }
 
-export default new ReferenceEntityFetcherImplementation(hydrator, hydrateAttribute);
+export default new ReferenceEntityFetcherImplementation();

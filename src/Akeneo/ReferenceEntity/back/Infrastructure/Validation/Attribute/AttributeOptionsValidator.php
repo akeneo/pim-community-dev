@@ -41,7 +41,7 @@ class AttributeOptionsValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->checkOptionsAreValid($attributeOptions)) {
+        if (!$this->areOptionsValid($attributeOptions)) {
             return;
         }
 
@@ -82,12 +82,12 @@ class AttributeOptionsValidator extends ConstraintValidator
         return $violations->count() > 0;
     }
 
-    private function checkOptionsAreValid(array $attributeOptions): bool
+    private function areOptionsValid(array $attributeOptions): bool
     {
         $validator = Validation::createValidator();
-        $violations = new ConstraintViolationList();
 
         foreach ($attributeOptions as $attributeOption) {
+            $violations = new ConstraintViolationList();
             $violations->addAll($validator->validate($attributeOption['code'], new AttributeOptionCode()));
             $violations->addAll($validator->validate($attributeOption['labels'], new LabelCollection()));
 
@@ -103,13 +103,13 @@ class AttributeOptionsValidator extends ConstraintValidator
             }
         }
 
-        return 0 !== $violations->count();
+        return 0 === $this->context->getViolations()->count();
     }
 
-    private function checkDuplicates($attributeOptions): void
+    private function checkDuplicates(array $attributeOptions): void
     {
         $optionCodes = array_map(function (array $attributeOption) {
-            return $attributeOption['code'];
+            return strtolower($attributeOption['code']);
         }, $attributeOptions);
 
         $frequencies = array_count_values($optionCodes);

@@ -9,19 +9,15 @@ const routing = require('routing');
 
 let Channels: Channel[] | null = null;
 export class ChannelFetcherImplementation implements ChannelFetcher {
-  constructor(private hydrator: (backendChannel: any) => Channel) {
-    Object.freeze(this);
-  }
-
   async fetchAll(): Promise<Channel[]> {
     if (null === Channels) {
       const backendChannels = await getJSON(routing.generate('pim_enrich_channel_rest_index')).catch(errorHandler);
 
-      Channels = hydrateAll<Channel>(this.hydrator)(backendChannels);
+      Channels = hydrateAll<Channel>(hydrator)(backendChannels);
     }
 
     return Channels;
   }
 }
 
-export default new ChannelFetcherImplementation(hydrator);
+export default new ChannelFetcherImplementation();

@@ -16,7 +16,15 @@ import {
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
 import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
-import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {NormalizedAttribute, Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {
+  optionEditionSubmission,
+  optionEditionErrorOccured,
+  optionEditionSucceeded,
+} from 'akeneoreferenceentity/domain/event/attribute/option';
+import {NormalizedOption, Option} from 'akeneoreferenceentity/domain/model/attribute/type/option/option';
+import {AttributeWithOptions} from 'akeneoreferenceentity/domain/model/attribute/type/option';
+import attributeOptionSaver from 'akeneoreferenceentity/infrastructure/saver/options';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,
@@ -51,6 +59,44 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   if (dismiss) {
     dispatch(attributeEditionCancel());
   }
+  await dispatch(updateAttributeList());
+
+  return;
+};
+
+export const saveOptions = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  if (getState().options.isSaving) {
+    return;
+  }
+
+  dispatch(optionEditionSubmission());
+  const normalizedAttribute = getState().attribute.data;
+  const attribute = (denormalizeAttribute(normalizedAttribute) as any) as AttributeWithOptions;
+  const options = getState().options.options.map((option: NormalizedOption) => Option.createFromNormalized(option));
+  const updatedAttribute = attribute.setOptions(options);
+
+  try {
+    let errors = await attributeOptionSaver.save((updatedAttribute as any) as Attribute);
+
+    if (errors) {
+      const validationErrors = Object.values(
+        errors.reduce((filteredErrors: {[propertyPath: string]: ValidationError}, error: ValidationError) => {
+          filteredErrors[error.propertyPath] = error;
+
+          return filteredErrors;
+        }, {})
+      ).map((error: ValidationError) => createValidationError(error));
+      dispatch(optionEditionErrorOccured(validationErrors));
+
+      return;
+    }
+  } catch (error) {
+    dispatch(optionEditionErrorOccured([]));
+
+    return;
+  }
+
+  dispatch(optionEditionSucceeded());
   await dispatch(updateAttributeList());
 
   return;

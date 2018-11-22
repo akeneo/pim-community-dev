@@ -36,9 +36,10 @@ pim_reference_entity:
         validation:
             options:
                 duplicated: 'The option "%option_code%" already exists'
-                too_many: 'Expected to have {{ limit }} at most, found {{ count }}'
+                too_many: 'You have reached the limit of {{ limit }} attribute options per attribute.'
                 code:
                     pattern: 'This field may only contain letters, numbers and underscores.'
+                    should_not_be_blank: 'The code of the option should not be blank'
             max_length:
                 should_be_an_integer: 'This value should be an integer.'
             max_file_size:
