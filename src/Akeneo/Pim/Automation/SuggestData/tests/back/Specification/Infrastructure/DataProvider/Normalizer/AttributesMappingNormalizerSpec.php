@@ -51,21 +51,28 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
     public function it_normalizes_attributes_mapping_that_contains_attribute(
         DomainAttributeMapping $colorMapping,
         DomainAttributeMapping $sizeMapping,
+        DomainAttributeMapping $heightMapping,
         AttributeTranslationInterface $enTranslation,
         AttributeTranslationInterface $frTranslation,
         ArrayCollection $colorTranslations,
         ArrayCollection $sizeTranslations,
+        ArrayCollection $heightTranslations,
         AttributeInterface $attributeColor,
         AttributeInterface $attributeSize,
+        AttributeInterface $attributeHeight,
         \ArrayIterator $translationsIterator
     ): void {
         $colorMapping->getTargetAttributeCode()->willReturn('color_target');
-        $colorMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
+        $colorMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_PENDING);
         $colorMapping->getAttribute()->willReturn($attributeColor);
 
         $sizeMapping->getTargetAttributeCode()->willReturn('size_target');
         $sizeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
         $sizeMapping->getAttribute()->willReturn($attributeSize);
+
+        $heightMapping->getTargetAttributeCode()->willReturn('height_target');
+        $heightMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_UNMAPPED);
+        $heightMapping->getAttribute()->willReturn($attributeHeight);
 
         $attributeColor->getCode()->willReturn('color');
         $attributeColor->getTranslations()->willReturn($colorTranslations);
@@ -76,8 +83,14 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $attributeSize->getType()->willReturn(AttributeTypes::METRIC);
         $attributeSize->getDefaultMetricUnit()->willReturn('CENTIMETER');
 
+        $attributeHeight->getCode()->willReturn('height');
+        $attributeHeight->getTranslations()->willReturn($heightTranslations);
+        $attributeHeight->getType()->willReturn(AttributeTypes::METRIC);
+        $attributeHeight->getDefaultMetricUnit()->willReturn('CENTIMETER');
+
         $sizeTranslations->isEmpty()->willReturn(true);
         $colorTranslations->isEmpty()->willReturn(false);
+        $heightTranslations->isEmpty()->willReturn(true);
 
         $colorTranslations->getIterator()->willReturn($translationsIterator);
         $translationsIterator->valid()->willReturn(true, true, false);
@@ -102,7 +115,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                     ],
                     'type' => 'multiselect',
                 ],
-                'status' => AttributeMapping::STATUS_ACTIVE,
+                'status' => AttributeMapping::STATUS_PENDING,
             ],
             [
                 'from' => ['id' => 'size_target'],
@@ -114,8 +127,18 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 ],
                 'status' => AttributeMapping::STATUS_ACTIVE,
             ],
+            [
+                'from' => ['id' => 'height_target'],
+                'to' => [
+                    'id' => 'height',
+                    'label' => [],
+                    'type' => 'metric',
+                    'unit' => 'CENTIMETER',
+                ],
+                'status' => AttributeMapping::STATUS_INACTIVE,
+            ],
         ];
 
-        $this->normalize([$colorMapping, $sizeMapping])->shouldReturn($expectedData);
+        $this->normalize([$colorMapping, $sizeMapping, $heightMapping])->shouldReturn($expectedData);
     }
 }

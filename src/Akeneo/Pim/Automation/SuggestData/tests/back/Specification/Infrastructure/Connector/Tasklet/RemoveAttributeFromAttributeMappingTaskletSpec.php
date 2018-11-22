@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping as WriteAttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -45,7 +46,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     public function it_calls_franklin_with_the_new_mapping(
         $getAttributesMappingHandler,
         $updateAttributesMappingHandler
-    ) {
+    ): void {
         $franklinResponse = new AttributesMappingResponse();
         $franklinResponse
             ->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', 1, null))
@@ -62,6 +63,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
             'franklin_color' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
+                'status' => WriteAttributeMapping::ATTRIBUTE_PENDING,
             ],
             'franklin_weight' => [
                 'franklinAttribute' => ['type' => 'text'],
@@ -75,7 +77,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     public function it_does_not_calls_franklin_if_the_attribute_is_not_in_family_attribute_mapping(
         $getAttributesMappingHandler,
         $updateAttributesMappingHandler
-    ) {
+    ): void {
         $franklinResponse = new AttributesMappingResponse();
         $franklinResponse->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', 1, null));
 
@@ -91,7 +93,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     public function it_does_not_update_the_mapping_if_the_mapping_is_empty(
         $getAttributesMappingHandler,
         $updateAttributesMappingHandler
-    ) {
+    ): void {
         $getAttributesMappingHandler
             ->handle(new GetAttributesMappingByFamilyQuery('router'))
             ->willReturn(new AttributesMappingResponse());

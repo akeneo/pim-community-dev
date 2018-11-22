@@ -18,6 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttribut
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -51,7 +52,7 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
 
         $response = $this->getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery($familyCode));
 
-        if (! $response->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
+        if (!$response->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
             return;
         }
 
@@ -71,23 +72,24 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
 
     private function buildNewAttributeMapping(AttributesMappingResponse $response, string $pimAttributeCode)
     {
-        $mapping = [];
+        $newMapping = [];
 
-        foreach ($response as $attributeMapping) {
+        foreach ($response as $mapping) {
+            $attributeMapping = [
+                'franklinAttribute' => [
+                    'type' => $mapping->getTargetAttributeType(),
+                ],
+                'attribute' => $mapping->getPimAttributeCode(),
+            ];
 
-            $pimAttribute = $attributeMapping->getPimAttributeCode();
-            if ($attributeMapping->getPimAttributeCode() === $pimAttributeCode) {
-                $pimAttribute = null;
+            if ($mapping->getPimAttributeCode() === $pimAttributeCode) {
+                $attributeMapping['attribute'] = null;
+                $attributeMapping['status'] = AttributeMapping::ATTRIBUTE_PENDING;
             }
 
-            $mapping[$attributeMapping->getTargetAttributeCode()] = [
-                'franklinAttribute' => [
-                    'type' => $attributeMapping->getTargetAttributeType(),
-                ],
-                'attribute' => $pimAttribute,
-            ];
+            $newMapping[$mapping->getTargetAttributeCode()] = $attributeMapping;
         }
 
-        return $mapping;
+        return $newMapping;
     }
 }

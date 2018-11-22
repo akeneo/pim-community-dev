@@ -21,6 +21,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class AttributeMapping
 {
+    /** The attribute is pending */
+    public const ATTRIBUTE_PENDING = 0;
+
     /** The attribute is mapped */
     public const ATTRIBUTE_MAPPED = 1;
 
@@ -57,11 +60,13 @@ class AttributeMapping
      * @param string $targetAttributeCode
      * @param string $targetAttributeType
      * @param null|string $pimAttributeCode
+     * @param int|null $status
      */
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
-        ?string $pimAttributeCode
+        ?string $pimAttributeCode,
+        ?int $status
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
 
@@ -76,7 +81,12 @@ class AttributeMapping
         }
         $this->targetAttributeType = $targetAttributeType;
         $this->pimAttributeCode = empty($pimAttributeCode) ? null : $pimAttributeCode;
-        $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
+
+        if (null !== $status) {
+            $this->status = $status;
+        } else {
+            $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
+        }
     }
 
     /**
