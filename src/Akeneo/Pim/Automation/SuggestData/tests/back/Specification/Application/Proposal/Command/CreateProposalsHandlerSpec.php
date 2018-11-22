@@ -12,7 +12,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalAuthor
 use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalSuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -77,15 +76,15 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
     ): void {
         $subscription1->getSubscriptionId()->shouldNotBeCalled();
         $suggestedDataFactory->fromSubscription($subscription1)->willReturn(
-            new ProposalSuggestedData(['foo' => 'bar'], new Product())
+            new ProposalSuggestedData(42, ['foo' => 'bar'])
         );
         $subscription2->getSubscriptionId()->willReturn('abc');
         $suggestedDataFactory->fromSubscription($subscription2)->willReturn(
-            new ProposalSuggestedData(['bar' => 'baz'], new Product())
+            new ProposalSuggestedData(56, ['bar' => 'baz'])
         );
         $subscription3->getSubscriptionId()->willReturn('def');
         $suggestedDataFactory->fromSubscription($subscription3)->willReturn(
-            new ProposalSuggestedData(['test' => 42], new Product())
+            new ProposalSuggestedData(144, ['test' => 42])
         );
 
         $subscriptionRepository->findPendingSubscriptions(2, null)->willReturn([$subscription1, $subscription2]);

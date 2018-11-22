@@ -116,6 +116,7 @@ $rules = [
 
             // Akeneo external bounded contexts
             'Akeneo\Pim\Enrichment\Component',
+            'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\WorkOrganization\Workflow\Component',
             'Akeneo\Tool\Component\StorageUtils',
 

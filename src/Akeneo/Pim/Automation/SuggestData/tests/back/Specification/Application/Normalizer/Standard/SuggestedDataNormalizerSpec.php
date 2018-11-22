@@ -270,7 +270,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository): void
+    public function it_normalizes_suggested_data_ignoring_unsupported_attribute_types($attributeRepository): void
     {
         $suggestedData = [
             ['pimAttributeCode' => 'foo', 'value' => 'bar'],
@@ -283,7 +283,16 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $this->shouldThrow(new \InvalidArgumentException('Unsupported attribute type "pim_catalog_price_collection"'))
-             ->during('normalize', [new SuggestedData($suggestedData)]);
+        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
+            [
+                'foo' => [
+                    [
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => 'bar',
+                    ],
+                ],
+            ]
+        );
     }
 }

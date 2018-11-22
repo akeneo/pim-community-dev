@@ -20,8 +20,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -39,39 +37,6 @@ class ProposalUpsertIntegration extends TestCase
     {
         parent::setUp();
         $this->proposalUpsert = $this->get('akeneo.pim.automation.suggest_data.proposal.create_proposal');
-    }
-
-    /**
-     * @return array
-     */
-    public static function invalidDataProvider(): array
-    {
-        return [
-            [
-                [
-                    'un_unknown_attribute' => [
-                        [
-                            'data' => '42',
-                            'scope' => null,
-                            'locale' => null,
-                        ],
-                    ],
-                ],
-                UnknownPropertyException::class,
-            ],
-            [
-                [
-                    'a_multi_select' => [
-                        [
-                            'data' => -45.12,
-                            'scope' => null,
-                            'locale' => null,
-                        ],
-                    ],
-                ],
-                InvalidPropertyTypeException::class,
-            ],
-        ];
     }
 
     public function test_it_creates_a_proposal_from_values(): void
@@ -96,7 +61,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($suggestedValues, $product)],
+            [new ProposalSuggestedData($product->getId(), $suggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -126,7 +91,7 @@ class ProposalUpsertIntegration extends TestCase
         );
 
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($suggestedValues, $product)],
+            [new ProposalSuggestedData($product->getId(), $suggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -171,7 +136,7 @@ class ProposalUpsertIntegration extends TestCase
             ],
         ];
         $this->proposalUpsert->process(
-            [new ProposalSuggestedData($newSuggestedValues, $product)],
+            [new ProposalSuggestedData($product->getId(), $newSuggestedValues)],
             ProposalAuthor::USERNAME
         );
 
@@ -183,26 +148,29 @@ class ProposalUpsertIntegration extends TestCase
         Assert::assertEquals('Some other text', $aText);
     }
 
-    /**
-     * @dataProvider invalidDataProvider
-     *
-     * @param array $invalidValues
-     * @param string $exceptionClass
-     */
-    public function test_it_throws_an_exception_for_invalid_data(array $invalidValues, string $exceptionClass): void
+    public function test_that_it_does_not_create_proposals_with_invalid_values(): void
     {
         $product = $this->createProduct(
             'foo',
             'familyA'
         );
-
-        $this->expectException($exceptionClass);
+        $invalidValues = [
+            'un_unknown_attribute' => [
+                [
+                    'data' => '42',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        ];
         $this->proposalUpsert->process(
             [
-                new ProposalSuggestedData($invalidValues, $product),
+                new ProposalSuggestedData($product->getId(), $invalidValues),
             ],
             ProposalAuthor::USERNAME
         );
+
+        Assert::assertNull($this->getDraft($product, ProposalAuthor::USERNAME));
     }
 
     /**

@@ -13,29 +13,37 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-
 /**
+ * Holds the data necessary to create a proposal on a product:
+ *  - product id
+ *  - standard format values.
+ *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class ProposalSuggestedData
 {
+    /** @var int */
+    private $productId;
+
     /** @var array */
     private $suggestedValues;
 
-    /** @var ProductInterface */
-    private $product;
+    /**
+     * @param int $productId
+     * @param array $suggestedValues
+     */
+    public function __construct(int $productId, array $suggestedValues)
+    {
+        $this->productId = $productId;
+        $this->suggestedValues = $suggestedValues;
+    }
 
     /**
-     * @param array $suggestedValues
-     * @param ProductInterface $product
+     * @return int
      */
-    public function __construct(
-        array $suggestedValues,
-        ProductInterface $product
-    ) {
-        $this->suggestedValues = $suggestedValues;
-        $this->product = $product;
+    public function getProductId(): int
+    {
+        return $this->productId;
     }
 
     /**
@@ -44,13 +52,5 @@ final class ProposalSuggestedData
     public function getSuggestedValues(): array
     {
         return $this->suggestedValues;
-    }
-
-    /**
-     * @return ProductInterface
-     */
-    public function getProduct(): ProductInterface
-    {
-        return $this->product;
     }
 }

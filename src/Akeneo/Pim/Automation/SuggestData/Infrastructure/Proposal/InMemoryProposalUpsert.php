@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Event\SubscriptionEvents;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,6 +28,9 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     /** @var array */
     private $drafts = [];
 
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
@@ -34,11 +38,16 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     private $eventDispatcher;
 
     /**
+     * @param ProductRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface $productUpdater
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(ObjectUpdaterInterface $productUpdater, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        ObjectUpdaterInterface $productUpdater,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -50,13 +59,14 @@ class InMemoryProposalUpsert implements ProposalUpsertInterface
     {
         $processed = [];
         foreach ($suggestedData as $data) {
-            $product = $data->getProduct();
+            $product = $this->productRepository->find($data->getProductId());
             $this->productUpdater->update($product, ['values' => $data->getSuggestedValues()]);
 
             $key = sprintf('%s-%s', $product->getIdentifier(), $author);
             $this->drafts[$key] = $product->getValues()->toArray();
-            $processed[] = $data->getProduct()->getId();
+            $processed[] = $data->getProductId();
         }
+
         $this->eventDispatcher->dispatch(
             SubscriptionEvents::FRANKLIN_PROPOSALS_CREATED,
             new GenericEvent($processed)
