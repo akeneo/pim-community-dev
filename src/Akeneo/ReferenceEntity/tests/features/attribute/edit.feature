@@ -68,7 +68,6 @@ Feature: Lists all attributes related to a reference entity
     Then the user edits the attribute property "Label" with value "Nice Name"
     And the user edits the attribute property "IsRequired" with value "true"
 
-  # -----------------------
   @acceptance-front
   Scenario: Manage the list of options by adding a new option code
     Given a valid reference entity
@@ -80,7 +79,6 @@ Feature: Lists all attributes related to a reference entity
     When the user adds the new option code "blue"
     And the user saves successfully
     Then the code of the "blue" option should be locked
-  # And the user should see a success message on the edit attribute page
 
   @acceptance-front
   Scenario: Fill in the label of an option to the list of available options of an option attribute

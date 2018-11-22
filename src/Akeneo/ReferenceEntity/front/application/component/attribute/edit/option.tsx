@@ -30,15 +30,13 @@ import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/refe
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   return (
-    <React.Fragment>
-      <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
-        <div className="AknFieldContainer-header">
-          <button onClick={onOptionEditionStart} className="AknButton" data-code="manageOption">
-            {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
-          </button>
-        </div>
+    <div className="AknFieldContainer AknFieldContainer--packed">
+      <div className="AknFieldContainer-header">
+        <button onClick={onOptionEditionStart} className="AknButton" data-code="manageOption">
+          {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+        </button>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -95,8 +93,8 @@ const optionRow = ({
   numberOfLockedOptions,
   locale,
   errors,
-  labelRef,
-  codeRef,
+  labelInputReference,
+  codeInputReference,
   onOptionEditionCodeUpdated,
   onOptionEditionSelected,
   onOptionEditionLabelUpdated,
@@ -111,8 +109,8 @@ const optionRow = ({
   numberOfLockedOptions: any;
   locale: string;
   errors: ValidationError[];
-  labelRef: React.RefObject<HTMLInputElement>;
-  codeRef: React.RefObject<HTMLInputElement>;
+  labelInputReference: React.RefObject<HTMLInputElement>;
+  codeInputReference: React.RefObject<HTMLInputElement>;
   onOptionEditionCodeUpdated: (code: string, id: any) => void;
   onOptionEditionSelected: (id: any) => void;
   onOptionEditionLabelUpdated: (label: string, locale: string, id: any) => void;
@@ -127,7 +125,7 @@ const optionRow = ({
           <div className="AknFieldContainer">
             <div className="AknFieldContainer-inputContainer">
               <input
-                ref={labelRef}
+                ref={labelInputReference}
                 placeholder={
                   isLastRow
                     ? __('pim_reference_entity.attribute.edit.input.manage_options.option.label.placeholder')
@@ -162,7 +160,7 @@ const optionRow = ({
           <div className="AknFieldContainer">
             <div className="AknFieldContainer-inputContainer">
               <input
-                ref={codeRef}
+                ref={codeInputReference}
                 type="text"
                 className={
                   'AknTextField AknTextField--light' +
@@ -236,19 +234,32 @@ const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: Norm
 };
 
 class ManageOptionsView extends React.Component<OptionProps> {
-  private labelRefs: React.RefObject<HTMLInputElement>[] = [];
-  private codeRefs: React.RefObject<HTMLInputElement>[] = [];
+  /**
+   * We keep track of the references of the input in order to put the user in the
+   * right input whenever he presses enter.
+   *
+   * Ex: The user has the focus on the code red, when he presses enter the focus will go in the next code input.
+   * (It works the same for the labels)
+   */
+  private labelInputReferences: React.RefObject<HTMLInputElement>[] = [];
+  private codeInputReferences: React.RefObject<HTMLInputElement>[] = [];
 
   componentDidMount() {
-    const current = this.labelRefs[0].current;
+    const current = this.labelInputReferences[0].current;
     if (null !== current) {
       current.focus();
     }
   }
 
   updateRefs(options: NormalizedOption[]) {
-    this.labelRefs = [...options.map(() => React.createRef<HTMLInputElement>()), React.createRef<HTMLInputElement>()];
-    this.codeRefs = [...options.map(() => React.createRef<HTMLInputElement>()), React.createRef<HTMLInputElement>()];
+    this.labelInputReferences = [
+      ...options.map(() => React.createRef<HTMLInputElement>()),
+      React.createRef<HTMLInputElement>(),
+    ];
+    this.codeInputReferences = [
+      ...options.map(() => React.createRef<HTMLInputElement>()),
+      React.createRef<HTMLInputElement>(),
+    ];
   }
 
   cancelManageOptions() {
@@ -264,17 +275,16 @@ class ManageOptionsView extends React.Component<OptionProps> {
 
   onFocusNextField(index: number, field: Field) {
     const newIndex = index === this.props.options.length ? this.props.options.length : index + 1;
-
     if (field === Field.Code) {
-      const ref = this.codeRefs[newIndex].current;
-      if (null !== ref) {
-        ref.focus();
+      const codeReference = this.codeInputReferences[newIndex].current;
+      if (null !== codeReference) {
+        codeReference.focus();
       }
     }
     if (field === Field.Label) {
-      const ref = this.labelRefs[newIndex].current;
-      if (null !== ref) {
-        ref.focus();
+      const codeReference = this.labelInputReferences[newIndex].current;
+      if (null !== codeReference) {
+        codeReference.focus();
       }
     }
   }
@@ -282,13 +292,13 @@ class ManageOptionsView extends React.Component<OptionProps> {
   onFocusPreviousField(index: number, field: Field) {
     const newIndex = index === 0 ? 0 : index - 1;
     if (field === Field.Code) {
-      const ref = this.codeRefs[newIndex].current;
+      const ref = this.codeInputReferences[newIndex].current;
       if (null !== ref) {
         ref.focus();
       }
     }
     if (field === Field.Label) {
-      const ref = this.labelRefs[newIndex].current;
+      const ref = this.labelInputReferences[newIndex].current;
       if (null !== ref) {
         ref.focus();
       }
@@ -316,11 +326,12 @@ class ManageOptionsView extends React.Component<OptionProps> {
                 <div className="AknFullPage-subTitle">
                   {__('pim_reference_entity.attribute.options.sub_title')} / {this.props.referenceEntity.code}
                 </div>
-                <div className="AknFullPage-title">{__('pim_reference_entity.attribute.options.title')}</div>
+                <div className="AknFullPage-title">
+                  {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+                </div>
               </div>
             </div>
             <div>
-              {/*Needed*/}
               <div className="AknFullPage AknFullPage--modal">
                 <div className="AknFullPage-content AknFullPage-content--visible">
                   <div className="AknOptionEditor">
@@ -358,8 +369,8 @@ class ManageOptionsView extends React.Component<OptionProps> {
                               numberOfLockedOptions: this.props.numberOfLockedOptions,
                               locale: this.props.locale,
                               errors: this.props.errors,
-                              labelRef: this.labelRefs[index],
-                              codeRef: this.codeRefs[index],
+                              labelInputReference: this.labelInputReferences[index],
+                              codeInputReference: this.codeInputReferences[index],
                               onOptionEditionCodeUpdated: this.props.events.onOptionEditionCodeUpdated,
                               onOptionEditionSelected: this.props.events.onOptionEditionSelected,
                               onOptionEditionLabelUpdated: this.props.events.onOptionEditionLabelUpdated,
@@ -368,6 +379,9 @@ class ManageOptionsView extends React.Component<OptionProps> {
                               onFocusPreviousField: this.onFocusPreviousField.bind(this),
                             });
                           })}
+                          <tr>
+                            <td>{getErrorsView(this.props.errors, 'options')}</td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>

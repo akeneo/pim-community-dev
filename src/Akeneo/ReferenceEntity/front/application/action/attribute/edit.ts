@@ -76,13 +76,13 @@ export const saveOptions = () => async (dispatch: any, getState: () => EditState
   const updatedAttribute = attribute.setOptions(options);
 
   try {
-    // Todo: Introduce normalizableAttribute interface (used by save and implemented by all concrete attributes)
     let errors = await attributeOptionSaver.save((updatedAttribute as any) as Attribute);
 
     if (errors) {
       const validationErrors = Object.values(
         errors.reduce((filteredErrors: {[propertyPath: string]: ValidationError}, error: ValidationError) => {
           filteredErrors[error.propertyPath] = error;
+
           return filteredErrors;
         }, {})
       ).map((error: ValidationError) => createValidationError(error));

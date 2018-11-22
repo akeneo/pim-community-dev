@@ -93,16 +93,12 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 
   const showManageOptionModal = async () => {
     page.waitForSelector('.AknButton[data-code="manageOption"]');
-    // As the button doesn't have any size, we need to make it clickable by giving him a size
-    await page.evaluate(
-      (edit) => {
-        const button = edit.querySelector('.AknButton[data-code="manageOption"]');
+    await page.evaluate(edit => {
+      const button = edit.querySelector('.AknButton[data-code="manageOption"]');
 
-        button.style.width = '100px';
-        button.style.height = '100px';
-      },
-      nodeElement
-    );
+      button.style.width = '100px';
+      button.style.height = '100px';
+    }, nodeElement);
 
     const button = await nodeElement.$('.AknButton[data-code="manageOption"]');
     await button.click();
@@ -136,7 +132,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
     setAllowedExtensions,
     isLoaded,
     showManageOptionModal,
-    hasSuccessNotification
+    hasSuccessNotification,
   };
 };
 

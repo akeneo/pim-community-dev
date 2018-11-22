@@ -1,249 +1,248 @@
 pim_title:
-    akeneo_reference_entities_reference_entity_index: Create a new entity
-    akeneo_reference_entities_reference_entity_edit: Edit a reference entity
-    akeneo_reference_entities_record_edit: Edit a record
+  akeneo_reference_entities_reference_entity_index: Create a new entity
+  akeneo_reference_entities_reference_entity_edit: Edit a reference entity
+  akeneo_reference_entities_record_edit: Edit a record
 
 pim_reference_entity:
-    app:
-        image:
-            wide:
-                remove: Remove the image
-                download: Download the image
-                upload: Drag and drop to upload or click here
-            small:
-                remove: Remove
-                download: Download
-                upload: Drag and drop to upload
-    reference_entity:
-        validation:
-            code:
-                pattern: 'This field may only contain letters, numbers and underscores.'
-                should_be_unique: 'This code already exists for this entity.'
-                limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
-        button:
-            save: Save
-            create: Create
-        title: Entities
-        img: The main image of the reference entity named "{{ label }}"
-        tab:
-            records: Records
-            attribute: Attributes
-            properties: Properties
-        properties:
-            title: Entity properties
-            identifier: Code
-            label: Label
-            image: Image
-        attribute:
-            title: Record attributes
-            attribute:
-                error:
-                    render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
-                    render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
-        module:
-            delete:
-                button: Delete entity
-                confirm: Are you sure you want to delete this entity?
-        index:
-            grid:
-                count: "{{ count }} results"
-        create:
-            header:
-                title: Create
-            subtitle: Entities
-            title: Create a new entity
-            input:
-                label: Label
-                code: Code (required)
-            confirm: Save
-        delete:
-            message: Are you sure you want to delete the entity "{{ referenceEntityLabel }}"?
-            title: Attribute
-        notification:
-            save:
-                success: Reference entity successfully updated.
-                fail: An error occured during the save of the reference entity
-            create:
-                success: Reference entity successfully created.
-                fail: An error occured during the creation of the reference entity
-            delete:
-                success: Reference entity successfully deleted.
-                fail: An error occured during the deletion of the reference entity
-    record:
-        validation:
-            limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
-            code:
-                pattern: 'This field may only contain letters, numbers and underscores.'
-                should_be_unique: 'This code already exists for this entity.'
-        no_data:
-            title: There are no record for {{ entityLabel }}
-            subtitle: Click on the button "Add new" to create the first record
-        no_result:
-            title: There are no result for your search
-            subtitle: Try again with new search criteria.
-        selector:
-            no_value: Click here to select a record.
-        error:
-            value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
-        button:
-            save: Save
-            create: Add new
-            delete: Delete
-            delete_all: Delete all records
-            back: Back to list
-        enrich:
-            title: Record attributes
-            code: Code
-            label: Label
-        title: Records
-        create:
-            header:
-                title: Create
-            subtitle: Entities
-            title: Add new {{ entityLabel }}
-            input:
-                label: Label
-                code: Code (required)
-            confirm: Save
-        delete:
-            message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
-            title: Record
-        delete_all:
-            confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
-        grid:
-            search: Search on label, code and text attributes
-            column:
-                code: Code
-                image: Image
-                label: Label
-                action: Actions
-            more_result:
-                title: That's not it!
-                description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
-        tab:
-            enrich: Enrich
-        notification:
-            save:
-                success: Record successfully updated.
-                fail: An error occured during the save of the record
-                validation_error: The record could not be updated
-            create:
-                success: Record successfully created.
-                fail: An error occured during the creation of the record
-            delete:
-                success: Record "{{ code }}" successfully deleted.
-                fail: An error occured during the deletion of the record
-            delete_all:
-                success: All "{{ entityIdentifier }}" records successfully deleted.
-                fail: An error occured during the deletion of all this reference entity's records
+  app:
+    image:
+      wide:
+        remove: Remove the image
+        download: Download the image
+        upload: Drag and drop to upload or click here
+      small:
+        remove: Remove
+        download: Download
+        upload: Drag and drop to upload
+  reference_entity:
+    validation:
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'
+        should_be_unique: 'This code already exists for this entity.'
+        limit_reached: 'You cannot create the reference entity "{{ %reference_entity_label% }}" because you have reached the limit of {{ %limit% }} reference entities'
+    button:
+      save: Save
+      create: Create
+    title: Entities
+    img: The main image of the reference entity named "{{ label }}"
+    tab:
+      records: Records
+      attribute: Attributes
+      properties: Properties
+    properties:
+      title: Entity properties
+      identifier: Code
+      label: Label
+      image: Image
     attribute:
-        validation:
-            limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this reference entity'
-        default:
-            code: Code
-            label: Label
-            image: Image
-        type:
-            text: Text
-            image: Image
-            record: Reference entity simple link
-            record_collection: Reference entity multiple link
-            option: Single option
-            option_collection: Multiple options
-        is_required: required for completeness
-        no_data:
-            title: There are no custom attributes for {{ entityLabel }}
-            subtitle: Click on the button "Add an attribute" to configure your first custom attribute
-        button:
-            add: Add an attribute
-        create:
-            header:
-                title: Create
-            subtitle: Entities
-            title: Add a new attribute
-            input:
-                code: Code (required)
-                label: Label
-                type: Attribute type
-                record_type: Reference entity to link
-                value_per_locale: Value per locale
-                value_per_channel: Value per channel
-            confirm: Save
-        edit:
-            delete: Delete the attribute
-            title: Edit attribute {{ code }}
-            save: Save
-            cancel: Cancel
-            input:
-                code: Code (required)
-                label: Label
-                type: Attribute type
-                record_type: Related reference entity
-                value_per_locale: Value per locale
-                value_per_channel: Value per channel
-                is_required: Required for completeness
-                max_length: Max characters
-                textarea: Text Area
-                is_rich_text_editor: Rich Text Editor
-                max_file_size: Max file size (MB)
-                allowed_extensions: Allowed extensions
-                validation_rule: Validation rule
-                regular_expression: Regular expression
-                manage_options:
-                    confirmation:
-                        discard_changes: You will lose changes made to the list of options if you leave the page
-                    quick_edit:
-                        label: Manage options
-                    option:
-                        label:
-                            placeholder: Write you new option label here
-                options:
-                    validation_rule:
-                        none: None
-                        email: E-mail
-                        regular_expression: Regular expression
-                        url: URL
-        delete:
-            message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
-            title: Attribute
-        notification:
-            list:
-                fail: An error occured during the update of the attribute list
-            save:
-                success: Attribute successfully updated.
-                fail: An error occured during the save of the attribute
-                validation_error: The attribute could not be updated
-            create:
-                success: Attribute successfully created.
-                fail: An error occured during the creation of the attribute
-                validation_error: The attribute could not be created
-            delete:
-                success: Attribute successfully deleted.
-                fail: An error occured during the deletion of the attribute
+      title: Record attributes
+      attribute:
+        error:
+          render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
+    module:
+      delete:
+        button: Delete entity
+        confirm: Are you sure you want to delete this entity?
+    index:
+      grid:
+        count: '{{ count }} results'
+    create:
+      header:
+        title: Create
+      subtitle: Entities
+      title: Create a new entity
+      input:
+        label: Label
+        code: Code (required)
+      confirm: Save
+    delete:
+      message: Are you sure you want to delete the entity "{{ referenceEntityLabel }}"?
+      title: Attribute
+    notification:
+      save:
+        success: Reference entity successfully updated.
+        fail: An error occured during the save of the reference entity
+      create:
+        success: Reference entity successfully created.
+        fail: An error occured during the creation of the reference entity
+      delete:
+        success: Reference entity successfully deleted.
+        fail: An error occured during the deletion of the reference entity
+  record:
+    validation:
+      limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
+      code:
+        pattern: 'This field may only contain letters, numbers and underscores.'
+        should_be_unique: 'This code already exists for this entity.'
+    no_data:
+      title: There are no record for {{ entityLabel }}
+      subtitle: Click on the button "Add new" to create the first record
+    no_result:
+      title: There are no result for your search
+      subtitle: Try again with new search criteria.
+    selector:
+      no_value: Click here to select a record.
+    error:
+      value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
+    button:
+      save: Save
+      create: Add new
+      delete: Delete
+      delete_all: Delete all records
+      back: Back to list
+    enrich:
+      title: Record attributes
+      code: Code
+      label: Label
+    title: Records
+    create:
+      header:
+        title: Create
+      subtitle: Entities
+      title: Add new {{ entityLabel }}
+      input:
+        label: Label
+        code: Code (required)
+      confirm: Save
+    delete:
+      message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
+      title: Record
+    delete_all:
+      confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
+    grid:
+      search: Search on label, code and text attributes
+      column:
+        code: Code
+        image: Image
+        label: Label
+        action: Actions
+      more_result:
+        title: That's not it!
+        description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
+    tab:
+      enrich: Enrich
+    notification:
+      save:
+        success: Record successfully updated.
+        fail: An error occured during the save of the record
+        validation_error: The record could not be updated
+      create:
+        success: Record successfully created.
+        fail: An error occured during the creation of the record
+      delete:
+        success: Record "{{ code }}" successfully deleted.
+        fail: An error occured during the deletion of the record
+      delete_all:
+        success: All "{{ entityIdentifier }}" records successfully deleted.
+        fail: An error occured during the deletion of all this reference entity's records
+  attribute:
+    validation:
+      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this reference entity'
+    default:
+      code: Code
+      label: Label
+      image: Image
+    type:
+      text: Text
+      image: Image
+      record: Reference entity simple link
+      record_collection: Reference entity multiple link
+      option: Single option
+      option_collection: Multiple options
+    is_required: required for completeness
+    no_data:
+      title: There are no custom attributes for {{ entityLabel }}
+      subtitle: Click on the button "Add an attribute" to configure your first custom attribute
+    button:
+      add: Add an attribute
+    create:
+      header:
+        title: Create
+      subtitle: Entities
+      title: Add a new attribute
+      input:
+        code: Code (required)
+        label: Label
+        type: Attribute type
+        record_type: Reference entity to link
+        value_per_locale: Value per locale
+        value_per_channel: Value per channel
+      confirm: Save
+    edit:
+      delete: Delete the attribute
+      title: Edit attribute {{ code }}
+      save: Save
+      cancel: Cancel
+      input:
+        code: Code (required)
+        label: Label
+        type: Attribute type
+        record_type: Related reference entity
+        value_per_locale: Value per locale
+        value_per_channel: Value per channel
+        is_required: Required for completeness
+        max_length: Max characters
+        textarea: Text Area
+        is_rich_text_editor: Rich Text Editor
+        max_file_size: Max file size (MB)
+        allowed_extensions: Allowed extensions
+        validation_rule: Validation rule
+        regular_expression: Regular expression
+        manage_options:
+          confirmation:
+            discard_changes: You will lose changes made to the list of options if you leave the page
+          quick_edit:
+            label: Manage options
+          option:
+            label:
+              placeholder: Write you new option label here
         options:
-            title: Manage options
-            no_value: Click here to select an option.
-            sub_title: Reference Entities
-            helper:
-                title: Label translations
-    modal:
-        delete:
-            subtitle: Confirm deletion
-            button:
-                cancel: Cancel
-                confirm: Delete
+          validation_rule:
+            none: None
+            email: E-mail
+            regular_expression: Regular expression
+            url: URL
+    delete:
+      message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
+      title: Attribute
+    notification:
+      list:
+        fail: An error occured during the update of the attribute list
+      save:
+        success: Attribute successfully updated.
+        fail: An error occured during the save of the attribute
+        validation_error: The attribute could not be updated
+      create:
+        success: Attribute successfully created.
+        fail: An error occured during the creation of the attribute
+        validation_error: The attribute could not be created
+      delete:
+        success: Attribute successfully deleted.
+        fail: An error occured during the deletion of the attribute
+    options:
+      no_value: Click here to select an option.
+      sub_title: Reference Entities
+      helper:
+        title: Label translations
+  modal:
+    delete:
+      subtitle: Confirm deletion
+      button:
+        cancel: Cancel
+        confirm: Delete
 
 pim_enrich:
-    confirmation:
-        discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
-    entity:
-        attribute:
-            property:
-                type:
-                    akeneo_reference_entity_collection: Reference entity multiple link
-                    akeneo_reference_entity: Reference entity simple link
-                section:
-                    type_specific: Type specific parameters
-                reference_entity:
-                    identifier: Related reference entity
-                    default_label: Please select a reference entity
+  confirmation:
+    discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
+  entity:
+    attribute:
+      property:
+        type:
+          akeneo_reference_entity_collection: Reference entity multiple link
+          akeneo_reference_entity: Reference entity simple link
+        section:
+          type_specific: Type specific parameters
+        reference_entity:
+          identifier: Related reference entity
+          default_label: Please select a reference entity
