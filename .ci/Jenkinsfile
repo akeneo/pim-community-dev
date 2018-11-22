@@ -108,6 +108,11 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && bin/check-pullup"
             )},
+            "back-phpstan": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/phpstan analyse src/Akeneo/Pim -l 0"
+            )},
             "front-lint": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
