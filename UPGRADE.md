@@ -628,7 +628,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductPrice/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductPrice/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductPriceInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductPriceInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductUniqueValueCollectionInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductUniqueValueCollectionInterface/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductValueKeyGenerator/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductValueKeyGenerator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ScopableInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ScopableInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\TimestampableInterface/Akeneo\\Tool\\Component\\Versioning\\Model\\TimestampableInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ValueCollection/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ValueCollection/g'
