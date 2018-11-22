@@ -82,10 +82,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('designer'),
-            null,
-            100,
             ChannelReference::noReference(),
-            LocaleIdentifierCollection::empty()
+            LocaleIdentifierCollection::empty(),
+            100,
+            null
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -136,10 +136,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('designer'),
-            null,
-            100,
             ChannelReference::createfromNormalized('ecommerce'),
-            LocaleIdentifierCollection::empty()
+            LocaleIdentifierCollection::empty(),
+            100,
+            null
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -185,10 +185,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('designer'),
-            null,
-            100,
             ChannelReference::createfromNormalized('ecommerce'),
-            LocaleIdentifierCollection::fromNormalized(['fr_FR'])
+            LocaleIdentifierCollection::fromNormalized(['fr_FR']),
+            100,
+            null
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -228,10 +228,10 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('designer'),
-            null,
-            100,
             ChannelReference::noReference(),
-            LocaleIdentifierCollection::empty()
+            LocaleIdentifierCollection::empty(),
+            100,
+            null
         );
 
         $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar'], $recordQuery);

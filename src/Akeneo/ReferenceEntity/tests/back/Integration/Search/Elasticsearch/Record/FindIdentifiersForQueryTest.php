@@ -322,10 +322,10 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     {
         $query = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('alessi'),
-            10,
             ChannelReference::noReference(),
-            LocaleIdentifierCollection::empty()
+            LocaleIdentifierCollection::empty(),
+            10,
+            RecordCode::fromString('alessi')
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
@@ -342,10 +342,10 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     {
         $query = RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            null,
-            10,
             ChannelReference::noReference(),
-            LocaleIdentifierCollection::empty()
+            LocaleIdentifierCollection::empty(),
+            10,
+            null
         );
 
         $matchingIdentifiers = ($this->findIdentifiersForQuery)($query);
