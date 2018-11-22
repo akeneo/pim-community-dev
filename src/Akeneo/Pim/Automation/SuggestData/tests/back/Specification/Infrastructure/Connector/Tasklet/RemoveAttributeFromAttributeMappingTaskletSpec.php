@@ -26,6 +26,9 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
 {
     public function let(
@@ -47,22 +50,6 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(RemoveAttributeFromAttributeMappingTasklet::class);
         $this->shouldImplement(TaskletInterface::class);
-    }
-
-    public function it_throw_an_exception_if_there_is_no_job_parameters($stepExecution): void
-    {
-        $stepExecution->getJobParameters()->willReturn(null);
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
-    }
-
-    public function it_throw_an_exception_if_one_parameter_is_missing($stepExecution): void
-    {
-        $stepExecution->getJobParameters()->willReturn(new JobParameters([
-            'wrong_key' => 'wrong_value',
-        ]));
-
-        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
     }
 
     public function it_calls_franklin_with_the_new_mapping(
@@ -96,7 +83,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $this->execute();
     }
 
-    public function it_does_not_calls_franklin_if_the_attribute_is_not_in_family_attribute_mapping(
+    public function it_does_not_call_franklin_if_the_attribute_is_not_in_family_attribute_mapping(
         $getAttributesMappingHandler,
         $updateAttributesMappingHandler
     ): void {

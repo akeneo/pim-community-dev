@@ -69,6 +69,8 @@ $rules = [
 
             // External dependencies
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\Validator\Constraints\Collection',
+            'Symfony\Component\Validator\Constraints\NotBlank',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',

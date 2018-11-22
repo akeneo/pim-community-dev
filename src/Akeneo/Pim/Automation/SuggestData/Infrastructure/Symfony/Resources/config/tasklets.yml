@@ -11,7 +11,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.create_proposals'
 
-    akeneo.pim.automation.suggest_data.connector.tasklet.remove_attribute_from_attribute_mapping:
+    akeneo.pim.automation.suggest_data.connector.tasklet.remove_attribute_from_attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveAttributeFromAttributeMappingTasklet'
         public: false
         arguments:

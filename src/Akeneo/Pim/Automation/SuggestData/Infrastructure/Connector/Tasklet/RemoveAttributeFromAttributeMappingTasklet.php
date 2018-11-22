@@ -23,6 +23,9 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
 {
     /** @var StepExecution */
@@ -34,6 +37,10 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
     /** @var UpdateAttributesMappingByFamilyHandler */
     private $updateAttributesMappingHandler;
 
+    /**
+     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingHandler
+     * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingHandler
+     */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingHandler,
         UpdateAttributesMappingByFamilyHandler $updateAttributesMappingHandler
@@ -47,18 +54,20 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
      */
     public function execute(): void
     {
-        $pimAttributeCode = $this->getJobParameterValue('pim_attribute_code');
-        $familyCode = $this->getJobParameterValue('family_code');
+        $pimAttributeCode = $this->stepExecution->getJobParameters()->get('pim_attribute_code');
+        $familyCode = $this->stepExecution->getJobParameters()->get('family_code');
 
-        $response = $this->getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery($familyCode));
+        $attributesMapping = $this->getAttributesMappingHandler->handle(
+            new GetAttributesMappingByFamilyQuery($familyCode)
+        );
 
-        if (!$response->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
+        if (!$attributesMapping->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
             return;
         }
 
-        $mapping = $this->buildNewAttributeMapping($response, $pimAttributeCode);
+        $newMapping = $this->buildNewAttributesMapping($attributesMapping, $pimAttributeCode);
 
-        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $mapping);
+        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $newMapping);
         $this->updateAttributesMappingHandler->handle($command);
     }
 
@@ -71,16 +80,16 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
     }
 
     /**
-     * @param AttributesMappingResponse $response
+     * @param AttributesMappingResponse $attributesMapping
      * @param string $pimAttributeCode
      *
      * @return array
      */
-    private function buildNewAttributeMapping(AttributesMappingResponse $response, string $pimAttributeCode)
+    private function buildNewAttributesMapping(AttributesMappingResponse $attributesMapping, string $pimAttributeCode)
     {
         $newMapping = [];
 
-        foreach ($response as $mapping) {
+        foreach ($attributesMapping as $mapping) {
             $attributeMapping = [
                 'franklinAttribute' => [
                     'type' => $mapping->getTargetAttributeType(),
@@ -97,30 +106,5 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
         }
 
         return $newMapping;
-    }
-
-    /**
-     * @param string $parameterName
-     *
-     * @return string
-     */
-    private function getJobParameterValue(string $parameterName): string
-    {
-        if (null === $this->stepExecution->getJobParameters()) {
-            throw new \InvalidArgumentException(sprintf(
-                'Missing job parameters for tasklet "%s"',
-                self::class
-            ));
-        }
-
-        if (!$this->stepExecution->getJobParameters()->has($parameterName)) {
-            throw new \InvalidArgumentException(sprintf(
-                'The job parameter "%" is missing for the tasklet "%s"',
-                $parameterName,
-                self::class
-            ));
-        }
-
-        return $this->stepExecution->getJobParameters()->get($parameterName);
     }
 }

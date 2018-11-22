@@ -56,10 +56,10 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.suggest_data.connector.tasklet.create_proposals'
 
-    akeneo.pim.automation.suggest_data.connector.step.remove_attribute_from_attribute_mapping:
+    akeneo.pim.automation.suggest_data.connector.step.remove_attribute_from_attributes_mapping:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
             - 'update_attribute_mapping'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@akeneo.pim.automation.suggest_data.connector.tasklet.remove_attribute_from_attribute_mapping'
+            - '@akeneo.pim.automation.suggest_data.connector.tasklet.remove_attribute_from_attributes_mapping'
