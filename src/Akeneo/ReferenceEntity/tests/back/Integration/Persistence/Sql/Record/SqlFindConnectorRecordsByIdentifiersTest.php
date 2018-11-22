@@ -30,6 +30,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -80,7 +81,11 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['unexpected_record']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::noReference(), []
+            ReferenceEntityIdentifier::fromString('designer'),
+            null,
+            100,
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty()
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -130,7 +135,11 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['unexpected_record']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::createfromNormalized('ecommerce'), []
+            ReferenceEntityIdentifier::fromString('designer'),
+            null,
+            100,
+            ChannelReference::createfromNormalized('ecommerce'),
+            LocaleIdentifierCollection::empty()
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -179,9 +188,7 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
             null,
             100,
             ChannelReference::createfromNormalized('ecommerce'),
-            [
-                LocaleReference::createFromNormalized('fr_FR')
-            ]
+            LocaleIdentifierCollection::fromNormalized(['fr_FR'])
         );
         $identifiers = ['designer_dyson_fingerprint', 'designer_newson_fingerprint', 'designer_starck_fingerprint'];
 
@@ -220,7 +227,11 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
         $this->loadRecords(['starck', 'dyson']);
 
         $recordQuery = RecordQuery::createPaginatedQueryUsingSearchAfter(
-            ReferenceEntityIdentifier::fromString('designer'), null, 100, ChannelReference::noReference(), []
+            ReferenceEntityIdentifier::fromString('designer'),
+            null,
+            100,
+            ChannelReference::noReference(),
+            LocaleIdentifierCollection::empty()
         );
 
         $recordsFound = ($this->findConnectorRecordsQuery)(['foo', 'bar'], $recordQuery);

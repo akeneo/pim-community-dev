@@ -15,11 +15,10 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Webmozart\Assert\Assert;
 
 /**
  * Object representing a record query
@@ -64,9 +63,9 @@ class RecordQuery
     /**
      * To filter the values by locales. The values without locale will not be filtered.
      *
-     * @var LocaleReference[]
+     * @var LocaleIdentifierCollection
      */
-    private $localeReferencesValuesFilter;
+    private $localeIdentifiersValuesFilter;
 
     private function __construct(
         ?ChannelIdentifier $channel,
@@ -77,7 +76,7 @@ class RecordQuery
         ?RecordCode $searchAfterCode,
         string $paginationMethod,
         ChannelReference $channelReferenceValuesFilter,
-        array $localeReferencesValuesFilter
+        LocaleIdentifierCollection $localeIdentifiersValuesFilter
     ) {
         foreach ($filters as $filter) {
             if (!(
@@ -93,11 +92,6 @@ class RecordQuery
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported pagination method', $paginationMethod));
         }
 
-        Assert::allIsInstanceOf($localeReferencesValuesFilter, LocaleReference::class, sprintf(
-            'RecordQuery expects an array of objects of class "%s" to filter values by locales.',
-            LocaleReference::class
-        ));
-
         $this->channel = $channel;
         $this->locale  = $locale;
         $this->filters = $filters;
@@ -107,8 +101,8 @@ class RecordQuery
         $this->searchAfterCode  = $searchAfterCode;
         $this->paginationMethod = $paginationMethod;
 
-        $this->channelReferenceValuesFilter = $channelReferenceValuesFilter;
-        $this->localeReferencesValuesFilter  = $localeReferencesValuesFilter;
+        $this->channelReferenceValuesFilter  = $channelReferenceValuesFilter;
+        $this->localeIdentifiersValuesFilter = $localeIdentifiersValuesFilter;
     }
 
     public static function createFromNormalized(array $normalizedQuery): RecordQuery
@@ -132,7 +126,7 @@ class RecordQuery
             null,
             self::PAGINATE_USING_OFFSET,
             ChannelReference::noReference(),
-            []
+            LocaleIdentifierCollection::empty()
         );
     }
 
@@ -141,7 +135,7 @@ class RecordQuery
         ?RecordCode $searchAfterCode,
         int $size,
         ChannelReference $channelReferenceValuesFilter,
-        array $localeReferencesValuesFilter
+        LocaleIdentifierCollection $localeIdentifiersValuesFilter
     ): RecordQuery {
         $filters = [
             [
@@ -160,7 +154,7 @@ class RecordQuery
             $searchAfterCode,
             self::PAGINATE_USING_SEARCH_AFTER,
             $channelReferenceValuesFilter,
-            $localeReferencesValuesFilter
+            $localeIdentifiersValuesFilter
         );
     }
 
@@ -228,11 +222,8 @@ class RecordQuery
         return $this->channelReferenceValuesFilter;
     }
 
-    /**
-     * @return LocaleReference[]
-     */
-    public function getLocaleReferencesValuesFilter(): array
+    public function getLocaleIdentifiersValuesFilter(): LocaleIdentifierCollection
     {
-        return $this->localeReferencesValuesFilter;
+        return $this->localeIdentifiersValuesFilter;
     }
 }

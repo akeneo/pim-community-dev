@@ -36,11 +36,11 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($localeReferences, Constraint $constraint)
+    public function validate($localeIdentifiers, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
+        $this->checkLocaleIdentifierCollectionType($localeIdentifiers);
 
-        $localeIdentifiers = LocaleIdentifierCollection::fromLocaleReferences($localeReferences);
         if ($localeIdentifiers->isEmpty()) {
             return;
         }
@@ -67,6 +67,17 @@ class LocalesShouldBeActivatedValidator extends ConstraintValidator
     {
         if (!$constraint instanceof LocalesShouldBeActivated) {
             throw new UnexpectedTypeException($constraint, self::class);
+        }
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkLocaleIdentifierCollectionType($channelReference): void
+    {
+        if (null !== $channelReference && !$channelReference instanceof LocaleIdentifierCollection) {
+            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
+                LocaleIdentifierCollection::class, get_class($channelReference)));
         }
     }
 }

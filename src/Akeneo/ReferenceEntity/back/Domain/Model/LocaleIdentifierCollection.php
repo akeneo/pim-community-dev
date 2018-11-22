@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,7 +27,7 @@ class LocaleIdentifierCollection implements \IteratorAggregate
     /**
      * @param LocaleIdentifier[] $localeIdentifiers
      */
-    public function __construct(array $localeIdentifiers)
+    private function __construct(array $localeIdentifiers)
     {
         Assert::allIsInstanceOf($localeIdentifiers, LocaleIdentifier::class);
         $this->localeIdentifiers = $localeIdentifiers;
@@ -69,19 +68,8 @@ class LocaleIdentifierCollection implements \IteratorAggregate
         return new self($localeIdentifiers);
     }
 
-    /**
-     * @param LocaleReference[] $localeReferences
-     */
-    public static function fromLocaleReferences(array $localeReferences): LocaleIdentifierCollection
+    public static function empty(): LocaleIdentifierCollection
     {
-        $localeIdentifiers = array_reduce($localeReferences, function ($localeIdentifiers, LocaleReference $localeReference) {
-            if (!$localeReference->isEmpty()) {
-                $localeIdentifiers[] = $localeReference->getIdentifier();
-            }
-
-            return $localeIdentifiers;
-        }, []);
-
-        return new self($localeIdentifiers);
+        return new self([]);
     }
 }

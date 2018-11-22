@@ -147,7 +147,7 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Channel\ChannelShouldExist:
                   payload:
                       standardPropertyName: channel
-        localeReferencesValuesFilter:
+        localeIdentifiersValuesFilter:
             - Akeneo\ReferenceEntity\Infrastructure\Validation\Locale\LocalesShouldBeActivated:
                   payload:
                       standardPropertyName: locales

@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Domain\Model;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use PhpSpec\ObjectBehavior;
 
 class LocaleIdentifierCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith([]);
+        $this->beConstructedThrough('empty');
     }
 
     function it_is_an_iterator_aggregate()
@@ -42,34 +40,13 @@ class LocaleIdentifierCollectionSpec extends ObjectBehavior
 
     public function it_returns_false_if_the_collection_is_not_empty()
     {
-        $this->beConstructedWith([LocaleIdentifier::fromCode('en_US')]);
+        $this->beConstructedThrough('fromNormalized', [['en_US']]);
         $this->isEmpty()->shouldReturn(false);
     }
 
     public function it_normalizes_itself()
     {
-        $this->beConstructedWith([
-            LocaleIdentifier::fromCode('en_US'),
-            LocaleIdentifier::fromCode('fr_FR')
-        ]);
-
-        $this->normalize()->shouldReturn(['en_US', 'fr_FR']);
-    }
-
-    public function it_can_be_created_from_normalized_locale_identifiers()
-    {
         $this->beConstructedThrough('fromNormalized', [['en_US', 'fr_FR']]);
-        $this->normalize()->shouldReturn(['en_US', 'fr_FR']);
-    }
-
-    public function it_can_be_create_from_a_list_of_locale_references()
-    {
-        $this->beConstructedThrough('fromLocaleReferences', [[
-            LocaleReference::createFromNormalized('en_US'),
-            LocaleReference::createFromNormalized('fr_FR'),
-            LocaleReference::noReference()
-        ]]);
-
         $this->normalize()->shouldReturn(['en_US', 'fr_FR']);
     }
 }
