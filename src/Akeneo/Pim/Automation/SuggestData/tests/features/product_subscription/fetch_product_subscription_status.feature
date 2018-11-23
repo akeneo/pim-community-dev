@@ -18,7 +18,7 @@ Feature: Fetch product subscription status
     Given the product "606449099812" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | asin        | asin           |
+      | asin          | asin           |
     When I retrieve the product subscription status of the product "606449099812"
     Then the product subscription status indicates that mapping is not filled
 
@@ -26,7 +26,7 @@ Feature: Fetch product subscription status
     Given the product "606449099812" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | upc         | pim_upc        |
+      | upc           | pim_upc        |
     When I retrieve the product subscription status of the product "606449099812"
     Then the product subscription status indicates that mapping is filled
 

@@ -16,8 +16,8 @@ Feature: Fetch products from Franklin
     And the product "606449099812" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | upc         | pim_upc        |
-      | asin        | asin           |
+      | upc           | pim_upc        |
+      | asin          | asin           |
     And the product "B00EYZY6AC" is subscribed to Franklin
     And the product "606449099812" is subscribed to Franklin
     And last fetch of subscribed products has been done yesterday
