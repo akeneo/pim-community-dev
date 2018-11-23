@@ -16,7 +16,6 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\Pro
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -36,6 +35,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     const FIELD_ENTITY_WITH_VALUES_IDENTIFIER = 'entity_with_values_identifier';
     const FIELD_AUTHOR = 'author';
 
+    const PRODUCT_IDENTIFIER_PREFIX = 'product_draft_';
+
     /**
      * {@inheritdoc}
      */
@@ -47,7 +48,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $data = [];
 
-        $data[self::FIELD_ID] = ProductProposalIndexer::PRODUCT_IDENTIFIER_PREFIX . (string) $productProposal->getId();
+        $data[self::FIELD_ID] = self::PRODUCT_IDENTIFIER_PREFIX. (string) $productProposal->getId();
 
         $product = $productProposal->getEntityWithValue();
         $data[self::FIELD_ENTITY_WITH_VALUES_IDENTIFIER] = $product->getIdentifier();
