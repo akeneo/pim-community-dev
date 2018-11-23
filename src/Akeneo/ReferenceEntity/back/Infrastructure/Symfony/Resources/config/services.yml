@@ -11,7 +11,7 @@ services:
             - { name: 'console.command'}
 
     akeneo_referenceentity.updater.adder.reference_entity_collection:
-        class: Akeneo\Pim\ReferenceEntity\Component\Updater\Adder\ReferenceEntityCollectionAdder
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Adder\ReferenceEntityCollectionAdder
         arguments:
         - '@pim_catalog.builder.entity_with_values'
         - ['akeneo_reference_entity_collection']

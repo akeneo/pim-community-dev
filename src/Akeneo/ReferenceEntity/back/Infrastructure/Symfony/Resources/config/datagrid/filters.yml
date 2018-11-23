@@ -1,6 +1,6 @@
 services:
     pimee_reference_entity.filter.reference_entity:
-        class: Akeneo\Pim\ReferenceEntity\Bundle\Datagrid\Filter\ProductValue\ReferenceEntityRecordFilter
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Filter\ProductValue\ReferenceEntityRecordFilter
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'

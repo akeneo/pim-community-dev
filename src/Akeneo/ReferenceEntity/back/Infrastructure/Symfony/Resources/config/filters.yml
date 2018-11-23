@@ -1,5 +1,5 @@
 parameters:
-    akeneo_reference_entity.query.elasticsearch.filter.reference_entity.class: Akeneo\Pim\ReferenceEntity\Component\Filter\ReferenceEntityFilter
+    akeneo_reference_entity.query.elasticsearch.filter.reference_entity.class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Filter\ReferenceEntityFilter
 
 services:
     pim.reference_entity.query.filter.reference_entity:

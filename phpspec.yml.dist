@@ -42,10 +42,10 @@ suites:
 
     ## Pim extension
     ReferenceEntityExtension:
-        namespace: Akeneo\Pim\ReferenceEntity
-        psr4_prefix: Akeneo\Pim\ReferenceEntity
-        spec_path: tests/back/Pim/ReferenceEntity
-        src_path: src/Akeneo/Pim/ReferenceEntity
+        namespace: Akeneo\Pim\Enrichment\ReferenceEntity
+        psr4_prefix: Akeneo\Pim\Enrichment\ReferenceEntity
+        spec_path: tests/back/Pim/Enrichment/ReferenceEntity
+        src_path: src/Akeneo/Pim/Enrichment/ReferenceEntity
         spec_prefix: Specification
 
     AssetExtension:
