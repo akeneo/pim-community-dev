@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\ReferenceEntity\Component\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -106,7 +105,6 @@ class ReferenceEntityCollectionValueFactory extends AbstractValueFactory
                 $collection[] = $record->getCode();
             }
         }
-
 
         return $collection;
     }

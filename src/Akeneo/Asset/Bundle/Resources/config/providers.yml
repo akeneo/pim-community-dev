@@ -14,6 +14,16 @@ services:
         tags:
             - { name: pim_enrich.provider.filter, priority: 90 }
 
+    pimee_product_asset.enrich.provider.filter.reference_entity_collection:
+        class: Akeneo\Asset\Bundle\Enrich\Provider\Filter\ReferenceEntityCollectionFilterProvider
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 90 }
+
+    pimee_product_asset.enrich.provider.filter.reference_entity:
+        class: Akeneo\Asset\Bundle\Enrich\Provider\Filter\ReferenceEntityCollectionFilterProvider
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 90 }
+
     pimee_product_asset.enrich.provider.empty_value.asset_collection:
         class: '%pimee_product_asset.enrich.provider.empty_value.asset_collection.class%'
         tags:

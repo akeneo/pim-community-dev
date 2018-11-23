@@ -10,12 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractAttributeAdder
 use Akeneo\Pim\ReferenceEntity\Component\Updater\Adder\ReferenceEntityCollectionAdder;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Image;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityCollectionAdderSpec extends ObjectBehavior
@@ -45,21 +40,7 @@ class ReferenceEntityCollectionAdderSpec extends ObjectBehavior
             'scope' => null,
         ];
 
-        $starckIdentifier = RecordIdentifier::create(
-            'designer',
-            'starck',
-            'fingerprint'
-        );
-        $originalData = [
-            Record::create(
-                $starckIdentifier,
-                ReferenceEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('starck'),
-                ['fr_Fr' => 'Philippe Starck'],
-                Image::createEmpty(),
-                ValueCollection::fromValues([])
-            ),
-        ];
+        $originalData = [RecordCode::fromString('starck')];
         $newData = ['dyson', 'arad'];
 
         $attribute->getCode()->willReturn('my_attribute_code');

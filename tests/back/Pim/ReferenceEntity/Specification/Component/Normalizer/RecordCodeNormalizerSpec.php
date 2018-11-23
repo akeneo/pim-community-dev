@@ -24,9 +24,10 @@ class RecordCodeNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_record_code_with_the_field_name(RecordCode $starckCode)
     {
+        $starckCode->__toString()->willReturn('starck');
         $starckCode->normalize()->willReturn('starck');
 
-        $this->normalize($starckCode, 'standard', ['field_name' => 'designer'])->shouldReturn('starck');
+        $this->normalize($starckCode, 'standard', ['field_name' => 'designer'])->shouldReturn(['designer' => 'starck']);
     }
 
     function it_supports_a_record_code(RecordCode $starck)

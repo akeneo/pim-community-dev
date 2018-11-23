@@ -74,9 +74,9 @@ class ReferenceEntityCollectionAdder extends AbstractAttributeAdder
         $referenceEntityCollectionValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $referenceEntityCollectionValue) {
-            foreach ($referenceEntityCollectionValue->getData() as $record) {
-                if (!in_array((string) $record->getCode(), $recordCodes)) {
-                    $recordCodes[] = (string) $record->getCode();
+            foreach ($referenceEntityCollectionValue->getData() as $recordCode) {
+                if (!in_array((string) $recordCode, $recordCodes)) {
+                    $recordCodes[] = (string) $recordCode;
                 }
             }
         }

@@ -8,3 +8,12 @@ extensions:
                 - IN
                 - EMPTY
                 - NOT EMPTY
+
+    akeneo-attribute-reference-entity-collection-filter:
+        module: pimee/filter/attribute/reference-entity-collection
+        config:
+            url: akeneo_reference_entities_record_index_rest
+            operators:
+                - IN
+                - EMPTY
+                - NOT EMPTY

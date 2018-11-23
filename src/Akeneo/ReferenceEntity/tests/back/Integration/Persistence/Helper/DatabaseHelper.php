@@ -115,9 +115,9 @@ SQL;
     private function insertUsers(): void
     {
         $resetUsers = <<<SQL
-        INSERT INTO `oro_user` (`id`, `ui_locale_id`, `username`, `email`, `name_prefix`, `first_name`, `middle_name`, `last_name`, `name_suffix`, `birthday`, `image`, `enabled`, `salt`, `password`, `confirmation_token`, `password_requested`, `last_login`, `login_count`, `createdAt`, `updatedAt`, `product_grid_filters`, `emailNotifications`, `phone`, `timezone`, `catalogLocale_id`, `catalogScope_id`, `defaultTree_id`)
+        INSERT INTO `oro_user` (`id`, `ui_locale_id`, `username`, `email`, `name_prefix`, `first_name`, `middle_name`, `last_name`, `name_suffix`, `birthday`, `image`, `enabled`, `salt`, `password`, `confirmation_token`, `password_requested`, `last_login`, `login_count`, `createdAt`, `updatedAt`, `product_grid_filters`, `emailNotifications`, `phone`, `timezone`, `catalogLocale_id`, `catalogScope_id`, `defaultTree_id`, properties)
         VALUES
-	        (1, 1, 'admin', 'admin@example.com', NULL, 'John', NULL, 'Doe', NULL, NULL, NULL, 1, '9zpd00l1ijkg0s44og4wck0cwoo00c8', '2S/jxiyQSBEsCWqvH3YOpelBwjfj2MhmDV8mFcrOD6pcGa9VzUlVuJ7R64fG68llfHpyjXJbvD9gnAzMDnsn8w==', NULL, NULL, NULL, 0, '2018-09-14 23:46:33', '2018-09-14 23:46:33', '[]', 0, NULL, 'UTC', 1, 1, 1, );
+	        (1, 1, 'admin', 'admin@example.com', NULL, 'John', NULL, 'Doe', NULL, NULL, NULL, 1, '9zpd00l1ijkg0s44og4wck0cwoo00c8', '2S/jxiyQSBEsCWqvH3YOpelBwjfj2MhmDV8mFcrOD6pcGa9VzUlVuJ7R64fG68llfHpyjXJbvD9gnAzMDnsn8w==', NULL, NULL, NULL, 0, '2018-09-14 23:46:33', '2018-09-14 23:46:33', '[]', 0, NULL, 'UTC', 1, 1, 1, '{"default_asset_tree":"asset_main_catalog","asset_delay_reminder":5,"proposals_to_review_notification":true,"proposals_state_notifications":true}');
 SQL;
         $this->sqlConnection->executeQuery($resetUsers);
     }

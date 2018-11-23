@@ -33,12 +33,14 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
     protected $findReferenceEntityDetails;
 
     /**
-     * @param array                              $referenceEntityTypes
+     * @param array $referenceEntityTypes
      * @param FindReferenceEntityDetailsInterface $findReferenceEntityDetails
      */
-    public function __construct(array $referenceEntityTypes, FindReferenceEntityDetailsInterface $findReferenceEntityDetails)
-    {
-        $this->referenceEntityTypes       = $referenceEntityTypes;
+    public function __construct(
+        array $referenceEntityTypes,
+        FindReferenceEntityDetailsInterface $findReferenceEntityDetails
+    ) {
+        $this->referenceEntityTypes = $referenceEntityTypes;
         $this->findReferenceEntityDetails = $findReferenceEntityDetails;
     }
 
@@ -58,7 +60,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawReferenceEntityIdentifier);
         } catch (\InvalidArgumentException $e) {
-            $this->addInvalidViolation($this->context, $constraint, $rawReferenceEntityIdentifier);
+            $this->addInvalidViolation($constraint, $rawReferenceEntityIdentifier);
 
             return;
         }
@@ -66,7 +68,7 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
         if (in_array($attribute->getType(), $this->referenceEntityTypes) &&
             null === ($this->findReferenceEntityDetails)($referenceEntityIdentifier)
         ) {
-            $this->addUnknownViolation($this->context, $constraint, $rawReferenceEntityIdentifier);
+            $this->addUnknownViolation($constraint, $rawReferenceEntityIdentifier);
         }
     }
 
@@ -78,11 +80,8 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function addInvalidViolation(
-        ExecutionContextInterface $context,
-        Constraint $constraint,
-        string $rawReferenceEntityIdentifier
-    ) {
+    private function addInvalidViolation(Constraint $constraint, string $rawReferenceEntityIdentifier)
+    {
         $this->context
             ->buildViolation($constraint->invalidMessage)
             ->setParameter('%reference_entity_identifier%', $rawReferenceEntityIdentifier)
@@ -90,11 +89,8 @@ class IsReferenceEntityConfiguredValidator extends ConstraintValidator
             ->addViolation();
     }
 
-    private function addUnknownViolation(
-        ExecutionContextInterface $context,
-        Constraint $constraint,
-        string $rawReferenceEntityIdentifier
-    ) {
+    private function addUnknownViolation(Constraint $constraint, string $rawReferenceEntityIdentifier)
+    {
         $this->context
             ->buildViolation($constraint->unknownMessage)
             ->setParameter('%reference_entity_identifier%', $rawReferenceEntityIdentifier)

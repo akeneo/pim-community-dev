@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordsByIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
@@ -73,10 +74,10 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             'brand_muuto_fingerprint',
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            null,
-            10,
             ChannelReference::noReference(),
-            []
+            LocaleIdentifierCollection::empty(),
+            10,
+            null
         ));
 
         $this->assertEquals([$lexonRecord, $alessiRecord], $recordsFound);
@@ -101,10 +102,10 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             'brand_muuto_fingerprint',
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            null,
-            10,
             ChannelReference::noReference(),
-            []
+            LocaleIdentifierCollection::empty(),
+            10,
+            null
         ));
 
         $this->assertEquals([], $recordsFound);
@@ -180,10 +181,10 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             $recordIdentifier->normalize(),
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            null,
-            10,
             ChannelReference::createfromNormalized('ecommerce'),
-            []
+            LocaleIdentifierCollection::empty(),
+            10,
+            null
         ));
 
         $this->assertEquals([$expectedConnectorRecord], $recordsFound);
@@ -272,13 +273,13 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
             $recordIdentifier->normalize(),
         ], RecordQuery::createPaginatedQueryUsingSearchAfter(
             ReferenceEntityIdentifier::fromString('brand'),
-            null,
-            10,
             ChannelReference::createfromNormalized('ecommerce'),
-            [
-                LocaleReference::createFromNormalized('en_US'),
-                LocaleReference::createFromNormalized('de_DE'),
-            ]
+            LocaleIdentifierCollection::fromNormalized([
+                'en_US',
+                'de_DE',
+            ]),
+            10,
+            null
         ));
 
         $this->assertEquals([$expectedConnectorRecord], $recordsFound);

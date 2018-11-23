@@ -13,7 +13,6 @@ namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 /**
@@ -46,8 +45,8 @@ class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceE
     public function isEqual(ValueInterface $value): bool
     {
         return $this->getData() === $value->getData() &&
-            $this->scope === $value->getScopeCode() &&
-            $this->locale === $value->getLocaleCode();
+            $this->scopeCode === $value->getScopeCode() &&
+            $this->localeCode === $value->getLocaleCode();
     }
 
     /**

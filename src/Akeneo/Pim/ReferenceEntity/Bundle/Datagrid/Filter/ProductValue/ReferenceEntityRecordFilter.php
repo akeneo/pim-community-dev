@@ -16,7 +16,9 @@ namespace Akeneo\Pim\ReferenceEntity\Bundle\Datagrid\Filter\ProductValue;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindExistingRecordCodes;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
@@ -33,6 +35,9 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
 
+    /** @var SqlFindExistingRecordCodes */
+    private $existingRecordCodesQuery;
+
     /**
      * Constructor
      *
@@ -48,11 +53,13 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
         AttributeOptionRepositoryInterface $attributeOptionRepository,
-        ReferenceEntityRepositoryInterface $referenceEntityRepository
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        SqlFindExistingRecordCodes $existingRecordCodesQuery
     ) {
         parent::__construct($factory, $util, $userContext, $attributeRepository, $attributeOptionRepository);
 
         $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->existingRecordCodesQuery = $existingRecordCodesQuery;
     }
 
     /**
@@ -81,5 +88,20 @@ class ReferenceEntityRecordFilter extends ChoiceFilter
         $metadata[FilterUtility::ENABLED_KEY] = false;
 
         return $metadata;
+    }
+
+    /**
+     * Filter options value to have only existing record codes
+     *
+     * @param string[] $optionCodes
+     *
+     * @return string[]
+     */
+    protected function filterOnlyExistingOptions($optionCodes): array
+    {
+        $attribute = $this->getAttribute();
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($attribute->getReferenceDataName());
+
+        return ($this->existingRecordCodesQuery)($referenceEntityIdentifier, $optionCodes);
     }
 }
