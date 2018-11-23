@@ -75,11 +75,9 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | asin        |                |
 
     Examples:
-      | attribute_type           |
-      | pim_catalog_text         |
-      | pim_catalog_simpleselect |
-      | pim_catalog_identifier   |
-      | pim_catalog_number       |
+      | attribute_type         |
+      | pim_catalog_text       |
+      | pim_catalog_identifier |
 
   Scenario Outline: Fails to map Franklin attributes with invalid PIM attribute types
     Given an empty identifiers mapping
@@ -104,6 +102,8 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | pim_catalog_boolean                |
       | pim_catalog_metric                 |
       | pim_catalog_date                   |
+      | pim_catalog_number                 |
+      | pim_catalog_simpleselect           |
       | akeneo_reference_entity_collection |
 
   Scenario: Fails to map Franklin attribute with unexisting PIM attribute
