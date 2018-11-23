@@ -1,7 +1,7 @@
 Feature: Connection to e-commerce platforms and marketplaces
-  In order to administrate the records of the reference entities enriched in the PIM, inside my e-commerce platform and marketplace backends
+  In order to administrate the records of the reference entities enriched in the PIM, inside my e-commerce platform and marketplace back offices
   As a connector
-  I want to know the name of all the reference entities that are in the PIM
+  I want to know the properties (label and image) of all the reference entities that are in the PIM
 
   @integration-back
   Scenario: Get a reference entity
