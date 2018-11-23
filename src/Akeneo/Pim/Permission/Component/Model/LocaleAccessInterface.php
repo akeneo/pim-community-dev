@@ -28,7 +28,7 @@ interface LocaleAccessInterface extends AccessInterface
     public function setLocale(LocaleInterface $locale);
 
     /**
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getLocale();
 

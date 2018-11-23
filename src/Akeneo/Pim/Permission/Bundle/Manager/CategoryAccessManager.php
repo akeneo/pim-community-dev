@@ -136,7 +136,7 @@ class CategoryAccessManager
                 break;
 
             default:
-                throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
+                throw new \LogicException(sprintf('Attribute "%s" is not supported.', $attribute));
                 break;
         }
 

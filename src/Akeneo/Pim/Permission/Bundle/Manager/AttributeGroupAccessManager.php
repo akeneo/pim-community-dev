@@ -68,7 +68,7 @@ class AttributeGroupAccessManager
         } elseif (Attributes::VIEW_ATTRIBUTES === $permission) {
             $grantedUserGroups = $this->getViewUserGroups($group);
         } else {
-            throw new \LogicException(sprintf('Attribute "%" is not supported.', $permission));
+            throw new \LogicException(sprintf('Attribute "%s" is not supported.', $permission));
         }
 
         foreach ($grantedUserGroups as $userGroup) {
