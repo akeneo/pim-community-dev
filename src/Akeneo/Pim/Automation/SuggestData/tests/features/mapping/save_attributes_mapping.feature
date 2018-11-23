@@ -7,7 +7,7 @@ Feature: Map the PIM attributes with Franklin attributes
   Scenario: Successfully save the attributes mapping
     Given the family "router"
     And the following attribute:
-      | code  | type             |
+      | code          | type             |
       | product_color | pim_catalog_text |
     And Franklin is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
