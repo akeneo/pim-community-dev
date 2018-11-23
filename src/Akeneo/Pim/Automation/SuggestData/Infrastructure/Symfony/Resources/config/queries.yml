@@ -8,3 +8,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\AttributeMapping\GetAttributeMappingStatusesFromFamilyCodesQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.select_family_codes_by_attribute_query:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\SelectFamilyCodesByAttributeQuery'
+        arguments:
+            - '@database_connection'
