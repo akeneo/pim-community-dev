@@ -27,4 +27,5 @@ export const getValueDenormalizer = (
   );
 };
 
-export default getValueDenormalizer(getDataDenormalizer, getAttributeDenormalizer);
+export default (normalizedValue: NormalizedValue): Value =>
+  getValueDenormalizer(getDataDenormalizer, getAttributeDenormalizer)(normalizedValue);

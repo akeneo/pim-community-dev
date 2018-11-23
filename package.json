@@ -22,7 +22,7 @@
     "tslint": "node ./node_modules/tslint/bin/tslint",
     "unit": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/unit/jest/unit.jest.js",
     "integration": "jest --maxWorkers=4 --config $npm_package_config_source/tests/front/integration/jest/integration.jest.js",
-    "acceptance": "NODE_PATH=./node_modules cucumber-js --parallel 2 --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js",
+    "acceptance": "NODE_PATH=./node_modules cucumber-js --parallel ${NODE_NUMBER_OF_THREAD:-2} --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js",
     "acceptance-report": "NODE_PATH=./node_modules yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node $npm_package_config_source/webpack/test/acceptance/generate-html-report.js"
   },
   "devDependencies": {

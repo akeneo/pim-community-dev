@@ -60,9 +60,19 @@ const normalizedWebsite = {
 };
 const website = denormalizeTextAttribute(normalizedWebsite);
 const descriptionData = denormalizeTextData('a nice description');
-const descriptionValue = createValue(description, denormalizeChannelReference('ecommerce'), denormalizeLocaleReference('en_US'), descriptionData);
+const descriptionValue = createValue(
+  description,
+  denormalizeChannelReference('ecommerce'),
+  denormalizeLocaleReference('en_US'),
+  descriptionData
+);
 const websiteData = denormalizeTextData('');
-const websiteValue = createValue(website, denormalizeChannelReference('ecommerce'), denormalizeLocaleReference('en_US'), websiteData);
+const websiteValue = createValue(
+  website,
+  denormalizeChannelReference('ecommerce'),
+  denormalizeLocaleReference('en_US'),
+  websiteData
+);
 const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 
 describe('akeneo > record > domain > model --- record', () => {
@@ -246,8 +256,14 @@ describe('akeneo > record > domain > model --- record', () => {
 
   test('I can get the completeness of the record', () => {
     expect(
-      createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile, valueCollection)
-        .getCompleteness(channelEcommerce, localeFr)
+      createRecord(
+        michelIdentifier,
+        designerIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        valueCollection
+      ).getCompleteness(channelEcommerce, localeFr)
     ).toEqual({complete: 1, required: 2});
   });
 });

@@ -16,6 +16,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\FindConnectorReferenceEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityQuery;
 
 class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenceEntityItemsInterface
 {
@@ -37,7 +38,7 @@ class InMemoryFindConnectorReferenceEntityItems implements FindConnectorReferenc
     /**
      * {@inheritdoc}
      */
-    public function __invoke($query): array
+    public function __invoke(ReferenceEntityQuery $query): array
     {
         $searchAfterCode = $query->getSearchAfterIdentifier();
         $referenceEntities = array_values(array_filter($this->results, function (ConnectorReferenceEntity $referenceEntity) use ($searchAfterCode): bool {

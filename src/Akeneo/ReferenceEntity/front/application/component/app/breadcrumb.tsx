@@ -42,6 +42,7 @@ const renderRedirect = (item: BreadcrumbItem, key: number, last: boolean) => {
 
         return false;
       }}
+      title={item.label}
       href={path}
       className={`AknBreadcrumb-item AknBreadcrumb-item--routable ${last ? 'AknBreadcrumb-item--final' : ''}`}
     >
@@ -52,7 +53,7 @@ const renderRedirect = (item: BreadcrumbItem, key: number, last: boolean) => {
 
 const renderDisplay = (item: BreadcrumbItem, key: number, last: boolean) => {
   return (
-    <span key={key} className={`AknBreadcrumb-item ${last ? 'AknBreadcrumb-item--final' : ''}`}>
+    <span key={key} className={`AknBreadcrumb-item ${last ? 'AknBreadcrumb-item--final' : ''}`} title={item.label}>
       {item.label}
     </span>
   );

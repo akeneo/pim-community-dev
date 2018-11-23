@@ -83,7 +83,7 @@ enum Field {
   Label,
 }
 
-interface OptionProps extends StateProps, DispatchProps {}
+interface ManageOptionsProps extends StateProps, DispatchProps {}
 
 const optionRow = ({
   code,
@@ -153,7 +153,7 @@ const optionRow = ({
                 }}
               />
             </div>
-            {!isLastRow ? getErrorsView(errors, `options${'' === code ? '' : `.${code}`}`) : null}
+            {!isLastRow ? getErrorsView(errors, `options.${index}`) : null}
           </div>
         </td>
         <td>
@@ -190,15 +190,17 @@ const optionRow = ({
           </div>
         </td>
         <td>
-          <Close
-            onClick={() => onOptionEditionDelete(index)}
-            onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
-              if (Key.Space === event.key) onOptionEditionDelete(index);
-            }}
-            color="#67768A"
-            className="AknOptionEditor-remove"
-            tabIndex={0}
-          />
+          {!isLastRow ? (
+            <Close
+              onClick={() => onOptionEditionDelete(index)}
+              onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
+                if (Key.Space === event.key) onOptionEditionDelete(index);
+              }}
+              color="#67768A"
+              className="AknOptionEditor-remove"
+              tabIndex={0}
+            />
+          ) : null}
         </td>
       </tr>
     </React.Fragment>
@@ -229,7 +231,7 @@ const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: Norm
   );
 };
 
-class ManageOptionsView extends React.Component<OptionProps> {
+class ManageOptionsView extends React.Component<ManageOptionsProps> {
   /**
    * We keep track of the references of the input in order to put the user in the
    * right input whenever he presses enter.
@@ -342,17 +344,20 @@ class ManageOptionsView extends React.Component<OptionProps> {
                           onLocaleChange={this.props.events.onLocaleChanged}
                         />
                       </div>
-                      {/* <table className="AknOptionEditor-headerTable" /> */}
                       <table className="AknOptionEditor-table">
                         <thead>
                           <tr>
-                            <td>
-                              <label className="">{__('pim_common.label')}</label>
-                            </td>
-                            <td>
-                              <label className="">{__('pim_reference_entity.attribute.edit.input.code')}</label>
-                            </td>
-                            <td />
+                            <th className="AknOptionEditor-headCell">
+                              <label className="AknOptionEditor-headCellLabel">{__('pim_common.label')}</label>
+                            </th>
+                            <th className="AknOptionEditor-headCell">
+                              <label className="AknOptionEditor-headCellLabel">
+                                {__('pim_reference_entity.attribute.edit.input.code')}
+                              </label>
+                            </th>
+                            <th className="AknOptionEditor-headCell">
+                              <label className="AknOptionEditor-headCellLabel" />
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -382,7 +387,7 @@ class ManageOptionsView extends React.Component<OptionProps> {
                       </table>
                     </div>
                     <div className="AknOptionEditor-helper">
-                      <div className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light">
+                      <div className="AknSubsection-title AknSubsection-title--light">
                         <span className="AknSubsection-titleLabel">
                           {__('pim_reference_entity.attribute.options.helper.title')}
                         </span>

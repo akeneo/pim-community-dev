@@ -150,6 +150,7 @@ export const editOptionsReducer = (state: EditOptionState = initEditOptionState(
         ...state,
         options: filteredOptions,
         isDirty: isDirty(state, filteredOptions),
+        currentOptionId: 1 <= id ? id - 1 : 0,
         numberOfLockedOptions:
           id <= state.numberOfLockedOptions - 1 ? state.numberOfLockedOptions - 1 : state.numberOfLockedOptions,
       };

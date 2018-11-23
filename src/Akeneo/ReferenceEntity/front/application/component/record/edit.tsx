@@ -137,7 +137,7 @@ class RecordEditView extends React.Component<EditProps> {
                     image={record.getImage()}
                     onImageChange={this.props.events.onImageUpdated}
                   />
-                  <div className="AknTitleContainer-mainContainer">
+                  <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
                     <div>
                       <div className="AknTitleContainer-line">
                         <div className="AknTitleContainer-breadcrumbs">
@@ -211,11 +211,11 @@ class RecordEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
-                    {0 !== completeness.getRequired() ? (
+                    {0 !== completeness.getRequiredAttributeCount() ? (
                       <div>
                         <div
                           className={`AknBadge AknBadge--big completeness-badge ${
-                            completeness.getRequired() === completeness.getComplete()
+                            completeness.getRequiredAttributeCount() === completeness.getCompleteAttributeCount()
                               ? 'AknBadge--success '
                               : 'AknBadge--warning'
                           }`}

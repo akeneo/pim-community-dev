@@ -43,28 +43,42 @@ const normalizedWebsite = {
 };
 const website = denormalizeTextAttribute(normalizedWebsite);
 const descriptionData = denormalizeTextData('a nice description');
-const descriptionValue = createValue(description, denormalizeChannelReference('ecommerce'), denormalizeLocaleReference('en_US'), descriptionData);
+const descriptionValue = createValue(
+  description,
+  denormalizeChannelReference('ecommerce'),
+  denormalizeLocaleReference('en_US'),
+  descriptionData
+);
 const websiteData = denormalizeTextData('');
-const websiteValue = createValue(website, denormalizeChannelReference('ecommerce'), denormalizeLocaleReference('en_US'), websiteData);
+const websiteValue = createValue(
+  website,
+  denormalizeChannelReference('ecommerce'),
+  denormalizeLocaleReference('en_US'),
+  websiteData
+);
 const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 const channelEcommerce = createChannelReference('ecommerce');
 const localeFr = createLocaleReference('en_US');
 
 describe('akeneo > record > domain > model --- completeness', () => {
   test('I can create from the normalized', () => {
-    const completeness = Completeness.createFromNormalized({complete: 0, required: 0})
-    expect(completeness.getComplete()).toBe(0);
-    expect(completeness.getRequired()).toBe(0);
+    const completeness = Completeness.createFromNormalized({complete: 0, required: 0});
+    expect(completeness.getCompleteAttributeCount()).toBe(0);
+    expect(completeness.getRequiredAttributeCount()).toBe(0);
   });
 
   test('I can create the completeness from the values', () => {
-    const completeness = Completeness.createFromValues(valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr));
-    expect(completeness.getComplete()).toBe(1);
-    expect(completeness.getRequired()).toBe(2);
+    const completeness = Completeness.createFromValues(
+      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr)
+    );
+    expect(completeness.getCompleteAttributeCount()).toBe(1);
+    expect(completeness.getRequiredAttributeCount()).toBe(2);
   });
 
   test('I can get the ratio', () => {
-    const completeness = Completeness.createFromValues(valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr));
+    const completeness = Completeness.createFromValues(
+      valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr)
+    );
     expect(completeness.getRatio()).toBe(50);
   });
 });

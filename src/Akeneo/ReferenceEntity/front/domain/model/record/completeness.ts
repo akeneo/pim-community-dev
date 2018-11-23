@@ -1,6 +1,6 @@
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 
-type NormalizedCompleteness = {complete: number, required: number};
+type NormalizedCompleteness = {complete: number; required: number};
 
 class Completeness {
   private constructor(private complete: number, private required: number) {
@@ -12,32 +12,35 @@ class Completeness {
   }
 
   public static createFromValues(values: Value[]) {
-    const normalizedCompleteness = values.reduce((completeness: NormalizedCompleteness, currentValue: Value) => {
-      const newCompleteness = {...completeness};
-      if (currentValue.isComplete()) {
-        newCompleteness.complete++;
-      }
+    const normalizedCompleteness = values.reduce(
+      (completeness: NormalizedCompleteness, currentValue: Value) => {
+        const newCompleteness = {...completeness};
+        if (currentValue.isComplete()) {
+          newCompleteness.complete++;
+        }
 
-      if (currentValue.isRequired()) {
-        newCompleteness.required++;
-      }
+        if (currentValue.isRequired()) {
+          newCompleteness.required++;
+        }
 
-      return newCompleteness;
-    }, {complete: 0, required: 0});
+        return newCompleteness;
+      },
+      {complete: 0, required: 0}
+    );
 
     return Completeness.createFromNormalized(normalizedCompleteness);
   }
 
-  public getComplete() {
+  public getCompleteAttributeCount() {
     return this.complete;
   }
 
-  public getRequired() {
+  public getRequiredAttributeCount() {
     return this.required;
   }
 
   public getRatio() {
-    return (100 * this.complete) / this.required;
+    return Math.round((100 * this.complete) / this.required);
   }
 }
 

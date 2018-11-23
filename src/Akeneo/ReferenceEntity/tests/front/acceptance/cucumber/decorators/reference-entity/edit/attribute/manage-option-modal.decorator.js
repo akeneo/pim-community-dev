@@ -10,8 +10,10 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   const newOptionCode = async code => {
     const newCodeInput = await nodeElement.$('tr[data-code=""] input[name="code"]');
+
     newCodeInput.type(code);
-    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 9000});
   };
 
   const newOptionLabel = async label => {
@@ -122,8 +124,10 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   const hasError = async code => {
     await page.waitForSelector(
-      `.AknOptionEditor-translator tr[data-code="${code}"] .AknFieldContainer-validationErrors`,
-      {timeout: 2000}
+      undefined === code
+        ? '.AknOptionEditor-translator tr .AknFieldContainer-validationErrors'
+        : `.AknOptionEditor-translator tr[data-code="${code}"] .AknFieldContainer-validationErrors`,
+      {timeout: 1000}
     );
 
     return true;
