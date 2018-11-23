@@ -10,7 +10,7 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | asin        | asin           |
+      | asin          | asin           |
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should be subscribed
 
@@ -19,7 +19,7 @@ Feature: Subscribe a product to Franklin
     And the product without family "product_without_family"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | upc         | pim_upc        |
+      | upc           | pim_upc        |
     When I subscribe the product "product_without_family" to Franklin
     Then the product "product_without_family" should not be subscribed
     And an invalid family message should be sent
@@ -29,7 +29,7 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | upc         | pim_upc        |
+      | upc           | pim_upc        |
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid values message should be sent
@@ -39,7 +39,7 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | asin        | asin           |
+      | asin          | asin           |
     And the product "B00EYZY6AC" is subscribed to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should be subscribed
@@ -49,7 +49,7 @@ Feature: Subscribe a product to Franklin
     Given the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | asin        | asin           |
+      | asin          | asin           |
     And Franklin is configured with an expired token
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
@@ -60,7 +60,7 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | asin        | asin           |
+      | asin          | asin           |
     And there are no more credits on my Franklin account
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
@@ -87,8 +87,8 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | mpn         | mpn            |
-      | brand       | pim_brand      |
+      | mpn           | mpn            |
+      | brand         | pim_brand      |
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid MPN and Brand message should be sent
@@ -100,7 +100,7 @@ Feature: Subscribe a product to Franklin
     And the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
-      | asin        | asin           |
+      | asin          | asin           |
     And Franklin server is down
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
