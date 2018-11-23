@@ -11,12 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -32,17 +29,12 @@ class DetachProductPostPublishSubscriber implements EventSubscriberInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var EntityManager */
-    protected $entityManager;
-
     /**
      * @param ObjectManager $objectManager
-     * @param EntityManager $entityManager
      */
-    public function __construct(ObjectManager $objectManager, EntityManager $entityManager)
+    public function __construct(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
-        $this->entityManager = $entityManager;
     }
 
     /**
