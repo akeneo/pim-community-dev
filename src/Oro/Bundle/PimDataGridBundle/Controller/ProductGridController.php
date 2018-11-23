@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ProductGridController
 {
-    /** @var ListAttributesQuery */
+    /** @var ListAttributesUseableInProductGrid */
     private $listAttributesQuery;
 
     /** @var ConfiguratorInterface */

@@ -668,6 +668,24 @@ services:
 
     # Services used by the products and product models' grid
     # here, products and product models should be gathered by the most top level product model
+    akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFactory'
+        arguments:
+        - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+        - '@pim_catalog.repository.attribute'
+        - '@pim_catalog.query.filter.product_and_product_model_registry'
+        - '@pim_catalog.query.sorter.registry'
+        - '@akeneo.pim.enrichment.factory.product_identifier_cursor'
+        - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory'
+        arguments:
+        - 'Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder'
+        - '@akeneo.pim.enrichment.query.product_query_builder_from_size_factory.with_product_identifier_cursor'
+        - '@pim_enrich.query.product_and_product_model_search_aggregator'
+
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class%'
         arguments:

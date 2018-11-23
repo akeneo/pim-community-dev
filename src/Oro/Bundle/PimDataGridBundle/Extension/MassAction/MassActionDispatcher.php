@@ -10,6 +10,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
@@ -95,8 +96,8 @@ class MassActionDispatcher
         $datagrid = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
 
-        if (!$datasource instanceof ProductDatasource) {
-            throw new \LogicException('getRawFilters is only implemented for ProductDatasource');
+        if (!$datasource instanceof ProductDatasource && !$datasource instanceof ProductAndProductModelDatasource) {
+            throw new \LogicException('getRawFilters is only implemented for ProductDatasource and ProductAndProductModelDatasource');
         }
 
         if (true === $parameters['inset']) {

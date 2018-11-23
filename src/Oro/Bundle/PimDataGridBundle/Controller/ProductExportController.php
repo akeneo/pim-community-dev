@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -155,7 +156,7 @@ class ProductExportController
      * Get the context (locale and scope) from the datagrid
      *
      * @param Request $request
-     * @throws \LogicException If datasource is not a ProductDatasource
+     * @throws \LogicException If datasource is not a ProductDatasource or a ProductAndProductModelDatasource
      *
      * @return string[] Returns [] || ['locale' => 'en_US', 'scope' => 'mobile']
      */
@@ -165,8 +166,8 @@ class ProductExportController
         $datagrid = $this->datagridManager->getDatagrid($datagridName);
         $dataSource = $datagrid->getDatasource();
 
-        if (!$dataSource instanceof ProductDatasource) {
-            throw new \LogicException('getContextParameters is only implemented for ProductDatasource');
+        if (!$dataSource instanceof ProductDatasource && !$dataSource instanceof ProductAndProductModelDatasource) {
+            throw new \LogicException('getContextParameters is only implemented for ProductDatasource and ProductAndProductModelDatasource');
         }
 
         $user = $this->getUser();

@@ -12,6 +12,13 @@ parameters:
     pim_datagrid.normalizer.family_variant.class: Oro\Bundle\PimDataGridBundle\Normalizer\FamilyVariantNormalizer
 
 services:
+    pim_datagrid.normalizer.product_and_product_model_rows:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\ProductAndProductModelRowNormalizer'
+        arguments:
+        - '@pim_enrich.normalizer.image'
+        tags:
+        - { name: pim_datagrid_serializer.normalizer }
+
     pim_datagrid.normalizer.product:
         class: '%pim_datagrid.normalizer.product.class%'
         arguments:

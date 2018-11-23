@@ -74,31 +74,19 @@ class CatalogConfigurationContext extends PimContext
 
         switch ($entity) {
             case 'product':
-                $tablesToPurge = [
-                    'pim_catalog_completeness_missing_attribute',
-                    'pim_catalog_completeness',
-                    'pim_catalog_association_product',
-                    'pim_catalog_category_product',
-                    'pim_catalog_group_product',
-                    'pim_catalog_product_unique_data',
-                    'pim_catalog_product',
-                ];
+                $db->exec('DELETE FROM pim_catalog_product');
+                $this->getContainer()->get('akeneo_elasticsearch.client.product')->resetIndex();
                 $this->getContainer()->get('akeneo_elasticsearch.client.product')->refreshIndex();
                 break;
             case 'product model':
-                $tablesToPurge = ['pim_catalog_category_product_model', 'pim_catalog_product_model'];
+                $db->exec('DELETE FROM pim_catalog_product_model');
+                $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
                 $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
                 break;
             default:
                 throw new \InvalidArgumentException(
                     sprintf('The purge of "%s" in the catalog has not been implemented yet.')
                 );
-        }
-
-        foreach ($tablesToPurge as $tableToPurge) {
-            $db->exec('SET FOREIGN_KEY_CHECKS = 0;');
-            $db->exec(sprintf('TRUNCATE TABLE %s', $tableToPurge));
-            $db->exec('SET FOREIGN_KEY_CHECKS = 1;');
         }
     }
 
