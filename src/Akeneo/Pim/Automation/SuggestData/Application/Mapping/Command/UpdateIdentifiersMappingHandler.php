@@ -32,9 +32,7 @@ class UpdateIdentifiersMappingHandler
     /** @var array */
     private const ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER = [
         AttributeTypes::TEXT,
-        AttributeTypes::OPTION_SIMPLE_SELECT,
         AttributeTypes::IDENTIFIER,
-        AttributeTypes::NUMBER,
     ];
 
     /** @var AttributeRepositoryInterface */

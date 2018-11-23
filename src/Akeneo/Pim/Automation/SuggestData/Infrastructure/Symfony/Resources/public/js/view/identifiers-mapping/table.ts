@@ -27,8 +27,6 @@ const template = require('pimee/template/identifiers-mapping/table');
 class EditIdentifiersMappingView extends BaseView {
   private static readonly VALID_MAPPING: string[] = [
     'pim_catalog_identifier',
-    'pim_catalog_number',
-    'pim_catalog_simpleselect',
     'pim_catalog_text',
   ];
 
