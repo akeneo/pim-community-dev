@@ -1,12 +1,4 @@
 services:
-    pimee_workflow.twig.extension.group_product_values:
-        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\GroupProductValuesExtension'
-        arguments:
-            - '@pimee_workflow.helper.filter_product_values'
-            - '@pimee_workflow.helper.sort_product_values'
-        tags:
-            - { name: twig.extension }
-
     pimee_workflow.twig.extension.product_draft_status_grid:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension'
         arguments:
