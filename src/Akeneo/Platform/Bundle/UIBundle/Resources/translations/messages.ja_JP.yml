@@ -57,6 +57,7 @@ pim_common:
   create: 作成
   permissions: パーミッション
   properties: プロパティ
+  name: 名前
 pim_enrich:
   acl:
     locale:

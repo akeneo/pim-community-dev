@@ -57,6 +57,7 @@ pim_common:
   create: Skapa
   permissions: Behörigheter
   properties: Egenskaper
+  name: Namn
 pim_enrich:
   acl:
     locale:

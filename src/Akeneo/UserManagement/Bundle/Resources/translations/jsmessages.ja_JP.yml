@@ -5,21 +5,56 @@ pim_title:
   oro_config_configuration_system: 設定
   pim_user_security_login: ログイン
   pim_user_reset_request: パスワードを忘れた
+confirmation:
+  remove:
+    user: このユーザーを削除してもよろしいですか?
 pim_user_management:
   entity:
     user:
+      properties:
+        username: ユーザー名
+        name_prefix: 尊称
+        first_name: 名
+        middle_name: ミドルネーム
+        last_name: 姓
+        name_suffix: 尊称
+        birthday: 誕生日
+        avatar: アバター
+        email: 電子メール
+        catalog_locale: カタログのロケール
+        catalog_scope: カタログのスコープ
+        default_tree: 既定のツリー
+        default_asset_tree: デフォルトのアセットツリー
+        product_grid_filters: 製品グリッドフィルター
+        current_password: 現在のパスワード
+        new_password: 新しいパスワード
+        new_password_repeat: 新しいパスワード (再入力)
+        password: パスワード
+        ui_locale: UI ロケール
+        timezone: タイムゾーン
+        default_product_grid_view: デフォルト製品のグリッドビュー
+        default_published_product_grid_view: デフォルト公開商品のグリッドビュー
+        proposals_to_review_notification: 新しい提案をレビューするとき
+        proposals_state_notifications: 提案が受け入れまたは拒否されたとき
       module:
         create:
           button: ユーザー作成
         delete:
           confirm: このユーザーを削除してもよろしいですか?
+        update:
+          additional: 追加
+          password: パスワード
+          interfaces: インタフェース
+          notifications: お知らせ
     role:
+      plural_label: 権限
       module:
         create:
           button: 権限を作成
         delete:
           confirm: このロールを削除してもよろしいですか？
     group:
+      plural_label: ユーザーグループ
       module:
         create:
           button: グループを作成

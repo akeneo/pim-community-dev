@@ -30,6 +30,7 @@ pim_analytics:
     avg_percentage_scopable_attributes_per_family: Pourcentage moyen d’attributs scopables par famille (%)
     avg_percentage_localizable_attributes_per_family: Pourcentage moyen d’attributs localisables par famille (%)
     avg_percentage_scopable_localizable_attributes_per_family: Pourcentage moyen d’attributs scopables et localisables par famille (%)
+    avg_number_attributes_per_family: Nombre moyen d'attributs par famille
     nb_locales: Nombre de locales
     nb_families: Nombre de familles
     nb_users: Nombre d’utilisateurs

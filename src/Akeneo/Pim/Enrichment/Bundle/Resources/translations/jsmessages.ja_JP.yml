@@ -79,7 +79,6 @@ pim_enrich.entity.product:
       remove_optional: 属性を削除
       locale_specific_unavailable: このロケールの特定のフィールドは、このロケールでは利用できません。
       locale_unavailable: このローカライズ可能なフィールドは {{ locale }} ローケルと{{ channel }} チャンネル で使用できません
-      media_upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
       add_attribute_option: 属性オプションの追加
       add_option: オプションを追加
     completeness:

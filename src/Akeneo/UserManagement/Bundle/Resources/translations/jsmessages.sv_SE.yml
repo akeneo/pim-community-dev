@@ -5,21 +5,56 @@ pim_title:
   oro_config_configuration_system: Inställningar
   pim_user_security_login: Logga in
   pim_user_reset_request: Glömt Lösenord
+confirmation:
+  remove:
+    user: Är du säker på att du vill ta bort denna användare?
 pim_user_management:
   entity:
     user:
+      properties:
+        username: Användarnanm
+        name_prefix: Namnprefix
+        first_name: Förnamn
+        middle_name: Mellannamn
+        last_name: Efternamn
+        name_suffix: Namnsuffix
+        birthday: Födelsedag
+        avatar: Profilbild
+        email: E-postadress
+        catalog_locale: Katalogspråk
+        catalog_scope: Område för katalog
+        default_tree: Standardträd
+        default_asset_tree: Standard träd för tillgångar
+        product_grid_filters: Filter för produktlista
+        current_password: Nuvarande lösenord
+        new_password: Nytt Lösenord
+        new_password_repeat: Nytt lösenord (upprepa)
+        password: Lösenord
+        ui_locale: Gränssnittspråk
+        timezone: Tidszon
+        default_product_grid_view: Standard produktlistningsvy
+        default_published_product_grid_view: Standard produkt publicerad i listan
+        proposals_to_review_notification: När nya förslag att granska
+        proposals_state_notifications: När förslaget godkänns eller underkänns
       module:
         create:
           button: Skapa användare
         delete:
           confirm: Är du säker på att du vill ta bort denna användare?
+        update:
+          additional: Ytterligare
+          password: Lösenord
+          interfaces: Gränssnitt
+          notifications: Notiser
     role:
+      plural_label: Roller
       module:
         create:
           button: Skapa roll
         delete:
           confirm: Är du säker på att du vill ta bort denna roll?
     group:
+      plural_label: Användargrupper
       module:
         create:
           button: Skapa grupp

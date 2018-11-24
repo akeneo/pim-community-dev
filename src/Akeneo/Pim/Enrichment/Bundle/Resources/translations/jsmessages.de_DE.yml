@@ -75,7 +75,6 @@ pim_enrich.entity.product:
       remove_optional: Dieses Attribut löschen
       locale_specific_unavailable: Dieses vom Gebietsschema abhängige Feld ist in diesem Gebietsschema nicht verfügbar
       locale_unavailable: Dieses lokalisierbare Feld ist für das Gebietsschema '{{ locale }}' und den Ausgabekanal '{{ channel }}' nicht verfügbar
-      media_upload: Upload per Drag & Drop oder hier klicken
       add_attribute_option: Attributoption hinzufügen
       add_option: Auswahlmöglichkeit hinzufügen
     completeness:

@@ -77,7 +77,6 @@ pim_enrich.entity.product:
       remove_optional: Ta bort detta attributet
       locale_specific_unavailable: Detta lokaliserbara fältet är inte tillgängligt för detta språket
       locale_unavailable: Detta lokaliserbara fält är inte tillgänglig för språket '{{ locale }}' och kanal '{{ channel }}'
-      media_upload: Dra och släpp för att ladda upp eller klicka här
       add_attribute_option: Lägg till attributalternativ
       add_option: Lägg till alternativ
     completeness:

@@ -133,6 +133,7 @@ pim_common:
   label_translations: Etikettsöversättningar
   less_than: Mindre än
   loading: Laddar...
+  media_upload: Dra och släpp för att ladda upp eller klicka här
   more_than: Mer än
   next: Nästa
   "no": "Nej"

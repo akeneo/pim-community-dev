@@ -80,7 +80,6 @@ pim_enrich.entity.product:
       remove_optional: Fjern denne attribut
       locale_specific_unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
       locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for locale '{{ locale }}' og '{{ channel }}'-kanal
-      media_upload: Træk og slip for at uploade eller klik her
       add_attribute_option: Tilføj attribut tilvalg
       add_option: Tilføje en mulighed
     completeness:

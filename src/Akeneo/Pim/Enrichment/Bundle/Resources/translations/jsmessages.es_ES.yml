@@ -80,7 +80,6 @@ pim_enrich.entity.product:
       remove_optional: Quitar este atributo
       locale_specific_unavailable: Este campo específico de local no está disponible en este local
       locale_unavailable: Este campo traducible no está disponible para el local '{{ locale }}' y el canal '{{ channel }}'
-      media_upload: Arrastrar y soltar para cargar o haga clic aquí
       to_fill_count: "{1}1 atributo requerido faltante|]1, Inf[{{ count }} atributos requeridos faltantes"
       add_attribute_option: Agregar opción de atributo
       add_option: Agregar una opción

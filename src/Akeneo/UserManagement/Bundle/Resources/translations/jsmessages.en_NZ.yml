@@ -3,11 +3,7 @@ pim_title:
   pim_user_role_index: Roles
   pim_user_group_index: User groups
   oro_config_configuration_system: Configuration
-  pim_user_view: 'User {{ username }} | View'
-  pim_user_update: 'User {{ username }} | Edit'
   pim_user_create: 'Users | Create'
-  pim_user_profile_view: '{{ username }}'
-  pim_user_profile_update: '{{ username }} | Edit'
   pim_user_role_update: 'Role {{ role }} | Edit'
   pim_user_role_create: 'Role | Create'
   pim_user_security_login: Login
@@ -21,6 +17,8 @@ pim_user_management:
     user:
       page_title:
         index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
+      properties:
+        phone: Phone
       module:
         create:
           button: Create user

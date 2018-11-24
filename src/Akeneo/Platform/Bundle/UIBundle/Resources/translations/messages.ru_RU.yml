@@ -50,6 +50,7 @@ pim_common:
   create: Создать
   permissions: Права доступа
   properties: Свойства
+  name: Имя
 pim_enrich:
   acl:
     locale:

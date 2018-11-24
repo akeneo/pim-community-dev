@@ -3,24 +3,59 @@ pim_title:
   pim_user_role_index: Rollen
   pim_user_group_index: Benutzergruppen
   oro_config_configuration_system: Konfiguration
-  pim_user_profile_view: '{{ username }}'
   pim_user_security_login: Anmelden
   pim_user_reset_request: Passwort vergessen
+confirmation:
+  remove:
+    user: Möchten Sie diesen Benutzer wirklich löschen?
 pim_user_management:
   entity:
     user:
+      properties:
+        username: Benutzername
+        name_prefix: Namenspräfix
+        first_name: Vorname
+        middle_name: Zweiter Vorname
+        last_name: Nachname
+        name_suffix: Namenssuffix
+        phone: Telefon
+        birthday: Geburtstag
+        avatar: Benutzerbild
+        email: E-Mail
+        catalog_locale: Katalog-Gebietsschema
+        catalog_scope: Standard-Gültigkeitsbereich
+        default_tree: Standardkategoriebaum Produkte
+        default_asset_tree: Standardkategoriebaum Assets
+        product_grid_filters: Filter Produktliste
+        current_password: Aktuelles Passwort
+        new_password: Neues Passwort
+        new_password_repeat: Neues Passwort (Wiederholung)
+        password: Passwort
+        ui_locale: UI-Gebietsschema
+        timezone: Zeitzone
+        default_product_grid_view: Standardansicht Produktliste
+        default_published_product_grid_view: Standardansicht Produktliste veröffentlichte Produkte
+        proposals_to_review_notification: Wenn ein neuer Vorschlag zu überprüfen ist
+        proposals_state_notifications: Wenn der Vorschlag angenommen oder abgelehnt wird
       module:
         create:
           button: Benutzer anlegen
         delete:
           confirm: Möchten Sie diesen Benutzer wirklich löschen?
+        update:
+          additional: Ergänzend
+          password: Passwort
+          interfaces: Benutzeroberfläche
+          notifications: Benachrichtigungen
     role:
+      plural_label: Rollen
       module:
         create:
           button: Rolle anlegen
         delete:
           confirm: Möchten Sie diese Rolle wirklich löschen?
     group:
+      plural_label: Benutzergruppen
       module:
         create:
           button: Gruppe anlegen

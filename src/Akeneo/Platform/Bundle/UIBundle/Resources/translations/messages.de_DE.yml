@@ -57,6 +57,7 @@ pim_common:
   create: Anlegen
   permissions: Berechtigungen
   properties: Eigenschaften
+  name: Name
 pim_enrich:
   acl:
     locale:

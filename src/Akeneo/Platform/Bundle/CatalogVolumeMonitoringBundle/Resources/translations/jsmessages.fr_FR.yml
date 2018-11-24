@@ -27,3 +27,5 @@ pim_catalog_volume:
     count_variant_products: Produits variants
     count_product_models: Modèles de produits
     warning: Wow ! Vous avez atteint des records sur cet axe ! N’hésitez pas à nous contacter si vous avez besoin d’aide avec ce type de volumétrie.
+  mean: 'Moyenne :'
+  max: 'Max :'

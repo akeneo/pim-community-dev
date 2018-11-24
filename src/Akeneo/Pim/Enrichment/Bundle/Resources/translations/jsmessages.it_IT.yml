@@ -82,7 +82,6 @@ pim_enrich.entity.product:
       remove_optional: Rimuovere l'attributo
       locale_specific_unavailable: Questo specifico campo relativo alle impostazioni internazionali non è disponibile in questa impostazione internazionale
       locale_unavailable: Questo campo localizzabile non è disponibile per l'impostazione internazionale '{{ locale }}' e per il canale '{{ channel }}'
-      media_upload: Drag and drop per caricare un file o fai click qui
       to_fill_count: "{1}1 attributo obbligatorio mancante|]1, Inf[{{ count }} attributi obbligatori mancanti"
       add_attribute_option: Aggiungi l'opzione dell'attributo
       add_option: Aggiungi un'opzione
