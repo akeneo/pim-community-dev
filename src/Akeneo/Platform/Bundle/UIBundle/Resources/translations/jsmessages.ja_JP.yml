@@ -135,6 +135,7 @@ pim_common:
   label_translations: ラベルの翻訳
   less_than: 以下
   loading: 読み込んでいます.
+  media_upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
   more_than: 以上
   next: 次
   "no": "いいえ"

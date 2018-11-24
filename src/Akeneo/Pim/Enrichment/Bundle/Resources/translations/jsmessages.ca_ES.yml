@@ -82,7 +82,6 @@ pim_enrich.entity.product:
       remove_optional: Eliminar aquest atribut
       locale_specific_unavailable: Aquest camp específic no està disponible per aquesta configuració regional
       locale_unavailable: Aquest camp regionalitzable no està disponible per la configuració regional '{{ locale }}' i el canal '{{ channel }}'
-      media_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       to_fill_count: "{1}1 atribut requerit falta|]1, Inf[{{ count }} atributs requerits falten"
       add_attribute_option: Afegir opció d'atribut
       add_option: Afegir una opció

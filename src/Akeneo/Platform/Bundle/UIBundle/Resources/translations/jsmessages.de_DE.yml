@@ -135,6 +135,7 @@ pim_common:
   label_translations: Feldbezeichner-Übersetzungen
   less_than: Weniger als
   loading: Lädt...
+  media_upload: Upload per Drag & Drop oder hier klicken
   more_than: Mehr als
   next: Vor
   "no": "Nein"

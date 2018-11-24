@@ -80,7 +80,6 @@ pim_enrich.entity.product:
       remove_optional: Poista tämä attribuutti
       locale_specific_unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
-      media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       add_attribute_option: Lisää määritteen vaihtoehto
       add_option: Lisää vaihtoehto
     completeness:

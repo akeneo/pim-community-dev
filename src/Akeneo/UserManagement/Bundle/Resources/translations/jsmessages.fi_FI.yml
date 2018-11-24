@@ -5,21 +5,56 @@ pim_title:
   oro_config_configuration_system: Kokoonpano
   pim_user_security_login: Kirjaudu sisään
   pim_user_reset_request: Unohdin salasanani
+confirmation:
+  remove:
+    user: Haluatko varmasti poistaa tämän käyttäjän?
 pim_user_management:
   entity:
     user:
+      properties:
+        username: Käyttäjänimi
+        name_prefix: Nimen etuliite
+        first_name: Etunimi
+        middle_name: Toinen nimi
+        last_name: Sukunimi
+        name_suffix: Nimen liite
+        birthday: Syntymäpäivä
+        avatar: Avatar
+        email: Sähköpostiosoite
+        catalog_locale: Katalogin lokaatio
+        catalog_scope: Katalogin laajuus
+        default_tree: Oletusarvoinen puu
+        default_asset_tree: Omaisuuden oletuspuu
+        product_grid_filters: Tuoteruudukon suodattimet
+        current_password: Nykyinen salasana
+        new_password: Uusi salasana
+        new_password_repeat: Uusi salasana (toista)
+        password: Salasana
+        ui_locale: Käyttöliittymän kieli
+        timezone: Aikavyöhyke
+        default_product_grid_view: Tuoteruudukon oletusnäkymä
+        default_published_product_grid_view: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
+        proposals_to_review_notification: Milloin uusi ehdotus on käytävissä läpi
+        proposals_state_notifications: Kun uusi ehdotus on hyväksytty tai hylätty
       module:
         create:
           button: Luo käyttäjä
         delete:
           confirm: Haluatko varmasti poistaa tämän käyttäjän?
+        update:
+          additional: Lisää
+          password: Salasana
+          interfaces: Rajapinnat
+          notifications: Ilmoitukset
     role:
+      plural_label: Roolit
       module:
         create:
           button: Luo rooli
         delete:
           confirm: Oletko varma, että haluat poistaa tämän roolin?
     group:
+      plural_label: Käyttäjäryhmät
       module:
         create:
           button: Luo ryhmä

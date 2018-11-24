@@ -140,6 +140,7 @@ pim_common:
   label_translations: Traduction des libellés
   less_than: Moins de
   loading: Chargement en cours...
+  media_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
   more_than: Plus de
   next: Suivant
   "no": "Non"

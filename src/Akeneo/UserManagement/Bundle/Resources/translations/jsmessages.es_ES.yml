@@ -3,11 +3,7 @@ pim_title:
   pim_user_role_index: Roles
   pim_user_group_index: Grupos de Usuario
   oro_config_configuration_system: Configuración
-  pim_user_view: 'Usuario {{ username }} | Ver'
-  pim_user_update: 'Usuario {{ username }} | Editar'
   pim_user_create: 'Usuarios | Crear'
-  pim_user_profile_view: '{{ username }}'
-  pim_user_profile_update: '{{ username }} | Editar'
   pim_user_role_update: 'Rol {{ role }} | Editar'
   pim_user_role_create: 'Rol | Crear'
   pim_user_security_login: Ingresar
@@ -16,17 +12,52 @@ pim_title:
   pim_user_reset_check_email: Reiniciar contraseña | Verificar correo electrónico
   pim_user_group_create: 'Grupos | Crear'
   pim_user_group_update: 'Grupo {{ group }} | Editar'
+confirmation:
+  remove:
+    user: '¿Seguro que desea eliminar este usuario?'
 pim_user_management:
   entity:
     user:
       page_title:
         index: "]-Inf, 1] {{ count }} usuario|]1, Inf [{{ count }} usuarios"
+      properties:
+        username: Nombre de usuario
+        name_prefix: Prefijo del nombre
+        first_name: Primer nombre
+        middle_name: Segundo nombre
+        last_name: Apellidos
+        name_suffix: Sufijo del nombre
+        phone: Teléfono
+        birthday: Cumpleaños
+        avatar: Avatar
+        email: Correo Electrónico
+        catalog_locale: Local de catálogo
+        catalog_scope: Ambito del Catálogo
+        default_tree: Árbol por defecto
+        default_asset_tree: Árbol por defecto de recursos
+        product_grid_filters: Filtros de cuadrícula de productos
+        current_password: Contraseña actual
+        new_password: Nueva contraseña
+        new_password_repeat: Nueva contraseña (repetir)
+        password: Contraseña
+        ui_locale: Idioma de la interfaz
+        timezone: Zona horaria
+        default_product_grid_view: Vista de cuadrícula de producto automática
+        default_published_product_grid_view: Vista por defecto de cuadrícula de productos publicados
+        proposals_to_review_notification: Si hay nuevas propuestas a revisar
+        proposals_state_notifications: Cuando una nueva propuesta es aceptada o rachazada
       module:
         create:
           button: Crear usuario
         delete:
           confirm: '¿Seguro que desea eliminar este usuario?'
+        update:
+          additional: Adicional
+          password: Contraseña
+          interfaces: Interfaces
+          notifications: Notificaciones
     role:
+      plural_label: Roles
       page_title:
         index: "]-Inf, 1] {{ count }} rol|]1, Inf [{{ count }} roles"
       module:
@@ -35,6 +66,7 @@ pim_user_management:
         delete:
           confirm: '¿Está seguro que desea eliminar este rol?'
     group:
+      plural_label: Grupos de Usuario
       page_title:
         index: "]-Inf, 1] {{ count }} grupo|]1, Inf [{{ count }} grupos"
       module:

@@ -135,6 +135,7 @@ pim_common:
   label_translations: Etiket oversættelser
   less_than: Mindre end
   loading: Indlæser...
+  media_upload: Træk og slip for at uploade eller klik her
   more_than: Mere end
   next: Næste
   "no": "Nej"

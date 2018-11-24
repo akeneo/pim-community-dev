@@ -127,6 +127,7 @@ pim_common:
   label_translations: Переводы меток
   less_than: Менее чем
   loading: Загрузка...
+  media_upload: Перетащите чтобы загрузить, или нажмите здесь
   more_than: Более чем
   next: Следующая
   "no": "Нет"

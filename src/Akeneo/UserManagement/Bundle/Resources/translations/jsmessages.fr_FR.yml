@@ -3,11 +3,8 @@ pim_title:
   pim_user_role_index: Rôles
   pim_user_group_index: Groupes d'utilisateurs
   oro_config_configuration_system: Configuration
-  pim_user_view: 'Utilisateur {{ username }} | Visualisation'
-  pim_user_update: 'Utilisateur {{ username }} | Édition'
+  pim_user_edit: 'Utilisateur {{ username }} | Édition'
   pim_user_create: 'Utilisateurs | Création'
-  pim_user_profile_view: '{{ username }}'
-  pim_user_profile_update: '{{ username }} | Édition'
   pim_user_role_update: 'Rôle {{ role }} | Édition'
   pim_user_role_create: 'Rôles | Création'
   pim_user_security_login: Connexion
@@ -16,19 +13,67 @@ pim_title:
   pim_user_reset_check_email: Réinitialisation de mot de passe | Email de vérification
   pim_user_group_create: 'Groupes | Création'
   pim_user_group_update: 'Groupes {{ group }} | Édition'
+confirmation:
+  remove:
+    user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: L'utilisateur n'a pas pu être supprimé
+          success: L'utilisateur a été supprimé
 pim_user_management:
   entity:
     user:
+      flash:
+        update:
+          success: L'utilisateur a bien été mis à jour.
+          fail: L'utilisateur n'a pas pu être mis à jour.
+          fields_not_ready: "L'utilisateur ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+        create:
+          success: L’utilisateur a été créé avec succès.
       page_title:
         index: "]-Inf, 1]{{ count }} utilisateur|]1, Inf[{{ count }} utilisateurs"
+      properties:
+        username: Nom d'utilisateur
+        name_prefix: Particule
+        first_name: Prénom
+        middle_name: Deuxième prénom
+        last_name: Nom
+        name_suffix: Suffixe de nom
+        phone: Téléphone
+        birthday: Date d’anniversaire
+        avatar: Photo
+        email: Email
+        catalog_locale: Locale du catalogue
+        catalog_scope: Portée du catalogue
+        default_tree: Arborescence par défaut
+        default_asset_tree: Arborescence par défaut des ressources
+        product_grid_filters: Filtres de la grille des produits
+        current_password: Mot de passe actuel
+        new_password: Nouveau mot de passe
+        new_password_repeat: Nouveau mot de passe (répéter)
+        password: Mot de passe
+        ui_locale: Langue de l'interface
+        timezone: Fuseau horaire
+        default_product_grid_view: Vue par défaut de la grille des produits
+        default_published_product_grid_view: Vue par défaut de la grille des produits publiés
+        proposals_to_review_notification: Lors d'une nouvelle proposition à examiner
+        proposals_state_notifications: Lorsqu'une proposition est acceptée ou rejetée
       module:
         create:
           button: Créer un utilisateur
         delete:
           confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
-      properties:
-        ui_locale: "Langue de l'interface"
+        update:
+          additional: Supplémentaire
+          groups_and_roles: Groupes et rôles
+          password: Mot de passe
+          interfaces: Interfaces
+          notifications: Notifications
     role:
+      plural_label: Rôles
       page_title:
         index: "]-Inf, 1]{{ count }} rôle|]1, Inf[{{ count }} rôles"
       module:
@@ -37,6 +82,7 @@ pim_user_management:
         delete:
           confirm: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
     group:
+      plural_label: Groupes d'utilisateurs
       page_title:
         index: "]-Inf, 1]{{ count }} groupe|]1, Inf[{{ count }} groupes"
       module:

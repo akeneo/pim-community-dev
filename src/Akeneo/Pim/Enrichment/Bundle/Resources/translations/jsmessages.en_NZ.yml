@@ -82,7 +82,6 @@ pim_enrich.entity.product:
       remove_optional: Remove this attribute
       locale_specific_unavailable: This locale specific field is not available in this locale
       locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
-      media_upload: Drag and drop to upload or click here
       to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
       add_attribute_option: Add attribute option
       add_option: Add an option

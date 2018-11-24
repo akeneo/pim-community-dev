@@ -75,7 +75,6 @@ pim_enrich.entity.product:
       remove_optional: Удалить этот атрибут
       locale_specific_unavailable: Это локализуемое поле не доступно для этого языка
       locale_unavailable: Это локализуемое поле не доступно для языка «{{ locale }}» и канала «{{ channel }}»
-      media_upload: Перетащите чтобы загрузить, или нажмите здесь
       add_attribute_option: Добавить элемента списка для атрибута
       add_option: Добавить новый элемента списка
     completeness:

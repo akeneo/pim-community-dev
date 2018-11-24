@@ -137,6 +137,7 @@ pim_common:
   label_translations: Traducciones de etiqueta
   less_than: Menor que
   loading: Cargando...
+  media_upload: Arrastrar y soltar para cargar o haga clic aquí
   more_than: Mayor que
   next: Siguiente
   "no": "No"
