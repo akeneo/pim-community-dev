@@ -666,7 +666,7 @@ pim_enrich:
             code: Kod
             date_max: Max datum
             date_min: Min datum
-            decimals_allowed: Decimala värden tillåtna
+            decimals_allowed: Tillåt decimala värden
             default_metric_unit: Metrisk standardenhet
             group: Attributgrupp
             is_locale_specific: Specifik språk
@@ -674,7 +674,7 @@ pim_enrich:
             max_file_size: Max filstorlek (MB)
             metric_family: Metrisk familj
             minimum_input_length: Minsta längd för autokomplettering
-            negative_allowed: Negativa värden som är tillåtna
+            negative_allowed: Tillåt negativa värden
             number_max: Max antal
             number_min: Min antal
             reference_data_name: Referens datatyp

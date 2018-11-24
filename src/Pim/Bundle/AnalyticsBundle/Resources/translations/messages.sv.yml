@@ -29,6 +29,7 @@ pim_analytics:
     nb_locales: Antal språk
     nb_families: Antal familjer
     nb_users: Antal användare
+    nb_categories: Antalet kategorier
     pim_storage_version: Lagringsmodell
     os_version: OS version
     php_version: PHP-version
