@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Sql;
 
 
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Doctrine\DBAL\Connection;
 use LRUCache\LRUCache;
 
 class LruAttributeRepository
@@ -24,7 +21,7 @@ class LruAttributeRepository
         $this->cache = new LRUCache($capacity);
     }
 
-    public function findOneByIdentifier(string $code): ?AttributeInterface
+    public function findOneByIdentifier(string $code): ?Attribute
     {
         $attribute = $this->cache->get($code);
         if (null !== $attribute) {
@@ -38,6 +35,28 @@ class LruAttributeRepository
         }
 
         return $attribute;
+    }
+
+    public function findSeveralByIdentifiers(array $codes): array
+    {
+        $cachedAttributes = [];
+        $uncachedAttributeCodes = [];
+        foreach ($codes as $code) {
+            $attribute = $this->cache->get($code);
+            if (null !== $attribute) {
+                $cachedAttributes[$code] = $attribute;
+            } else {
+                $uncachedAttributeCodes[] = $code;
+            }
+
+        }
+
+        $uncachedAttributes = $this->attributeRepository->findSeveralByIdentifiers($uncachedAttributeCodes);
+        foreach ($uncachedAttributes as $code => $attribute) {
+            $this->cache->put($code, $attribute);
+        }
+
+        return array_merge($cachedAttributes, $uncachedAttributes);
     }
 
 }

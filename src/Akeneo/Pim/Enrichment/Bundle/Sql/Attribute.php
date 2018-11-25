@@ -117,8 +117,8 @@ final class Attribute
      * @param int             $maxCharacters
      * @param string          $validationRule
      * @param string          $validationRegexp
-     * @param float           $numberMin
-     * @param float           $numberMax
+     * @param int           $numberMin
+     * @param int           $numberMax
      * @param bool            $decimalsAllowed
      * @param bool            $negativeAllowed
      * @param \Datetime       $dateMin
@@ -132,31 +132,31 @@ final class Attribute
     public function __construct(
         int $id,
         string $code,
-        string $type,
-        string $backendType,
-        bool $required,
-        bool $unique,
-        bool $localizable,
-        bool $scopable,
+        ?string $type,
+        ?string $backendType,
+        ?bool $required,
+        ?bool $unique,
+        ?bool $localizable,
+        ?bool $scopable,
         ArrayCollection $properties,
         //array $options,
-        string $groupCode,
-        bool $useableAsGridFilter,
+        ?string $groupCode,
+        ?bool $useableAsGridFilter,
         ArrayCollection $availableLocales,
         int $maxCharacters,
-        string $validationRule,
-        string $validationRegexp,
-        float $numberMin,
-        float $numberMax,
-        bool $decimalsAllowed,
-        bool $negativeAllowed,
-        \Datetime $dateMin,
-        \Datetime $dateMax,
-        string $metricFamily,
-        string $defaultMetricUnit,
-        float $maxFileSize,
+        ?string $validationRule,
+        ?string $validationRegexp,
+        ?int $numberMin,
+        ?int $numberMax,
+        ?bool $decimalsAllowed,
+        ?bool $negativeAllowed,
+        ?\Datetime $dateMin,
+        ?\Datetime $dateMax,
+        ?string $metricFamily,
+        ?string $defaultMetricUnit,
+        ?int $maxFileSize,
         array $allowedExtensions,
-        int $minimumInputLength
+        ?int $minimumInputLength
     ) {
         $this->id = $id;
         $this->code = $code;
@@ -186,21 +186,6 @@ final class Attribute
         $this->allowedExtensions = $allowedExtensions;
         $this->minimumInputLength = $minimumInputLength;
     }
-
-
-    //public function __construct()
-    //{
-    //    $this->options = new ArrayCollection();
-    //    $this->required = false;
-    //    $this->unique = false;
-    //    $this->localizable = false;
-    //    $this->scopable = false;
-    //    $this->useableAsGridFilter = false;
-    //    $this->availableLocales = new ArrayCollection();
-    //    $this->families = new ArrayCollection();
-    //    $this->validationRule = null;
-    //    $this->properties = [];
-    //}
 
     /**
      * {@inheritdoc}
@@ -262,7 +247,7 @@ final class Attribute
 
     public function getGroupCode()
     {
-        return $this->group;
+        return $this->groupCode;
     }
 
     public function isUseableAsGridFilter()
