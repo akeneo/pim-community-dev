@@ -7,6 +7,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
 
 class TestCacheLruCommand extends ContainerAwareCommand
 {
@@ -30,11 +31,14 @@ class TestCacheLruCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $batchSize = 100;
+        $cacheSize = 100;
 
-        $this->doctrineWithoutCache($batchSize);
+        //$this->doctrineWithoutCache($batchSize);
         $this->doctrineWithCache($batchSize);
-        $this->sqlWithoutCache($batchSize);
-        $this->sqlWithLruCache($batchSize, 20);
+        //$this->sqlWithoutCache($batchSize);
+        $this->sqlWithLruCache($batchSize, $cacheSize);
+        $this->sqlWithoutCacheBatchCall($batchSize);
+        $this->sqlWithLruCacheBatchCall($batchSize, $cacheSize);
     }
 
     private function doctrineWithoutCache(int $batchSize)
@@ -65,6 +69,20 @@ class TestCacheLruCommand extends ContainerAwareCommand
         echo "Sql with LRU cache $elapsedTime" . PHP_EOL;
     }
 
+    private function sqlWithoutCacheBatchCall(int $batchSize)
+    {
+        $repository =  $this->getContainer()->get('pim_catalog.repository.sql_attribute');
+        $elapsedTime = $this->benchmarkBatch($batchSize, $repository);
+        echo "Sql without cache in batch call $elapsedTime" . PHP_EOL;
+    }
+
+    private function sqlWithLruCacheBatchCall(int $batchSize, int $cacheSize)
+    {
+        $repository =  new LruAttributeRepository($this->getContainer()->get('pim_catalog.repository.sql_attribute'), $cacheSize);
+        $elapsedTime = $this->benchmarkBatch($batchSize, $repository);
+        echo "Sql with LRU cache in batch call $elapsedTime" . PHP_EOL;
+    }
+
     private function benchmark(int $batchSize, $repository)
     {
         $sql = 'SELECT raw_values FROM pim_catalog_product LIMIT %s OFFSET %s';
@@ -88,6 +106,29 @@ class TestCacheLruCommand extends ContainerAwareCommand
 
             $clearer =  $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
             $clearer->clear();
+            $offset += $batchSize;
+        } while (!empty($rows));
+
+        return $elapsedTime;
+    }
+
+    private function benchmarkBatch(int $batchSize, $repository)
+    {
+        $sql = 'SELECT raw_values FROM pim_catalog_product LIMIT %s OFFSET %s';
+
+        $elapsedTime = 0;
+        $offset = 0;
+
+        do {
+            $rows = $this->getConnection()->executeQuery(sprintf($sql, $batchSize, $offset))->fetchAll();
+            foreach ($rows as $row) {
+                $attributeCodes = array_keys(json_decode($row['raw_values'], true));
+
+                $start = microtime(true);
+                $attributes = $repository->findSeveralByIdentifiers($attributeCodes);
+                Assert::count($attributes, count($attributeCodes));
+                $elapsedTime += microtime(true) - $start;
+            }
             $offset += $batchSize;
         } while (!empty($rows));
 
