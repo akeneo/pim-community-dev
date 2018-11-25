@@ -23,18 +23,9 @@ class LruAttributeRepository
 
     public function findOneByIdentifier(string $code): ?Attribute
     {
-        $attribute = $this->cache->get($code);
-        if (null !== $attribute) {
-            return $attribute;
-        }
+        $attributes = $this->findSeveralByIdentifiers([$code]);
 
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        if (null !== $attribute) {
-            $this->cache->put($code, $attribute);
-        }
-
-        return $attribute;
+        return $attributes[$code];
     }
 
     public function findSeveralByIdentifiers(array $codes): array
@@ -44,7 +35,7 @@ class LruAttributeRepository
         foreach ($codes as $code) {
             $attribute = $this->cache->get($code);
             if (null !== $attribute) {
-                $cachedAttributes[$code] = $attribute;
+                $cachedAttributes[$code] = $attribute === 'NULL' ? null : $attribute;
             } else {
                 $uncachedAttributeCodes[] = $code;
             }
@@ -53,6 +44,7 @@ class LruAttributeRepository
 
         $uncachedAttributes = $this->attributeRepository->findSeveralByIdentifiers($uncachedAttributeCodes);
         foreach ($uncachedAttributes as $code => $attribute) {
+            $attribute = null === $attribute ? 'NULL' : $attribute;
             $this->cache->put($code, $attribute);
         }
 
