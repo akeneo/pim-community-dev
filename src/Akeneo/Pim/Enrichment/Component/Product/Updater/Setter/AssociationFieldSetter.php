@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
@@ -29,28 +30,28 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param ProductBuilderInterface               $productBuilder
+     * @param MissingAssociationAdder               $missingAssociationAdder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductBuilderInterface $productBuilder,
+        MissingAssociationAdder $missingAssociationAdder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
-        $this->productBuilder = $productBuilder;
         $this->supportedFields = $supportedFields;
+        $this->missingAssociationAdder = $missingAssociationAdder;
     }
 
     /**
@@ -141,7 +142,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      */
     protected function addMissingAssociations(EntityWithAssociationsInterface $entity)
     {
-        $this->productBuilder->addMissingAssociations($entity);
+        $this->missingAssociationAdder->addMissingAssociations($entity);
     }
 
     /**

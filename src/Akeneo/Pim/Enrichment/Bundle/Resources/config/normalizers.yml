@@ -40,7 +40,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.group'
-            - '@pim_enrich.provider.structure_version.group'
+            - '@pim_structure_version.provider.structure_version.group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
         tags:
@@ -126,7 +126,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
-            - '@pim_enrich.provider.structure_version.product'
+            - '@pim_structure_version.provider.structure_version.product'
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'

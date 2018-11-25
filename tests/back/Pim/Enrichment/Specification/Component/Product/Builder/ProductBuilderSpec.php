@@ -27,8 +27,7 @@ class ProductBuilderSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
         EventDispatcherInterface $eventDispatcher,
-        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
-        MissingAssociationAdder $missingAssociationAdder
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
@@ -40,7 +39,6 @@ class ProductBuilderSpec extends ObjectBehavior
             $familyRepository,
             $eventDispatcher,
             $entityWithValuesBuilder,
-            $missingAssociationAdder,
             $entityConfig
         );
     }
@@ -77,15 +75,5 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $product = $this->createProduct('mysku', 'tshirt');
         $product->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
-    }
-
-    function it_adds_missing_product_associations(
-        MissingAssociationAdder $missingAssociationAdder,
-        EntityWithAssociationsInterface $productOne,
-        EntityWithAssociationsInterface $productTwo,
-        AssociationTypeInterface $type
-    ) {
-        $missingAssociationAdder->addMissingAssociations($productOne)->shouldBeCalled();
-        $this->addMissingAssociations($productOne);
     }
 }

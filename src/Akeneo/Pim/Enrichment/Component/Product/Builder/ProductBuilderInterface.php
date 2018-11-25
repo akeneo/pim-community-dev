@@ -25,15 +25,4 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
      * @return ProductInterface
      */
     public function createProduct($identifier = null, $familyCode = null);
-
-    /**
-     * Add empty associations for each association types when they don't exist yet
-     *
-     * @param EntityWithAssociationsInterface $entity
-     *
-     * @return EntityWithValuesBuilderInterface
-     *
-     * @deprecated since 2.3 in favor of \Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder
-     */
-    public function addMissingAssociations(EntityWithAssociationsInterface $entity);
 }

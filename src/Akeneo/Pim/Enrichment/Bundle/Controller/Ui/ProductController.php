@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -39,6 +40,9 @@ class ProductController extends AbstractListCategoryController
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $valuesFiller;
 
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
+
     /**
      * @param TranslatorInterface                   $translator
      * @param ProductRepositoryInterface            $productRepository
@@ -46,6 +50,7 @@ class ProductController extends AbstractListCategoryController
      * @param SaverInterface                        $productSaver
      * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param MissingAssociationAdder               $missingAssociationAdder
      * @param SecurityFacade                        $securityFacade
      * @param string                                $categoryClass
      * @param string                                $acl
@@ -58,6 +63,7 @@ class ProductController extends AbstractListCategoryController
         SaverInterface $productSaver,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $valuesFiller,
+        MissingAssociationAdder $missingAssociationAdder,
         string $categoryClass,
         SecurityFacade $securityFacade,
         string $acl,
@@ -69,6 +75,7 @@ class ProductController extends AbstractListCategoryController
         $this->translator = $translator;
         $this->productSaver = $productSaver;
         $this->productBuilder = $productBuilder;
+        $this->missingAssociationAdder = $missingAssociationAdder;
         $this->valuesFiller = $valuesFiller;
         $this->acl = $acl;
     }
@@ -116,7 +123,7 @@ class ProductController extends AbstractListCategoryController
         }
         // With this version of the form we need to add missing values from family
         $this->valuesFiller->fillMissingValues($product);
-        $this->productBuilder->addMissingAssociations($product);
+        $this->missingAssociationAdder->addMissingAssociations($product);
 
         return $product;
     }
