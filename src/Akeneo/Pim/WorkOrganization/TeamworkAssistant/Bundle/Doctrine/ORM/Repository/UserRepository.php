@@ -14,7 +14,6 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repo
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
@@ -92,7 +91,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $qb = $this->createQueryBuilder('u');
 
         $project = $options['project'];
-        $groupIds = array_map(function (Group $userGroup) {
+        $groupIds = array_map(function (GroupInterface $userGroup) {
             return $userGroup->getId();
         }, $project->getUserGroups()->toArray());
 

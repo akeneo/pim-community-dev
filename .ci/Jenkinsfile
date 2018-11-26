@@ -68,7 +68,7 @@ stage("Test") {
             "back-php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cd.php src/Akeneo/Pim/Automation/SuggestData && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Asset/.php_cd.php src/Akeneo/Asset"
+                script: "cd /var/www/pim && make coupling"
             )},
             "back-phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
