@@ -60,3 +60,8 @@ jobs:
         alias:     refresh_project_completeness_calculation
         label:     Refresh project completeness
         type:      refresh_project_completeness_calculation
+    compute_completeness_of_products_linked_to_assets:
+        connector: internal
+        alias:     compute_completeness_of_products_linked_to_assets
+        label:     compute completeness of products linked to assets
+        type:      compute_completeness_of_products_linked_to_assets

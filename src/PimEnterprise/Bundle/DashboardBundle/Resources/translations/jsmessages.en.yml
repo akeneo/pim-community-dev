@@ -6,3 +6,8 @@ pimee_dashboard:
             product: Product
             review:  Review
             empty:   No proposals to review
+pim_dashboard:
+    widget:
+        last_operations:
+            job_type:
+                compute_completeness_of_products_linked_to_assets: Compute completeness of products linked to assets
