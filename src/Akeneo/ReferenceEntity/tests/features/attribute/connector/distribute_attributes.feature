@@ -1,16 +1,16 @@
 Feature: Connection to e-commerce platforms and marketplaces
-  In order to properly structure the records of a given reference entity enriched in the PIM, inside my e-commerce platform and marketplace backends
+  In order to know how to interpret the records attribute values of the reference entities enriched in the PIM
   As a connector
-  I want to know the structure of this given reference entity, ie the attributes that describe it
+  I want to collect the structure of the reference entities that are in the PIM
+
+  @acceptance-back
+  Scenario: Collect the structure of a given reference entity
+    Given 50 attributes that structure the Brand reference entity in the PIM
+    When the connector requests the structure of the Brand reference entity from the PIM
+    Then the PIM returns the 50 attributes of the Brand reference entity
 
   @integration-back
-  Scenario: Get all the attributes of a given reference entity
-    Given the Brand reference entity described by 10 attributes
-    When the connector requests all attributes of this entity
-    Then the PIM returns the 10 attributes of the Brand reference entity
-
-  @integration-back
-  Scenario: Get an attribute of a given reference entity
-    Given the Brand reference entity described by the Description attribute
-    When the connector requests the Description attribute of the Brand reference entity
-    Then the PIM returns the Description attribute
+  Scenario: Notify an error when collecting the structure of a non-existent reference entity
+    Given some reference entities with some attributes
+    When the connector requests the structure of a non-existent reference entity
+    Then the PIM notifies the connector about an error indicating that the reference entity does not exist
