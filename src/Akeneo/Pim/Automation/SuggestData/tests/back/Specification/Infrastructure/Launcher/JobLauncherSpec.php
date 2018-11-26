@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Launcher;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -38,7 +39,7 @@ class JobLauncherSpec extends ObjectBehavior
     public function it_is_a_job_launcher(): void
     {
         $this->shouldHaveType(JobLauncher::class);
-        $this->shouldImplement(\Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface::class);
+        $this->shouldImplement(\Akeneo\Pim\Automation\SuggestData\Application\Connector\JobLauncherInterface::class);
     }
 
     public function it_launches_a_job(
@@ -49,7 +50,7 @@ class JobLauncherSpec extends ObjectBehavior
         $tokenStorage,
         $jobLauncher
     ): void {
-        $jobInstanceName = 'suggest_data_remove_attribute_from_mapping';
+        $jobInstanceName = JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING;
 
         $jobInstanceRepository
             ->findOneByIdentifier($jobInstanceName)

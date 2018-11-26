@@ -53,18 +53,27 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
      */
     public function execute(): void
     {
-        $pimAttributeCode = $this->stepExecution->getJobParameters()->get('pim_attribute_code');
+        $pimAttributeCodes = array_map(function (string $attributeCode) {
+            return new AttributeCode($attributeCode);
+        }, $this->stepExecution->getJobParameters()->get('pim_attribute_codes'));
         $familyCode = $this->stepExecution->getJobParameters()->get('family_code');
 
         $attributesMapping = $this->getAttributesMappingHandler->handle(
             new GetAttributesMappingByFamilyQuery($familyCode)
         );
 
-        if (!$attributesMapping->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
+        $hasAtLeastOneAttribute = false;
+        foreach ($pimAttributeCodes as $pimAttributeCode) {
+            if ($attributesMapping->hasPimAttribute($pimAttributeCode)) {
+                $hasAtLeastOneAttribute = true;
+                break;
+            }
+        }
+        if (!$hasAtLeastOneAttribute) {
             return;
         }
 
-        $newMapping = $this->buildNewAttributesMapping($attributesMapping, $pimAttributeCode);
+        $newMapping = $this->buildNewAttributesMapping($attributesMapping, $pimAttributeCodes);
 
         $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $newMapping);
         $this->updateAttributesMappingHandler->handle($command);
@@ -80,11 +89,11 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
 
     /**
      * @param AttributesMappingResponse $attributesMapping
-     * @param string $pimAttributeCode
+     * @param string[] $pimAttributeCodes
      *
      * @return array
      */
-    private function buildNewAttributesMapping(AttributesMappingResponse $attributesMapping, string $pimAttributeCode)
+    private function buildNewAttributesMapping(AttributesMappingResponse $attributesMapping, array $pimAttributeCodes)
     {
         $newMapping = [];
 
@@ -96,7 +105,7 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
                 'attribute' => $mapping->getPimAttributeCode(),
             ];
 
-            if ($mapping->getPimAttributeCode() === $pimAttributeCode) {
+            if (false !== array_search($mapping->getPimAttributeCode(), $pimAttributeCodes)) {
                 $attributeMapping['attribute'] = null;
             }
 

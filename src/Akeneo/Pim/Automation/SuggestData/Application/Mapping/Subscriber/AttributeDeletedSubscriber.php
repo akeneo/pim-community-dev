@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobLauncherInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -25,8 +26,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AttributeDeletedSubscriber implements EventSubscriberInterface
 {
-    public const JOB_INSTANCE_NAME = 'suggest_data_remove_attribute_from_mapping';
-
     /** @var SelectFamilyCodesByAttributeQueryInterface */
     private $familyCodesByAttributeQuery;
 
@@ -84,8 +83,8 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
         }
 
         foreach ($this->familyCodes as $familyCode) {
-            $this->jobLauncher->launch(self::JOB_INSTANCE_NAME, [
-                'pim_attribute_code' => $attribute->getCode(),
+            $this->jobLauncher->launch(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING, [
+                'pim_attribute_codes' => [$attribute->getCode()],
                 'family_code' => $familyCode,
             ]);
         }

@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobLauncherInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeDeletedSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -94,13 +95,13 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $postRemoveEvent->getSubject()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute_code');
 
-        $jobLauncher->launch(AttributeDeletedSubscriber::JOB_INSTANCE_NAME, [
-            'pim_attribute_code' => 'attribute_code',
+        $jobLauncher->launch(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING, [
+            'pim_attribute_codes' => ['attribute_code'],
             'family_code' => 'family_1',
         ])->shouldBeCalled();
 
-        $jobLauncher->launch(AttributeDeletedSubscriber::JOB_INSTANCE_NAME, [
-            'pim_attribute_code' => 'attribute_code',
+        $jobLauncher->launch(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING, [
+            'pim_attribute_codes' => ['attribute_code'],
             'family_code' => 'family_2',
         ])->shouldBeCalled();
 

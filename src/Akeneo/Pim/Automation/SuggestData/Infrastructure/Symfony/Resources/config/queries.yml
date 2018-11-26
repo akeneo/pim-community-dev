@@ -8,3 +8,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\SelectFamilyCodesByAttributeQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.find_family_attributes_not_in:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\FamilyAttribute\FindFamilyAttributesNotInQuery'
+        arguments:
+            - '@database_connection'

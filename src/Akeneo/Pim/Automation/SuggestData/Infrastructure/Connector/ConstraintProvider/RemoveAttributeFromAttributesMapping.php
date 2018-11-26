@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\ConstraintProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -29,7 +30,7 @@ class RemoveAttributeFromAttributesMapping implements ConstraintCollectionProvid
     public function getConstraintCollection(): Collection
     {
         return new Collection(['fields' => [
-            'pim_attribute_code' => new NotBlank(),
+            'pim_attribute_codes' => new NotBlank(),
             'family_code' => new NotBlank(),
         ]]);
     }
@@ -39,6 +40,6 @@ class RemoveAttributeFromAttributesMapping implements ConstraintCollectionProvid
      */
     public function supports(JobInterface $job): bool
     {
-        return 'suggest_data_remove_attribute_from_mapping' === $job->getName();
+        return JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING === $job->getName();
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Launcher;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobLauncherInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface as PimJobLauncher;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,6 +32,11 @@ class JobLauncher implements JobLauncherInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /**
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param PimJobLauncher $jobLauncher
+     * @param TokenStorageInterface $tokenStorage
+     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         PimJobLauncher $jobLauncher,
