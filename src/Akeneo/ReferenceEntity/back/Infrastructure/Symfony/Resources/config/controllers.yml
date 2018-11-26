@@ -158,3 +158,9 @@ services:
             - '@akeneo_referenceentity.application.record.create_record_handler'
             - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
+            -
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorReferenceEntityAttributesAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'

@@ -1,0 +1,34 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attributes_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "_links": {
+          "self": {
+            "href": "https://localhost/api/rest/v1/reference-entities/brand/attributes/description"
+          }
+        },
+        "code": "description",
+        "labels": {
+          "en_US": "Description",
+          "fr_FR": "Description"
+        },
+        "type": "text",
+        "localizable": true,
+        "scopable": false,
+        "max_characters": 155,
+        "is_textarea": false,
+        "is_rich_text_editor": false,
+        "validation_rule": null,
+        "validation_regexp": null
+      }
+    ]
+  }
+}
