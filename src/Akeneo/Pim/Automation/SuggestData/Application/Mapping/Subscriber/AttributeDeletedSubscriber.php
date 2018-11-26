@@ -13,52 +13,40 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AttributeDeletedSubscriber implements EventSubscriberInterface
 {
+    public const JOB_INSTANCE_NAME = 'suggest_data_remove_attribute_from_mapping';
+
     /** @var SelectFamilyCodesByAttributeQueryInterface */
     private $familyCodesByAttributeQuery;
 
     /** @var array */
     private $familyCodes;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $jobInstanceRepository;
-
     /** @var JobLauncherInterface */
     private $jobLauncher;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
     /**
      * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
      * @param JobLauncherInterface $jobLauncher
-     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        JobLauncherInterface $jobLauncher,
-        TokenStorageInterface $tokenStorage
+        JobLauncherInterface $jobLauncher
     ) {
         $this->familyCodesByAttributeQuery = $familyCodesByAttributeQuery;
-        $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobLauncher = $jobLauncher;
         $this->familyCodes = [];
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -95,11 +83,8 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('suggest_data_remove_attribute_from_mapping');
-        $user = $this->tokenStorage->getToken()->getUser();
-
         foreach ($this->familyCodes as $familyCode) {
-            $this->jobLauncher->launch($jobInstance, $user, [
+            $this->jobLauncher->launch(self::JOB_INSTANCE_NAME, [
                 'pim_attribute_code' => $attribute->getCode(),
                 'family_code' => $familyCode,
             ]);

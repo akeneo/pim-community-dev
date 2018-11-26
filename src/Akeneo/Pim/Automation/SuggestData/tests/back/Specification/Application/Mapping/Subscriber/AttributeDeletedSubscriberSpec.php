@@ -13,21 +13,16 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeDeletedSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -36,16 +31,9 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
 {
     public function let(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        JobLauncherInterface $jobLauncher,
-        TokenStorageInterface $tokenStorage
+        JobLauncherInterface $jobLauncher
     ): void {
-        $this->beConstructedWith(
-            $familyCodesByAttributeQuery,
-            $jobInstanceRepository,
-            $jobLauncher,
-            $tokenStorage
-        );
+        $this->beConstructedWith($familyCodesByAttributeQuery, $jobLauncher);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -93,11 +81,6 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         GenericEvent $preRemoveEvent,
         GenericEvent $postRemoveEvent,
         AttributeInterface $attribute,
-        JobInstance $jobInstance,
-        TokenInterface $token,
-        UserInterface $user,
-        $jobInstanceRepository,
-        $tokenStorage,
         $familyCodesByAttributeQuery,
         $jobLauncher
     ): void {
@@ -111,19 +94,12 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $postRemoveEvent->getSubject()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute_code');
 
-        $jobInstanceRepository
-            ->findOneByIdentifier('suggest_data_remove_attribute_from_mapping')
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
-        $jobLauncher->launch($jobInstance, $user, [
+        $jobLauncher->launch(AttributeDeletedSubscriber::JOB_INSTANCE_NAME, [
             'pim_attribute_code' => 'attribute_code',
             'family_code' => 'family_1',
         ])->shouldBeCalled();
 
-        $jobLauncher->launch($jobInstance, $user, [
+        $jobLauncher->launch(AttributeDeletedSubscriber::JOB_INSTANCE_NAME, [
             'pim_attribute_code' => 'attribute_code',
             'family_code' => 'family_2',
         ])->shouldBeCalled();

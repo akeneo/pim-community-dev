@@ -18,8 +18,6 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeDeletedSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.select_family_codes_by_attribute_query'
-            - '@akeneo_batch.job.job_instance_repository'
-            - '@akeneo_batch_queue.launcher.queue_job_launcher'
-            - '@security.token_storage'
+            - '@akeneo.pim.automation.suggest_data.launcher.job_launcher'
         tags:
             - { name: kernel.event_subscriber }
