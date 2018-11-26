@@ -13,22 +13,18 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Akeneo\Pim\Automation\SuggestData\Domain',
-
-            // Akeneo external bounded contexts
-            'Akeneo\Pim\Structure\Component',
-            'Akeneo\Pim\Enrichment\Component',
+            // TODO remove all links by reference
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            // TODO public constant
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Domain'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application',
 
-            // Akeneo external bounded contexts
-            'Akeneo\Pim\Structure\Component',
-            'Akeneo\Pim\Enrichment\Component',
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException',
 
@@ -36,13 +32,23 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
+
+            // TODO remove all links by reference
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            // TODO relationship between bounded context (query data though repository)
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+            // TODO public constant
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Application'),
 
     $builder->only(
         [
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
-
             // External dependencies
             'Guzzle',
             'Symfony\Component\HttpFoundation\Response',
@@ -54,10 +60,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector',
-
-            // TODO: can be removed when we disable the link to product in ProductSubscription
-            'Akeneo\Pim\Enrichment\Component\Product\Repository',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
@@ -67,6 +69,9 @@ $rules = [
 
             // External dependencies
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+
+            // TODO relationship between bounded context (query data though repository)
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector'),
 
@@ -74,7 +79,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi',
 
             // External dependencies
             'Symfony\Component\HttpFoundation',
@@ -89,16 +93,18 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider',
-            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+
+            // TODO public constant
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+
+            // TODO remove all links by reference
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command',
 
             // Akeneo external bounded contexts
@@ -114,26 +120,27 @@ $rules = [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
 
-            // Akeneo external bounded contexts
-            'Akeneo\Pim\Enrichment\Component',
-            'Akeneo\Pim\Structure\Component',
             'Akeneo\Pim\WorkOrganization\Workflow\Component',
             'Akeneo\Tool\Component\StorageUtils',
 
             // External dependencies
             'Symfony\Component\EventDispatcher',
+
+            // TODO remove all links by reference
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            // TODO relationship between bounded context (query data though repository)
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application',
 
             // Akeneo external bounded contexts
-            'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils',
-            'Oro\Bundle\ConfigBundle\Entity',
 
             // External dependencies
             'Doctrine',
@@ -143,19 +150,24 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool',
-            'Akeneo\Pim\Enrichment',
-            'Akeneo\Pim\Structure',
 
             // external dependencies
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
             // TODO: the next line could be removed with lazy-loaded commands
             'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
             'Symfony\Component',
+
+            // TODO remove all links by reference
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+
+            // TODO public constant
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony'),
 ];
