@@ -20,7 +20,12 @@ Feature: Connection to MDM or ERP systems
     When the connector collects the Brand reference entity from the ERP to synchronize it with the PIM
     Then the properties of the reference entity is correctly synchronized in the PIM with the information from the ERP
     
-  Scenario: Notify an error when collecting a reference entity property that is not in the reference entity format
+  Scenario: Notify an error when collecting a reference entity that has an invalid format
     Given some reference entities
-    When the connector collects a property that is not in the reference entity format
-    Then the PIM notifies the connector about an error indicating that the property is not in the reference entity format
+    When the connector collects a reference entity that has an invalid format
+    Then the PIM notifies the connector about an error indicating that the reference entity has an invalid format
+    
+  Scenario: Notify an error when collecting a reference entity whose data does not comply with the business rules
+    Given some reference entities
+    When the connector collects a reference entity whose data does not comply with the business rules
+    Then the PIM notifies the connector about an error indicating that the reference entity has data that does not comply with the business rules
