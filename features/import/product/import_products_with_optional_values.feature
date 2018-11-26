@@ -32,11 +32,10 @@ Feature: Import product information with optional values
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
-    And attribute opt_att_global of "caterpillar-pim" should be "Pim"
-    And the english localizable value opt_att_local of "caterpillar-pim" should be "PimUS"
-    And the tablet scopable value opt_att_scope of "caterpillar-pim" should be "PimTablet"
     And attribute opt_att_global of "caterpillar-pam" should be "Pam"
     And the tablet scopable value opt_att_scope of "caterpillar-pam" should be "PamTablet"
     And attribute opt_att_global of "caterpillar-poum" should be ""
     And attribute opt_att_global of "caterpillar-pum" should be "PimPamPoum"
+    And the product "caterpillar-pim" should not have the following values:
+      | opt_att_global |
 
