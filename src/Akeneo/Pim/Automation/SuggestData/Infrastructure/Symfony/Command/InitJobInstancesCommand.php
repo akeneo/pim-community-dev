@@ -29,6 +29,7 @@ class InitJobInstancesCommand extends ContainerAwareCommand
     private const SUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_subscribe_products';
     private const UNSUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_unsubscribe_products';
     private const FETCH_PRODUCTS_JOB_NAME = 'suggest_data_fetch_products';
+    private const REMOVE_ATTRIBUTE_FROM_MAPPING_JOB_NAME = 'suggest_data_remove_attribute_from_mapping';
 
     /** @var CommandLauncher */
     private $commandLauncher;
@@ -58,17 +59,31 @@ class InitJobInstancesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        if (null === $this->jobInstanceRepository->findOneBy(['code' => self::SUBSCRIBE_PRODUCTS_JOB_NAME])) {
+        if (!$this->isJobInstanceAlreadyCreated(self::SUBSCRIBE_PRODUCTS_JOB_NAME)) {
             $this->createJobInstance(self::SUBSCRIBE_PRODUCTS_JOB_NAME, 'mass_edit');
         }
 
-        if (null === $this->jobInstanceRepository->findOneBy(['code' => self::UNSUBSCRIBE_PRODUCTS_JOB_NAME])) {
+        if (!$this->isJobInstanceAlreadyCreated(self::UNSUBSCRIBE_PRODUCTS_JOB_NAME)) {
             $this->createJobInstance(self::UNSUBSCRIBE_PRODUCTS_JOB_NAME, 'mass_edit');
         }
 
-        if (null === $this->jobInstanceRepository->findOneBy(['code' => self::FETCH_PRODUCTS_JOB_NAME])) {
+        if (!$this->isJobInstanceAlreadyCreated(self::FETCH_PRODUCTS_JOB_NAME)) {
             $this->createJobInstance(self::FETCH_PRODUCTS_JOB_NAME, 'franklin_insights');
         }
+
+        if (!$this->isJobInstanceAlreadyCreated(self::REMOVE_ATTRIBUTE_FROM_MAPPING_JOB_NAME)) {
+            $this->createJobInstance(self::REMOVE_ATTRIBUTE_FROM_MAPPING_JOB_NAME, 'franklin_insights');
+        }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return bool
+     */
+    private function isJobInstanceAlreadyCreated(string $code): bool
+    {
+        return null !== $this->jobInstanceRepository->findOneBy(['code' => $code]);
     }
 
     /**
