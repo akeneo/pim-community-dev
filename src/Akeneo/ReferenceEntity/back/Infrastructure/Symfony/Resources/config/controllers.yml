@@ -147,3 +147,13 @@ services:
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image'
             - '%reference_entity_connector_reference_entities_limit_per_page%'
+
+    akeneo_referenceentity.infrastructure.connector.action.record.create_or_update:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\CreateOrUpdateRecordAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@akeneo_referenceentity.application.factory.record.connector.edit_record_command_factory'
+            - '@akeneo_referenceentity.application.record.edit_record_handler'
+            - '@akeneo_referenceentity.application.record.create_record_handler'
+            - '@router'

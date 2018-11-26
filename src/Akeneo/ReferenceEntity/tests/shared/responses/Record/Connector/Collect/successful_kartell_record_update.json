@@ -1,0 +1,46 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_record_rest_connector_patch",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "code": "kartell"
+        },
+        "body": {
+            "code": "kartell",
+            "main_image": "0/c/b/0/0cb0c0e115dedba676f8d1ad8343ec207ab54c7b_kartell.jpg",
+            "labels": {
+                "en_US": "Kartell updated english label",
+                "fr_FR": "Kartell updated french label"
+            },
+            "values": {
+                "name": [
+                    {
+                        "channel": null,
+                        "locale": "en_US",
+                        "data": "Updated english name"
+                    },
+                    {
+                        "channel": null,
+                        "locale": "fr_FR",
+                        "data": null
+                    }
+                ],
+                "description": [
+                    {
+                        "locale": "en_US",
+                        "channel": "ecommerce",
+                        "data": "Kartell english description"
+                    }
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 204,
+        "body": "",
+        "headers": {
+            "location": "http://localhost/api/rest/v1/reference-entities/brand/records/kartell"
+        }
+    }
+}

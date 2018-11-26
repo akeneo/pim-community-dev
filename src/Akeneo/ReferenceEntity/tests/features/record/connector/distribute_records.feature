@@ -1,7 +1,7 @@
 Feature: Connection to e-commerce platforms and marketplaces
   In order to benefit from the enrichment work of Julia on the reference entity records
   As a connector
-  I want to distribute records of a reference entity to e-commerce platforms and marketplaces
+  I want to distribute records of a reference entity from the PIM to e-commerce platforms and marketplaces
 
   @integration-back
   Scenario: Get a single record of a reference entity

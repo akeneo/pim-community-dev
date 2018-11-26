@@ -52,3 +52,13 @@ services:
         tags:
         - { name: fob.context_service }
 
+    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_record_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateRecordContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
+        tags:
+            - { name: fob.context_service }
