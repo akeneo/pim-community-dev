@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var AttributeRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var SerializerInterface */
@@ -33,8 +33,14 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var int */
     protected $precision;
 
-    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository, IdentifiableObjectRepositoryInterface $attributeOptionRepository, int $precision = 4)
-    {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeOptionRepository;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
+        int $precision = 4
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->attributeOptionRepository = $attributeOptionRepository;
         $this->precision = $precision;
@@ -176,7 +182,7 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
     {
         $options = [];
         foreach ($optionsCollection as $optionCode) {
-            $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode().'.'.$optionCode);
+            $option = $this->attributeOptionRepository->findOneByIdentifier($attribute->getCode() . '.' . $optionCode);
             if (null !== $option) {
                 $options[] = $option;
             }

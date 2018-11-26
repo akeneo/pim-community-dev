@@ -27,7 +27,8 @@ class IdentifierSorter extends BaseFieldSorter implements AttributeSorterInterfa
      */
     public function __construct(array $supportedFields = [], array $supportedAttributes = [])
     {
-        $this->supportedFields = $supportedFields;
+        parent::__construct($supportedFields);
+
         $this->supportedAttributes = $supportedAttributes;
     }
 

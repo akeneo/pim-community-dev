@@ -241,7 +241,7 @@ class CategoryController
         }
 
         $this->updateCategory($category, $data, 'patch_categories__code_');
-        $this->validateCategory($category, $data);
+        $this->validateCategory($category);
 
         try {
             $this->saver->save($category);

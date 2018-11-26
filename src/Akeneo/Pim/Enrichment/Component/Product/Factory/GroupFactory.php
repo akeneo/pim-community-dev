@@ -21,6 +21,9 @@ class GroupFactory implements SimpleFactoryInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
+    /** @var string */
+    protected $groupClass;
+
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepository
      * @param string                       $groupClass

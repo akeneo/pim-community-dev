@@ -76,6 +76,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         AttributeFilterInterface $productModelAttributeFilter,
         string $importType
     ) {
+        parent::__construct($productModelRepository);
+
         $this->productModelFactory = $productModelFactory;
         $this->productModelUpdater = $productModelUpdater;
         $this->productModelRepository = $productModelRepository;

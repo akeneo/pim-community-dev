@@ -121,6 +121,9 @@ class ProductController
     /** @var AddParent */
     protected $addParent;
 
+    /** @var AttributeFilterInterface */
+    protected $productAttributeFilter;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
      * @param NormalizerInterface                   $normalizer

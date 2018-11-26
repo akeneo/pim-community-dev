@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GroupTypeNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer */
+    /** @var NormalizerInterface */
     protected $translationNormalizer;
 
     /**

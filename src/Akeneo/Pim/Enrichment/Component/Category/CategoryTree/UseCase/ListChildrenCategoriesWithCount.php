@@ -22,9 +22,8 @@ class ListChildrenCategoriesWithCount
     /** @var bool */
     private $countIncludingSubCategories;
 
-
     /** @var int */
-    private $userI;
+    private $userId;
 
     /** @var string */
     private $translationLocaleCode;
