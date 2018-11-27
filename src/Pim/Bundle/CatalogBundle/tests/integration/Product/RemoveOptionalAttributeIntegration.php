@@ -34,22 +34,6 @@ class RemoveOptionalAttributeIntegration extends TestCase
         Assert::assertNull($product->getValue('a_text'));
     }
 
-    /**
-     * @test
-     */
-    function remove_an_optional_attribute_on_a_product_with_family()
-    {
-
-    }
-
-    /**
-     * @test
-     */
-    function cannot_remove_an_attribute_of_a_product_if_attribute_is_in_the_family()
-    {
-
-    }
-
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();

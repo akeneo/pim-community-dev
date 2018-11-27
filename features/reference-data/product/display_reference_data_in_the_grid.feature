@@ -35,7 +35,7 @@ Feature: Display reference data in the grid
   Scenario: Successfully edit reference data values to a product with scope
     Given the following products:
       | sku        | family |
-      | high-heels | heels  |
+      | high-heels |        |
     And the following reference data:
       | type   | code   | label  |
       | color  | black  | Black  |
