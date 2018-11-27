@@ -25,7 +25,9 @@ interface Config {
 }
 
 /**
- * TODO
+ * This module inherits from SimpleSelectAttribute, and adds a warning message if types mismatch.
+ *
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
   private static readonly warningTemplate: ((...data: any[]) => string) = _.template(warningTemplate);
@@ -43,6 +45,8 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
   }
 
   /**
+   * This method overrides the parent's one by adding a method to render warning if needed.
+   *
    * {@inheritdoc}
    */
   select2InitSelection(element: any, callback: any): void {
@@ -55,7 +59,7 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
       }).then((response: NormalizedAttribute[]) => {
         const selected = response.find(e => e.code === code);
         if (undefined !== selected) {
-          this.toggleWarning(selected.type);
+          this.displayWarningTypesMismatch(selected.type);
           callback(this.convertBackendItem(selected));
         }
       });
@@ -63,10 +67,9 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
   }
 
   /**
-   *
-   * @param type
+   * @param {string} type
    */
-  private toggleWarning(type: string) {
+  private displayWarningTypesMismatch(type: string) {
     if (!this.perfectMappings.includes(type)) {
       this.$el.find('.AknFieldContainer-footer').append(SimpleSelectAttributeWithWarning.warningTemplate({
         message: __('akeneo_suggest_data.entity.attributes_mapping.module.index.types_mismatch_warning')
