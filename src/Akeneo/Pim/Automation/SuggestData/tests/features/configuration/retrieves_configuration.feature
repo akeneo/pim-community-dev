@@ -13,3 +13,8 @@ Feature: Franklin configuration
     Given Franklin is configured with an expired token
     When a system administrator retrieves the Franklin configuration
     Then Franklin expired token is retrieved
+
+  Scenario: The system administrator can retrieve his configuration when there is no token defined
+    Given Franklin is not activated #token = null
+    When a system administrator retrieves the Franklin configuration
+    Then Franklin should not retrieve any token

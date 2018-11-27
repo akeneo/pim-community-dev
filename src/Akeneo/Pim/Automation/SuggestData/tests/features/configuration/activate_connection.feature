@@ -4,7 +4,7 @@ Feature: Franklin configuration
   As a system administrator
   I want to configure Franklin
 
-  @end-to-end @javascript
+  @end-to-end @javascript @critical
   Scenario: The system administrator successfully configures Franklin
     Given Franklin has not been configured
     When a system administrator configures Franklin using a valid token
