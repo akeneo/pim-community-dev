@@ -187,6 +187,7 @@ legacy:
                 - Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\ProposalContext:
                     - '@pim_catalog.repository.product'
                     - '@pimee_workflow.repository.product_draft'
+                    - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

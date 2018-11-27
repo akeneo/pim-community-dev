@@ -108,9 +108,9 @@ class SubscribeProductHandler
         $subscription->setSuggestedData($suggestedData);
         $subscription->markAsMissingMapping($subscriptionResponse->isMappingMissing());
 
-        $this->createProposalHandler->handle(new CreateProposalCommand($subscription));
-
         $this->productSubscriptionRepository->save($subscription);
+
+        $this->createProposalHandler->handle(new CreateProposalCommand($subscription));
     }
 
     /**
