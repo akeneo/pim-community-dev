@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import SimpleSelectAttribute = require("../common/simple-select-attribute");
 import NormalizedAttribute from 'pim/model/attribute';
 import * as _ from 'underscore';
+import SimpleSelectAttribute = require('../common/simple-select-attribute');
 const warningTemplate = require('akeneo/suggest-data/template/settings/attributes-mapping/warning');
 const __ = require('oro/translator');
 
@@ -21,7 +21,7 @@ interface Config {
     choiceRoute: string;
     types: string[];
   };
-  className: string
+  className: string;
 }
 
 /**
@@ -49,15 +49,15 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
    *
    * {@inheritdoc}
    */
-  select2InitSelection(element: any, callback: any): void {
+  public select2InitSelection(element: any, callback: any): void {
     const code = $(element).val();
     if ('' !== code) {
       $.ajax({
         url: this.choiceUrl,
         data: {options: {identifiers: [code]}},
-        type: this.choiceVerb
+        type: this.choiceVerb,
       }).then((response: NormalizedAttribute[]) => {
-        const selected = response.find(e => e.code === code);
+        const selected = response.find((e) => e.code === code);
         if (undefined !== selected) {
           this.displayWarningTypesMismatch(selected.type);
           callback(this.convertBackendItem(selected));
@@ -72,7 +72,7 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
   private displayWarningTypesMismatch(type: string) {
     if (!this.perfectMappings.includes(type)) {
       this.$el.find('.AknFieldContainer-footer').append(SimpleSelectAttributeWithWarning.warningTemplate({
-        message: __('akeneo_suggest_data.entity.attributes_mapping.module.index.types_mismatch_warning')
+        message: __('akeneo_suggest_data.entity.attributes_mapping.module.index.types_mismatch_warning'),
       }));
     }
   }

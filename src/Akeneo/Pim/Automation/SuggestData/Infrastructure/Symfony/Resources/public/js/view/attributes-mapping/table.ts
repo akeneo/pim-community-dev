@@ -9,14 +9,14 @@
 
 import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
+import NormalizedAttribute from 'pim/model/attribute';
 import BaseView = require('pimui/js/view/base');
 import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
-import SimpleSelectAttributeWithWarning = require("./simple-select-attribute-with-warning");
-import NormalizedAttribute from 'pim/model/attribute';
+import SimpleSelectAttributeWithWarning = require('./simple-select-attribute-with-warning');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -95,7 +95,7 @@ class AttributeMapping extends BaseView {
     'pim_catalog_text',
     'pim_catalog_textarea',
     'pim_catalog_boolean',
-    'pim_catalog_identifier'
+    'pim_catalog_identifier',
   ];
   private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 

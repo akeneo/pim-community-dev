@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import * as _ from 'underscore';
 import NormalizedAttribute from 'pim/model/attribute';
 import NormalizedAttributeGroup from 'pim/model/attribute-group';
+import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const BaseSimpleSelect = require('pim/form/common/fields/simple-select-async');
