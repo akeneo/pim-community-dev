@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -124,9 +124,9 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
      * @param array $rawValues
      * @param FamilyInterface $family
      *
-     * @return Product
+     * @return ProductInterface
      */
-    private function createProduct(array $rawValues, FamilyInterface $family): Product
+    private function createProduct(array $rawValues, FamilyInterface $family): ProductInterface
     {
         $product = $this->getContainer()
             ->get('pim_catalog.repository.product')
@@ -161,9 +161,9 @@ class LoadFranklinProductsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return AttributeGroup|null
+     * @return AttributeGroupInterface|null
      */
-    private function getOtherAttributeGroup(): ?AttributeGroup
+    private function getOtherAttributeGroup(): ?AttributeGroupInterface
     {
         $attrGroupRepository = $this->getContainer()->get('pim_catalog.repository.attribute_group');
 
