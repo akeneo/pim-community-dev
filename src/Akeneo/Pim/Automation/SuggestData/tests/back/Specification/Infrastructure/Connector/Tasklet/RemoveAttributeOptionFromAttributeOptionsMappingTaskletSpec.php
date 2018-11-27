@@ -33,6 +33,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -110,6 +111,55 @@ class RemoveAttributeOptionFromAttributeOptionsMappingTaskletSpec extends Object
                 ],
             ])
         ))->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    public function it_updates_nothing_when_no_families_uses_the_attribute(
+        $familyCodesByAttributeQuery,
+        $getAttributesMappingHandler,
+        $getAttributeOptionsMappingHandler,
+        $saveAttributeOptionsMappingHandler
+    ): void {
+        $familyCodesByAttributeQuery->execute('pim_color')->willReturn([]);
+
+        $getAttributesMappingHandler->handle(Argument::any())->shouldNotBeCalled();
+        $getAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
+        $saveAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
+    }
+
+    public function it_updates_nothing_when_there_is_no_attribute_mapping(
+        $familyCodesByAttributeQuery,
+        $getAttributesMappingHandler,
+        $getAttributeOptionsMappingHandler,
+        $saveAttributeOptionsMappingHandler
+    ): void {
+        $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
+
+        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn(new AttributesMappingResponse());
+
+        $getAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
+        $saveAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
+    }
+
+    public function it_updates_nothing_when_there_is_no_attribute_option_mapping(
+        $familyCodesByAttributeQuery,
+        $getAttributesMappingHandler,
+        $getAttributeOptionsMappingHandler,
+        $saveAttributeOptionsMappingHandler
+    ): void {
+        $familyCodesByAttributeQuery->execute('pim_color')->willReturn(['router']);
+
+        $attributesMapping = new AttributesMappingResponse();
+        $attributesMapping->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
+
+        $getAttributesMappingHandler->handle(new GetAttributesMappingByFamilyQuery('router'))->willReturn($attributesMapping);
+
+        $getAttributeOptionsMappingHandler->handle(
+            new GetAttributeOptionsMappingQuery(new FamilyCode('router'), new FranklinAttributeId('franklin_color'))
+        )->willReturn(new AttributeOptionsMapping('router', 'franklin_color', []));
+
+        $saveAttributeOptionsMappingHandler->handle(Argument::any())->shouldNotBeCalled();
 
         $this->execute();
     }

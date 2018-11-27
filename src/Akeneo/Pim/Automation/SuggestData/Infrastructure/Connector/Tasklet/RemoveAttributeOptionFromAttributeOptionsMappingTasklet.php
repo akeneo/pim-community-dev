@@ -19,7 +19,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOpti
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
@@ -80,27 +79,46 @@ class RemoveAttributeOptionFromAttributeOptionsMappingTasklet implements Tasklet
         $familyCodes = $this->familyCodesByAttributeQuery->execute($pimAttributeCode);
 
         foreach ($familyCodes as $familyCode) {
-            $attributesMapping = $this->getAttributesMappingHandler->handle(
-                new GetAttributesMappingByFamilyQuery($familyCode)
-            );
-
-            if (!$attributesMapping->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
-                return;
-            }
-
-            foreach ($attributesMapping as $attributeMapping) {
-                $this->updateAttributeOptionsMapping(
-                    $attributeMapping,
-                    $familyCode,
-                    $pimAttributeCode,
-                    $deletedAttributeOptionCode
-                );
-            }
+            $this->updateOptionsMappingByFamily($familyCode, $pimAttributeCode, $deletedAttributeOptionCode);
         }
     }
 
+    /**
+     * @param string $familyCode
+     * @param string $pimAttributeCode
+     * @param string $deletedAttributeOptionCode
+     */
+    private function updateOptionsMappingByFamily(
+        string $familyCode,
+        string $pimAttributeCode,
+        string $deletedAttributeOptionCode
+    ): void {
+        $familyAttributesMapping = $this->getAttributesMappingHandler->handle(
+            new GetAttributesMappingByFamilyQuery($familyCode)
+        );
+
+        if (!$familyAttributesMapping->hasPimAttribute(new AttributeCode($pimAttributeCode))) {
+            return;
+        }
+
+        foreach ($familyAttributesMapping as $attributeMapping) {
+            $this->updateAttributeOptionsMapping(
+                $attributeMapping->getTargetAttributeCode(),
+                $familyCode,
+                $pimAttributeCode,
+                $deletedAttributeOptionCode
+            );
+        }
+    }
+
+    /**
+     * @param string $franklinAttributeCode
+     * @param string $familyCode
+     * @param string $pimAttributeCode
+     * @param string $deletedAttributeOptionCode
+     */
     private function updateAttributeOptionsMapping(
-        AttributeMapping $attributeMapping,
+        string $franklinAttributeCode,
         string $familyCode,
         string $pimAttributeCode,
         string $deletedAttributeOptionCode
@@ -108,7 +126,7 @@ class RemoveAttributeOptionFromAttributeOptionsMappingTasklet implements Tasklet
         $attributeOptionsMapping = $this->getAttributeOptionsMappingHandler->handle(
             new GetAttributeOptionsMappingQuery(
                 new FamilyCode($familyCode),
-                new FranklinAttributeId($attributeMapping->getTargetAttributeCode())
+                new FranklinAttributeId($franklinAttributeCode)
             )
         );
 
@@ -121,35 +139,52 @@ class RemoveAttributeOptionFromAttributeOptionsMappingTasklet implements Tasklet
         $command = new SaveAttributeOptionsMappingCommand(
             new FamilyCode($familyCode),
             new AttributeCode($pimAttributeCode),
-            new FranklinAttributeId($attributeMapping->getTargetAttributeCode()),
+            new FranklinAttributeId($franklinAttributeCode),
             new AttributeOptions($newMapping)
         );
 
         $this->saveAttributeOptionsMappingHandler->handle($command);
     }
 
+    /**
+     * @param AttributeOptionsMapping $attributeOptionsMapping
+     * @param string $deletedAttributeOptionCode
+     *
+     * @return array
+     */
     private function buildNewAttributeOptionsMapping(
         AttributeOptionsMapping $attributeOptionsMapping,
         string $deletedAttributeOptionCode
     ): array {
-        $newMapping = [];
+        $newAttributeOptionsMapping = [];
 
-        foreach ($attributeOptionsMapping as $attributeOptionMapping) {
-            $mapping = [
-                'franklinAttributeOptionCode' => [
-                    'label' => $attributeOptionMapping->franklinAttributeLabel(),
-                ],
-                'catalogAttributeOptionCode' => $attributeOptionMapping->catalogAttributeCode(),
-                'status' => $attributeOptionMapping->status(),
-            ];
-
-            if ($deletedAttributeOptionCode === $attributeOptionMapping->catalogAttributeCode()) {
-                $mapping['catalogAttributeOptionCode'] = null;
-            }
-
-            $newMapping[$attributeOptionMapping->franklinAttributeId()] = $mapping;
+        foreach ($attributeOptionsMapping as $currentOptionMapping) {
+            $newOptionMapping = $this->buildNewOptionMapping($deletedAttributeOptionCode, $currentOptionMapping);
+            $newAttributeOptionsMapping[$currentOptionMapping->franklinAttributeId()] = $newOptionMapping;
         }
 
-        return $newMapping;
+        return $newAttributeOptionsMapping;
+    }
+
+    /**
+     * @param string $deletedAttributeOptionCode
+     * @param $currentOptionMapping
+     *
+     * @return array
+     */
+    private function buildNewOptionMapping(string $deletedAttributeOptionCode, $currentOptionMapping): array
+    {
+        $newMappedOptionCode = $currentOptionMapping->catalogAttributeCode() === $deletedAttributeOptionCode ?
+            null : $currentOptionMapping->catalogAttributeCode();
+
+        $newOptionMapping = [
+            'franklinAttributeOptionCode' => [
+                'label' => $currentOptionMapping->franklinAttributeLabel(),
+            ],
+            'catalogAttributeOptionCode' => $newMappedOptionCode,
+            'status' => $currentOptionMapping->status(),
+        ];
+
+        return $newOptionMapping;
     }
 }

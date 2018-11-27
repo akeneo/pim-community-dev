@@ -29,25 +29,6 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
     /** @var JobLauncherInterface */
     private $jobLauncher;
 
-    /*
-     * Ecouter tous les événements POST_REMOVE
-     * Ignorer tout ce qui n'est pas un AttributeOptionInterface
-     * Récupérer l'attribut de l'option
-     * Lancer un job pour traiter les impact sur Franklin en asynchrone
-     *      Paramètres :
-     *          - AttributeCode
-     *          - AttributeOptionCode
-     *
-     * Job :
-     *  - Récupérer tous les codes des familles qui ont l'attribut (cf Query SelectFamilyCodesByAttributeQueryInterface)
-     *  - Pour chacune de ces familles
-     *      - Récupérer le mapping des attributs de la famille
-     *      - Si l'attribut est utilisé dans le mapping
-     *          - récupérer le mapping des options de l'attribut (récupérer l'attribute id de Franklin associé)
-     *          - Chercher parmi les options s'il y en a une qui a pour ID pim AttributeOptionCode
-     *          - Si oui, mettre la valeur à null dans le "to" pour cette option et appeler Franklin
-     */
-
     public function __construct(JobLauncherInterface $jobLauncher)
     {
         $this->jobLauncher = $jobLauncher;
