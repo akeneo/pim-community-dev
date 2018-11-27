@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class AttributeOptionsMapping
+final class AttributeOptionsMapping implements \IteratorAggregate
 {
     /** @var string */
     private $familyCode;
@@ -61,5 +61,29 @@ final class AttributeOptionsMapping
     public function mapping(): array
     {
         return $this->mapping;
+    }
+
+    /**
+     * @param string $attributeOptionCode
+     *
+     * @return bool
+     */
+    public function hasPimAttributeOption(string $attributeOptionCode): bool
+    {
+        foreach ($this->mapping as $attributeOption) {
+            if ($attributeOption->catalogAttributeCode() === $attributeOptionCode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return \Iterator
+     */
+    public function getIterator(): \Iterator
+    {
+        return new \ArrayIterator($this->mapping);
     }
 }
