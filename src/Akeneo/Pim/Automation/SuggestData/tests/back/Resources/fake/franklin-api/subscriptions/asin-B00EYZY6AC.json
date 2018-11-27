@@ -2,20 +2,28 @@
   "_links": {
     "subscription": [
       {
-        "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c"
+        "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b"
       }
     ]
   },
   "_embedded": {
     "subscription": [
       {
-        "id": "73b62382-f528-46c7-998e-bea9adb3d15c",
+        "id": "8ea48c14-2983-4f29-931a-73654272289b",
         "identifiers": {
-          "upc": null,
+          "upc": "730870200933",
           "asin": "B00EYZY6AC",
-          "mpn_brand": null
+          "mpn_brand": {
+            "mpn": "FE20093",
+            "brand": "Frederic Fekkai"
+          }
         },
-        "attributes": [],
+        "attributes": [
+          {
+            "name": "Product Dimensions",
+            "value": "12.2 oz"
+          }
+        ],
         "extra": {
           "family": {
             "code": "hairstyling",
@@ -25,25 +33,29 @@
           },
           "tracker_id": "50"
         },
-        "created_at": "2018-10-23T14:54:33+00:00",
-        "refreshed_at": null,
-        "valid_until": "2019-10-23T14:54:33+00:00",
+        "created_at": "2018-11-27T13:16:21+00:00",
+        "refreshed_at": "2018-11-27T13:18:58+00:00",
+        "valid_until": "2019-11-27T13:16:21+00:00",
         "is_cancelled": false,
-        "message": "",
+        "message": "We only found a few product values for your product, so you we'll give you back your credits at the end of the subscription period if we don't find more than 5 product values in the meantime.  You can cancel this subscription at any time to get your credit back sooner.",
         "_links": {
           "self": {
-            "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c"
+            "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b"
           },
           "cancel": {
-            "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c",
+            "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b",
             "type": "application/prs.hal-forms+json"
+          },
+          "attributes-mapping": {
+            "href": "/api/mapping/comestic/attributes",
+            "title": "Get attributes mapping"
           }
         },
         "_embedded": {
           "cancel": {
             "_links": {
               "self": {
-                "href": "/api/subscriptions/73b62382-f528-46c7-998e-bea9adb3d15c"
+                "href": "/api/subscriptions/8ea48c14-2983-4f29-931a-73654272289b"
               }
             },
             "_templates": {
@@ -57,8 +69,30 @@
             }
           }
         },
-        "mapped_identifiers": [],
-        "mapped_attributes": [],
+        "mapped_identifiers": [
+          {
+            "name": "sku",
+            "value": "B00EYZY6AC"
+          },
+          {
+            "name": "upc",
+            "value": "730870200933"
+          },
+          {
+            "name": "pim_brand",
+            "value": "Frederic Fekkai"
+          },
+          {
+            "name": "camera_model_name",
+            "value": "FE20093"
+          }
+        ],
+        "mapped_attributes": [
+          {
+            "name": "dimensions",
+            "value": "12.2 OUNCE"
+          }
+        ],
         "misses_mapping": false
       }
     ],
