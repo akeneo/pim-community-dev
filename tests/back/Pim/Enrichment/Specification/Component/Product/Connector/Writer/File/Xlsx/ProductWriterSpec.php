@@ -3,6 +3,9 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromFamilyCodesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -32,7 +35,9 @@ class ProductWriterSpec extends ObjectBehavior
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
-        FileExporterPathGeneratorInterface $fileExporterPath
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes,
+        GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
         $this->filesystem = new Filesystem();
@@ -44,6 +49,8 @@ class ProductWriterSpec extends ObjectBehavior
             $flusher,
             $attributeRepository,
             $fileExporterPath,
+            $generateHeadersFromFamilyCodes,
+            $generateHeadersFromAttributeCodes,
             ['pim_catalog_file', 'pim_catalog_image']
         );
     }
@@ -303,7 +310,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->getWrittenFiles()->shouldBeEqualTo([]);
     }
 
-    function it_writes_the_xlsx_file(
+    function it_writes_the_xlsx_file_without_headers(
         $bufferFactory,
         $flusher,
         FlatItemBuffer $flatRowBuffer,
@@ -330,6 +337,7 @@ class ProductWriterSpec extends ObjectBehavior
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
+        $jobParameters->has('withHeader')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
         $flusher->flush(
@@ -343,6 +351,155 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
 
         $this->initialize();
+        $this->flush();
+    }
+
+    function it_writes_the_xlsx_file_with_headers(
+        $bufferFactory,
+        $flusher,
+        $generateHeadersFromFamilyCodes,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('CSV Product export');
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
+        $jobParameters->has('ui_locale')->willReturn(false);
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(false);
+        $jobParameters->has('selected_properties')->willReturn(false);
+        $jobParameters->has('withHeader')->willReturn(true);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+
+        $descHeader = new FlatFileHeader(
+            "description",
+            true,
+            'ecommerce',
+            true,
+            ['fr_FR', 'en_US']
+        );
+        $nameHeader = new FlatFileHeader("name", true, "ecommerce");
+        $brandHeader = new FlatFileHeader("brand");
+        $generateHeadersFromFamilyCodes
+            ->__invoke(["family_1", "family_2"], 'ecommerce', ['fr_FR', 'en_US'])
+            ->willReturn([$descHeader, $nameHeader, $brandHeader]);
+
+
+        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flusher->flush(
+            $flatRowBuffer,
+            Argument::type('array'),
+            Argument::type('string'),
+            -1
+        )->willReturn([
+            $this->directory . 'XLSX_Product_export_product1.xlsx',
+            $this->directory . 'XLSX_Product_export_product2.xlsx'
+        ]);
+
+        $this->initialize();
+        $this->write([
+            [
+                'sku' => 'sku-01',
+                'family' => 'family_1'
+            ],
+            [
+                'sku' => 'sku-02',
+                'family' => 'family_2'
+            ]
+        ]);
+        $this->flush();
+    }
+
+    function it_writes_the_xlsx_file_with_headers_and_selected_attributes(
+        $bufferFactory,
+        $flusher,
+        $generateHeadersFromAttributeCodes,
+        FlatItemBuffer $flatRowBuffer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        ExecutionContext $executionContext
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobInstance->getLabel()->willReturn('CSV Product export');
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
+        $jobParameters->has('ui_locale')->willReturn(false);
+        $jobParameters->has('decimalSeparator')->willReturn(false);
+        $jobParameters->has('dateFormat')->willReturn(false);
+        $jobParameters->has('with_media')->willReturn(false);
+        $jobParameters->has('selected_properties')->willReturn(true);
+        $jobParameters->get('selected_properties')->willReturn(['name', 'description']);
+        $jobParameters->has('withHeader')->willReturn(true);
+        $jobParameters->get('withHeader')->willReturn(true);
+        $jobParameters->get('filters')->willReturn(['structure' => ['locales' => ['fr_FR', 'en_US'], 'scope' => 'ecommerce']]);
+
+        $descHeader = new FlatFileHeader(
+            "description",
+            true,
+            'ecommerce',
+            true,
+            ['fr_FR', 'en_US']
+        );
+        $nameHeader = new FlatFileHeader("name", true, "ecommerce");
+        $generateHeadersFromAttributeCodes
+            ->__invoke(["name", "description"], 'ecommerce', ['fr_FR', 'en_US'])
+            ->willReturn([$nameHeader, $descHeader]);
+
+       $bufferFactory->create()->willReturn($flatRowBuffer);
+        $flusher->flush(
+            $flatRowBuffer,
+            Argument::type('array'),
+            Argument::type('string'),
+            -1
+        )->willReturn([
+            $this->directory . 'XLSX_Product_export_product1.xlsx',
+            $this->directory . 'XLSX_Product_export_product2.xlsx'
+        ]);
+
+        $this->initialize();
+        $this->write([
+            [
+                'sku' => 'sku-01',
+                'family' => 'family_1'
+            ],
+            [
+                'sku' => 'sku-02',
+                'family' => 'family_2'
+            ]
+        ]);
         $this->flush();
     }
 }

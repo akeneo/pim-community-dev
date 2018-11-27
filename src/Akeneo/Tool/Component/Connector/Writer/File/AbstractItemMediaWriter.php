@@ -26,7 +26,7 @@ abstract class AbstractItemMediaWriter implements
     FlushableInterface,
     StepExecutionAwareInterface
 {
-    private const DEFAULT_FILE_PATH = 'filePath';
+    protected const DEFAULT_FILE_PATH = 'filePath';
 
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -269,6 +269,10 @@ abstract class AbstractItemMediaWriter implements
         $identifier = $this->getItemIdentifier($item);
 
         foreach ($mediaAttributeTypes as $attributeCode => $attributeType) {
+            if (!isset($item['values'][$attributeCode])) {
+                continue;
+            }
+
             foreach ($item['values'][$attributeCode] as $index => $value) {
                 if (null !== $value['data']) {
                     $exportDirectory = $this->fileExporterPath->generate($value, [

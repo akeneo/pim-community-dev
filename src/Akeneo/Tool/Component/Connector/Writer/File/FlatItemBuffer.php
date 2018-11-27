@@ -58,7 +58,7 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
      *
      * @param array $keys
      */
-    protected function addToHeaders(array $keys)
+    public function addToHeaders(array $keys)
     {
         $headers = array_merge($this->headers, $keys);
         $headers = array_unique($headers);

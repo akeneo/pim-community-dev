@@ -30,10 +30,10 @@ Feature: Quick export products according to the product grid context
     And the names of the exported files of "csv_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.csv,2_product_models_export_grid_context_en_US_tablet.csv"
     And first exported file of "csv_product_grid_context_quick_export" should contain:
     """
-    sku;color;description-en_US-tablet;family;groups;name-en_US;price-EUR;price-USD;size
-    boots;black;Mob;boots;;Amazing boots;20;25;40
-    sneakers;white;ylette;sneakers;;Sneakers;50;60;42
-    pump;blue;;;;Pump;15;20;41
+    sku;color;description-en_US-tablet;family;groups;name-en_US;price-EUR;price-USD;size;weight;weight-unit
+    boots;black;Mob;boots;;Amazing boots;20;25;40;;
+    sneakers;white;ylette;sneakers;;Sneakers;50;60;42;;
+    pump;blue;;;;Pump;15;20;41;;
     """
 
   @jira https://akeneo.atlassian.net/browse/PIM-7911
@@ -84,7 +84,7 @@ Feature: Quick export products according to the product grid context
     Then I should see the text "COMPLETED"
     And the names of the exported files of "xlsx_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.xlsx,2_product_models_export_grid_context_en_US_tablet.xlsx"
     And exported xlsx file 1 of "xlsx_product_grid_context_quick_export" should contain:
-      | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size |
-      | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   |
-      | sneakers | white | ylette                   | sneakers |        | Sneakers      | 50        | 60        | 42   |
-      | pump     | blue  |                          |          |        | Pump          | 15        | 20        | 41   |
+      | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size | weight | weight-unit |
+      | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   |        |             |
+      | sneakers | white | ylette                   | sneakers |        | Sneakers      | 50        | 60        | 42   |        |             |
+      | pump     | blue  |                          |          |        | Pump          | 15        | 20        | 41   |        |             |

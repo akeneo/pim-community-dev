@@ -10,7 +10,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -19,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -31,17 +29,13 @@ class ProductProcessorSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
-        EntityManagerClearerInterface $clearer
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $mediaFetcher,
-            $productValuesFiller,
-            $clearer
+            $mediaFetcher
         );
 
         $this->setStepExecution($stepExecution);
@@ -64,7 +58,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productValuesFiller,
         $attributeRepository,
         $clearer,
         ChannelInterface $channel,
@@ -88,8 +81,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
-
-        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
 
         $normalizer->normalize($product, 'standard', ['filter_types' => ['pim.transform.product_value.structured'], 'channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn([
@@ -136,7 +127,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productValuesFiller,
         $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -162,7 +152,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
         $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
 
@@ -203,7 +192,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productValuesFiller,
         $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -229,7 +217,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
         $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
 
