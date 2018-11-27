@@ -389,9 +389,9 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         string $username
     ) {
         $repository = $this->get('pimee_teamwork_assistant.repository.project_completeness');
-        $todo = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_TODO, $username));
-        $inProgress = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_IN_PROGRESS, $username));
-        $done = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::OWNER_DONE, $username));
+        $todo = count($repository->findProductIds($project, ProjectCompletenessFilter::OWNER_TODO, $username));
+        $inProgress = count($repository->findProductIds($project, ProjectCompletenessFilter::OWNER_IN_PROGRESS, $username));
+        $done = count($repository->findProductIds($project, ProjectCompletenessFilter::OWNER_DONE, $username));
 
         $this->assertEquals(
             $projectCompleteness->getProductsCountTodo(),
@@ -425,9 +425,9 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         string $username
     ) {
         $repository = $this->get('pimee_teamwork_assistant.repository.project_completeness');
-        $todo = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_TODO, $username));
-        $inProgress = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS, $username));
-        $done = count($repository->findProductIdentifiers($project, ProjectCompletenessFilter::CONTRIBUTOR_DONE, $username));
+        $todo = count($repository->findProductIds($project, ProjectCompletenessFilter::CONTRIBUTOR_TODO, $username));
+        $inProgress = count($repository->findProductIds($project, ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS, $username));
+        $done = count($repository->findProductIds($project, ProjectCompletenessFilter::CONTRIBUTOR_DONE, $username));
 
         $this->assertEquals(
             $projectCompleteness->getProductsCountTodo(),
