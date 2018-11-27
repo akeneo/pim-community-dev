@@ -14,7 +14,7 @@ Feature: Fetch products from Franklin
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
     And the product "606449099812" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
       | asin          | asin           |

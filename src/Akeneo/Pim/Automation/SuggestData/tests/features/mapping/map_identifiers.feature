@@ -26,7 +26,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
 
   Scenario: Successfully update an already existing mapping
     Given the predefined attributes pim_brand, MPN, EAN, ASIN, SKU and identifier
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |

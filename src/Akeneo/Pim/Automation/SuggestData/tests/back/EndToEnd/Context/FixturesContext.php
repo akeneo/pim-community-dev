@@ -111,13 +111,13 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @Given a predefined mapping as follows:
+     * @Given a predefined identifiers mapping as follows:
      *
      * @param TableNode $table
      *
      * @throws InvalidMappingException
      */
-    public function aPredefinedMapping(TableNode $table): void
+    public function aPredefinedIdentifiersMapping(TableNode $table): void
     {
         $mappedIdentifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
