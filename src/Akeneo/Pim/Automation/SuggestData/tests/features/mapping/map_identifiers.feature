@@ -7,21 +7,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Background:
     Given Franklin is configured with a valid token
 
-  Scenario: Successfully retrieve the mapping for the display
-    Given the predefined attributes pim_brand, MPN, EAN and ASIN
-    When the identifiers are mapped with valid values as follows:
-      | franklin_code | attribute_code |
-      | brand         | pim_brand      |
-      | mpn           | mpn            |
-      | upc           | ean            |
-      | asin          | asin           |
-    Then the retrieved mapping should be the following:
-      | franklin_code | attribute_code | en_US | fr_FR  |
-      | brand         | pim_brand      | Brand | Marque |
-      | mpn           | mpn            | MPN   | MPN    |
-      | upc           | ean            |       |        |
-      | asin          | asin           | ASIN  | ASIN   |
-
+  @critical
   Scenario: Successfully map Franklin attributes to PIM attributes for the first time
     Given the predefined attributes pim_brand, MPN, EAN and ASIN
     And an empty identifiers mapping
@@ -62,16 +48,16 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Scenario Outline: Successfully map Franklin attributes with valid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
-      | code  | type             |
-      | brand | <attribute_type> |
+      | code      | type             |
+      | pim_upc   | <attribute_type> |
     When the identifiers are mapped with valid values as follows:
       | franklin_code | attribute_code |
-      | upc           | brand          |
+      | upc           | pim_upc        |
     Then the retrieved mapping should be the following:
       | franklin_code | attribute_code |
       | brand         |                |
       | mpn           |                |
-      | upc           | brand          |
+      | upc           | pim_upc        |
       | asin          |                |
 
     Examples:
@@ -82,11 +68,11 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Scenario Outline: Fails to map Franklin attributes with invalid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
-      | code  | type             |
-      | brand | <attribute_type> |
+      | code    | type             |
+      | pim_upc | <attribute_type> |
     When the identifiers are mapped with valid values as follows:
       | franklin_code | attribute_code |
-      | upc           | brand          |
+      | upc           | pim_upc        |
     Then the identifiers mapping should not be saved
 
     Examples:
@@ -136,42 +122,44 @@ Feature: Map the PIM identifiers with Franklin identifiers
     When the identifiers mapping is saved with empty values
     Then the identifiers mapping should not be saved
 
-  Scenario: An identifiers mapping is valid if at least ASIN is mapped
+  Scenario: Fails to empty an identifiers mapping
     Given the predefined attributes ASIN
-    When the identifiers are mapped with valid values as follows:
+    And the identifiers are mapped with valid values as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
-    Then identifiers mapping should be valid
+    When the identifiers mapping is saved with empty values
+    Then the identifiers mapping should not be saved
 
-  Scenario: An identifiers mapping is valid if at least UPC is mapped
-    Given the predefined attributes EAN
+  Scenario: Fails to map identifiers mapping when Franklin is down
+    Given the predefined attributes pim_brand, MPN, EAN and ASIN
+    And an empty identifiers mapping
+    And Franklin is configured with an expired token
     When the identifiers are mapped with valid values as follows:
       | franklin_code | attribute_code |
+      | brand         | pim_brand      |
+      | mpn           | mpn            |
       | upc           | ean            |
-    Then identifiers mapping should be valid
+      | asin          | asin           |
+    Then the retrieved mapping should be the following:
+      | franklin_code | attribute_code | en_US | fr_FR  |
+      | brand         | pim_brand      | Brand | Marque |
+      | mpn           | mpn            | MPN   | MPN    |
+      | upc           | ean            |       |        |
+      | asin          | asin           | ASIN  | ASIN   |
 
-  Scenario: An identifiers mapping is valid if at least MPN and BRAND are mapped
-    Given the predefined attributes pim_brand and MPN
+  Scenario: Fails to map identifiers mapping when Franklin is down
+    Given the predefined attributes pim_brand, MPN, EAN and ASIN
+    And an empty identifiers mapping
+    And Franklin server is down
     When the identifiers are mapped with valid values as follows:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
-    Then identifiers mapping should be valid
-
-  Scenario: An identifiers mapping is not valid if MPN is mapped without BRAND
-    Given the predefined attributes pim_brand
-    When the identifiers are mapped with valid values as follows:
-      | franklin_code | attribute_code |
-      | brand         | pim_brand      |
-    Then identifiers mapping should not be valid
-
-  Scenario: An identifiers mapping is not valid if BRAND is mapped without MPN
-    Given the predefined attributes mpn
-    When the identifiers are mapped with valid values as follows:
-      | franklin_code | attribute_code |
-      | mpn           | mpn            |
-    Then identifiers mapping should not be valid
-
-  Scenario: An identifiers mapping is not valid if nothing is mapped
-    Given an empty identifiers mapping
-    Then identifiers mapping should not be valid
+      | upc           | ean            |
+      | asin          | asin           |
+    Then the retrieved mapping should be the following:
+      | franklin_code | attribute_code | en_US | fr_FR  |
+      | brand         | pim_brand      | Brand | Marque |
+      | mpn           | mpn            | MPN   | MPN    |
+      | upc           | ean            |       |        |
+      | asin          | asin           | ASIN  | ASIN   |
