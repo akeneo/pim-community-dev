@@ -176,21 +176,20 @@ SQL;
      */
     protected function findProductIdsAsOwner(ProjectInterface $project, $status)
     {
-        $parameters = [
-            'locale_code' => $project->getLocale()->getCode(),
-            'channel_code' => $project->getChannel()->getCode(),
-        ];
+        $parameters = $this->buildQueryParameters($project);
 
         $sql = <<<SQL
-SELECT `completeness_per_attribute_group`.`product_id`
-FROM `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
-INNER JOIN `@pim_catalog.entity.channel@` AS `channel`
-	ON `completeness_per_attribute_group`.`channel_id` = `channel`.`id`
-INNER JOIN `@pim_catalog.entity.locale@` AS `locale`
-	ON `completeness_per_attribute_group`.`locale_id` = `locale`.`id`
-AND `channel`.`code` = :channel_code
-AND `locale`.`code` = :locale_code
-GROUP BY `completeness_per_attribute_group`.`product_id`
+SELECT `product`.`identifier`
+FROM 
+     `@pim_catalog.entity.product@` AS `product`
+      INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+        ON `product`.`id` = `completeness_per_attribute_group`.`product_id` 
+        AND completeness_per_attribute_group.channel_id = :channel_id 
+        AND completeness_per_attribute_group.locale_id = :locale_id 
+      INNER JOIN `@pimee_teamwork_assistant.project_product@` AS `project_product`
+        ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
+        AND `project_product`.`project_id` = :project_id
+GROUP BY `product`.`identifier`
 SQL;
 
         if ($status === ProjectCompletenessFilter::OWNER_TODO) {
@@ -218,7 +217,7 @@ SQL;
         $sql = $this->tableNameMapper->createQuery($sql);
         $productIds = $connection->fetchAll($sql, $parameters);
 
-        return array_column($productIds, 'product_id');
+        return array_column($productIds, 'identifier');
     }
 
     /**
