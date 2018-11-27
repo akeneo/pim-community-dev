@@ -4,7 +4,7 @@ Feature: Subscribe a product to Franklin
   As Julia
   I want to subscribe a product to Franklin
 
-  @end-to-end @javascript
+  @end-to-end @javascript @critical
   Scenario: Successfully subscribe a product to Franklin
     Given a system administrator configures Franklin using a valid token
     And the product "B00EYZY6AC" of the family "router"
