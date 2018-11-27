@@ -19,6 +19,12 @@ describe('akeneo > reference entity > domain > model > record > data --- text', 
     expect(denormalize('awesome text').stringValue()).toEqual('awesome text');
   });
 
+  test('I can test if a TextData is empty or not', () => {
+    expect(denormalize('awesome text').isEmpty()).toBe(false);
+    expect(denormalize('').isEmpty()).toBe(true);
+    expect(denormalize('<p></p>\n').isEmpty()).toBe(true);
+  });
+
   test('I can test if two textData are equal', () => {
     expect(denormalize('awesome text').equals(denormalize('awesome text'))).toEqual(true);
     expect(denormalize('awesome text').equals(denormalize('nice text'))).toEqual(false);

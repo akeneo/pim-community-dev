@@ -24,6 +24,7 @@ pim_reference_entity:
       save: Save
       create: Create
     title: Entities
+    breadcrumb: Reference Entities
     img: The main image of the reference entity named "{{ label }}"
     tab:
       records: Records
@@ -46,7 +47,7 @@ pim_reference_entity:
         confirm: Are you sure you want to delete this entity?
     index:
       grid:
-        count: '{{ count }} results'
+        count: '{0} No Reference Entity|{1} {{ count }} Reference Entity|]1,Inf] {{ count }} Reference Entities'
     create:
       header:
         title: Create

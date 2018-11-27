@@ -149,11 +149,12 @@ module.exports = async function(cucumber) {
 
   Then('the user should see the validation error {string}', async function(expectedError) {
     const modal = await await getElement(this.page, 'Modal');
-    const error = await modal.getValidationMessageForCode();
 
-    assert.strictEqual(error, expectedError);
+    let error = null;
+    while (error !== expectedError) {
+      error = await modal.getValidationMessageForCode();
+    }
   });
-
 
   When('the user creates a valid option attribute', async function() {
     await answerChannelList.apply(this);
@@ -194,5 +195,4 @@ module.exports = async function(cucumber) {
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
   });
-
 };

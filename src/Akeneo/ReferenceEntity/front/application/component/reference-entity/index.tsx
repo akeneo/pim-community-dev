@@ -68,7 +68,7 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                               type: 'redirect',
                               route: 'akeneo_reference_entities_reference_entity_edit',
                             },
-                            label: __('pim_reference_entity.reference_entity.title'),
+                            label: __('pim_reference_entity.reference_entity.breadcrumb'),
                           },
                         ]}
                       />
@@ -97,9 +97,13 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                   <div className="AknTitleContainer-line">
                     <div className="AknTitleContainer-title">
                       <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
-                        {__('pim_reference_entity.reference_entity.index.grid.count', {
-                          count: grid.referenceEntities.length,
-                        })}
+                        {__(
+                          'pim_reference_entity.reference_entity.index.grid.count',
+                          {
+                            count: grid.referenceEntities.length,
+                          },
+                          grid.referenceEntities.length
+                        )}
                       </span>
                     </div>
                     <div className="AknTitleContainer-state" />

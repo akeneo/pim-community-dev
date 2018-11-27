@@ -210,25 +210,21 @@ const helperRow = ({locale, currentOption}: {locale: Locale; currentOption: Norm
 
   return (
     <React.Fragment key={locale.code}>
-      <tr>
-        <td>
-          <div className="AknFieldContainer">
-            <div className="AknFieldContainer-header AknFieldContainer-header--light">
-              <label className="AknFieldContainer-label">{locale.label}</label>
-            </div>
-            <div className="AknFieldContainer-inputContainer">
-              <input
-                type="text"
-                className="AknTextField AknTextField--light AknTextField--disabled"
-                value={label}
-                readOnly
-                tabIndex={-1}
-              />
-              <Flag locale={locale} displayLanguage={false} className="AknFieldContainer-inputSides" />
-            </div>
-          </div>
-        </td>
-      </tr>
+      <div className="AknFieldContainer">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
+          <label className="AknFieldContainer-label">{locale.label}</label>
+        </div>
+        <div className="AknFieldContainer-inputContainer">
+          <input
+            type="text"
+            className="AknTextField AknTextField--light AknTextField--disabled"
+            value={label}
+            readOnly
+            tabIndex={-1}
+          />
+          <Flag locale={locale} displayLanguage={false} className="AknFieldContainer-inputSides" />
+        </div>
+      </div>
     </React.Fragment>
   );
 };
@@ -391,20 +387,18 @@ class ManageOptionsView extends React.Component<OptionProps> {
                           {__('pim_reference_entity.attribute.options.helper.title')}
                         </span>
                       </div>
-                      <table className="AknOptionEditor-table">
-                        <tbody>
-                          {sortedLocales.map((locale: Locale) => {
-                            if (locale.code === this.props.locale) {
-                              return;
-                            }
+                      <div className="AknOptionEditor-labelList">
+                        {sortedLocales.map((locale: Locale) => {
+                          if (locale.code === this.props.locale) {
+                            return;
+                          }
 
-                            return helperRow({
-                              locale: locale,
-                              currentOption: options[this.props.currentOptionId],
-                            });
-                          })}
-                        </tbody>
-                      </table>
+                          return helperRow({
+                            locale: locale,
+                            currentOption: options[this.props.currentOptionId],
+                          });
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
