@@ -51,8 +51,8 @@ class AttributeShouldNotExistValidator extends ConstraintValidator
 
         if ($alreadyExists) {
             $this->context->buildViolation(AttributeShouldNotExist::ERROR_MESSAGE)
-                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
-                ->setParameter('%code%', $code)
+                ->setParameter('reference_entity_identifier', $referenceEntityIdentifier)
+                ->setParameter('code', $code)
                 ->atPath('code')
                 ->addViolation();
         }
