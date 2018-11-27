@@ -15,9 +15,13 @@ asset-coupling:
 twa-coupling:
 	vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/WorkOrganization/TeamworkAssistant/.php_cd.php src/Akeneo/Pim/WorkOrganization/TeamworkAssistant
 
+.PHONY: workflow-coupling
+workflow-coupling:
+	vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/WorkOrganization/Workflow/.php_cd.php src/Akeneo/Pim/WorkOrganization/Workflow
+
 .PHONY: rule-engine-coupling
 rule-engine-coupling:
 	vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/RuleEngine/.php_cd.php src/Akeneo/Pim/Automation/RuleEngine
 
 .PHONY: coupling
-coupling: twa-coupling asset-coupling suggest-data-coupling reference-entity-coupling rule-engine-coupling
+coupling: twa-coupling asset-coupling suggest-data-coupling reference-entity-coupling rule-engine-coupling workflow-coupling
