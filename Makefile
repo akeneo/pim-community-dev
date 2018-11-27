@@ -23,5 +23,9 @@ workflow-coupling:
 rule-engine-coupling:
 	vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/RuleEngine/.php_cd.php src/Akeneo/Pim/Automation/RuleEngine
 
+.PHONY: permission-coupling
+permission-coupling:
+	vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Permission/.php_cd.php src/Akeneo/Pim/Permission
+
 .PHONY: coupling
-coupling: twa-coupling asset-coupling suggest-data-coupling reference-entity-coupling rule-engine-coupling workflow-coupling
+coupling: twa-coupling asset-coupling suggest-data-coupling reference-entity-coupling rule-engine-coupling workflow-coupling permission-coupling
