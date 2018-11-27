@@ -15,7 +15,8 @@ import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
-import SimpleSelectAttribute = require('../common/simple-select-attribute');
+import SimpleSelectAttributeWithWarning = require("./simple-select-attribute-with-warning");
+import NormalizedAttribute from 'pim/model/attribute';
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -40,11 +41,6 @@ interface AttributesMappingForFamily {
 interface NormalizedAttributesMappingForFamily {
   code: string;
   mapping: AttributesMappingForFamily;
-}
-
-interface NormalizedAttribute {
-  code: string;
-  type: string;
 }
 
 interface Config {
@@ -84,13 +80,23 @@ class AttributeMapping extends BaseView {
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
 
   /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
-  private static readonly VALID_MAPPING: { [attributeType: string]: string[] } = {
+  private static readonly PERFECT_MAPPINGS: { [attributeType: string]: string[] } = {
     metric: [ 'pim_catalog_metric' ],
     select: [ 'pim_catalog_simpleselect' ],
     multiselect: [ 'pim_catalog_multiselect' ],
     number: [ 'pim_catalog_number' ],
     text: [ 'pim_catalog_text' ],
   };
+  private static readonly ALLOWED_CATALOG_TYPES: string[] = [
+    'pim_catalog_metric',
+    'pim_catalog_simpleselect',
+    'pim_catalog_multiselect',
+    'pim_catalog_number',
+    'pim_catalog_text',
+    'pim_catalog_textarea',
+    'pim_catalog_boolean',
+    'pim_catalog_identifier'
+  ];
   private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
   private readonly template = _.template(template);
@@ -212,12 +218,13 @@ class AttributeMapping extends BaseView {
     const $dom = this.$el.find(
       '.attribute-selector[data-franklin-attribute-code="' + franklinAttributeCode + '"]',
     );
-    const attributeSelector = new SimpleSelectAttribute({
+    const attributeSelector = new SimpleSelectAttributeWithWarning({
       config: {
         fieldName: 'mapping.' + franklinAttributeCode + '.attribute',
         label: '',
         choiceRoute: 'pim_enrich_attribute_rest_index',
-        types: AttributeMapping.VALID_MAPPING[mapping[franklinAttributeCode].franklinAttribute.type],
+        types: AttributeMapping.ALLOWED_CATALOG_TYPES,
+        perfectMappings: AttributeMapping.PERFECT_MAPPINGS[mapping[franklinAttributeCode].franklinAttribute.type],
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });

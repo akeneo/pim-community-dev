@@ -8,6 +8,8 @@
  */
 
 import * as _ from 'underscore';
+import NormalizedAttribute from 'pim/model/attribute';
+import NormalizedAttributeGroup from 'pim/model/attribute-group';
 
 const __ = require('oro/translator');
 const BaseSimpleSelect = require('pim/form/common/fields/simple-select-async');
@@ -15,16 +17,6 @@ const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
 const LineTemplate = require('pim/template/attribute/attribute-line');
-
-interface NormalizedAttribute {
-  code: string;
-  labels: { [pimAttributeCode: string]: string };
-  group: string;
-}
-
-interface NormalizedAttributeGroup {
-  labels: { [pimAttributeGroupCode: string]: string };
-}
 
 /**
  * Attributes simple select
@@ -35,6 +27,9 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   private readonly lineView = _.template(LineTemplate);
   private attributeGroups: { [pimAttributeGroupCode: string]: NormalizedAttributeGroup } = {};
 
+  /**
+   * {@inheritdoc}
+   */
   constructor(options: { config: object, className: string }) {
     super({
       ...{ className: 'AknFieldContainer AknFieldContainer--withoutMargin' }, ...options,
@@ -85,6 +80,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
             ) : ''
         ),
       },
+      type: item.type,
     };
   }
 
