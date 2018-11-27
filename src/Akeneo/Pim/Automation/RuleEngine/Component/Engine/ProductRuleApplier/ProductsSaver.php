@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
@@ -114,7 +113,7 @@ class ProductsSaver
     /**
      * Explicitly updates the product models descendants of a product.
      *
-     * @param ProductModel[] $productModels
+     * @param ProductModelInterface[] $productModels
      */
     private function computeProductModelDescendants(array $productModels): void
     {
