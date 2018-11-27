@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FindAttributeGroupOrdersEqualOrSuperiorTo;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -82,7 +82,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
                 continue;
             }
 
-            /** @var AttributeGroup $attributeGroup */
+            /** @var AttributeGroupInterface $attributeGroup */
             $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupItem['code']);
 
             if (null === $attributeGroup) {
