@@ -109,6 +109,11 @@
     min-height: 0;
     display: flex;
     align-items: center;
+    flex: 1;
+
+    .select2-result-label-main {
+      flex: 1;
+    }
   }
 
   .select2-searching {
@@ -236,7 +241,10 @@
     }
 
     .select2-search-field {
-      height: @AknFormHeight - 7px;
+      height: @AknFormHeight -7px;
+      background: url("../../images/icon-plus.svg") no-repeat;
+      background-size: 16px;
+      background-position: right 20px center;
 
       input {
         height: @AknFormHeight - 4px;
@@ -628,7 +636,7 @@
 }
 
 
-@recordSelectorWidth: 430px;
+@recordSelectorWidth: 450px;
 @recordSelectorHeight: 54px;
 
 .record-selector-multi-dropdown, .record-selector-dropdown {
@@ -650,6 +658,14 @@
       margin-right: 10px;
     }
   }
+
+  .select2-result-label-hint {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: @AknGrey;
+  }
 }
 
 .record-selector-multi-dropdown {
@@ -658,8 +674,9 @@
 }
 
 .record-selector {
+
   &.select2-container-multi, &.select2-container {
-    width: @recordSelectorWidth + 30px;
+    width: @recordSelectorWidth + 10px;
     .select2-choice {
       height: 70px;
 
@@ -670,6 +687,14 @@
         align-items: center;
         font-size: 13px;
 
+        .select2-result-label-main {
+          flex: 1;
+        }
+
+        .select2-result-label-hint {
+          margin-right: 20px;
+        }
+
         img {
           margin-right: 10px;
         }
@@ -679,7 +704,6 @@
     .select2-choices {
       border: none;
       border-bottom: 1px solid @AknMediumGrey;
-      background: url("../../images/icon-plus.svg") no-repeat right 1px;
       background-size: 16px 16px;
       min-height: @recordSelectorHeight + 16px !important;
 
@@ -726,6 +750,13 @@
           flex-direction: row;
           align-items: center;
           font-size: 13px;
+
+          .select2-result-label-main {
+            flex: 1;
+          }
+          .select2-result-label-hint {
+            margin-right: 10px;
+          }
 
           img {
             margin-right: 10px;
@@ -775,5 +806,13 @@
         background-size: 16px 16px !important;
       }
     }
+  }
+
+  .select2-result-label-hint {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: @AknGrey;
   }
 }
