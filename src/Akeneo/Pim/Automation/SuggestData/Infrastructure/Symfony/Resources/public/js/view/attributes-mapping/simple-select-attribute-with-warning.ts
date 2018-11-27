@@ -9,6 +9,9 @@
 
 import SimpleSelectAttribute = require("../common/simple-select-attribute");
 import NormalizedAttribute from 'pim/model/attribute';
+import * as _ from 'underscore';
+const warningTemplate = require('akeneo/suggest-data/template/settings/attributes-mapping/warning');
+const __ = require('oro/translator');
 
 interface Config {
   config: {
@@ -25,8 +28,8 @@ interface Config {
  * TODO
  */
 class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
+  private static readonly warningTemplate: ((...data: any[]) => string) = _.template(warningTemplate);
   private readonly perfectMappings: string[];
-  // private cacheMapping: { [attributeCode: string]: string } = {};
 
   /**
    * {@inheritdoc}
@@ -65,10 +68,9 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
    */
   private toggleWarning(type: string) {
     if (!this.perfectMappings.includes(type)) {
-      this.$el.find('.AknFieldContainer-footer').append('<span class="AknFieldContainer-validationError">' +
-        '            <i class="icon-warning-sign"></i>' +
-        '            <span class="error-message">message</span>' +
-        '        </span>');
+      this.$el.find('.AknFieldContainer-footer').append(SimpleSelectAttributeWithWarning.warningTemplate({
+        message: __('akeneo_suggest_data.entity.attributes_mapping.module.index.types_mismatch_warning')
+      }));
     }
   }
 }

@@ -34,7 +34,7 @@
             <div class="AknFieldContainer-validationErrors label-errors">
                 <% _.each(_.where(errors, {field: 'label'}), function (error) { %>
                     <div class="AknFieldContainer-validationError">
-                        <i class="icon-warning-sign"></i> <%- error.message %>
+                        <%- error.message %>
                     </div>
                 <% }); %>
             </div>
@@ -54,7 +54,7 @@
             <div class="AknFieldContainer-validationErrors dueDate-errors">
                 <% _.each(_.where(errors, {field: 'dueDate'}), function (error) { %>
                     <div class="AknFieldContainer-validationError">
-                        <i class="icon-warning-sign"></i> <%- error.message %>
+                        <%- error.message %>
                     </div>
                 <% }); %>
             </div>

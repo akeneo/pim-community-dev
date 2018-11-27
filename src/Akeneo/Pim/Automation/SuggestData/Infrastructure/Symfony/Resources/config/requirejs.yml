@@ -87,6 +87,7 @@ config:
         akeneo/suggest-data/template/settings/attributes-mapping/table: akeneosuggestdata/templates/attributes-mapping/table.html
         akeneo/suggest-data/template/settings/attributes-mapping/family-mapping: akeneosuggestdata/templates/attributes-mapping/family-mapping.html
         akeneo/suggest-data/template/settings/attributes-mapping/family-line: akeneosuggestdata/templates/attributes-mapping/family-line.html
+        akeneo/suggest-data/template/settings/attributes-mapping/warning: akeneosuggestdata/templates/attributes-mapping/warning.html
         akeneo/suggest-data/template/common/status-filter: akeneosuggestdata/templates/common/status-filter.html
         akeneo/suggest-data/template/common/tabs: akeneosuggestdata/templates/common/tabs.html
         akeneo/suggest-data/template/common/simple-select-attribute: akeneosuggestdata/templates/common/simple-select-attribute.html
