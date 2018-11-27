@@ -153,6 +153,11 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
                       standardPropertyName: locales
 
 # Attributes
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\EditUploadedFileValueCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditUploadedFileValueCommand: ~
+
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
         - CreateImageAttributeCommand

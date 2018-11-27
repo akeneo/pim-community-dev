@@ -10,24 +10,44 @@ export interface DropdownElement {
 const DefaultButtonView = ({
   selectedElement,
   onClick,
+  allowEmpty,
+  placeholder
 }: {
   open: boolean;
   selectedElement: DropdownElement;
   onClick: () => void;
+  allowEmpty?: boolean;
+  placeholder?: string
 }) => (
-  <div
-    className="AknButton"
-    tabIndex={0}
-    data-selected={selectedElement.identifier}
-    onClick={() => onClick()}
-    onKeyPress={event => {
-      if (Key.Space === event.key) onClick();
-    }}
-    aria-label={selectedElement.label}
-  >
-    <span className="AknActionButton-highlight">{selectedElement.label}</span>
-    <span className="AknActionButton-caret" />
-  </div>
+  <React.Fragment>
+    {allowEmpty && placeholder && selectedElement.identifier === 'none' ? (
+      <div
+        className="AknButton"
+        tabIndex={0}
+        onClick={() => onClick()}
+        onKeyPress={event => {
+          if (Key.Space === event.key) onClick();
+        }}
+      >
+        <span className="AknActionButton-highlight">{placeholder}</span>
+        <span className="AknActionButton-caret" />
+      </div>
+    ) : (
+      <div
+        className="AknButton"
+        tabIndex={0}
+        data-selected={selectedElement.identifier}
+        onClick={() => onClick()}
+        onKeyPress={event => {
+          if (Key.Space === event.key) onClick();
+        }}
+        aria-label={selectedElement.label}
+      >
+        <span className="AknActionButton-highlight">{selectedElement.label}</span>
+        <span className="AknActionButton-caret" />
+      </div>
+    )}
+  </React.Fragment>
 );
 
 const DefaultItemView = ({
@@ -75,6 +95,8 @@ interface Props {
   label: string;
   className?: string;
   onSelectionChange: (element: DropdownElement) => void;
+  allowEmpty?: boolean;
+  placeholder?: string;
 }
 
 interface State {
@@ -118,10 +140,16 @@ class Dropdown extends React.Component<Props, State> {
 
   render() {
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
-    const dropdownButton = (selectedElement: string, label: string) => {
+    const dropdownButton = (selectedElement: string, label: string, allowEmpty?: boolean, placeholder?: string) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
-      return <Button label={label} selectedElement={this.getElement(selectedElement)} onClick={this.open.bind(this)} />;
+      return <Button
+        label={label}
+        selectedElement={this.getElement(selectedElement)}
+        onClick={this.open.bind(this)}
+        allowEmpty={allowEmpty}
+        placeholder={placeholder}
+      />;
     };
 
     const ElementViews = this.props.elements.map((element: DropdownElement) => {
@@ -141,7 +169,7 @@ class Dropdown extends React.Component<Props, State> {
     return (
       <div className={`AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
         {this.state.isOpen ? <div className="AknDropdown-mask" onClick={this.close.bind(this)} /> : null}
-        {dropdownButton(this.state.selectedElement, this.props.label)}
+        {dropdownButton(this.state.selectedElement, this.props.label, this.props.allowEmpty, this.props.placeholder)}
         <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass}`}>
           <div className="AknDropdown-menuTitle">{this.props.label}</div>
           {ElementViews}

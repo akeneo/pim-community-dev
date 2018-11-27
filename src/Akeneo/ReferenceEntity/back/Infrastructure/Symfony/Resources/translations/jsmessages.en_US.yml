@@ -167,8 +167,8 @@ pim_reference_entity:
       input:
         code: Code (required)
         label: Label
-        type: Attribute type
-        record_type: Reference entity to link
+        type: Attribute type (required)
+        record_type: Reference entity to link (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
       confirm: Save

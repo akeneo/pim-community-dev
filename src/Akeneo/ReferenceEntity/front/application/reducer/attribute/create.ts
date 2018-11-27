@@ -11,7 +11,7 @@ export interface CreateState {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    record_type: string | null;
+    record_type: string;
   };
   errors: ValidationError[];
 }
@@ -20,10 +20,10 @@ const initCreateState = (): CreateState => ({
   active: false,
   data: {
     code: '',
-    type: 'text',
+    type: 'none',
     value_per_locale: false,
     value_per_channel: false,
-    record_type: null,
+    record_type: 'none',
     labels: {},
   },
   errors: [],

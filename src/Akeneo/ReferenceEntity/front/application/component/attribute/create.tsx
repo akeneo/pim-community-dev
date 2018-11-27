@@ -37,7 +37,7 @@ interface StateProps {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    record_type: string | null;
+    record_type: string;
   };
   errors: ValidationError[];
 }
@@ -131,7 +131,6 @@ class Create extends React.Component<CreateProps> {
 
     const referenceEntities = await referenceEntityFetcher.fetchAll();
     this.setState({referenceEntities: referenceEntities});
-    this.props.events.onRecordTypeUpdated(referenceEntities[0].getIdentifier().stringValue());
   }
 
   private onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,11 +164,6 @@ class Create extends React.Component<CreateProps> {
   };
 
   render(): JSX.Element | JSX.Element[] | null {
-    const defaultRecordType =
-      undefined !== this.state.referenceEntities[0]
-        ? this.state.referenceEntities[0].getIdentifier().stringValue()
-        : '';
-
     return (
       <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
         <div>
@@ -249,6 +243,8 @@ class Create extends React.Component<CreateProps> {
                       elements={this.getTypeOptions()}
                       selectedElement={this.props.data.type}
                       onSelectionChange={this.onTypeUpdate}
+                      allowEmpty={true}
+                      placeholder='Sélectionner votre type'
                     />
                   </div>
                   {getErrorsView(this.props.errors, 'type')}
@@ -272,10 +268,10 @@ class Create extends React.Component<CreateProps> {
                           label: referenceEntity.getLabel(this.props.context.locale),
                           original: referenceEntity,
                         }))}
-                        selectedElement={
-                          null === this.props.data.record_type ? defaultRecordType : this.props.data.record_type
-                        }
+                        selectedElement={this.props.data.record_type}
                         onSelectionChange={this.onRecordTypeUpdate}
+                        allowEmpty={true}
+                        placeholder='Sélectionner votre lien'
                       />
                     </div>
                     {getErrorsView(this.props.errors, 'recordType')}
