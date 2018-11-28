@@ -50,6 +50,8 @@ class JobLauncher implements JobLauncherInterface
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($jobInstanceName);
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $this->jobLauncher->launch($jobInstance, $user, $options);
+        if (null !== $jobInstance) {
+            $this->jobLauncher->launch($jobInstance, $user, $options);
+        }
     }
 }
