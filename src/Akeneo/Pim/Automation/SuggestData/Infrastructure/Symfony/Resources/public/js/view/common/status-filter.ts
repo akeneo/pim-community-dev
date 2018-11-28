@@ -13,7 +13,7 @@ import * as _ from 'underscore';
 import {Filter, FilterValue} from '../../common/filterable';
 
 const __ = require('oro/translator');
-const template = require('pimee/template/common/status-filter');
+const template = require('akeneo/suggest-data/template/common/status-filter');
 
 interface FilterLabel {
   value: number | string;

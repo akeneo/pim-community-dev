@@ -23,7 +23,7 @@ class IndexController extends BaseIndexController {
    * This is the same method than the parent, but adding the 'can-leave' mechanism.
    */
   public renderForm(): object {
-    return FormBuilder.build('pim-' + this.options.config.entity + '-index')
+    return FormBuilder.build('akeneo-suggest-data-' + this.options.config.entity + '-index')
       .then((form: any) => {
         this.on('pim:controller:can-leave', (event: any) => {
           form.trigger('pim_enrich:form:can-leave', event);

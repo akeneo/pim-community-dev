@@ -33,6 +33,11 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
 
+            //Subscribers
+            'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
@@ -69,6 +74,8 @@ $rules = [
 
             // External dependencies
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\Validator\Constraints\Collection',
+            'Symfony\Component\Validator\Constraints\NotBlank',
 
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',

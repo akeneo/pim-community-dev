@@ -1,5 +1,5 @@
 extensions:
-    pim-ee-suggest-data-connection:
+    akeneo-suggest-data-franklin-connection:
         module: pim/menu/item
         parent: pim-menu-system-navigation-block
         aclResourceId: akeneo_suggest_data_connection

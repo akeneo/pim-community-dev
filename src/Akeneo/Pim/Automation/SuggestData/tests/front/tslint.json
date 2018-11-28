@@ -12,7 +12,8 @@
     "quotemark": [true, "single"],
     "radix": false,
     "switch-default": false,
-    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"],
+    "max-line-length": false
   },
   "rulesDirectory": []
 }

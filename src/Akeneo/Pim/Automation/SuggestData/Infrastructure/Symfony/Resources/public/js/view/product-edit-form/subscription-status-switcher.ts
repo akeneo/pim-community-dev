@@ -18,8 +18,8 @@ const __ = require('oro/translator');
 const Mediator = require('oro/mediator');
 const Messenger = require('oro/messenger');
 const Routing = require('routing');
-const template = require('pimee/template/product-edit-form/subscription-status-switcher');
-const templateReadOnly = require('pimee/template/product-edit-form/subscription-status-switcher-read-only');
+const template = require('akeneo/suggest-data/template/product-edit-form/subscription-status-switcher');
+const templateReadOnly = require('akeneo/suggest-data/template/product-edit-form/subscription-status-switcher-read-only');
 
 interface Config {
   createProductSubscriptionFailMessage: string;

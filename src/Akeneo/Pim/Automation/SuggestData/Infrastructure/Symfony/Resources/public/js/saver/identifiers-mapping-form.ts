@@ -10,7 +10,7 @@
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
-const MappingSaver = require('pimee/saver/identifiers-mapping');
+const MappingSaver = require('akeneo/suggest-data/saver/identifiers-mapping');
 
 interface Mapping {
   [franklinAttribute: string]: (string | null);

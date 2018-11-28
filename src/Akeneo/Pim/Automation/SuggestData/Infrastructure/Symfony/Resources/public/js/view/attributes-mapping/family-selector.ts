@@ -13,7 +13,7 @@ import AttributeMapping = require('./table');
 const BaseSelect = require('pim/form/common/fields/simple-select-async');
 const FetcherRegistry = require('pim/fetcher-registry');
 const Router = require('pim/router');
-const lineTemplate = require('pimee/template/attributes-mapping/family-line');
+const lineTemplate = require('akeneo/suggest-data/template/settings/attributes-mapping/family-line');
 
 interface Config {
   fieldName: string;
@@ -34,7 +34,7 @@ class FamilySelector extends BaseSelect {
     super(config);
     this.events = {
       'change input': (event: { target: any }) => {
-        FetcherRegistry.getFetcher('suggest_data_attribute_mapping_by_family')
+        FetcherRegistry.getFetcher('attributes-mapping-by-family')
           .fetch(this.getFieldValue(event.target), {cached: false})
           .then((family: { code: string }) => {
             const hasRedirected = Router.redirectToRoute('akeneo_suggest_data_attributes_mapping_edit', {

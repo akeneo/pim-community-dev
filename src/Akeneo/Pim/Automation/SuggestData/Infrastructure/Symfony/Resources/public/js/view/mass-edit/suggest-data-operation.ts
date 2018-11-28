@@ -13,7 +13,7 @@ import {getConnectionStatus} from '../../fetcher/franklin-connection';
 import ConnectionStatus from '../../model/connection-status';
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
-const template = require('pimee/template/mass-edit/suggest-data-operation');
+const template = require('akeneo/suggest-data/template/mass-edit/suggest-data-operation');
 const Router = require('pim/router');
 
 interface Config {

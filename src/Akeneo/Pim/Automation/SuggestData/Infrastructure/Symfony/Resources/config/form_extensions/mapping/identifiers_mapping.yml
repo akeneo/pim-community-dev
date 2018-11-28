@@ -1,54 +1,54 @@
 extensions:
-    pimee-suggest-data-settings-identifiers-mapping-index:
+    akeneo-suggest-data-settings-identifiers-mapping-index:
         module: pim/form/common/edit-form
 
-    pimee-suggest-data-settings-identifiers-mapping-index-breadcrumb:
+    akeneo-suggest-data-settings-identifiers-mapping-index-breadcrumb:
         module: pim/common/breadcrumbs
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: breadcrumbs
         config:
             tab: pim-menu-settings
-            item: pimee-suggest-data-menu-settings-mapping
+            item: akeneo-suggest-data-menu-settings-mapping
 
-    pimee-suggest-data-settings-identifiers-mapping-index-user-navigation:
+    akeneo-suggest-data-settings-identifiers-mapping-index-user-navigation:
         module: pim/menu/user-navigation
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pimee-suggest-data-settings-identifiers-mapping-index-title:
+    akeneo-suggest-data-settings-identifiers-mapping-index-title:
         module: pim/common/grid-title
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: title
         config:
             countable: false
             title: akeneo_suggest_data.settings.page_title
 
-    pimee-suggest-data-settings-identifiers-mapping-index-save-buttons:
+    akeneo-suggest-data-settings-identifiers-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: buttons
         position: 120
 
-    pimee-suggest-data-settings-identifiers-mapping-index-save:
-        module: pimee/saver/identifiers-mapping-form
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+    akeneo-suggest-data-settings-identifiers-mapping-index-save:
+        module: akeneo/suggest-data/saver/identifiers-mapping-form
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: buttons
         position: 0
 
-    pimee-suggest-data-settings-identifiers-mapping-index-state:
-        module: pimee/view/attributes-mapping/state
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+    akeneo-suggest-data-settings-identifiers-mapping-index-state:
+        module: akeneo/suggest-data/view/settings/attributes-mapping/state
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: state
         position: 900
         config:
             entity: akeneo_suggest_data.entity.identifier_mapping.plural_label
 
-    pimee-suggest-data-settings-identifiers-mapping-index-description-header:
+    akeneo-suggest-data-settings-identifiers-mapping-index-description-header:
         module: pim/common/simple-view
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: content
         position: 10
         config:
@@ -60,9 +60,9 @@ extensions:
                     - akeneo_suggest_data.settings.module.title.description.first_step
                     - akeneo_suggest_data.settings.module.title.description.second_step
 
-    pimee-suggest-data-settings-identifiers-mapping-index-tabs:
-        module: pimee/view/common/tabs
-        parent: pimee-suggest-data-settings-identifiers-mapping-index
+    akeneo-suggest-data-settings-identifiers-mapping-index-tabs:
+        module: akeneo/suggest-data/view/settings/mapping/common/tabs
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index
         targetZone: content
         position: 90
         config:
@@ -71,7 +71,7 @@ extensions:
                 - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_suggest_data_attributes_mapping_index, checkAllowed: true }
             selected: 0
 
-    pimee-suggest-data-settings-identifiers-mapping-index-edit-mapping-identifier:
-        module: pimee/view/identifiers-mapping/table
-        parent: pimee-suggest-data-settings-identifiers-mapping-index-tabs
+    akeneo-suggest-data-settings-identifiers-mapping-index-edit-mapping-identifier:
+        module: akeneo/suggest-data/view/settings/identifiers-mapping/table
+        parent: akeneo-suggest-data-settings-identifiers-mapping-index-tabs
         targetZone: content

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -31,5 +33,14 @@ class AttributesMappingResponseSpec extends ObjectBehavior
         $this->shouldHaveType(\Traversable::class);
 
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
+    }
+
+    public function it_can_check_if_attribute_exists(): void
+    {
+        $this->hasPimAttribute(new AttributeCode('color'))->shouldReturn(false);
+
+        $this->addAttribute(new AttributeMapping('franklin_color', null, 'text', 'pim_color', 1, null));
+        $this->hasPimAttribute(new AttributeCode('pim_color'))->shouldReturn(true);
+        $this->hasPimAttribute(new AttributeCode('burger'))->shouldReturn(false);
     }
 }

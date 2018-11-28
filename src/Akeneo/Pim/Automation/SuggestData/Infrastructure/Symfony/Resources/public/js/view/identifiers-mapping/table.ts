@@ -14,7 +14,7 @@ import SimpleSelectAttribute = require('../common/simple-select-attribute');
 
 const FetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
-const template = require('pimee/template/identifiers-mapping/table');
+const template = require('akeneo/suggest-data/template/settings/identifiers-mapping/table');
 
 /**
  * Maps Franklin identifiers with akeneo attributes.

@@ -1,6 +1,6 @@
 extensions:
-    pimee-mass-product-edit-configure-suggest-data:
-        module: pimee/view/mass-edit/suggest-data-operation
+    akeneo-suggest-data-mass-product-edit-configure:
+        module: akeneo/suggest-data/view/mass-edit/suggest-data-operation
         parent: pim-mass-product-edit
         position: 230
         aclResourceId: akeneo_suggest_data_product_subscription
