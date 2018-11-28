@@ -43,9 +43,7 @@ class FilterExtensionSpec extends ObjectBehavior
         $configurator->configure($configuration)->shouldBeCalled();
         $configuration->offsetGetByPath('[filters][columns][foo][label]')->willReturn(null);
 
-        $this
-            ->shouldThrow(new \LogicException('Attribute "foo" does not exists'))
-            ->duringFilterLabel('foo');
+        $this->filterLabel('foo')->shouldReturn(null);
     }
 
     function it_gives_the_label_of_a_filter(
