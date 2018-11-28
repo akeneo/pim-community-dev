@@ -34,9 +34,6 @@ class ProductController extends AbstractListCategoryController
     /** @var SaverInterface */
     protected $productSaver;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $valuesFiller;
 
@@ -49,8 +46,8 @@ class ProductController extends AbstractListCategoryController
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param SaverInterface                        $productSaver
      * @param ProductBuilderInterface               $productBuilder
-     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param MissingAssociationAdder               $missingAssociationAdder
+     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param SecurityFacade                        $securityFacade
      * @param string                                $categoryClass
      * @param string                                $acl
@@ -61,9 +58,8 @@ class ProductController extends AbstractListCategoryController
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         SaverInterface $productSaver,
-        ProductBuilderInterface $productBuilder,
-        EntityWithFamilyValuesFillerInterface $valuesFiller,
         MissingAssociationAdder $missingAssociationAdder,
+        EntityWithFamilyValuesFillerInterface $valuesFiller,
         string $categoryClass,
         SecurityFacade $securityFacade,
         string $acl,
@@ -74,7 +70,6 @@ class ProductController extends AbstractListCategoryController
         $this->productRepository = $productRepository;
         $this->translator = $translator;
         $this->productSaver = $productSaver;
-        $this->productBuilder = $productBuilder;
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->valuesFiller = $valuesFiller;
         $this->acl = $acl;
