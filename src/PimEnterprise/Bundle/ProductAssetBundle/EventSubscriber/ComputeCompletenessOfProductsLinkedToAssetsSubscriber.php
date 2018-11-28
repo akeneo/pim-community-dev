@@ -16,6 +16,10 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -35,6 +39,12 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
     /** @var IdentifiableObjectRepositoryInterface */
     private $jobInstanceRepository;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
+
     /** @var JobLauncherInterface */
     private $jobLauncher;
 
@@ -44,13 +54,25 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
     /** @var CompletenessRemoverInterface */
     private $completenessRemover;
 
+    /**
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+     * @param JobLauncherInterface $jobLauncher
+     * @param TokenStorageInterface $tokenStorage
+     * @param CompletenessRemoverInterface $completenessRemover
+     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         JobLauncherInterface $jobLauncher,
         TokenStorageInterface $tokenStorage,
         CompletenessRemoverInterface $completenessRemover
     ) {
         $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->jobLauncher = $jobLauncher;
         $this->tokenStorage = $tokenStorage;
         $this->completenessRemover = $completenessRemover;
@@ -62,11 +84,14 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE     => 'computeCompletenessOfProductsLinkedToAsset',
+            StorageEvents::POST_SAVE => 'computeCompletenessOfProductsLinkedToAsset',
             StorageEvents::POST_SAVE_ALL => 'computeCompletenessOfProductsLinkedToAssets',
         ];
     }
 
+    /**
+     * @param GenericEvent $event
+     */
     public function computeCompletenessOfProductsLinkedToAsset(GenericEvent $event): void
     {
         if ($event->hasArgument('unitary') && !$event->getArgument('unitary')) {
@@ -88,6 +113,9 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
         $this->computeCompletenessForAssets([$asset]);
     }
 
+    /**
+     * @param GenericEvent $event
+     */
     public function computeCompletenessOfProductsLinkedToAssets(GenericEvent $event): void
     {
         $assets = [];
@@ -113,7 +141,10 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
         $this->computeCompletenessForAssets($assets);
     }
 
-    private function computeCompletenessForAssets(array $assets)
+    /**
+     * @param array $assets
+     */
+    private function computeCompletenessForAssets(array $assets): void
     {
         $computeCompletenessJobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_CODE);
 
@@ -127,13 +158,42 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
             return;
         }
 
-        $assetCodes = array_map(function (AssetInterface $asset) {
-            return $asset->getCode();
-        }, $assets);
+        $assetCodes = array_map(
+            function (AssetInterface $asset) {
+                return $asset->getCode();
+            },
+            $assets
+        );
+
+        if (!$this->areThereProductsLinkedToAssets($assetCodes)) {
+            return;
+        }
 
         $user = $this->tokenStorage->getToken()->getUser();
         $configuration = ['asset_codes' => $assetCodes];
 
         $this->jobLauncher->launch($computeCompletenessJobInstance, $user, $configuration);
+    }
+
+    /**
+     * Checks whether there are products linked to specific assets
+     *
+     * @param array $assetCodes
+     *
+     * @return bool
+     */
+    private function areThereProductsLinkedToAssets(array $assetCodes): bool
+    {
+        $assetAttributeCodes = $this->attributeRepository->getAttributeCodesByType(AttributeTypes::ASSETS_COLLECTION);
+        foreach ($assetAttributeCodes as $attributeCode) {
+            $pqb = $this->productQueryBuilderFactory->create();
+            $pqb->addFilter($attributeCode, Operators::IN_LIST, $assetCodes);
+
+            if ($pqb->execute()->count() > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
