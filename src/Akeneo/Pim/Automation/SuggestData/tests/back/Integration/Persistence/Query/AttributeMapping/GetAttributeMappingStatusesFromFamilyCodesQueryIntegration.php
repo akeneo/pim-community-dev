@@ -96,20 +96,14 @@ class GetAttributeMappingStatusesFromFamilyCodesQueryIntegration extends TestCas
 
         $attributeMappingStatus = $this->getAttributeMappingStatusForTestFamily();
 
-        Assert::assertSame(
-            [static::TESTED_FAMILY_CODE => Family::MAPPING_EMPTY],
-            $attributeMappingStatus
-        );
+        Assert::assertEmpty($attributeMappingStatus);
     }
 
     public function test_there_is_no_mapping_status_for_families_with_no_products(): void
     {
         $attributeMappingStatus = $this->getAttributeMappingStatusForTestFamily();
 
-        Assert::assertSame(
-            [static::TESTED_FAMILY_CODE => Family::MAPPING_EMPTY],
-            $attributeMappingStatus
-        );
+        Assert::assertEmpty($attributeMappingStatus);
     }
 
     /**

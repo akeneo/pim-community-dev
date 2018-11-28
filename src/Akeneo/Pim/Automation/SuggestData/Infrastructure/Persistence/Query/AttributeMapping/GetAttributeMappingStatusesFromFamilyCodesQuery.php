@@ -55,7 +55,7 @@ SQL;
 
         $results = $statement->fetchAll();
 
-        $attributeStatusesByFamily = array_fill_keys($familyCodes, Family::MAPPING_EMPTY);
+        $attributeStatusesByFamily = [];
         foreach ($results as $result) {
             $familyCode = $result['code'];
             $missesMapping = (bool) $result['misses_mapping'] ? Family::MAPPING_PENDING : Family::MAPPING_FULL;
