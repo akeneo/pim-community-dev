@@ -1,0 +1,48 @@
+<?php
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
+
+/**
+ * Dynamic configuration for SSO, composed of a root code, a section for the Identity Provider and another for
+ * the Service Provider.
+ *
+ * @author Yohan Blain <yohan.blain@akeneo.com>
+ */
+final class Root
+{
+    /** @var Code */
+    private $code;
+
+    /** @var IdentityProvider */
+    private $identityProvider;
+
+    /** @var ServiceProvider */
+    private $serviceProvider;
+
+    private function __construct(
+        Code $code,
+        IdentityProvider $identityProvider,
+        ServiceProvider $serviceProvider
+    ) {
+        $this->identityProvider = $identityProvider;
+        $this->serviceProvider = $serviceProvider;
+        $this->code = $code;
+    }
+
+    public static function create(
+        Code $code,
+        IdentityProvider $identityProvider,
+        ServiceProvider $serviceProvider
+    ): self {
+        return new self($code, $identityProvider, $serviceProvider);
+    }
+}
