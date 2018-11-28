@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOpti
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributeOptionsMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read\AttributeOptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\ValueObject\AttributeOptions;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
@@ -168,12 +169,14 @@ class RemoveAttributeOptionFromAttributeOptionsMappingTasklet implements Tasklet
 
     /**
      * @param string $deletedAttributeOptionCode
-     * @param $currentOptionMapping
+     * @param AttributeOptionMapping $currentOptionMapping
      *
      * @return array
      */
-    private function buildNewOptionMapping(string $deletedAttributeOptionCode, $currentOptionMapping): array
-    {
+    private function buildNewOptionMapping(
+        string $deletedAttributeOptionCode,
+        AttributeOptionMapping $currentOptionMapping
+    ): array {
         $newMappedOptionCode = $currentOptionMapping->catalogAttributeCode() === $deletedAttributeOptionCode ?
             null : $currentOptionMapping->catalogAttributeCode();
 
