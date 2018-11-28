@@ -4,12 +4,14 @@ Feature: Fetch products from Franklin
   As the System
   I want to fetch products I subscribed on from Franklin
 
+
   Scenario: Fail to fetch products if token is not configured
     Given Franklin is configured with an expired token
     And last fetch of subscribed products has been done yesterday
     When the subscribed products are fetched from Franklin
     Then 0 suggested data should have been added
 
+  @critical
   Scenario: Successfully fetch products from Franklin
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
@@ -21,6 +23,7 @@ Feature: Fetch products from Franklin
     And the product "B00EYZY6AC" is subscribed to Franklin
     And the product "606449099812" is subscribed to Franklin
     And last fetch of subscribed products has been done yesterday
+    # Adds assertion on proposal creation
     #When the subscribed products are fetched from Franklin
     #Then 2 suggested data should have been added (APAI-153)
 

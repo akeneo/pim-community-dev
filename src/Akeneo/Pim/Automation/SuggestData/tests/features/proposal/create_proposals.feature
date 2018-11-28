@@ -32,3 +32,5 @@ Feature: Create proposals
     Then there should be a proposal for product "B00EYZY6AC"
     And the suggested data for the subscription of product "B00EYZY6AC" should be empty
     But there should not be a proposal for product "606449099812"
+
+    # TO DELETE

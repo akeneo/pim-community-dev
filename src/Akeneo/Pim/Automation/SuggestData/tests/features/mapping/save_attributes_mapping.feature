@@ -4,6 +4,7 @@ Feature: Map the PIM attributes with Franklin attributes
   As a system administrator
   I want to map Franklin attributes to Akeneo PIM attributes
 
+  @critical
   Scenario: Successfully save the attributes mapping
     Given the family "router"
     And the following attribute:
@@ -18,3 +19,6 @@ Feature: Map the PIM attributes with Franklin attributes
       | target_attribute_code | target_attribute_label | pim_attribute_code | status  |
       | product_weight        | Product Weight         |                    | pending |
       | color                 | Color                  | product color      | active  |
+
+    Then Franklin attribute "product_weight" should not be mapped (inactive)
+    And Franklin attribute "color" should be mapped to PIM "product_color" (activated)
