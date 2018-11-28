@@ -9,7 +9,7 @@ config:
     jstree/nested_switch:
       deps:
       - jquery.jstree
-    translator:
+    oro/translator:
       exports: Translator
     jquery-ui:
       deps:
@@ -277,11 +277,12 @@ config:
         pim_enrich_associationtype_edit:
           module: pim/controller/association-type
           aclResourceId: pim_enrich_associationtype_edit
-        pim_enrich_associationtype_index:
-          module: pim/controller/common/index
-          aclResourceId: pim_enrich_associationtype_index
-          config:
-            entity: association-type
+        # TODO Remove this
+#        pim_enrich_associationtype_index:
+#          module: pim/controller/common/index
+#          aclResourceId: pim_enrich_associationtype_index
+#          config:
+#            entity: association-type
         pim_enrich_attribute_create:
           module: pim/controller/attribute/create
           aclResourceId: pim_enrich_attribute_create
@@ -314,11 +315,12 @@ config:
         pim_enrich_channel_create:
           module: pim/controller/channel/edit
           aclResourceId: pim_enrich_channel_create
-        pim_enrich_channel_index:
-          module: pim/controller/common/index
-          aclResourceId: pim_enrich_channel_index
-          config:
-            entity: channel
+# TODO Remove this
+#        pim_enrich_channel_index:
+#          module: pim/controller/common/index
+#          aclResourceId: pim_enrich_channel_index
+#          config:
+#            entity: channel
         pim_enrich_grouptype_edit:
           module: pim/controller/group-type
           aclResourceId: pim_enrich_grouptype_edit
@@ -555,7 +557,6 @@ config:
     pim/saveformstate:         pimui/js/pim-saveformstate
     pim/fileinput:             pimui/js/pim-fileinput
     pim/dialogform:            pimui/js/pim-dialogform
-    oro/error:                 pimui/js/pim-error
     pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
 
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
@@ -576,7 +577,6 @@ config:
 
     pimuser/js/init-signin: pimuser/js/init-signin
     translator-lib: pimui/lib/translator
-    translator: pimui/js/translator
     routing: pimui/js/fos-routing-wrapper
     pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
     jquery-setup: pimui/js/jquery-setup.js
@@ -630,7 +630,6 @@ config:
     pim/user-context:                   pimui/js/user-context
     pim/date-context:                   pimui/js/date-context
     pim/error:                          pimui/js/error/error
-    translator:                         pimui/lib/translator
     oro/translator:                     pimui/js/translator
     pim/common/property:                pimui/js/common/property
     pim/common/select2/family:          pimui/js/common/select2/family
@@ -712,7 +711,6 @@ config:
     pim/channel-edit-form/properties/general/locales:       pimui/js/channel/form/properties/general/locales
     pim/channel-edit-form/properties/general/category-tree: pimui/js/channel/form/properties/general/category-tree
     pim/channel-edit-form/properties/conversion-unit:       pimui/js/channel/form/properties/conversion-unit
-    pim/channel-edit-form/properties/general/category-tree: pimui/js/channel/form/properties/general/category-tree.js
 
     # Family
     pim/family-edit-form/delete:                                        pimui/js/family/form/delete
@@ -726,10 +724,8 @@ config:
     pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimui/js/family/form/attributes/toolbar/add-select/attribute/select
     pim/family-edit-form/attributes/toolbar:                            pimui/js/family/form/attributes/toolbar
     pim/family-edit-form/attributes/attributes:                         pimui/js/family/form/attributes/attributes
-    pim/family-edit-form/attributes/toolbar:                            pimui/js/family/form/attributes/toolbar
     pim/family-edit-form/attributes:                                    pimui/js/family/form/attributes
     pim/family-edit-form/properties/general:                            pimui/js/family/form/properties/general
-    pim/family-edit-form/attributes:                                    pimui/js/family/form/attributes
     pim/family-edit-form/add-family-variant:                            pimui/js/family/form/variants/add-family-variant
     pim/family-edit-form/add-family-variant-form:                       pimui/js/family/form/variants/add-family-variant-form
     pim/family-edit-form/add-family-variant-header:                     pimui/js/family/form/variants/add-family-variant-header
@@ -749,9 +745,6 @@ config:
     pim/job-instance-import-edit-form/save: pimui/js/job/import/edit/save
     pim/job-instance/import/switcher:       pimui/js/job/import/switcher
     pim/job-instance/import/switcher-item:  pimui/js/job/import/switcher-item
-
-    # Group
-    pim/group-edit-form/save: pimui/js/group/form/save
 
     # Product
     pim/product-edit-form/product-label:                     pimui/js/product/form/product-label
@@ -1069,7 +1062,7 @@ config:
     pim/template/common/item-picker:                          pimui/templates/common/item-picker.html
     pim/template/common/item-picker-basket:                   pimui/templates/common/item-picker-basket.html
     pim/template/common/description-header:                   pimui/templates/common/description-header.html
-    pim/template/common/modal/modal-with-illustration:        pimui/templates/common/modal/modal-with-illustration.html
+    pim/template/common/modal-with-illustration:              pimui/templates/common/modal-with-illustration.html
 
     pim/template/form/group-selector:                         pimui/templates/form/group-selector.html
     pim/template/form/save:                                   pimui/templates/form/save.html

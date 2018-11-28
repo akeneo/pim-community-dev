@@ -25,6 +25,7 @@
     width: 100%;
 
     &--withIllustration {
+      @paddingBetween: 40px;
       margin: 0 80px;
       display: flex;
       align-items: stretch;
@@ -33,11 +34,12 @@
       & > :nth-child(1) {
         text-align: right;
         border-right: 2px solid @AknLightPurple;
-        padding-right: 40px;
+        padding-right: @paddingBetween;
       }
 
       & > :nth-child(2) {
-        padding: 20px 0 20px 40px;
+        padding: 20px 0 20px @paddingBetween;
+        min-width: calc(@AknMaxFormWidth + @paddingBetween);
       }
     }
   }

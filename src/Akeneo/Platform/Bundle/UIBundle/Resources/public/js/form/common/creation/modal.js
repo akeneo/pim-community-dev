@@ -14,7 +14,7 @@ define(
         'pim/router',
         'oro/messenger',
         'pim/template/form/creation/modal',
-        'pim/template/common/modal/modal-with-illustration'
+        'pim/template/common/modal-with-illustration'
     ],
     function (
         $,
