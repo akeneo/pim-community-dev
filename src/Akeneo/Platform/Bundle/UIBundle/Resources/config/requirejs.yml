@@ -36,7 +36,7 @@ config:
       - jquery
       - underscore
       exports: Backbone
-    backbone/bootstrap-modal:
+    bootstrap-modal:
       deps:
       - jquery
       - underscore
@@ -528,7 +528,7 @@ config:
     jquery.jstree:                 pimui/lib/jstree/jquery.jstree
     jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
     bootstrap:                     pimui/lib/bootstrap/js/bootstrap
-    backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
+    bootstrap-modal:               pimui/lib/bootstrap-modal/bootstrap-modal
     oro/app:                       pimui/js/oro-app
     oro/error:                     pimui/js/error
     oro/init-layout:               pimui/js/init-layout
@@ -575,7 +575,6 @@ config:
     pim/init-translator:                pimui/js/init-translator
 
     pimuser/js/init-signin: pimuser/js/init-signin
-    bootstrap-modal: pimui/lib/bootstrap-modal
     translator-lib: pimui/lib/translator
     translator: pimui/js/translator
     routing: pimui/js/fos-routing-wrapper
