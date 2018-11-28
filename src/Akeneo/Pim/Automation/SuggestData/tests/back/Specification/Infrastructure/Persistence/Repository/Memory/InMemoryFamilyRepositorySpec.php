@@ -13,27 +13,31 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilySearchableRepository;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
+class InMemoryFamilyRepositorySpec extends ObjectBehavior
 {
-    public function let(FamilyRepositoryInterface $familyRepository): void
+    public function let(StructureFamilyRepositoryInterface $familyRepository): void
     {
         $this->beConstructedWith($familyRepository);
     }
 
-    public function it_is_a_family_searchable_repository(): void
+    public function it_is_an_attribute_mapping_family_repository(): void
     {
-        $this->shouldHaveType(InMemoryFamilySearchableRepository::class);
-        $this->shouldImplement(FamilySearchableRepositoryInterface::class);
+        $this->shouldImplement(FamilyRepositoryInterface::class);
+    }
+
+    public function it_is_the_in_memory_implementation_of_the_family_repository(): void
+    {
+        $this->shouldHaveType(InMemoryFamilyRepository::class);
     }
 
     public function it_finds_all_family_without_filter($familyRepository): void
@@ -45,7 +49,7 @@ class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
         $familyList = [$family1, $family2, $family3];
         $familyRepository->findAll()->willReturn($familyList);
 
-        $this->findBySearch(0, 10)->shouldReturn($familyList);
+        $this->findBySearch(0, 10, null, [])->shouldReturn($familyList);
     }
 
     public function it_finds_families_with_pagination_applied($familyRepository): void
@@ -56,9 +60,9 @@ class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
 
         $familyRepository->findAll()->willReturn([$family1, $family2, $family3]);
 
-        $this->findBySearch(0, 1)->shouldReturn([$family1]);
-        $this->findBySearch(1, 1)->shouldReturn([$family2]);
-        $this->findBySearch(2, 1)->shouldReturn([$family3]);
+        $this->findBySearch(0, 1, null, [])->shouldReturn([$family1]);
+        $this->findBySearch(1, 1, null, [])->shouldReturn([$family2]);
+        $this->findBySearch(2, 1, null, [])->shouldReturn([$family3]);
     }
 
     public function it_finds_families_with_search_applied_on_code_and_label(
@@ -89,7 +93,7 @@ class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
 
         $familyRepository->findAll()->willReturn([$family1, $family2, $family3]);
 
-        $this->findBySearch(0, 10, 'another')->shouldReturn([
+        $this->findBySearch(0, 10, 'another', [])->shouldReturn([
             1 => $family2,
             2 => $family3,
         ]);

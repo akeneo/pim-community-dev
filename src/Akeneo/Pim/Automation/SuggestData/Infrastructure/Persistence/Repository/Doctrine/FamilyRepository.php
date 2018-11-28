@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class FamilySearchableRepository implements FamilySearchableRepositoryInterface
+final class FamilyRepository implements FamilyRepositoryInterface
 {
     /** @var SearchableRepositoryInterface */
     private $familyRepository;
@@ -35,7 +35,7 @@ class FamilySearchableRepository implements FamilySearchableRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findBySearch(int $page, int $limit, ?string $search = null, array $identifiers = []): array
+    public function findBySearch(int $page, int $limit, ?string $search, array $identifiers): array
     {
         return $this->familyRepository->findBySearch($search, [
             'page' => $page,

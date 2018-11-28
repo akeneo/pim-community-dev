@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-interface FamilySearchableRepositoryInterface
+interface FamilyRepositoryInterface
 {
     /**
      * @param int $limit
@@ -26,5 +26,5 @@ interface FamilySearchableRepositoryInterface
      *
      * @return array
      */
-    public function findBySearch(int $page, int $limit, ?string $search = null, array $identifiers = []): array;
+    public function findBySearch(int $page, int $limit, ?string $search, array $identifiers): array;
 }

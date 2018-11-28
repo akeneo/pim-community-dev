@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
-use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryInterface
+final class InMemoryFamilyRepository implements FamilyRepositoryInterface
 {
-    /** @var FamilyRepositoryInterface */
+    /** @var StructureFamilyRepositoryInterface */
     private $familyRepository;
 
     /**
-     * @param FamilyRepositoryInterface $familyRepository
+     * @param StructureFamilyRepositoryInterface $familyRepository
      */
-    public function __construct(FamilyRepositoryInterface $familyRepository)
+    public function __construct(StructureFamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
     }
@@ -36,7 +36,7 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
     /**
      * {@inheritdoc}
      */
-    public function findBySearch(int $page, int $limit, ?string $search = null, array $identifiers = []): array
+    public function findBySearch(int $page, int $limit, ?string $search, array $identifiers): array
     {
         $families = $this->familyRepository->findAll();
 

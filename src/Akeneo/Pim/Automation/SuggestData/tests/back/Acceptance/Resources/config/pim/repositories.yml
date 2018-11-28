@@ -14,7 +14,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository'
 
     akeneo.pim.automation.suggest_data.repository.search_family:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilySearchableRepository'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository'
         arguments:
             - '@pim_catalog.repository.family'
 

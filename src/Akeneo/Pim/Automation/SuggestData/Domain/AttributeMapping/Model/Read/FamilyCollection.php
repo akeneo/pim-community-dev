@@ -46,6 +46,9 @@ class FamilyCollection implements \IteratorAggregate, \Countable
         return new \ArrayIterator($this->families);
     }
 
+    /**
+     * @return int
+     */
     public function count(): int
     {
         return count($this->families);

@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQu
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Query\GetAttributeMappingStatusesFromFamilyCodesQueryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Doctrine\Common\Collections\Collection;
@@ -30,7 +30,7 @@ use PhpSpec\ObjectBehavior;
 class SearchFamiliesHandlerSpec extends ObjectBehavior
 {
     public function let(
-        FamilySearchableRepositoryInterface $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         GetAttributeMappingStatusesFromFamilyCodesQueryInterface $getAttributeMappingStatusesFromFamilyCodesQuery
     ): void {
         $this->beConstructedWith($familyRepository, $getAttributeMappingStatusesFromFamilyCodesQuery);

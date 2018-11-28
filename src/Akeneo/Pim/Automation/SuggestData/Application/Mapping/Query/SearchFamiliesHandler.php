@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Query\GetAttributeMappingStatusesFromFamilyCodesQueryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilySearchableRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
@@ -24,18 +24,18 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
  */
 class SearchFamiliesHandler
 {
-    /** @var FamilySearchableRepositoryInterface */
+    /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
     /** @var GetAttributeMappingStatusesFromFamilyCodesQueryInterface */
     private $getAttributeMappingStatusesFromFamilyCodesQuery;
 
     /**
-     * @param FamilySearchableRepositoryInterface $familyRepository
+     * @param FamilyRepositoryInterface $familyRepository
      * @param GetAttributeMappingStatusesFromFamilyCodesQueryInterface $getAttributeMappingStatusesFromFamilyCodesQuery
      */
     public function __construct(
-        FamilySearchableRepositoryInterface $familyRepository,
+        FamilyRepositoryInterface $familyRepository,
         GetAttributeMappingStatusesFromFamilyCodesQueryInterface $getAttributeMappingStatusesFromFamilyCodesQuery
     ) {
         $this->familyRepository = $familyRepository;
