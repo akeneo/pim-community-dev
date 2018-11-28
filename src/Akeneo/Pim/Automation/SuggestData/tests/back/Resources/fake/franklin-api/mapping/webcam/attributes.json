@@ -23,5 +23,21 @@
       }
     }
   },
-  "mapping": []
+  "mapping": [
+    {
+      "from": {
+        "id": "idontreallyknowhwatiam",
+        "label": {
+          "en_us": "An attribute that has no type"
+        },
+        "type": null
+      },
+      "to": null,
+      "summary": [
+        "true",
+        "strixos"
+      ],
+      "status": "pending"
+    }
+  ]
 }
