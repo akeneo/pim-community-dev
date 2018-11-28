@@ -153,6 +153,10 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
                       standardPropertyName: locales
 
 # Attributes
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNoneAttributeCommand:
+    constraints:
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeTypeShouldBeRequired: ~
+
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\EditUploadedFileValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
