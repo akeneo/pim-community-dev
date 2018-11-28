@@ -26,6 +26,14 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
      */
     public function testCreateAProjectOnTheTshirtFamily()
     {
+        $this->createProject('project', 'Julia', 'en_US', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['usb_keys'],
+            ],
+        ]);
+
         $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'en_US',  'ecommerce', [
             [
                 'field'    => 'family',
@@ -224,7 +232,6 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $this->checkProjectCompleteness($projectCompleteness, 1, 0, 1, 'Teddy');
         $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Teddy');
 
-
         /**
          * Claude
          *      - is technical contributor (technical clothing attribute group),
@@ -235,7 +242,6 @@ class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
         $this->checkProductSelectionCount($projectCompleteness, 4, 'Claude');
         $this->checkProjectCompleteness($projectCompleteness, 2, 0, 2, 'Claude');
         $this->checkProjectCompletenessFilterForContributor($project, $projectCompleteness, 'Claude');
-
 
         /**
          * Marc
