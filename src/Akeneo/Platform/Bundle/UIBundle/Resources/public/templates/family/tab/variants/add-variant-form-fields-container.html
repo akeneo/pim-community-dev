@@ -11,7 +11,6 @@
             <div class="AknFieldContainer-validationErrors validation-errors">
                 <% fieldErrors.code.forEach((error) => { %>
                 <span class="AknFieldContainer-validationError">
-                    <i class="icon-warning-sign"></i>
                     <span class="error-message"><%- error.message %></span>
                 </span>
                 <% }); %>
@@ -33,7 +32,6 @@
             <div class="AknFieldContainer-validationErrors validation-errors">
                 <% fieldErrors['translations[0].label'].forEach((error) => { %>
                 <span class="AknFieldContainer-validationError">
-                    <i class="icon-warning-sign"></i>
                     <span class="error-message"><%- error.message %></span>
                 </span>
                 <% }); %>

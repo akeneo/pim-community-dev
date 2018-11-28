@@ -1,6 +1,8 @@
 import * as $ from 'jquery';
 import * as i18n from 'pimui/js/i18n';
 import * as _ from 'underscore';
+import NormalizedAttribute from 'pim/model/attribute';
+import NormalizedAttributeGroup from 'pim/model/attribute-group';
 
 const __ = require('oro/translator');
 const BaseMultiSelectAsync = require('pim/form/common/fields/multi-select-async');
@@ -13,20 +15,9 @@ const LineTemplate = require('pim/template/attribute/attribute-line');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-
-interface NormalizedAttributeInterface {
-  code: string;
-  labels: { [locale: string]: string };
-  group: string;
-}
-
-interface NormalizedAttributeGroupInterface {
-  labels: { [locale: string]: string };
-}
-
 class ProductGridFilters extends BaseMultiSelectAsync {
   private readonly lineView = _.template(LineTemplate);
-  private attributeGroups: { [key: string]: NormalizedAttributeGroupInterface } = {};
+  private attributeGroups: { [key: string]: NormalizedAttributeGroup } = {};
 
   /**
    * {@inheritdoc}
@@ -41,7 +32,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
       FetcherRegistry
         .getFetcher('attribute-group')
         .fetchAll()
-        .then((attributeGroups: { [key: string]: NormalizedAttributeGroupInterface }) => {
+        .then((attributeGroups: { [key: string]: NormalizedAttributeGroup }) => {
           this.attributeGroups = {...this.attributeGroups, ...attributeGroups};
         })
     );
@@ -58,7 +49,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
     return parent;
   }
 
-  protected convertBackendItem(item: NormalizedAttributeInterface): Object {
+  protected convertBackendItem(item: NormalizedAttribute): Object {
     return {
       id: item.code,
       text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
@@ -87,12 +78,12 @@ class ProductGridFilters extends BaseMultiSelectAsync {
         data: { identifiers: strValues },
         type: this.choiceVerb
       }).then(response => {
-        let selecteds: NormalizedAttributeInterface[] = <NormalizedAttributeInterface[]> Object.values(response)
-          .filter((item: NormalizedAttributeInterface) => {
+        let selecteds: NormalizedAttribute[] = <NormalizedAttribute[]> Object.values(response)
+          .filter((item: NormalizedAttribute) => {
             return values.indexOf(item.code) > -1;
           });
 
-        callback(selecteds.map((selected: NormalizedAttributeInterface) => {
+        callback(selecteds.map((selected: NormalizedAttribute) => {
           return this.convertBackendItem(selected);
         }));
       });
@@ -102,10 +93,10 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   /**
    * Returns a fake attribute group for system filters
    *
-   * @returns {NormalizedAttributeGroupInterface}
+   * @returns {NormalizedAttributeGroup}
    */
-  private static getSystemAttributeGroup(): NormalizedAttributeGroupInterface {
-    const result: NormalizedAttributeGroupInterface = {labels: {}};
+  private static getSystemAttributeGroup(): NormalizedAttributeGroup {
+    const result: NormalizedAttributeGroup = {labels: {}};
     result['labels'][UserContext.get('catalogLocale')] = __('pim_datagrid.filters.system');
 
     return result;
