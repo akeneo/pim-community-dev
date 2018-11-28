@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.18 (2018-11-28)
+
 ## Bug fixes
 
 - PIM-7775: Security patch: check MIME type to be coherent with extension file. Saving products with incoherent file extension and MIME type is now forbidden.
