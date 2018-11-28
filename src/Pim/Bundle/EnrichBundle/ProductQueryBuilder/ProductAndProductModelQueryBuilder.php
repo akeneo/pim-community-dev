@@ -135,6 +135,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasGroupsFilter = $this->hasRawFilter('field', 'groups');
         $hasCategoryFilter = $this->hasFilterOnCategoryWhichImplyAggregation();
         $hasLabelOrIdentifierFilter = $this->hasRawFilter('field', 'label_or_identifier');
+        
 
         return !$hasAttributeFilters &&
             !$hasParentFilter &&
