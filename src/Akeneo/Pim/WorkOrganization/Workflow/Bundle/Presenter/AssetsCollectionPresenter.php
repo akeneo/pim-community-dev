@@ -12,9 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 

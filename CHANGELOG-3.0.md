@@ -15,6 +15,9 @@
 - TIP-883: In order to have a clean and independant product aggregate, ProductValue only provides attribute code and no more direct attribute access.
 
 ## BC breaks
+- Remove the service `pimee_workflow.twig.extension.group_product_values`
+- Remove the service `pimee_workflow.helper.sort_product_values`
+- Remove the second constructor arguments of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct`
 - Remove `Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType`
 - Remove bundle `PimEnterpriseUserBundle`
 - The service `pim_catalog.repository.cached_attribute`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:

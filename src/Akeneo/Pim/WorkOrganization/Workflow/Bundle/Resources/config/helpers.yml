@@ -14,8 +14,3 @@ services:
         class: '%pimee_workflow.helper.product_draft_changes_permission.class%'
         arguments:
             - '@pim_enrich.filter.product_values_edit_data'
-
-    pimee_workflow.helper.sort_product_values:
-        class: '%pimee_workflow.helper.sort_product_values.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'

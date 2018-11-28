@@ -21,14 +21,13 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Twig_Extension_InitRuntimeInterface;
 
 /**
  * Twig extension to present product draft changes
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Extension_InitRuntimeInterface
+class ProductDraftChangesExtension extends \Twig_Extension
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
@@ -70,14 +69,6 @@ class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Exten
         $this->translator = $translator;
         $this->valueFactory = $valueFactory;
         $this->attributeFactory = $attributeFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initRuntime(\Twig_Environment $twig)
-    {
-        $this->twig = $twig;
     }
 
     /**
