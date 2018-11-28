@@ -47,6 +47,8 @@
     <% } %>\
   ');
 
+  template = _.template('INSIDE TEMPLATE');
+
   //Reset to users' template settings
   _.templateSettings = _interpolateBackup;
 
