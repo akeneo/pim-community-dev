@@ -32,7 +32,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class RemoveAttributeOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
+class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
 {
     /** @var SelectFamilyCodesByAttributeQueryInterface */
     private $familyCodesByAttributeQuery;

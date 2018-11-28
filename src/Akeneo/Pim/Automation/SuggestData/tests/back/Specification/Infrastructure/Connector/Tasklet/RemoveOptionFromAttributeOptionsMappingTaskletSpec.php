@@ -28,7 +28,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAtt
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttributeId;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveAttributeOptionFromAttributeOptionsMappingTasklet;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveOptionFromAttributeOptionsMappingTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -38,7 +38,7 @@ use Prophecy\Argument;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class RemoveAttributeOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
+class RemoveOptionFromAttributeOptionsMappingTaskletSpec extends ObjectBehavior
 {
     public function let(
         StepExecution $stepExecution,
@@ -64,7 +64,7 @@ class RemoveAttributeOptionFromAttributeOptionsMappingTaskletSpec extends Object
 
     public function it_is_a_tasklet_for_removing_attribute_option_from_attribute_options_mapping(): void
     {
-        $this->shouldBeAnInstanceOf(RemoveAttributeOptionFromAttributeOptionsMappingTasklet::class);
+        $this->shouldBeAnInstanceOf(RemoveOptionFromAttributeOptionsMappingTasklet::class);
         $this->shouldImplement(TaskletInterface::class);
     }
 
