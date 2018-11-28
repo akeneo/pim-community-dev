@@ -13,9 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Analytic;
 
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Data collector to return the attribute Group Access count
