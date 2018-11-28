@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController as BaseProductController;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -38,8 +39,8 @@ class ProductController extends BaseProductController
      * @param ProductRepositoryInterface            $productRepository
      * @param CategoryRepositoryInterface           $categoryRepository
      * @param SaverInterface                        $productSaver
-     * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param MissingAssociationAdder               $missingAssociationAdder
      * @param string                                $categoryClass
      * @param SecurityFacade                        $securityFacade
      * @param string                                $acl
@@ -51,7 +52,7 @@ class ProductController extends BaseProductController
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
         SaverInterface $productSaver,
-        ProductBuilderInterface $productBuilder,
+        MissingAssociationAdder $missingAssociationAdder,
         EntityWithFamilyValuesFillerInterface $valuesFiller,
         string $categoryClass,
         SecurityFacade $securityFacade,
@@ -64,7 +65,7 @@ class ProductController extends BaseProductController
             $productRepository,
             $categoryRepository,
             $productSaver,
-            $productBuilder,
+            $missingAssociationAdder,
             $valuesFiller,
             $categoryClass,
             $securityFacade,
