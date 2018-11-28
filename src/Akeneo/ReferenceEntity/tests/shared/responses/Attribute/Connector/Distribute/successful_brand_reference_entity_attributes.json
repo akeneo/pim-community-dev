@@ -10,12 +10,7 @@
     "status": 200,
     "body": [
       {
-        "_links": {
-          "self": {
-            "href": "https://localhost/api/rest/v1/reference-entities/brand/attributes/description"
-          }
-        },
-        "code": "description",
+        "code": "description_brand_test",
         "labels": {
           "en_US": "Description",
           "fr_FR": "Description"
@@ -27,7 +22,12 @@
         "is_textarea": false,
         "is_rich_text_editor": false,
         "validation_rule": null,
-        "validation_regexp": null
+        "validation_regexp": null,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/description_brand_test"
+          }
+        }
       }
     ]
   }

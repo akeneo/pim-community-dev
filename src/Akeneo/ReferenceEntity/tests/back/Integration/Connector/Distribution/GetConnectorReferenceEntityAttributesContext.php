@@ -100,7 +100,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
 
         $textConnectorAttribute = new ConnectorAttribute(
             $textAttribute->getIdentifier(),
-            LabelCollection::fromArray(['en_US' => 'Whatever']),
+            LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             'text',
             true,
             false,
@@ -114,7 +114,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         );
 
         $this->findConnectorReferenceEntityAttributes->save(
-            ReferenceEntityIdentifier::fromString($attributeIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             $textConnectorAttribute
         );
 

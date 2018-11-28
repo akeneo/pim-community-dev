@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface;
@@ -40,7 +39,6 @@ class InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier 
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        var_dump('get the stuff', (string) $referenceEntityIdentifier, $this->attributes);
         return $this->attributes[(string) $referenceEntityIdentifier];
     }
 }

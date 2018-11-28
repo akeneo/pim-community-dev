@@ -121,7 +121,12 @@ services:
     akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage
         arguments:
-        - '@router'
+            - '@router'
+
+    akeneo_referenceentity.infrasctucture.connector.add_hal_self_link_to_normalized_connector_attribute:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalSelfLinkToNormalizedConnectorAttribute
+        arguments:
+            - '@router'
 
     akeneo_referenceentity.infrastructure.connector.action.records.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\GetConnectorRecordsAction
@@ -164,3 +169,4 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrasctucture.connector.add_hal_self_link_to_normalized_connector_attribute'

@@ -37,20 +37,8 @@ class ConnectorAttribute
     /** @var bool */
     public $scopable;
 
-    /** @var int */
-    public $maxCharacters;
-
-    /** @var bool */
-    public $isTextarea;
-
-    /** @var bool */
-    public $isRichTextEditor;
-
-    /** @var string | null */
-    public $validationRule;
-
-    /** @var string | null */
-    public $validationRegexp;
+    /** @var array */
+    public $additionalProperties;
 
     public function __construct(
         AttributeIdentifier $identifier,
@@ -68,7 +56,6 @@ class ConnectorAttribute
         $this->additionalProperties = $additionalProperties;
     }
 
-    // @TODO - move to additional properties ?
     public function normalize(): array
     {
         $commonProperties = [
