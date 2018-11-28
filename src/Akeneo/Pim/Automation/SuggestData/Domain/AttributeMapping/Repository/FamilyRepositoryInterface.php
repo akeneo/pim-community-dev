@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -24,7 +26,7 @@ interface FamilyRepositoryInterface
      * @param null|string $search
      * @param array $identifiers
      *
-     * @return array
+     * @return FamilyCollection
      */
-    public function findBySearch(int $page, int $limit, ?string $search, array $identifiers): array;
+    public function findBySearch(int $page, int $limit, ?string $search, array $identifiers): FamilyCollection;
 }

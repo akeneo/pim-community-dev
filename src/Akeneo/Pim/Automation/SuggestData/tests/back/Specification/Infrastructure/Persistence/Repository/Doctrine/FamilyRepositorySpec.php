@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Persist
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\FamilyRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,9 +24,9 @@ use PhpSpec\ObjectBehavior;
  */
 class FamilyRepositorySpec extends ObjectBehavior
 {
-    public function let(SearchableRepositoryInterface $familyRepository): void
+    public function let(SearchableRepositoryInterface $familyRepository, Connection $connection): void
     {
-        $this->beConstructedWith($familyRepository);
+        $this->beConstructedWith($familyRepository, $connection);
     }
 
     public function it_is_an_attribute_mapping_family_repository(): void

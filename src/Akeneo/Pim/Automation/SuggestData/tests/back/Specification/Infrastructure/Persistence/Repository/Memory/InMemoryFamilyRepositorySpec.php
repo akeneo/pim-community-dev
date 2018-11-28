@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository;
-use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\Family as StructureFamily;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -42,27 +43,33 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
 
     public function it_finds_all_family_without_filter($familyRepository): void
     {
-        $family1 = (new Family())->setCode('a-family');
-        $family2 = (new Family())->setCode('another-family');
-        $family3 = (new Family())->setCode('again-another-family');
+        $family1 = (new StructureFamily())->setCode('a_family');
+        $family2 = (new StructureFamily())->setCode('another_family');
+        $family3 = (new StructureFamily())->setCode('again_another_family');
 
         $familyList = [$family1, $family2, $family3];
         $familyRepository->findAll()->willReturn($familyList);
 
-        $this->findBySearch(0, 10, null, [])->shouldReturn($familyList);
+        $familyCollection = $this->findBySearch(0, 10, null, []);
+        $familyCollection->shouldHaveTheFollowingFamilies(['a_family', 'another_family', 'again_another_family']);
     }
 
     public function it_finds_families_with_pagination_applied($familyRepository): void
     {
-        $family1 = (new Family())->setCode('a-family');
-        $family2 = (new Family())->setCode('another-family');
-        $family3 = (new Family())->setCode('again-another-family');
+        $family1 = (new StructureFamily())->setCode('a_family');
+        $family2 = (new StructureFamily())->setCode('another_family');
+        $family3 = (new StructureFamily())->setCode('again_another_family');
 
         $familyRepository->findAll()->willReturn([$family1, $family2, $family3]);
 
-        $this->findBySearch(0, 1, null, [])->shouldReturn([$family1]);
-        $this->findBySearch(1, 1, null, [])->shouldReturn([$family2]);
-        $this->findBySearch(2, 1, null, [])->shouldReturn([$family3]);
+        $familyCollection1 = $this->findBySearch(0, 1, null, []);
+        $familyCollection1->shouldHaveTheFollowingFamilies(['a_family']);
+
+        $familyCollection2 = $this->findBySearch(1, 1, null, []);
+        $familyCollection2->shouldHaveTheFollowingFamilies(['another_family']);
+
+        $familyCollection3 = $this->findBySearch(2, 1, null, []);
+        $familyCollection3->shouldHaveTheFollowingFamilies(['again_another_family']);
     }
 
     public function it_finds_families_with_search_applied_on_code_and_label(
@@ -75,27 +82,47 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
         $family1LabelTranslation->getLocale()->willReturn('en_US');
         $family2LabelTranslation->getLabel()->willReturn('family2');
         $family2LabelTranslation->getLocale()->willReturn('en_US');
-        $family3LabelTranslation->getLabel()->willReturn('another-family');
+        $family3LabelTranslation->getLabel()->willReturn('another_family');
         $family3LabelTranslation->getLocale()->willReturn('en_US');
 
-        $family1 = (new Family())
-            ->setCode('a-family')
+        $family1 = (new StructureFamily())
+            ->setCode('a_family')
             ->addTranslation($family1LabelTranslation->getWrappedObject())
             ->setLocale('en_US');
-        $family2 = (new Family())
-            ->setCode('another-family')
+        $family2 = (new StructureFamily())
+            ->setCode('another_family')
             ->addTranslation($family2LabelTranslation->getWrappedObject())
             ->setLocale('en_US');
-        $family3 = (new Family())
-            ->setCode('third-family')
+        $family3 = (new StructureFamily())
+            ->setCode('third_family')
             ->addTranslation($family3LabelTranslation->getWrappedObject())
             ->setLocale('en_US');
 
         $familyRepository->findAll()->willReturn([$family1, $family2, $family3]);
 
-        $this->findBySearch(0, 10, 'another', [])->shouldReturn([
-            1 => $family2,
-            2 => $family3,
-        ]);
+        $familyCollection = $this->findBySearch(0, 10, 'another', []);
+        $familyCollection->shouldHaveTheFollowingFamilies(['another_family', 'third_family']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMatchers(): array
+    {
+        return [
+            'haveTheFollowingFamilies' => function (FamilyCollection $subject, array $expectedFamilyCodes) {
+                if (count($expectedFamilyCodes) !== $subject->getIterator()->count()) {
+                    return false;
+                }
+
+                foreach ($subject as $positionInList => $family) {
+                    if ($family->getCode() !== $expectedFamilyCodes[$positionInList]) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+        ];
     }
 }

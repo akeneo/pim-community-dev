@@ -19,3 +19,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\FamilyRepository'
         arguments:
             - '@pim_enrich.repository.family.search'
+            - '@database_connection'
