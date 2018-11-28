@@ -38,7 +38,8 @@ class CommunityRequirements
         'xml',
         'zip',
         'exif',
-        'imagick'
+        'imagick',
+        'mbstring',
     ];
 
     public function __construct(string $baseDir, array $directoriesToCheck = [])
