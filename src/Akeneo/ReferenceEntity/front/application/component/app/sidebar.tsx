@@ -54,7 +54,7 @@ class Sidebar extends React.Component<SidebarProps> {
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
               {undefined !== BackButton ? <BackButton /> : null}
-              <div className="AknColumn-title">{__('pim_reference_entity.reference_entity.title')}</div>
+              <div className="AknColumn-title">{__('pim_reference_entity.reference_entity.breadcrumb')}</div>
               {this.props.tabs.map((tab: any) => {
                 const activeClass = this.props.currentTab === tab.code ? 'AknColumn-navigationLink--active' : '';
 

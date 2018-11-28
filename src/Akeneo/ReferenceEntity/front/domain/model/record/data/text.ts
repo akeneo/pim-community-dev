@@ -24,7 +24,7 @@ class TextData extends ValueData {
   }
 
   public isEmpty(): boolean {
-    return 0 === this.textData.length;
+    return 0 === this.textData.length || '<p></p>\n' === this.textData;
   }
 
   public equals(data: ValueData): boolean {

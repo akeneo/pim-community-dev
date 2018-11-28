@@ -97,7 +97,7 @@ module.exports = async function(cucumber) {
     assert.equal(rows.length, count);
 
     const title = await grid.getTitle();
-    assert.equal(title.trim(), `${total} result${total > 1 ? 's' : ''}`);
+    assert.equal(title.trim(), `${total} Reference Entit${total > 1 ? 'ies' : 'y'}`);
   });
 
   Then('the user gets a reference entity {string}', async function(identifier) {

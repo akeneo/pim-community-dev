@@ -147,7 +147,9 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
                 `<img width="34" height="34" src="${getImageShowUrl(
                   denormalizeFile(record.original.image),
                   'thumbnail_small'
-                )}"/><span>${record.text}</span>`
+                )}"/><span class="select2-result-label-main">${
+                  record.text
+                }</span><span class="select2-result-label-hint">${record.original.code}</span>`
               )
             );
         },
@@ -159,7 +161,9 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
                 `<img width="34" height="34" src="${getImageShowUrl(
                   denormalizeFile(record.original.image),
                   'thumbnail_small'
-                )}"/><span>${record.text}</span>`
+                )}"/><span class="select2-result-label-main">${
+                  record.text
+                }</span><span class="select2-result-label-hint">${record.original.code}</span>`
               )
             );
         },

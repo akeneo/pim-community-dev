@@ -142,7 +142,7 @@ class RecordEditView extends React.Component<EditProps> {
                                   type: 'redirect',
                                   route: 'akeneo_reference_entities_reference_entity_index',
                                 },
-                                label: __('pim_reference_entity.reference_entity.title'),
+                                label: __('pim_reference_entity.reference_entity.breadcrumb'),
                               },
                               {
                                 action: {
