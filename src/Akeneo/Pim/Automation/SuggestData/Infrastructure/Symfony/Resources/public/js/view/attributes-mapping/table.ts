@@ -11,7 +11,7 @@ import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import NormalizedAttribute from 'pim/model/attribute';
 import BaseView = require('pimui/js/view/base');
-import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
+import BootstrapModal = require('bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';

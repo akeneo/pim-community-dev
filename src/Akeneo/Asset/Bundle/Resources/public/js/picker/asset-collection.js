@@ -17,7 +17,7 @@ define(
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
-        'backbone/bootstrap-modal',
+        'bootstrap-modal',
         'pim/security-context'
     ], (
         $,
