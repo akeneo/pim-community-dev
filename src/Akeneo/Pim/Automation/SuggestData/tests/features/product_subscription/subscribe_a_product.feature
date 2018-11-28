@@ -11,8 +11,10 @@ Feature: Subscribe a product to Franklin
     And a predefined mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
+      | upc           | pim_upc        |
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should be subscribed
+    And there should be a proposal for product B00EYZY6AC
 
   Scenario: Fail to subscribe a product without family
     Given Franklin is configured with a valid token

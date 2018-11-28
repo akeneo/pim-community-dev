@@ -91,5 +91,6 @@ services:
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.create_proposals'
             - '@__symfony__.akeneo.pim.automation.suggest_data.proposal.create_proposal'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
         tags:
             - { name: 'fob.context_service' }

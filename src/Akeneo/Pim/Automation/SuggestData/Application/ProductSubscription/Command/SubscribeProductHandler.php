@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
@@ -44,26 +46,34 @@ class SubscribeProductHandler
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var CreateProposalHandler */
+    private $createProposalHandler;
+
     /**
      * @param ProductRepositoryInterface $productRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param SubscriptionProviderInterface $subscriptionProvider
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param CreateProposalHandler $createProposalHandler
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        CreateProposalHandler $createProposalHandler
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscriptionProvider = $subscriptionProvider;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->createProposalHandler = $createProposalHandler;
     }
 
     /**
      * @param SubscribeProductCommand $command
+     *
+     * @throws ProductSubscriptionException
      */
     public function handle(SubscribeProductCommand $command): void
     {
@@ -76,6 +86,8 @@ class SubscribeProductHandler
      * Creates a subscription request, sends it to the data provider and saves the resulting subscription.
      *
      * @param ProductInterface $product
+     *
+     * @throws ProductSubscriptionException
      */
     private function subscribe(ProductInterface $product): void
     {
@@ -97,10 +109,14 @@ class SubscribeProductHandler
         $subscription->markAsMissingMapping($subscriptionResponse->isMappingMissing());
 
         $this->productSubscriptionRepository->save($subscription);
+
+        $this->createProposalHandler->handle(new CreateProposalCommand($subscription));
     }
 
     /**
      * @param int $productId
+     *
+     * @throws ProductSubscriptionException
      *
      * @return ProductInterface
      */

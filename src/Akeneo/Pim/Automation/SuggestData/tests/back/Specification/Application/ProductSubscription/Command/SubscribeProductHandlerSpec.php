@@ -7,6 +7,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSub
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
@@ -14,6 +16,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscript
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -28,13 +31,15 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         SubscriptionProviderInterface $subscriptionProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        CreateProposalHandler $createProposalHandler
     ): void {
         $this->beConstructedWith(
             $productRepository,
             $subscriptionRepository,
             $subscriptionProvider,
-            $identifiersMappingRepository
+            $identifiersMappingRepository,
+            $createProposalHandler
         );
     }
 
@@ -43,8 +48,10 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_product_does_not_exist($productRepository): void
-    {
+    public function it_throws_an_exception_if_the_product_does_not_exist(
+        $productRepository,
+        $createProposalHandler
+    ): void {
         $productId = 42;
         $productRepository->find($productId)->willReturn(null);
 
@@ -54,10 +61,13 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
                 sprintf('Could not find product with id "%s"', $productId)
             )
         )->during('handle', [$command]);
+
+        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
     public function it_throws_an_exception_if_the_product_has_no_family(
         $productRepository,
+        $createProposalHandler,
         ProductInterface $product
     ): void {
         $productId = 42;
@@ -68,11 +78,14 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $this->shouldThrow(
             ProductSubscriptionException::familyRequired()
         )->during('handle', [$command]);
+
+        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
     public function it_throws_an_exception_if_the_product_is_already_subscribed(
         $productRepository,
         $subscriptionRepository,
+        $createProposalHandler,
         ProductInterface $product,
         ProductSubscription $productSubscription
     ): void {
@@ -87,18 +100,29 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $this->shouldThrow(
             new ProductSubscriptionException(sprintf('The product with id "%d" is already subscribed', $productId))
         )->during('handle', [$command]);
+
+        $createProposalHandler->handle(Argument::cetera())->shouldNotHaveBeenCalled();
     }
 
     public function it_subscribes_a_product_to_the_data_provider(
         $subscriptionProvider,
+        $identifiersMappingRepository,
+        $createProposalHandler,
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         ProductInterface $product,
         AttributeInterface $ean,
-        ValueInterface $eanValue,
-        $identifiersMappingRepository
+        ValueInterface $eanValue
     ): void {
         $productId = 42;
+        $subscriptionId = uniqid();
+        $suggestedValues = [[
+            'pimAttributeCode' => 'foo',
+            'value' => 'bar',
+        ]];
+        $suggestedData = new SuggestedData($suggestedValues);
+        $identifiersMapping = ['upc' => 'an_ean'];
+
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
         $product->getValue('ean')->willReturn($eanValue);
@@ -112,12 +136,18 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
-        $response = new ProductSubscriptionResponse(42, 'test-id', [], false, false);
+        $response = new ProductSubscriptionResponse($productId, $subscriptionId, $suggestedValues, false, false);
         $subscriptionProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
-        $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();
+        $productSubscription = (new ProductSubscription(
+            $productId,
+            $subscriptionId,
+            $identifiersMapping
+        ))->setSuggestedData($suggestedData);
+        $createProposalHandler->handle(new CreateProposalCommand($productSubscription))->shouldBeCalled();
 
-        $command = new SubscribeProductCommand($productId);
-        $this->handle($command);
+        $subscriptionRepository->save($productSubscription)->shouldBeCalled();
+
+        $this->handle(new SubscribeProductCommand($productId));
     }
 }
