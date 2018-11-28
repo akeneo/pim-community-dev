@@ -41,5 +41,5 @@ export const attributeCreationSucceeded = () => {
 };
 
 export const attributeCreationErrorOccured = (errors: ValidationError[]) => {
-  return {type: 'ATTRIBUTE_CREATION_ERROR_OCCURED', errors};
+  return {type: 'ATTRIBUTE_CREATION_ERROR_OCCURED', errors: errors.map(error => error.normalize())};
 };
