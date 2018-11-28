@@ -70,16 +70,6 @@ class CheckHeadersRequestSubscriberIntegration extends ApiTestCase
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode(), 'Header is acceptable');
     }
 
-    public function testSuccessWhenRouteIsOutsideTheAPI()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', '/');
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), 'Page is accessible without error');
-    }
-
     public function testErrorIfContentTypeHeaderIsJsonOnListPatch()
     {
         $client = $this->createAuthenticatedClient();
