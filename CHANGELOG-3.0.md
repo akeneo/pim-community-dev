@@ -18,6 +18,8 @@
 - Remove the service `pimee_workflow.twig.extension.group_product_values`
 - Remove the service `pimee_workflow.helper.sort_product_values`
 - Remove the second constructor arguments of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct`
+- Replace argument `@pim_catalog.builder.product` by `@pim_catalog.association.missing_association_adder` in service `pim_catalog.updater.setter.association_field`
+- Remove argument `@pim_catalog.association.missing_association_adder` from service `pimee_workflow.builder.published_product`
 - Remove `Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType`
 - Remove bundle `PimEnterpriseUserBundle`
 - The service `pim_catalog.repository.cached_attribute`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:
