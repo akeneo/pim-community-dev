@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
-use Akeneo\Pim\Structure\Component\Model;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -99,7 +99,7 @@ class GroupType extends AbstractType
                 'type',
                 EntityType::class,
                 [
-                    'class'         => Model\GroupType::class,
+                    'class'         => GroupTypeInterface::class,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getAllGroupsExceptVariantQB();
                     },
