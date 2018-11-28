@@ -30,7 +30,7 @@ interface Config {
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
-  private static readonly warningTemplate: ((...data: any[]) => string) = _.template(warningTemplate);
+  private static readonly WARNING_TEMPLATE: ((...data: any[]) => string) = _.template(warningTemplate);
   private readonly perfectMappings: string[];
 
   /**
@@ -71,7 +71,7 @@ class SimpleSelectAttributeWithWarning extends SimpleSelectAttribute {
    */
   private displayWarningTypesMismatch(type: string) {
     if (!this.perfectMappings.includes(type)) {
-      this.$el.find('.AknFieldContainer-footer').append(SimpleSelectAttributeWithWarning.warningTemplate({
+      this.$el.find('.AknFieldContainer-footer').append(SimpleSelectAttributeWithWarning.WARNING_TEMPLATE({
         message: __('akeneo_suggest_data.entity.attributes_mapping.module.index.types_mismatch_warning'),
       }));
     }

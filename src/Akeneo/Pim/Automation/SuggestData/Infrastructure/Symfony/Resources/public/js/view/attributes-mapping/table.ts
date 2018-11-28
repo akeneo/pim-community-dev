@@ -85,7 +85,7 @@ class AttributeMapping extends BaseView {
     select: [ 'pim_catalog_simpleselect' ],
     multiselect: [ 'pim_catalog_multiselect' ],
     number: [ 'pim_catalog_number' ],
-    text: [ 'pim_catalog_text' ],
+    text: [ 'pim_catalog_text', 'pim_catalog_textarea' ],
   };
   private static readonly ALLOWED_CATALOG_TYPES: string[] = [
     'pim_catalog_metric',
@@ -95,7 +95,6 @@ class AttributeMapping extends BaseView {
     'pim_catalog_text',
     'pim_catalog_textarea',
     'pim_catalog_boolean',
-    'pim_catalog_identifier',
   ];
   private static readonly ATTRIBUTE_TYPES_BUTTONS_VISIBILITY = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
 
