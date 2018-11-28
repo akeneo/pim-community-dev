@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_property.class: Akeneo\Pim\ReferenceEntity\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\ReferenceEntityCollectionProperty
+    pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_property.class: Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Datagrid\Extension\Formatter\Property\ProductValue\ReferenceEntityCollectionProperty
 
 services:
     pimee_product_asset.datagrid.extension.formatter.property.product_value.reference_entity_collection_property:

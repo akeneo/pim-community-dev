@@ -563,7 +563,7 @@ TODO: change the link!!
         - `Akeneo\Channel\Bundle\AkeneoChannelBundle`
         - `Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle`
         - `Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle`
-        - `Akeneo\Pim\Enrichment\Asset\Bundle\AkeneoPimAssetBundle`
+        - `Akeneo\Pim\Enrichment\Asset\Bundle\AkeneoPimEnrichmentAssetBundle`
         - `Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle`
         - `Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle`
         - `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
@@ -630,10 +630,10 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGrid
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Handler\\RuleImpactedProductCountActionHandler/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\Datagrid\\Extension\\MassAction\\RuleImpactedProductCountActionHandler/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\ProductHistory\\GridHelper/Akeneo\\Pim\\WorkOrganization\\ProductRevert\\Datagrid\\Configuration\\ProductHistory\\GridHelper/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\Doctrine\\ORM\\CompletenessRemover/Akeneo\\Pim\\Asset\\Bundle\\Doctrine\\ORM\\CompletenessRemover/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\CompletenessRemoverInterface/Akeneo\\Pim\\Asset\\Component\\Completeness\\CompletenessRemoverInterface/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\Checker\\AssetCollectionCompleteChecker/Akeneo\\Pim\\Asset\\Component\\Completeness\\Checker\\AssetCollectionCompleteChecker/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Comparator\\Attribute\\AssetCollectionComparator/Akeneo\\Pim\\Asset\\Component\\Comparator\\Attribute\\AssetCollectionComparator/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\Doctrine\\ORM\\CompletenessRemover/Akeneo\\Pim\\Enrichment\\Asset\\Bundle\\Doctrine\\ORM\\CompletenessRemover/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\CompletenessRemoverInterface/Akeneo\\Pim\\Enrichment\\Asset\\Component\\Completeness\\CompletenessRemoverInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\Checker\\AssetCollectionCompleteChecker/Akeneo\\Pim\\Enrichment\\Asset\\Component\\Completeness\\Checker\\AssetCollectionCompleteChecker/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Comparator\\Attribute\\AssetCollectionComparator/Akeneo\\Pim\\Enrichment\\Asset\\Component\\Comparator\\Attribute\\AssetCollectionComparator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ApiBundle\\Security\\AccessDeniedHandler/Akeneo\\Pim\\Permission\\Bundle\\Api\\AccessDeniedHandler/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ApiBundle\\Checker\\QueryParametersChecker/Akeneo\\Pim\\Permission\\Bundle\\Api\\QueryParametersChecker/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Filter\\AbstractAuthorizationFilter\\DatagridViewFilter/Akeneo\\Pim\\Permission\\Bundle\\Filter\\AbstractAuthorizationFilter\\DatagridViewFilter/g'
@@ -740,8 +740,8 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBu
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Normalizer\\ImageNormalizer/Akeneo\\Asset\\Component\\Normalizer\\InternalApi\\ImageNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Manager\\AttributeValuesResolver/Akeneo\\Pim\\Permission\\Component\\Manager\\AttributeValuesResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\ProductModel\\Filter\\GrantedProductAttributeFilter/Akeneo\\Pim\\Permission\\Component\\Filter\\GrantedProductAttributeFilter/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Updater\\Adder\\AssetCollectionAdder/Akeneo\\Pim\\Asset\\Component\\Updater\\Adder\\AssetCollectionAdder/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\\\AssetCollectionValueFactory/Akeneo\\Pim\\Asset\\Component\\AssetCollectionValueFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Updater\\Adder\\AssetCollectionAdder/Akeneo\\Pim\\Enrichment\\Asset\\Component\\Updater\\Adder\\AssetCollectionAdder/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\\\AssetCollectionValueFactory/Akeneo\\Pim\\Enrichment\\Asset\\Component\\AssetCollectionValueFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Security/PimEnterprise\\Component\\Security/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle/PimEnterprise\\Bundle\\RevertBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle\\UpdateGuesser/Akeneo\\Pim\\Permission\\Bundle\\UpdateGuesser/g'

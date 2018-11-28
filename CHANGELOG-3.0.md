@@ -67,14 +67,14 @@
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler` to `Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction\RuleImpactedProductCountActionHandler`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper` to `Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory\GridHelper`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Configuration\Product\FiltersConfigurator`
-- Move `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
-- Move `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface` to `Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface`
-- Move `PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker` to `Akeneo\Pim\Asset\Component\Completeness\Checker\AssetCollectionCompleteChecker`
-- Move `PimEnterprise\Component\ProductAsset\Comparator\Attribute\AssetCollectionComparator` to `Akeneo\Pim\Asset\Component\Comparator\Attribute\AssetCollectionComparator`
+- Move `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Enrichment\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
+- Move `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface` to `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`
+- Move `PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker` to `Akeneo\Pim\Enrichment\Asset\Component\Completeness\Checker\AssetCollectionCompleteChecker`
+- Move `PimEnterprise\Component\ProductAsset\Comparator\Attribute\AssetCollectionComparator` to `Akeneo\Pim\Enrichment\Asset\Component\Comparator\Attribute\AssetCollectionComparator`
 - Move `PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Permission\Component\Manager\AttributeValuesResolver`
 - Move `PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter` to `Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter`
-- Move `PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder` to `Akeneo\Pim\Asset\Component\Updater\Adder\AssetCollectionAdder`
-- Move `PimEnterprise\Component\Catalog\\AssetCollectionValueFactory` to `Akeneo\Pim\Asset\Component\AssetCollectionValueFactory`
+- Move `PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder` to `Akeneo\Pim\Enrichment\Asset\Component\Updater\Adder\AssetCollectionAdder`
+- Move `PimEnterprise\Component\Catalog\\AssetCollectionValueFactory` to `Akeneo\Pim\Enrichment\Asset\Component\AssetCollectionValueFactory`
 - Move namespace `PimEnterprise\Component\Catalog\Security` to `PimEnterprise\Component\Security`
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.

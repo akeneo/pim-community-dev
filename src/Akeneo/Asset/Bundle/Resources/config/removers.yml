@@ -1,6 +1,6 @@
 parameters:
     pimee_product_asset.remover.category_asset.class: Akeneo\Asset\Bundle\Doctrine\ORM\Remover\CategoryAssetRemover
-    pimee_product_asset.remover.completeness.class: Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover
+    pimee_product_asset.remover.completeness.class: Akeneo\Pim\Enrichment\Asset\Bundle\Doctrine\ORM\CompletenessRemover
 
 services:
     pimee_product_asset.remover.variation:

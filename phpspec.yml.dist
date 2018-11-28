@@ -42,17 +42,17 @@ suites:
 
     ## Pim extension
     ReferenceEntityExtension:
-        namespace: Akeneo\Pim\ReferenceEntity
-        psr4_prefix: Akeneo\Pim\ReferenceEntity
-        spec_path: tests/back/Pim/ReferenceEntity
-        src_path: src/Akeneo/Pim/ReferenceEntity
+        namespace: Akeneo\Pim\Enrichment\ReferenceEntity
+        psr4_prefix: Akeneo\Pim\Enrichment\ReferenceEntity
+        spec_path: tests/back/Pim/Enrichment/ReferenceEntity
+        src_path: src/Akeneo/Pim/Enrichment/ReferenceEntity
         spec_prefix: Specification
 
     AssetExtension:
-        namespace: Akeneo\Pim\Asset
-        psr4_prefix: Akeneo\Pim\Asset
-        spec_path: tests/back/Pim/Asset
-        src_path: src/Akeneo/Pim/Asset
+        namespace: Akeneo\Pim\Enrichment\Asset
+        psr4_prefix: Akeneo\Pim\Enrichment\Asset
+        spec_path: tests/back/Pim/Enrichment/Asset
+        src_path: src/Akeneo/Pim/Enrichment/Asset
         spec_prefix: Specification
 
     ## Asset BC

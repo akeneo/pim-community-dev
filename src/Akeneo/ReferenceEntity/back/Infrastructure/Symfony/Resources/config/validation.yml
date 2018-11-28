@@ -31,7 +31,7 @@ Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteR
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
-        - Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfigured:
+        - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfigured:
             groups:
                 - akeneo_reference_entity_collection
 

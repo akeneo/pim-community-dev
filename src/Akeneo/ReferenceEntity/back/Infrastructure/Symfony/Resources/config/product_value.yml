@@ -1,32 +1,32 @@
 services:
     akeneo_referenceentity.attribute_type.reference_entity_collection:
-        class: Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType
         arguments:
             - 'reference_data_options'
         tags:
             - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity_collection, entity: '%pim_catalog.entity.product.class%' }
 
     akeneo_referenceentity.attribute_type.reference_entity:
-        class: Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityType
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType
         arguments:
             - 'reference_data_options'
         tags:
             - { name: pim_catalog.attribute_type, alias: akeneo_reference_entity, entity: '%pim_catalog.entity.product.class%' }
 
     akeneo_referenceentity.enrich.provider.reference_entity_collection_provider:
-        class: Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityCollectionProvider
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Provider\ReferenceEntityCollectionProvider
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
     akeneo_referenceentity.enrich.provider.reference_entity_provider:
-        class: Akeneo\Pim\ReferenceEntity\Component\Provider\ReferenceEntityProvider
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Provider\ReferenceEntityProvider
         tags:
             - { name: pim_enrich.provider.field, priority: 100 }
             - { name: pim_enrich.provider.empty_value, priority: 80 }
 
     akeneo_referenceentity.factory.product_value.reference_entity_collection:
-        class: Akeneo\Pim\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory
         public: false
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
@@ -34,7 +34,7 @@ services:
             - { name: pim_catalog.factory.value }
 
     akeneo_referenceentity.factory.product_value.reference_entity:
-        class: Akeneo\Pim\ReferenceEntity\Component\Factory\ReferenceEntityValueFactory
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Factory\ReferenceEntityValueFactory
         public: false
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
@@ -96,7 +96,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     akeneo_referenceentity.validator.constraint.is_reference_entity_configured:
-        class: Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfiguredValidator
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfiguredValidator
         arguments:
             - ['akeneo_reference_entity_collection', 'akeneo_reference_entity']
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details'
@@ -104,21 +104,21 @@ services:
             - { name: validator.constraint_validator, alias: pim_is_reference_entity_configured_validator }
 
     akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_collection_value:
-        class: Akeneo\Pim\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer
         arguments:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     akeneo_referenceentity.infrastructure.catalog.normalizer.reference_entity_value:
-        class: Akeneo\Pim\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\ReferenceEntityValueNormalizer
         arguments:
             - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     akeneo_referenceentity.infrastructure.catalog.normalizer.record_code:
-        class: Akeneo\Pim\ReferenceEntity\Component\Normalizer\RecordCodeNormalizer
+        class: Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\RecordCodeNormalizer
         tags:
         - { name: pim_serializer.normalizer, priority: 90 }
         - { name: pim_standard_format_serializer.normalizer, priority: 90 }

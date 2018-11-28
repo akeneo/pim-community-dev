@@ -53,7 +53,7 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber',
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
-        'Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface',
+        'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController', // We should not use public constant
