@@ -22,6 +22,9 @@ final class JobInstanceNames
     public const REMOVE_ATTRIBUTES_FROM_MAPPING = 'suggest_data_remove_attribute_from_mapping';
 
     /** @var string */
+    public const REMOVE_ATTRIBUTE_OPTION_FROM_MAPPING= 'suggest_data_remove_attribute_option_from_mapping';
+
+    /** @var string */
     public const SUBSCRIBE_PRODUCTS = 'suggest_data_subscribe_products';
 
     /** @var string */
