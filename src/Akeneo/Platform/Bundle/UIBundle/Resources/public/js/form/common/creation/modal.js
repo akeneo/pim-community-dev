@@ -13,7 +13,8 @@ define(
         'oro/loading-mask',
         'pim/router',
         'oro/messenger',
-        'pim/template/form/creation/modal'
+        'pim/template/form/creation/modal',
+        'pim/template/common/modal/modal-with-illustration'
     ],
     function (
         $,
@@ -27,11 +28,14 @@ define(
         LoadingMask,
         router,
         messenger,
-        template
+        template,
+        modalTemplate,
     ) {
         return BaseForm.extend({
             config: {},
             template: _.template(template),
+            modalTemplate: _.template(modalTemplate),
+            validationErrors: [],
 
             /**
              * {@inheritdoc}
@@ -47,10 +51,7 @@ define(
              */
             render() {
                 this.$el.html(this.template({
-                    titleLabel: __(this.config.labels.title),
-                    subTitleLabel: __(this.config.labels.subTitle),
                     contentLabel: __(this.config.labels.content),
-                    picture: this.config.picture,
                     fields: null
                 }));
 
@@ -71,21 +72,18 @@ define(
 
                 const modal = new Backbone.BootstrapModal({
                     title: __(this.config.labels.title),
-                    content: '',
-                    cancelText: __('pim_common.cancel'),
+                    subtitle: __(this.config.labels.subTitle),
+                    picture: this.config.picture,
+                    content: this,
                     okText: __('pim_common.save'),
-                    okCloses: false
+                    okCloses: false,
+                    template: this.modalTemplate,
                 });
 
                 modal.open();
-                modal.$el.addClass('modal--fullPage');
 
-                const modalBody = modal.$('.modal-body');
-                modalBody.addClass('creation');
-
-                this.render()
-                    .setElement(modalBody)
-                    .render();
+                // TODO Find why this is used. Probably behats.
+                modal.$('.modal-body').addClass('creation');
 
                 modal.on('cancel', () => {
                     deferred.reject();

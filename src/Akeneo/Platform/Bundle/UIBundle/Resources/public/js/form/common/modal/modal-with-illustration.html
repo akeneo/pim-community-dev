@@ -1,0 +1,22 @@
+<div class="AknFullPage AknFullPage--asModal">
+  <div class="AknFullPage-content AknFullPage-content AknFullPage-content--withIllustration">
+    <div>
+      <img src="bundles/pimui/images/<%- picture %>" alt="<%- picture %>"/>
+    </div>
+    <div>
+      <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <div class="AknFullPage-title"><%- title %></div>
+      <% if (typeof contentLabel !== 'undefined') { %>
+      <!-- TODO Rename this to 'description' -->
+        <div class="AknFullPage-description">
+          <%- contentLabel %>
+        </div>
+      <% } %>
+      <div class="modal-body"></div>
+      <div title="<%- okText %>" class="AknButton AknButton--apply AknFullPage-ok ok"><%- okText %></div>
+    </div>
+  </div>
+  <% if (allowCancel) { %>
+    <div class="AknFullPage-cancel cancel"></div>
+  <% } %>
+</div>

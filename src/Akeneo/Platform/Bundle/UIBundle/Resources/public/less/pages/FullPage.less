@@ -2,16 +2,74 @@
 
 .AknFullPage {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
   background: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 900;
+  overflow: hidden;
+  align-items: center;
 
+  &--asModal {
+    top: -50vh;
+    left: ~"calc(-50vw + 400px)"; // Default modal are localed centered minus 400px, for a default 800px wide.
+  }
+
+  &-content {
+    max-height: 100vh;
+    overflow-x: auto;
+    width: 100%;
+
+    &--withIllustration {
+      margin: 0 80px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+
+      & > :nth-child(1) {
+        text-align: right;
+        border-right: 2px solid @AknLightPurple;
+        padding-right: 40px;
+      }
+
+      & > :nth-child(2) {
+        padding: 20px 0 20px 40px;
+      }
+    }
+  }
+
+  &-cancel {
+    position: absolute;
+    top: @AknFullPagePadding;
+    left: @AknFullPagePadding;
+    width: 32px;
+    height: 32px;
+    background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
+    cursor: pointer;
+    border: none;
+  }
+
+  &-subTitle {
+    color: @AknLightPurple;
+    text-transform: uppercase;
+    font-size: @AknFontSizeBigger;
+  }
+
+  &-title {
+    font-size: @AknAltTitleFontSize;
+    line-height: 1.4;
+    color: @AknDarkBlue;
+
+    &--highlight {
+      color: @AknLightPurple;
+    }
+  }
+
+  /*
   &--modal {
     position: inherit;
   }
@@ -50,54 +108,14 @@
     }
   }
 
-  &-left {
-    width: 250px;
-    padding: 0 40px 0 0;
-  }
-
-  &-right {
-    width: 650px;
-    padding: 20px 0 0 40px;
-    border-left: 2px solid @AknLightPurple;
-  }
-
-  &-image {
-    width: 210px;
-    height: 210px;
-  }
-
   &-bottom {
     padding: @AknFullPagePadding;
-  }
-
-  &-subTitle {
-    color: @AknSlateGrey;
-    text-transform: uppercase;
-    font-size: @AknFontSizeBigger;
   }
 
   &-content--column &-subTitle,
   &-content--column &-title {
     margin:auto;
     text-align: center;
-  }
-
-  &-title {
-    font-size: @AknAltTitleFontSize;
-    line-height: 1.4;
-    color: @AknDarkBlue;
-
-    &--highlight {
-      color: @AknLightPurple;
-    }
-  }
-
-  &-cancel {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
-    cursor: pointer;
   }
 
   &-description {
@@ -219,5 +237,5 @@
     &--proposal {
         background-image: url('../../images/illustrations/Product.svg');
     }
-  }
+  }*/
 }

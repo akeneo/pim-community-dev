@@ -13,141 +13,116 @@
   background-color: white;
   transform: translate(0, -50%);
 
-  &.modal-large {
-    width: 90%;
-    left: 5%;
-    top: 5%;
-    margin-left: 0;
-    transform: none;
-  }
+  //&.modal-large {
+  //  width: 90%;
+  //  left: 5%;
+  //  top: 5%;
+  //  margin-left: 0;
+  //  transform: none;
+  //}
 
-  .modal-header {
-    background: @AknPurple;
-    font-size: @AknTitleFontSize;
-    height: 50px;
-    line-height: 50px;
-    color: white;
-    padding: 0 16px;
-    border: none;
-    margin-top: -1px;
+  //.modal-header {
+  //  background: @AknPurple;
+  //  font-size: @AknTitleFontSize;
+  //  height: 50px;
+  //  line-height: 50px;
+  //  color: white;
+  //  padding: 0 16px;
+  //  border: none;
+  //  margin-top: -1px;
+  //
+  //  .close {
+  //    display: none;
+  //  }
+  //
+  //  h3 {
+  //    line-height: 50px;
+  //    font-weight: normal;
+  //    margin: 0;
+  //  }
+  //}
+  //
+  //.modal-body {
+  //  position: relative;
+  //  max-height: ~"calc(100vh - 140px)"; // 140px = @AknFullPageTopPadding
+  //  padding: 15px;
+  //  overflow-y: auto;
+  //}
+  //
+  //.modal-full-body {
+  //  position: relative;
+  //  max-height: none;
+  //  padding: 0;
+  //  overflow-y: auto;
+  //}
+  //
+  //.modal-footer {
+  //  border-top: 1px solid @AknBorderColor;
+  //  padding: 10px 20px;
+  //}
 
-    .close {
-      display: none;
-    }
+  // TODO To delete
+  //&.modal--fullPage.modal--alignTop {
+  //  justify-content: left;
+  //}
 
-    h3 {
-      line-height: 50px;
-      font-weight: normal;
-      margin: 0;
-    }
-  }
+  // TODO to delete
+  //&.modal--fullPage {
+  //  transform: initial;
+  //  top: 0;
+  //  left: 0;
+  //  margin-left: 0;
+  //  width: 100vw;
+  //  height: 100vh;
+  //  display: flex;
+  //  justify-content: center;
+  //  flex-direction: column;
+  //
+  //  .modal-header {
+  //    display: none;
+  //  }
+  //
+  //  .modal-footer {
+  //    border-top: none;
+  //    margin: 0 auto;
+  //    width: 900px;
+  //    padding: 10px 0 0 0;
+  //    padding-left: 250px + 40px;
+  //    justify-content: flex-start;
+  //
+  //    .cancel {
+  //      position: fixed;
+  //      top: @AknFullPagePadding;
+  //      left: @AknFullPagePadding;
+  //      width: 32px;
+  //      height: 32px;
+  //      background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
+  //      cursor: pointer;
+  //      font-size: 0;
+  //      margin-left: 0;
+  //      border: none;
+  //    }
+  //
+  //    .confirm {
+  //      position: fixed;
+  //      top: @AknFullPagePadding;
+  //      right: @AknFullPagePadding;
+  //      cursor: pointer;
+  //    }
+  //  }
+  //
+  //  // TODO To delete
+  //  //&.modal--topButton {
+  //  //}
+  //}
 
-  .modal-body {
-    position: relative;
-    max-height: ~"calc(100vh - 140px)"; // 140px = @AknFullPageTopPadding
-    padding: 15px;
-    overflow-y: auto;
-  }
-
-  .modal-full-body {
-    position: relative;
-    max-height: none;
-    padding: 0;
-    overflow-y: auto;
-  }
-
-  .modal-body.creation{
-    min-height: 150px;
-  }
-
-  .modal-footer {
-    border-top: 1px solid @AknBorderColor;
-    padding: 10px 20px;
-  }
-
-  &.modal-full .modal-body {
-    padding: 0;
-  }
-
-  &.modal--fullPage.modal--alignTop {
-    justify-content: left;
-  }
-
-  &.modal--fullPage {
-    transform: initial;
-    top: 0;
-    left: 0;
-    margin-left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-
-    .modal-header {
-      display: none;
-    }
-
-    .modal-footer {
-      border-top: none;
-      margin: 0 auto;
-      width: 900px;
-      padding: 10px 0 0 0;
-      padding-left: 250px + 40px;
-      justify-content: flex-start;
-
-      .cancel {
-        position: fixed;
-        top: @AknFullPagePadding;
-        left: @AknFullPagePadding;
-        width: 32px;
-        height: 32px;
-        background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
-        cursor: pointer;
-        font-size: 0;
-        margin-left: 0;
-        border: none;
-      }
-
-      .confirm {
-        position: fixed;
-        top: @AknFullPagePadding;
-        right: @AknFullPagePadding;
-        cursor: pointer;
-      }
-    }
-
-    .modal-body {
-      padding: 0;
-    }
-
-    &.modal--topButton {
-      .modal-body {
-        max-height: 100vh;
-        height: 100vh;
-        padding: @AknFullPageTopPadding 0 @AknFullPagePadding 0;
-      }
-
-      .modal-body-full {
-        padding: 0;
-      }
-
-      .modal-footer {
-        position: absolute;
-        top: @AknFullPagePadding;
-        padding: 0;
-        right: @AknFullPagePadding;
-        width: auto;
-      }
-    }
-  }
-
-  &.modal--columns {
-    .modal-body {
-      height: 100%;
-      max-height: 100%;
-    }
-  }
+  // TODO To delete
+  //&.modal--columns {
+  //  .modal-body {
+  //    height: 100%;
+  //    max-height: 100%;
+  //  }
+  //}
 }
 
 .modal-backdrop {
