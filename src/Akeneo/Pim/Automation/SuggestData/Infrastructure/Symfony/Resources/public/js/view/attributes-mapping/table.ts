@@ -11,12 +11,14 @@ import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import NormalizedAttribute from 'pim/model/attribute';
 import BaseView = require('pimui/js/view/base');
-import BootstrapModal = require('bootstrap-modal');
+// TODO Revert this commit with @Tamara
+// import BootstrapModal = require('bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttributeWithWarning = require('./simple-select-attribute-with-warning');
+import * as Backbone from "backbone";
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -321,7 +323,7 @@ class AttributeMapping extends BaseView {
       form: BaseView,
       normalizedFamily: any,
     ) => {
-      this.attributeOptionsMappingModal = new BootstrapModal({
+      this.attributeOptionsMappingModal = new (<any>Backbone).BootstrapModal({
         className: 'modal modal--fullPage modal--topButton',
         modalOptions: {
           backdrop: 'static',
