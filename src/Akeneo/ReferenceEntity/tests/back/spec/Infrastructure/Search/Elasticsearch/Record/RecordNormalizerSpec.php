@@ -13,6 +13,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\SearchableRecordItem;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocale;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindSearchableRecords;
 use Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +30,11 @@ class RecordNormalizerSpec extends ObjectBehavior
         FindValueKeysToIndexForChannelAndLocaleInterface $findValueKeysToIndexForChannelAndLocale,
         SqlFindSearchableRecords $findSearchableRecords
     ) {
-        $this->beConstructedWith($findActivatedLocalesPerChannels, $findValueKeysToIndexForChannelAndLocale, $findSearchableRecords);
+        $this->beConstructedWith(
+            $findActivatedLocalesPerChannels,
+            $findValueKeysToIndexForChannelAndLocale,
+            $findSearchableRecords
+        );
     }
 
     function it_is_initializable()
@@ -85,6 +90,11 @@ class RecordNormalizerSpec extends ObjectBehavior
                 'mobile'    => [
                     'en_US' => "stark  Bio",
                 ],
+            ]
+        );
+        $normalizedRecord['complete_value_keys']->shouldBeEqualTo([
+                'name' => true,
+                'description_mobile_en_US' => true,
             ]
         );
         $normalizedRecord['updated_at']->shouldBeInt();
