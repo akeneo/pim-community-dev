@@ -1,7 +1,7 @@
 @import '../base/variables';
 
 .AknFullPage {
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -14,21 +14,20 @@
   overflow: hidden;
   align-items: center;
 
-  &--asModal {
-    top: -50vh;
-    left: ~"calc(-50vw + 400px)"; // Default modal are localed centered minus 400px, for a default 800px wide.
-  }
-
   &-content {
     max-height: 100vh;
     overflow-x: auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0 80px;
+    padding: 20px 0;
 
     &--withIllustration {
       @paddingBetween: 40px;
       margin: 0 80px;
-      display: flex;
-      align-items: stretch;
+      flex-direction: row;
       justify-content: center;
 
       & > :nth-child(1) {
@@ -53,15 +52,18 @@
     background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
     cursor: pointer;
     border: none;
+    z-index: 1040;
   }
 
   &-subTitle {
+    text-align: center;
     color: @AknLightPurple;
     text-transform: uppercase;
     font-size: @AknFontSizeBigger;
   }
 
   &-title {
+    text-align: center;
     font-size: @AknAltTitleFontSize;
     line-height: 1.4;
     color: @AknDarkBlue;
@@ -69,6 +71,11 @@
     &--highlight {
       color: @AknLightPurple;
     }
+  }
+
+  &-content--withIllustration &-title,
+  &-content--withIllustration &-subTitle {
+    text-align: left;
   }
 
   /*

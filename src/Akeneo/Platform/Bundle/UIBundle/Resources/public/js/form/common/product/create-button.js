@@ -17,7 +17,8 @@ define(
         'pim/fetcher-registry',
         'bootstrap-modal',
         'pim/form-builder',
-        'pim/security-context'
+        'pim/security-context',
+        'pim/template/common/modal-with-choices'
     ],
     function (
         $,
@@ -26,15 +27,17 @@ define(
         Backbone,
         BaseForm,
         template,
-        templateModal,
+        modalContentTemplate,
         FetcherRegistry,
         BootstrapModal,
         FormBuilder,
-        SecurityContext
+        SecurityContext,
+        modalTemplate
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            templateModal: _.template(templateModal),
+            modalTemplate: _.template(modalTemplate),
+            modalContentTemplate: _.template(modalContentTemplate),
 
             events: {
                 'click .create-product-button': 'openModal'
@@ -98,15 +101,14 @@ define(
                 });
 
                 this.modal = new Backbone.BootstrapModal({
-                    content: this.templateModal({
+                    title: __(modalTitle),
+                    subtitle: __(subTitle),
+                    template: this.modalTemplate,
+                    content: this.modalContentTemplate({
                         choices: translatedChoices,
-                        modalTitle: __(modalTitle),
-                        subTitle: __(subTitle)
                     })
                 }).open();
 
-                this.modal.$el.find('.modal-footer').remove();
-                this.modal.$el.addClass('modal--fullPage modal--columns');
                 this.modal.$el.on('click', '.AknFullPage-cancel', this.closeModal.bind(this));
                 this.modal.$el.on('click', '.product-choice', this.openFormModal.bind(this));
 

@@ -1,0 +1,11 @@
+<div class="AknFullPage">
+  <div class="AknFullPage-content">
+      <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <div class="AknFullPage-title"><%- title %></div>
+      <div class="modal-body"><%= content %></div>
+    </div>
+  </div>
+  <% if (allowCancel) { %>
+    <div class="AknFullPage-cancel cancel"></div>
+  <% } %>
+</div>

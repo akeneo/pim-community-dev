@@ -1063,6 +1063,8 @@ config:
     pim/template/common/item-picker-basket:                   pimui/templates/common/item-picker-basket.html
     pim/template/common/description-header:                   pimui/templates/common/description-header.html
     pim/template/common/modal-with-illustration:              pimui/templates/common/modal-with-illustration.html
+    # TODO Find a better name
+    pim/template/common/modal-with-choices:                   pimui/templates/common/modal-with-choices.html
 
     pim/template/form/group-selector:                         pimui/templates/form/group-selector.html
     pim/template/form/save:                                   pimui/templates/form/save.html
