@@ -62,8 +62,10 @@ class FamilyRepositoryIntegration extends TestCase
 
     public function test_that_families_with_subscribed_products_are_found(): void
     {
-        $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
-        $this->insertSubscription($product->getId(), false);
+        $product1 = $this->createProduct('product_1', static::TEST_FAMILY_CODE);
+        $this->insertSubscription($product1->getId(), false);
+        $product2 = $this->createProduct('product_2', static::TEST_FAMILY_CODE);
+        $this->insertSubscription($product2->getId(), true);
 
         $familyCollection = $this->getFamilies(
             1,
@@ -76,6 +78,10 @@ class FamilyRepositoryIntegration extends TestCase
             $familyCollection,
             [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
         );
+        $this->assertFamilyStatus($familyCollection, [
+            static::TEST_FAMILY_CODE => Family::MAPPING_PENDING,
+            static::CONTROL_FAMILY_CODE => Family::MAPPING_FULL,
+        ]);
     }
 
     public function test_that_families_with_subscribed_products_are_paginated(): void
@@ -165,30 +171,6 @@ class FamilyRepositoryIntegration extends TestCase
         Assert::assertEmpty($familyCollection);
     }
 
-    public function test_that_the_status_is_unmapped_if_there_is_at_least_one_subscription_with_missing_mapping(): void
-    {
-        $product1 = $this->createProduct('product_1', static::TEST_FAMILY_CODE);
-        $this->insertSubscription($product1->getId(), false);
-        $product2 = $this->createProduct('product_2', static::TEST_FAMILY_CODE);
-        $this->insertSubscription($product2->getId(), true);
-
-        $familyCollection = $this->getFamilies(1, 20, null, [static::TEST_FAMILY_CODE]);
-
-        $this->assertFamilyStatus($familyCollection, Family::MAPPING_PENDING);
-    }
-
-    public function test_that_the_status_is_mapped_if_no_subscription_indicates_missing_mapping(): void
-    {
-        $product1 = $this->createProduct('product_1', static::TEST_FAMILY_CODE);
-        $this->insertSubscription($product1->getId(), false);
-        $product2 = $this->createProduct('product_2', static::TEST_FAMILY_CODE);
-        $this->insertSubscription($product2->getId(), false);
-
-        $familyCollection = $this->getFamilies(1, 20, null, [static::TEST_FAMILY_CODE]);
-
-        $this->assertFamilyStatus($familyCollection, Family::MAPPING_FULL);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -264,11 +246,14 @@ SQL;
         }
     }
 
-    private function assertFamilyStatus(FamilyCollection $familyCollection, int $mappingStatus): void
+    /**
+     * @param FamilyCollection $familyCollection
+     * @param array $mappingStatuses
+     */
+    private function assertFamilyStatus(FamilyCollection $familyCollection, array $mappingStatuses): void
     {
-        Assert::assertCount(1, $familyCollection);
         foreach ($familyCollection as $position => $family) {
-            Assert::assertSame($mappingStatus, $family->getMappingStatus());
+            Assert::assertSame($mappingStatuses[$family->getCode()], $family->getMappingStatus());
         }
     }
 }

@@ -24,9 +24,9 @@ interface FamilyRepositoryInterface
      * @param int $limit
      * @param int $page
      * @param null|string $search
-     * @param array $identifiers
+     * @param array $familyCodes
      *
      * @return FamilyCollection
      */
-    public function findBySearch(int $page, int $limit, ?string $search, array $identifiers): FamilyCollection;
+    public function findBySearch(int $page, int $limit, ?string $search, array $familyCodes): FamilyCollection;
 }
