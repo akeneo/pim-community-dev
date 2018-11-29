@@ -23,6 +23,8 @@ interface OwnProps {
   isDirty: boolean;
   isLoading?: boolean;
   breadcrumbConfiguration: BreadcrumbConfiguration;
+  onLocaleChanged?: (locale: Locale) => void;
+  onChannelChanged?: (channel: Channel) => void;
 }
 
 interface StateProps extends OwnProps {
@@ -135,15 +137,21 @@ export default connect(
       },
     };
   },
-  (dispatch: any, ownProps: any): DispatchProps => {
+  (dispatch: any, ownProps: OwnProps): DispatchProps => {
     return {
       events: {
-        onLocaleChanged: undefined === ownProps.onLocaleChanged ? (locale: Locale) => {
-          dispatch(catalogLocaleChanged(locale.code));
-        } : ownProps.onLocaleChanged,
-        onChannelChanged: undefined === ownProps.onChannelChanged ? (channel: Channel) => {
-          dispatch(catalogChannelChanged(channel.code));
-        } : ownProps.onChannelChanged,
+        onLocaleChanged:
+          undefined === ownProps.onLocaleChanged
+            ? (locale: Locale) => {
+                dispatch(catalogLocaleChanged(locale.code));
+              }
+            : ownProps.onLocaleChanged,
+        onChannelChanged:
+          undefined === ownProps.onChannelChanged
+            ? (channel: Channel) => {
+                dispatch(catalogChannelChanged(channel.code));
+              }
+            : ownProps.onChannelChanged,
       },
     };
   }

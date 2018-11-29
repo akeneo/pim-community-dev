@@ -12,7 +12,11 @@ import Header from 'akeneoreferenceentity/application/component/reference-entity
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import {needMoreResults, searchUpdated, updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
+import {
+  needMoreResults,
+  searchUpdated,
+  updateRecordResults,
+} from 'akeneoreferenceentity/application/action/record/search';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import ReferenceEntityIdentifier, {
   createIdentifier as createReferenceIdentifier,
