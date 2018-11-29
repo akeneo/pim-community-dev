@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.44 (2018-11-29)
+
 ## Bug fixes
 
 - PIM-7855: Fix the add of optional attributes on product with family, if imported file doesn't have the family column    
