@@ -111,4 +111,18 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
 
         $this->execute();
     }
+
+    public function it_throws_an_exception_if_there_is_no_job_parameters($stepExecution): void
+    {
+        $stepExecution->getJobParameters()->willReturn(null);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
+    }
+
+    public function it_throws_an_exception_if_one_parameter_is_missing($stepExecution): void
+    {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'wrong_key' => 'wrong_value',
+        ]));
+        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
+    }
 }

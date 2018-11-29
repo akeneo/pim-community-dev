@@ -74,8 +74,8 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
      */
     public function execute(): void
     {
-        $deletedAttributeOptionCode = $this->stepExecution->getJobParameters()->get('pim_attribute_option_code');
-        $pimAttributeCode = $this->stepExecution->getJobParameters()->get('pim_attribute_code');
+        $deletedAttributeOptionCode = $this->getJobParameterValue('pim_attribute_option_code');
+        $pimAttributeCode = $this->getJobParameterValue('pim_attribute_code');
 
         $familyCodes = $this->familyCodesByAttributeQuery->execute($pimAttributeCode);
 
@@ -189,5 +189,29 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
         ];
 
         return $newOptionMapping;
+    }
+
+    /**
+     * @param string $parameterName
+     *
+     * @return string
+     */
+    private function getJobParameterValue(string $parameterName): string
+    {
+        if (null === $this->stepExecution->getJobParameters()) {
+            throw new \InvalidArgumentException(sprintf(
+                'Missing job parameters for tasklet "%s"',
+                self::class
+            ));
+        }
+        if (!$this->stepExecution->getJobParameters()->has($parameterName)) {
+            throw new \InvalidArgumentException(sprintf(
+                'The job parameter "%s" is missing for the tasklet "%s"',
+                $parameterName,
+                self::class
+            ));
+        }
+
+        return $this->stepExecution->getJobParameters()->get($parameterName);
     }
 }
