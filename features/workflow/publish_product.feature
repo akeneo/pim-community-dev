@@ -113,7 +113,7 @@ Feature: Publish a product
       | waterproof | Waterproof  | pim_catalog_boolean | other |
     And the following product:
       | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
+      | my-jacket |         | Jackets    |
     And the following family:
       | code | label-en_US | attributes     |
       | baz  | Baz         | sku,waterproof |
@@ -134,7 +134,7 @@ Feature: Publish a product
       | climate | Climate     | pim_catalog_multiselect | 0        | 0           |                    |               |                     | other |
     And the following product:
       | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
+      | my-jacket |         | Jackets    |
     And the following "climate" attribute options: Hot and Cold
     And the following product values:
       | product   | attribute | value | locale | scope |

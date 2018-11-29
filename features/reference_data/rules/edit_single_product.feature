@@ -27,7 +27,7 @@ Feature: Update a single product by applying rules
   Scenario: Successfully execute a rule with setter actions to update non empty values on reference data attributes
     Given the following products:
       | sku       | family |
-      | red-heels | heels  |
+      | red-heels |        |
     And the following product values:
       | product   | attribute   | value          | locale | scope  |
       | red-heels | sole_color  | yellow         |        |        |
@@ -91,7 +91,7 @@ Feature: Update a single product by applying rules
   Scenario: Successfully execute a rule with copier actions to update non empty values on reference data attributes
     Given the following products:
       | sku       | family |
-      | red-heels | heels  |
+      | red-heels |        |
     And the following product values:
       | product   | attribute   | value          | locale | scope  |
       | red-heels | sole_color  | yellow         |        |        |
