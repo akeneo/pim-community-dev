@@ -1,0 +1,6 @@
+Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters:
+    properties:
+        localeCode:
+            - Akeneo\Pim\Permission\Component\Validator\Constraint\IsGrantedLocale:
+        attributeCodes:
+            - Akeneo\Pim\Permission\Component\Validator\Constraint\AreGrantedAttributes:
