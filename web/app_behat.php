@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Dotenv\Dotenv;
 
 ini_set('display_errors', '1');
 error_reporting(E_ALL);
@@ -11,6 +12,11 @@ $env = getenv('BEHAT_ENV');
 
 if ($env == null) {
     $env = 'behat';
+}
+
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    (new Dotenv())->load($envFile);
 }
 
 $kernel = new AppKernel($env, false);

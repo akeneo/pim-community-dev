@@ -13,4 +13,4 @@ parameters:
     product_model_index_name:              akeneo_pim_product_model
     product_and_product_model_index_name:  akeneo_pim_product_and_product_model
     record_index_name:                     akeneo_referenceentity_record
-    index_hosts:                          'localhost: 9200'
+    index_hosts:                           'localhost: 9200'
