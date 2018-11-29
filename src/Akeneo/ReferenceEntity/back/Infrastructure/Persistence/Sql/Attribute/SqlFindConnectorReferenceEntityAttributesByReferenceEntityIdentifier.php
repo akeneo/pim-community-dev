@@ -69,13 +69,13 @@ SQL;
     private function hydrateAttributes(array $results): array
     {
         $allAttributeDetails = [];
-        
+
         foreach ($results as $result) {
             $hydratedAttribute = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
 
             $connectorAttribute = new ConnectorAttribute(
                 $hydratedAttribute->getIdentifier(),
-                LabelCollection::fromArray(json_decorde($result['labels'], true)),
+                LabelCollection::fromArray(json_decode($result['labels'], true)),
                 $result['attribute_type'],
                 $hydratedAttribute->hasValuePerLocale(),
                 $hydratedAttribute->hasValuePerChannel(),
@@ -100,6 +100,7 @@ SQL;
         unset($normalizedAttribute['value_per_channel']);
         unset($normalizedAttribute['value_per_locale']);
         unset($normalizedAttribute['type']);
+        unset($normalizedAttribute['options']);
 
         return $normalizedAttribute;
     }

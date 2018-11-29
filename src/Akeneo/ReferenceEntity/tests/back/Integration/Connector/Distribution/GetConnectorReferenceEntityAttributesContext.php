@@ -16,15 +16,20 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -73,20 +78,16 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository = $attributeRepository;
     }
 
-    /**
-     * @Given /^7 attributes that structure the Brand reference entity in the PIM$/
-     */
-    public function attributesThatStructureTheBrandReferenceEntityInThePIM()
+    public function createTextAttribute(string $referenceEntityIdentifier)
     {
         $attributeIdentifier = 'description';
-        $referenceEntityIdentifier = 'brand';
 
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('regex'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
-            AttributeOrder::fromInteger(2),
+            AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
@@ -95,7 +96,6 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             AttributeRegularExpression::fromString('/\w+/')
         );
 
-        // Should store the additional properties
         $this->attributeRepository->create($textAttribute);
 
         $textConnectorAttribute = new ConnectorAttribute(
@@ -118,6 +118,195 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             $textConnectorAttribute
         );
+    }
+
+    public function createImageAttribute(string $referenceEntityIdentifier)
+    {
+        $attributeIdentifier = 'photo';
+
+        $imageAttribute = ImageAttribute::create(
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString('image'),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('10'),
+            AttributeAllowedExtensions::fromList(['jpg'])
+        );
+
+        $this->attributeRepository->create($imageAttribute);
+
+        $imageAttribute = new ConnectorAttribute(
+            $imageAttribute->getIdentifier(),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            'image',
+            $imageAttribute->hasValuePerLocale(),
+            $imageAttribute->hasValuePerChannel(),
+            true,
+            [
+                'allowed_extensions' => ['jpg'],
+                'max_file_size' => '10'
+            ]
+        );
+
+        $this->findConnectorReferenceEntityAttributes->save(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            $imageAttribute
+        );
+    }
+
+    public function createOptionAttribute(string $referenceEntityIdentifier)
+    {
+        $attributeIdentifier = 'nationality';
+
+        $optionAttribute = OptionAttribute::create(
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeIdentifier),
+            LabelCollection::fromArray(['fr_FR' => 'Nationalité', 'en_US' => 'Nationality']),
+            AttributeOrder::fromInteger(3),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        $optionAttribute = new ConnectorAttribute(
+            $optionAttribute->getIdentifier(),
+            LabelCollection::fromArray(['en_US' => 'Nationality', 'fr_FR' => 'Nationalité']),
+            'single_option',
+            $optionAttribute->hasValuePerLocale(),
+            $optionAttribute->hasValuePerChannel(),
+            false,
+            []
+        );
+
+        $this->findConnectorReferenceEntityAttributes->save(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            $optionAttribute
+        );
+    }
+
+    public function createMultiOptionAttribute(string $referenceEntityIdentifier)
+    {
+        $attributeIdentifier = 'sales_areas';
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeIdentifier),
+            LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        $optionAttribute = new ConnectorAttribute(
+            $optionAttribute->getIdentifier(),
+            LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
+            'multiple_options',
+            $optionAttribute->hasValuePerLocale(),
+            $optionAttribute->hasValuePerChannel(),
+            false,
+            []
+        );
+
+        $this->findConnectorReferenceEntityAttributes->save(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            $optionAttribute
+        );
+    }
+
+    public function createSingleLinkAttribute(string $referenceEntityIdentifier)
+    {
+        $attributeIdentifier = 'country';
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeIdentifier),
+            LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        $optionAttribute = new ConnectorAttribute(
+            $optionAttribute->getIdentifier(),
+            LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
+            'reference_entity_single_link',
+            $optionAttribute->hasValuePerLocale(),
+            $optionAttribute->hasValuePerChannel(),
+            false,
+            [
+                "reference_entity_code" => 'country'
+            ]
+        );
+
+        $this->findConnectorReferenceEntityAttributes->save(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            $optionAttribute
+        );
+    }
+
+    public function createMultiLinkAttribute(string $referenceEntityIdentifier)
+    {
+        $attributeIdentifier = 'designers';
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString($attributeIdentifier),
+            LabelCollection::fromArray(['fr_FR' => 'Designeurs', 'en_US' => 'Designers']),
+            AttributeOrder::fromInteger(6),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        $optionAttribute = new ConnectorAttribute(
+            $optionAttribute->getIdentifier(),
+            LabelCollection::fromArray(['fr_FR' => 'Designeurs', 'en_US' => 'Designers']),
+            'reference_entity_multiple_links',
+            $optionAttribute->hasValuePerLocale(),
+            $optionAttribute->hasValuePerChannel(),
+            true,
+            [
+                "reference_entity_code" => 'designer'
+            ]
+        );
+
+        $this->findConnectorReferenceEntityAttributes->save(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            $optionAttribute
+        );
+    }
+
+    /**
+     * @Given /^7 attributes that structure the Brand reference entity in the PIM$/
+     */
+    public function attributesThatStructureTheBrandReferenceEntityInThePIM()
+    {
+        $referenceEntityIdentifier = 'brand';
+
+        $this->createTextAttribute($referenceEntityIdentifier);
+        $this->createImageAttribute($referenceEntityIdentifier);
+        $this->createOptionAttribute($referenceEntityIdentifier);
+        $this->createMultiOptionAttribute($referenceEntityIdentifier);
+        $this->createSingleLinkAttribute($referenceEntityIdentifier);
+        $this->createMultiLinkAttribute($referenceEntityIdentifier);
 
         $referenceEntity = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),

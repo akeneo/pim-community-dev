@@ -65,15 +65,15 @@
         }
       },
       {
-        "code": "sales_areas",
+        "code": "sales_areas_brand_test",
         "labels": {
-          "en_US": "Sales areas",
-          "fr_FR": "Zones de vente"
+          "fr_FR": "Zones de vente",
+          "en_US": "Sales areas"
         },
         "type": "multiple_options",
         "localizable": false,
         "scopable": false,
-        "is_required_for_completeness": true,
+        "is_required_for_completeness": false,
         "_links": {
           "self": {
             "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/sales_areas_brand_test"
