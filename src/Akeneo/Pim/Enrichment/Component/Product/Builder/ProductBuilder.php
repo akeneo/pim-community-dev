@@ -37,15 +37,11 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $productClass;
 
-    /** @var MissingAssociationAdder */
-    protected $missingAssociationAdder;
-
     /**
      * @param AttributeRepositoryInterface       $attributeRepository Attribute repository
      * @param FamilyRepositoryInterface          $familyRepository Family repository
      * @param EventDispatcherInterface           $eventDispatcher Event dispatcher
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
-     * @param MissingAssociationAdder            $missingAssociationAdder
      * @param array                              $classes Model classes
      */
     public function __construct(
@@ -53,7 +49,6 @@ class ProductBuilder implements ProductBuilderInterface
         FamilyRepositoryInterface $familyRepository,
         EventDispatcherInterface $eventDispatcher,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
-        MissingAssociationAdder $missingAssociationAdder,
         array $classes
     ) {
         $this->attributeRepository     = $attributeRepository;
@@ -61,7 +56,6 @@ class ProductBuilder implements ProductBuilderInterface
         $this->eventDispatcher         = $eventDispatcher;
         $this->productClass            = $classes['product'];
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
-        $this->missingAssociationAdder = $missingAssociationAdder;
     }
 
     /**
@@ -85,16 +79,6 @@ class ProductBuilder implements ProductBuilderInterface
         $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
 
         return $product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addMissingAssociations(EntityWithAssociationsInterface $entity)
-    {
-        $this->missingAssociationAdder->addMissingAssociations($entity);
-
-        return $this;
     }
 
     /**

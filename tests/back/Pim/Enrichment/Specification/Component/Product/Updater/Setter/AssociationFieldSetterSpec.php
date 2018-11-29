@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
@@ -10,7 +11,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -23,9 +23,9 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductBuilderInterface $productBuilder
+        MissingAssociationAdder $missingAssociationAdder
     ) {
-        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $productBuilder, ['associations']);
+        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $missingAssociationAdder, ['associations']);
     }
 
     function it_is_a_setter()
@@ -110,7 +110,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productRepository,
         $productModelRepository,
         $groupRepository,
-        $productBuilder,
+        $missingAssociationAdder,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
         AssociationInterface $upsellAssociation,
@@ -138,7 +138,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
         );
 
-        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
         $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
 
@@ -182,11 +182,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_association_type_code_does_not_exist(
-        $productBuilder,
+        $missingAssociationAdder,
         ProductInterface $product
     ) {
         $product->getAssociations()->willReturn(new ArrayCollection());
-        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
@@ -208,7 +208,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_associated_product_does_not_exist(
-        $productBuilder,
+        $missingAssociationAdder,
         $productRepository,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
@@ -220,7 +220,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
 
         $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
 
-        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
 
         $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
@@ -244,7 +244,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_associated_group_does_not_exist(
-        $productBuilder,
+        $missingAssociationAdder,
         $groupRepository,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
@@ -254,7 +254,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $xsellAssociation->getGroups()->willReturn(new ArrayCollection([]));
         $xsellAssociation->getProducts()->willReturn(new ArrayCollection([]));
         $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
-        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
 
         $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
@@ -278,7 +278,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_should_clear_concerned_associations(
-        $productBuilder,
+        $missingAssociationAdder,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
         AssociationInterface $upsellAssociation,
@@ -315,7 +315,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $upsellAssociation->removeProductModel($productModel1)->shouldBeCalled();
         $upsellAssociation->removeProductModel($productModel2)->shouldBeCalled();
 
-        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
         $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
 

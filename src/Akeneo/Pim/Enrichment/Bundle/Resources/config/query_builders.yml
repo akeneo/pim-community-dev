@@ -194,16 +194,6 @@ services:
             - '@pim_catalog.repository.attribute'
 
     # PQB common utils
-    pim_catalog.doctrine.query.filter.object_id_resolver:
-        class: '%pim_catalog.doctrine.query.filter.object_id_resolver.class%'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-        calls:
-            - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
-            - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
-            - [ addFieldMapping, ['category', '%pim_catalog.entity.category.class%']]
-            - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
-
     pim_catalog.doctrine.query.filter.object_code_resolver:
         class: '%pim_catalog.doctrine.query.filter.object_code_resolver.class%'
         arguments:

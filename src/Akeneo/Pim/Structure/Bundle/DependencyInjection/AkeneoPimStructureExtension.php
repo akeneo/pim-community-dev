@@ -47,6 +47,5 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
-        $loader->load('providers.yml');
     }
 }
