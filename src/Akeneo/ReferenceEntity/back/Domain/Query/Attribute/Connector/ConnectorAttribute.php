@@ -37,6 +37,9 @@ class ConnectorAttribute
     /** @var bool */
     public $scopable;
 
+    /** @var bool */
+    public $isRequired;
+
     /** @var array */
     public $additionalProperties;
 
@@ -46,6 +49,7 @@ class ConnectorAttribute
         string $type,
         bool $localizable,
         bool $scopable,
+        bool $isRequired,
         array $additionalProperties
     ) {
         $this->identifier = $identifier;
@@ -53,6 +57,7 @@ class ConnectorAttribute
         $this->type = $type;
         $this->localizable = $localizable;
         $this->scopable = $scopable;
+        $this->isRequired = $isRequired;
         $this->additionalProperties = $additionalProperties;
     }
 
@@ -63,7 +68,8 @@ class ConnectorAttribute
             'labels' => $this->labelCollection->normalize(),
             'type' => $this->type,
             'localizable' => $this->localizable,
-            'scopable' => $this->scopable
+            'scopable' => $this->scopable,
+            'is_required_for_completeness' => $this->isRequired
         ];
 
         return array_merge($commonProperties, $this->additionalProperties);

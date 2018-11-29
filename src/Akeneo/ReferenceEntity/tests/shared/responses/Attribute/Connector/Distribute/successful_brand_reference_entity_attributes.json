@@ -18,6 +18,7 @@
         "type": "text",
         "localizable": true,
         "scopable": false,
+        "is_required_for_completeness": true,
         "max_characters": 155,
         "is_textarea": false,
         "is_rich_text_editor": false,

@@ -2,6 +2,7 @@
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
@@ -33,7 +34,7 @@ class SqlFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier imple
     {
         $results = $this->fetchResult($referenceEntityIdentifier);
 
-        return $this->hydrateAttributesDetails($results);
+        return $this->hydrateAttributes($results);
     }
 
     private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array
@@ -65,24 +66,41 @@ SQL;
     /**
      * @return ConnectorAttribute[]
      */
-    private function hydrateAttributesDetails(array $results): array
+    private function hydrateAttributes(array $results): array
     {
         $allAttributeDetails = [];
+        
         foreach ($results as $result) {
             $hydratedAttribute = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
 
-            $attributeDetails = new ConnectorAttribute(
+            $connectorAttribute = new ConnectorAttribute(
                 $hydratedAttribute->getIdentifier(),
-                LabelCollection::fromArray(json_decode($result['labels'], true)),
+                LabelCollection::fromArray(json_decorde($result['labels'], true)),
                 $result['attribute_type'],
                 $hydratedAttribute->hasValuePerLocale(),
                 $hydratedAttribute->hasValuePerChannel(),
-                json_decode($result['additional_properties'], true)
+                (bool) $result['is_required'],
+                $this->getAdditionalProperties($hydratedAttribute->normalize())
             );
 
-            $allAttributeDetails[] = $attributeDetails;
+            $allAttributeDetails[] = $connectorAttribute;
         }
 
         return $allAttributeDetails;
+    }
+
+    private function getAdditionalProperties(array $normalizedAttribute): array
+    {
+        unset($normalizedAttribute['identifier']);
+        unset($normalizedAttribute['reference_entity_identifier']);
+        unset($normalizedAttribute['code']);
+        unset($normalizedAttribute['labels']);
+        unset($normalizedAttribute['order']);
+        unset($normalizedAttribute['is_required']);
+        unset($normalizedAttribute['value_per_channel']);
+        unset($normalizedAttribute['value_per_locale']);
+        unset($normalizedAttribute['type']);
+
+        return $normalizedAttribute;
     }
 }

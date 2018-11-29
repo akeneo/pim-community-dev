@@ -104,6 +104,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             'text',
             true,
             false,
+            true,
             [
                 'max_characters' => $textAttribute->getMaxLength()->intValue(),
                 'is_textarea' => false,
@@ -125,13 +126,6 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         );
 
         $this->referenceEntityRepository->create($referenceEntity);
-
-        // Create 7 attributes of different types
-        // Put them in the Attribute repository
-        // Create ConnectorAttributes
-        // Save them in the InMemoryGetReferenceEntityAttributes
-        // Create the reference entity
-        // Put it in the reference entity repository
     }
 
     /**
