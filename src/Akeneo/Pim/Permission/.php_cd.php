@@ -134,6 +134,7 @@ $rules = [
         'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
         'Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents',
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder'
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
