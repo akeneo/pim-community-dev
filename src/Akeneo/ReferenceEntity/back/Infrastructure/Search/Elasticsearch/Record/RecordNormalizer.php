@@ -155,7 +155,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         return (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp();
     }
 
-    private function generateFilledValueKeys(SearchableRecordItem $searchableRecordItem)
+    private function generateFilledValueKeys(SearchableRecordItem $searchableRecordItem): array
     {
         return array_fill_keys(array_keys($searchableRecordItem->values), true);
     }
@@ -175,6 +175,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::UPDATED_AT               => $this->now(),
             self::COMPLETE_VALUE_KEYS      => $filledValueKeysMatrix,
         ];
+        
         return $normalizedRecord;
     }
 }
