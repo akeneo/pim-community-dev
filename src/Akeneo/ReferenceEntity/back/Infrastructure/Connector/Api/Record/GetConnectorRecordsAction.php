@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\SearchRecord\SearchConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
@@ -22,7 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Limit;
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Hal\AddHalDownloadLinkToRecordImages;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

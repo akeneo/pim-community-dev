@@ -11,7 +11,7 @@ declare(strict_types=1);
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Hal;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal;
 
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

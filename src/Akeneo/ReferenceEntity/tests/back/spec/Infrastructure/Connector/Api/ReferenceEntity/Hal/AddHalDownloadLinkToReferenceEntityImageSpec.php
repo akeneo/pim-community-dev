@@ -11,9 +11,9 @@ declare(strict_types=1);
 * file that was distributed with this source code.
 */
 
-namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Hal;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal;
 
-use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Hal\AddHalDownloadLinkToReferenceEntityImage;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
