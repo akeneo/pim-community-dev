@@ -27,3 +27,8 @@ mappings:
                     mapping:
                         type: 'keyword'
                         normalizer: 'text_normalizer'
+            -
+                complete_value_keys:
+                    path_match: 'complete_value_keys.*'
+                    mapping:
+                        type: 'boolean'
