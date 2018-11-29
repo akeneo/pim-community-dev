@@ -19,10 +19,10 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface FindRecordItemsForIdentifiersInterface
+interface FindRecordItemsForIdentifiersAndQueryInterface
 {
     /**
      * @return RecordItem[]
      */
-    public function __invoke(array $identifiers): array;
+    public function __invoke(array $identifiers, RecordQuery $query): array;
 }

@@ -92,8 +92,8 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers:
-        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiers
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 

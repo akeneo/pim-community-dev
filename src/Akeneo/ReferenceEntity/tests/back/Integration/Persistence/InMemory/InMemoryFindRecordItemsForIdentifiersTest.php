@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersWithRecordQuery;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -32,13 +32,13 @@ class InMemoryFindRecordItemsForIdentifiersTest extends TestCase
     /** @var RecordIdentifier */
     private $cocoIdentifier;
 
-    /** @var InMemoryFindRecordItemsForIdentifiers */
+    /** @var InMemoryFindRecordItemsForIdentifiersWithRecordQuery */
     private $query;
 
     public function setup()
     {
         $this->recordRepository = new InMemoryRecordRepository();
-        $this->query = new InMemoryFindRecordItemsForIdentifiers($this->recordRepository);
+        $this->query = new InMemoryFindRecordItemsForIdentifiersWithRecordQuery($this->recordRepository);
     }
 
     /**

@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 
@@ -23,7 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordItemsForIdentifiers implements FindRecordItemsForIdentifiersInterface
+class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIdentifiersAndQueryInterface
 {
     /** @var RecordRepositoryInterface */
     private $recordRepository;
@@ -36,7 +37,7 @@ class InMemoryFindRecordItemsForIdentifiers implements FindRecordItemsForIdentif
     /**
      * {@inheritdoc}
      */
-    public function __invoke(array $identifiers): array
+    public function __invoke(array $identifiers, RecordQuery $query): array
     {
         return array_values(array_filter(array_map(function (string $identifier) {
             try {
@@ -52,6 +53,7 @@ class InMemoryFindRecordItemsForIdentifiers implements FindRecordItemsForIdentif
             $recordItem->labels = $record->normalize()['labels'];
             $recordItem->image = $record->getImage()->normalize();
             $recordItem->values = $record->getValues()->normalize();
+            $recordItem->completenessPercentage = '-';
 
             return $recordItem;
         }, $identifiers)));

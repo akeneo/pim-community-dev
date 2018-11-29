@@ -27,6 +27,7 @@ class RecordItem
     private const LABELS = 'labels';
     private const IMAGE = 'image';
     private const VALUES = 'values';
+    private const COMPLETENESS_PERCENTAGE = 'completeness_percentage';
 
     /** @var string */
     public $identifier;
@@ -46,6 +47,9 @@ class RecordItem
     /** @var []|null */
     public $values;
 
+    /** @var ?string */
+    public $completenessPercentage;
+
     public function normalize(): array
     {
         return [
@@ -55,6 +59,7 @@ class RecordItem
             self::LABELS                      => $this->labels,
             self::IMAGE                       => $this->image,
             self::VALUES                      => $this->values,
+            self::COMPLETENESS_PERCENTAGE     => $this->completenessPercentage,
         ];
     }
 }
