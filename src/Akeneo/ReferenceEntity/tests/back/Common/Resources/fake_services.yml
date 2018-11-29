@@ -106,6 +106,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocale
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy
