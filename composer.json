@@ -34,7 +34,7 @@
         ]
     },
     "require": {
-        "akeneo/pim-community-dev": "2.0.x-dev@dev",
+        "akeneo/pim-community-dev": "~2.0.44",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
