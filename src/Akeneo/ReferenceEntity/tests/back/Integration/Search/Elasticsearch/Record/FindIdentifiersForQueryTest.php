@@ -342,12 +342,6 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'completeness',
-                    'operator' => 'ALL',
-                    'value' => '',
-                    'context' => []
-                ],
-                [
                     'field' => 'reference_entity',
                     'operator' => '=',
                     'value' => 'brand',
@@ -375,8 +369,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'completeness',
-                    'operator' => 'YES',
+                    'field' => 'complete',
+                    'operator' => true,
                     'value' => '',
                     'context' => []
                 ],
@@ -408,8 +402,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'completeness',
-                    'operator' => 'NO',
+                    'field' => 'complete',
+                    'operator' => false,
                     'value' => '',
                     'context' => []
                 ],

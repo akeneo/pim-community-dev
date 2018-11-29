@@ -74,7 +74,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
         $fullTextFilter = ($recordQuery->hasFilter('full_text')) ? $recordQuery->getFilter('full_text') : null;
         $codeLabelFilter = ($recordQuery->hasFilter('code_label')) ? $recordQuery->getFilter('code_label') : null;
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
-        $completenessFilter = ($recordQuery->hasFilter('completeness')) ? $recordQuery->getFilter('completeness') : null;
+        $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
 
         $query = [
             '_source' => '_id',
@@ -144,40 +144,8 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
-        if (null !== $completenessFilter) {
-            $requiredValueKeys = $this->getRequiredValueKeys(
-                $referenceEntityCode,
-                ChannelIdentifier::fromCode($recordQuery->getChannel()),
-                LocaleIdentifier::fromCode($recordQuery->getLocale())
-            );
-            if ('YES' === $completenessFilter['operator']) {
-                $clauses = array_map(function (string $requiredValueKey) {
-                    return [
-                        'exists' => [
-                            'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                        ],
-                    ];
-                }, $requiredValueKeys->normalize());
-                $query['query']['constant_score']['filter']['bool']['filter'] = array_merge($query['query']['constant_score']['filter']['bool']['filter'],
-                    $clauses);
-            }
-            if ('NO' === $completenessFilter['operator']) {
-                $clauses = array_map(function (string $requiredValueKey) {
-                    return [
-                        'bool' => [
-                            'must_not' => [
-                                [
-                                    'exists' => [
-                                        'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ];
-                }, $requiredValueKeys->normalize());
-                $query['query']['constant_score']['filter']['bool']['should'] = array_merge($query['query']['constant_score']['filter']['bool']['should'] ?? [],
-                    $clauses);
-            }
+        if (null !== $completeFilter) {
+            $query = $this->getCompleteFilterQuery($recordQuery, $referenceEntityCode, $completeFilter, $query);
         }
 
         return $query;
@@ -205,5 +173,44 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $channel,
             $locale
         );
+    }
+
+    private function getCompleteFilterQuery(RecordQuery $recordQuery, $referenceEntityCode, $completeFilter, $query)
+    {
+        $requiredValueKeys = $this->getRequiredValueKeys(
+            $referenceEntityCode,
+            ChannelIdentifier::fromCode($recordQuery->getChannel()),
+            LocaleIdentifier::fromCode($recordQuery->getLocale())
+        );
+        if (true === $completeFilter['operator']) {
+            $clauses = array_map(function (string $requiredValueKey) {
+                return [
+                    'exists' => [
+                        'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                    ],
+                ];
+            }, $requiredValueKeys->normalize());
+            $query['query']['constant_score']['filter']['bool']['filter'] = array_merge($query['query']['constant_score']['filter']['bool']['filter'],
+                $clauses);
+        }
+        if (false === $completeFilter['operator']) {
+            $clauses = array_map(function (string $requiredValueKey) {
+                return [
+                    'bool' => [
+                        'must_not' => [
+                            [
+                                'exists' => [
+                                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+            }, $requiredValueKeys->normalize());
+            $query['query']['constant_score']['filter']['bool']['should'] = array_merge($query['query']['constant_score']['filter']['bool']['should'] ?? [],
+                $clauses);
+        }
+
+        return $query;
     }
 }
