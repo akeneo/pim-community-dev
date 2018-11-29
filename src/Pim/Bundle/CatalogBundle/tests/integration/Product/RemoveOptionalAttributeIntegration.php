@@ -15,7 +15,7 @@ class RemoveOptionalAttributeIntegration extends TestCase
     /**
      * @test
      */
-    function remove_an_attribute_on_a_product_without_family()
+    function test_remove_an_attribute_on_a_product_without_family()
     {
         /** @var EntityBuilder $entityBuilder */
         $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
