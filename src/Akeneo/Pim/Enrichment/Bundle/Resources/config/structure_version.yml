@@ -15,7 +15,6 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_structure_version.provider.structure_version.product:
-        alias: pim_enrich.provider.structure_version.product
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@doctrine'
@@ -30,7 +29,6 @@ services:
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
     pim_structure_version.provider.structure_version.group:
-        alias: pim_enrich.provider.structure_version.group
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@doctrine'
@@ -40,8 +38,7 @@ services:
             - [addResource, ['%pim_catalog.entity.channel.class%']]
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
-    pim_structure_version.provider.structure_version.group:
-        alias: pim_enrich.provider.structure_version.group_type
+    pim_structure_version.provider.structure_version.group_type:
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@doctrine'
@@ -49,7 +46,6 @@ services:
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
     pim_structure_version.provider.structure_version.attribute:
-        alias: pim_enrich.provider.structure_version.attribute
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@doctrine'
@@ -58,7 +54,6 @@ services:
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
     pim_structure_version.provider.structure_version.family_variant:
-        alias: pim_enrich.provider.structure_version.family_variant
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@doctrine'
