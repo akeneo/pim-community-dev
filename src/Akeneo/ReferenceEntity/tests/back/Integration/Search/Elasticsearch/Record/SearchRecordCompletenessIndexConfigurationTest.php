@@ -54,8 +54,8 @@ class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTe
             ],
         ];
 
-        $matchingidentifiers = $this->searchRecordIndexHelper->executeQuery($query);
-        Assert::assertSame(['brand_kartell'], $matchingidentifiers);
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        Assert::assertSame(['brand_kartell'], $matchingIdentifiers);
     }
 
     /**
@@ -83,8 +83,8 @@ class SearchRecordCompletenessIndexConfigurationTest extends SearchIntegrationTe
             ],
         ];
 
-        $matchingidentifiers = $this->searchRecordIndexHelper->executeQuery($query);
-        Assert::assertSame(['brand_kartell', 'brand_ikea'], $matchingidentifiers);
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        Assert::assertSame(['brand_kartell', 'brand_ikea'], $matchingIdentifiers);
     }
 
     private function loadDataset()
