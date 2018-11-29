@@ -59,13 +59,13 @@ class RecordNormalizer implements RecordNormalizerInterface
         $matrixWithValueKeys = $this->generateSearchMatrixWithValueKeys($referenceEntityIdentifier);
         $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
         $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
-        $completeValueKeysMatrix = $this->generateCompleteValueKeys($searchableRecordItem);
+        $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
 
         return $this->normalize(
             $searchableRecordItem,
             $fullTextMatrix,
             $codeLabelMatrix,
-            $completeValueKeysMatrix
+            $filledValueKeysMatrix
         );
     }
 
@@ -76,13 +76,13 @@ class RecordNormalizer implements RecordNormalizerInterface
         foreach ($searchableRecordItems as $searchableRecordItem) {
             $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
             $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
-            $completeValueKeysMatrix = $this->generateCompleteValueKeys($searchableRecordItem);
+            $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
 
             yield $this->normalize(
                 $searchableRecordItem,
                 $fullTextMatrix,
                 $codeLabelMatrix,
-                $completeValueKeysMatrix
+                $filledValueKeysMatrix
             );
         }
     }
@@ -155,7 +155,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         return (new \DateTime('now', new \DateTimeZone('UTC')))->getTimestamp();
     }
 
-    private function generateCompleteValueKeys(SearchableRecordItem $searchableRecordItem)
+    private function generateFilledValueKeys(SearchableRecordItem $searchableRecordItem)
     {
         return array_fill_keys(array_keys($searchableRecordItem->values), true);
     }
@@ -164,7 +164,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         SearchableRecordItem $searchableRecordItem,
         array $fullTextMatrix,
         array $codeLabelMatrix,
-        array $completeValueKeysMatrix
+        array $filledValueKeysMatrix
     ): array {
         $normalizedRecord = [
             self::IDENTIFIER               => $searchableRecordItem->identifier,
@@ -173,7 +173,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::RECORD_FULL_TEXT_SEARCH  => $fullTextMatrix,
             self::RECORD_CODE_LABEL_SEARCH => $codeLabelMatrix,
             self::UPDATED_AT               => $this->now(),
-            self::COMPLETE_VALUE_KEYS      => $completeValueKeysMatrix,
+            self::COMPLETE_VALUE_KEYS      => $filledValueKeysMatrix,
         ];
         return $normalizedRecord;
     }
