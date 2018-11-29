@@ -32,5 +32,4 @@ services:
             - '@pim_catalog.repository.family'
             - '@event_dispatcher'
             - '@pim_catalog.builder.entity_with_values'
-            - '@pim_catalog.association.missing_association_adder'
             - {'product': '%pimee_workflow.entity.published_product.class%'}

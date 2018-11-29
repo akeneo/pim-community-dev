@@ -106,7 +106,7 @@ services:
             - '@pim_catalog.repository.product_without_permission'
             - '@pim_catalog.repository.product_model_without_permission'
             - '@pim_catalog.repository.group'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.association.missing_association_adder'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
