@@ -3,52 +3,60 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form-builder',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/user-context',
+        'pim/i18n',
+        'pim/template/common/modal-with-choices'
     ],
-    function(_, Backbone, formBuilder, fetcherRegistry) {
+    function(
+        _,
+        __,
+        Backbone,
+        formBuilder,
+        fetcherRegistry,
+        UserContext,
+        i18n,
+        modalTemplate
+    ) {
         return {
             /**
              * Create a modal from fetcher and entity identifier
              *
              * @param {String} entityCode
              * @param {String} fetcherCode
-             * @param {String} className
              *
-             * @return {Backbone.Modal}
+             * @return {Promise}
              */
-            createModal: function(entityCode, fetcherCode, className) {
-                if (undefined === className) {
-                    className = 'modal modal--fullPage';
-                }
-
+            createModal: function(entityCode, fetcherCode) {
                 return fetcherRegistry.getFetcher(fetcherCode).fetch(
                     entityCode,
                     {cached: false}
                 ).then((entity) => {
                     return formBuilder.build(entity.meta.form)
                         .then((form) => {
-                            const modal = new Backbone.BootstrapModal({
-                                className: className,
-                                content: '',
-                                okCloses: false,
-                                buttons: false
-                            });
-
                             form.setData(entity);
                             form.trigger('pim_enrich:form:entity:post_fetch', entity);
-
-                            form.on('cancel', () => {
-                                modal.trigger('cancel');
-                            });
                             form.on('pim_enrich:form:entity:post_save', () => {
                                 modal.trigger('cancel');
                             });
 
+                            const familyVariant = entity;
+                            const modal = new Backbone.BootstrapModal({
+                                content: form,
+                                buttons: false,
+                                title: i18n.getLabel(
+                                    familyVariant.labels,
+                                    UserContext.get('uiLocale'),
+                                    familyVariant.code
+                                ),
+                                subtitle: __('Code')  + ': ' + familyVariant.code,
+                                template: _.template(modalTemplate),
+                                okText: '',
+                            });
                             modal.open();
-
-                            form.setElement(modal.$('.modal-body')).render();
 
                             return modal;
                         });

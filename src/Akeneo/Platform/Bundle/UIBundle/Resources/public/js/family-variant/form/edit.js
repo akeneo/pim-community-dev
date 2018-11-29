@@ -9,48 +9,17 @@
  */
 define([
         'underscore',
-        'oro/translator',
         'pim/form/common/edit-form',
-        'pim/i18n',
-        'pim/user-context',
         'pim/template/family-variant/edit'
     ],
     function (
         _,
-        __,
         BaseEdit,
-        i18n,
-        userContext,
         template
     ) {
         return BaseEdit.extend({
+            // TODO This can be replaced by a common/edit-form specifying the template!
             template: _.template(template),
-            events: {
-                'click .cancel': function () {
-                    this.trigger('cancel');
-                }
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
-                this.getRoot().trigger('pim_enrich:form:render:before');
-
-                this.$el.html(this.template({
-                    familyVariant: this.getFormData(),
-                    __: __,
-                    i18n,
-                    userContext
-                }));
-
-                this.renderExtensions();
-
-                this.getRoot().trigger('pim_enrich:form:render:after');
-            }
         });
     }
 );
