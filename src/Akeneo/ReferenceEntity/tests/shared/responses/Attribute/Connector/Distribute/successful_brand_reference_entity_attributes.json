@@ -29,6 +29,90 @@
             "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/description_brand_test"
           }
         }
+      },
+      {
+        "code": "photo_brand_test",
+        "labels": {
+          "en_US": "Photo",
+          "fr_FR": "Photo"
+        },
+        "type": "image",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": true,
+        "allowed_extensions": ["jpg"],
+        "max_file_size": "10",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/photo_brand_test"
+          }
+        }
+      },
+      {
+        "code": "nationality_brand_test",
+        "labels": {
+          "en_US": "Nationality",
+          "fr_FR": "Nationalité"
+        },
+        "type": "single_option",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": false,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/nationality_brand_test"
+          }
+        }
+      },
+      {
+        "code": "sales_areas",
+        "labels": {
+          "en_US": "Sales areas",
+          "fr_FR": "Zones de vente"
+        },
+        "type": "multiple_options",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": true,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/sales_areas_brand_test"
+          }
+        }
+      },
+      {
+        "code": "country_brand_test",
+        "labels": {
+          "en_US": "Country",
+          "fr_FR": "Pays"
+        },
+        "type": "reference_entity_single_link",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": false,
+        "reference_entity_code": "country",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/country_brand_test"
+          }
+        }
+      },
+      {
+        "code": "designers_brand_test",
+        "labels": {
+          "en_US": "Designers",
+          "fr_FR": "Designeurs"
+        },
+        "type": "reference_entity_multiple_links",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": true,
+        "reference_entity_code": "designer",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/designers_brand_test"
+          }
+        }
       }
     ]
   }
