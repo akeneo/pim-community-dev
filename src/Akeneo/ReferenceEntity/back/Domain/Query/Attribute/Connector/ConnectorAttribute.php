@@ -22,6 +22,13 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
  */
 class ConnectorAttribute
 {
+    private const ATTRIBUTE_TYPES = [
+        'record' => 'reference_entity_single_link',
+        'record_collection' => 'reference_entity_multiple_links',
+        'option' => 'single_option',
+        'option_collection' => 'multiple_options'
+    ];
+
     /** @var AttributeIdentifier */
     private $identifier;
 
@@ -61,12 +68,17 @@ class ConnectorAttribute
         $this->additionalProperties = $additionalProperties;
     }
 
+    public function mapAttributeType(string $type)
+    {
+        return self::ATTRIBUTE_TYPES[$this->type] ?? $type;
+    }
+
     public function normalize(): array
     {
         $commonProperties = [
             'code' => $this->identifier->normalize(),
             'labels' => $this->labelCollection->normalize(),
-            'type' => $this->type,
+            'type' => $this->mapAttributeType($this->type),
             'localizable' => $this->localizable,
             'scopable' => $this->scopable,
             'is_required_for_completeness' => $this->isRequired
