@@ -135,15 +135,15 @@ export default connect(
       },
     };
   },
-  (dispatch: any): DispatchProps => {
+  (dispatch: any, ownProps: any): DispatchProps => {
     return {
       events: {
-        onLocaleChanged: (locale: Locale) => {
+        onLocaleChanged: undefined === ownProps.onLocaleChanged ? (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
-        },
-        onChannelChanged: (channel: Channel) => {
+        } : ownProps.onLocaleChanged,
+        onChannelChanged: undefined === ownProps.onChannelChanged ? (channel: Channel) => {
           dispatch(catalogChannelChanged(channel.code));
-        },
+        } : ownProps.onChannelChanged,
       },
     };
   }
