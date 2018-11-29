@@ -142,7 +142,11 @@ module.exports = async function(cucumber) {
 
   Then('the user should not see any validation error', async function() {
     const modal = await await getElement(this.page, 'Modal');
-    const error = await modal.getValidationMessageForCode();
+
+    let error = null;
+    while (error !== '') {
+      error = await modal.getValidationMessageForCode();
+    }
 
     assert.strictEqual(error, '');
   });

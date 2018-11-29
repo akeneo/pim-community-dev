@@ -27,6 +27,8 @@ import Channel from 'akeneoreferenceentity/domain/model/channel';
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import Key from 'akeneoreferenceentity/tools/key';
+import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 
 interface StateProps {
   sidebar: {
@@ -115,6 +117,10 @@ class RecordEditView extends React.Component<EditProps> {
     const record = denormalizeRecord(this.props.record);
     const label = record.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_reference_entities_record_edit', this.props.sidebar.currentTab);
+    const completeness = record.getCompleteness(
+      createChannelReference(this.props.context.channel),
+      createLocaleReference(this.props.context.locale)
+    );
 
     return (
       <React.Fragment>
@@ -131,7 +137,7 @@ class RecordEditView extends React.Component<EditProps> {
                     image={record.getImage()}
                     onImageChange={this.props.events.onImageUpdated}
                   />
-                  <div className="AknTitleContainer-mainContainer">
+                  <div className="AknTitleContainer-mainContainer AknTitleContainer-mainContainer--contained">
                     <div>
                       <div className="AknTitleContainer-line">
                         <div className="AknTitleContainer-breadcrumbs">
@@ -205,6 +211,20 @@ class RecordEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
+                    {0 !== completeness.getRequiredAttributeCount() ? (
+                      <div>
+                        <div
+                          className={`AknBadge AknBadge--big completeness-badge ${
+                            completeness.getRequiredAttributeCount() === completeness.getCompleteAttributeCount()
+                              ? 'AknBadge--success '
+                              : 'AknBadge--warning'
+                          }`}
+                        >
+                          {__('pim_reference_entity.record.completeness.label')}:{' '}
+                          <span>{completeness.getRatio()}%</span>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               </header>

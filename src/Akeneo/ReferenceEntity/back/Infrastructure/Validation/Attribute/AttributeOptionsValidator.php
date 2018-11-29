@@ -86,16 +86,15 @@ class AttributeOptionsValidator extends ConstraintValidator
     {
         $validator = Validation::createValidator();
 
-        foreach ($attributeOptions as $attributeOption) {
+        foreach ($attributeOptions as $index => $attributeOption) {
             $violations = new ConstraintViolationList();
             $violations->addAll($validator->validate($attributeOption['code'], new AttributeOptionCode()));
             $violations->addAll($validator->validate($attributeOption['labels'], new LabelCollection()));
 
             foreach ($violations as $violation) {
-                $path = $attributeOption['code'] ?? '';
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath((string) $path)
+                    ->atPath((string) $index)
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())
@@ -117,7 +116,7 @@ class AttributeOptionsValidator extends ConstraintValidator
             if ($frequency > 1) {
                 $this->context->buildViolation(AttributeOptions::MESSAGE_OPTION_DUPLICATED)
                     ->setParameter('%option_code%', $optionCode)
-                    ->atPath($optionCode)
+                    ->atPath(array_search($optionCode, array_column($attributeOptions, 'code')))
                     ->addViolation();
             }
         }

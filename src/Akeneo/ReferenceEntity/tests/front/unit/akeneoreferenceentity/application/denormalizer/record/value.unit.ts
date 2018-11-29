@@ -1,4 +1,4 @@
-import {getValueDenormalizer} from 'akeneoreferenceentity/application/denormalizer/record/value';
+import denormalize, {getValueDenormalizer} from 'akeneoreferenceentity/application/denormalizer/record/value';
 import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
 import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
@@ -35,5 +35,9 @@ describe('akeneo > reference entity > application > denormalizer > record --- va
       () => denormalizeTextAttribute
     );
     expect(denormalizeValue(descriptionenUS).normalize()).toEqual(descriptionenUS);
+  });
+
+  test('I can execute the denormalizer', () => {
+    expect(() => denormalize('a nice description').normalize()).toThrow();
   });
 });

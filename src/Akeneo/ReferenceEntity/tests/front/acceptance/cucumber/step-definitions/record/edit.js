@@ -334,4 +334,11 @@ module.exports = async function(cucumber) {
 
     assert.strictEqual(isFilled, true);
   });
+
+  Then('the user should see the completeness percentage with a value of {string}', async function (value) {
+    const editPage = await await getElement(this.page, 'Edit');
+    const completenessValue = await editPage.getCompletenessValue();
+
+    assert.strictEqual(completenessValue, value);
+  });
 };

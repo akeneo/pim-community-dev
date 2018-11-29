@@ -49,7 +49,7 @@ module.exports = async function(cucumber) {
     await manageOption.newOptionLabel(label);
   });
 
-  When('the user adds the new option code {string}', async function(code) {
+  When('the user adds the new option code {string}', {timeout: 10 * 1000}, async function(code) {
     const manageOption = await await getElement(this.page, 'ManageOptionModal');
     await manageOption.newOptionCode(code);
   });
@@ -156,12 +156,24 @@ module.exports = async function(cucumber) {
     );
   });
 
-  Then('the user cannot save the options successfully because the option is not valid', async function() {
-    const requestContract = getRequestContract('Attribute/Edit/Option/invalid_option_code_regular_expression.json');
-    await listenRequest(this.page, requestContract);
-    const manageOption = await await getElement(this.page, 'ManageOptionModal');
-    await manageOption.save();
-  });
+  Then(
+    'the user cannot save the options successfully because the option is not valid',
+    {timeout: 10 * 1000},
+    async function() {
+      const requestContract = getRequestContract('Attribute/Edit/Option/invalid_option_code_regular_expression.json');
+      await listenRequest(this.page, requestContract);
+      const manageOption = await await getElement(this.page, 'ManageOptionModal');
+
+      let hasError = false;
+      while (!hasError) {
+        await manageOption.save();
+        try {
+          await manageOption.hasError();
+          hasError = true;
+        } catch (e) {}
+      }
+    }
+  );
 
   Then('the user cannot save the options successfully because an option is duplicated', async function() {
     const requestContract = getRequestContract('Attribute/Edit/Option/invalid_options_duplicated.json');

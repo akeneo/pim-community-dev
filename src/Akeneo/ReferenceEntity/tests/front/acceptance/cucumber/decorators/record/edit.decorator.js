@@ -34,6 +34,12 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     return await await getElement(page, 'LocaleSwitcher');
   };
 
+  const getCompletenessValue = async () => {
+    return await page.evaluate(edit => {
+      return edit.querySelector('.completeness-badge span').innerText;
+    }, nodeElement);
+  }
+
   const getEnrich = async () => {
     const sidebar = await await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('enrich');
@@ -104,6 +110,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     isLoaded,
     getSidebar,
     getLocaleSwitcher,
+    getCompletenessValue,
     getEnrich,
     isUpdated,
     isSaved,

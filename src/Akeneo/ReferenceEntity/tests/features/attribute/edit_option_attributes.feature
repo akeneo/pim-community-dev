@@ -20,7 +20,7 @@ Feature: Edit the options of a list attribute
   Scenario: Set duplicated options
     Given a reference entity with an option attribute 'favorite_color' and the label 'en_US' equal to 'Favorite color'
     When the user adds the 'red' option twice
-    Then there should be a validation error on the property 'options.red' with message 'The option "red" already exists'
+    Then there should be a validation error on the property 'options.0' with message 'The option "red" already exists'
 
   @acceptance-back
   Scenario Outline: Set an option with an invalid code
@@ -29,22 +29,22 @@ Feature: Edit the options of a list attribute
     Then there should be a validation error on the property '<property_path>' with message '<message>'
 
     Examples:
-      | invalid_option_code | property_path  | message                                                       |
-      | null                | options        | The code of the option should not be blank                    |
-      | 255                 | options.255    | This value should be of type string.                          |
-      | "gre-en"            | options.gre-en | This field may only contain letters, numbers and underscores. |
+      | invalid_option_code | property_path | message                                                       |
+      | null                | options.0     | The code of the option should not be blank                    |
+      | 255                 | options.0     | This value should be of type string.                          |
+      | "gre-en"            | options.0     | This field may only contain letters, numbers and underscores. |
 
   @acceptance-back
   Scenario: Set an option with a code too long
     Given a reference entity with an option attribute 'favorite_color' and the label 'en_US' equal to 'Favorite color'
     When the user sets an option with a code too long
-    Then there should be a validation error on the property 'options.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' with message 'This value is too long. It should have 255 characters or less.'
+    Then there should be a validation error on the property 'options.0' with message 'This value is too long. It should have 255 characters or less.'
 
   @acceptance-back
   Scenario Outline: Set an option with an invalid label
     Given a reference entity with an option attribute 'favorite_color' and the label 'en_US' equal to 'Favorite color'
     When the user sets an option with a label '<invalid_option_label>'
-    Then there should be a validation error on the property 'options.option_code' with message '<message>'
+    Then there should be a validation error on the property 'options.0' with message '<message>'
 
     Examples:
       | invalid_option_label | message                                                                                  |

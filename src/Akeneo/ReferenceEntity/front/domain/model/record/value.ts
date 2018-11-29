@@ -75,6 +75,14 @@ class Value {
     return this.data.isEmpty();
   }
 
+  public isComplete(): boolean {
+    return this.attribute.isRequired && !this.data.isEmpty();
+  }
+
+  public isRequired(): boolean {
+    return this.attribute.isRequired;
+  }
+
   public equals(value: Value): boolean {
     return (
       this.channel.equals(value.channel) && this.locale.equals(value.locale) && this.attribute.equals(value.attribute)

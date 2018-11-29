@@ -19,7 +19,7 @@ export interface RecordSelectorProps {
   locale: LocaleReference;
   channel: ChannelReference;
   placeholder: string;
-  onChange: (value: RecordCode[] | RecordCode) => void;
+  onChange: (value: RecordCode[] | RecordCode | null) => void;
 }
 
 type Select2Item = {id: string; text: string; original: NormalizedRecord};
@@ -171,7 +171,9 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
       this.el.on('change', (event: any) => {
         const newValue = this.props.multiple
           ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
-          : RecordCode.create(event.val);
+          : '' === event.val
+            ? null
+            : RecordCode.create(event.val);
         this.props.onChange(newValue);
       });
     }
@@ -198,8 +200,10 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   }
 
   render(): JSX.Element | JSX.Element[] {
+    const {referenceEntityIdentifier, ...props} = this.props;
+
     return (
-      <input className="record-selector" {...this.props} type="hidden" value={this.normalizeValue(this.props.value)} />
+      <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} />
     );
   }
 }

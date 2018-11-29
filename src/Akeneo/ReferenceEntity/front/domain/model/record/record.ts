@@ -5,6 +5,9 @@ import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import Identifier, {NormalizedRecordIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
 import ValueCollection from 'akeneoreferenceentity/domain/model/record/value-collection';
 import {NormalizedValue, NormalizedMinimalValue} from 'akeneoreferenceentity/domain/model/record/value';
+import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
 
 interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
@@ -38,6 +41,7 @@ export default interface Record {
   equals: (record: Record) => boolean;
   normalize: () => NormalizedRecord;
   normalizeMinimal: () => NormalizedMinimalRecord;
+  getCompleteness: (channel: ChannelReference, locale: LocaleReference) => Completeness;
 }
 
 class InvalidArgumentError extends Error {}
@@ -149,6 +153,12 @@ class RecordImplementation implements Record {
       image: this.getImage().normalize(),
       values: this.valueCollection.normalizeMinimal(),
     };
+  }
+
+  public getCompleteness(channel: ChannelReference, locale: LocaleReference): Completeness {
+    const values = this.getValueCollection().getValuesForChannelAndLocale(channel, locale);
+
+    return Completeness.createFromValues(values);
   }
 }
 

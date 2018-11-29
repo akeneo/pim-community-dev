@@ -217,10 +217,10 @@ class AttributesView extends React.Component<CreateProps> {
                   <React.Fragment>
                     {this.props.attributes.map((attribute: NormalizedAttribute) => (
                       <ErrorBoundary
+                        key={attribute.identifier}
                         errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_list')}
                       >
                         <AttributeView
-                          key={attribute.identifier}
                           attribute={attribute}
                           onAttributeEdit={this.props.events.onAttributeEdit}
                           locale={this.props.context.locale}

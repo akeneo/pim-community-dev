@@ -5,6 +5,14 @@ import {createIdentifier as createRecordIdentifier} from 'akeneoreferenceentity/
 import {createRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import File, {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
+import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import ValueData from 'akeneoreferenceentity/domain/model/record/data';
+import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
+import {denormalize as denormalizeTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
 
 const michelIdentifier = createRecordIdentifier('michel');
 const designerIdentifier = createReferenceEntityIdentifier('designer');
@@ -15,6 +23,57 @@ const didierIdentifier = createRecordIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 const emptyFile = createEmptyFile();
+const channelEcommerce = createChannelReference('ecommerce');
+const localeFr = createLocaleReference('en_US');
+const normalizedDescription = {
+  identifier: 'description_1234',
+  reference_entity_identifier: 'designer',
+  code: 'description',
+  labels: {en_US: 'Description'},
+  type: 'text',
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: true,
+  is_required: true,
+  max_length: 0,
+  is_textarea: false,
+  is_rich_text_editor: false,
+  validation_rule: 'email',
+  regular_expression: null,
+};
+const description = denormalizeTextAttribute(normalizedDescription);
+const normalizedWebsite = {
+  identifier: 'website_1234',
+  reference_entity_identifier: 'designer',
+  code: 'website',
+  labels: {en_US: 'Website'},
+  type: 'text',
+  order: 0,
+  value_per_locale: true,
+  value_per_channel: true,
+  is_required: true,
+  max_length: 0,
+  is_textarea: false,
+  is_rich_text_editor: false,
+  validation_rule: 'url',
+  regular_expression: null,
+};
+const website = denormalizeTextAttribute(normalizedWebsite);
+const descriptionData = denormalizeTextData('a nice description');
+const descriptionValue = createValue(
+  description,
+  denormalizeChannelReference('ecommerce'),
+  denormalizeLocaleReference('en_US'),
+  descriptionData
+);
+const websiteData = denormalizeTextData('');
+const websiteValue = createValue(
+  website,
+  denormalizeChannelReference('ecommerce'),
+  denormalizeLocaleReference('en_US'),
+  websiteData
+);
+const valueCollection = createValueCollection([descriptionValue, websiteValue]);
 
 describe('akeneo > record > domain > model --- record', () => {
   test('I can create a new record with a identifier and labels', () => {
@@ -193,5 +252,18 @@ describe('akeneo > record > domain > model --- record', () => {
         .getValueCollection()
         .normalize()
     ).toEqual([]);
+  });
+
+  test('I can get the completeness of the record', () => {
+    expect(
+      createRecord(
+        michelIdentifier,
+        designerIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        valueCollection
+      ).getCompleteness(channelEcommerce, localeFr)
+    ).toEqual({complete: 1, required: 2});
   });
 });
