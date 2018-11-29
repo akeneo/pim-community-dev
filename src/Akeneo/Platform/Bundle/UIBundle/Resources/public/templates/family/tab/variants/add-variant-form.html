@@ -1,11 +1,13 @@
-<div class="AknFullPage AknFullPage--modal">
-    <div class="AknFullPage-content">
-        <div class="AknFullPage-left">
-            <img src="bundles/pimui/images/illustrations/Variant.svg" class="AknFullPage-image">
+<div class="AknFullPage">
+    <div class="AknFullPage-content AknFullPage-content--withIllustration">
+        <div>
+            <img src="bundles/pimui/images/illustrations/Variant.svg" alt=""/>
         </div>
-        <div class="AknFullPage-right">
+        <div>
             <div data-drop-zone="header"></div>
-            <div data-drop-zone="fields-container"></div>
+            <div class="AknFormContainer" data-drop-zone="fields-container"></div>
+            <div class="AknButtonList-item AknButton AknButton--apply ok"><%- okLabel %></div>
         </div>
     </div>
 </div>
+<div class="AknFullPage-cancel cancel"></div>

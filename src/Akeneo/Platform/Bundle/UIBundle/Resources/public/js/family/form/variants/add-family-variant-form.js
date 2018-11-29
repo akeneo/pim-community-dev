@@ -10,6 +10,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'routing',
         'pim/form',
         'pim/template/family-variant/add-variant-form'
@@ -17,6 +18,7 @@ define(
     function(
         $,
         _,
+        __,
         Routing,
         BaseForm,
         template
@@ -25,7 +27,10 @@ define(
             template: _.template(template),
 
             render() {
-                this.$el.html(this.template());
+                // TODO Refactor using 'pim/template/common/modal-with-illustration'
+                this.$el.html(this.template({
+                    okLabel: __('pim_common.save'),
+                }));
                 this.renderExtensions();
             },
 

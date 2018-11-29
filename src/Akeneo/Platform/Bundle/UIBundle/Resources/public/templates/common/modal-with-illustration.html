@@ -5,14 +5,14 @@
     </div>
     <div>
       <% if (typeof subtitle !== 'undefined') { %>
-        <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <div class="AknFullPage-subTitle"><%- subtitle %></div>
       <% } %>
       <div class="AknFullPage-title"><%- title %></div>
       <% if (typeof contentLabel !== 'undefined') { %>
       <!-- TODO Rename this to 'description' -->
-        <div class="AknFullPage-description">
-          <%- contentLabel %>
-        </div>
+      <div class="AknFullPage-description">
+        <%- contentLabel %>
+      </div>
       <% } %>
       <div class="modal-body"><%= content %></div>
       <div title="<%- okText %>" class="AknButton AknButton--apply ok"><%- okText %></div>
@@ -20,5 +20,5 @@
   </div>
 </div>
 <% if (allowCancel) { %>
-  <div class="AknFullPage-cancel cancel"></div>
+<div class="AknFullPage-cancel cancel"></div>
 <% } %>
