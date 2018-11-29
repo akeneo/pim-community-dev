@@ -190,14 +190,7 @@ class ChannelController
         $channel = $this->factory->create();
 
         if (isset($data['conversion_units']) && is_array($data['conversion_units'])) {
-            $conversionUnits = array_filter(
-                array_merge($channel->getConversionUnits(), $data['conversion_units']),
-                function ($value) {
-                    return null !== $value && '' !== $value;
-                }
-            );
-
-            $data['conversion_units'] = $conversionUnits;
+            $data['conversion_units'] = $this->mergeAndFilterConversionUnits($channel, $data);
         }
 
         $this->updateChannel($channel, $data, 'post_channels');
@@ -235,14 +228,7 @@ class ChannelController
         }
 
         if (isset($data['conversion_units']) && is_array($data['conversion_units'])) {
-            $conversionUnits = array_filter(
-                array_merge($channel->getConversionUnits(), $data['conversion_units']),
-                function ($value) {
-                    return null !== $value && '' !== $value;
-                }
-            );
-
-            $data['conversion_units'] =$conversionUnits;
+            $data['conversion_units'] = $this->mergeAndFilterConversionUnits($channel, $data);
         }
 
         $this->updateChannel($channel, $data, 'patch_channels__code_');
@@ -271,6 +257,26 @@ class ChannelController
         $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
         return $response;
+    }
+
+    /**
+     * `conversion_units` are not well exposed through the api, on the api side it is an object while in ChannelInterface it is an array.
+     * To follow the API merge rules on object https://api-staging.akeneo.com/documentation/update.html#patch-rules,
+     * we are forced to process data before updating them, we cannot change this behavior everywhere to avoid BC breaks.
+     *
+     * @param ChannelInterface $channel
+     * @param array            $data
+     *
+     * @return array
+     */
+    private function mergeAndFilterConversionUnits($channel, $data): array
+    {
+        return array_filter(
+            array_merge($channel->getConversionUnits(), $data['conversion_units']),
+            function ($value) {
+                return null !== $value && '' !== $value;
+            }
+        );
     }
 
     /**
