@@ -43,9 +43,9 @@ class GetConnectorReferenceEntityAttributesAction
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
-        $referenceEntity = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $referenceEntityExists = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
 
-        if (false === $referenceEntity) {
+        if (false === $referenceEntityExists) {
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
