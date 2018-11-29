@@ -19,8 +19,7 @@ class Version_3_0_20181128123105_migrate_users extends AbstractMigration
 
         foreach ($users as $user) {
             $properties = [];
-            $assetCategory = $this->connection->fetchAll(sprintf('SELECT code from pimee_product_asset_category WHERE id = %s', $user['defaultAssetTree_id']));
-            $assetCategoryCode = $assetCategory[0]['code'];
+            $assetCategoryCode = $this->connection->fetchColumn(sprintf('SELECT code from pimee_product_asset_category WHERE id = %s', $user['defaultAssetTree_id']));
             $properties['default_asset_tree'] = $assetCategoryCode;
             $properties['asset_delay_reminder'] = $user['assetDelayReminder'];
             $properties['proposals_to_review_notification'] = (bool) $user['proposalsToReviewNotification'];
