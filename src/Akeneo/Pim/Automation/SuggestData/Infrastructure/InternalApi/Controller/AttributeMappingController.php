@@ -87,12 +87,7 @@ class AttributeMappingController
             $page = (int) $options['page'];
         }
 
-        $identifiers = [];
-        if (isset($options['identifiers'])) {
-            $identifiers = $options['identifiers'];
-        }
-
-        $query = new SearchFamiliesQuery($limit, $page, $identifiers, $request->get('search'));
+        $query = new SearchFamiliesQuery($limit, $page, $request->get('search'));
         $families = $this->searchFamiliesHandler->handle($query);
 
         return new JsonResponse(

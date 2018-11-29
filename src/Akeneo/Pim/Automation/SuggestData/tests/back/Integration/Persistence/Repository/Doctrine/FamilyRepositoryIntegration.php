@@ -67,12 +67,7 @@ class FamilyRepositoryIntegration extends TestCase
         $product2 = $this->createProduct('product_2', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product2->getId(), true);
 
-        $familyCollection = $this->getFamilies(
-            1,
-            20,
-            null,
-            [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
-        );
+        $familyCollection = $this->getFamilies(1, 20, null);
 
         $this->assertFamilyCollectionContainsInOrder(
             $familyCollection,
@@ -89,12 +84,7 @@ class FamilyRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
-        $familyCollection = $this->getFamilies(
-            1,
-            1,
-            null,
-            [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
-        );
+        $familyCollection = $this->getFamilies(1, 1, null);
 
         $this->assertFamilyCollectionContainsInOrder(
             $familyCollection,
@@ -107,12 +97,7 @@ class FamilyRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
-        $familyCollection = $this->getFamilies(
-            1,
-            20,
-            'control_',
-            [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
-        );
+        $familyCollection = $this->getFamilies(1, 20, 'control_');
 
         $this->assertFamilyCollectionContainsInOrder(
             $familyCollection,
@@ -125,12 +110,7 @@ class FamilyRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
-        $familyCollection = $this->getFamilies(
-            1,
-            20,
-            'testing',
-            [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
-        );
+        $familyCollection = $this->getFamilies(1, 20, 'testing');
 
         $this->assertFamilyCollectionContainsInOrder(
             $familyCollection,
@@ -142,33 +122,12 @@ class FamilyRepositoryIntegration extends TestCase
     {
         $this->createProduct('a_product', static::TEST_FAMILY_CODE);
 
-        $familyCollection = $this->getFamilies(
-            1,
-            20,
-            null,
-            [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
-        );
+        $familyCollection = $this->getFamilies(1, 20, null);
 
         $this->assertFamilyCollectionContainsInOrder(
             $familyCollection,
             [static::CONTROL_FAMILY_CODE]
         );
-    }
-
-    public function test_that_no_families_are_returned_if_their_products_are_not_subscribed(): void
-    {
-        $this->createProduct('product', static::TEST_FAMILY_CODE);
-
-        $familyCollection = $this->getFamilies(1, 20, null, [static::TEST_FAMILY_CODE]);
-
-        Assert::assertEmpty($familyCollection);
-    }
-
-    public function test_that_no_families_are_returned_if_they_have_no_products(): void
-    {
-        $familyCollection = $this->getFamilies(1, 20, null, [static::TEST_FAMILY_CODE]);
-
-        Assert::assertEmpty($familyCollection);
     }
 
     /**
@@ -223,15 +182,14 @@ SQL;
      * @param int $page
      * @param int $limit
      * @param string|null $search
-     * @param string[] $identifiers
      *
      * @return FamilyCollection
      */
-    private function getFamilies(int $page, int $limit, ?string $search, array $identifiers): FamilyCollection
+    private function getFamilies(int $page, int $limit, ?string $search): FamilyCollection
     {
         return $this
             ->get('akeneo.pim.automation.suggest_data.repository.search_family')
-            ->findBySearch($page, $limit, $search, $identifiers);
+            ->findBySearch($page, $limit, $search);
     }
 
     /**

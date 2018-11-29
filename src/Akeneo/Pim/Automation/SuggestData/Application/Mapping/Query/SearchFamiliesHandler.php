@@ -42,8 +42,7 @@ class SearchFamiliesHandler
         return $this->familyRepository->findBySearch(
             $getFamiliesQuery->getPage(),
             $getFamiliesQuery->getLimit(),
-            $getFamiliesQuery->getSearch(),
-            $getFamiliesQuery->getFamilyIdentifiers()
+            $getFamiliesQuery->getSearch()
         );
     }
 }

@@ -46,7 +46,7 @@ final class InMemoryFamilyRepository implements FamilyRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findBySearch(int $page, int $limit, ?string $search, array $familyCodes): FamilyCollection
+    public function findBySearch(int $page, int $limit, ?string $search): FamilyCollection
     {
         $families = $this->familyRepository->findAll();
 

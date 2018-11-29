@@ -41,11 +41,9 @@ class SearchFamiliesHandlerSpec extends ObjectBehavior
         $familyCollection->add(new Family('family_code_1', ['en_US' => 'Family 1'], Family::MAPPING_PENDING));
         $familyCollection->add(new Family('family_code_2', ['en_US' => 'Family 2'], Family::MAPPING_FULL));
 
-        $familyRepository
-            ->findBySearch(1, 10, 'previous_family_code', ['family_code_1', 'family_code_2'])
-            ->willReturn($familyCollection);
+        $familyRepository->findBySearch(1, 10, null)->willReturn($familyCollection);
 
-        $query = new SearchFamiliesQuery(10, 1, ['family_code_1', 'family_code_2'], 'previous_family_code');
+        $query = new SearchFamiliesQuery(10, 1, null);
         $this->handle($query)->shouldReturn($familyCollection);
     }
 }

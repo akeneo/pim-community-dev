@@ -111,7 +111,7 @@ final class AttributesMappingContext implements Context
      */
     public function iRetrieveTheFamilies(): void
     {
-        $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, [], null));
+        $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, null));
     }
 
     /**
@@ -122,12 +122,7 @@ final class AttributesMappingContext implements Context
     public function iSearchOneFamilyWithTheQuery(string $familyCodeOrLabel): void
     {
         $this->retrievedFamilies = $this->searchFamiliesHandler->handle(
-            new SearchFamiliesQuery(
-                20,
-                0,
-                [],
-                $familyCodeOrLabel
-            )
+            new SearchFamiliesQuery(20, 0, $familyCodeOrLabel)
         );
     }
 
