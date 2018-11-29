@@ -10,6 +10,8 @@ const buttonTemplate = require('pim/template/datagrid/column-selector/button');
 const columnsTemplate = require('pim/template/datagrid/column-selector/columns');
 const modalTemplate = require('pim/template/datagrid/column-selector/modal');
 const selectedTemplate = require('pim/template/datagrid/column-selector/selected');
+// TODO change the name
+const changethename = require('pim/template/common/modal-with-choices');
 
 interface AttributeGroup {
   code: string;
@@ -48,6 +50,7 @@ class ColumnSelector extends BaseView {
   private modalTemplate: ((...data: any[]) => string) = _.template(modalTemplate);
   private columnsTemplate: ((...data: any[]) => string) = _.template(columnsTemplate);
   private selectedTemplate: ((...data: any[]) => string) = _.template(selectedTemplate);
+  private changethename: ((...data: any[]) => string) = _.template(changethename);
 
   public events(): Backbone.EventsHash {
     return {
@@ -390,19 +393,17 @@ class ColumnSelector extends BaseView {
 
     this.fetchAttributeGroups().then(groups => {
       const modal = new (<any>Backbone).BootstrapModal({
-        className: 'modal modal--fullPage modal--topButton column-configurator-modal',
-        modalOptions: {backdrop: 'static', keyboard: false},
-        allowCancel: true,
         okCloses: false,
-        cancelText: __('pim_common.cancel'),
         title: __('pim_datagrid.column_configurator.title'),
+        innerDescription: __('pim_datagrid.column_configurator.description'),
+        okText: __('pim_common.apply'),
+        template: this.changethename,
+        // TODO Not fan of this wording. Maybe add a 'class' variable instead.
+        full: true,
         content: this.modalTemplate({
           groups,
           attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),
-          title: __('pim_datagrid.column_configurator.title'),
-          description: __('pim_datagrid.column_configurator.description'),
         }),
-        okText: __('pim_common.apply'),
       });
 
       modal.open();

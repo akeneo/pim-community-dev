@@ -103,6 +103,7 @@ define(
                 this.modal = new Backbone.BootstrapModal({
                     title: __(modalTitle),
                     subtitle: __(subTitle),
+                    okText: '',
                     template: this.modalTemplate,
                     content: this.modalContentTemplate({
                         choices: translatedChoices,

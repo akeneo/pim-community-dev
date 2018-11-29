@@ -1,11 +1,21 @@
-<div class="AknFullPage">
+<div class="AknFullPage<% if (typeof full !== 'undefined' && full) { %> AknFullPage--full<% } %>">
   <div class="AknFullPage-content">
-      <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <% if (typeof subtitle !== 'undefined') { %>
+        <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <% } %>
       <div class="AknFullPage-title"><%- title %></div>
+      <% if (typeof innerDescription !== 'undefined') { %>
+          <div class="AknFullPage-description">
+              <%- innerDescription %>
+          </div>
+      <% } %>
       <div class="modal-body"><%= content %></div>
     </div>
   </div>
   <% if (allowCancel) { %>
     <div class="AknFullPage-cancel cancel"></div>
+  <% } %>
+  <% if (okText !== '') { %>
+    <div class="AknButton AknButton--apply AknFullPage-ok ok"><%- okText %></div>
   <% } %>
 </div>

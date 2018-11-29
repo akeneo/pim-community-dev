@@ -14,6 +14,10 @@
   overflow: hidden;
   align-items: center;
 
+  &--full {
+    justify-content: flex-start;
+  }
+
   &-content {
     max-height: 100vh;
     overflow-x: auto;
@@ -56,14 +60,12 @@
   }
 
   &-subTitle {
-    text-align: center;
     color: @AknLightPurple;
     text-transform: uppercase;
     font-size: @AknFontSizeBigger;
   }
 
   &-title {
-    text-align: center;
     font-size: @AknAltTitleFontSize;
     line-height: 1.4;
     color: @AknDarkBlue;
@@ -73,9 +75,33 @@
     }
   }
 
+  &-subTitle,
+  &-title,
+  &-description {
+    text-align: center;
+  }
+
+  &-content--withIllustration &-subTitle,
   &-content--withIllustration &-title,
-  &-content--withIllustration &-subTitle {
+  &-content--withIllustration &-description {
     text-align: left;
+  }
+
+  &-description {
+    font-size: @AknFontSizeBigger;
+    line-height: 1.5;
+    margin-bottom: 10px;
+
+    //&--bottom {
+    //  margin-bottom: 30px;
+    //}
+  }
+
+  &-ok {
+    position: fixed;
+    z-index: 900;
+    right: 20px;
+    top: 20px;
   }
 
   /*
@@ -125,16 +151,6 @@
   &-content--column &-title {
     margin:auto;
     text-align: center;
-  }
-
-  &-description {
-    font-size: @AknFontSizeBigger;
-    line-height: 1.5;
-    margin-bottom: 10px;
-
-    &--bottom {
-        margin-bottom: 30px;
-    }
   }
 
   &-upperTitle {
