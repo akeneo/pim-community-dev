@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Product datasource for the product grid only.
@@ -30,6 +31,9 @@ class ProductAndProductModelDatasource extends Datasource
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /** @var Query\FetchProductAndProductModelRows */
     private $fetchRows;
 
@@ -37,18 +41,21 @@ class ProductAndProductModelDatasource extends Datasource
      * @param ObjectManager                         $om
      * @param ProductQueryBuilderFactoryInterface   $factory
      * @param NormalizerInterface                   $serializer
+     * @param ValidatorInterface                    $validator
      * @param Query\FetchProductAndProductModelRows $fetchRows
      */
     public function __construct(
         ObjectManager $om,
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $serializer,
+        ValidatorInterface $validator,
         Query\FetchProductAndProductModelRows $fetchRows
     ) {
         $this->om = $om;
         $this->factory = $factory;
         $this->normalizer = $serializer;
         $this->fetchRows = $fetchRows;
+        $this->validator = $validator;
     }
 
     /**
@@ -67,6 +74,16 @@ class ProductAndProductModelDatasource extends Datasource
             $channelCode,
             $localeCode
         );
+
+        $errors = $this->validator->validate($getRowsQueryParameters);
+        if (count($errors)) {
+            throw new \LogicException(
+                sprintf(
+                    'Invalid query parameters sent to fetch data in the product and product model datagrid: "%s".',
+                    (string) $errors
+                )
+            );
+        }
 
         $rows = ($this->fetchRows)($getRowsQueryParameters);
 
