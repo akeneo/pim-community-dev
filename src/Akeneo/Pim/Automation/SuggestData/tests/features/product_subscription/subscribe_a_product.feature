@@ -95,8 +95,6 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid MPN and Brand message should be sent
 
-  #Scenario: Handle a bad request to Franklin
-
   Scenario: Dealing with error on product subscription when Franklin server is down
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"

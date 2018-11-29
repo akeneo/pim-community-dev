@@ -1,4 +1,5 @@
 @acceptance-back
+# TODO: TO DELETE and link to subscription, bulk subscription and fetch products
 Feature: Create proposals
   In order to automatically enrich my products
   As the System
@@ -33,4 +34,3 @@ Feature: Create proposals
     And the suggested data for the subscription of product "B00EYZY6AC" should be empty
     But there should not be a proposal for product "606449099812"
 
-    # TO DELETE

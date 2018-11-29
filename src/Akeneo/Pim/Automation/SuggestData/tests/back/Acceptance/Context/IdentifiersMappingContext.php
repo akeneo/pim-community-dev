@@ -16,7 +16,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
@@ -88,54 +88,38 @@ class IdentifiersMappingContext implements Context
      */
     public function aPredefinedIdentifiersMapping(TableNode $table): void
     {
-        $mapped = $this->extractIdentifiersMappingFromTable($table);
-        $identifiers = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
+        $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $tmp = array_fill_keys($identifiers, null);
-        $tmp = array_merge($tmp, $mapped);
-        $tmp = array_map(function ($value) {
-            return '' !== $value ? $value : null;
-        }, $tmp);
-
-        $command = new UpdateIdentifiersMappingCommand($tmp);
+        $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
         $this->updateIdentifiersMappingHandler->handle($command);
     }
 
     /**
-     * @When the identifiers are mapped with the following values:
+     * @When the identifiers are mapped as follows:
      *
      * @param TableNode $table
-     *
-     * @return bool
      */
-    public function theIdentifiersAreMappedWithValidValues(TableNode $table): void
+    public function theIdentifiersAreMappedAsFollows(TableNode $table): void
     {
+        $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
         try {
-            $command = new UpdateIdentifiersMappingCommand(
-                $this->extractIdentifiersMappingFromTable($table)
-            );
+            $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
             $this->updateIdentifiersMappingHandler->handle($command);
-        } catch (\Exception $e) {
+        } catch (InvalidMappingException $e) {
             $this->thrownException = $e;
         }
     }
 
     /**
      * @When the identifiers are mapped with empty values
-     *
-     * @return bool
-     *
-     * TODO: To remove?
      */
-    public function theIdentifiersMappingIsSavedWithEmptyValues(): bool
+    public function theIdentifiersMappingIsSavedWithEmptyValues(): void
     {
         try {
             $command = new UpdateIdentifiersMappingCommand([]);
             $this->updateIdentifiersMappingHandler->handle($command);
-
-            return false;
-        } catch (\Exception $e) {
-            return true;
+        } catch (InvalidMappingException $e) {
+            $this->thrownException = $e;
         }
     }
 
@@ -225,6 +209,9 @@ class IdentifiersMappingContext implements Context
         }
     }
 
+    /**
+     * Asserts the identifiers mapping is empty.
+     */
     private function assertIdentifiersMappingIsEmpty(): void
     {
         $persistedIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
@@ -234,94 +221,13 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @param TableNode $tableNode
-     *
-     * @return array
-     */
-    private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode): array
-    {
-        $extractedData = $tableNode->getRowsHash();
-        array_shift($extractedData);
-
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
-
-        return array_merge($identifiersMapping, $extractedData);
-    }
-
-    /**
      * Transforms from gherkin table:.
      *
-     *                                | Not mandatory  | as much locales as you want ...
-     * | franklin_code | attribute_code | en_US | fr_FR  |
-     * | brand       | brand          | Brand | Marque |
-     * | mpn         | mpn            | MPN   | MPN    |
-     * | upc         | ean            | EAN   | EAN    |
-     * | asin        | asin           | ASIN  | ASIN   |
-     *
-     * to php array Franklin format:
-     *
-     * [
-     *     [
-     *         'from' => ['id' => 'brand'], (franklin_code)
-     *         'status' => 'active',
-     *         'to' => [
-     *             'id' => 'brand', (attribute_code)
-     *             'label' => [
-     *                 'en_US' => 'Brand',
-     *                 'fr_FR' => 'Marque',
-     *                 etc.
-     *             ],
-     *         ]
-     *     ], etc.
-     * ]
-     *
-     * @param TableNode $tableNode
-     *
-     * @return array
-     */
-    private function extractIdentifiersMappingToFranklinFormatFromTable(TableNode $tableNode): array
-    {
-        $extractedData = $tableNode->getRows();
-        $indexes = array_shift($extractedData);
-        $locales = array_filter($indexes, function ($value) {
-            return 'franklin_code' !== $value && 'attribute_code' !== $value;
-        });
-
-        $mappings = [];
-        foreach ($extractedData as $data) {
-            $rawMapping = array_combine($indexes, $data);
-            $labels = [];
-            foreach ($locales as $locale) {
-                if ('' !== $rawMapping[$locale]) {
-                    $labels[$locale] = $rawMapping[$locale];
-                }
-            }
-
-            $mappings[$rawMapping['franklin_code']] = [
-                'from' => ['id' => $rawMapping['franklin_code']],
-                'status' => empty($rawMapping['attribute_code']) ? 'inactive' : 'active',
-            ];
-
-            if (!empty($rawMapping['attribute_code'])) {
-                $mappings[$rawMapping['franklin_code']]['to'] = [
-                    'id' => $rawMapping['attribute_code'],
-                    'label' => $labels,
-                ];
-            }
-        }
-
-        return array_values($mappings);
-    }
-
-    /**
-     * Transforms from gherkin table:.
-     *
-     *                                | Not mandatory and will not be part of extraction |
-     * | franklin_code | attribute_code | en_US | fr_FR  |
-     * | brand       | brand          | Brand | Marque |
-     * | mpn         | mpn            | MPN   | MPN    |
-     * | upc         | ean            | EAN   | EAN    |
-     * | asin        | asin           | ASIN  | ASIN   |
+     * | franklin_code | attribute_code |
+     * | brand         | brand          |
+     * | mpn           | mpn            |
+     * | upc           | ean            |
+     * | asin          | asin           |
      *
      * to php array with simple identifier mapping:
      *

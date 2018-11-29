@@ -17,3 +17,5 @@ Feature: Retrieve some family attributes from Franklin
 #    Then the retrieved attributes mapping for the family "webcam" should be:
 #      | target_attribute_code | target_attribute_label | pim_attribute_code | status  |
 #      | color                 | Color                  |                    | pending  |
+
+  #TODO: Adds more scenarios in APAI-456
