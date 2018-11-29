@@ -39,7 +39,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorReferenceEntityAttributesContext implements Context
@@ -63,6 +62,9 @@ class GetConnectorReferenceEntityAttributesContext implements Context
 
     /** @var null|Response */
     private $attributesForReferenceEntity;
+
+    /** @var null|string */
+    private $notFoundReferenceEntityRequestContract;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -369,13 +371,5 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         );
 
         $this->referenceEntityRepository->create($secondReferenceEntity);
-    }
-
-    /**
-     * @When /^the connector requests the structure of a non\-existent reference entity$/
-     */
-    public function theConnectorRequestsTheStructureOfANonExistentReferenceEntity()
-    {
-        throw new PendingException();
     }
 }

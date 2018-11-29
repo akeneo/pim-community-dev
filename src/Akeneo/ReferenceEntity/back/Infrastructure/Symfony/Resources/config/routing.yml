@@ -99,7 +99,6 @@ akeneo_reference_entities_reference_entity_attributes_rest_connector_get:
 
 akeneo_reference_entities_reference_entity_attribute_rest_connector_get:
     path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes/{code}'
-    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get }
     methods: [GET]
 
 akeneo_reference_entities_record_rest_connector_get:
