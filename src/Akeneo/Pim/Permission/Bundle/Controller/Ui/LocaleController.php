@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
 use Akeneo\Platform\Bundle\UIBundle\Flash\Message;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -48,13 +48,13 @@ class LocaleController
     /**
      * Edit a locale
      *
-     * @param LocaleInterface $locale
+     * @param Locale $locale
      *
      * @AclAncestor("pimee_enrich_locale_edit")
      *
      * @return  Response
      */
-    public function editAction(Request $request, LocaleInterface $locale): Response
+    public function editAction(Request $request, Locale $locale): Response
     {
         $form = $this->formFactory->create(LocaleType::class, $locale);
         if ($request->isMethod('POST')) {

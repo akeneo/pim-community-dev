@@ -44,6 +44,7 @@ $rules = [
         'Akeneo\Asset\Component\Model\CategoryInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Model\Locale',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
