@@ -27,6 +27,8 @@ class AttributeMapping
     /** The attribute was registered to not be mapped */
     public const ATTRIBUTE_UNMAPPED = 2;
 
+    private const UNKNOWN_ATTRIBUTE_TYPE = 'unknown';
+
     /** @var string */
     private $targetAttributeCode;
 
@@ -107,7 +109,7 @@ class AttributeMapping
     public function getTargetAttributeType(): string
     {
         if (null === $this->targetAttributeType) {
-            return 'unknown';
+            return self::UNKNOWN_ATTRIBUTE_TYPE;
         }
 
         return $this->targetAttributeType;
