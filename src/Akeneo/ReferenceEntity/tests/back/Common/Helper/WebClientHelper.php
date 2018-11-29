@@ -120,8 +120,13 @@ HTML;
             $response->getContent()
         );
         Assert::assertSame($expectedResponse['response']['status'], $response->getStatusCode(), $errorMessage);
-        if ($expectedContent !== '') {
-            Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.');
+
+        $expectedContent !== ''
+            ? Assert::assertJsonStringEqualsJsonString($expectedContent, $response->getContent(), 'Expected response content is not the same as the actual.')
+            : Assert::assertSame('', $response->getContent(), 'Expected response content should be empty but it is not.');
+
+        if (isset($expectedResponse['response']['headers'])) {
+            $this->assertResponseHeaders($expectedResponse['response']['headers'], $response);
         }
     }
 
@@ -177,5 +182,13 @@ HTML;
         }
 
         return json_encode($expectedBody, JSON_HEX_QUOT);
+    }
+
+    private function assertResponseHeaders(array $expectedHeaders, Response $response): void
+    {
+        foreach ($expectedHeaders as $headerKey => $headerValue) {
+            Assert::assertTrue($response->headers->has($headerKey), 'Expected header does not exist.');
+            Assert::assertSame($headerValue, $response->headers->get($headerKey), 'Expected header has not the same value in the response.');
+        }
     }
 }

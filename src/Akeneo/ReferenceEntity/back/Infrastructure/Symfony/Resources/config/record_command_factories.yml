@@ -48,3 +48,9 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCollectionValueCommandFactory
         tags:
             - { name: akeneo_referenceentity.edit_record_value_command_factory }
+
+    akeneo_referenceentity.application.factory.record.connector.edit_record_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory
+        arguments:
+            - '@akeneo_referenceentity.application.registry.record.edit_record_value_command_factory_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
