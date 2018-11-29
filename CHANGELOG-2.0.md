@@ -1,11 +1,14 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7855: Fix the add of optional attributes on product with family, if imported file doesn't have the family column    
+
 # 2.0.43 (2018-11-27)
 
 ## Bug fixes
 
 - GITHUB-7532: Fix the prepopulation of textarea field - cheers MarieMinasyan, userz58, kanduvisla & oliverde8 !
-- PIM-7855: Fix the add of optional attributes on product with family, if imported file doesn't have the family column    
 
 # 2.0.42 (2018-11-12)
 
