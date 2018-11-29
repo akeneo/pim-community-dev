@@ -16,12 +16,12 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\IdentifiersMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -46,6 +46,9 @@ class IdentifiersMappingContext implements Context
 
     /** @var FakeClient */
     private $fakeClient;
+
+    /** @var \Exception */
+    private $thrownException;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
@@ -73,7 +76,7 @@ class IdentifiersMappingContext implements Context
      */
     public function anEmptyIdentifiersMapping(): void
     {
-        $this->assertMappingIsEmpty();
+        $this->assertIdentifiersMappingIsEmpty();
     }
 
     /**
@@ -99,51 +102,30 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @When the identifiers are mapped with valid values as follows:
+     * @When the identifiers are mapped with the following values:
      *
      * @param TableNode $table
      *
      * @return bool
      */
-    public function theIdentifiersAreMappedWithValidValues(TableNode $table): bool
+    public function theIdentifiersAreMappedWithValidValues(TableNode $table): void
     {
         try {
             $command = new UpdateIdentifiersMappingCommand(
                 $this->extractIdentifiersMappingFromTable($table)
             );
             $this->updateIdentifiersMappingHandler->handle($command);
-
-            return true;
         } catch (\Exception $e) {
-            return false;
+            $this->thrownException = $e;
         }
     }
 
     /**
-     * @When the identifiers are mapped with invalid values as follows:
-     *
-     * @param TableNode $table
+     * @When the identifiers are mapped with empty values
      *
      * @return bool
-     */
-    public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
-    {
-        try {
-            $command = new UpdateIdentifiersMappingCommand(
-                $this->getTableNodeAsArrayWithoutHeaders($table)
-            );
-            $this->updateIdentifiersMappingHandler->handle($command);
-
-            return false;
-        } catch (\Exception $e) {
-            return true;
-        }
-    }
-
-    /**
-     * @When the identifiers mapping is saved with empty values
      *
-     * @return bool
+     * TODO: To remove?
      */
     public function theIdentifiersMappingIsSavedWithEmptyValues(): bool
     {
@@ -158,46 +140,96 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @Then the identifiers mapping should not be defined
-     */
-    public function theIdentifiersMappingIsNotDefined(): void
-    {
-        $this->assertMappingIsEmpty();
-    }
-
-    /**
      * @Then the identifiers mapping should not be saved
      */
-    public function theIdentifiersMappingIsNotSaved(): void
+    public function theIdentifiersMappingShouldNotBeSaved(): void
     {
-        $this->assertMappingIsEmpty();
+        $this->assertIdentifiersMappingIsEmpty();
     }
 
     /**
-     * @Then the retrieved mapping should be the following:
+     * @Then the retrieved identifiers mapping should be the following:
      *
      * @param TableNode $table
      */
-    public function theRetrievedMappingIsTheFollowing(TableNode $table): void
+    public function theRetrievedIdentifiersMappingIsTheFollowing(TableNode $table): void
     {
-        $identifiers = $this->extractIdentifiersMappingFromTable($table);
+        $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
-        $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
-        $normalizedIdentifiers = $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers());
-
-        Assert::assertEquals($identifiers, $normalizedIdentifiers);
-        Assert::assertEquals(
-            $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
-            $this->fakeClient->getIdentifiersMapping()
-        );
+        $this->assertIdentifiersMappingSentToFranklin($expectedIdentifiersMapping);
+        $this->assertIdentifiersMappingPersisted($expectedIdentifiersMapping);
     }
 
-    private function assertMappingIsEmpty(): void
+    /**
+     * Asserts that the identifiers mapping sent to Franklin is similar to the expected one.
+     *
+     * @param array $expectedMappings
+     */
+    private function assertIdentifiersMappingSentToFranklin(array $expectedMappings): void
     {
-        $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
+        $clientMappings = $this->fakeClient->getIdentifiersMapping();
+        $franklinMappings = new AttributesMapping($clientMappings);
 
-        Assert::assertEquals([], $identifiers);
+        Assert::assertCount(count($expectedMappings), $franklinMappings);
+
+        foreach ($franklinMappings as $index => $franklinMapping) {
+            /** @var AttributeMapping $franklinMapping */
+            $franklinCode = $franklinMapping->getTargetAttributeCode();
+            $pimCode = $franklinMapping->getPimAttributeCode();
+            $expectedPimCode = $expectedMappings[$franklinCode];
+
+            Assert::assertArrayHasKey($franklinCode, $expectedMappings);
+            Assert::assertEquals($expectedPimCode, $franklinMapping->getPimAttributeCode());
+            $expectedStatus = (null === $pimCode) ? AttributeMapping::STATUS_INACTIVE : AttributeMapping::STATUS_ACTIVE;
+            Assert::assertEquals($expectedStatus, $franklinMapping->getStatus());
+
+            $this->assertLabelsSentToFranklin($pimCode, $clientMappings[$index]);
+        }
+    }
+
+    /**
+     * Asserts that identifiers labels sent to Franklin are the expecting ones.
+     *
+     * @param string|null $pimCode
+     * @param array $clientMapping
+     */
+    private function assertLabelsSentToFranklin(?string $pimCode, array $clientMapping): void
+    {
+        if (null !== $pimCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($pimCode);
+            foreach ($attribute->getTranslations() as $translation) {
+                $locale = $translation->getLocale();
+                $label = $translation->getLabel();
+                Assert::assertEquals($label, $clientMapping['to']['label'][$locale]);
+            }
+        }
+    }
+
+    /**
+     * Assert that the persisted identifiers mapping is similar to the expected one.
+     *
+     * @param array $expectedMappings
+     */
+    private function assertIdentifiersMappingPersisted(array $expectedMappings): void
+    {
+        $persistedMappings = $this->identifiersMappingRepository->find();
+        Assert::assertCount(count($expectedMappings), $persistedMappings);
+
+        foreach ($expectedMappings as $expectedFranklinCode => $expectedPimCode) {
+            $persistedMapping = $persistedMappings->getIdentifier($expectedFranklinCode);
+            if (null === $persistedMapping) {
+                Assert::assertNull($expectedPimCode);
+            } else {
+                Assert::assertEquals($expectedPimCode, $persistedMapping->getCode());
+            }
+        }
+    }
+
+    private function assertIdentifiersMappingIsEmpty(): void
+    {
+        $persistedIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
+
+        Assert::assertEquals([], $persistedIdentifiers);
         Assert::assertEquals([], $this->fakeClient->getIdentifiersMapping());
     }
 
@@ -307,13 +339,18 @@ class IdentifiersMappingContext implements Context
      */
     private function extractIdentifiersMappingFromTable(TableNode $tableNode): array
     {
-        $mapping = [];
-        foreach ($tableNode->getColumnsHash() as $column) {
-            $mapping[$column['franklin_code']] = $column['attribute_code'];
-        }
-
         $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
-        return array_merge($identifiersMapping, $mapping);
+        foreach ($tableNode->getColumnsHash() as $column) {
+            $franklinCode = $column['franklin_code'];
+            if (!array_key_exists($franklinCode, $identifiersMapping)) {
+                throw new \LogicException(
+                    sprintf('Key "%s" is not part of the identifier mapping', $column['franklin_code'])
+                );
+            }
+            $identifiersMapping[$franklinCode] = empty($column['attribute_code']) ? null : $column['attribute_code'];
+        }
+
+        return $identifiersMapping;
     }
 }

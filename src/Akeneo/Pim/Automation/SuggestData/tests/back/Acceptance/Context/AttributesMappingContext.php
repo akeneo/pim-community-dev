@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -40,6 +41,9 @@ final class AttributesMappingContext implements Context
 
     /** @var array */
     private $retrievedFamilies;
+
+    /** @var array */
+    private $retrievedAttributesMapping;
 
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
@@ -66,11 +70,8 @@ final class AttributesMappingContext implements Context
      */
     public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $expectedAttributes): void
     {
-        $query = new GetAttributesMappingByFamilyQuery($familyCode);
-        $attributesMappingResponse = $this->getAttributesMappingByFamilyHandler->handle($query);
-
         $attributesMapping = [];
-        foreach ($attributesMappingResponse as $attribute) {
+        foreach ($this->retrievedAttributesMapping as $attribute) {
             $attributesMapping[] = [
                 'target_attribute_code' => $attribute->getTargetAttributeCode(),
                 'target_attribute_label' => $attribute->getTargetAttributeLabel(),
@@ -129,6 +130,17 @@ final class AttributesMappingContext implements Context
                 $familyCodeOrLabel
             )
         );
+    }
+
+    /**
+     * @When I retrieves the attributes mapping for the family :familyCode
+     *
+     * @param mixed $familyCode
+     */
+    public function iRetrievesTheAttributesMappingForTheFamily($familyCode): void
+    {
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
+        $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
     }
 
     /**

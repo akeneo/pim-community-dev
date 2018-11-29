@@ -92,10 +92,12 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
                 [
                     'from' => ['id' => 'upc'],
                     'status' => 'inactive',
+                    'to' => null,
                 ],
                 [
                     'from' => ['id' => 'asin'],
                     'status' => 'inactive',
+                    'to' => null,
                 ],
             ]
         );

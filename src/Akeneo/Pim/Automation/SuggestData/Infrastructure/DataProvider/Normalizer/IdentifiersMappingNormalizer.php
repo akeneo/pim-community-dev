@@ -34,6 +34,7 @@ class IdentifiersMappingNormalizer
             $normalizedMapping[$franklinIdentifier] = [
                 'from' => ['id' => $franklinIdentifier],
                 'status' => 'inactive',
+                'to' => null,
             ];
         }
 

@@ -26,7 +26,7 @@
   "mapping": [
     {
       "from": {
-        "id": "idontreallyknowhwatiam",
+        "id": "idontreallyknowwhatiam",
         "label": {
           "en_us": "An attribute that has no type"
         },

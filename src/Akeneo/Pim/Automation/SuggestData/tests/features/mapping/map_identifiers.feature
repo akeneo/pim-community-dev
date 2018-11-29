@@ -11,18 +11,18 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Scenario: Successfully map Franklin attributes to PIM attributes for the first time
     Given the predefined attributes pim_brand, MPN, EAN and ASIN
     And an empty identifiers mapping
-    When the identifiers are mapped with valid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
       | upc           | ean            |
       | asin          | asin           |
-    Then the retrieved mapping should be the following:
-      | franklin_code | attribute_code | en_US | fr_FR  |
-      | brand         | pim_brand      | Brand | Marque |
-      | mpn           | mpn            | MPN   | MPN    |
-      | upc           | ean            |       |        |
-      | asin          | asin           | ASIN  | ASIN   |
+    Then the retrieved identifiers mapping should be the following:
+      | franklin_code | attribute_code |
+      | brand         | pim_brand      |
+      | mpn           | mpn            |
+      | upc           | ean            |
+      | asin          | asin           |
 
   Scenario: Successfully update an already existing mapping
     Given the predefined attributes pim_brand, MPN, EAN, ASIN, SKU and identifier
@@ -32,28 +32,28 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | mpn           | mpn            |
       | upc           | ean            |
       | asin          | asin           |
-    When the identifiers are mapped with valid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
       | upc           | sku            |
       | asin          | identifier     |
-    Then the retrieved mapping should be the following:
-      | franklin_code | attribute_code | en_US | fr_FR  |
-      | brand         | pim_brand      | Brand | Marque |
-      | mpn           | mpn            | MPN   | MPN    |
-      | upc           | sku            | SKU   | UGS    |
-      | asin          | identifier     |       |        |
+    Then the retrieved identifiers mapping should be the following:
+      | franklin_code | attribute_code |
+      | brand         | pim_brand      |
+      | mpn           | mpn            |
+      | upc           | sku            |
+      | asin          | identifier     |
 
   Scenario Outline: Successfully map Franklin attributes with valid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code      | type             |
       | pim_upc   | <attribute_type> |
-    When the identifiers are mapped with valid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
-    Then the retrieved mapping should be the following:
+    Then the retrieved identifiers mapping should be the following:
       | franklin_code | attribute_code |
       | brand         |                |
       | mpn           |                |
@@ -70,7 +70,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
     And the following attribute:
       | code    | type             |
       | pim_upc | <attribute_type> |
-    When the identifiers are mapped with valid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
     Then the identifiers mapping should not be saved
@@ -94,7 +94,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
 
   Scenario: Fails to map Franklin attribute with unexisting PIM attribute
     Given an empty identifiers mapping
-    When the identifiers are mapped with invalid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | brand         | burger         |
     Then the identifiers mapping should not be saved
@@ -102,7 +102,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Scenario: Fails to save a mapping with the brand without the MPN
     Given the predefined attributes pim_brand and EAN
     And an empty identifiers mapping
-    When the identifiers are mapped with invalid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | upc           | ean            |
@@ -111,7 +111,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
   Scenario: Fails to save a mapping with the MPN without the brand
     Given the predefined attributes MPN and EAN
     And an empty identifiers mapping
-    When the identifiers are mapped with invalid values as follows:
+    When the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | mpn           | mpn            |
       | upc           | ean            |
@@ -119,47 +119,39 @@ Feature: Map the PIM identifiers with Franklin identifiers
 
   Scenario: Fails to save an empty identifiers mapping
     Given an empty identifiers mapping
-    When the identifiers mapping is saved with empty values
+    When the identifiers are mapped with empty values
     Then the identifiers mapping should not be saved
 
   Scenario: Fails to empty an identifiers mapping
     Given the predefined attributes ASIN
-    And the identifiers are mapped with valid values as follows:
+    And the identifiers are mapped with the following values:
       | franklin_code | attribute_code |
       | asin          | asin           |
-    When the identifiers mapping is saved with empty values
-    Then the identifiers mapping should not be saved
+    When the identifiers are mapped with empty values
+    Then the retrieved identifiers mapping should be the following:
+      | franklin_code | attribute_code |
+      | asin          | asin           |
 
-  Scenario: Fails to map identifiers mapping when Franklin is down
-    Given the predefined attributes pim_brand, MPN, EAN and ASIN
-    And an empty identifiers mapping
-    And Franklin is configured with an expired token
-    When the identifiers are mapped with valid values as follows:
-      | franklin_code | attribute_code |
-      | brand         | pim_brand      |
-      | mpn           | mpn            |
-      | upc           | ean            |
-      | asin          | asin           |
-    Then the retrieved mapping should be the following:
-      | franklin_code | attribute_code | en_US | fr_FR  |
-      | brand         | pim_brand      | Brand | Marque |
-      | mpn           | mpn            | MPN   | MPN    |
-      | upc           | ean            |       |        |
-      | asin          | asin           | ASIN  | ASIN   |
-
-  Scenario: Fails to map identifiers mapping when Franklin is down
-    Given the predefined attributes pim_brand, MPN, EAN and ASIN
-    And an empty identifiers mapping
-    And Franklin server is down
-    When the identifiers are mapped with valid values as follows:
-      | franklin_code | attribute_code |
-      | brand         | pim_brand      |
-      | mpn           | mpn            |
-      | upc           | ean            |
-      | asin          | asin           |
-    Then the retrieved mapping should be the following:
-      | franklin_code | attribute_code | en_US | fr_FR  |
-      | brand         | pim_brand      | Brand | Marque |
-      | mpn           | mpn            | MPN   | MPN    |
-      | upc           | ean            |       |        |
-      | asin          | asin           | ASIN  | ASIN   |
+#  Scenario: Fails to map identifiers mapping when Franklin is down
+#    Given the predefined attributes pim_brand, MPN, EAN and ASIN
+#    And an empty identifiers mapping
+#    And Franklin is configured with an expired token
+#    When the identifiers are mapped with the following values:
+#      | franklin_code | attribute_code |
+#      | brand         | pim_brand      |
+#      | mpn           | mpn            |
+#      | upc           | ean            |
+#      | asin          | asin           |
+#    Then the identifiers mapping should not be saved
+#
+#  Scenario: Fails to map identifiers mapping when Franklin is down
+#    Given the predefined attributes pim_brand, MPN, EAN and ASIN
+#    And an empty identifiers mapping
+#    And Franklin server is down
+#    When the identifiers are mapped with the following values:
+#      | franklin_code | attribute_code |
+#      | brand         | pim_brand      |
+#      | mpn           | mpn            |
+#      | upc           | ean            |
+#      | asin          | asin           |
+#    Then the identifiers mapping should not be saved
