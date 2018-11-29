@@ -14,6 +14,7 @@ define(
         'backbone',
         'pim/form',
         'teamwork-assistant/templates/grid/view-selector/create-project',
+        'pim/template/common/modal-with-illustration',
         'teamwork-assistant/project/create-form'
     ],
     function (
@@ -23,10 +24,12 @@ define(
         Backbone,
         BaseForm,
         template,
+        templateModal,
         CreateForm
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            templateModal: _.template(templateModal),
             tagName: 'span',
             className: 'create-project-button',
             fieldsStatuses: {},
@@ -59,28 +62,24 @@ define(
              * Prompt the create project modal
              */
             promptCreateProject: function () {
-                var modal = new Backbone.BootstrapModal({
-                    title: __('teamwork_assistant.create_project_modal.title'),
-                    content: '',
-                    cancelText: __('pim_common.cancel'),
-                    okText: __('pim_common.save'),
-                    okCloses: false
-                });
-
-                modal.open();
-                modal.$el.addClass('modal--fullPage');
-
-                var modalBody = modal.$('.modal-body');
-                modalBody.css('min-height', 150);
-                modalBody.css('overflow-y', 'auto');
-
                 this.form = new CreateForm();
                 this.form.configure();
                 this.form.on(
                     'teamwork-assistant:edit-project:field-validated',
                     this.onFieldValueValidated.bind(this)
                 );
-                this.form.setElement(modalBody).render();
+
+                var modal = new Backbone.BootstrapModal({
+                    title: __('pim_common.create'),
+                    subtitle: __('teamwork_assistant.create_project_modal.title'),
+                    content: this.form,
+                    picture: 'illustrations/Project.svg',
+                    okText: __('pim_common.save'),
+                    template: this.templateModal,
+                    okCloses: false,
+                });
+
+                modal.open();
 
                 modal.on('cancel', function () {
                     modal.remove();
