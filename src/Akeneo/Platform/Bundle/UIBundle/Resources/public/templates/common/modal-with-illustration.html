@@ -4,7 +4,9 @@
       <img src="bundles/pimui/images/<%- picture %>" alt="<%- picture %>"/>
     </div>
     <div>
-      <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <% if (typeof subtitle !== 'undefined') { %>
+        <div class="AknFullPage-subTitle"><%- subtitle %></div>
+      <% } %>
       <div class="AknFullPage-title"><%- title %></div>
       <% if (typeof contentLabel !== 'undefined') { %>
       <!-- TODO Rename this to 'description' -->

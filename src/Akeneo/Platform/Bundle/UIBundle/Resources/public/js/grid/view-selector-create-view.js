@@ -16,6 +16,7 @@ define(
         'backbone',
         'pim/form',
         'pim/template/grid/view-selector/create-view',
+        'pim/template/common/modal-with-illustration',
         'pim/template/form/creation/modal',
         'pim/template/grid/view-selector/create-view-label-input',
         'pim/datagrid/state',
@@ -30,6 +31,7 @@ define(
         BaseForm,
         template,
         templateModal,
+        templateModalContent,
         templateInput,
         DatagridState,
         DatagridViewSaver,
@@ -38,6 +40,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             templateModal: _.template(templateModal),
+            templateModalContent: _.template(templateModalContent),
             templateInput: _.template(templateInput),
             tagName: 'span',
             className: 'create-button',
@@ -70,22 +73,22 @@ define(
             promptCreateView: function () {
                 this.getRoot().trigger('grid:view-selector:close-selector');
 
-                let modalContent = this.templateModal({
-                    subTitleLabel: __('pim_datagrid.view_selector.view'),
-                    titleLabel: __('pim_common.create'),
+                let modal = new Backbone.BootstrapModal({
+                    subtitle: __('pim_datagrid.view_selector.view'),
+                    title: __('pim_common.create'),
                     picture: 'illustrations/Views.svg',
-                    fields: this.templateInput({
-                        placeholder: __('pim_datagrid.view_selector.placeholder'),
-                        label: __('pim_datagrid.view_selector.choose_label')
-                    })
+                    okText: __('pim_common.save'),
+                    template: this.templateModal,
+                    okCloses: false,
+                    content: this.templateModalContent({
+                        fields: this.templateInput({
+                            placeholder: __('pim_datagrid.view_selector.placeholder'),
+                            label: __('pim_datagrid.view_selector.choose_label')
+                        })
+                    }),
                 });
 
-                let modal = new Backbone.BootstrapModal({
-                    content: modalContent,
-                    okText: __('pim_common.save')
-                });
                 modal.open();
-                modal.$el.addClass('modal--fullPage');
 
                 const $submitButton = modal.$el.find('.ok').addClass('AknButton--disabled');
 
@@ -116,6 +119,10 @@ define(
              * @param {object} modal
              */
             saveView: function (modal) {
+                if ($('.modal .ok').hasClass('AknButton--disabled')) {
+                    return;
+                }
+
                 var gridState = DatagridState.get(this.getRoot().gridAlias, ['filters', 'columns']);
                 var newView = {
                     filters: gridState.filters,
@@ -126,6 +133,8 @@ define(
                 DatagridViewSaver.save(newView, this.getRoot().gridAlias)
                     .done(function (response) {
                         this.getRoot().trigger('grid:view-selector:view-created', response.id);
+                        modal.close();
+                        modal.remove();
                     }.bind(this))
                     .fail(function (response) {
                         _.each(response.responseJSON, function (error) {
