@@ -44,6 +44,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\FindIdentifiersForQuery
         arguments:
             - '@akeneo_referenceentity.client.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale:
        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForChannelAndLocale
