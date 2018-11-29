@@ -106,25 +106,25 @@ services:
             - '@oro_security.security_facade'
 
     akeneo_referenceentity.infrastructure.connector.action.record.get:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorRecordAction
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\GetConnectorRecordAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_record_by_reference_entity_and_code'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images'
 
     akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_record_images:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToRecordImages
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\Hal\AddHalDownloadLinkToRecordImages
         arguments:
             - '@router'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes'
 
     akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\Hal\AddHalDownloadLinkToReferenceEntityImage
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\Hal\AddHalDownloadLinkToReferenceEntityImage
         arguments:
         - '@router'
 
     akeneo_referenceentity.infrastructure.connector.action.records.get:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorRecordsAction
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\GetConnectorRecordsAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.application.record.search_connector_record'
@@ -134,14 +134,14 @@ services:
             - '@validator'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity.get:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorReferenceEntityAction
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\GetConnectorReferenceEntityAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_by_reference_entity_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entities.get:
-        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Http\GetConnectorReferenceEntitiesAction
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\GetConnectorReferenceEntitiesAction
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_items'
             - '@pim_api.pagination.search_after_hal_paginator'
