@@ -295,7 +295,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     }
 
     /**
-     * @Given /^7 attributes that structure the Brand reference entity in the PIM$/
+     * @Given /^6 attributes that structure the Brand reference entity in the PIM$/
      */
     public function attributesThatStructureTheBrandReferenceEntityInThePIM()
     {
@@ -331,7 +331,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the 7 attributes of the Brand reference entity$/
+     * @Then /^the PIM returns the 6 attributes of the Brand reference entity$/
      */
     public function thePIMReturnsTheAttributesOfTheBrandReferenceEntity()
     {
@@ -346,7 +346,29 @@ class GetConnectorReferenceEntityAttributesContext implements Context
      */
     public function someReferenceEntitiesWithSomeAttributes()
     {
-        throw new PendingException();
+        $firstIdentifier = 'whatever_1';
+
+        $this->createTextAttribute($firstIdentifier);
+
+        $firstReferenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($firstIdentifier),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($firstReferenceEntity);
+
+        $secondIdentifier = 'whatever_2';
+
+        $this->createImageAttribute($secondIdentifier);
+
+        $secondReferenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($secondIdentifier),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($secondReferenceEntity);
     }
 
     /**
