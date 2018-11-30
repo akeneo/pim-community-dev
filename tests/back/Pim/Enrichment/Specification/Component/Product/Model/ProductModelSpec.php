@@ -101,6 +101,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(false);
 
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
         $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
 
         $nameValue->getAttributeCode()->willReturn('name');
@@ -129,6 +130,9 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(true);
+
+        $values->getByCodes('name', 'mobile', 'fr_FR')->willReturn($mobileNameValue);
+        $values->getByCodes('name', 'ecommerce', 'fr_FR')->willReturn($ecommerceNameValue);
 
         $values->toArray()->willreturn([
             'name-ecommerce-fr_FR' => $ecommerceNameValue,
@@ -179,6 +183,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
+        $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
         $values->toArray()->willreturn([]);
 
         $this->setFamilyVariant($familyVariant);
@@ -202,6 +207,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(false);
 
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
         $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
 
         $nameValue->getAttributeCode()->willReturn('name');
@@ -230,6 +236,8 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(true);
+
+        $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
 
         $values->toArray()->willreturn([
             'name-ecommerce-fr_FR' => $ecommerceNameValue,
@@ -267,6 +275,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(false);
 
+        $values->getByCodes('name', null, null)->willReturn($nameValue);
         $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
 
         $nameValue->getAttributeCode()->willReturn('name');
@@ -293,6 +302,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsImage->getCode()->willReturn('picture');
         $attributeAsImage->isUnique()->willReturn(false);
 
+        $values->getByCodes('picture', null, null)->willReturn($pictureValue);
         $values->toArray()->willreturn(['picture-<all_channels>-<all_locales>' => $pictureValue]);
 
         $pictureValue->getAttributeCode()->willReturn('picture');
@@ -329,6 +339,7 @@ class ProductModelSpec extends ObjectBehavior
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $attributeAsImage->getCode()->willReturn('picture');
 
+        $values->getByCodes('picture', null, null)->willReturn(null);
         $values->toArray()->willreturn([]);
 
         $this->setFamilyVariant($familyVariant);
@@ -397,6 +408,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
+        $values->getByCodes('name', null, null)->willReturn(null);
         $values->toArray()->willreturn([]);
 
         $this->setFamilyVariant($familyVariant);

@@ -38,6 +38,28 @@ parameters:
     pim_catalog.validator.constraint.invalid_variant_product_parent.class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParentValidator
     pim_catalog.validator.constraint.unique_product.class:                 Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueEntityValidator
 
+    pim_catalog.validator.extension_to_mimetype_mapping:
+        mp3:  ['audio/mpeg']
+        wav:  ['audio/x-wav']
+        jpg:  ['image/jpeg']
+        jpeg: ['image/jpeg']
+        jfif: ['image/jpeg']
+        jif:  ['image/jpeg']
+        svg:  ['image/svg+xml']
+        png:  ['image/png']
+        gif:  ['image/gif']
+        tiff: ['image/tiff']
+        tif:  ['image/tiff']
+        txt:  ['text/plain']
+        rtf:  ['text/rtf']
+        csv:  ['text/x-comma-separated-values', 'text/csv', 'text/plain']
+        psd:  ['application/x-photoshop']
+        pdf:  ['application/pdf']
+        doc:  ['application/msword']
+        docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+        ppt:  ['application/powerpoint']
+        pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation']
+
 services:
     # Helpers
     pim_catalog.validator.helper.attribute:
@@ -56,6 +78,13 @@ services:
         public: true
 
     # Validators
+    pim_catalog.validator.constraint.file_extensions_and_mimetypes:
+        class: Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator
+        arguments:
+            - '%pim_catalog.validator.extension_to_mimetype_mapping%'
+        tags:
+            - { name: validator.constraint_validator }
+
     pim_catalog.validator.constraint.only_expected_attributes:
         class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
         arguments:

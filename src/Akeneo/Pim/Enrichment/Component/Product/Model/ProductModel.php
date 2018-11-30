@@ -155,7 +155,16 @@ class ProductModel implements ProductModelInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null): ?ValueInterface
     {
-        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
+        $result = $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
+        if (null !== $result) {
+            return $result;
+        }
+
+        if (null === $this->getParent()) {
+            return null;
+        }
+
+        return $this->getParent()->getValue($attributeCode, $localeCode, $scopeCode);
     }
 
     /**
