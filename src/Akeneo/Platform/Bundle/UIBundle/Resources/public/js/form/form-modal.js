@@ -46,6 +46,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'oro/mediator',
         'pim/form-builder'
@@ -53,6 +54,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         mediator,
         FormBuilder
@@ -83,8 +85,7 @@ define(
                 okCloses:    false,
                 content:     '',
                 title:       '[modal_title]',
-                okText:      '[ok]',
-                cancelText:  '[cancel]',
+                okText:      __('pim_common.save'),
                 modalOptions: {
                     backdrop: 'static',
                     keyboard: false
@@ -121,11 +122,11 @@ define(
                 FormBuilder
                     .build(this.formName)
                     .then(function (form) {
+                        form.setData(this.initialFormData, {silent: true});
+                        this.modalParameters.content = form;
+
                         this.modal = new Backbone.BootstrapModal(this.modalParameters);
                         this.modal.open();
-
-                        form.setData(this.initialFormData, {silent: true});
-                        form.setElement(this.modal.$('.modal-body')).render();
 
                         mediator.on('pim_enrich:form:modal:ok_button:disable', function () {
                             this.disableOkBtn();
