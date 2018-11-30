@@ -80,9 +80,13 @@ class Properties extends React.Component<StateProps & DispatchProps> {
         <Header
           label={referenceEntity.getLabel(this.props.context.locale)}
           image={referenceEntity.getImage()}
-          primaryAction={() => {
+          primaryAction={(defaultFocus: React.RefObject<any>) => {
             return this.props.acls.edit ? (
-              <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
+              <button
+                className="AknButton AknButton--apply"
+                onClick={this.props.events.onSaveEditForm}
+                ref={defaultFocus}
+              >
                 {__('pim_reference_entity.reference_entity.button.save')}
               </button>
             ) : null;

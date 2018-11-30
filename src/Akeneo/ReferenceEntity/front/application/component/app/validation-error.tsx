@@ -19,9 +19,7 @@ export const getErrorsView = (errors: ValidationError[], field: string) => {
 
   return (
     <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">
-      <span className="AknFieldContainer-validationError">
-        {errorMessages}
-      </span>
+      <span className="AknFieldContainer-validationError">{errorMessages}</span>
     </div>
   );
 };

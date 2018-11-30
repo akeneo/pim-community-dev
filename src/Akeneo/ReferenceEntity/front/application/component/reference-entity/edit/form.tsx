@@ -22,11 +22,17 @@ interface FormProps {
 }
 
 export default class EditForm extends React.Component<FormProps> {
-  private labelInput: HTMLInputElement;
+  private labelInput: React.RefObject<HTMLInputElement>;
+
+  constructor(props: FormProps) {
+    super(props);
+
+    this.labelInput = React.createRef();
+  }
 
   componentDidMount() {
-    if (this.labelInput) {
-      this.labelInput.focus();
+    if (this.labelInput.current) {
+      this.labelInput.current.focus();
     }
   }
 
@@ -84,9 +90,7 @@ export default class EditForm extends React.Component<FormProps> {
               value={referenceEntity.getLabel(this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
-              ref={(input: HTMLInputElement) => {
-                this.labelInput = input;
-              }}
+              ref={this.labelInput}
             />
             <Flag
               locale={createLocaleFromCode(this.props.locale)}

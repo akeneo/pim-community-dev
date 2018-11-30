@@ -4,6 +4,7 @@ const Header = require('../../decorators/reference-entity/app/header.decorator')
 const Records = require('../../decorators/reference-entity/edit/records.decorator');
 const Modal = require('../../decorators/delete/modal.decorator');
 const {getRequestContract, listenRequest, askForReferenceEntity} = require('../../tools');
+const LocaleSwitcher = require('../../decorators/reference-entity/app/locale-switcher.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -30,6 +31,10 @@ module.exports = async function(cucumber) {
     Modal: {
       selector: '.AknFullPage--modal',
       decorator: Modal,
+    },
+    LocaleSwitcher: {
+      selector: '.locale-switcher',
+      decorator: LocaleSwitcher,
     },
   };
 
@@ -150,7 +155,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isValid, true);
   });
 
-  Given('the user ask for a list of records', async function() {
+  Given('the user asks for a list of records', async function() {
     const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
     await listenRequest(this.page, requestContract);
     const recordsRequestContract = getRequestContract('Record/Search/not_filtered.json');
@@ -160,7 +165,7 @@ module.exports = async function(cucumber) {
     await showRecordTab(this.page);
   });
 
-  When('the user search for {string}', async function(searchInput) {
+  When('the user searches for {string}', async function(searchInput) {
     const requestContract = getRequestContract(
       's' === searchInput ? 'Record/Search/ok.json' : 'Record/Search/no_result.json'
     );
@@ -180,6 +185,13 @@ module.exports = async function(cucumber) {
       return (await isValid) && (await recordList.hasRecord(expectedRecord));
     }, true);
     assert.strictEqual(isValid, true);
+  });
+
+  Then('I switch to another locale in the record grid', async function() {
+    const requestContract = getRequestContract('Record/Search/no_result_fr.json');
+
+    await listenRequest(this.page, requestContract);
+    await (await await getElement(this.page, 'LocaleSwitcher')).switchLocale('fr_FR');
   });
 
   Then('the user should see an unfiltered list of records', async function() {

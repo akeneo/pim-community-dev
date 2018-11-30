@@ -202,8 +202,6 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   render(): JSX.Element | JSX.Element[] {
     const {referenceEntityIdentifier, ...props} = this.props;
 
-    return (
-      <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} />
-    );
+    return <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} />;
   }
 }
