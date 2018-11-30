@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -41,6 +42,12 @@ final class AttributesMappingContext implements Context
     /** @var array */
     private $retrievedFamilies;
 
+    /** @var array */
+    private $retrievedAttributesMapping;
+
+    /** @var \Exception */
+    private $thrownException;
+
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
@@ -59,39 +66,15 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @Then the retrieved attributes mapping for the family :familyCode should be:
-     *
-     * @param string $familyCode
-     * @param TableNode $expectedAttributes
-     */
-    public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $expectedAttributes): void
-    {
-        $query = new GetAttributesMappingByFamilyQuery($familyCode);
-        $attributesMappingResponse = $this->getAttributesMappingByFamilyHandler->handle($query);
-
-        $attributesMapping = [];
-        foreach ($attributesMappingResponse as $attribute) {
-            $attributesMapping[] = [
-                'target_attribute_code' => $attribute->getTargetAttributeCode(),
-                'target_attribute_label' => $attribute->getTargetAttributeLabel(),
-                'pim_attribute_code' => $attribute->getPimAttributeCode(),
-                'status' => $attribute->getStatus(),
-            ];
-        }
-
-        Assert::eq($this->buildExpectedAttributesMapping($expectedAttributes), $attributesMapping);
-    }
-
-    /**
      * @When the attributes are mapped for the family :familyCode as follows:
      *
      * @param string $familyCode
-     * @param TableNode $mappings
+     * @param TableNode $table
      */
-    public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $mappings): void
+    public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $table): void
     {
         $requestMapping = [];
-        foreach ($mappings->getColumnsHash() as $mapping) {
+        foreach ($table->getColumnsHash() as $mapping) {
             $requestMapping[$mapping['target_attribute_code']] = [
                 'franklinAttribute' => [
                     'label' => 'A label',
@@ -102,8 +85,12 @@ final class AttributesMappingContext implements Context
             ];
         }
 
-        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
-        $this->updateAttributesMappingByFamilyHandler->handle($command);
+        try {
+            $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
+            $this->updateAttributesMappingByFamilyHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -129,6 +116,41 @@ final class AttributesMappingContext implements Context
                 $familyCodeOrLabel
             )
         );
+    }
+
+    /**
+     * @When I retrieves the attributes mapping for the family :familyCode
+     *
+     * @param mixed $familyCode
+     */
+    public function iRetrievesTheAttributesMappingForTheFamily($familyCode): void
+    {
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
+        $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
+    }
+
+    /**
+     * @Then the retrieved attributes mapping for the family :familyCode should be:
+     *
+     * @param string $familyCode
+     * @param TableNode $expectedAttributes
+     */
+    public function theRetrievedAttributesMappingShouldBe(string $familyCode, TableNode $expectedAttributes): void
+    {
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
+        $attributesMappingResponse = $this->getAttributesMappingByFamilyHandler->handle($query);
+
+        $attributesMapping = [];
+        foreach ($attributesMappingResponse as $attribute) {
+            $attributesMapping[] = [
+                'target_attribute_code' => $attribute->getTargetAttributeCode(),
+                'target_attribute_label' => $attribute->getTargetAttributeLabel(),
+                'pim_attribute_code' => $attribute->getPimAttributeCode(),
+                'status' => $attribute->getStatus(),
+            ];
+        }
+
+        Assert::eq($this->buildExpectedAttributesMapping($expectedAttributes), $attributesMapping);
     }
 
     /**

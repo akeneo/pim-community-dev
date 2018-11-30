@@ -73,8 +73,8 @@ class UpdateIdentifiersMappingHandler
         $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
-        $this->identifiersMappingRepository->save($identifiersMapping);
         $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
+        $this->identifiersMappingRepository->save($identifiersMapping);
     }
 
     /**

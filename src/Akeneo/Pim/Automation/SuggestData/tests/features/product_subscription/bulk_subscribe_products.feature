@@ -39,3 +39,5 @@ Feature: Bulk subscribes products to Franklin
   # Should return a 402
 
   #Scenario: Handle a mass subscribe bad request to Franklin
+
+  # TODO: Assert proposal creation

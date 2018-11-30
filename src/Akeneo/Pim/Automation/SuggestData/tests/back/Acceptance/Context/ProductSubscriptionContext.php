@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Su
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
@@ -103,6 +104,8 @@ class ProductSubscriptionContext implements Context
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductSubscriptionException $e) {
+            $this->thrownException = $e;
+        } catch (ProductNotSubscribedException $e) {
             $this->thrownException = $e;
         }
     }
@@ -253,6 +256,14 @@ class ProductSubscriptionContext implements Context
             ProductSubscriptionException::invalidToken()->getMessage(),
             $this->thrownException->getMessage()
         );
+    }
+
+    /**
+     * @Then a product not subscribed message should be sent
+     */
+    public function aProductNotSubscribedMessageShouldBeSent(): void
+    {
+        Assert::isInstanceOf($this->thrownException, ProductNotSubscribedException::class);
     }
 
     /**

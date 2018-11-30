@@ -16,12 +16,12 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\IdentifiersMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -46,6 +46,9 @@ class IdentifiersMappingContext implements Context
 
     /** @var FakeClient */
     private $fakeClient;
+
+    /** @var \Exception */
+    private $thrownException;
 
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
@@ -73,223 +76,189 @@ class IdentifiersMappingContext implements Context
      */
     public function anEmptyIdentifiersMapping(): void
     {
-        $this->assertMappingIsEmpty();
+        $this->assertIdentifiersMappingIsEmpty();
     }
 
     /**
-     * @Given a predefined mapping as follows:
+     * @Given a predefined identifiers mapping as follows:
      *
      * @param TableNode $table
      *
      * @throws InvalidMappingException
      */
-    public function aPredefinedMapping(TableNode $table): void
+    public function aPredefinedIdentifiersMapping(TableNode $table): void
     {
-        $mapped = $this->extractIdentifiersMappingFromTable($table);
-        $identifiers = IdentifiersMapping::FRANKLIN_IDENTIFIERS;
+        $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $tmp = array_fill_keys($identifiers, null);
-        $tmp = array_merge($tmp, $mapped);
-        $tmp = array_map(function ($value) {
-            return '' !== $value ? $value : null;
-        }, $tmp);
-
-        $command = new UpdateIdentifiersMappingCommand($tmp);
+        $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
         $this->updateIdentifiersMappingHandler->handle($command);
     }
 
     /**
-     * @When the identifiers are mapped with valid values as follows:
+     * @When the identifiers are mapped as follows:
      *
      * @param TableNode $table
-     *
-     * @return bool
      */
-    public function theIdentifiersAreMappedWithValidValues(TableNode $table): bool
+    public function theIdentifiersAreMappedAsFollows(TableNode $table): void
     {
+        $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
         try {
-            $command = new UpdateIdentifiersMappingCommand(
-                $this->extractIdentifiersMappingFromTable($table)
-            );
+            $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
             $this->updateIdentifiersMappingHandler->handle($command);
-
-            return true;
-        } catch (\Exception $e) {
-            return false;
+        } catch (InvalidMappingException $e) {
+            $this->thrownException = $e;
         }
     }
 
     /**
-     * @When the identifiers are mapped with invalid values as follows:
-     *
-     * @param TableNode $table
-     *
-     * @return bool
+     * @When the identifiers are mapped with empty values
      */
-    public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
-    {
-        try {
-            $command = new UpdateIdentifiersMappingCommand(
-                $this->getTableNodeAsArrayWithoutHeaders($table)
-            );
-            $this->updateIdentifiersMappingHandler->handle($command);
-
-            return false;
-        } catch (\Exception $e) {
-            return true;
-        }
-    }
-
-    /**
-     * @When the identifiers mapping is saved with empty values
-     *
-     * @return bool
-     */
-    public function theIdentifiersMappingIsSavedWithEmptyValues(): bool
+    public function theIdentifiersMappingIsSavedWithEmptyValues(): void
     {
         try {
             $command = new UpdateIdentifiersMappingCommand([]);
             $this->updateIdentifiersMappingHandler->handle($command);
-
-            return false;
-        } catch (\Exception $e) {
-            return true;
+        } catch (InvalidMappingException $e) {
+            $this->thrownException = $e;
         }
-    }
-
-    /**
-     * @Then the identifiers mapping should not be defined
-     */
-    public function theIdentifiersMappingIsNotDefined(): void
-    {
-        $this->assertMappingIsEmpty();
     }
 
     /**
      * @Then the identifiers mapping should not be saved
      */
-    public function theIdentifiersMappingIsNotSaved(): void
+    public function theIdentifiersMappingShouldNotBeSaved(): void
     {
-        $this->assertMappingIsEmpty();
+        $this->assertIdentifiersMappingIsEmpty();
     }
 
     /**
-     * @Then the retrieved mapping should be the following:
+     * @Then the retrieved identifiers mapping should be the following:
      *
      * @param TableNode $table
      */
-    public function theRetrievedMappingIsTheFollowing(TableNode $table): void
+    public function theRetrievedIdentifiersMappingIsTheFollowing(TableNode $table): void
     {
-        $identifiers = $this->extractIdentifiersMappingFromTable($table);
+        $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $identifiersMappingNormalizer = new IdentifiersMappingNormalizer();
-        $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
-        $normalizedIdentifiers = $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers());
-
-        Assert::assertEquals($identifiers, $normalizedIdentifiers);
-        Assert::assertEquals(
-            $this->extractIdentifiersMappingToFranklinFormatFromTable($table),
-            $this->fakeClient->getIdentifiersMapping()
-        );
+        $this->assertIdentifiersMappingSentToFranklin($expectedIdentifiersMapping);
+        $this->assertIdentifiersMappingPersisted($expectedIdentifiersMapping);
     }
 
-    private function assertMappingIsEmpty(): void
+    /**
+     * Asserts that the identifiers mapping sent to Franklin is similar to the expected one.
+     *
+     * @param array $expectedMappings
+     *
+     * Expected Mapping format is:
+     * [
+     *     "asin" => "pim_asin",
+     *     "upc"  => null
+     * ]
+     *
+     * Identifiers mapping sent to Franklin is:
+     * [
+     *     [
+     *         "from" => ["id" => "asin"]
+     *         "status" => "active"
+     *         "to" => ["id" => "pim_asin", "label" => ["en_US" => "My Asin"]]
+     *     ],
+     *     [
+     *         "from" => ["id" => "upc"]
+     *         "status" => "inactive"
+     *         "to" => null
+     *     ]
+     * ]
+     */
+    private function assertIdentifiersMappingSentToFranklin(array $expectedMappings): void
     {
-        $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
+        $clientMappings = $this->fakeClient->getIdentifiersMapping();
+        Assert::assertCount(count($expectedMappings), $clientMappings);
 
-        Assert::assertEquals([], $identifiers);
+        $franklinMappings = new AttributesMapping($clientMappings);
+        foreach ($franklinMappings as $index => $franklinMapping) {
+            /** @var AttributeMapping $franklinMapping */
+            $franklinCode = $franklinMapping->getTargetAttributeCode();
+            $pimCode = $franklinMapping->getPimAttributeCode();
+            $expectedPimCode = $expectedMappings[$franklinCode];
+
+            Assert::assertArrayHasKey($franklinCode, $expectedMappings);
+            Assert::assertEquals($expectedPimCode, $franklinMapping->getPimAttributeCode());
+            $expectedStatus = (null === $pimCode) ? AttributeMapping::STATUS_INACTIVE : AttributeMapping::STATUS_ACTIVE;
+            Assert::assertEquals($expectedStatus, $franklinMapping->getStatus());
+
+            $this->assertLabelsSentToFranklin($pimCode, $clientMappings[$index]);
+        }
+    }
+
+    /**
+     * Asserts that identifiers labels sent to Franklin are the expected ones.
+     *
+     * @param string|null $pimCode
+     * @param array $clientMapping
+     */
+    private function assertLabelsSentToFranklin(?string $pimCode, array $clientMapping): void
+    {
+        if (null !== $pimCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($pimCode);
+            foreach ($attribute->getTranslations() as $translation) {
+                $locale = $translation->getLocale();
+                $label = $translation->getLabel();
+                Assert::assertEquals($label, $clientMapping['to']['label'][$locale]);
+            }
+        }
+    }
+
+    /**
+     * Asserts that the persisted identifiers mapping is similar to the expected one.
+     *
+     * @param array $expectedMappings
+     *
+     * Expected Mapping format is:
+     * [
+     *     "asin" => "pim_asin",
+     *     "upc"  => null
+     * ]
+     *
+     * Identifiers mapping saved in Database is:
+     * [
+     *     "brand" => AttributeInterface::code "pim_asin",
+     *     "upc"   => null
+     * ]
+     */
+    private function assertIdentifiersMappingPersisted(array $expectedMappings): void
+    {
+        $persistedMappings = $this->identifiersMappingRepository->find();
+        Assert::assertCount(count($expectedMappings), $persistedMappings);
+
+        foreach ($expectedMappings as $expectedFranklinCode => $expectedPimCode) {
+            $persistedMapping = $persistedMappings->getIdentifier($expectedFranklinCode);
+            if (null === $persistedMapping) {
+                Assert::assertNull($expectedPimCode);
+            } else {
+                Assert::assertEquals($expectedPimCode, $persistedMapping->getCode());
+            }
+        }
+    }
+
+    /**
+     * Asserts the identifiers mapping is empty.
+     */
+    private function assertIdentifiersMappingIsEmpty(): void
+    {
+        $persistedIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
+
+        Assert::assertEquals([], $persistedIdentifiers);
         Assert::assertEquals([], $this->fakeClient->getIdentifiersMapping());
     }
 
     /**
-     * @param TableNode $tableNode
-     *
-     * @return array
-     */
-    private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode): array
-    {
-        $extractedData = $tableNode->getRowsHash();
-        array_shift($extractedData);
-
-        $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
-
-        return array_merge($identifiersMapping, $extractedData);
-    }
-
-    /**
      * Transforms from gherkin table:.
      *
-     *                                | Not mandatory  | as much locales as you want ...
-     * | franklin_code | attribute_code | en_US | fr_FR  |
-     * | brand       | brand          | Brand | Marque |
-     * | mpn         | mpn            | MPN   | MPN    |
-     * | upc         | ean            | EAN   | EAN    |
-     * | asin        | asin           | ASIN  | ASIN   |
-     *
-     * to php array Franklin format:
-     *
-     * [
-     *     [
-     *         'from' => ['id' => 'brand'], (franklin_code)
-     *         'status' => 'active',
-     *         'to' => [
-     *             'id' => 'brand', (attribute_code)
-     *             'label' => [
-     *                 'en_US' => 'Brand',
-     *                 'fr_FR' => 'Marque',
-     *                 etc.
-     *             ],
-     *         ]
-     *     ], etc.
-     * ]
-     *
-     * @param TableNode $tableNode
-     *
-     * @return array
-     */
-    private function extractIdentifiersMappingToFranklinFormatFromTable(TableNode $tableNode): array
-    {
-        $extractedData = $tableNode->getRows();
-        $indexes = array_shift($extractedData);
-        $locales = array_filter($indexes, function ($value) {
-            return 'franklin_code' !== $value && 'attribute_code' !== $value;
-        });
-
-        $mappings = [];
-        foreach ($extractedData as $data) {
-            $rawMapping = array_combine($indexes, $data);
-            $labels = [];
-            foreach ($locales as $locale) {
-                if ('' !== $rawMapping[$locale]) {
-                    $labels[$locale] = $rawMapping[$locale];
-                }
-            }
-
-            $mappings[$rawMapping['franklin_code']] = [
-                'from' => ['id' => $rawMapping['franklin_code']],
-                'status' => empty($rawMapping['attribute_code']) ? 'inactive' : 'active',
-            ];
-
-            if (!empty($rawMapping['attribute_code'])) {
-                $mappings[$rawMapping['franklin_code']]['to'] = [
-                    'id' => $rawMapping['attribute_code'],
-                    'label' => $labels,
-                ];
-            }
-        }
-
-        return array_values($mappings);
-    }
-
-    /**
-     * Transforms from gherkin table:.
-     *
-     *                                | Not mandatory and will not be part of extraction |
-     * | franklin_code | attribute_code | en_US | fr_FR  |
-     * | brand       | brand          | Brand | Marque |
-     * | mpn         | mpn            | MPN   | MPN    |
-     * | upc         | ean            | EAN   | EAN    |
-     * | asin        | asin           | ASIN  | ASIN   |
+     * | franklin_code | attribute_code |
+     * | brand         | brand          |
+     * | mpn           | mpn            |
+     * | upc           | ean            |
+     * | asin          | asin           |
      *
      * to php array with simple identifier mapping:
      *
@@ -307,13 +276,18 @@ class IdentifiersMappingContext implements Context
      */
     private function extractIdentifiersMappingFromTable(TableNode $tableNode): array
     {
-        $mapping = [];
-        foreach ($tableNode->getColumnsHash() as $column) {
-            $mapping[$column['franklin_code']] = $column['attribute_code'];
-        }
-
         $identifiersMapping = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
 
-        return array_merge($identifiersMapping, $mapping);
+        foreach ($tableNode->getColumnsHash() as $column) {
+            $franklinCode = $column['franklin_code'];
+            if (!array_key_exists($franklinCode, $identifiersMapping)) {
+                throw new \LogicException(
+                    sprintf('Key "%s" is not part of the identifier mapping', $column['franklin_code'])
+                );
+            }
+            $identifiersMapping[$franklinCode] = empty($column['attribute_code']) ? null : $column['attribute_code'];
+        }
+
+        return $identifiersMapping;
     }
 }

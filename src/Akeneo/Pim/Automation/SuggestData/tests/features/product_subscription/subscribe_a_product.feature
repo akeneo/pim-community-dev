@@ -4,11 +4,11 @@ Feature: Subscribe a product to Franklin
   As Julia
   I want to subscribe a product to Franklin
 
-  @end-to-end @javascript
+  @end-to-end @javascript @critical
   Scenario: Successfully subscribe a product to Franklin
     Given a system administrator configures Franklin using a valid token
     And the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
       | upc           | pim_upc        |
@@ -19,7 +19,7 @@ Feature: Subscribe a product to Franklin
   Scenario: Fail to subscribe a product without family
     Given Franklin is configured with a valid token
     And the product without family "product_without_family"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
     When I subscribe the product "product_without_family" to Franklin
@@ -29,7 +29,7 @@ Feature: Subscribe a product to Franklin
   Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
     When I subscribe the product "B00EYZY6AC" to Franklin
@@ -39,7 +39,7 @@ Feature: Subscribe a product to Franklin
   Scenario: Fail to subscribe a product that is already subscribed to Franklin
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
     And the product "B00EYZY6AC" is subscribed to Franklin
@@ -49,7 +49,7 @@ Feature: Subscribe a product to Franklin
 
   Scenario: Fail to subscribe a product with an invalid token
     Given the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
     And Franklin is configured with an expired token
@@ -60,7 +60,7 @@ Feature: Subscribe a product to Franklin
   Scenario: Subscribe a product without enough money on Franklin account
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
     And there are no more credits on my Franklin account
@@ -77,7 +77,7 @@ Feature: Subscribe a product to Franklin
   Scenario: Fail to subscribe a product with an invalid upc
     Given Franklin is configured with a valid token
     And the product "invalidupc" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
     When I subscribe the product "invalidupc" to Franklin
@@ -87,7 +87,7 @@ Feature: Subscribe a product to Franklin
   Scenario: Fail to subscribe a product that does not have MPN and Brand filled together
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | mpn           | mpn            |
       | brand         | pim_brand      |
@@ -95,12 +95,10 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid MPN and Brand message should be sent
 
-  #Scenario: Handle a bad request to Franklin
-
   Scenario: Dealing with error on product subscription when Franklin server is down
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
-    And a predefined mapping as follows:
+    And a predefined identifiers mapping as follows:
       | franklin_code | attribute_code |
       | asin          | asin           |
     And Franklin server is down
