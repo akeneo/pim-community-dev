@@ -24,14 +24,18 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.template({
-                    subTitleLabel: __('pim_enrich.entity.product.plural_label'),
-                    titleLabel: __('pimee_enrich.entity.product.module.approval.send'),
-                    label: __('pimee_enrich.entity.product.module.approval.comment_title'),
-                    characters: __('pimee_enrich.entity.product.module.approval.comment_chars')
-                }));
-
-                return this.renderExtensions();
+                this.$el.html(
+                    this.modalTemplate({
+                        title: __('pimee_enrich.entity.product.module.approval.send'),
+                        subtitle: __('pim_enrich.entity.product.plural_label'),
+                        picture: 'illustration-attribute.svg',
+                        okText: __('pim_common.ok'),
+                        content: this.template({
+                            label: __('pimee_enrich.entity.product_draft.module.proposal.comment_title'),
+                            characters: __('pimee_enrich.entity.product_draft.module.proposal.comment_chars')
+                        })
+                    })
+                );
             }
         });
     }

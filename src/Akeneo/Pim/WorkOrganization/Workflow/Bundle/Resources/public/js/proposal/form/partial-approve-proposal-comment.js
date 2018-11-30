@@ -20,11 +20,15 @@ define(
              */
             render: function () {
                 this.$el.html(
-                    this.template({
-                        subTitleLabel: __('pim_enrich.entity.product.plural_label'),
-                        titleLabel: __('pimee_enrich.entity.product.module.approval.send'),
-                        label: __('pimee_workflow.entity.proposal.modal.title'),
-                        characters: __('pimee_enrich.entity.product.module.approval.comment_chars')
+                    this.modalTemplate({
+                        title: __('pimee_enrich.entity.product.module.approval.send'),
+                        subtitle: __('pim_enrich.entity.product.plural_label'),
+                        picture: 'illustration-attribute.svg',
+                        okText: __('pim_common.ok'),
+                        content: this.template({
+                            label: __('pimee_workflow.entity.proposal.modal.title'),
+                            characters: __('pimee_enrich.entity.product_draft.module.proposal.comment_chars')
+                        })
                     })
                 );
 

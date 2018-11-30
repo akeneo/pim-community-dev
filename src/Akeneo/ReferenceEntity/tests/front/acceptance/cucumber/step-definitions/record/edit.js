@@ -25,7 +25,7 @@ module.exports = async function(cucumber) {
       decorator: Edit,
     },
     Modal: {
-      selector: '.AknFullPage--modal',
+      selector: '.modal',
       decorator: Modal,
     },
   };

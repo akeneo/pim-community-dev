@@ -30,7 +30,7 @@ module.exports = async function(cucumber) {
       decorator: Records,
     },
     Modal: {
-      selector: '.AknFullPage--modal',
+      selector: '.modal',
       decorator: Modal,
     },
     LocaleSwitcher: {
