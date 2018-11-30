@@ -227,3 +227,8 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute family variant structure changes
         type:      compute_family_variant_structure_changes
+    compute_completeness_of_products_linked_to_assets:
+        connector: internal
+        alias:     compute_completeness_of_products_linked_to_assets
+        label:     compute completeness of products linked to assets
+        type:      compute_completeness_of_products_linked_to_assets

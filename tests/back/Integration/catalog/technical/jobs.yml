@@ -107,3 +107,8 @@ jobs:
         alias:     add_tags_to_assets
         label:     Add tags to assets
         type:      mass_edit
+    compute_completeness_of_products_linked_to_assets:
+        connector: internal
+        alias:     compute_completeness_of_products_linked_to_assets
+        label:     compute completeness of products linked to assets
+        type:      compute_completeness_of_products_linked_to_assets
