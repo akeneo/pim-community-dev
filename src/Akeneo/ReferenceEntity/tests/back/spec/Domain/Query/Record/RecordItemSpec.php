@@ -53,7 +53,8 @@ class RecordItemSpec extends ObjectBehavior
                         'locale' => 'en_US',
                         'data' => 'A nice name'
                     ]
-                ]
+                ],
+                'completeness_percentage' => null
             ]
         );
     }

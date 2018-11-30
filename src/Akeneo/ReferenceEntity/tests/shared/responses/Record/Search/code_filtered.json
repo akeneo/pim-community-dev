@@ -39,7 +39,8 @@
                         "fr_FR": "Dyson"
                     },
                     "image": null,
-                    "values": {}
+                    "values": {},
+                    "completeness_percentage": null
                 }
             ],
             "total": 1

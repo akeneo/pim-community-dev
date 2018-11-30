@@ -96,6 +96,7 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale'
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordIdentifiersForQuery
@@ -108,6 +109,8 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocale
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:

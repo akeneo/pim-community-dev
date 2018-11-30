@@ -51,7 +51,8 @@
                             "locale": "en_US",
                             "data": "an awesome designer!"
                         }
-                    }
+                    },
+                    "completeness_percentage": null
                 }
             ],
             "total": 1

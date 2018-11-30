@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -29,9 +33,18 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
     /** @var RecordRepositoryInterface */
     private $recordRepository;
 
-    public function __construct(RecordRepositoryInterface $recordRepository)
-    {
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
+    private $findRequiredValueKeyCollectionForChannelAndLocale;
+
+    public function __construct(
+        RecordRepositoryInterface $recordRepository,
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+    ) {
         $this->recordRepository = $recordRepository;
+        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+
+        $this->findRequiredValueKeyCollectionForChannelAndLocale->setActivatedLocales(['en_US']);
+        $this->findRequiredValueKeyCollectionForChannelAndLocale->setActivatedChannels(['ecommerce']);
     }
 
     /**
@@ -39,11 +52,32 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
      */
     public function __invoke(array $identifiers, RecordQuery $query): array
     {
-        return array_values(array_filter(array_map(function (string $identifier) {
+        $referenceEntityFilter = $query->getFilter('reference_entity');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
+        $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
+        $localeIdentifier = LocaleIdentifier::fromCode($query->getLocale());
+
+        /** @var ValueKeyCollection $requiredValueKeyCollection */
+        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+            $referenceEntityIdentifier,
+            $channelIdentifier,
+            $localeIdentifier
+        );
+        $requiredValueKeys = $requiredValueKeyCollection->normalize();
+
+        return array_values(array_filter(array_map(function (string $identifier) use ($requiredValueKeys) {
             try {
                 $record = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString($identifier));
             } catch (RecordNotFoundException $exception) {
                 return false;
+            }
+
+            $valueCollection = $record->getValues()->normalize();
+            $completenessPercentage = null;
+            if (count($requiredValueKeys) > 0) {
+                $existingValueKeys = array_keys($valueCollection);
+                $completed = count(array_intersect($requiredValueKeys, $existingValueKeys));
+                $completenessPercentage = strval(($completed * 100) / count($requiredValueKeys));
             }
 
             $recordItem = new RecordItem();
@@ -53,7 +87,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
             $recordItem->labels = $record->normalize()['labels'];
             $recordItem->image = $record->getImage()->normalize();
             $recordItem->values = $record->getValues()->normalize();
-            $recordItem->completenessPercentage = '-';
+            $recordItem->completenessPercentage = $completenessPercentage;
 
             return $recordItem;
         }, $identifiers)));
