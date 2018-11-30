@@ -54,7 +54,7 @@ security:
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
 
-        main:
+        local:
             pattern:                        ^/
             provider:                       chain_provider
             form_login:
@@ -70,7 +70,26 @@ security:
                 lifetime:                   1209600   # stay logged for two weeks
             anonymous:                      false
 
+        sso:
+            pattern:   ^/
+            anonymous: true
+            provider:  chain_provider
+            saml:
+                username_attribute: uid
+                check_path: /saml/acs
+                login_path: /saml/login
+            logout:
+                path: /saml/logout
+
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/, role: pim_api_overall_access }
+        #Additionnal access control for SSO
+        - { path: ^/user/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/reset-request, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/send-email, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml-idp/resume, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/saml/metadata, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }

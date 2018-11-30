@@ -93,6 +93,7 @@ class AppKernel extends Kernel
             new Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle(),
             new Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\AkeneoSuggestDataBundle(),
             new Akeneo\Platform\Bundle\UIBundle\PimEnterpriseUIBundle(),
+            new Hslavich\OneloginSamlBundle\HslavichOneloginSamlBundle(),
         ];
     }
 

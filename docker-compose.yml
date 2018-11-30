@@ -83,6 +83,11 @@ services:
       - 'akeneo'
       - 'behat'
 
+  sso-idp-server:
+    image: 'kristophjunge/test-saml-idp'
+    volumes:
+      - './docker/sso_authsources.php:/var/www/simplesamlphp/config/authsources.php'
+
 networks:
   akeneo:
   behat:
