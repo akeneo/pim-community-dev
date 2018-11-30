@@ -151,19 +151,6 @@ class CategoryFilter extends NumberFilter
     }
 
     /**
-     * Get children category codes
-     *
-     * @param CategoryInterface $category
-     * @return string[]
-     *
-     * @deprecated Not used anymore internally. If needed, use directly the categoryRepo service
-     */
-    protected function getAllChildrenCodes(CategoryInterface $category)
-    {
-        return $this->categoryRepo->getAllChildrenCodes($category);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getFormType()

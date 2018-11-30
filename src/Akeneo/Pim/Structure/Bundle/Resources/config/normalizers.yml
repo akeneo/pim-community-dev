@@ -39,7 +39,7 @@ services:
             - '@pim_enrich.normalizer.attribute'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
-            - '@pim_enrich.provider.structure_version.attribute'
+            - '@pim_structure_version.provider.structure_version.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -147,7 +147,7 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyVariantNormalizer'
         arguments:
             - '@pim_standard_format_serializer'
-            - '@pim_enrich.provider.structure_version.family_variant'
+            - '@pim_structure_version.provider.structure_version.family_variant'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -200,7 +200,7 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer'
         arguments:
             - '@pim_standard_format_serializer'
-            - '@pim_enrich.provider.structure_version.group_type'
+            - '@pim_structure_version.provider.structure_version.group_type'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

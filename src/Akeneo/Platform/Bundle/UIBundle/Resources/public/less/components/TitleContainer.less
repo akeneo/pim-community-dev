@@ -120,6 +120,8 @@
     overflow: hidden;
     margin-right: 20px;
     line-height: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &-buttonsContainer {
@@ -197,5 +199,9 @@
 
   &--hidden {
     display: none;
+  }
+
+  &-mainContainer--contained {
+    max-width: ~"calc(100% - 162px)";
   }
 }

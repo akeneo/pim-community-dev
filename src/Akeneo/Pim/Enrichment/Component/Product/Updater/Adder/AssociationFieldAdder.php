@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -28,27 +28,27 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param ProductBuilderInterface               $productBuilder
+     * @param MissingAssociationAdder               $missingAssociationAdder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductBuilderInterface $productBuilder,
+        MissingAssociationAdder $missingAssociationAdder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
-        $this->productBuilder = $productBuilder;
+        $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
     }
 
@@ -72,18 +72,8 @@ class AssociationFieldAdder extends AbstractFieldAdder
     public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
-        $this->addMissingAssociations($product);
+        $this->missingAssociationAdder->addMissingAssociations($product);
         $this->addProductsAndGroupsToAssociations($product, $data);
-    }
-
-    /**
-     * Add missing associations (if association type has been added after the last processing)
-     *
-     * @param ProductInterface|ProductModelInterface $product
-     */
-    protected function addMissingAssociations($product)
-    {
-        $this->productBuilder->addMissingAssociations($product);
     }
 
     /**

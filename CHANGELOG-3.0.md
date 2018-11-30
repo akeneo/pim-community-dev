@@ -21,6 +21,20 @@
 
 ## BC breaks
 - Change constructor of  `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator` to add an array of string (extension to mime type mapping) 
+- Remove service `@pim_enrich.provider.structure_version.attribute` in favor of `@pim_structure_version.provider.structure_version.attribute`
+- Remove service `@pim_enrich.provider.structure_version.family_variant` in favor of `@pim_structure_version.provider.structure_version.family_variant`
+- Remove service `@pim_enrich.provider.structure_version.group_type` in favor of `@pim_structure_version.provider.structure_version.group_type`
+- Replace argument `Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface` by `Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder` in the constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`
+- Replace argument `Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface` by `Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder` in the constructor of `Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder`
+- Remove method `addMissingAssociations` from interface `Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface`
+- Remove argument `Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder` from constructor of `Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder`
+- Remove service `@pim_enrich.provider.structure_version.product` in favor of `@pim_structure_version.provider.structure_version.product`
+- Remove service `@pim_enrich.provider.structure_version.group` in favor of `@pim_structure_version.provider.structure_version.group`
+- Remove argument `@pim_catalog.association.missing_association_adder` from `pim_catalog.builder.product`
+- Remove interface `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolverInterface`
+- Remove service `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver`
+- Replace the `Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface` by `Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder` in `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController`
+- Remove method `mergeAndFilterConversionUnits` from `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
 - Change constructor of `Akeneo\UserManagement\Component\Normalizer\UserNormalizer` to add an Array of `Symfony\Component\Serializer\Normalizer\NormalizerInterface` and a variadic of properties (designed for User)
 - Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add a variadic of properties (designed for User)
 - `AbstractValue->getAttribute()` has been replaced by `AbstractValue->getAttributeCode()`. You will need to inject the AttributeRepository in your service if you need to access the full Attribute object related to the provided attribute code.

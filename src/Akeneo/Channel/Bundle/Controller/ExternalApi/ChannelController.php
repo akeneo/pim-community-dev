@@ -260,8 +260,6 @@ class ChannelController
     }
 
     /**
-     * @deprecated Will be remove in 1.9
-     *
      * `conversion_units` are not well exposed through the api, on the api side it is an object while in ChannelInterface it is an array.
      * To follow the API merge rules on object https://api-staging.akeneo.com/documentation/update.html#patch-rules,
      * we are forced to process data before updating them, we cannot change this behavior everywhere to avoid BC breaks.
@@ -271,7 +269,7 @@ class ChannelController
      *
      * @return array
      */
-    protected function mergeAndFilterConversionUnits($channel, $data)
+    private function mergeAndFilterConversionUnits($channel, $data): array
     {
         return array_filter(
             array_merge($channel->getConversionUnits(), $data['conversion_units']),

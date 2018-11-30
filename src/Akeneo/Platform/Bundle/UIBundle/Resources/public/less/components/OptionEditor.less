@@ -7,6 +7,7 @@
     overflow: auto;
     flex: 2;
     padding-right: 20px;
+    overflow: auto;
   }
 
   &-helper {
@@ -19,6 +20,22 @@
 
   &-table {
     width: 100%;
+    overflow: auto;
+  }
+
+  &-headCell {
+    z-index: 2;
+    position: sticky;
+    top: 62px;
+  }
+
+  &-headCellLabel {
+    width: 100%;
+    font-weight: normal;
+    display: block;
+    text-align: left;
+    box-shadow: 0 -14px 0 white;
+    background: white;
   }
 
   &-labelList {
