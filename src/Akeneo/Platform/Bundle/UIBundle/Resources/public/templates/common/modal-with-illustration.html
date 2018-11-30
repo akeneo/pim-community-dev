@@ -19,6 +19,6 @@
     </div>
   </div>
 </div>
-<% if (allowCancel) { %>
+<% if (typeof allowCancel === 'undefined' || allowCancel) { %>
 <div class="AknFullPage-cancel cancel"></div>
 <% } %>

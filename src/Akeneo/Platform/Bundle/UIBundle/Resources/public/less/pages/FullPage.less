@@ -13,6 +13,7 @@
   z-index: 900;
   overflow: hidden;
   align-items: center;
+  padding: 20px 0;
 
   &--full {
     justify-content: flex-start;
@@ -25,7 +26,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    margin: 0 80px;
+    margin: -20px 80px;
     padding: 20px 0;
 
     &--withIllustration {
@@ -33,7 +34,6 @@
       margin: 0 80px;
       flex-direction: row;
       justify-content: center;
-      width: ~"calc(100vw - 160px)";
 
       & > :nth-child(1) {
         text-align: right;
@@ -94,9 +94,9 @@
     line-height: 1.5;
     margin-bottom: 10px;
 
-    //&--bottom {
-    //  margin-bottom: 30px;
-    //}
+    &--bottom {
+      margin-bottom: 30px;
+    }
   }
 
   &-ok {

@@ -16,6 +16,7 @@ define(
         'pim/form',
         'pim/template/product/tab/associations',
         'pim/template/product/tab/association-panes',
+        'pim/template/common/modal-with-choices',
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/user-context',
@@ -36,6 +37,7 @@ define(
         BaseForm,
         formTemplate,
         panesTemplate,
+        modalTemplate,
         FetcherRegistry,
         AttributeManager,
         UserContext,
@@ -53,6 +55,7 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             panesTemplate: _.template(panesTemplate),
+            modalTemplate: _.template(modalTemplate),
             className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
@@ -665,24 +668,28 @@ define(
                         .getFetcher('association-type')
                         .fetch(this.getCurrentAssociationType())
                         .then((associationType) => {
-                            form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
-                                associationType: associationType.labels[UserContext.get('catalogLocale')]
-                            }));
+                            // TODO Delete setCustomTitle if possible
+                            //form.setCustomTitle();
 
                             let modal = new Backbone.BootstrapModal({
-                                className: 'modal modal--fullPage modal--topButton',
                                 modalOptions: {
                                     backdrop: 'static',
                                     keyboard: false
                                 },
-                                allowCancel: true,
                                 okCloses: false,
-                                title: '',
+                                title: __('pim_enrich.entity.product.module.associations.manage', {
+                                    associationType: associationType.labels[UserContext.get('catalogLocale')]
+                                }),
+                                innerDescription: __('pim_enrich.entity.product.module.associations.manage_description'),
                                 content: '',
-                                cancelText: ' ',
-                                okText: __('pim_common.confirm')
+                                okText: __('pim_common.confirm'),
+                                template: this.modalTemplate,
+                                full: true,
                             });
+
                             modal.open();
+                            form.setElement(modal.$('.modal-body')).render();
+
                             modal.on('cancel', deferred.reject);
                             modal.on('ok', () => {
                                 const products = form.getItems().sort((a, b) => {
@@ -692,8 +699,6 @@ define(
 
                                 deferred.resolve(products);
                             });
-
-                            form.setElement(modal.$('.modal-body')).render();
                         });
                 });
 
