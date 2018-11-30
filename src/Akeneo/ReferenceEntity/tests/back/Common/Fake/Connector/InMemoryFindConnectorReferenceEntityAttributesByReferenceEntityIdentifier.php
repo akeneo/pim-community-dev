@@ -39,6 +39,6 @@ class InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier 
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        return $this->attributes[(string) $referenceEntityIdentifier];
+        return $this->attributes[(string) $referenceEntityIdentifier] ?? [];
     }
 }
