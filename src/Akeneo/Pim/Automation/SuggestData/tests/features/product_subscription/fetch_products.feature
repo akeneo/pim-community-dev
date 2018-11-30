@@ -4,7 +4,6 @@ Feature: Fetch products from Franklin
   As the System
   I want to fetch products I subscribed on from Franklin
 
-
   Scenario: Fail to fetch products if token is not configured
     Given Franklin is configured with an expired token
     And last fetch of subscribed products has been done yesterday
