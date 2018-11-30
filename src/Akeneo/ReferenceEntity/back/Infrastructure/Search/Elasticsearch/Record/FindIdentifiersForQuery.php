@@ -182,7 +182,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ChannelIdentifier::fromCode($recordQuery->getChannel()),
             LocaleIdentifier::fromCode($recordQuery->getLocale())
         );
-        if (true === $completeFilter['operator']) {
+        if (true === $completeFilter['value']) {
             $clauses = array_map(function (string $requiredValueKey) {
                 return [
                     'exists' => [
@@ -193,7 +193,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             $query['query']['constant_score']['filter']['bool']['filter'] = array_merge($query['query']['constant_score']['filter']['bool']['filter'],
                 $clauses);
         }
-        if (false === $completeFilter['operator']) {
+        if (false === $completeFilter['value']) {
             $clauses = array_map(function (string $requiredValueKey) {
                 return [
                     'bool' => [

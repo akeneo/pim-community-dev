@@ -370,8 +370,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'filters' => [
                 [
                     'field' => 'complete',
-                    'operator' => true,
-                    'value' => '',
+                    'operator' => '=',
+                    'value' => true,
                     'context' => []
                 ],
                 [
@@ -403,8 +403,8 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'filters' => [
                 [
                     'field' => 'complete',
-                    'operator' => false,
-                    'value' => '',
+                    'operator' => '=',
+                    'value' => false,
                     'context' => []
                 ],
                 [
