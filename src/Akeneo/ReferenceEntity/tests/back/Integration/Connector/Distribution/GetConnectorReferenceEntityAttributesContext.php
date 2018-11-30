@@ -63,9 +63,6 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     /** @var null|Response */
     private $attributesForReferenceEntity;
 
-    /** @var null|string */
-    private $notFoundReferenceEntityRequestContract;
-
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
@@ -91,7 +88,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
@@ -104,9 +101,9 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             $textAttribute->getIdentifier(),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             'text',
-            true,
-            false,
-            true,
+            AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
             [
                 'max_characters' => $textAttribute->getMaxLength()->intValue(),
                 'is_textarea' => false,
@@ -145,9 +142,9 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             $imageAttribute->getIdentifier(),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
             'image',
-            $imageAttribute->hasValuePerLocale(),
-            $imageAttribute->hasValuePerChannel(),
-            true,
+            AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
             [
                 'allowed_extensions' => ['jpg'],
                 'max_file_size' => '10'
@@ -170,7 +167,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'Nationalité', 'en_US' => 'Nationality']),
             AttributeOrder::fromInteger(3),
-            AttributeIsRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -181,9 +178,9 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             $optionAttribute->getIdentifier(),
             LabelCollection::fromArray(['en_US' => 'Nationality', 'fr_FR' => 'Nationalité']),
             'single_option',
-            $optionAttribute->hasValuePerLocale(),
-            $optionAttribute->hasValuePerChannel(),
-            false,
+            AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($optionAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(false),
             []
         );
 
@@ -203,7 +200,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
             AttributeOrder::fromInteger(4),
-            AttributeIsRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
@@ -214,9 +211,9 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             $optionAttribute->getIdentifier(),
             LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
             'multiple_options',
-            $optionAttribute->hasValuePerLocale(),
-            $optionAttribute->hasValuePerChannel(),
-            false,
+            AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($optionAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(false),
             []
         );
 
@@ -230,26 +227,26 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     {
         $attributeIdentifier = 'country';
 
-        $optionAttribute = OptionCollectionAttribute::create(
+        $linkAttribute = OptionCollectionAttribute::create(
             AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeIdentifier),
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
             AttributeOrder::fromInteger(5),
-            AttributeIsRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
 
-        $this->attributeRepository->create($optionAttribute);
+        $this->attributeRepository->create($linkAttribute);
 
-        $optionAttribute = new ConnectorAttribute(
-            $optionAttribute->getIdentifier(),
+        $linkAttribute = new ConnectorAttribute(
+            $linkAttribute->getIdentifier(),
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
             'reference_entity_single_link',
-            $optionAttribute->hasValuePerLocale(),
-            $optionAttribute->hasValuePerChannel(),
-            false,
+            AttributeValuePerLocale::fromBoolean($linkAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($linkAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(false),
             [
                 "reference_entity_code" => 'country'
             ]
@@ -257,7 +254,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
 
         $this->findConnectorReferenceEntityAttributes->save(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            $optionAttribute
+            $linkAttribute
         );
     }
 
@@ -265,26 +262,26 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     {
         $attributeIdentifier = 'designers';
 
-        $optionAttribute = OptionCollectionAttribute::create(
+        $multiLinkAttribute = OptionCollectionAttribute::create(
             AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeIdentifier),
-            LabelCollection::fromArray(['fr_FR' => 'Designeurs', 'en_US' => 'Designers']),
+            LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
             AttributeOrder::fromInteger(6),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false)
         );
 
-        $this->attributeRepository->create($optionAttribute);
+        $this->attributeRepository->create($multiLinkAttribute);
 
-        $optionAttribute = new ConnectorAttribute(
-            $optionAttribute->getIdentifier(),
-            LabelCollection::fromArray(['fr_FR' => 'Designeurs', 'en_US' => 'Designers']),
+        $multiLinkAttribute = new ConnectorAttribute(
+            $multiLinkAttribute->getIdentifier(),
+            LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
             'reference_entity_multiple_links',
-            $optionAttribute->hasValuePerLocale(),
-            $optionAttribute->hasValuePerChannel(),
-            true,
+            AttributeValuePerLocale::fromBoolean($multiLinkAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($multiLinkAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
             [
                 "reference_entity_code" => 'designer'
             ]
@@ -292,7 +289,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
 
         $this->findConnectorReferenceEntityAttributes->save(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            $optionAttribute
+            $multiLinkAttribute
         );
     }
 

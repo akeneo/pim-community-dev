@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 
 /**
@@ -54,9 +57,9 @@ class ConnectorAttribute
         AttributeIdentifier $identifier,
         LabelCollection $labelCollection,
         string $type,
-        bool $localizable,
-        bool $scopable,
-        bool $isRequired,
+        AttributeValuePerLocale $localizable,
+        AttributeValuePerChannel $scopable,
+        AttributeIsRequired $isRequired,
         array $additionalProperties
     ) {
         $this->identifier = $identifier;
@@ -79,9 +82,9 @@ class ConnectorAttribute
             'code' => $this->identifier->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'type' => $this->mapAttributeType($this->type),
-            'localizable' => $this->localizable,
-            'scopable' => $this->scopable,
-            'is_required_for_completeness' => $this->isRequired
+            'localizable' => $this->localizable->normalize(),
+            'scopable' => $this->scopable->normalize(),
+            'is_required_for_completeness' => $this->isRequired->normalize()
         ];
 
         return array_merge($commonProperties, $this->additionalProperties);

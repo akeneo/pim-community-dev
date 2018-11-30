@@ -3,6 +3,9 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
@@ -77,9 +80,9 @@ SQL;
                 $hydratedAttribute->getIdentifier(),
                 LabelCollection::fromArray(json_decode($result['labels'], true)),
                 $result['attribute_type'],
-                $hydratedAttribute->hasValuePerLocale(),
-                $hydratedAttribute->hasValuePerChannel(),
-                (bool) $result['is_required'],
+                AttributeValuePerLocale::fromBoolean($hydratedAttribute->hasValuePerLocale()),
+                AttributeValuePerChannel::fromBoolean($hydratedAttribute->hasValuePerChannel()),
+                AttributeIsRequired::fromBoolean((bool) $result['is_required']),
                 $this->getAdditionalProperties($hydratedAttribute->normalize())
             );
 
