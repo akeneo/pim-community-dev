@@ -13,8 +13,8 @@
             "filters": [
                 {
                     "field": "complete",
-                    "operator": true,
-                    "value": "",
+                    "operator": "=",
+                    "value": true,
                     "context": {}
                 },
                 {

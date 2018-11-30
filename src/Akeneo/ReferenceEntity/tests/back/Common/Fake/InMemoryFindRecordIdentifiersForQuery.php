@@ -83,11 +83,11 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
 
             $valueKey = ValueKey::createFromNormalized('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US');
 
-            if (true === $completeFilter['operator']) {
+            if (true === $completeFilter['value']) {
                 return !is_null($record->getValues()->findValue($valueKey));
             }
 
-            if (false === $completeFilter['operator']) {
+            if (false === $completeFilter['value']) {
                 return is_null($record->getValues()->findValue($valueKey));
             }
         }));
