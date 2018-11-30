@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7898: Fix tab navigation when the column is collapsed
+- PIM-7866: Do not show delete icon on import/export profile if the user doesn't have the right to delete.
 - PIM-7910: Search parent filter is now case insensitive
 
 ## Elasticsearch

@@ -46,6 +46,7 @@ datagrid:
                 label: Edit
                 link:  edit_link
             delete:
+                acl_resource:  pim_importexport_export_profile_remove
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
