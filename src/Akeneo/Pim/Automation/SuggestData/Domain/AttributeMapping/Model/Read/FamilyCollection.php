@@ -39,13 +39,16 @@ class FamilyCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return \Iterator
+     * @return \ArrayIterator
      */
-    public function getIterator(): \Iterator
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->families);
     }
 
+    /**
+     * @return int
+     */
     public function count(): int
     {
         return count($this->families);

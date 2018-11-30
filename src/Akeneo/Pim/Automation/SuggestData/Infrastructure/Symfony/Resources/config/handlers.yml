@@ -92,7 +92,6 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.search_family'
-            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.attribute_mapping.get_statuses_for_families'
 
     akeneo.pim.automation.suggest_data.application.configuration.query.get_connection_status_handler:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusHandler'

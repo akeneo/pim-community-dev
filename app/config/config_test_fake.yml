@@ -7,7 +7,6 @@ imports:
     - { resource: ../../tests/back/Asset/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/pim/event_subscribers.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }
-    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/fake_services.yml }
     - { resource: ../../src/Akeneo/ReferenceEntity/tests/back/Common/Resources/helpers.yml }
 
