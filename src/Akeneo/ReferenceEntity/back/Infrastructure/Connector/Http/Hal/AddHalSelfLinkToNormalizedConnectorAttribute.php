@@ -28,7 +28,7 @@ class AddHalSelfLinkToNormalizedConnectorAttribute
         $this->router = $router;
     }
 
-    public function __invoke($referenceEntityIdentifier, $normalizedAttribute): array
+    public function __invoke(string $referenceEntityIdentifier, array $normalizedAttribute): array
     {
         $selfUrl = $this->router->generate(
             'akeneo_reference_entities_reference_entity_attribute_rest_connector_get',
