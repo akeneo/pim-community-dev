@@ -12,15 +12,9 @@
             "page": 0,
             "filters": [
                 {
-                    "field": "code_label",
+                    "field": "complete",
                     "operator": "=",
-                    "value": "s",
-                    "context": {}
-                },
-                {
-                    "field": "code",
-                    "operator": "NOT IN",
-                    "value": "dyson",
+                    "value": true,
                     "context": {}
                 },
                 {

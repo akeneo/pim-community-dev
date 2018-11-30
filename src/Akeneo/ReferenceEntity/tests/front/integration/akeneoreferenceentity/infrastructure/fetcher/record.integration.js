@@ -56,7 +56,14 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           labels: {en_US: 'Starck'},
           reference_entity_identifier: 'designer',
           image: null,
-          values: {},
+          values: {
+            'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US': {
+              'attribute': 'description_designer_29aea250-bc94-49b2-8259-bbc116410eb2',
+              'channel': 'ecommerce',
+              'data': 'an awesome designer!',
+              'locale': 'en_US'
+            },
+          }
         },
       ],
       total: 2,

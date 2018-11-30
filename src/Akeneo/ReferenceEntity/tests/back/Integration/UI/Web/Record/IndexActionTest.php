@@ -15,10 +15,17 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
@@ -79,6 +86,22 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_a_list_of_records_filtered_by_complete()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'complete_filtered.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_list_of_records_filtered_by_uncomplete()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'uncomplete_filtered.json');
+    }
+
+    /**
+     * @test
+     */
     public function it_fails_if_invalid_reference_entity_identifier()
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_reference_entity_identifier.json');
@@ -99,13 +122,19 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $identifier = RecordIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
+        $descriptionValue = Value::create(
+            AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('an awesome designer!')
+        );
         $recordStarck = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck'],
             Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$descriptionValue])
         );
         $recordRepository->create($recordStarck);
 

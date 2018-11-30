@@ -49,7 +49,14 @@
                       "en_US": "Starck"
                   },
                   "image": null,
-                  "values": {}
+                  "values": {
+                      "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
+                          "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+                          "channel": "ecommerce",
+                          "locale": "en_US",
+                          "data": "an awesome designer!"
+                      }
+                  }
               }
             ],
             "total": 2
