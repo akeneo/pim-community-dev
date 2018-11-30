@@ -148,14 +148,33 @@ class IdentifiersMappingContext implements Context
      * Asserts that the identifiers mapping sent to Franklin is similar to the expected one.
      *
      * @param array $expectedMappings
+     *
+     * Expected Mapping format is:
+     * [
+     *     "asin" => "pim_asin",
+     *     "upc"  => null
+     * ]
+     *
+     * Identifiers mapping sent to Franklin is:
+     * [
+     *     [
+     *         "from" => ["id" => "asin"]
+     *         "status" => "active"
+     *         "to" => ["id" => "pim_asin", "label" => ["en_US" => "My Asin"]]
+     *     ],
+     *     [
+     *         "from" => ["id" => "upc"]
+     *         "status" => "inactive"
+     *         "to" => null
+     *     ]
+     * ]
      */
     private function assertIdentifiersMappingSentToFranklin(array $expectedMappings): void
     {
         $clientMappings = $this->fakeClient->getIdentifiersMapping();
+        Assert::assertCount(count($expectedMappings), $clientMappings);
+
         $franklinMappings = new AttributesMapping($clientMappings);
-
-        Assert::assertCount(count($expectedMappings), $franklinMappings);
-
         foreach ($franklinMappings as $index => $franklinMapping) {
             /** @var AttributeMapping $franklinMapping */
             $franklinCode = $franklinMapping->getTargetAttributeCode();
@@ -172,7 +191,7 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * Asserts that identifiers labels sent to Franklin are the expecting ones.
+     * Asserts that identifiers labels sent to Franklin are the expected ones.
      *
      * @param string|null $pimCode
      * @param array $clientMapping
@@ -190,9 +209,21 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * Assert that the persisted identifiers mapping is similar to the expected one.
+     * Asserts that the persisted identifiers mapping is similar to the expected one.
      *
      * @param array $expectedMappings
+     *
+     * Expected Mapping format is:
+     * [
+     *     "asin" => "pim_asin",
+     *     "upc"  => null
+     * ]
+     *
+     * Identifiers mapping saved in Database is:
+     * [
+     *     "brand" => AttributeInterface::code "pim_asin",
+     *     "upc"   => null
+     * ]
      */
     private function assertIdentifiersMappingPersisted(array $expectedMappings): void
     {
