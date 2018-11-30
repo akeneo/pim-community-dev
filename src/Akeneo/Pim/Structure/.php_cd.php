@@ -18,21 +18,28 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'FOS\RestBundle\View',
-        // Context integration through database (we ask data from another bounded context)
+
+        // TODO: Functional problem to query products before removing AttributeOption
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory',
 
-        // Coupling issues:
-        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface', // TODO a repository method should be turned into a query function
-        'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO we need the current locale
-        // TODO: linked by reference instead of id
+        // TODO: Functionnal problem we should not create empty associations
+        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
+
+        // TODO: Contextual information shouldn't be injected but a parameter method (current Locale for instance)
+        'Akeneo\UserManagement\Bundle\Context\UserContext',
+
+        // TODO: linked by reference instead of id + repo + ACL
         'Akeneo\Channel\Component\Model\ChannelInterface',
+
         // TODO form type inheritance/usage
+        // TODO: The forms are probably not used anymore
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType',
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
-        // TODO: we should find another way to manage permission
+
+        // TODO: Used to filter in search/get action, enrichment shouldn't call something else than `/enrichment`
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface'
     ])->in('Akeneo\Pim\Structure\Bundle'),
@@ -40,34 +47,49 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Akeneo\Tool\Component',
+
+        // TODO a validator should not query the unit of work
+        'Doctrine\ORM\EntityManagerInterface',
+        // TODO \Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface expose the QueryBuilder
+        'Doctrine\ORM\QueryBuilder',
+
+        //TODO: Context integration through database (we ask data from another bounded context)
+        //TODO: Link by reference instead of id
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        // Context integration through database (we ask data from another bounded context)
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+
+        //TODO: Functionnal problem -> used to check if we can remove a family / family variant
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface',
 
         // Coupling issues:
-        'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor', // TODO it should be duplicated
-        'Doctrine\ORM\EntityManagerInterface', //TODO a validator need to access data from the unit of work
-        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface', // TODO a repository method should be turned into a query function
-        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager', // TODO remove coupling
-        'Doctrine\ORM\QueryBuilder', // TODO \Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface expose the QueryBuilder
-        // TODO: linked by reference instead of id
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        // TODO it should be duplicated
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor',
+
+        // TODO: Functionnal problem we should not create empty associations
+        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
+
+        // TODO remove coupling
+        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
+
         // TODO: we should find another way to manage permission
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
+
         // TODO related to the front stuff
         'Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface',
-        // TODO \Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator should be split into two validator
+
+        // TODO: Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator should be split into two validator
         'Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface',
-        // TODO we should not use public constant
+
+        // TODO used for enrichment purpose in FamilyNormalizer check if it used for other purpose
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel',

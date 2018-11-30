@@ -13,18 +13,25 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Akeneo\Tool',
-        'Akeneo\UserManagement\Component',
-        'Oro\Bundle\PimDataGridBundle\Entity\DatagridView', // TODO: The locale is linked by reference instead of id
-        'Akeneo\UserManagement\Bundle\Manager\UserManager', // TODO: We use it to encode the user's password
-        'Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface', // TODO: User has some view
-        'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager', // TODO: This dependency should be removed
-        'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
-        'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
-        'Akeneo\Tool\Component\Connector\ArrayConverter', // TODO: Remove that ligne when connector bundle/component will be moved in Tool
-        'Oro\Bundle\SecurityBundle\SecurityFacade', // TODO: Should be somewhere else
+        // TODO: The feature uses the datagrid
+        'Oro\Bundle\PimDataGridBundle',
+
+        // TODO: The user as a default locale and default channel
+        // TODO: A representation of the user should belong elsewhere where it is really useful to have those information
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider' // TODO: Integration by database
+
+        // TODO: We use it to encode the user's password, Bundle dependency
+        'Akeneo\UserManagement\Bundle\Manager\UserManager',
+
+        // TODO: This dependency should be removed, Bundle dependency
+        'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
+
+        // TODO: We should not depend on Platform
+        'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider'
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
         'Doctrine',
@@ -32,25 +39,27 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\UserManagement',
         'Oro\Bundle\SecurityBundle',
+        'Sensio\Bundle\FrameworkExtraBundle',
+        'Symfony\Bundle\FrameworkBundle',
         'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
         'OAuth2\OAuth2', // used by API client controller
-        'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: we should not rely on the platform here
-        'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
-        'Akeneo\Channel\Component\Model\Channel', // TODO: Use for entity form
-        'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
-        'Akeneo\Channel\Component\Model\Locale', // TODO: Use for entity form
+
+        // TODO: We should not depend on Platform
+        'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
+
+        // TODO: The user as a default locale and default channel and default category tree
+        // TODO: A representation of the user should belong elsewhere where it is really useful to have those information
+        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Model\Channel',
+        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Component\Model\Locale',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: it should be moved somewhere we could centralize old symfony form or remove it
-        'Sensio\Bundle\FrameworkExtraBundle', // TODO:Some old Oro controllers use Template annotation
-        'Symfony\Bundle\FrameworkBundle', // TODO:Some old Oro controllers extend the symfony controller
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // TODO: you should not use form type anymore
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // TODO: you should not use form type anymore
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface', //TODO: Link by id
+        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+
+        // TODO: it should be moved somewhere we could centralize old symfony form
+        // TODO: Used by Role form
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

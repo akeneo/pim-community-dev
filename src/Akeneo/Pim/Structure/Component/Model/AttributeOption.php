@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

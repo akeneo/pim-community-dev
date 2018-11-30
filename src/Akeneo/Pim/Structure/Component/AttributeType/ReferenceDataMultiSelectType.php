@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\AttributeType;
 
-use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
-
 /**
  * Reference data multi options (select) attribute type
  *
