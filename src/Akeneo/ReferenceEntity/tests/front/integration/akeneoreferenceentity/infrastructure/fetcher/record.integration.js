@@ -43,16 +43,15 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
         {
           code: 'dyson',
           identifier: 'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
-          image: null,
           labels: {en_US: 'Dyson', fr_FR: 'Dyson'},
           reference_entity_identifier: 'designer',
           image: null,
           values: {},
+          completeness_percentage: null,
         },
         {
           code: 'starck',
           identifier: 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
-          image: null,
           labels: {en_US: 'Starck'},
           reference_entity_identifier: 'designer',
           image: null,
@@ -63,7 +62,8 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               'data': 'an awesome designer!',
               'locale': 'en_US'
             },
-          }
+          },
+          completeness_percentage: null,
         },
       ],
       total: 2,
