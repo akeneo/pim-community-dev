@@ -155,7 +155,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isValid, true);
   });
 
-  Given('the user ask for a list of records', async function() {
+  Given('the user asks for a list of records', async function() {
     const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
     await listenRequest(this.page, requestContract);
     const recordsRequestContract = getRequestContract('Record/Search/not_filtered.json');
@@ -165,7 +165,7 @@ module.exports = async function(cucumber) {
     await showRecordTab(this.page);
   });
 
-  When('the user search for {string}', async function(searchInput) {
+  When('the user searches for {string}', async function(searchInput) {
     const requestContract = getRequestContract(
       's' === searchInput ? 'Record/Search/ok.json' : 'Record/Search/no_result.json'
     );

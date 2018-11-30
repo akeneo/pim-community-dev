@@ -50,7 +50,7 @@ install:
 script:
     - yarn unit
     - yarn integration
-    - yarn acceptance src/Akeneo/ReferenceEntity/tests/features
+    - NODE_PATH=./node_modules node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js src/Akeneo/ReferenceEntity/tests/features
     - yarn lint
     - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
     - vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist

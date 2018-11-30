@@ -33,6 +33,7 @@ interface StateProps {
   };
   referenceEntity: ReferenceEntity;
   createAttribute: CreateState;
+  editAttribute: boolean;
   options: EditOptionState;
   attributes: NormalizedAttribute[];
   firstLoading: boolean;
@@ -176,23 +177,20 @@ class AttributeView extends React.Component<AttributeViewProps> {
 }
 
 class AttributesView extends React.Component<CreateProps> {
-  private addButton: HTMLButtonElement;
-
-  componentDidMount() {
-    if (this.addButton) {
-      this.addButton.focus();
-    }
-  }
-
   render() {
     return (
       <React.Fragment>
         <Header
           label={this.props.referenceEntity.getLabel(this.props.context.locale)}
           image={this.props.referenceEntity.getImage()}
-          primaryAction={() => {
+          primaryAction={(defaultFocus: React.RefObject<any>) => {
             return this.props.acls.createAttribute ? (
-              <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
+              <button
+                className="AknButton AknButton--action"
+                onClick={this.props.events.onAttributeCreationStart}
+                ref={defaultFocus}
+                tabIndex={0}
+              >
                 {__('pim_reference_entity.attribute.button.add')}
               </button>
             ) : null;
@@ -219,7 +217,6 @@ class AttributesView extends React.Component<CreateProps> {
                       <ErrorBoundary
                         key={attribute.identifier}
                         errorMessage={__('pim_reference_entity.reference_entity.attribute.error.render_list')}
-                        key={attribute.code}
                       >
                         <AttributeView
                           attribute={attribute}
@@ -228,19 +225,10 @@ class AttributesView extends React.Component<CreateProps> {
                         />
                       </ErrorBoundary>
                     ))}
-                    <button
-                      className="AknButton AknButton--action"
-                      onClick={this.props.events.onAttributeCreationStart}
-                      ref={(button: HTMLButtonElement) => {
-                        this.addButton = button;
-                      }}
-                    >
-                      {__('pim_reference_entity.attribute.button.add')}
-                    </button>
                   </React.Fragment>
                 )}
               </div>
-              <AttributeEditForm />
+              {this.props.editAttribute ? <AttributeEditForm /> : null}
             </div>
           ) : (
             <React.Fragment>
@@ -256,13 +244,7 @@ class AttributesView extends React.Component<CreateProps> {
                 <div className="AknGridContainer-noDataSubtitle">
                   {__('pim_reference_entity.attribute.no_data.subtitle')}
                 </div>
-                <button
-                  className="AknButton AknButton--action"
-                  onClick={this.props.events.onAttributeCreationStart}
-                  ref={(button: HTMLButtonElement) => {
-                    this.addButton = button;
-                  }}
-                >
+                <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
                   {__('pim_reference_entity.attribute.button.add')}
                 </button>
               </div>
@@ -291,6 +273,7 @@ export default connect(
       },
       referenceEntity,
       createAttribute: state.createAttribute,
+      editAttribute: state.attribute.isActive,
       options: state.options,
       firstLoading: null === state.attributes.attributes,
       attributes: null !== state.attributes.attributes ? state.attributes.attributes : [],

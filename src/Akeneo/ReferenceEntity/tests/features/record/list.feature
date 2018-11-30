@@ -35,27 +35,27 @@ Feature: Lists all records of a reference entity
 
   @acceptance-front
   Scenario: List records of a reference entity
-    Given the user ask for a list of records
+    Given the user asks for a list of records
     Then the user should see an unfiltered list of records
-    When the user search for "s"
+    When the user searches for "s"
     Then the user should see a filtered list of records
 
   @acceptance-front
   Scenario: Search records of a reference entity
-    Given the user ask for a list of records
-    When the user search for "s"
+    Given the user asks for a list of records
+    When the user searches for "s"
     Then the user should see a filtered list of records
     And I switch to another locale in the record grid
     Then the list of records should be empty
 
   @acceptance-front
   Scenario: Search records of a reference entity
-    Given the user ask for a list of records
-    When the user search for "s"
+    Given the user asks for a list of records
+    When the user searches for "s"
     Then the user should see a filtered list of records
 
   @acceptance-front
   Scenario: Search records of a reference entity with no results
-    Given the user ask for a list of records
-    When the user search for "search"
+    Given the user asks for a list of records
+    When the user searches for "search"
     Then the list of records should be empty

@@ -11,7 +11,9 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
   const getElement = createElementDecorator(config);
 
   const isLoaded = async () => {
-    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknButton.AknButton--action');
+    await page.waitFor(
+      '.AknDefault-mainContent .AknSubsection .AknFieldContainer[data-identifier="system_record_code"]'
+    );
 
     return true;
   };
@@ -19,6 +21,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
   const hasAttribute = async (code, type) => {
     await isLoaded();
     const fieldSelector = `[data-identifier="${code}"][data-type="${type}"][data-placeholder="false"]`;
+
     await page.waitFor(`.AknDefault-mainContent .AknSubsection .AknFieldContainer${fieldSelector}`);
 
     return true;
