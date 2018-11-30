@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Persistence\Reposit
 
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\FamilyRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -28,6 +29,7 @@ class FamilyRepositoryIntegration extends TestCase
 {
     private const TEST_FAMILY_CODE = 'test_family';
     private const CONTROL_FAMILY_CODE = 'control_family';
+    private const UNEXPECTED_FAMILY_CODE = 'unexpected_family';
 
     /**
      * {@inheritdoc}
@@ -54,7 +56,18 @@ class FamilyRepositoryIntegration extends TestCase
         ]);
         $this->getFromTestContainer('validator')->validate($controlFamily);
 
-        $this->getFromTestContainer('pim_catalog.saver.family')->saveAll([$testFamily, $controlFamily]);
+        $unexpectedFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
+            'code' => static::UNEXPECTED_FAMILY_CODE,
+            'labels' => [
+                'en_US' => 'An unexpected family',
+            ],
+            'attributes' => ['sku'],
+        ]);
+        $this->getFromTestContainer('validator')->validate($controlFamily);
+
+        $this
+            ->getFromTestContainer('pim_catalog.saver.family')
+            ->saveAll([$testFamily, $controlFamily, $unexpectedFamily]);
 
         $controlProduct = $this->createProduct('control_product', static::CONTROL_FAMILY_CODE);
         $this->insertSubscription($controlProduct->getId(), false);
@@ -67,16 +80,15 @@ class FamilyRepositoryIntegration extends TestCase
         $product2 = $this->createProduct('product_2', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product2->getId(), true);
 
-        $familyCollection = $this->getFamilies(1, 20, null);
+        $familyCollection = $this->getRepository()->findBySearch(1, 20, null);
 
-        $this->assertFamilyCollectionContainsInOrder(
+        $this->assertFamilyCollection(
             $familyCollection,
-            [static::TEST_FAMILY_CODE, static::CONTROL_FAMILY_CODE]
+            [
+                new Family(static::TEST_FAMILY_CODE, Family::MAPPING_PENDING),
+                new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL),
+            ]
         );
-        $this->assertFamilyStatus($familyCollection, [
-            static::TEST_FAMILY_CODE => Family::MAPPING_PENDING,
-            static::CONTROL_FAMILY_CODE => Family::MAPPING_FULL,
-        ]);
     }
 
     public function test_that_families_with_subscribed_products_are_paginated(): void
@@ -84,49 +96,43 @@ class FamilyRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
-        $familyCollection = $this->getFamilies(1, 1, null);
-
-        $this->assertFamilyCollectionContainsInOrder(
+        $familyCollection = $this->getRepository()->findBySearch(1, 1, null);
+        $this->assertFamilyCollection(
             $familyCollection,
-            [static::TEST_FAMILY_CODE]
+            [new Family(static::TEST_FAMILY_CODE, Family::MAPPING_PENDING)]
+        );
+
+        $familyCollection = $this->getRepository()->findBySearch(2, 1, null);
+        $this->assertFamilyCollection(
+            $familyCollection,
+            [new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL)]
         );
     }
 
-    public function test_that_families_with_subscribed_products_are_searched_using_code(): void
+    public function test_that_families_with_subscribed_products_are_searched(): void
     {
         $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
-        $familyCollection = $this->getFamilies(1, 20, 'control_');
-
-        $this->assertFamilyCollectionContainsInOrder(
+        $familyCollection = $this->getRepository()->findBySearch(1, 20, 'control_');
+        $this->assertFamilyCollection(
             $familyCollection,
-            [static::CONTROL_FAMILY_CODE]
+            [new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL)]
         );
-    }
 
-    public function test_that_families_with_subscribed_products_are_searched_using_label(): void
-    {
-        $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
-        $this->insertSubscription($product->getId(), false);
-
-        $familyCollection = $this->getFamilies(1, 20, 'testing');
-
-        $this->assertFamilyCollectionContainsInOrder(
+        $familyCollection = $this->getRepository()->findBySearch(1, 20, 'testing');
+        $this->assertFamilyCollection(
             $familyCollection,
-            [static::TEST_FAMILY_CODE]
+            [new Family(static::TEST_FAMILY_CODE, Family::MAPPING_FULL)]
         );
-    }
 
-    public function test_that_only_families_with_subscribed_products_are_found(): void
-    {
-        $this->createProduct('a_product', static::TEST_FAMILY_CODE);
-
-        $familyCollection = $this->getFamilies(1, 20, null);
-
-        $this->assertFamilyCollectionContainsInOrder(
+        $familyCollection = $this->getRepository()->findBySearch(1, 20, 'family');
+        $this->assertFamilyCollection(
             $familyCollection,
-            [static::CONTROL_FAMILY_CODE]
+            [
+                new Family(static::TEST_FAMILY_CODE, Family::MAPPING_FULL),
+                new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL),
+            ]
         );
     }
 
@@ -179,39 +185,23 @@ SQL;
     }
 
     /**
-     * @param int $page
-     * @param int $limit
-     * @param string|null $search
-     *
-     * @return FamilyCollection
+     * @return FamilyRepository
      */
-    private function getFamilies(int $page, int $limit, ?string $search): FamilyCollection
+    private function getRepository(): FamilyRepository
     {
-        return $this
-            ->get('akeneo.pim.automation.suggest_data.repository.search_family')
-            ->findBySearch($page, $limit, $search);
+        return $this->get('akeneo.pim.automation.suggest_data.repository.search_family');
     }
 
     /**
      * @param FamilyCollection $familyCollection
-     * @param string[] $identifiers
+     * @param Family[] $expectedFamilies
      */
-    private function assertFamilyCollectionContainsInOrder(FamilyCollection $familyCollection, array $identifiers): void
+    private function assertFamilyCollection(FamilyCollection $familyCollection, array $expectedFamilies): void
     {
-        Assert::assertCount(count($identifiers), $familyCollection);
+        Assert::assertCount(count($expectedFamilies), $familyCollection);
         foreach ($familyCollection as $position => $family) {
-            Assert::assertSame($identifiers[$position], $family->getCode());
-        }
-    }
-
-    /**
-     * @param FamilyCollection $familyCollection
-     * @param array $mappingStatuses
-     */
-    private function assertFamilyStatus(FamilyCollection $familyCollection, array $mappingStatuses): void
-    {
-        foreach ($familyCollection as $position => $family) {
-            Assert::assertSame($mappingStatuses[$family->getCode()], $family->getMappingStatus());
+            Assert::assertInstanceOf(Family::class, $family);
+            Assert::assertSame($expectedFamilies[$position], $family);
         }
     }
 }
