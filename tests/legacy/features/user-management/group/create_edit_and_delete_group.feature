@@ -28,7 +28,7 @@ Feature: Create a group
     But I should not see "DummyGroup1"
     When I click on the "Delete" action of the row which contains "DummyGroup"
     Then I should see a confirm dialog with the following content:
-      | title   | Delete Confirmation                         |
+      | title   | Confirm deletion                            |
       | content | Are you sure you want to delete this group? |
     And I confirm the deletion
     Then I should not see "DummyGroup"

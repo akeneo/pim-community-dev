@@ -1209,7 +1209,6 @@ config:
     pim/template/i18n/flag:                              pimui/templates/i18n/flag.html
     pim/template/error/error:                            pimui/templates/error/error.html
     pim/template/grid/mass-actions:                      pimui/templates/grid/mass-actions.html
-    pim/template/grid/mass-actions-confirm:              pimui/templates/grid/mass-actions-confirm.html
 
     pim/template/mass-edit/form:                                             pimui/templates/mass-edit/form.html
     pim/template/mass-edit/choose:                                           pimui/templates/mass-edit/choose.html

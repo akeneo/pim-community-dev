@@ -17,7 +17,7 @@ define(
         'backbone',
         'oro/translator',
         'pim/router',
-        'pim/template/grid/mass-actions-confirm',
+        'pim/template/common/modal-with-illustration',
         'bootstrap-modal'
     ],
     function ($, _, Backbone, __, router, template) {
@@ -35,9 +35,9 @@ define(
 
             /**
              * Open a modal dialog without cancel button
-             * @param string content The message in the modal
-             * @param string title The title of the modal
-             * @param string subTitle The subtitle for the modal
+             * @param {String} content The message in the modal
+             * @param {String} title The title of the modal
+             * @param {String} subTitle The subtitle for the modal
              */
             alert: function (content, title, subTitle) {
                 const alert = new Backbone.BootstrapModal({
@@ -45,7 +45,7 @@ define(
                     allowCancel: false,
                     title: title,
                     content: content,
-                    okText: __('OK'),
+                    okText: __('pim_common.'),
                     cancelText: __('pim_common.cancel'),
                     template: this.template,
                     buttonClass: 'AknButton--action',
@@ -59,10 +59,10 @@ define(
 
             /**
              * Open a modal dialog with cancel button and specific redirection when
-             * @param string content
-             * @param string title
-             * @param string okText
-             * @param string location
+             * @param {String} content
+             * @param {String} title
+             * @param {String} okText
+             * @param {String} location
              */
             redirect: function (content, title, okText, location) {
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
@@ -106,8 +106,9 @@ define(
                 const confirm = new Backbone.BootstrapModal({
                     type: __(subTitle || ''),
                     title: __(title),
-                    content: __(content),
-                    okText: __(buttonText) || __('OK'),
+                    contentLabel: __(content),
+                    content: '',
+                    okText: __(buttonText) || __('pim_common.ok'),
                     cancelText: __('pim_common.cancel'),
                     buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,
@@ -134,7 +135,7 @@ define(
             },
 
             /**
-             * Open a delete confirmation modal and execute callback after
+             * Open a Confirm deletion modal and execute callback after
              * user validation
              * @param  {String}   content    The message text
              * @param  {String}   title      The title

@@ -1,9 +1,19 @@
-define(['underscore', 'oro/translator', 'oro/modal', 'pim/template/grid/mass-actions-confirm'],
-function (_, __, Modal, confirmModalTemplate) {
+define(
+    [
+        'underscore',
+        'oro/translator',
+        'oro/modal',
+        'pim/template/common/modal-with-illustration'
+    ], function (
+        _,
+        __,
+        Modal,
+        confirmModalTemplate
+    ) {
     'use strict';
 
     /**
-     * Delete confirmation dialog
+     * Confirm deletion dialog
      *
      * @export  oro/delete-confirmation
      * @class   oro.DeleteConfirmation
@@ -16,13 +26,12 @@ function (_, __, Modal, confirmModalTemplate) {
          */
         initialize: function (options) {
             options = _.extend({
-                title: __('Delete Confirmation'),
-                okText: __('Yes, Delete'),
-                cancelText: __('pim_common.cancel'),
+                title: __('pim_common.confirm_deletion'),
+                okText: __('pim_common.ok'),
                 template: this.confirmModalTemplate,
-                type: '',
                 buttonClass: 'AknButton--important',
-                illustrationClass: 'delete'
+                illustrationClass: 'delete',
+                cancelText: __('pim_common.cancel'),
             }, options);
 
             arguments[0] = options;
