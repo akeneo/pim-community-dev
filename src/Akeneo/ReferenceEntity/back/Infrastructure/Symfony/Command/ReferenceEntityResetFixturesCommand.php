@@ -476,8 +476,8 @@ INSERT INTO `akeneo_reference_entity_attribute` (
   `additional_properties`
   )
 VALUES
-    ('founder_brand_eb505477-3139-4c6d-9014-ac8091c2c2de','founder','brand','{\"en_US\": \"Designer\", \"fr_FR\": \"Designer\"}','text',2,0,0,0,'{\"max_length\": null, \"is_textarea\": false, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": false}'),
-    ('description_brand_d794e371-5d9b-4c4b-918b-9714a9b65a71','description','brand','{\"en_US\": \"Description\", \"fr_FR\": \"Description\"}','text',5,0,1,1,'{\"max_length\": null, \"is_textarea\": true, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": true}'),
+    ('founder_brand_eb505477-3139-4c6d-9014-ac8091c2c2de','founder','brand','{\"en_US\": \"Designer\", \"fr_FR\": \"Designer\"}','text',2,1,0,0,'{\"max_length\": null, \"is_textarea\": false, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": false}'),
+    ('description_brand_d794e371-5d9b-4c4b-918b-9714a9b65a71','description','brand','{\"en_US\": \"Description\", \"fr_FR\": \"Description\"}','text',5,1,1,1,'{\"max_length\": null, \"is_textarea\": true, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": true}'),
     ('founded_brand_fff5387e-64ce-4228-b68e-af8704867761','founded','brand','{\"en_US\": \"Founded\", \"fr_FR\": \"Fondé\"}','text',3,0,0,0,'{\"max_length\": null, \"is_textarea\": false, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": false}'),
     ('nationality_brand_f60def21-f44f-449d-9fae-7a4f76cded60','nationality','brand','{\"en_US\": \"Country\", \"fr_FR\": \"Pays\"}','text',0,0,0,0,'{\"max_length\": null, \"is_textarea\": false, \"validation_rule\": \"none\", \"regular_expression\": null, \"is_rich_text_editor\": false}'),
     ('photo_brand_8587cda6-58c8-47fa-9278-033e1d8c735c','photo','brand','{\"en_US\": \"Photo\", \"fr_FR\": \"Photo\"}','image',4,0,0,0,'{\"max_file_size\": null, \"allowed_extensions\": []}')

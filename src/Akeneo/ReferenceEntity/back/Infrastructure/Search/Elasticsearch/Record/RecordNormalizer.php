@@ -175,7 +175,7 @@ class RecordNormalizer implements RecordNormalizerInterface
             self::UPDATED_AT               => $this->now(),
             self::COMPLETE_VALUE_KEYS      => $filledValueKeysMatrix,
         ];
-        
+
         return $normalizedRecord;
     }
 }
