@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface;
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 
 /**

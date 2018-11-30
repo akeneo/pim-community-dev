@@ -41,7 +41,7 @@ class ValidMetricValidator extends ConstraintValidator
      * Validate metric type and default metric unit
      *
      * @param AttributeInterface|MetricInterface|ValueInterface $object
-     * @param Constraint                                                                              $constraint
+     * @param Constraint $constraint
      */
     public function validate($object, Constraint $constraint)
     {
