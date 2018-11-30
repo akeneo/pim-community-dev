@@ -43,4 +43,12 @@ class SecurityController extends Controller
     {
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
+
+    public function logoutRedirectAction()
+    {
+        $logoutUrlGenerator = $this->get('security.logout_url_generator');
+
+        return $this->redirect($logoutUrlGenerator->getLogoutUrl());
+    }
 }
+        
