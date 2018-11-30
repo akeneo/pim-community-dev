@@ -25,10 +25,14 @@ use PHPUnit\Framework\Assert;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class FamilyRepositoryIntegration extends TestCase
+final class FamilyRepositoryIntegration extends TestCase
 {
     private const TEST_FAMILY_CODE = 'test_family';
+    private const TEST_FAMILY_LABELS = ['en_US' => 'A family for testing purpose'];
+
     private const CONTROL_FAMILY_CODE = 'control_family';
+    private const CONTROL_FAMILY_LABELS = ['en_US' => 'A control family'];
+
     private const UNEXPECTED_FAMILY_CODE = 'unexpected_family';
 
     /**
@@ -39,28 +43,21 @@ class FamilyRepositoryIntegration extends TestCase
         parent::setUp();
 
         $testFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
-            'code' => static::TEST_FAMILY_CODE,
-            'labels' => [
-                'en_US' => 'A family for testing purpose',
-            ],
+            'code' => self::TEST_FAMILY_CODE,
+            'labels' => self::TEST_FAMILY_LABELS,
             'attributes' => ['sku'],
         ]);
         $this->getFromTestContainer('validator')->validate($testFamily);
 
         $controlFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
-            'code' => static::CONTROL_FAMILY_CODE,
-            'labels' => [
-                'en_US' => 'A control family',
-            ],
+            'code' => self::CONTROL_FAMILY_CODE,
+            'labels' => self::CONTROL_FAMILY_LABELS,
             'attributes' => ['sku'],
         ]);
         $this->getFromTestContainer('validator')->validate($controlFamily);
 
         $unexpectedFamily = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.family')->build([
-            'code' => static::UNEXPECTED_FAMILY_CODE,
-            'labels' => [
-                'en_US' => 'An unexpected family',
-            ],
+            'code' => self::UNEXPECTED_FAMILY_CODE,
             'attributes' => ['sku'],
         ]);
         $this->getFromTestContainer('validator')->validate($controlFamily);
@@ -69,15 +66,15 @@ class FamilyRepositoryIntegration extends TestCase
             ->getFromTestContainer('pim_catalog.saver.family')
             ->saveAll([$testFamily, $controlFamily, $unexpectedFamily]);
 
-        $controlProduct = $this->createProduct('control_product', static::CONTROL_FAMILY_CODE);
+        $controlProduct = $this->createProduct('control_product', self::CONTROL_FAMILY_CODE);
         $this->insertSubscription($controlProduct->getId(), false);
     }
 
     public function test_that_families_with_subscribed_products_are_found(): void
     {
-        $product1 = $this->createProduct('product_1', static::TEST_FAMILY_CODE);
+        $product1 = $this->createProduct('product_1', self::TEST_FAMILY_CODE);
         $this->insertSubscription($product1->getId(), false);
-        $product2 = $this->createProduct('product_2', static::TEST_FAMILY_CODE);
+        $product2 = $this->createProduct('product_2', self::TEST_FAMILY_CODE);
         $this->insertSubscription($product2->getId(), true);
 
         $familyCollection = $this->getRepository()->findBySearch(1, 20, null);
@@ -85,53 +82,53 @@ class FamilyRepositoryIntegration extends TestCase
         $this->assertFamilyCollection(
             $familyCollection,
             [
-                new Family(static::TEST_FAMILY_CODE, Family::MAPPING_PENDING),
-                new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL),
+                new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_PENDING),
+                new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
             ]
         );
     }
 
     public function test_that_families_with_subscribed_products_are_paginated(): void
     {
-        $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
+        $product = $this->createProduct('a_product', self::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
         $familyCollection = $this->getRepository()->findBySearch(1, 1, null);
         $this->assertFamilyCollection(
             $familyCollection,
-            [new Family(static::TEST_FAMILY_CODE, Family::MAPPING_PENDING)]
+            [new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_PENDING)]
         );
 
         $familyCollection = $this->getRepository()->findBySearch(2, 1, null);
         $this->assertFamilyCollection(
             $familyCollection,
-            [new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL)]
+            [new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL)]
         );
     }
 
-    public function test_that_families_with_subscribed_products_are_searched(): void
+    public function test_that_only_families_with_subscribed_products_are_searched(): void
     {
-        $product = $this->createProduct('a_product', static::TEST_FAMILY_CODE);
+        $product = $this->createProduct('a_product', self::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
 
         $familyCollection = $this->getRepository()->findBySearch(1, 20, 'control_');
         $this->assertFamilyCollection(
             $familyCollection,
-            [new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL)]
+            [new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL)]
         );
 
         $familyCollection = $this->getRepository()->findBySearch(1, 20, 'testing');
         $this->assertFamilyCollection(
             $familyCollection,
-            [new Family(static::TEST_FAMILY_CODE, Family::MAPPING_FULL)]
+            [new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_FULL)]
         );
 
         $familyCollection = $this->getRepository()->findBySearch(1, 20, 'family');
         $this->assertFamilyCollection(
             $familyCollection,
             [
-                new Family(static::TEST_FAMILY_CODE, Family::MAPPING_FULL),
-                new Family(static::CONTROL_FAMILY_CODE, Family::MAPPING_FULL),
+                new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_FULL),
+                new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
             ]
         );
     }
@@ -201,7 +198,9 @@ SQL;
         Assert::assertCount(count($expectedFamilies), $familyCollection);
         foreach ($familyCollection as $position => $family) {
             Assert::assertInstanceOf(Family::class, $family);
-            Assert::assertSame($expectedFamilies[$position], $family);
+            Assert::assertEquals($expectedFamilies[$position]->getCode(), $family->getCode());
+            Assert::assertEquals($expectedFamilies[$position]->getLabels(), $family->getLabels());
+            Assert::assertEquals($expectedFamilies[$position]->getMappingStatus(), $family->getMappingStatus());
         }
     }
 }
