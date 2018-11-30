@@ -15,6 +15,7 @@ define(
         'backbone',
         'pim/form',
         'pim/template/form/tab/attribute/create-button',
+        'pim/template/common/modal-with-choices',
         'pim/template/form/tab/attribute/create-modal-content',
         'routing',
         'pim/fetcher-registry',
@@ -29,12 +30,14 @@ define(
         BaseForm,
         template,
         templateModal,
+        innerTemplateModal,
         Routing,
         FetcherRegistry,
         router
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            innerTemplateModal: _.template(innerTemplateModal),
             templateModal: _.template(templateModal),
 
             /**
@@ -55,27 +58,26 @@ define(
                 var moduleConfig = __moduleConfig;
 
                 var modal = null;
-                var modalContent = this.templateModal({
-                    title: 'Select your type',
-                    superTitle: 'Create attribute',
-                    attributeTypes: attributeTypes,
-                    iconsMap: moduleConfig.attribute_icons,
-                    generateRoute: function (route, params) {
-                        return Routing.generate(route, params);
-                    }
-                });
 
                 $('#attribute-create-button').on('click', function () {
                     if (modal) {
                         modal.open();
                     } else {
                         modal = new Backbone.BootstrapModal({
-                            content: modalContent
+                            // TODO translate this
+                            title: 'Select your type',
+                            subtitle: 'Create attribute',
+                            content: this.innerTemplateModal({
+                                attributeTypes: attributeTypes,
+                                iconsMap: moduleConfig.attribute_icons,
+                                generateRoute: function (route, params) {
+                                    return Routing.generate(route, params);
+                                }
+                            }),
+                            okText: '',
+                            template: this.templateModal
                         });
-
                         modal.open();
-                        modal.$el.find('.modal-footer').remove();
-                        modal.$el.addClass('modal--fullPage modal--columns');
                     }
 
                     modal.$el.on('click', '.attribute-choice', function () {
@@ -84,7 +86,7 @@ define(
                         router.redirect($(this).attr('data-route'), {trigger: true});
                     });
 
-                    modal.$el.on('click', '.AknFullPage-cancel', () => {
+                    modal.$el.on('click', '.cancel', () => {
                         modal.close();
                         modal.$el.remove();
                     });

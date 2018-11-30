@@ -110,7 +110,7 @@ define(
                     })
                 }).open();
 
-                this.modal.$el.on('click', '.AknFullPage-cancel', this.closeModal.bind(this));
+                this.modal.$el.on('click', '.cancel', this.closeModal.bind(this));
                 this.modal.$el.on('click', '.product-choice', this.openFormModal.bind(this));
 
                 return this.modal;

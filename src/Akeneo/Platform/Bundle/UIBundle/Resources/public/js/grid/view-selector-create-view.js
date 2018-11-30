@@ -39,7 +39,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            templateModal: _.template(templateModal),
+            innerTemplateModal: _.template(templateModal),
             templateModalContent: _.template(templateModalContent),
             templateInput: _.template(templateInput),
             tagName: 'span',
@@ -78,7 +78,7 @@ define(
                     title: __('pim_common.create'),
                     picture: 'illustrations/Views.svg',
                     okText: __('pim_common.save'),
-                    template: this.templateModal,
+                    template: this.innerTemplateModal,
                     okCloses: false,
                     content: this.templateModalContent({
                         fields: this.templateInput({
