@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -40,6 +42,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $fullTextFilter = ($query->hasFilter('full_text')) ? $query->getFilter('full_text') : null;
         $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
+        $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -71,6 +74,22 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             throw new \LogicException(
                 sprintf('Unknown operator %s for code filter', $codeFilter['operator'])
             );
+        }));
+
+        $records = array_values(array_filter($records, function (Record $record) use ($completeFilter): bool {
+            if (null === $completeFilter) {
+                return true;
+            }
+
+            $valueKey = ValueKey::createFromNormalized('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US');
+
+            if (true === $completeFilter['operator']) {
+                return !is_null($record->getValues()->findValue($valueKey));
+            }
+
+            if (false === $completeFilter['operator']) {
+                return is_null($record->getValues()->findValue($valueKey));
+            }
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {
