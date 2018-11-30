@@ -107,7 +107,7 @@ pim_reference_entity:
         code: Code (required)
       confirm: Save
     delete:
-      message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
+      message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products or records, the links will be removed.
       title: Record
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
@@ -163,7 +163,7 @@ pim_reference_entity:
       header:
         title: Create
       subtitle: Entities
-      title: Add a new attribute
+      title: Add new record attribute
       input:
         code: Code (required)
         label: Label

@@ -46,8 +46,8 @@ pim_reference_entity:
                 should_be_a_number: 'This value should be a number.'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
-                reserved_codes: 'The code cannot be any of those values: "%comma_separated_reserved_keywords%"'
-                should_not_exist: 'The attribute already exists for the reference entity "%reference_entity_identifier%" and the attribute code "%code%"'
+                reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
+                should_not_exist: 'The attribute already exists for the reference entity "{{ reference_entity_identifier }}" and the attribute code "{{ code }}"'
                 should_exist: 'The attribute was not found'
             regular_expression:
                 invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
