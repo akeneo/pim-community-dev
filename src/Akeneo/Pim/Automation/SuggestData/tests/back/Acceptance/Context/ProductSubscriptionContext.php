@@ -83,7 +83,7 @@ class ProductSubscriptionContext implements Context
         try {
             $command = new SubscribeProductCommand($product->getId());
             $this->subscribeProductHandler->handle($command);
-        } catch (ProductSubscriptionException $e) {
+        } catch (\Exception $e) {
             $this->thrownException = $e;
         }
     }
@@ -92,8 +92,6 @@ class ProductSubscriptionContext implements Context
      * @When I unsubscribe the product :identifier
      *
      * @param string $identifier
-     *
-     * @throws ProductSubscriptionException
      */
     public function iUnsubscribeTheProduct(string $identifier): void
     {
@@ -103,9 +101,7 @@ class ProductSubscriptionContext implements Context
         try {
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
-        } catch (ProductSubscriptionException $e) {
-            $this->thrownException = $e;
-        } catch (ProductNotSubscribedException $e) {
+        } catch (\Exception $e) {
             $this->thrownException = $e;
         }
     }
@@ -128,22 +124,27 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Then /^the product "([^"]*)" should(| not) be subscribed$/
+     * @Then the product ":identifier" should be subscribed
      *
      * @param string $identifier
-     * @param bool $not
      */
-    public function theProductShouldBeSubscribed(string $identifier, bool $not): void
+    public function theProductShouldBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        Assert::isInstanceOf($productSubscription, ProductSubscription::class);
+    }
 
-        if ($not) {
-            Assert::null($productSubscription);
-        } else {
-            Assert::isInstanceOf($productSubscription, ProductSubscription::class);
-        }
+    /**
+     * @Then the product ":identifier" should not be subscribed
+     *
+     * @param string $identifier
+     */
+    public function theProductShouldNotBeSubscribed(string $identifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        Assert::null($productSubscription);
     }
 
     /**
