@@ -424,7 +424,7 @@ pim_enrich:
         pim_reference_data_multiselect: Viitetiedot monivalinta
       validation_rule:
         email: Sähköposti
-        regexp: Tavallinen virke
+        regexp: Säännöllinen lauseke
         url: URL-osoite
       title: attribuutti
     attribute_group:
@@ -527,7 +527,7 @@ pim_enrich:
           title: Vaihda perhettä
           merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
           keep_attributes: Mitään attribuutteja ei poisteta.
-          change_family_to: Vaihda perhe olemaan
+          change_family_to: Vaihda perheeksi
           empty_selection: Valitse perhe
       flash:
         attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
@@ -741,7 +741,7 @@ pim_enrich:
             help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
           real_time_versioning:
             title: Reaaliaikainen historiapäivitys
-            help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
+            help: Tarkoittaa että tuotteen muutoshistoria on päivitetään automaattisesti. Voidaan laittaa pois päältä suorituskyvyn parantamiseksi
           family_variant_column:
             title: Varianttiperheen sarake
         history:
@@ -784,7 +784,7 @@ pim_enrich:
             type: Tyyppi
             unique: Yksilöllinen arvo
             useable_as_grid_filter: Käytettävissä ruudukossa
-            validation_regexp: Tavallinen virke
+            validation_regexp: Säännöllinen lauseke
             validation_rule: Kelpoisuussääntö
             wysiwyg_enabled: Tekstin muotoilu käytössä
           default_label:

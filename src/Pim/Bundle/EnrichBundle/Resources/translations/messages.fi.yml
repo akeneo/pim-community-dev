@@ -428,7 +428,7 @@ info:
     no available attributes: Ei ole enää attribuutteja lisättäväksi
     no family defined: Ei perhettä määritetty
     change family: Vaihda perhettä
-    change family to: Vaihda perhe olemaan
+    change family to: Vaihda perheeksi
     merge attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
     keep attributes: Mitään attribuutteja ei poisteta.
     number of associations: '%productCount% tuotetta ja %groupCount% ryhmää'
@@ -554,7 +554,7 @@ Allowed extensions: Sallitut laajennukset
 None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
-Regular expression: Tavallinen virke
+Regular expression: Säännöllinen lauseke
 Minimum input length: Syötteen vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
