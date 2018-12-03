@@ -41,7 +41,7 @@ export const searchUpdated = (searchInput: string) => (dispatch: any) => {
   dispatch(gridStateUpdated());
 };
 
-export const completenessFilterUpdated = (completeValue: boolean|null) => (dispatch: any) => {
+export const completenessFilterUpdated = (completeValue: boolean | null) => (dispatch: any) => {
   if (null === completeValue) {
     dispatch(removeFilter('complete'));
   } else {

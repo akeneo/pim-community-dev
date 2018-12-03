@@ -18,7 +18,7 @@ export type NormalizedValidationError = {
   message: string;
   propertyPath: string;
   invalidValue: any;
-}
+};
 
 class ConcreteValidationError implements ValidationError {
   readonly messageTemplate: string;
@@ -44,7 +44,7 @@ class ConcreteValidationError implements ValidationError {
       message: this.message,
       propertyPath: this.propertyPath,
       invalidValue: this.invalidValue,
-    }
+    };
   }
 
   static fromError(error: ValidationError) {

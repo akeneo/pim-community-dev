@@ -58,7 +58,7 @@ interface TableDispatch {
   onDeleteRecord: (recordCode: RecordCode, label: string) => void;
   onNeedMoreResults: () => void;
   onSearchUpdated: (userSearch: string) => void;
-  onCompletenessFilterUpdated: (completenessValue: boolean|null) => void;
+  onCompletenessFilterUpdated: (completenessValue: boolean | null) => void;
 }
 
 interface TableProps extends TableState, TableDispatch {}
@@ -167,10 +167,9 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   render(): JSX.Element | JSX.Element[] {
     const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
     const userSearch = getFilter(grid.filters, 'full_text').value;
-    const completenessValue = grid.filters.find((filter: Filter) => filter.field === 'complete') ?
-      getFilter(grid.filters, 'complete').value :
-      null
-    ;
+    const completenessValue = grid.filters.find((filter: Filter) => filter.field === 'complete')
+      ? getFilter(grid.filters, 'complete').value
+      : null;
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
 
     const noResult = 0 === grid.records.length && false === grid.isLoading;

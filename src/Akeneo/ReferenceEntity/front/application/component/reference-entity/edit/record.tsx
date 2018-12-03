@@ -16,7 +16,7 @@ import {
   needMoreResults,
   searchUpdated,
   updateRecordResults,
-  completenessFilterUpdated
+  completenessFilterUpdated,
 } from 'akeneoreferenceentity/application/action/record/search';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import ReferenceEntityIdentifier, {
@@ -67,7 +67,7 @@ interface DispatchProps {
     onSearchUpdated: (userSearch: string) => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
-    onCompletenessFilterUpdated: (completenessValue: boolean|null) => void;
+    onCompletenessFilterUpdated: (completenessValue: boolean | null) => void;
     onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onOpenDeleteAllRecordsModal: () => void;

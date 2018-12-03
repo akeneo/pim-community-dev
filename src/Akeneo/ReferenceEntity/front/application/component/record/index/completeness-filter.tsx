@@ -3,8 +3,8 @@ import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/compo
 import Key from 'akeneoreferenceentity/tools/key';
 
 type Props = {
-  value: boolean|null;
-  onChange: (newValue: boolean|null) => void;
+  value: boolean | null;
+  onChange: (newValue: boolean | null) => void;
 };
 
 const CompletenessFilterItemView = ({
@@ -18,9 +18,7 @@ const CompletenessFilterItemView = ({
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
 }) => {
-  const className = `AknDropdown-menuLink ${
-    isActive ? 'AknDropdown-menuLink--active' : ''
-    }`;
+  const className = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`;
   return (
     <div
       className={className}
@@ -54,16 +52,16 @@ export default class CompletenessFilter extends React.Component<Props> {
         identifier: 'no',
         label: 'NO',
         original: 'completeness',
-      }
-    ]
+      },
+    ];
   };
 
   onCompletenessUpdated(event: DropdownElement) {
-    let completenessValue: boolean|null;
+    let completenessValue: boolean | null;
     if ('all' === event.identifier) {
       completenessValue = null;
     } else {
-      completenessValue = ('yes' === event.identifier) ? true : false;
+      completenessValue = 'yes' === event.identifier ? true : false;
     }
 
     this.props.onChange(completenessValue);
@@ -73,13 +71,13 @@ export default class CompletenessFilter extends React.Component<Props> {
     if (null === this.props.value) {
       this.value = 'all';
     } else {
-      this.value = (true === this.props.value) ? 'yes' : 'no';
+      this.value = true === this.props.value ? 'yes' : 'no';
     }
 
     return (
       <Dropdown
         ItemView={CompletenessFilterItemView}
-        label='Completeness'
+        label="Completeness"
         elements={this.getCompletenessFilter()}
         selectedElement={this.value}
         onSelectionChange={this.onCompletenessUpdated.bind(this)}

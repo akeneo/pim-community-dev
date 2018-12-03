@@ -263,7 +263,7 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
     const newState = reducer(state, {
       type: 'GRID_REMOVE_FILTER',
-      field: 'complete'
+      field: 'complete',
     });
 
     expect(newState).toEqual({
