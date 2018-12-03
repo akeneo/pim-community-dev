@@ -1,9 +1,10 @@
 services:
-    akeneo.pim.automation.suggest_data.subscriber.unsubscribe_product_after_family_removal:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductFamilyRemovalSubscriber'
+    akeneo.pim.automation.suggest_data.subscriber.product_family_update:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductFamilyUpdateSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_family_id_query'
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.suggest_data.product_subscription.handler.update_subscription_family'
         tags:
             - { name: kernel.event_subscriber }
 

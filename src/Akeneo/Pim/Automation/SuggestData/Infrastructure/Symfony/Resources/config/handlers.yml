@@ -37,7 +37,10 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.product_subscription'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
-
+            
+    akeneo.pim.automation.suggest_data.product_subscription.handler.update_subscription_family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler'
+        
     akeneo.pim.automation.suggest_data.handler.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler'
         arguments:

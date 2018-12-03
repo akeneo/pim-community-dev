@@ -15,6 +15,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subs
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UpdateSubscriptionFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -25,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
+class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
 {
     /** @var SelectProductFamilyIdQueryInterface */
     private $selectProductFamilyIdQuery;
@@ -33,16 +35,22 @@ class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
     /** @var UnsubscribeProductHandler */
     private $unsubscribeProductHandler;
 
+    /** @var UpdateSubscriptionFamilyHandler */
+    private $updateSubscriptionFamilyHandler;
+
     /**
      * @param SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
+     * @param UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
      */
     public function __construct(
         SelectProductFamilyIdQueryInterface $selectProductFamilyIdQuery,
-        UnsubscribeProductHandler $unsubscribeProductHandler
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        UpdateSubscriptionFamilyHandler $updateSubscriptionFamilyHandler
     ) {
         $this->selectProductFamilyIdQuery = $selectProductFamilyIdQuery;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
+        $this->updateSubscriptionFamilyHandler = $updateSubscriptionFamilyHandler;
     }
 
     /**
@@ -71,22 +79,20 @@ class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->hasFamilyRemoved($product)) {
-            $this->unsubscribeProduct($product->getId());
+        $originalFamilyId = $this->selectProductFamilyIdQuery->execute($product->getId());
+        if (null === $originalFamilyId) {
+            return;
         }
-    }
 
-    /**
-     * Checks if the product family has been removed.
-     *
-     * @param ProductInterface $product
-     *
-     * @return bool
-     */
-    private function hasFamilyRemoved($product)
-    {
-        return null === $product->getFamily()
-            && null !== $this->selectProductFamilyIdQuery->execute($product->getId());
+        if (null === $product->getFamily()) {
+            $this->unsubscribeProduct($product->getId());
+
+            return;
+        }
+
+        if ($product->getFamily()->getId() !== $originalFamilyId) {
+            $this->updateSubscriptionFamily($product->getId());
+        }
     }
 
     /**
@@ -96,15 +102,27 @@ class ProductFamilyRemovalSubscriber implements EventSubscriberInterface
      */
     private function unsubscribeProduct(int $productId): void
     {
-        if (null !== $this->selectProductFamilyIdQuery->execute($productId)) {
-            try {
-                $command = new UnsubscribeProductCommand($productId);
-                $this->unsubscribeProductHandler->handle($command);
-            } catch (ProductNotSubscribedException $e) {
-                // Silently catch exception if the product is not subscribed
-                // We don't check it here as the handler already check it. No need to do it twice
-                return;
-            }
+        try {
+            $command = new UnsubscribeProductCommand($productId);
+            $this->unsubscribeProductHandler->handle($command);
+        } catch (ProductNotSubscribedException $e) {
+            // Silently catch exception if the product is not subscribed
+            // We don't check it here as the handler already checks it. No need to do it twice
+            return;
+        }
+    }
+
+    /**
+     * @param int $productId
+     */
+    private function updateSubscriptionFamily(int $productId): void
+    {
+        try {
+            $this->updateSubscriptionFamilyHandler->handle(new UpdateSubscriptionFamilyCommand());
+        } catch (ProductNotSubscribedException $e) {
+            // Silently catch exception if the product is not subscribed
+            // We don't check it here as the handler already checks it. No need to do it twice
+            return;
         }
     }
 }
