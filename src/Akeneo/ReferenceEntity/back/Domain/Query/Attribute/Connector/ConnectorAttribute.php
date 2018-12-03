@@ -36,22 +36,22 @@ class ConnectorAttribute
     private $identifier;
 
     /** @var LabelCollection */
-    public $labelCollection;
+    private $labelCollection;
 
     /** @var string */
-    public $type;
+    private $type;
 
     /** @var bool */
-    public $localizable;
+    private $localizable;
 
     /** @var bool */
-    public $scopable;
+    private $scopable;
 
     /** @var bool */
-    public $isRequired;
+    private $isRequired;
 
     /** @var array */
-    public $additionalProperties;
+    private $additionalProperties;
 
     public function __construct(
         AttributeIdentifier $identifier,
