@@ -37,6 +37,15 @@ final class ServiceProvider
         $this->privateCertificate = $privateCertificate;
     }
 
+    public static function fromArray(array $content): self
+    {
+        return new self(
+            EntityId::fromString($content['entityId']),
+            Certificate::fromString($content['publicCertificate']),
+            Certificate::fromString($content['privateCertificate'])
+        );
+    }
+
     public function toArray(): array
     {
         return [

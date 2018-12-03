@@ -37,6 +37,15 @@ final class IdentityProvider
         $this->publicCertificate = $publicCertificate;
     }
 
+    public static function fromArray(array $content): self
+    {
+        return new self(
+            EntityId::fromString($content['entityId']),
+            Url::fromString($content['url']),
+            Certificate::fromString($content['publicCertificate'])
+        );
+    }
+
     public function toArray(): array
     {
         return [

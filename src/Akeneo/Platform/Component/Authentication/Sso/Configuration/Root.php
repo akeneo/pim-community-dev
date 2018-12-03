@@ -38,6 +38,15 @@ final class Root
         $this->serviceProvider = $serviceProvider;
     }
 
+    public static function fromArray(string $code, array $content): self
+    {
+        return new self(
+            Code::fromString($code),
+            IdentityProvider::fromArray($content['identityProvider']),
+            ServiceProvider::fromArray($content['serviceProvider'])
+        );
+    }
+
     public function toArray(): array
     {
         return [
@@ -46,8 +55,8 @@ final class Root
         ];
     }
 
-    public function code(): Code
+    public function code(): string
     {
-        return $this->code;
+        return $this->code->toString();
     }
 }
