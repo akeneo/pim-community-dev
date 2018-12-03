@@ -35,12 +35,12 @@ class SqlFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier imple
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $results = $this->fetchResult($referenceEntityIdentifier);
+        $results = $this->fetchAll($referenceEntityIdentifier);
 
         return $this->hydrateAttributes($results);
     }
 
-    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array
+    private function fetchAll(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $query = <<<SQL
         SELECT
@@ -59,7 +59,7 @@ class SqlFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier imple
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
-            ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
+            ['reference_entity_identifier' => $referenceEntityIdentifier->normalize()]
         );
         $result = $statement->fetchAll();
 
