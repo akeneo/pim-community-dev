@@ -112,7 +112,7 @@ class GetConnectorReferenceEntitiesContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the 7 reference entities of the PIM$/
+     * @Then /^the PIM returns the label and image properties of the 7 reference entities of the PIM/
      */
     public function thePIMReturnsTheReferenceEntitiesOfThePIM()
     {

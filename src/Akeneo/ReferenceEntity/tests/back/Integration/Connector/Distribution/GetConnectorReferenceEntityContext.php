@@ -101,7 +101,7 @@ class GetConnectorReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^the PIM returns the Brand reference entity$/
+     * @Then /^the PIM returns the label and image properties Brand reference entity$/
      */
     public function thePIMReturnsTheBrandReferenceEntity(): void
     {
