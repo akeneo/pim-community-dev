@@ -12,7 +12,7 @@ define(
          * @return {Promise}
          */
         getAttributeGroupsForObject: function (product) {
-            return FetcherRegistry.getFetcher('attribute-group').fetchAll()
+            return FetcherRegistry.getFetcher('attribute-group').fetchAll({cached: true})
                 .then(function (attributeGroups) {
                     return _.values(attributeGroups).reduce((result, attributeGroup) => {
                         //If one (or more) of the attributes of the attribute group is in the product we need to add it

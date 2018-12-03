@@ -42,7 +42,7 @@ function (
         configure: function () {
             return $.when(
                 BaseField.prototype.configure.apply(this, arguments),
-                fetcherRegistry.getFetcher('attribute-group').fetchAll()
+                fetcherRegistry.getFetcher('attribute-group').fetchAll({cached: true})
                     .then(function (attributeGroups) {
                         this.attributeGroups = attributeGroups;
                     }.bind(this))

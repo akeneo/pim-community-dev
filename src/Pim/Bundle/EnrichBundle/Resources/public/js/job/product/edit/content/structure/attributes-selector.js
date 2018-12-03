@@ -58,7 +58,7 @@ define(
              */
             render: function () {
                 $.when(
-                    fetcherRegistry.getFetcher('attribute-group').fetchAll(),
+                    fetcherRegistry.getFetcher('attribute-group').fetchAll({cached: true}),
                     fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(this.getSelected())
                 ).then(function (attributeGroups, selectedAttributes) {
                     var scrollPositions = {};

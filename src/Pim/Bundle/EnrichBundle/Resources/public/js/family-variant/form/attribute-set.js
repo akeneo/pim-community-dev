@@ -95,7 +95,7 @@ define(
                         ).filter((code, index, codes) => codes.indexOf(code) === index);
 
                         return $.when(
-                            fetcherRegistry.getFetcher('attribute-group').fetchAll(),
+                            fetcherRegistry.getFetcher('attribute-group').fetchAll({cached: true}),
                             fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes, {rights: 0}),
                             axesAttributeCodes,
                             family

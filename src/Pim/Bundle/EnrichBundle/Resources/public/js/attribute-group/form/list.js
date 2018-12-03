@@ -46,7 +46,7 @@ define([
              */
             configure: function () {
                 return $.when(
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll(),
+                    FetcherRegistry.getFetcher('attribute-group').fetchAll({cached: true}),
                     BaseForm.prototype.configure.apply(this, arguments)
                 ).then(function (attributeGroups) {
                     this.attributeGroups = attributeGroups;
