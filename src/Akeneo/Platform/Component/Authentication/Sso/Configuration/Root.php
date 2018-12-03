@@ -28,21 +28,26 @@ final class Root
     /** @var ServiceProvider */
     private $serviceProvider;
 
-    private function __construct(
+    public function __construct(
         Code $code,
         IdentityProvider $identityProvider,
         ServiceProvider $serviceProvider
     ) {
+        $this->code = $code;
         $this->identityProvider = $identityProvider;
         $this->serviceProvider = $serviceProvider;
-        $this->code = $code;
     }
 
-    public static function create(
-        Code $code,
-        IdentityProvider $identityProvider,
-        ServiceProvider $serviceProvider
-    ): self {
-        return new self($code, $identityProvider, $serviceProvider);
+    public function toArray(): array
+    {
+        return [
+            'identityProvider' => $this->identityProvider->toArray(),
+            'serviceProvider'  => $this->serviceProvider->toArray(),
+        ];
+    }
+
+    public function code(): Code
+    {
+        return $this->code;
     }
 }

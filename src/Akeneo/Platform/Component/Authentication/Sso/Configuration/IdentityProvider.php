@@ -12,26 +12,37 @@
 namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
 
 /**
- * Dynamic configuration for an Identity Provider, composed of a URL and a public certificate.
+ * Dynamic configuration for an Identity Provider, composed of an entity id, a URL and a public certificate.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
 final class IdentityProvider
 {
+    /** @var EntityId */
+    private $entityId;
+
     /** @var Url */
     private $url;
 
     /** @var Certificate */
     private $publicCertificate;
 
-    private function __construct(Url $url, Certificate $publicCertificate)
-    {
+    public function __construct(
+        EntityId $entityId,
+        Url $url,
+        Certificate $publicCertificate
+    ) {
+        $this->entityId = $entityId;
         $this->url = $url;
         $this->publicCertificate = $publicCertificate;
     }
 
-    public static function create(Url $url, Certificate $publicCertificate): self
+    public function toArray(): array
     {
-        return new self($url, $publicCertificate);
+        return [
+            'entityId'          => $this->entityId->toString(),
+            'url'               => $this->url->toString(),
+            'publicCertificate' => $this->publicCertificate->toString(),
+        ];
     }
 }

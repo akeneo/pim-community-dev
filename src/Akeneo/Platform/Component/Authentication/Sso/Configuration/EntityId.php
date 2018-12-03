@@ -12,31 +12,31 @@
 namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
 
 /**
- * Represents a URL value in the configuration. The URL must have a valid format.
+ * TODO
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-final class Url
+final class EntityId
 {
     /** @var string */
-    private $url;
+    private $entityId;
 
-    private function __construct(string $url)
+    private function __construct(string $entityId)
     {
-        $this->url = $url;
+        $this->entityId = $entityId;
     }
 
-    public static function fromString(string $url): self
+    public static function fromString(string $entityId): self
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException(sprintf('Value must be a valid URL, "%s" given.', $url));
+        if (!filter_var($entityId, FILTER_VALIDATE_URL)) {
+            throw new \InvalidArgumentException(sprintf('Value must be a valid URL, "%s" given.', $entityId));
         }
 
-        return new self($url);
+        return new self($entityId);
     }
 
     public function toString(): string
     {
-        return $this->url;
+        return $this->entityId;
     }
 }

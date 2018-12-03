@@ -30,4 +30,9 @@ final class Certificate
     {
         return new self($certificate);
     }
+
+    public function toString(): string
+    {
+        return $this->certificate;
+    }
 }

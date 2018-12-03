@@ -12,26 +12,37 @@
 namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
 
 /**
- * Dynamic configuration for a Service Provider, composed of a public and a private certificate.
+ * Dynamic configuration for a Service Provider, composed of an entity id, a public and a private certificate.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
 final class ServiceProvider
 {
+    /** @var EntityId */
+    private $entityId;
+
     /** @var Certificate */
     private $publicCertificate;
 
     /** @var Certificate */
     private $privateCertificate;
 
-    private function __construct(Certificate $publicCertificate, Certificate $privateCertificate)
-    {
+    public function __construct(
+        EntityId $entityId,
+        Certificate $publicCertificate,
+        Certificate $privateCertificate
+    ) {
+        $this->entityId = $entityId;
         $this->publicCertificate = $publicCertificate;
         $this->privateCertificate = $privateCertificate;
     }
 
-    public static function create(Certificate $publicCertificate, Certificate $privateCertificate): self
+    public function toArray(): array
     {
-        return new self($publicCertificate, $privateCertificate);
+        return [
+            'entityId'           => $this->entityId->toString(),
+            'publicCertificate'  => $this->publicCertificate->toString(),
+            'privateCertificate' => $this->privateCertificate->toString(),
+        ];
     }
 }

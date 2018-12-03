@@ -23,4 +23,9 @@ final class Code
     {
         return new self($code);
     }
+
+    public function toString(): string
+    {
+        return $this->code;
+    }
 }
