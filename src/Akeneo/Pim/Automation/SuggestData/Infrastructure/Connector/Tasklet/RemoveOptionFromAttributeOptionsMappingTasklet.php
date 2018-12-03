@@ -30,6 +30,8 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
+ * There are 2 inputs parameters on this.
+ *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
@@ -49,6 +51,12 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
+    /**
+     * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
+     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingHandler
+     * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
+     * @param SaveAttributeOptionsMappingHandler $saveAttributeOptionsMappingHandler
+     */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
         GetAttributesMappingByFamilyHandler $getAttributesMappingHandler,
@@ -159,7 +167,7 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
     ): array {
         $newAttributeOptionsMapping = [];
 
-        foreach ($attributeOptionsMapping as $currentOptionMapping) {
+        foreach ($attributeOptionsMapping->mapping() as $currentOptionMapping) {
             $newOptionMapping = $this->buildNewOptionMapping($deletedAttributeOptionCode, $currentOptionMapping);
             $newAttributeOptionsMapping[$currentOptionMapping->franklinAttributeId()] = $newOptionMapping;
         }
@@ -168,6 +176,8 @@ class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
     }
 
     /**
+     * Removes deleted attribute option from the option mapping.
+     *
      * @param string $deletedAttributeOptionCode
      * @param AttributeOptionMapping $currentOptionMapping
      *

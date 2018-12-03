@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeOptionDeletedSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -42,6 +43,11 @@ class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
+    public function it_subscribes_post_remove_event(): void
+    {
+        $this->getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE);
+    }
+
     public function it_publishes_a_new_job_in_the_job_queue(
         GenericEvent $event,
         AttributeOptionInterface $attributeOption,
@@ -59,7 +65,7 @@ class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
             'attribute_option_code' => 'red',
         ])->shouldBeCalled();
 
-        $this->onPostRemove($event);
+        $this->removeAttributeOptionFromMapping($event);
     }
 
     public function it_is_only_applied_when_an_attribute_option_is_removed(
@@ -70,6 +76,6 @@ class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
 
         $jobLauncher->launch(Argument::any())->shouldNotBeCalled();
 
-        $this->onPostRemove($event);
+        $this->removeAttributeOptionFromMapping($event);
     }
 }

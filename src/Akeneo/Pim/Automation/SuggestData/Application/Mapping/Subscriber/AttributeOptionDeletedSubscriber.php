@@ -24,11 +24,15 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
 {
+    /** @var string */
     public const JOB_INSTANCE_NAME = 'suggest_data_remove_attribute_option_from_mapping';
 
     /** @var JobLauncherInterface */
     private $jobLauncher;
 
+    /**
+     * @param JobLauncherInterface $jobLauncher
+     */
     public function __construct(JobLauncherInterface $jobLauncher)
     {
         $this->jobLauncher = $jobLauncher;
@@ -40,14 +44,14 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_REMOVE => 'onPostRemove',
+            StorageEvents::POST_REMOVE => 'removeAttributeOptionFromMapping',
         ];
     }
 
     /**
      * @param GenericEvent $event
      */
-    public function onPostRemove(GenericEvent $event): void
+    public function removeAttributeOptionFromMapping(GenericEvent $event): void
     {
         $attributeOption = $event->getSubject();
         if (!$attributeOption instanceof AttributeOptionInterface) {

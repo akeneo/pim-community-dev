@@ -36,13 +36,6 @@ class AttributeOptionsMappingSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeOptionsMapping::class);
     }
 
-    public function it_is_traversable(): void
-    {
-        $this->shouldHaveType(\Traversable::class);
-
-        $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
-    }
-
     public function it_can_check_if_attribute_exists(): void
     {
         $this->hasPimAttributeOption('pim_blue')->shouldReturn(true);

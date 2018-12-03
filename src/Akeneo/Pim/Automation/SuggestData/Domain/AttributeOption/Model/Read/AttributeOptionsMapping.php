@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Read;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-final class AttributeOptionsMapping implements \IteratorAggregate
+final class AttributeOptionsMapping
 {
     /** @var string */
     private $familyCode;
@@ -77,13 +77,5 @@ final class AttributeOptionsMapping implements \IteratorAggregate
         }
 
         return false;
-    }
-
-    /**
-     * @return \Iterator
-     */
-    public function getIterator(): \Iterator
-    {
-        return new \ArrayIterator($this->mapping);
     }
 }
