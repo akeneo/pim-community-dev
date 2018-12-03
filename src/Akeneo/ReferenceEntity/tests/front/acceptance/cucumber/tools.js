@@ -23,6 +23,9 @@ const listenRequest = async function(page, requestContract) {
   );
 
   const answerRequest = request => {
+    if ('http://pim.com/rest/reference_entity/designer/record' === request.url()) {
+      debugger;
+    }
     if (
       url === request.url() &&
       requestContract.request.method === request.method() &&

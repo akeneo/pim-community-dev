@@ -177,8 +177,10 @@ export default class Table extends React.Component<TableProps, {columns: Column[
 
     return (
       <React.Fragment>
-        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
-        <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
+        <div className="AknTitleContainer-line">
+          <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
+          <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
+        </div>
         {noResult ? (
           <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
         ) : (

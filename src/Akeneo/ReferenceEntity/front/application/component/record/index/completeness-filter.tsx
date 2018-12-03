@@ -1,11 +1,37 @@
 import * as React from 'react';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
 import Key from 'akeneoreferenceentity/tools/key';
+import __ from 'akeneoreferenceentity/tools/translator';
 
 type Props = {
   value: boolean | null;
   onChange: (newValue: boolean | null) => void;
 };
+
+const CompletenessFilterButtonView = ({
+  selectedElement,
+  onClick,
+}: {
+  selectedElement: DropdownElement;
+  onClick: () => void;
+}) => (
+  <div
+    className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
+    data-identifier={selectedElement.identifier}
+    onClick={onClick}
+    tabIndex={0}
+    onKeyPress={event => {
+      if (Key.Space === event.key) onClick();
+    }}
+  >
+    {__('Complete')}
+    :&nbsp;
+    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
+      {selectedElement.label}
+    </span>
+    <span className="AknActionButton-caret" />
+  </div>
+);
 
 const CompletenessFilterItemView = ({
   isOpen,
@@ -18,10 +44,10 @@ const CompletenessFilterItemView = ({
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
 }) => {
-  const className = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`;
+  const menuLinkClass = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`;
   return (
     <div
-      className={className}
+      className={menuLinkClass}
       data-identifier={element.identifier}
       onClick={() => onClick(element)}
       onKeyPress={event => {
@@ -77,10 +103,12 @@ export default class CompletenessFilter extends React.Component<Props> {
     return (
       <Dropdown
         ItemView={CompletenessFilterItemView}
-        label="Completeness"
+        ButtonView={CompletenessFilterButtonView}
+        label={__('Complete')}
         elements={this.getCompletenessFilter()}
         selectedElement={this.value}
         onSelectionChange={this.onCompletenessUpdated.bind(this)}
+        className="complete-filter"
       />
     );
   }
