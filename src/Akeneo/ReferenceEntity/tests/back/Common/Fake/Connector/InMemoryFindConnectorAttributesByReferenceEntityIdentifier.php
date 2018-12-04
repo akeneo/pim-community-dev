@@ -15,9 +15,9 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
 
-class InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier implements FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface
+class InMemoryFindConnectorAttributesByReferenceEntityIdentifier implements FindConnectorAttributesByReferenceEntityIdentifierInterface
 {
     /** @var ConnectorAttribute[] */
     private $attributes;

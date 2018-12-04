@@ -3,7 +3,7 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorReferenceEntityAttributesAction
 {
-    /** @var FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface */
+    /** @var FindConnectorAttributesByReferenceEntityIdentifierInterface */
     private $findConnectorReferenceEntityAttributes;
 
     /** @var ReferenceEntityExistsInterface */
@@ -22,7 +22,7 @@ class GetConnectorReferenceEntityAttributesAction
     private $addHalSelfLinkToNormalizedConnectorAttribute;
 
     public function __construct(
-        FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
+        FindConnectorAttributesByReferenceEntityIdentifierInterface $findConnectorReferenceEntityAttributes,
         ReferenceEntityExistsInterface $referenceEntityExists,
         AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute
     ) {

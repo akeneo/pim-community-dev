@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -51,7 +51,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier */
+    /** @var InMemoryFindConnectorAttributesByReferenceEntityIdentifier */
     private $findConnectorReferenceEntityAttributes;
 
     /** @var ReferenceEntityRepositoryInterface */
@@ -66,7 +66,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier $findConnectorReferenceEntityAttributes,
+        InMemoryFindConnectorAttributesByReferenceEntityIdentifier $findConnectorReferenceEntityAttributes,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository
     ) {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -24,14 +24,14 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
-class InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifierTest extends TestCase
+class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier */
+    /** @var InMemoryFindConnectorAttributesByReferenceEntityIdentifier */
     private $query;
 
     public function setup()
     {
-        $this->query = new InMemoryFindConnectorReferenceEntityAttributesByReferenceEntityIdentifier();
+        $this->query = new InMemoryFindConnectorAttributesByReferenceEntityIdentifier();
     }
 
     /**

@@ -31,7 +31,7 @@ use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributesByReferenceEntityIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
@@ -45,7 +45,7 @@ class SqlFindReferenceEntityAttributesByReferenceEntityIdentifierTest extends Sq
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var FindConnectorReferenceEntityAttributesByReferenceEntityIdentifierInterface*/
+    /** @var FindConnectorAttributesByReferenceEntityIdentifierInterface*/
     private $findConnectorReferenceEntityAttributes;
 
     protected function setUp(): void
