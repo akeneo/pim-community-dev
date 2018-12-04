@@ -12,6 +12,7 @@ define(
         'oro/mediator',
         'pim/common/column-list-view',
         'pim/template/datagrid/action-configure-columns',
+        'pim/template/common/modal-with-choices',
         'bootstrap-modal',
         'jquery-ui'
     ],
@@ -27,7 +28,8 @@ define(
         BaseForm,
         mediator,
         ColumnListView,
-        template
+        template,
+        modalTemplate
     ) {
         var Column = Backbone.Model.extend({
             defaults: {
@@ -62,6 +64,8 @@ define(
             route: null,
 
             template: _.template(template),
+
+            modalTemplate: _.template(modalTemplate),
 
             configuratorTemplate: _.template(
                 '<div id="column-configurator"></div>'
@@ -181,17 +185,17 @@ define(
                     var columnListView = new ColumnListView({collection: columnList, route});
 
                     var modal = new Backbone.BootstrapModal({
-                        className: 'modal modal--fullPage modal--topButton column-configurator-modal',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
-                        allowCancel: true,
                         okCloses: false,
-                        cancelText: __('pim_common.cancel'),
                         title: __('pim_datagrid.column_configurator.title'),
+                        innerDescription: __('pim_datagrid.column_configurator.description'),
+                        okText: __('pim_common.apply'),
+                        template: this.modalTemplate,
                         content: this.configuratorTemplate(),
-                        okText: __('pim_common.apply')
+                        className: 'AknFullPage--full',
                     });
 
                     loadingMask.hide();

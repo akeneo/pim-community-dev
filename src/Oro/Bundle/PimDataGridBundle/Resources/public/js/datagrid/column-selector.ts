@@ -8,10 +8,9 @@ const Routing = require('routing');
 const DatagridState = require('pim/datagrid/state');
 const buttonTemplate = require('pim/template/datagrid/column-selector/button');
 const columnsTemplate = require('pim/template/datagrid/column-selector/columns');
-const modalTemplate = require('pim/template/datagrid/column-selector/modal');
+const innerModalTemplate = require('pim/template/datagrid/column-selector/modal');
 const selectedTemplate = require('pim/template/datagrid/column-selector/selected');
-// TODO change the name
-const changethename = require('pim/template/common/modal-with-choices');
+const modalTemplate = require('pim/template/common/modal-with-choices');
 
 interface AttributeGroup {
   code: string;
@@ -47,10 +46,10 @@ class ColumnSelector extends BaseView {
   public hideButton: boolean;
 
   private buttonTemplate: ((...data: any[]) => string) = _.template(buttonTemplate);
-  private modalTemplate: ((...data: any[]) => string) = _.template(modalTemplate);
+  private innerModalTemplate: ((...data: any[]) => string) = _.template(innerModalTemplate);
   private columnsTemplate: ((...data: any[]) => string) = _.template(columnsTemplate);
   private selectedTemplate: ((...data: any[]) => string) = _.template(selectedTemplate);
-  private changethename: ((...data: any[]) => string) = _.template(changethename);
+  private modalTemplate: ((...data: any[]) => string) = _.template(modalTemplate);
 
   public events(): Backbone.EventsHash {
     return {
@@ -397,9 +396,9 @@ class ColumnSelector extends BaseView {
         title: __('pim_datagrid.column_configurator.title'),
         innerDescription: __('pim_datagrid.column_configurator.description'),
         okText: __('pim_common.apply'),
-        template: this.changethename,
+        template: this.modalTemplate,
         className: 'AknFullPage--full',
-        content: this.modalTemplate({
+        content: this.innerModalTemplate({
           groups,
           attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),
         }),
