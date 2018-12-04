@@ -25,6 +25,7 @@ final class AttributeTypes
     const TEXT = 'pim_catalog_text';
     const REFERENCE_DATA_MULTI_SELECT = 'pim_reference_data_multiselect';
     const REFERENCE_DATA_SIMPLE_SELECT = 'pim_reference_data_simpleselect';
+    const REFERENCE_ENTITY_SIMPLE_SELECT = 'akeneo_reference_entity';
 
     const BACKEND_TYPE_BOOLEAN = 'boolean';
     const BACKEND_TYPE_COLLECTION = 'collections';
