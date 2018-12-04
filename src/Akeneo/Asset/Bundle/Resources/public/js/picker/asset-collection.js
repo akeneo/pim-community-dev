@@ -13,6 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
+        'pim/template/common/modal-with-choices',
         'pimee/template/picker/asset-collection-preview',
         'pim/fetcher-registry',
         'pim/form-builder',
@@ -25,7 +26,8 @@ define(
         __,
         Backbone,
         template,
-        templateModal,
+        modalTemplate,
+        innerModalTemplate,
         FetcherRegistry,
         FormBuilder,
         Routing,
@@ -42,7 +44,8 @@ define(
                 'click .asset-thumbnail-item': 'updateAssetsFromPreview',
                 'click .upload-assets': 'uploadAssets'
             },
-            modalTemplate: _.template(templateModal),
+            innerModalTemplate: _.template(innerModalTemplate),
+            modalTemplate: _.template(modalTemplate),
 
             /**
              * {@inheritdoc}
@@ -155,17 +158,17 @@ define(
 
                 FormBuilder.build('pimee-product-asset-picker-form').then(form => {
                     let modal = new Backbone.BootstrapModal({
-                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
-                        allowCancel: true,
                         okCloses: false,
-                        title: '',
+                        title: __('pimee_product_asset.form.product.asset.title'),
+                        innerDescription: __('pimee_product_asset.form.product.asset.description'),
                         content: '',
-                        cancelText: ' ',
-                        okText: __('pim_common.confirm')
+                        okText: __('pim_common.confirm'),
+                        template: this.modalTemplate,
+                        className: 'AknFullPage--full',
                     });
                     modal.open();
 
@@ -233,7 +236,7 @@ define(
                         },
                         allowCancel: true,
                         okCloses: false,
-                        template: this.modalTemplate,
+                        template: this.innerModalTemplate,
                         assets: assets,
                         locale: this.context.locale,
                         scope: this.context.scope,
