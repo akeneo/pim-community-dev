@@ -138,9 +138,9 @@ class ParsedFilename implements ParsedFilenameInterface
 
     private function sanitizeFileName(string $filename): string
     {
-        $filename = basename(trim($filename));
-        $filename = mb_ereg_replace('[^A-Za-z0-9.-]', '_', $filename);
+        $filnamePathParts = pathinfo(trim($filename));
+        $sanitizedFilename = mb_ereg_replace('[^A-Za-z0-9-]', '_', $filnamePathParts['filename']);
 
-        return $filename;
+        return $sanitizedFilename . '.' . $filnamePathParts['extension'];
     }
 }

@@ -3,6 +3,7 @@
 ## Bug fixed
 
 - PIM-7922: Fix commandline for asset variation generation by using by default the asset reference.
+- PIM-7869: Fix asset invalid code when mass uploading an asset with a "." in the filename
 
 # 2.3.21 (2018-12-07)
 
