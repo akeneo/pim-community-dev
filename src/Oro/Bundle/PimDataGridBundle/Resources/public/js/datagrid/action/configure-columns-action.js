@@ -12,7 +12,7 @@ define(
         'oro/mediator',
         'pim/common/column-list-view',
         'pim/template/datagrid/action-configure-columns',
-        'pim/template/common/modal-with-choices',
+        'pim/template/common/modal-centered',
         'bootstrap-modal',
         'jquery-ui'
     ],

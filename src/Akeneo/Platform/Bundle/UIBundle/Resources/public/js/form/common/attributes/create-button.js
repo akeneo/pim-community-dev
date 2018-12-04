@@ -15,7 +15,7 @@ define(
         'backbone',
         'pim/form',
         'pim/template/form/tab/attribute/create-button',
-        'pim/template/common/modal-with-choices',
+        'pim/template/common/modal-centered',
         'pim/template/form/tab/attribute/create-modal-content',
         'routing',
         'pim/fetcher-registry',
@@ -65,8 +65,8 @@ define(
                     } else {
                         modal = new Backbone.BootstrapModal({
                             // TODO translate this
-                            title: 'Select your type',
-                            subtitle: 'Create attribute',
+                            title: __('pim_enrich.entity.attribute.property.type.choose'),
+                            subtitle: __('pim_enrich.entity.attribute.module.create.button'),
                             content: this.innerTemplateModal({
                                 attributeTypes: attributeTypes,
                                 iconsMap: moduleConfig.attribute_icons,

@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/template/export/product/edit/content/structure/attributes',
-        'pim/template/common/modal-with-choices',
+        'pim/template/common/modal-centered',
         'pim/form',
         'oro/loading-mask',
         'pim/fetcher-registry',

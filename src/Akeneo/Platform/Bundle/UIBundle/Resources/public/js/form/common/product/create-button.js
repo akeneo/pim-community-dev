@@ -18,7 +18,7 @@ define(
         'bootstrap-modal',
         'pim/form-builder',
         'pim/security-context',
-        'pim/template/common/modal-with-choices'
+        'pim/template/common/modal-centered'
     ],
     function (
         $,

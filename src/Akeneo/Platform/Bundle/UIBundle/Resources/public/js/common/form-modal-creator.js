@@ -9,7 +9,7 @@ define(
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n',
-        'pim/template/common/modal-with-choices'
+        'pim/template/common/modal-centered'
     ],
     function(
         _,

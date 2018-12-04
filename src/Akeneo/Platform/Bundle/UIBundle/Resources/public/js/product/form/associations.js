@@ -16,7 +16,7 @@ define(
         'pim/form',
         'pim/template/product/tab/associations',
         'pim/template/product/tab/association-panes',
-        'pim/template/common/modal-with-choices',
+        'pim/template/common/modal-centered',
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/user-context',

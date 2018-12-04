@@ -731,7 +731,6 @@ config:
     pim/family-edit-form/add-family-variant-header:                     pimui/js/family/form/variants/add-family-variant-header
     pim/family-edit-form/add-family-variant-fields-container:           pimui/js/family/form/variants/add-family-variant-fields-container
 
-    pim/family-variant-edit-form/edit:                                  pimui/js/family-variant/form/edit
     pim/family-variant-edit-form/attribute-set:                         pimui/js/family-variant/form/attribute-set
     pim/family-variant-edit-form/labels-container:                      pimui/js/family-variant/form/labels-container
     pim/family-variant-edit-form/save:                                  pimui/js/family-variant/form/save
@@ -1063,8 +1062,7 @@ config:
     pim/template/common/item-picker-basket:                   pimui/templates/common/item-picker-basket.html
     pim/template/common/description-header:                   pimui/templates/common/description-header.html
     pim/template/common/modal-with-illustration:              pimui/templates/common/modal-with-illustration.html
-    # TODO Find a better name
-    pim/template/common/modal-with-choices:                   pimui/templates/common/modal-with-choices.html
+    pim/template/common/modal-centered:                       pimui/templates/common/modal-centered.html
 
     pim/template/form/group-selector:                         pimui/templates/form/group-selector.html
     pim/template/form/save:                                   pimui/templates/form/save.html

@@ -27,7 +27,7 @@ define(
             template: _.template(template),
 
             render() {
-                // TODO Refactor using 'pim/template/common/modal-with-illustration'
+                // This can probably be refactored using 'pim/template/common/modal-with-illustration'
                 this.$el.html(this.template({
                     okLabel: __('pim_common.save'),
                 }));

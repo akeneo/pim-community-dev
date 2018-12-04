@@ -10,7 +10,7 @@ const buttonTemplate = require('pim/template/datagrid/column-selector/button');
 const columnsTemplate = require('pim/template/datagrid/column-selector/columns');
 const innerModalTemplate = require('pim/template/datagrid/column-selector/modal');
 const selectedTemplate = require('pim/template/datagrid/column-selector/selected');
-const modalTemplate = require('pim/template/common/modal-with-choices');
+const modalTemplate = require('pim/template/common/modal-centered');
 
 interface AttributeGroup {
   code: string;
