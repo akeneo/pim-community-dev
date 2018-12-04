@@ -26,8 +26,8 @@ define(
         __,
         Backbone,
         template,
-        modalTemplate,
-        innerModalTemplate,
+        manageAssetModalTemplate,
+        previewModalTemplate,
         FetcherRegistry,
         FormBuilder,
         Routing,
@@ -44,8 +44,8 @@ define(
                 'click .asset-thumbnail-item': 'updateAssetsFromPreview',
                 'click .upload-assets': 'uploadAssets'
             },
-            innerModalTemplate: _.template(innerModalTemplate),
-            modalTemplate: _.template(modalTemplate),
+            previewModalTemplate: _.template(previewModalTemplate),
+            manageAssetModalTemplate: _.template(manageAssetModalTemplate),
 
             /**
              * {@inheritdoc}
@@ -167,7 +167,7 @@ define(
                         innerDescription: __('pimee_product_asset.form.product.asset.description'),
                         content: '',
                         okText: __('pim_common.confirm'),
-                        template: this.modalTemplate,
+                        template: this.manageAssetModalTemplate,
                         className: 'AknFullPage--full',
                     });
                     modal.open();
@@ -229,26 +229,27 @@ define(
 
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
                     const modal = new Backbone.BootstrapModal({
-                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
-                        allowCancel: true,
                         okCloses: false,
-                        template: this.innerModalTemplate,
-                        assets: assets,
-                        locale: this.context.locale,
-                        scope: this.context.scope,
-                        content: '',
-                        thumbnailFilter: 'thumbnail',
-                        assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
-                        downloadLabel: __('pimee_product_asset.form.product.asset.download'),
-                        removeLabel: __('pimee_product_asset.form.product.asset.remove'),
-                        yesLabel: __('pimee_product_asset.form.product.asset.yes'),
-                        noLabel: __('pimee_product_asset.form.product.asset.no'),
-                        confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
-                        canRemoveAsset: aclGranted && 'view' !== editMode
+                        template: this.manageAssetModalTemplate,
+                        title: __('pimee_product_asset.form.product.asset.preview_title'),
+                        okText: '',
+                        innerDescription: ' ',
+                        content: this.previewModalTemplate({
+                            assets,
+                            locale: this.context.locale,
+                            scope: this.context.scope,
+                            thumbnailFilter: 'thumbnail',
+                            downloadLabel: __('pimee_product_asset.form.product.asset.download'),
+                            removeLabel: __('pimee_product_asset.form.product.asset.remove'),
+                            yesLabel: __('pimee_product_asset.form.product.asset.yes'),
+                            noLabel: __('pimee_product_asset.form.product.asset.no'),
+                            confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
+                            canRemoveAsset: aclGranted && 'view' !== editMode,
+                        }),
                     });
                     modal.open();
 
