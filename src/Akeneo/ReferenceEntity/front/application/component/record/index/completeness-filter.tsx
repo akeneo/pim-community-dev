@@ -63,8 +63,8 @@ const CompletenessFilterItemView = ({
 export enum CompletenessValue {
   All = 'all',
   Yes = 'yes',
-  No = 'no'
-};
+  No = 'no',
+}
 
 export default class CompletenessFilter extends React.Component<Props> {
   private getCompletenessFilter = (): DropdownElement[] => {

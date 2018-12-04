@@ -4,7 +4,7 @@ import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
 import {updateFilter, removeFilter, gridStateUpdated} from 'akeneoreferenceentity/application/event/search';
-import {CompletenessValue} from "akeneoreferenceentity/application/component/record/index/completeness-filter";
+import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 const stateToQuery = async (state: EditState): Promise<Query> => {
   return {

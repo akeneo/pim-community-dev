@@ -1,5 +1,5 @@
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {CompletenessValue} from "akeneoreferenceentity/application/component/record/index/completeness-filter";
+import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 class InvalidArgumentError extends Error {}
 
@@ -25,11 +25,11 @@ export const getCompletenessFilter = (filters: Filter[]): CompletenessValue => {
       case true:
         completenessValue = CompletenessValue.Yes;
         break;
-      case false :
+      case false:
         completenessValue = CompletenessValue.No;
         break;
     }
   }
 
   return completenessValue;
-}
+};
