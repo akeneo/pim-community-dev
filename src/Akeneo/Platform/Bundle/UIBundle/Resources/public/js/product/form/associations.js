@@ -684,7 +684,7 @@ define(
                                 content: '',
                                 okText: __('pim_common.confirm'),
                                 template: this.modalTemplate,
-                                full: true,
+                                className: 'AknFullPage--full',
                             });
 
                             modal.open();

@@ -398,8 +398,7 @@ class ColumnSelector extends BaseView {
         innerDescription: __('pim_datagrid.column_configurator.description'),
         okText: __('pim_common.apply'),
         template: this.changethename,
-        // TODO Not fan of this wording. Maybe add a 'class' variable instead.
-        full: true,
+        className: 'AknFullPage--full',
         content: this.modalTemplate({
           groups,
           attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),

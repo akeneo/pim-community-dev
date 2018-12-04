@@ -1,11 +1,11 @@
-<div class="AknFullPage<% if (typeof full !== 'undefined' && full) { %> AknFullPage--full<% } %>">
+<div class="AknFullPage<% if (typeof className !== 'undefined') { %> <%- className %><% } %>">
   <div class="AknFullPage-content">
       <% if (typeof subtitle !== 'undefined') { %>
         <div class="AknFullPage-subTitle"><%- subtitle %></div>
       <% } %>
       <div class="AknFullPage-title"><%- title %></div>
       <% if (typeof innerDescription !== 'undefined') { %>
-          <div class="AknFullPage-description">
+          <div class="AknFullPage-description description">
               <%- innerDescription %>
           </div>
       <% } %>

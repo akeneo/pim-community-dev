@@ -55,7 +55,7 @@ define(
                                 subtitle: __('Code')  + ': ' + familyVariant.code,
                                 template: _.template(modalTemplate),
                                 okText: '',
-                                full: true,
+                                className: 'AknFullPage--full',
                             });
                             modal.open();
 

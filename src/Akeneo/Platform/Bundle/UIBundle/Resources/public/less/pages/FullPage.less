@@ -10,13 +10,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  z-index: 900;
+  z-index: 1040;
   overflow: hidden;
   align-items: center;
   padding: 20px 0;
 
   &--withBottom {
     height: ~"calc(100vh - 110px)";
+  }
+
+  &--fixedWidth &-content {
+    padding-left: ~"calc((100vw - 1080px) / 2)";
+    padding-right: ~"calc((100vw - 1080px) / 2)";
   }
 
   &--full {
@@ -62,14 +67,14 @@
     background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
     cursor: pointer;
     border: none;
-    z-index: 1040;
+    z-index: 1050;
   }
 
   &-previous {
     position: absolute;
     top: @AknFullPagePadding;
     left: @AknFullPagePadding + 40px;
-    z-index: 1040;
+    z-index: 1050;
   }
 
   &-subTitle {
@@ -112,7 +117,7 @@
 
   &-ok {
     position: fixed;
-    z-index: 900;
+    z-index: 1050;
     right: 20px;
     top: 20px;
   }
@@ -230,29 +235,6 @@
   }
 
   /*
-
-  &-content {
-    display: flex;
-    justify-content: center;
-    overflow: auto;
-    flex: 1;
-
-    &--visible {
-      overflow: visible;
-    }
-
-    &--column {
-      flex-direction: column;
-      justify-content: space-around;
-      flex-grow: 1;
-    }
-  }
-
-  &-content--column &-subTitle,
-  &-content--column &-title {
-    margin:auto;
-    text-align: center;
-  }
 
   &-upperTitle {
     position: relative;
