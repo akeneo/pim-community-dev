@@ -67,7 +67,7 @@ interface DispatchProps {
     onSearchUpdated: (userSearch: string) => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
-    onCompletenessFilterUpdated: (completenessValue: boolean | null) => void;
+    onCompletenessFilterUpdated: (completenessValue: string) => void;
     onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onOpenDeleteAllRecordsModal: () => void;
@@ -263,7 +263,7 @@ export default connect(
         onSearchUpdated: (userSearch: string) => {
           dispatch(searchUpdated(userSearch));
         },
-        onCompletenessFilterUpdated: (completenessValue: boolean) => {
+        onCompletenessFilterUpdated: (completenessValue: string) => {
           dispatch(completenessFilterUpdated(completenessValue));
         },
         onRecordCreationStart: () => {

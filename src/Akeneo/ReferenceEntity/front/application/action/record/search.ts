@@ -4,6 +4,7 @@ import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
 import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
 import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
 import {updateFilter, removeFilter, gridStateUpdated} from 'akeneoreferenceentity/application/event/search';
+import {CompletenessValue} from "akeneoreferenceentity/application/component/record/index/completeness-filter";
 
 const stateToQuery = async (state: EditState): Promise<Query> => {
   return {
@@ -41,11 +42,17 @@ export const searchUpdated = (searchInput: string) => (dispatch: any) => {
   dispatch(gridStateUpdated());
 };
 
-export const completenessFilterUpdated = (completeValue: boolean | null) => (dispatch: any) => {
-  if (null === completeValue) {
-    dispatch(removeFilter('complete'));
-  } else {
-    dispatch(updateFilter('complete', '=', completeValue));
+export const completenessFilterUpdated = (completenessValue: string) => (dispatch: any) => {
+  switch (completenessValue) {
+    case CompletenessValue.All:
+      dispatch(removeFilter('complete'));
+      break;
+    case CompletenessValue.Yes:
+      dispatch(updateFilter('complete', '=', true));
+      break;
+    case CompletenessValue.No:
+      dispatch(updateFilter('complete', '=', false));
+      break;
   }
 
   dispatch(updateRecordResults(false));

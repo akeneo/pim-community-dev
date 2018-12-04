@@ -12,7 +12,7 @@ import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/re
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
 import CompletenessFilter from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
@@ -58,7 +58,7 @@ interface TableDispatch {
   onDeleteRecord: (recordCode: RecordCode, label: string) => void;
   onNeedMoreResults: () => void;
   onSearchUpdated: (userSearch: string) => void;
-  onCompletenessFilterUpdated: (completenessValue: boolean | null) => void;
+  onCompletenessFilterUpdated: (completenessValue: string) => void;
 }
 
 interface TableProps extends TableState, TableDispatch {}
@@ -167,9 +167,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   render(): JSX.Element | JSX.Element[] {
     const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
     const userSearch = getFilter(grid.filters, 'full_text').value;
-    const completenessValue = grid.filters.find((filter: Filter) => filter.field === 'complete')
-      ? getFilter(grid.filters, 'complete').value
-      : null;
+    const completenessValue = getCompletenessFilter(grid.filters);
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
 
     const noResult = 0 === grid.records.length && false === grid.isLoading;

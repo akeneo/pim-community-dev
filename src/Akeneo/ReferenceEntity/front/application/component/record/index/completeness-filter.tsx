@@ -4,8 +4,8 @@ import Key from 'akeneoreferenceentity/tools/key';
 import __ from 'akeneoreferenceentity/tools/translator';
 
 type Props = {
-  value: boolean | null;
-  onChange: (newValue: boolean | null) => void;
+  value: string;
+  onChange: (newValue: string) => void;
 };
 
 const CompletenessFilterButtonView = ({
@@ -24,7 +24,7 @@ const CompletenessFilterButtonView = ({
       if (Key.Space === event.key) onClick();
     }}
   >
-    {__('Complete')}
+    {__('pim_reference_entity.record.grid.filter.completeness.label')}
     :&nbsp;
     <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
       {selectedElement.label}
@@ -60,53 +60,42 @@ const CompletenessFilterItemView = ({
   );
 };
 
+export enum CompletenessValue {
+  All = 'all',
+  Yes = 'yes',
+  No = 'no'
+};
+
 export default class CompletenessFilter extends React.Component<Props> {
-  private value: string;
   private getCompletenessFilter = (): DropdownElement[] => {
     return [
       {
-        identifier: 'all',
-        label: 'ALL',
-        original: 'completeness',
+        identifier: CompletenessValue.All,
+        label: __('pim_reference_entity.record.grid.filter.completeness.all'),
       },
       {
-        identifier: 'yes',
-        label: 'YES',
-        original: 'completeness',
+        identifier: CompletenessValue.Yes,
+        label: __('pim_reference_entity.record.grid.filter.completeness.yes'),
       },
       {
-        identifier: 'no',
-        label: 'NO',
-        original: 'completeness',
+        identifier: CompletenessValue.No,
+        label: __('pim_reference_entity.record.grid.filter.completeness.no'),
       },
     ];
   };
 
   onCompletenessUpdated(event: DropdownElement) {
-    let completenessValue: boolean | null;
-    if ('all' === event.identifier) {
-      completenessValue = null;
-    } else {
-      completenessValue = 'yes' === event.identifier ? true : false;
-    }
-
-    this.props.onChange(completenessValue);
+    this.props.onChange(event.identifier);
   }
 
   render() {
-    if (null === this.props.value) {
-      this.value = 'all';
-    } else {
-      this.value = true === this.props.value ? 'yes' : 'no';
-    }
-
     return (
       <Dropdown
         ItemView={CompletenessFilterItemView}
         ButtonView={CompletenessFilterButtonView}
-        label={__('Complete')}
+        label={__('pim_reference_entity.record.grid.filter.completeness.label')}
         elements={this.getCompletenessFilter()}
-        selectedElement={this.value}
+        selectedElement={this.props.value}
         onSelectionChange={this.onCompletenessUpdated.bind(this)}
         className="complete-filter AknFilterBox-filterContainer"
       />
