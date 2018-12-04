@@ -17,15 +17,15 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMapping
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 {
@@ -42,32 +42,30 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(UpdateAttributesMappingByFamilyHandler::class);
     }
 
-    public function it_throws_an_exception_if_family_does_not_exist(
-        UpdateAttributesMappingByFamilyCommand $command,
-        FamilyRepositoryInterface $familyRepository
-    ): void {
-        $command->getFamilyCode()->willReturn('router');
+    public function it_throws_an_exception_if_family_does_not_exist($familyRepository): void
+    {
         $familyRepository->findOneByIdentifier('router')->willReturn(null);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('handle', [$command]);
+        $command = new UpdateAttributesMappingByFamilyCommand('router', []);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
     public function it_throws_an_exception_if_an_attribute_does_not_exist(
-        UpdateAttributesMappingByFamilyCommand $command,
-        FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeMapping $attributeMapping
+        $familyRepository,
+        $attributeRepository
     ): void {
-        $command->getFamilyCode()->willReturn('router');
-        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
+        $familyRepository->findOneByIdentifier('router')->willReturn(Argument::type(FamilyInterface::class));
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn(null);
 
-        $attributeCode = 'memory';
-        $attributeMapping->getPimAttributeCode()->willReturn($attributeCode);
-
-        $command->getAttributesMapping()->willReturn([$attributeMapping]);
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn(null);
+        $command = new UpdateAttributesMappingByFamilyCommand('router', [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Memory',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'random_access_memory',
+            ],
+        ]);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
@@ -75,50 +73,53 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_mapping_type_is_invalid(
-        UpdateAttributesMappingByFamilyCommand $command,
-        AttributeMapping $attributeMapping,
-        FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository,
+        $familyRepository,
+        $attributeRepository,
         AttributeInterface $attribute
     ): void {
-        $command->getFamilyCode()->willReturn('router');
-        $command->getAttributesMapping()->willReturn([$attributeMapping]);
+        $command = new UpdateAttributesMappingByFamilyCommand('router', [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Memory',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'random_access_memory',
+            ],
+        ]);
 
-        $attributeCode = 'memory';
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
-        $attributeMapping->getPimAttributeCode()->willReturn($attributeCode);
-        $attributeMapping->setAttribute($attribute)->shouldNotBeCalled();
 
-        $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
-        $attribute->getType()->willReturn('pim_catalog_metric');
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($attribute);
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
 
         $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
     }
 
     public function it_fills_attribute_and_calls_data_provider(
-        UpdateAttributesMappingByFamilyCommand $command,
-        FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeMapping $attributeMapping,
-        AttributeInterface $attribute,
-        $attributesMappingProvider
+        $familyRepository,
+        $attributeRepository,
+        $attributesMappingProvider,
+        AttributeInterface $memoryAttribute
     ): void {
-        $command->getFamilyCode()->willReturn('router');
+        $attributeMapping = [
+            'memory' => [
+                'franklinAttribute' => [
+                    'label' => 'Memory',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'random_access_memory',
+            ],
+        ];
+        $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
+
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 
-        $attributeCode = 'memory';
+        $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
+        $memoryAttribute->getType()->willReturn('pim_catalog_metric');
 
-        $attributeMapping->getPimAttributeCode()->willReturn($attributeCode);
-
-        $command->getAttributesMapping()->willReturn([$attributeMapping]);
-        $attributeRepository->findOneByIdentifier($attributeCode)->willReturn($attribute);
-
-        $attributeMapping->getTargetAttributeType()->willReturn('multiselect');
-        $attribute->getType()->willReturn('pim_catalog_multiselect');
-
-        $attributeMapping->setAttribute($attribute)->shouldBeCalled();
-        $attributesMappingProvider->updateAttributesMapping('router', [$attributeMapping])->shouldBeCalled();
+        $attributesMappingProvider
+            ->updateAttributesMapping('router', $command->getAttributesMapping())
+            ->shouldBeCalled();
 
         $this->handle($command);
     }
