@@ -59,4 +59,14 @@ interface SubscriptionApiInterface extends AuthenticatedApi
      * @throws FranklinServerException
      */
     public function unsubscribeProduct(string $subscriptionId): void;
+
+    /**
+     * @param string $subscriptionId
+     * @param array $familyInfos
+     *
+     * @throws BadRequestException
+     * @throws InvalidTokenException
+     * @throws FranklinServerException
+     */
+    public function updateFamilyInfos(string $subscriptionId, array $familyInfos): void;
 }

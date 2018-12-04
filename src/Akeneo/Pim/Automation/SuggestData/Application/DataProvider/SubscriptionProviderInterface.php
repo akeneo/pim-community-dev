@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubsc
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductSubscriptionResponseCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -52,4 +53,12 @@ interface SubscriptionProviderInterface
      * @return \Iterator
      */
     public function fetch(): \Iterator;
+
+    /**
+     * @param string $subscriptionId
+     * @param FamilyInterface $family
+     *
+     * @throws ProductSubscriptionException
+     */
+    public function updateFamilyInfos(string $subscriptionId, FamilyInterface $family): void;
 }

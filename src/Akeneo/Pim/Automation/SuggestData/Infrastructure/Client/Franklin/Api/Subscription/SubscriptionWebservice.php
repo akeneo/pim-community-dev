@@ -131,4 +131,37 @@ class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInter
             );
         }
     }
+
+    /**
+     * @param string $subscriptionId
+     * @param array $familyInfos
+     */
+    public function updateFamilyInfos(string $subscriptionId, array $familyInfos): void
+    {
+        $route = $this->uriGenerator->generate(
+            sprintf('/api/subscriptions/%s/family', $subscriptionId)
+        );
+
+        try {
+            $this->httpClient->request(
+                'PUT',
+                $route,
+                [
+                    'form_params' => $familyInfos,
+                ]
+            );
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf('Something went wrong on Franklin side during subscription update: %s', $e->getMessage())
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
+            throw new BadRequestException(
+                sprintf('Something went wrong during subscription update: %s', $e->getMessage())
+            );
+        }
+    }
 }

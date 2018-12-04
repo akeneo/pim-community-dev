@@ -33,7 +33,9 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsC
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -192,6 +194,29 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $subscriptionApi->fetchProducts()->willThrow($clientException);
 
         $this->shouldThrow(new ProductSubscriptionException('An exception message'))->during('fetch');
+    }
+
+    public function it_updates_family_infos_for_a_subscription($subscriptionApi): void
+    {
+        $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
+        $subscriptionApi->updateFamilyInfos(
+            '123456-987654',
+            [
+                'code' => 'new_family_code',
+                'label' => [
+                    'en_US' => 'My new family label',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $translation = new FamilyTranslation();
+        $translation->setLocale('en_US');
+        $translation->setLabel('My new family label');
+        $family = new Family();
+        $family->setCode('new_family_code');
+        $family->addTranslation($translation);
+
+        $this->updateFamilyInfos('123456-987654', $family);
     }
 
     /**

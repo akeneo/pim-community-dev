@@ -269,6 +269,9 @@ class FakeClient implements ClientInterface
                 $jsonContent = $this->loadFakeData(sprintf('%s/%s-%s', $uri, $key, $options['form_params'][0][$key]));
 
                 return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, [], $jsonContent);
+            case 'PUT':
+                // TODO check form params
+                return new \GuzzleHttp\Psr7\Response(Response::HTTP_OK, []);
             default:
                 throw new \LogicException('Wrong method send for subscription');
         }
