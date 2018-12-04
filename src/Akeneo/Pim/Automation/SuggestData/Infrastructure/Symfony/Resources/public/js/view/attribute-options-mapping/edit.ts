@@ -50,10 +50,8 @@ class AttributeOptionsMapping extends BaseForm {
       attributeOptionStatus: '',
     },
   };
-  private familyLabel: string;
   private familyCode: string;
   private catalogAttributeCode: string;
-  private franklinAttributeLabel: string;
   private franklinAttributeCode: string;
 
   /**
@@ -87,30 +85,6 @@ class AttributeOptionsMapping extends BaseForm {
     } else {
       this.innerRender();
     }
-    return this;
-  }
-
-  /**
-   * Sets the Family label (for the header display)
-   *
-   * @param {string} familyLabel
-   * @return AttributeOptionsMapping
-   */
-  public setFamilyLabel(familyLabel: string): AttributeOptionsMapping {
-    this.familyLabel = familyLabel;
-
-    return this;
-  }
-
-  /**
-   * Sets the Franklin attribute label (for the header display)
-   *
-   * @param {string} franklinAttributeLabel
-   * @return AttributeOptionsMapping
-   */
-  public setFranklinAttributeLabel(franklinAttributeLabel: string): AttributeOptionsMapping {
-    this.franklinAttributeLabel = franklinAttributeLabel;
-
     return this;
   }
 
@@ -184,10 +158,6 @@ class AttributeOptionsMapping extends BaseForm {
   private innerRender(): void {
     const mapping = this.getFormData().mapping as NormalizedAttributeOptionsMapping;
     this.$el.html(this.template({
-      title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
-        familyLabel: this.familyLabel,
-        franklinAttributeLabel: this.franklinAttributeLabel,
-      }),
       mapping,
       franklinAttributeOption: __(this.config.labels.franklinAttributeOption),
       catalogAttributeOption: __(this.config.labels.catalogAttributeOption),

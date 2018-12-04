@@ -1,33 +1,24 @@
-<script>alert("attribute-options-mapping/edit.html");</script>
-
-<div class="AknFullPage-upperTitle">
-    <div class="AknFullPage-title title"><%- title %></div>
-    <div class="AknFullPage-description"></div>
-</div>
-
-<div class="AknFullPage-centeredContent">
-    <div data-drop-zone="header"></div>
-    <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
-    <table class="AknGrid AknGrid--unclickable">
-        <tr class="AknGrid-header">
-            <th class="AknGrid-headerCell"><%- franklinAttributeOption %></th>
-            <th class="AknGrid-headerCell"><%- catalogAttributeOption %></th>
-            <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeOptionStatus %></th>
-        </tr>
-        <% Object.keys(mapping).forEach((franklinAttributeOptionCode) => { %>
-        <tr
-                class="AknGrid-bodyRow searchable-row"
-                data-franklin-attribute-option="<%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>"
-                data-status="<%- mapping[franklinAttributeOptionCode].status %>"
-        >
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
-                <%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>
-            </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklinAttributeOptionCode %>"/>
-            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--big">
-                <%- statuses[mapping[franklinAttributeOptionCode].status] %>
-            </td>
-        </tr>
-        <% }) %>
-    </table>
-</div>
+<div data-drop-zone="header"></div>
+<div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
+<table class="AknGrid AknGrid--unclickable">
+    <tr class="AknGrid-header">
+        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklinAttributeOption %></th>
+        <th class="AknGrid-headerCell"><%- catalogAttributeOption %></th>
+        <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeOptionStatus %></th>
+    </tr>
+    <% Object.keys(mapping).forEach((franklinAttributeOptionCode) => { %>
+    <tr
+            class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row"
+            data-franklin-attribute-option="<%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>"
+            data-status="<%- mapping[franklinAttributeOptionCode].status %>"
+    >
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
+            <%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>
+        </td>
+        <td class="AknGrid-bodyCell attribute-selector" data-franklin-attribute-code="<%- franklinAttributeOptionCode %>"/>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--big">
+            <%- statuses[mapping[franklinAttributeOptionCode].status] %>
+        </td>
+    </tr>
+    <% }) %>
+</table>
