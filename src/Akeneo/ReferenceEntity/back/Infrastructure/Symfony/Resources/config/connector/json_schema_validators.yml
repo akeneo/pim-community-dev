@@ -1,0 +1,50 @@
+services:
+    akeneo_referenceentity.infrastructure.connector.api.record_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.connector.api.record_properties_validator'
+            - '@akeneo_referenceentity.infrastructure.connector.api.record_values_validator'
+
+    akeneo_referenceentity.infrastructure.connector.api.record_values_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValuesValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.connector.api.record_value_validator_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+
+    akeneo_referenceentity.infrastructure.connector.api.record_properties_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordPropertiesValidator
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_validator_registry:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValueValidatorRegistry
+        arguments:
+            - !tagged akeneo_referenceentity.connector.api.record_value_validator
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_text_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\TextTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_image_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\ImageTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_record_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\RecordTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_option_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\OptionTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_record_collection_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\RecordCollectionTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }
+
+    akeneo_referenceentity.infrastructure.connector.api.record_value_option_collection_type_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\Value\OptionCollectionTypeValidator
+        tags:
+            - { name: akeneo_referenceentity.connector.api.record_value_validator }

@@ -234,6 +234,30 @@ class CreateOrUpdateRecordContext implements Context
         Assert::null($frenchNameValue);
     }
 
+    /**
+     * @When the connector collects a record that has an invalid format
+     */
+    public function theConnectorCollectsARecordThatHasAnInvalidFormat()
+    {
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_format.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about an error indicating that the record has an invalid format
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheRecordHasAnInvalidFormat()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_format.json'
+        );
+    }
+
     private function loadBrandReferenceEntity(): void
     {
         $referenceEntity = ReferenceEntity::create(

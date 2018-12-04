@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Http;
+namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
@@ -21,6 +21,9 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -53,13 +56,17 @@ class CreateOrUpdateRecordAction
     /** @var Router */
     private $router;
 
+    /** @var RecordValidator */
+    private $recordStructureValidator;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         RecordExistsInterface $recordExists,
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
         CreateRecordHandler $createRecordHandler,
-        Router $router
+        Router $router,
+        RecordValidator $recordStructureValidator
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->recordExists = $recordExists;
@@ -67,6 +74,7 @@ class CreateOrUpdateRecordAction
         $this->editRecordHandler = $editRecordHandler;
         $this->createRecordHandler = $createRecordHandler;
         $this->router = $router;
+        $this->recordStructureValidator = $recordStructureValidator;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $code): Response
@@ -83,7 +91,15 @@ class CreateOrUpdateRecordAction
         }
 
         $normalizedRecord = $this->getNormalizedRecordFromRequest($request);
-        // TODO: validate the structure with JSON Schema
+        $structureErrors = $this->recordStructureValidator->validate($referenceEntityIdentifier, $normalizedRecord);
+
+        if (!empty($structureErrors)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The record has an invalid format.',
+                'errors' => JsonSchemaErrorsFormatter::format($structureErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         try {
             $createRecordCommand = $this->createRecordCommandIfNeeded($referenceEntityIdentifier, $recordCode);

@@ -15,3 +15,8 @@ Feature: Connection to MDM or ERP systems
     When the connector collects this record from the ERP to synchronize it with the PIM
     Then the record is correctly synchronized in the PIM with the information from the ERP
 
+  @integration-back
+  Scenario: Notify an error when collecting a record that has an invalid format
+    Given the Brand reference entity with some records
+    When the connector collects a record that has an invalid format
+    Then the PIM notifies the connector about an error indicating that the record has an invalid format

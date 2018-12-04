@@ -33,6 +33,7 @@ $rules = [
         'Ramsey\Uuid\Uuid',
         'Symfony',
         'Webmozart\Assert\Assert',
+        'JsonSchema\Validator',
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 
