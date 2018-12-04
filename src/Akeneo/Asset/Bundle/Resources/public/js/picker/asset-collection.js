@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
-        'pim/template/common/modal-with-choices',
+        'pim/template/common/modal-centered',
         'pimee/template/picker/asset-collection-preview',
         'pim/fetcher-registry',
         'pim/form-builder',

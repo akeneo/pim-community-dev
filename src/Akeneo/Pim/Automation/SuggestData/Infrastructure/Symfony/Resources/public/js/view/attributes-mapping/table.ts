@@ -11,8 +11,6 @@ import {EventsHash} from 'backbone';
 import * as $ from 'jquery';
 import NormalizedAttribute from 'pim/model/attribute';
 import BaseView = require('pimui/js/view/base');
-// TODO Revert this commit with @Tamara
-// import BootstrapModal = require('bootstrap-modal');
 import * as _ from 'underscore';
 import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
@@ -25,7 +23,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 const FormBuilder = require('pim/form-builder');
 const Router = require('pim/router');
 const template = require('akeneo/suggest-data/template/settings/attributes-mapping/table');
-const modalTemplate = require('pim/template/common/modal-with-choices');
+const modalTemplate = require('pim/template/common/modal-centered');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 
