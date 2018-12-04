@@ -12,10 +12,11 @@ import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 
-export interface RecordSelectorProps {
+export type RecordSelectorProps = {
   value: RecordCode[] | RecordCode | null;
   referenceEntityIdentifier: ReferenceEntityIdentifier;
   multiple?: boolean;
+  readonly?: boolean;
   locale: LocaleReference;
   channel: ChannelReference;
   placeholder: string;
@@ -28,6 +29,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   PAGE_SIZE = 200;
   static defaultProps = {
     multiple: false,
+    readonly: false,
   };
   private el: any;
 
@@ -168,14 +170,19 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
             );
         },
       });
-      this.el.on('change', (event: any) => {
-        const newValue = this.props.multiple
-          ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
-          : '' === event.val
-            ? null
-            : RecordCode.create(event.val);
-        this.props.onChange(newValue);
-      });
+
+      if (!this.props.readonly) {
+        this.el.select2('readonly', true);
+
+        this.el.on('change', (event: any) => {
+          const newValue = this.props.multiple
+            ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
+            : '' === event.val
+              ? null
+              : RecordCode.create(event.val);
+          this.props.onChange(newValue);
+        });
+      }
     }
   }
 
@@ -202,6 +209,6 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   render(): JSX.Element | JSX.Element[] {
     const {referenceEntityIdentifier, ...props} = this.props;
 
-    return <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} />;
+    return <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} disabled={this.props.readonly}/>;
   }
 }
