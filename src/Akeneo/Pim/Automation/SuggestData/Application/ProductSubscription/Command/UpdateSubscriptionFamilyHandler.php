@@ -13,16 +13,43 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\SubscriptionProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
+
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class UpdateSubscriptionFamilyHandler
 {
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $productSubscriptionRepository;
+
+    /** @var SubscriptionProviderInterface */
+    private $subscriptionProvider;
+
+    /**
+     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+     * @param SubscriptionProviderInterface $subscriptionProvider
+     */
+    public function __construct(
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
+        SubscriptionProviderInterface $subscriptionProvider
+    ) {
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->subscriptionProvider = $subscriptionProvider;
+    }
+
     /**
      * @param UpdateSubscriptionFamilyCommand $command
      */
     public function handle(UpdateSubscriptionFamilyCommand $command): void
     {
-        // TODO: implement
+        $subscription = $this->productSubscriptionRepository->findOneByProductId($command->productId());
+        if (null === $subscription) {
+            return;
+        }
+
+        $this->subscriptionProvider->updateFamilyInfos($subscription->getSubscriptionId(), $command->family());
+        // TODO: empty suggested_data? misses_mapping? dispatch an event?
     }
 }

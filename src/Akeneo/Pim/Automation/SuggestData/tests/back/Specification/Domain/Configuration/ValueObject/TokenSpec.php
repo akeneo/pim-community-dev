@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\ValueObject;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use PhpSpec\ObjectBehavior;

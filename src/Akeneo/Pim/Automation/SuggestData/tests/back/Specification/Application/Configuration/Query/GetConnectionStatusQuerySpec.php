@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConnectionStatusQuery;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class GetConnectionStatusQuerySpec
+class GetConnectionStatusQuerySpec extends ObjectBehavior
 {
     public function it_is_a_get_connection_status_query(): void
     {

@@ -14,17 +14,13 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Query\GetConfigurationQuery;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class GetConfigurationQuerySpec
+class GetConfigurationQuerySpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-        $this->beConstructedWith();
-    }
-
     public function it_is_a_get_configuration_query(): void
     {
         $this->shouldHaveType(GetConfigurationQuery::class);

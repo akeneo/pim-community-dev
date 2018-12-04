@@ -13,9 +13,43 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class UpdateSubscriptionFamilyCommand
+final class UpdateSubscriptionFamilyCommand
 {
+    /** @var int */
+    private $productId;
+
+    /** @var FamilyInterface */
+    private $family;
+
+    /**
+     * @param int $productId
+     * @param FamilyInterface $family
+     */
+    public function __construct(int $productId, FamilyInterface $family)
+    {
+        $this->productId = $productId;
+        // TODO APAI-476: remove the $family argument
+        $this->family = $family;
+    }
+
+    /**
+     * @return int
+     */
+    public function productId(): int
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @return FamilyInterface
+     */
+    public function family(): Familyinterface
+    {
+        return $this->family;
+    }
 }

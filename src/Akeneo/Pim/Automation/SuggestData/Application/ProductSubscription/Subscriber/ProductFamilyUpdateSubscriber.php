@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Up
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductFamilyIdQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -91,7 +92,7 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
         }
 
         if ($product->getFamily()->getId() !== $originalFamilyId) {
-            $this->updateSubscriptionFamily($product->getId());
+            $this->updateSubscriptionFamily($product->getId(), $product->getFamily());
         }
     }
 
@@ -114,15 +115,11 @@ class ProductFamilyUpdateSubscriber implements EventSubscriberInterface
 
     /**
      * @param int $productId
+     * @param FamilyInterface $family
      */
-    private function updateSubscriptionFamily(int $productId): void
+    private function updateSubscriptionFamily(int $productId, FamilyInterface $family): void
     {
-        try {
-            $this->updateSubscriptionFamilyHandler->handle(new UpdateSubscriptionFamilyCommand());
-        } catch (ProductNotSubscribedException $e) {
-            // Silently catch exception if the product is not subscribed
-            // We don't check it here as the handler already checks it. No need to do it twice
-            return;
-        }
+        $command = new UpdateSubscriptionFamilyCommand($productId, $family);
+        $this->updateSubscriptionFamilyHandler->handle($command);
     }
 }

@@ -136,7 +136,7 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $this->onPreSave($event);
     }
 
-    public function it_does_not_update_the_subscrition_family_if_the_product_family_has_not_changed(
+    public function it_does_not_update_the_subscription_family_if_the_product_family_has_not_changed(
         GenericEvent $event,
         ProductInterface $product,
         FamilyInterface $family,
@@ -151,12 +151,12 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $selectProductFamilyIdQuery->execute(42)->willReturn(56);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
-        $updateSubscriptionFamilyHandler->handle(Argument::any())->shouldNotBeCalled();
+        $updateSubscriptionFamilyHandler->handle(Argument::cetera())->shouldNotBeCalled();
 
         $this->onPreSave($event);
     }
 
-    public function it_updates_the_subscrition_family_if_the_product_family_has_changed(
+    public function it_updates_the_subscription_family_if_the_product_family_has_changed(
         GenericEvent $event,
         ProductInterface $product,
         FamilyInterface $family,
@@ -171,7 +171,9 @@ class ProductFamilyUpdateSubscriberSpec extends ObjectBehavior
         $selectProductFamilyIdQuery->execute(42)->willReturn(56);
 
         $unsubscribeProductHandler->handle(Argument::any())->shouldNotBeCalled();
-        $updateSubscriptionFamilyHandler->handle(new UpdateSubscriptionFamilyCommand())->shouldBeCalled();
+        $updateSubscriptionFamilyHandler
+            ->handle(new UpdateSubscriptionFamilyCommand(42, $family->getWrappedObject()))
+            ->shouldBeCalled();
 
         $this->onPreSave($event);
     }
