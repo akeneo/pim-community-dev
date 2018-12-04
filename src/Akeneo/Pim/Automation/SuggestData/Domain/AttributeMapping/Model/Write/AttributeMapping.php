@@ -60,13 +60,11 @@ class AttributeMapping
      * @param string $targetAttributeCode
      * @param string $targetAttributeType
      * @param null|string $pimAttributeCode
-     * @param int|null $status
      */
     public function __construct(
         string $targetAttributeCode,
         string $targetAttributeType,
-        ?string $pimAttributeCode,
-        ?int $status
+        ?string $pimAttributeCode
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
 
@@ -81,12 +79,7 @@ class AttributeMapping
         }
         $this->targetAttributeType = $targetAttributeType;
         $this->pimAttributeCode = empty($pimAttributeCode) ? null : $pimAttributeCode;
-
-        if (null !== $status) {
-            $this->status = $status;
-        } else {
-            $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
-        }
+        $this->status = empty($this->pimAttributeCode) ? self::ATTRIBUTE_UNMAPPED : self::ATTRIBUTE_MAPPED;
     }
 
     /**

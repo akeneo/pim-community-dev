@@ -31,18 +31,15 @@ class AttributesMappingNormalizer
      */
     public function normalize(array $attributesMapping): array
     {
-        $statusMapping = [
-            DomainAttributeMapping::ATTRIBUTE_PENDING => AttributeMapping::STATUS_PENDING,
-            DomainAttributeMapping::ATTRIBUTE_MAPPED => AttributeMapping::STATUS_ACTIVE,
-            DomainAttributeMapping::ATTRIBUTE_UNMAPPED => AttributeMapping::STATUS_INACTIVE,
-        ];
-
         $result = [];
         foreach ($attributesMapping as $attributeMapping) {
+            $status = DomainAttributeMapping::ATTRIBUTE_MAPPED === $attributeMapping->getStatus()
+                ? AttributeMapping::STATUS_ACTIVE : AttributeMapping::STATUS_INACTIVE;
+
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
                 'to' => $this->computeNormalizedAttribute($attributeMapping),
-                'status' => $statusMapping[$attributeMapping->getStatus()],
+                'status' => $status,
             ];
         }
 

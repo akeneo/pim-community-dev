@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttribut
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributesMappingResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -99,7 +98,6 @@ class RemoveAttributeFromAttributeMappingTasklet implements TaskletInterface
 
             if ($mapping->getPimAttributeCode() === $pimAttributeCode) {
                 $attributeMapping['attribute'] = null;
-                $attributeMapping['status'] = AttributeMapping::ATTRIBUTE_PENDING;
             }
 
             $newMapping[$mapping->getTargetAttributeCode()] = $attributeMapping;
