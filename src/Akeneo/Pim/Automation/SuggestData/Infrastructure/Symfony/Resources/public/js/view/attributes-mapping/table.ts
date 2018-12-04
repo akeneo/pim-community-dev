@@ -62,24 +62,21 @@ interface Config {
  * This module will allow user to map the attributes from Franklin to the catalog attributes.
  * It displays a grid with all the attributes to map.
  *
- * The attribute types authorized for the mapping are defined in
- * Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\AttributeMappingController
- *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class AttributeMapping extends BaseView {
-  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family */
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family */
   public static readonly FAMILY_MAPPING_PENDING: number = 0;
   public static readonly FAMILY_MAPPING_FULL: number = 1;
   public static readonly FAMILY_MAPPING_EMPTY: number = 2;
 
-  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
-  /** Duplicated in Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping */
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping */
+  /** Duplicated in Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping */
   private static readonly ATTRIBUTE_PENDING: number = 0;
   private static readonly ATTRIBUTE_MAPPED: number = 1;
   private static readonly ATTRIBUTE_UNMAPPED: number = 2;
 
-  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping */
+  /** Defined in Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping */
   private static readonly PERFECT_MAPPINGS: { [attributeType: string]: string[] } = {
     metric: [ 'pim_catalog_metric' ],
     select: [ 'pim_catalog_simpleselect' ],

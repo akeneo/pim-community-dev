@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMapping
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -90,7 +91,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 
         $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($attribute);
-        $attribute->getType()->willReturn('pim_catalog_multiselect');
+        $attribute->getType()->willReturn(AttributeTypes::DATE);
 
         $this->shouldThrow(AttributeMappingException::class)->during('handle', [$command]);
     }
@@ -99,7 +100,8 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
-        AttributeInterface $memoryAttribute
+        AttributeInterface $memoryAttribute,
+        AttributeInterface $weightAttribute
     ): void {
         $attributeMapping = [
             'memory' => [
@@ -109,13 +111,23 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
                 ],
                 'attribute' => 'random_access_memory',
             ],
+            'weight' => [
+                'franklinAttribute' => [
+                    'label' => 'Weight',
+                    'type' => 'metric',
+                ],
+                'attribute' => 'product_weight',
+            ],
         ];
         $command = new UpdateAttributesMappingByFamilyCommand('router', $attributeMapping);
 
         $familyRepository->findOneByIdentifier('router')->willReturn(Argument::any());
 
         $attributeRepository->findOneByIdentifier('random_access_memory')->willReturn($memoryAttribute);
-        $memoryAttribute->getType()->willReturn('pim_catalog_metric');
+        $memoryAttribute->getType()->willReturn(AttributeTypes::METRIC);
+
+        $attributeRepository->findOneByIdentifier('product_weight')->willReturn($weightAttribute);
+        $weightAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $attributesMappingProvider
             ->updateAttributesMapping('router', $command->getAttributesMapping())

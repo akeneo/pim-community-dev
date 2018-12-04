@@ -58,7 +58,7 @@ akeneo_suggest_data:
             constraint:
                 missing_target_key: 'Missing target key for mapping'
                 missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
-                invalid_attribute_type_mapping: 'The external attribute type "{{ targetType }}" cannot be mapped to PIM attribute type "{{ pimType }}"'
+                invalid_attribute_type_mapping: 'Franklin attributes cannot be mapped to PIM attribute type "{{ pimType }}"'
         product_subscription:
             flash:
                 create:

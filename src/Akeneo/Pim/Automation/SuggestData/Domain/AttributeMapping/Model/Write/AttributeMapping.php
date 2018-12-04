@@ -30,15 +30,14 @@ class AttributeMapping
     /** The attribute was registered to not be mapped */
     public const ATTRIBUTE_UNMAPPED = 2;
 
-    /** @var array */
-    public const ATTRIBUTE_TYPES_MAPPING = [
-        'metric' => AttributeTypes::METRIC,
-        'select' => AttributeTypes::OPTION_SIMPLE_SELECT,
-        'multiselect' => AttributeTypes::OPTION_MULTI_SELECT,
-        'number' => AttributeTypes::NUMBER,
-        'text' => AttributeTypes::TEXT,
-        'boolean' => AttributeTypes::BOOLEAN,
-        'identifier' => AttributeTypes::IDENTIFIER,
+    public const AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS = [
+        AttributeTypes::METRIC => 'metric',
+        AttributeTypes::OPTION_SIMPLE_SELECT => 'select',
+        AttributeTypes::OPTION_MULTI_SELECT => 'multiselect',
+        AttributeTypes::NUMBER => 'number',
+        AttributeTypes::TEXT => 'text',
+        AttributeTypes::TEXTAREA => 'text',
+        AttributeTypes::BOOLEAN => 'boolean',
     ];
 
     /** @var string */
@@ -68,12 +67,12 @@ class AttributeMapping
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
 
-        if (!array_key_exists($targetAttributeType, self::ATTRIBUTE_TYPES_MAPPING)) {
+        $franklinAttributeTypes = array_unique(array_values(static::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS));
+        if (!in_array($targetAttributeType, $franklinAttributeTypes)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Type "%s" does not match with expected types (%s)',
-                    $targetAttributeType,
-                    implode(', ', array_keys(self::ATTRIBUTE_TYPES_MAPPING))
+                    'Provided Franklin attribute type "%s" does not exist.',
+                    $targetAttributeType
                 )
             );
         }

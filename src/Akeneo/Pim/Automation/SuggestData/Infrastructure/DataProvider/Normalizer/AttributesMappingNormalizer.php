@@ -65,12 +65,10 @@ class AttributesMappingNormalizer
                 }
             }
 
-            $attributeTypes = array_flip(DomainAttributeMapping::ATTRIBUTE_TYPES_MAPPING);
-
             $normalizedPimAttribute = [
                 'id' => $attribute->getCode(),
                 'label' => $labels,
-                'type' => $attributeTypes[$attribute->getType()],
+                'type' => DomainAttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute->getType()],
             ];
 
             if (AttributeTypes::METRIC === $attribute->getType()) {
