@@ -10,9 +10,11 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form',
         'pim/template/product/meta/change-family-modal',
+        'pim/template/common/modal-with-illustration',
         'pim/common/select2/family',
         'pim/initselect2',
         'bootstrap-modal',
@@ -20,14 +22,17 @@ define(
     ],
     function (
         _,
+        __,
         Backbone,
         BaseForm,
+        innerModalTemplate,
         modalTemplate,
         Select2Configurator,
         initSelect2
     ) {
         return BaseForm.extend({
             className: 'AknColumn-blockDown change-family',
+            innerModalTemplate: _.template(innerModalTemplate),
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click': 'showModal'
@@ -45,12 +50,17 @@ define(
             },
             showModal: function () {
                 var familyModal = new Backbone.BootstrapModal({
-                    allowCancel: true,
-                    cancelText: _.__('pim_common.cancel'),
-                    title: _.__('pim_enrich.entity.product.module.change_family.title'),
-                    content: this.modalTemplate({
+                    title: __('pim_enrich.entity.product.module.change_family.title'),
+                    content: this.innerModalTemplate({
                         product: this.getFormData()
-                    })
+                    }),
+                    template: this.modalTemplate,
+                    illustrationClass: 'families',
+                    okText: __('pim_common.save'),
+                    cancelText: __('pim_common.cancel'),
+                    contentLabel:
+                        __('pim_enrich.entity.product.module.change_family.merge_attributes') + ' ' +
+                        __('pim_enrich.entity.product.module.change_family.keep_attributes')
                 });
 
                 familyModal.on('ok', function () {
