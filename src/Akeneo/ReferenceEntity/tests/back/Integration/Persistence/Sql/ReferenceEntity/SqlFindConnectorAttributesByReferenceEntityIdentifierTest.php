@@ -37,7 +37,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
-class SqlFindReferenceEntityAttributesByReferenceEntityIdentifierTest extends SqlIntegrationTestCase
+class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlIntegrationTestCase
 {
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
