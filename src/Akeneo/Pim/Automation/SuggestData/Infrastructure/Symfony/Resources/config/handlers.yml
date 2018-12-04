@@ -16,6 +16,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.data_provider.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_query'
 
     akeneo.pim.automation.suggest_data.handler.subscribe_product:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler'
@@ -37,13 +38,13 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.product_subscription'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
-            
+
     akeneo.pim.automation.suggest_data.product_subscription.handler.update_subscription_family:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UpdateSubscriptionFamilyHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@akeneo.pim.automation.suggest_data.data_provider.product_subscription'
-        
+
     akeneo.pim.automation.suggest_data.handler.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler'
         arguments:

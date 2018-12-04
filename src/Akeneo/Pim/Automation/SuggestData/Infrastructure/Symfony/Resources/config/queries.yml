@@ -13,3 +13,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\FamilyAttribute\FindFamilyAttributesNotInQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_query:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\EmptySuggestedDataQuery'
+        arguments:
+            - '@database_connection'
