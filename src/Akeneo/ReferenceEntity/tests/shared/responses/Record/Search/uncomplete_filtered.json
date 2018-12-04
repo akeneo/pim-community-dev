@@ -45,7 +45,11 @@
                         "fr_FR": "Dyson"
                     },
                     "image": null,
-                    "values": []
+                    "values": [],
+                    "completeness": {
+                        "complete": 0,
+                        "required": 1
+                    }
                 }
             ],
             "total": 1

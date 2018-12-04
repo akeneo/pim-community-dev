@@ -97,7 +97,7 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
         $starck->code = 'starck';
         $starck->labels = ['fr_FR' => 'Philippe Starck'];
         $starck->values = [];
-        $starck->completenessPercentage = null;
+        $starck->completeness = ['complete' => 0, 'required' => 0];
         $starck->image = [
             'filePath' => null,
             'originalFilename' => null
@@ -109,7 +109,7 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
         $coco->code = 'coco';
         $coco->labels = ['fr_FR' => 'Coco Chanel'];
         $coco->values = [];
-        $coco->completenessPercentage = null;
+        $coco->completeness = ['complete' => 0, 'required' => 0];
         $coco->image = [
             'filePath' => null,
             'originalFilename' => null
@@ -192,6 +192,6 @@ class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCas
             $actual->image,
             'Image are not the same'
         );
-        $this->assertEquals($expected->completenessPercentage, $actual->completenessPercentage);
+        $this->assertEquals($expected->completeness, $actual->completeness);
     }
 }

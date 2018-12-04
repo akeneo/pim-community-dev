@@ -88,12 +88,12 @@ SQL;
             $image = null !== $result['image'] ? ['filePath' => $image['file_key'], 'originalFilename' => $image['original_filename']] : null;
 
             $valueCollection = $this->cleanValues($result['value_collection']);
-            $completenessPercentage = null;
+            $completeness = ['complete' => 0, 'required' => 0];
 
             if (count($requiredValueKeys) > 0) {
                 $existingValueKeys = array_keys($valueCollection);
-                $completed = count(array_intersect($requiredValueKeys, $existingValueKeys));
-                $completenessPercentage = strval(($completed * 100) / count($requiredValueKeys));
+                $completeness['complete'] = count(array_intersect($requiredValueKeys, $existingValueKeys));
+                $completeness['required'] = count($requiredValueKeys);
             }
 
             $recordItems[] = $this->hydrateRecordItem(
@@ -103,7 +103,7 @@ SQL;
                 $image,
                 $result['labels'],
                 $valueCollection,
-                $completenessPercentage
+                $completeness
             );
         }
 
@@ -117,7 +117,7 @@ SQL;
         ?array $image,
         string $normalizedLabels,
         array $values,
-        ?string $completenessPercentage
+        array $completeness
     ): RecordItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -134,7 +134,7 @@ SQL;
         $recordItem->labels = $labels;
         $recordItem->image = $image;
         $recordItem->values = $values;
-        $recordItem->completenessPercentage = $completenessPercentage;
+        $recordItem->completeness = $completeness;
 
         return $recordItem;
     }

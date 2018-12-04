@@ -52,7 +52,10 @@
                             "data": "an awesome designer!"
                         }
                     },
-                    "completeness_percentage": null
+                    "completeness": {
+                        "complete": 1,
+                        "required": 1
+                    }
                 }
             ],
             "total": 1

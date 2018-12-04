@@ -40,7 +40,10 @@
                     },
                     "image": null,
                     "values": {},
-                    "completeness_percentage": null
+                    "completeness": {
+                        "complete": 0,
+                        "required": 1
+                    }
                 }
             ],
             "total": 1

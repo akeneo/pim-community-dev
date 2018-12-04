@@ -51,6 +51,10 @@
                             "locale": "en_US",
                             "data": "an awesome designer!"
                         }
+                    },
+                    "completeness": {
+                        "complete": 1,
+                        "required": 1
                     }
                 }
             ],

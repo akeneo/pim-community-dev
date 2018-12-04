@@ -73,11 +73,11 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
             }
 
             $valueCollection = $record->getValues()->normalize();
-            $completenessPercentage = null;
+            $completeness = ['complete' => 0, 'required' => 0];
             if (count($requiredValueKeys) > 0) {
                 $existingValueKeys = array_keys($valueCollection);
-                $completed = count(array_intersect($requiredValueKeys, $existingValueKeys));
-                $completenessPercentage = strval(($completed * 100) / count($requiredValueKeys));
+                $completeness['complete'] = count(array_intersect($requiredValueKeys, $existingValueKeys));
+                $completeness['required'] = count($requiredValueKeys);
             }
 
             $recordItem = new RecordItem();
@@ -87,7 +87,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsFo
             $recordItem->labels = $record->normalize()['labels'];
             $recordItem->image = $record->getImage()->normalize();
             $recordItem->values = $record->getValues()->normalize();
-            $recordItem->completenessPercentage = $completenessPercentage;
+            $recordItem->completeness = $completeness;
 
             return $recordItem;
         }, $identifiers)));

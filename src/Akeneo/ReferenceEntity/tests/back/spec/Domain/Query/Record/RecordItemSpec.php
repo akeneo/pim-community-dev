@@ -54,7 +54,10 @@ class RecordItemSpec extends ObjectBehavior
                         'data' => 'A nice name'
                     ]
                 ],
-                'completeness_percentage' => null
+                'completeness' => [
+                    'complete' => 0,
+                    'required' => 0,
+                ]
             ]
         );
     }

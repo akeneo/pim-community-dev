@@ -27,7 +27,7 @@ class RecordItem
     private const LABELS = 'labels';
     private const IMAGE = 'image';
     private const VALUES = 'values';
-    private const COMPLETENESS_PERCENTAGE = 'completeness_percentage';
+    private const COMPLETENESS = 'completeness';
 
     /** @var string */
     public $identifier;
@@ -47,11 +47,13 @@ class RecordItem
     /** @var []|null */
     public $values;
 
-    /** @var ?string */
-    public $completenessPercentage;
+    /** @var array */
+    public $completeness;
 
     public function normalize(): array
     {
+        $defaultCompleteness = ['complete' => 0, 'required' => 0];
+
         return [
             self::IDENTIFIER                  => $this->identifier,
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
@@ -59,7 +61,7 @@ class RecordItem
             self::LABELS                      => $this->labels,
             self::IMAGE                       => $this->image,
             self::VALUES                      => $this->values,
-            self::COMPLETENESS_PERCENTAGE     => $this->completenessPercentage,
+            self::COMPLETENESS                => (null === $this->completeness) ? $defaultCompleteness : $this->completeness,
         ];
     }
 }
