@@ -10,7 +10,7 @@
     "status": 200,
     "body": [
       {
-        "code": "description_brand_test",
+        "code": "description",
         "labels": {
           "en_US": "Description",
           "fr_FR": "Description"
@@ -26,12 +26,12 @@
         "validation_regexp": null,
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/description_brand_test"
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/description"
           }
         }
       },
       {
-        "code": "photo_brand_test",
+        "code": "image",
         "labels": {
           "en_US": "Photo",
           "fr_FR": "Photo"
@@ -44,12 +44,12 @@
         "max_file_size": "10",
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/photo_brand_test"
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/image"
           }
         }
       },
       {
-        "code": "nationality_brand_test",
+        "code": "nationality",
         "labels": {
           "en_US": "Nationality",
           "fr_FR": "Nationalité"
@@ -60,12 +60,12 @@
         "is_required_for_completeness": false,
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/nationality_brand_test"
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/nationality"
           }
         }
       },
       {
-        "code": "sales_areas_brand_test",
+        "code": "sales_areas",
         "labels": {
           "fr_FR": "Zones de vente",
           "en_US": "Sales areas"
@@ -76,12 +76,12 @@
         "is_required_for_completeness": false,
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/sales_areas_brand_test"
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/sales_areas"
           }
         }
       },
       {
-        "code": "country_brand_test",
+        "code": "country",
         "labels": {
           "en_US": "Country",
           "fr_FR": "Pays"
@@ -93,12 +93,12 @@
         "reference_entity_code": "country",
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/country_brand_test"
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/country"
           }
         }
       },
       {
-        "code": "designers_brand_test",
+        "code": "designers",
         "labels": {
           "en_US": "Designers",
           "fr_FR": "Designeurs"
@@ -110,7 +110,7 @@
         "reference_entity_code": "designer",
         "_links": {
           "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/designers_brand_test"
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/designers"
           }
         }
       }

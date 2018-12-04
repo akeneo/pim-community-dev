@@ -77,7 +77,7 @@ SQL;
             $hydratedAttribute = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
 
             $connectorAttribute = new ConnectorAttribute(
-                $hydratedAttribute->getIdentifier(),
+                $hydratedAttribute->getCode(),
                 LabelCollection::fromArray(json_decode($result['labels'], true)),
                 $result['attribute_type'],
                 AttributeValuePerLocale::fromBoolean($hydratedAttribute->hasValuePerLocale()),

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -26,7 +26,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedWith(
-            AttributeIdentifier::fromString('description'),
+            AttributeCode::fromString('description'),
             LabelCollection::fromArray([
                 'en_US' => 'Description',
                 'fr_FR' => 'Description'
@@ -73,7 +73,7 @@ class ConnectorAttributeSpec extends ObjectBehavior
     function it_maps_attribute_types()
     {
         $this->beConstructedWith(
-            AttributeIdentifier::fromString('country'),
+            AttributeCode::fromString('country'),
             LabelCollection::fromArray([
                 'en_US' => 'Country',
                 'fr_FR' => 'Pays'

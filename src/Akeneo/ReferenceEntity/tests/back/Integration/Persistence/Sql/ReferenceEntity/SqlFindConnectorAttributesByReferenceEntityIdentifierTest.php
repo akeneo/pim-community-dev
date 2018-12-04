@@ -131,7 +131,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
 
         return [
             new ConnectorAttribute(
-                $textAttribute->getIdentifier(),
+                $textAttribute->getCode(),
                 LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
                 'text',
                 AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
@@ -146,7 +146,7 @@ class SqlFindConnectorAttributesByReferenceEntityIdentifierTest extends SqlInteg
                 ]
             ),
             new ConnectorAttribute(
-                $imageAttribute->getIdentifier(),
+                $imageAttribute->getCode(),
                 LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
                 'image',
                 AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),

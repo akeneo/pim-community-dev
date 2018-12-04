@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -40,7 +40,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
     public function it_returns_null_when_finding_a_non_existent_reference_entity()
     {
         $connectorAttribute = new ConnectorAttribute(
-            AttributeIdentifier::fromString('description'),
+            AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             'text',
             AttributeValuePerLocale::fromBoolean(true),
@@ -63,7 +63,7 @@ class InMemoryFindConnectorAttributesByReferenceEntityIdentifierTest extends Tes
     public function it_returns_the_attributes_when_finding_an_existing_reference_entity()
     {
         $connectorAttribute = new ConnectorAttribute(
-            AttributeIdentifier::fromString('description'),
+            AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             'text',
             AttributeValuePerLocale::fromBoolean(true),

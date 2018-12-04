@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector;
 
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -33,7 +34,7 @@ class ConnectorAttribute
     ];
 
     /** @var AttributeIdentifier */
-    private $identifier;
+    private $code;
 
     /** @var LabelCollection */
     private $labelCollection;
@@ -54,7 +55,7 @@ class ConnectorAttribute
     private $additionalProperties;
 
     public function __construct(
-        AttributeIdentifier $identifier,
+        AttributeCode $identifier,
         LabelCollection $labelCollection,
         string $type,
         AttributeValuePerLocale $localizable,
@@ -62,7 +63,7 @@ class ConnectorAttribute
         AttributeIsRequired $isRequired,
         array $additionalProperties
     ) {
-        $this->identifier = $identifier;
+        $this->code = $identifier;
         $this->labelCollection = $labelCollection;
         $this->type = $type;
         $this->localizable = $localizable;
@@ -79,7 +80,7 @@ class ConnectorAttribute
     public function normalize(): array
     {
         $commonProperties = [
-            'code' => $this->identifier->normalize(),
+            'code' => $this->code->__toString(),
             'labels' => $this->labelCollection->normalize(),
             'type' => $this->mapAttributeType($this->type),
             'localizable' => $this->localizable->normalize(),

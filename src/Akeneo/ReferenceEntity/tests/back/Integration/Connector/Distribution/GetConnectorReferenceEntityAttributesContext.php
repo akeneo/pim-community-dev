@@ -161,7 +161,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            AttributeCode::fromString('regex'),
+            AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(1),
             AttributeIsRequired::fromBoolean(true),
@@ -175,7 +175,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository->create($textAttribute);
 
         $textConnectorAttribute = new ConnectorAttribute(
-            $textAttribute->getIdentifier(),
+            $textAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             'text',
             AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
@@ -216,7 +216,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository->create($imageAttribute);
 
         $imageAttribute = new ConnectorAttribute(
-            $imageAttribute->getIdentifier(),
+            $imageAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
             'image',
             AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
@@ -252,7 +252,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository->create($optionAttribute);
 
         $optionAttribute = new ConnectorAttribute(
-            $optionAttribute->getIdentifier(),
+            $optionAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Nationality', 'fr_FR' => 'Nationalité']),
             'single_option',
             AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
@@ -285,7 +285,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository->create($optionAttribute);
 
         $optionAttribute = new ConnectorAttribute(
-            $optionAttribute->getIdentifier(),
+            $optionAttribute->getCode(),
             LabelCollection::fromArray(['fr_FR' => 'Zones de vente', 'en_US' => 'Sales areas']),
             'multiple_options',
             AttributeValuePerLocale::fromBoolean($optionAttribute->hasValuePerLocale()),
@@ -318,7 +318,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository->create($linkAttribute);
 
         $linkAttribute = new ConnectorAttribute(
-            $linkAttribute->getIdentifier(),
+            $linkAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Country', 'fr_FR' => 'Pays']),
             'reference_entity_single_link',
             AttributeValuePerLocale::fromBoolean($linkAttribute->hasValuePerLocale()),
@@ -353,7 +353,7 @@ class GetConnectorReferenceEntityAttributesContext implements Context
         $this->attributeRepository->create($multiLinkAttribute);
 
         $multiLinkAttribute = new ConnectorAttribute(
-            $multiLinkAttribute->getIdentifier(),
+            $multiLinkAttribute->getCode(),
             LabelCollection::fromArray(['en_US' => 'Designers', 'fr_FR' => 'Designeurs']),
             'reference_entity_multiple_links',
             AttributeValuePerLocale::fromBoolean($multiLinkAttribute->hasValuePerLocale()),
