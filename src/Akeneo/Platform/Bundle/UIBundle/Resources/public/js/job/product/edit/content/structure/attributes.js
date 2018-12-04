@@ -13,6 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pim/template/export/product/edit/content/structure/attributes',
+        'pim/template/common/modal-with-choices',
         'pim/form',
         'oro/loading-mask',
         'pim/fetcher-registry',
@@ -25,6 +26,7 @@ define(
         __,
         Backbone,
         template,
+        modalTemplate,
         BaseForm,
         LoadingMask,
         fetcherRegistry,
@@ -34,6 +36,7 @@ define(
         return BaseForm.extend({
             className: 'AknFieldContainer attributes',
             template: _.template(template),
+            modalTemplate: _.template(modalTemplate),
             events: {
                 'click button': 'openSelector'
             },
@@ -101,25 +104,23 @@ define(
                 attributeSelector.setSelected(selectedAttributes);
 
                 var modal = new Backbone.BootstrapModal({
-                    className: 'modal modal--fullPage modal--topButton column-configurator-modal',
                     modalOptions: {
                         backdrop: 'static',
                         keyboard: false
                     },
-                    allowCancel: true,
                     okCloses: false,
-                    cancelText: _.__('pim_common.cancel'),
-                    title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
-                    content: '<div class="AknColumnConfigurator attribute-selector"></div>',
-                    okText: _.__('pim_common.apply'),
-                    attributeCount: 0
+                    title: __('pim_enrich.entity.attribute.plural_label'),
+                    innerDescription: __('pim_enrich.export.product.filter.attributes_selector.description'),
+                    content: attributeSelector,
+                    okText: __('pim_common.apply'),
+                    template: this.modalTemplate,
                 });
 
                 loadingMask.hide();
                 loadingMask.$el.remove();
 
                 modal.open();
-                attributeSelector.setElement('.attribute-selector').render();
+                // attributeSelector.setElement('.attribute-selector').render();
 
                 modal.on('ok', function () {
                     var values = attributeSelector.getSelected();
