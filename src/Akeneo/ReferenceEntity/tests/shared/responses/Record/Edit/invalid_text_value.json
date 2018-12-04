@@ -36,13 +36,13 @@
         {
           "attribute":"website_designer_fingerprint",
           "channel":null,
-          "locale":"en_US",
+          "locale":null,
           "data":"hello world"
         },
         {
           "attribute":"portrait_designer_fingerprint",
           "channel":null,
-          "locale":"en_US",
+          "locale":null,
           "data":null
         }
       ]
@@ -162,7 +162,7 @@
               },
               "text": "hello world",
               "channel": null,
-              "locale": "en_US"
+              "locale": null
             },
             {
               "attribute": {
@@ -185,7 +185,7 @@
                 "valuePerLocale": false
               },
               "channel": null,
-              "locale": "en_US"
+              "locale": null
             }
           ]
         },
@@ -213,7 +213,7 @@
           },
           "text": "hello world",
           "channel": null,
-          "locale": "en_US"
+          "locale": null
         },
         "constraint": {
           "targets": "class",

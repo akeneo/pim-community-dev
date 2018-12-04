@@ -55,6 +55,24 @@ Feature: Edit an record
     And the record should have the updated value for this attribute and the french locale
 
   @acceptance-back
+  Scenario: Updating a localizable value of a record without locale
+    Given a reference entity with a localizable attribute
+    When the user updates the localizable attribute of the record without locale
+    Then there should be a validation error on the property text attribute with message "A locale is expected for attribute "name" because it has a value per locale."
+
+  @acceptance-back
+  Scenario: Updating a not localizable value of a record with a locale
+    Given a reference entity with a not localizable attribute
+    When the user updates the not localizable attribute of the record with a locale
+    Then there should be a validation error on the property text attribute with message "A locale is not expected for attribute "name" because it has not a value per locale."
+
+  @acceptance-back
+  Scenario: Updating a localizable value of a record with a not activated locale
+    Given a reference entity with a localizable attribute
+    When the user updates the attribute of the record for a not activated locale
+    Then there should be a validation error on the property text attribute with message "The locale "de_DE" is not activated."
+
+  @acceptance-back
   Scenario: Updating a scopable value of a record
     Given a reference entity with a scopable attribute
     And a record belonging to this reference entity with a value for the ecommerce channel
@@ -70,15 +88,41 @@ Feature: Edit an record
     When the user updates the attribute of the record with an invalid channel
     Then there should be a validation error on the property text attribute with message "This value should be of type string."
 
-#  Todo: Scenario to activate for the import,exports/API
-#  @acceptance-back
-#  Scenario: Updating a scopable and localizable value of a record
-#    Given a reference entity with a scopable and localizable attribute
-#    And a record belonging to this reference entity with a value for the ecommerce channel and french locale
-#    When the user updates the attribute of the record for the ecommerce channel and french locale
-#    Then there is no exception thrown
-#    And there is no violations errors
-#    And the record should have the updated value for this attribute and the ecommerce channel and the french locale
+  @acceptance-back
+  Scenario: Updating a scopable value without channel
+    Given a reference entity with a scopable attribute
+    And a record belonging to this reference entity with a value for the ecommerce channel
+    When the user updates the scopable attribute of the record without channel
+    Then there should be a validation error on the property text attribute with message "A channel is expected for attribute "name" because it has a value per channel."
+
+  @acceptance-back
+  Scenario: Updating a not scopable value with a channel
+    Given a reference entity with a not scopable attribute
+    And a record belonging to this reference entity with a value for the not scopable attribute
+    When the user updates the not scopable attribute of the record with a channel
+    Then there should be a validation error on the property text attribute with message "A channel is not expected for attribute "name" because it has not a value per channel."
+
+  @acceptance-back
+  Scenario: Updating a scopable value of a record for an unknown channel
+    Given a reference entity with a scopable attribute
+    And a record belonging to this reference entity with a value for the ecommerce channel
+    When the user updates the attribute of the record for an unknown channel
+    Then there should be a validation error on the property text attribute with message "The channel "unknown_channel" does not exist."
+
+  @acceptance-back
+  Scenario: Updating a scopable and localizable value of a record
+    Given a reference entity with a scopable and localizable attribute
+    And a record belonging to this reference entity with a value for the ecommerce channel and french locale
+    When the user updates the attribute of the record for the ecommerce channel and french locale
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the updated value for this attribute and the ecommerce channel and the french locale
+
+  @acceptance-back
+  Scenario: Updating a scopable and localizable value of a record with a not activated locale for the channel
+    Given a reference entity with a scopable and localizable attribute
+    When the user updates the attribute of the record for a not activated locale for the ecommerce channel
+    Then there should be a validation error on the property text attribute with message "The locale "de_DE" is not activated for the channel "ecommerce"."
 
   # Text
   @acceptance-back

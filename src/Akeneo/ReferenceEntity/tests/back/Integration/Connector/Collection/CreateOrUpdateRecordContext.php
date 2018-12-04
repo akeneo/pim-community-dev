@@ -80,10 +80,10 @@ class CreateOrUpdateRecordContext implements Context
     private $channelExists;
 
     /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $findActivatedLocalesByIdentifiers;
+    private $activatedLocales;
 
     /** @var InMemoryFindActivatedLocalesPerChannels */
-    private $findActivatedLocalesPerChannels;
+    private $activatedLocalesPerChannels;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -92,8 +92,8 @@ class CreateOrUpdateRecordContext implements Context
         AttributeRepositoryInterface $attributeRepository,
         RecordRepositoryInterface $recordRepository,
         InMemoryChannelExists $channelExists,
-        InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
-        InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
@@ -101,8 +101,8 @@ class CreateOrUpdateRecordContext implements Context
         $this->attributeRepository = $attributeRepository;
         $this->recordRepository = $recordRepository;
         $this->channelExists = $channelExists;
-        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
-        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
+        $this->activatedLocales = $activatedLocales;
+        $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
     }
 
     /**
@@ -113,8 +113,8 @@ class CreateOrUpdateRecordContext implements Context
         $this->requestContract = 'successful_kartell_record_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $this->findActivatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
-        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
 
         $this->loadDescriptionAttribute();
         $this->loadBrandReferenceEntity();
@@ -182,9 +182,9 @@ class CreateOrUpdateRecordContext implements Context
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $this->findActivatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
-        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
-        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
 
         $mainImageInfo = new FileInfo();
         $mainImageInfo
@@ -291,7 +291,7 @@ class CreateOrUpdateRecordContext implements Context
     public function theConnectorCollectsARecordWhoseDataDoesNotComplyWithTheBusinessRules()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $this->findActivatedLocalesPerChannels->save('ecommerce', ['fr_FR', 'en_US']);
+        $this->activatedLocalesPerChannels->save('ecommerce', ['fr_FR', 'en_US']);
 
         $this->loadDescriptionAttribute();
         $client = $this->clientFactory->logIn('julia');

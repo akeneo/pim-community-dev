@@ -125,7 +125,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(25),
             AttributeValidationRule::fromString(AttributeValidationRule::URL),
             AttributeRegularExpression::createEmpty()
@@ -141,7 +141,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             AttributeOrder::fromInteger(3),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),
             AttributeAllowedExtensions::fromList(['png'])
         );
@@ -169,13 +169,13 @@ class GetActionTest extends ControllerIntegrationTestCase
             [
                 'attribute' => $websiteAttribute->normalize(),
                 'channel' => null,
-                'locale' => 'en_US',
+                'locale' => null,
                 'data' => null,
             ],
             [
                 'attribute' => $portraitAttribute->normalize(),
                 'channel' => null,
-                'locale' => 'en_US',
+                'locale' => null,
                 'data' => null,
             ],
         ];

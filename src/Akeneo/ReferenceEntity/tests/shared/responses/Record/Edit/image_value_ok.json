@@ -36,13 +36,13 @@
         {
           "attribute":"website_designer_fingerprint",
           "channel":null,
-          "locale":"en_US",
+          "locale":null,
           "data":null
         },
         {
           "attribute":"portrait_designer_fingerprint",
           "channel":null,
-          "locale":"en_US",
+          "locale":null,
           "data": {
             "filePath": "/a/b/c/philou.png",
             "originalFilename": "philou.png"

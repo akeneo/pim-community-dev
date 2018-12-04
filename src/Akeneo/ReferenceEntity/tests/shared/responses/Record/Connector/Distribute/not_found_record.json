@@ -3,7 +3,7 @@
     "method": "GET",
     "route": "akeneo_reference_entities_record_rest_connector_get",
     "query": {
-      "referenceEntityIdentifier": "Brand",
+      "referenceEntityIdentifier": "brand",
       "code": "wrong_record_code"
     }
   },
@@ -11,7 +11,7 @@
     "status": 404,
     "body": {
       "code": 404,
-      "message":"Record \"wrong_record_code\" does not exist for the reference entity \"Brand\"."
+      "message":"Record \"wrong_record_code\" does not exist for the reference entity \"brand\"."
     }
   }
 }

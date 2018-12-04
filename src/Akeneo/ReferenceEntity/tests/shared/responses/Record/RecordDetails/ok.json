@@ -98,7 +98,7 @@
             "order": 2,
             "is_required": true,
             "value_per_channel": false,
-            "value_per_locale": true,
+            "value_per_locale": false,
             "type": "text",
             "max_length": 25,
             "is_textarea": false,
@@ -107,7 +107,7 @@
             "regular_expression": null
           },
           "channel": null,
-          "locale": "en_US",
+          "locale": null,
           "data": null
         },
         {
@@ -122,13 +122,13 @@
             "order": 3,
             "is_required": false,
             "value_per_channel": false,
-            "value_per_locale": true,
+            "value_per_locale": false,
             "type": "image",
             "max_file_size": "200.10",
             "allowed_extensions": ["png"]
           },
           "channel": null,
-          "locale": "en_US",
+          "locale": null,
           "data": null
         }
       ]
