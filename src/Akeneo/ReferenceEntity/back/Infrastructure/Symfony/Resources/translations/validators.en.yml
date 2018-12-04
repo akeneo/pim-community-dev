@@ -57,3 +57,7 @@ pim_reference_entity:
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
             cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
             limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this reference entity'
+            type:
+                should_be_required: 'The attribute type is required'
+            record_type:
+                should_be_required: 'The linked reference entity is required'

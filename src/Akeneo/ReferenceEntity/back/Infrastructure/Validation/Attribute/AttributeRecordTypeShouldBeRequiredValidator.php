@@ -27,16 +27,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeTypeShouldBeRequiredValidator extends ConstraintValidator
+class AttributeRecordTypeShouldBeRequiredValidator extends ConstraintValidator
 {
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        if (isset($command->type) && 'none' === $command->type) {
-            $this->context->buildViolation(AttributeTypeShouldBeRequired::ERROR_MESSAGE)
-                ->atPath('type')
+        if ('none' === $command->recordType) {
+            $this->context->buildViolation(AttributeRecordTypeShouldBeRequired::ERROR_MESSAGE)
+                ->atPath('recordType')
                 ->addViolation();
         }
     }
@@ -57,7 +57,7 @@ class AttributeTypeShouldBeRequiredValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof AttributeTypeShouldBeRequired) {
+        if (!$constraint instanceof AttributeRecordTypeShouldBeRequired) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

@@ -244,7 +244,7 @@ class Create extends React.Component<CreateProps> {
                       selectedElement={this.props.data.type}
                       onSelectionChange={this.onTypeUpdate}
                       allowEmpty={true}
-                      placeholder='Sélectionner votre type'
+                      placeholder={__('pim_reference_entity.attribute.create.placeholder.type')}
                     />
                   </div>
                   {getErrorsView(this.props.errors, 'type')}
@@ -271,7 +271,7 @@ class Create extends React.Component<CreateProps> {
                         selectedElement={this.props.data.record_type}
                         onSelectionChange={this.onRecordTypeUpdate}
                         allowEmpty={true}
-                        placeholder='Sélectionner votre lien'
+                        placeholder={__('pim_reference_entity.attribute.create.placeholder.record_type')}
                       />
                     </div>
                     {getErrorsView(this.props.errors, 'recordType')}

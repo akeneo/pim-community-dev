@@ -20,6 +20,7 @@ class CreateNoneAttributeCommandFactory extends AbstractCreateAttributeCommandFa
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
         $command = new CreateNoneAttributeCommand();
+        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'];
         $command->type = $normalizedCommand['type'];
 
         return $command;

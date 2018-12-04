@@ -8,6 +8,11 @@ services:
         tags:
             - { name: akeneo_referenceentity.create_attribute_command_factory }
 
+    akeneo_referenceentity.application.factory.create_none_attribute_command_factory:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateNoneAttributeCommandFactory
+        tags:
+            - { name: akeneo_referenceentity.create_attribute_command_factory }
+
     akeneo_referenceentity.application.factory.create_image_attribute_command_factory:
         class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory
         tags:

@@ -171,6 +171,9 @@ pim_reference_entity:
         record_type: Reference entity to link (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
+      placeholder:
+        type: Select your type
+        record_type: Select your linked reference entity
       confirm: Save
     edit:
       delete: Delete the attribute
