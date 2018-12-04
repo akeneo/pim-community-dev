@@ -23,6 +23,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
 use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
@@ -59,6 +61,9 @@ class CreateOrUpdateRecordAction
     /** @var RecordValidator */
     private $recordStructureValidator;
 
+    /** @var ValidatorInterface */
+    private $recordDataValidator;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         RecordExistsInterface $recordExists,
@@ -66,7 +71,8 @@ class CreateOrUpdateRecordAction
         EditRecordHandler $editRecordHandler,
         CreateRecordHandler $createRecordHandler,
         Router $router,
-        RecordValidator $recordStructureValidator
+        RecordValidator $recordStructureValidator,
+        ValidatorInterface $recordDataValidator
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->recordExists = $recordExists;
@@ -75,6 +81,7 @@ class CreateOrUpdateRecordAction
         $this->createRecordHandler = $createRecordHandler;
         $this->router = $router;
         $this->recordStructureValidator = $recordStructureValidator;
+        $this->recordDataValidator = $recordDataValidator;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $code): Response
@@ -106,6 +113,11 @@ class CreateOrUpdateRecordAction
             $editRecordCommand = $this->editRecordCommandFactory->create($referenceEntityIdentifier, $normalizedRecord);
         } catch (\InvalidArgumentException $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $violations = $this->recordDataValidator->validate($editRecordCommand);
+        if ($violations->count() > 0) {
+            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
         }
 
         $responseStatusCode = Response::HTTP_NO_CONTENT;

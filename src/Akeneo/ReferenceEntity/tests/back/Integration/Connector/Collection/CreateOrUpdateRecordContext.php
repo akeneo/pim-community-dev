@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Collection;
 
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -25,6 +28,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
@@ -72,18 +76,33 @@ class CreateOrUpdateRecordContext implements Context
     /** @var null|string */
     private $requestContract;
 
+    /** @var InMemoryChannelExists */
+    private $channelExists;
+
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $findActivatedLocalesByIdentifiers;
+
+    /** @var InMemoryFindActivatedLocalesPerChannels */
+    private $findActivatedLocalesPerChannels;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
-        RecordRepositoryInterface $recordRepository
+        RecordRepositoryInterface $recordRepository,
+        InMemoryChannelExists $channelExists,
+        InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers,
+        InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
         $this->recordRepository = $recordRepository;
+        $this->channelExists = $channelExists;
+        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
+        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
     }
 
     /**
@@ -92,6 +111,10 @@ class CreateOrUpdateRecordContext implements Context
     public function aRecordOfTheBrandReferenceEntityExistingInTheErpButNotInThePim()
     {
         $this->requestContract = 'successful_kartell_record_creation.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->findActivatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
 
         $this->loadDescriptionAttribute();
         $this->loadBrandReferenceEntity();
@@ -158,6 +181,10 @@ class CreateOrUpdateRecordContext implements Context
         $this->loadBrandReferenceEntity();
         $this->loadDescriptionAttribute();
         $this->loadNameAttribute();
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->findActivatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
 
         $mainImageInfo = new FileInfo();
         $mainImageInfo
@@ -255,6 +282,34 @@ class CreateOrUpdateRecordContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_format.json'
+        );
+    }
+
+    /**
+     * @When the connector collects a record whose data does not comply with the business rules
+     */
+    public function theConnectorCollectsARecordWhoseDataDoesNotComplyWithTheBusinessRules()
+    {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->findActivatedLocalesPerChannels->save('ecommerce', ['fr_FR', 'en_US']);
+
+        $this->loadDescriptionAttribute();
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about an error indicating that the record has data that does not comply with the business rules
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheRecordHasDataThatDoesNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_entity_kartell_record_for_invalid_data.json'
         );
     }
 
