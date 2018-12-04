@@ -4,10 +4,8 @@ namespace Specification\Akeneo\Pim\Permission\Component\Validator\Constraint;
 
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\Validator\Constraint\AreGrantedAttributes;
 use Akeneo\Pim\Permission\Component\Validator\Constraint\IsGrantedLocale;
 use Akeneo\Pim\Permission\Component\Validator\Constraint\IsGrantedLocaleValidator;
-use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

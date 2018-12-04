@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,14 +20,11 @@ use Webmozart\Assert\Assert;
 
 /**
  * Validate that the locale is activated.
- *
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AreGrantedAttributesValidator extends ConstraintValidator
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    private $attributeRepository;
 
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
@@ -49,7 +46,7 @@ class AreGrantedAttributesValidator extends ConstraintValidator
      */
     public function validate($attributeCodes, Constraint $constraint)
     {
-        Assert::isArray($attributeCodes, 'Attribute codes should be an array of string to validate that it is a granted attributes.');
+        Assert::isArray($attributeCodes, 'Attribute codes should be an array of string to validate that it is granted attributes.');
         $notGrantedAttributeCodes = [];
 
         foreach ($attributeCodes as $attributeCode) {
