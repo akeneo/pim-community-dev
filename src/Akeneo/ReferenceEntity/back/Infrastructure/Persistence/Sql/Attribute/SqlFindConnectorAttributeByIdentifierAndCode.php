@@ -33,7 +33,7 @@ class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttri
     /**
      * @return ConnectorAttribute
      */
-    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ConnectorAttribute
     {
         $results = $this->fetchAll($referenceEntityIdentifier, $attributeCode);
 
@@ -65,20 +65,20 @@ SQL;
                 'attribute_code' => $attributeCode->__toString()
             ]
         );
-        $result = $statement->fetchAll();
+        $result = $statement->fetch();
 
-        return !$result ? [] : $result;
+        return !$result ? null : $result;
     }
 
     /**
      * @return ConnectorAttribute
      */
-    private function hydrateAttribute($result): ConnectorAttribute
+    private function hydrateAttribute(array $result): ConnectorAttribute
     {
         $hydratedAttribute = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
 
         return new ConnectorAttribute(
-            $hydratedAttribute->getIdentifier(),
+            $hydratedAttribute->getCode(),
             LabelCollection::fromArray(json_decode($result['labels'], true)),
             $result['attribute_type'],
             AttributeValuePerLocale::fromBoolean($hydratedAttribute->hasValuePerLocale()),

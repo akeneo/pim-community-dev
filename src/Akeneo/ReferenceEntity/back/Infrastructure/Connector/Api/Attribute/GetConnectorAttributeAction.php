@@ -3,7 +3,6 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
