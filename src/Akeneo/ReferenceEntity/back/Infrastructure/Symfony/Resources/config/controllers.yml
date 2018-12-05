@@ -123,7 +123,7 @@ services:
         arguments:
             - '@router'
 
-    akeneo_referenceentity.infrastructure.connector.add_hal_self_link_to_normalized_connector_attribute:
+    akeneo_referenceentity.infrasctucture.connector.add_hal_self_link_to_normalized_connector_attribute:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\Hal\AddHalSelfLinkToNormalizedConnectorAttribute
         arguments:
             - '@router'
@@ -169,4 +169,11 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
-            - '@akeneo_referenceentity.infrastructure.connector.add_hal_self_link_to_normalized_connector_attribute'
+            - '@akeneo_referenceentity.infrasctucture.connector.add_hal_self_link_to_normalized_connector_attribute'
+
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrasctucture.connector.add_hal_self_link_to_normalized_connector_attribute'

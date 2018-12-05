@@ -39,9 +39,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetConnectorReferenceEntityAttributesContext implements Context
+class GetConnectorAttributesContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
@@ -368,5 +369,61 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             $multiLinkAttribute
         );
+    }
+
+    /**
+     * @Given /^the Description attribute that is part of the structure of the Brand reference entity$/
+     */
+    public function theDescriptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^the connector requests the Description attribute of the Brand reference entity$/
+     */
+    public function theConnectorRequestsTheDescriptionAttributeOfTheBrandReferenceEntity()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^the PIM returns the Description reference attribute$/
+     */
+    public function thePIMReturnsTheDescriptionReferenceAttribute()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^the connector requests a given attribute of a non\-existent reference entity$/
+     */
+    public function theConnectorRequestsAGivenAttributeOfANonExistentReferenceEntity()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^the Brand reference entity with some attributes$/
+     */
+    public function theBrandReferenceEntityWithSomeAttributes()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When /^the connector requests a non\-existent attribute of a given reference entity$/
+     */
+    public function theConnectorRequestsANonExistentAttributeOfAGivenReferenceEntity()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute does not exist for the Brand reference entity$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotExistForTheBrandReferenceEntity()
+    {
+        throw new PendingException();
     }
 }

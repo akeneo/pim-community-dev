@@ -63,8 +63,8 @@ services:
         tags:
             - { name: fob.context_service }
 
-    akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_reference_entity_attributes_context:
-        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorReferenceEntityAttributesContext
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_attributes_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorAttributesContext
         arguments:
             - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
             - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
