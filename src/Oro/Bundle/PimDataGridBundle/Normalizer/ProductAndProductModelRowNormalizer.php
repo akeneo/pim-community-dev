@@ -66,6 +66,10 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
         $data['complete_variant_product'] = $row->childrenCompleteness();
         $data['parent'] = $row->parentCode();
 
+        foreach ($row->additionalProperties() as $additionalProperty) {
+            $data[$additionalProperty->name()] = $additionalProperty->value();
+        }
+
         return $data;
     }
 

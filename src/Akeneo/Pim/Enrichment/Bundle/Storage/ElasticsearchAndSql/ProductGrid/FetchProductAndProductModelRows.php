@@ -22,16 +22,28 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     /** @var Sql\ProductGrid\FetchProductModelRowsFromCodes */
     private $fetchProductModelRowsFromCodes;
 
+    /** @var Query\AddAdditionalProductProperties */
+    private $addAdditionalProductProperties;
+
+    /** @var Query\AddAdditionalProductModelProperties */
+    private $addAdditionalProductModelProperties;
+
     /**
      * @param Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers
      * @param Sql\ProductGrid\FetchProductModelRowsFromCodes  $fetchProductModelRowsFromCodes
+     * @param Query\AddAdditionalProductProperties            $addAdditionalProductProperties
+     * @param Query\AddAdditionalProductModelProperties       $addAdditionalProductModelProperties
      */
     public function __construct(
         Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
-        Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes
+        Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
+        Query\AddAdditionalProductProperties $addAdditionalProductProperties,
+        Query\AddAdditionalProductModelProperties $addAdditionalProductModelProperties
     ) {
         $this->fetchProductRowsFromIdentifiers = $fetchProductRowsFromIdentifiers;
         $this->fetchProductModelRowsFromCodes = $fetchProductModelRowsFromCodes;
+        $this->addAdditionalProductProperties = $addAdditionalProductProperties;
+        $this->addAdditionalProductModelProperties = $addAdditionalProductModelProperties;
     }
 
     /**
@@ -58,12 +70,15 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             $queryParameters->channelCode(),
             $queryParameters->localeCode()
         );
+        $productRows = $this->addAdditionalProductProperties->add($queryParameters, $productRows);
+
         $productModelRows = ($this->fetchProductModelRowsFromCodes)(
             $productModelCodes,
             $queryParameters->attributeCodes(),
             $queryParameters->channelCode(),
             $queryParameters->localeCode()
         );
+        $productModelRows = $this->addAdditionalProductModelProperties->add($queryParameters, $productModelRows);
 
         $rows = array_merge($productRows, $productModelRows);
         $sortedRows = [];

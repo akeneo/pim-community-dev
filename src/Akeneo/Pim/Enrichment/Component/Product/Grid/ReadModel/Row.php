@@ -65,6 +65,9 @@ final class Row
     /** @var ValueCollectionInterface */
     private $values;
 
+    /** @var AdditionalProperties */
+    private $additionalProperties;
+
     /**
      * @param string                   $identifier
      * @param null|string              $family
@@ -82,6 +85,7 @@ final class Row
      * @param array                    $childrenCompleteness
      * @param null|string              $parentCode
      * @param ValueCollectionInterface $values
+     * @param AdditionalProperties     $additionalProperties
      */
     private function __construct(
         string $identifier,
@@ -99,7 +103,8 @@ final class Row
         ?bool $checked,
         array $childrenCompleteness,
         ?string $parentCode,
-        ValueCollectionInterface $values
+        ValueCollectionInterface $values,
+        AdditionalProperties $additionalProperties
     ) {
         $this->identifier = $identifier;
         $this->familyCode = $family;
@@ -117,6 +122,7 @@ final class Row
         $this->childrenCompleteness = $childrenCompleteness;
         $this->parent = $parentCode;
         $this->values = $values;
+        $this->additionalProperties = $additionalProperties;
     }
 
     public static function fromProduct(
@@ -149,7 +155,8 @@ final class Row
             true,
             [],
             $parentCode,
-            $values
+            $values,
+            new AdditionalProperties()
         );
     }
 
@@ -181,7 +188,33 @@ final class Row
             true,
             $childrenCompleteness,
             $parent,
-            $values
+            $values,
+            new AdditionalProperties()
+        );
+    }
+
+    public function addAdditionalProperty(AdditionalProperty $property): Row
+    {
+        $properties = $this->additionalProperties->addAdditionalProperty($property);
+
+        return new self(
+            $this->identifier,
+            $this->familyCode,
+            $this->groupCodes,
+            $this->enabled,
+            $this->created,
+            $this->updated,
+            $this->label,
+            $this->image,
+            $this->completeness,
+            $this->documentType,
+            $this->technicalId,
+            $this->searchId,
+            $this->checked,
+            $this->childrenCompleteness,
+            $this->parent,
+            $this->values,
+            $properties
         );
     }
 
@@ -311,5 +344,13 @@ final class Row
     public function values(): ValueCollectionInterface
     {
         return $this->values;
+    }
+
+    /**
+     * @return AdditionalProperties
+     */
+    public function additionalProperties(): AdditionalProperties
+    {
+        return $this->additionalProperties;
     }
 }

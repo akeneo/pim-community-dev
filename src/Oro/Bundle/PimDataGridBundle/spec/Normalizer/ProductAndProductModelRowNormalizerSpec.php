@@ -3,6 +3,7 @@
 namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
@@ -80,6 +81,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'parent_code',
             $values
         );
+        $row = $row->addAdditionalProperty(new AdditionalProperty('name', 'value'));
 
         $context = [
             'locales'      => ['en_US'],
@@ -134,6 +136,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'is_checked' => true,
             'complete_variant_product' => [],
             'parent' => 'parent_code',
+            'name' => 'value',
         ];
 
         $this->normalize($row, 'datagrid', $context)->shouldReturn($data);
