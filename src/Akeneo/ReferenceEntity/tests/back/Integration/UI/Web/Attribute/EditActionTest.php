@@ -22,6 +22,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
@@ -173,6 +174,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $attributeRepository->create($name);
         $attributeRepository->create($portrait);
         $attributeRepository->create($favoriteColor);
+
+        $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }
 
     private function revokeEditRights(): void

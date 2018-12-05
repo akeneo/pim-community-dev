@@ -47,6 +47,10 @@
                 {
                     "property": "values.description",
                     "message": "The locale \"de_DE\" is not activated for the channel \"ecommerce\"."
+                },
+                {
+                    "property": "labels",
+                    "message": "The locale \"en_AU\" is not activated."
                 }
             ]
         }

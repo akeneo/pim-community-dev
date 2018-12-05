@@ -21,4 +21,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class LabelCollection extends Constraint
 {
+    public function validatedBy()
+    {
+        return 'akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection';
+    }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
 
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,6 +28,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class LabelCollectionValidator extends ConstraintValidator
 {
+    /** @var FindActivatedLocalesByIdentifiersInterface */
+    private $findActivatedLocales;
+
+    public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
+    {
+        $this->findActivatedLocales = $findActivatedLocales;
+    }
+
     /**
      * @param mixed      $labels     The value that should be validated
      * @param Constraint $constraint The constraint for the validation
@@ -42,6 +52,8 @@ class LabelCollectionValidator extends ConstraintValidator
             $this->validateLocaleCode($validator, $localeCode);
             $this->validateLabelForLocale($validator, $localeCode, $label);
         }
+
+        $this->validateActivatedLocales($labels);
     }
 
     /**
@@ -86,6 +98,24 @@ class LabelCollectionValidator extends ConstraintValidator
                     $violation->getParameters()
                 );
             }
+        }
+    }
+
+    private function validateActivatedLocales(array $labels): void
+    {
+        $locales = array_filter(array_keys($labels), function ($label) {
+            return is_string($label) && '' !== $label;
+        });
+
+        if (empty($locales)) {
+            return;
+        }
+
+        $activatedLocales = ($this->findActivatedLocales)(LocaleIdentifierCollection::fromNormalized($locales));
+        $notActivatedLocales = array_diff($locales, $activatedLocales->normalize());
+
+        foreach ($notActivatedLocales as $notActivatedLocale) {
+            $this->context->addViolation(sprintf('The locale "%s" is not activated.', $notActivatedLocale));
         }
     }
 }

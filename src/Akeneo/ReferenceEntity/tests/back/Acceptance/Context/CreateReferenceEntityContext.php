@@ -15,7 +15,9 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
@@ -45,18 +47,23 @@ final class CreateReferenceEntityContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         CreateReferenceEntityHandler $createReferenceEntityHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
-        ConstraintViolationsContext $violationsContext
+        ConstraintViolationsContext $violationsContext,
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->createReferenceEntityHandler = $createReferenceEntityHandler;
         $this->validator = $validator;
         $this->exceptionContext = $exceptionContext;
         $this->violationsContext = $violationsContext;
+        $this->activatedLocales = $activatedLocales;
     }
 
     /**
@@ -128,6 +135,9 @@ final class CreateReferenceEntityContext implements Context
      */
     public function randomReferenceEntities(int $number)
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
         for ($i = 0; $i < $number; $i++) {
             $command = new CreateReferenceEntityCommand();
             $command->code = uniqid();

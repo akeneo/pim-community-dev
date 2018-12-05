@@ -1642,6 +1642,7 @@ final class EditRecordContext implements Context
      */
     public function aReferenceEntityAndARecordWithLabel(string $label): void
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->createReferenceEntity();
         $this->recordRepository->create(
             Record::create(
@@ -1733,6 +1734,31 @@ final class EditRecordContext implements Context
             RecordCode::fromString(self::RECORD_CODE)
         );
         Assert::assertNull($record->getLabel('fr_FR'), 'French label is not null');
+    }
+
+    /**
+     * @When /^the user updates the german label to "([^"]*)"$/
+     */
+    public function theUserUpdatesTheGermanLabelTo(string $updatedLabel)
+    {
+        $editLabelCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                        => self::RECORD_CODE,
+            'labels'                      => [
+                'de_DE' => $updatedLabel
+            ],
+            'values'                      => [],
+        ]);
+        $this->executeCommand($editLabelCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property labels with message "(.*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyLabelsWithMessage($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage('labels', $expectedMessage);
     }
 
     /**

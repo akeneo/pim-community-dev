@@ -115,6 +115,7 @@ class CreateOrUpdateRecordContext implements Context
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
         $this->loadDescriptionAttribute();
         $this->loadBrandReferenceEntity();
@@ -292,6 +293,7 @@ class CreateOrUpdateRecordContext implements Context
     {
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocalesPerChannels->save('ecommerce', ['fr_FR', 'en_US']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
 
         $this->loadDescriptionAttribute();
         $client = $this->clientFactory->logIn('julia');
