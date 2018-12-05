@@ -209,7 +209,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttribu
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeShouldBeRequired: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeIsRequired: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand:
     group_sequence:
@@ -235,7 +235,7 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollect
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeShouldBeRequired: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeIsRequired: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateOptionAttributeCommand:
     group_sequence:
