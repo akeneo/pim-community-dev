@@ -12,10 +12,10 @@
             "page": 0,
             "filters": [
                 {
-                    "field":"full_text",
-                    "operator":"=",
-                    "value":"",
-                    "context":{}
+                    "field": "full_text",
+                    "operator": "=",
+                    "value": "",
+                    "context": {}
                 },
                 {
                     "field": "complete",
