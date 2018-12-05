@@ -58,7 +58,7 @@ define(
                     illustrationClass: 'families',
                     okText: __('pim_common.save'),
                     cancelText: __('pim_common.cancel'),
-                    contentLabel:
+                    innerDescription:
                         __('pim_enrich.entity.product.module.change_family.merge_attributes') + ' ' +
                         __('pim_enrich.entity.product.module.change_family.keep_attributes')
                 });

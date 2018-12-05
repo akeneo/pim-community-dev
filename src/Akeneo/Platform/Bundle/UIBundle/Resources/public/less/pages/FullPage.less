@@ -1,7 +1,7 @@
 @import '../base/variables';
 
 .AknFullPage {
-  position: fixed;
+  position: absolute;
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -26,6 +26,14 @@
 
   &--full {
     justify-content: flex-start;
+  }
+
+  &-titleContainer {
+    margin-bottom: 30px;
+  }
+
+  &--full &-content {
+    flex-grow: 1;
   }
 
   &-content {

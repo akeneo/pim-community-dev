@@ -397,7 +397,7 @@ class ColumnSelector extends BaseView {
         innerDescription: __('pim_datagrid.column_configurator.description'),
         okText: __('pim_common.apply'),
         template: this.modalTemplate,
-        className: 'AknFullPage--full',
+        innerClassName: 'AknFullPage--full',
         content: this.innerModalTemplate({
           groups,
           attributeGroupsLabel: __('pim_enrich.entity.attribute_group.plural_label'),

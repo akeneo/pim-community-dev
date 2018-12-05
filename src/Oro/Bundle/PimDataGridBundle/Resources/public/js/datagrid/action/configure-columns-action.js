@@ -195,7 +195,7 @@ define(
                         okText: __('pim_common.apply'),
                         template: this.modalTemplate,
                         content: this.configuratorTemplate(),
-                        className: 'AknFullPage--full',
+                        innerClassName: 'AknFullPage--full',
                     });
 
                     loadingMask.hide();

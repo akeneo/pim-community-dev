@@ -29,7 +29,7 @@ define(
             render() {
                 // This can probably be refactored using 'pim/template/common/modal-with-illustration'
                 this.$el.html(this.template({
-                    okLabel: __('pim_common.save'),
+                    okLabel: __('pim_common.create'),
                 }));
                 this.renderExtensions();
             },

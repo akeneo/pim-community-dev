@@ -277,12 +277,11 @@ config:
         pim_enrich_associationtype_edit:
           module: pim/controller/association-type
           aclResourceId: pim_enrich_associationtype_edit
-        # TODO Remove this
-#        pim_enrich_associationtype_index:
-#          module: pim/controller/common/index
-#          aclResourceId: pim_enrich_associationtype_index
-#          config:
-#            entity: association-type
+        pim_enrich_associationtype_index:
+          module: pim/controller/common/index
+          aclResourceId: pim_enrich_associationtype_index
+          config:
+            entity: association-type
         pim_enrich_attribute_create:
           module: pim/controller/attribute/create
           aclResourceId: pim_enrich_attribute_create
@@ -315,12 +314,6 @@ config:
         pim_enrich_channel_create:
           module: pim/controller/channel/edit
           aclResourceId: pim_enrich_channel_create
-# TODO Remove this
-#        pim_enrich_channel_index:
-#          module: pim/controller/common/index
-#          aclResourceId: pim_enrich_channel_index
-#          config:
-#            entity: channel
         pim_enrich_grouptype_edit:
           module: pim/controller/group-type
           aclResourceId: pim_enrich_grouptype_edit
@@ -433,9 +426,6 @@ config:
         pim_enrich_group_history:
           module: pim/controller/template
           aclResourceId: pim_enrich_group_history
-        pim_enrich_associationtype_index:
-          module: pim/controller/template
-          aclResourceId: pim_enrich_associationtype_index
         pim_enrich_associationtype_create:
           module: pim/controller/template
           aclResourceId: pim_enrich_associationtype_create

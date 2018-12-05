@@ -8,16 +8,17 @@
       <% } %>
     </div>
     <div>
-      <% if (typeof subtitle !== 'undefined') { %>
-        <div class="AknFullPage-subTitle"><%- subtitle %></div>
-      <% } %>
-      <div class="AknFullPage-title"><%- title %></div>
-      <% if (typeof contentLabel !== 'undefined') { %>
-        <!-- TODO Rename this to 'innerDescription' -->
-        <div class="AknFullPage-description">
-          <%- contentLabel %>
-        </div>
-      <% } %>
+      <div class="AknFullPage-titleContainer">
+        <% if (typeof subtitle !== 'undefined') { %>
+          <div class="AknFullPage-subTitle"><%- subtitle %></div>
+        <% } %>
+        <div class="AknFullPage-title"><%- title %></div>
+        <% if (typeof innerDescription !== 'undefined') { %>
+          <div class="AknFullPage-description">
+            <%- innerDescription %>
+          </div>
+        <% } %>
+      </div>
       <div class="modal-body"><%= content %></div>
       <div class="AknButtonList">
         <% if (typeof cancelText !== undefined) { %>

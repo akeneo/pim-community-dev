@@ -45,8 +45,7 @@ define(
                     allowCancel: false,
                     title: title,
                     content: content,
-                    okText: __('pim_common.'),
-                    cancelText: __('pim_common.cancel'),
+                    okText: __('pim_common.ok'),
                     template: this.template,
                     buttonClass: 'AknButton--action',
                     illustrationClass: this.getIllustrationClass(subTitle)
@@ -71,7 +70,6 @@ define(
                         title: title,
                         content: content,
                         okText: okText,
-                        cancelText: __('pim_common.cancel')
                     });
 
                     redirectModal.on('ok', function () {
@@ -106,7 +104,7 @@ define(
                 const confirm = new Backbone.BootstrapModal({
                     type: __(subTitle || ''),
                     title: __(title),
-                    contentLabel: __(content),
+                    innerDescription: __(content),
                     content: '',
                     okText: __(buttonText) || __('pim_common.ok'),
                     cancelText: __('pim_common.cancel'),

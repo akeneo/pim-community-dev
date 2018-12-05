@@ -19,8 +19,10 @@
 
     <% if (currentStep === 'choose') { %>
     <div class="AknFullPage-content">
-        <div class="AknFullPage-subTitle"><%- title %></div>
-        <div class="AknFullPage-title"><%= labelCount %></div>
+        <div class="AknFullPage-titleContainer">
+            <div class="AknFullPage-subTitle"><%- title %></div>
+            <div class="AknFullPage-title"><%= labelCount %></div>
+        </div>
         <div class="AknSquareList">
             <div class="step"></div>
         </div>
@@ -31,13 +33,15 @@
             <div class="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--<%- illustrationClass %>"></div>
         </div>
         <div>
-            <div class="AknFullPage-subTitle"><%- title %></div>
-            <div class="AknFullPage-title"><%= labelCount %></div>
-            <% if (description) { %>
-            <div class="AknFullPage-description">
-                <%- description %>
+            <div class="AknFullPage-titleContainer">
+                <div class="AknFullPage-subTitle"><%- title %></div>
+                <div class="AknFullPage-title"><%= labelCount %></div>
+                <% if (description) { %>
+                <div class="AknFullPage-description">
+                    <%- description %>
+                </div>
+                <% } %>
             </div>
-            <% } %>
             <% if (currentStep === 'confirm') { %>
             <div class="AknMessageBox AknMessageBox--warning AknMessageBox--withIcon">
                 <%- confirm %>

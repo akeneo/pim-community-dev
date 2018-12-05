@@ -45,5 +45,5 @@ Feature: Delete attribute options
     And I confirm the deletion
     Then I should see the text "Error during deletion of the attribute option"
     And I should see the text "Attribute option \"white\" could not be removed as it is used as variant axis value."
-    When I press "OK"
+    When I press the "OK" button
     Then I should see the text "white"

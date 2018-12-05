@@ -123,10 +123,10 @@ define(
                     .build(this.formName)
                     .then(function (form) {
                         form.setData(this.initialFormData, {silent: true});
-                        this.modalParameters.content = form;
 
                         this.modal = new Backbone.BootstrapModal(this.modalParameters);
                         this.modal.open();
+                        form.setElement(this.modal.$('.modal-body')).render();
 
                         mediator.on('pim_enrich:form:modal:ok_button:disable', function () {
                             this.disableOkBtn();

@@ -680,11 +680,12 @@ define(
                                 title: __('pim_enrich.entity.product.module.associations.manage', {
                                     associationType: associationType.labels[UserContext.get('catalogLocale')]
                                 }),
-                                innerDescription: __('pim_enrich.entity.product.module.associations.manage_description'),
+                                innerDescription:
+                                    __('pim_enrich.entity.product.module.associations.manage_description'),
                                 content: '',
                                 okText: __('pim_common.confirm'),
                                 template: this.modalTemplate,
-                                className: 'AknFullPage--full',
+                                innerClassName: 'AknFullPage--full',
                             });
 
                             modal.open();

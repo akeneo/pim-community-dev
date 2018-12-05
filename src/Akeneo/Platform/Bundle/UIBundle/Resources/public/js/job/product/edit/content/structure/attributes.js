@@ -111,7 +111,7 @@ define(
                     okCloses: false,
                     title: __('pim_enrich.entity.attribute.plural_label'),
                     innerDescription: __('pim_enrich.export.product.filter.attributes_selector.description'),
-                    content: attributeSelector,
+                    content: '',
                     okText: __('pim_common.apply'),
                     template: this.modalTemplate,
                 });
@@ -120,7 +120,7 @@ define(
                 loadingMask.$el.remove();
 
                 modal.open();
-                // attributeSelector.setElement('.attribute-selector').render();
+                attributeSelector.setElement('.modal-body').render();
 
                 modal.on('ok', function () {
                     var values = attributeSelector.getSelected();

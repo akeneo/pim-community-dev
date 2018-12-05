@@ -51,7 +51,7 @@ define(
              */
             render() {
                 this.$el.html(this.template({
-                    contentLabel: __(this.config.labels.content),
+                    innerDescription: __(this.config.labels.content),
                     fields: null
                 }));
 
@@ -74,13 +74,13 @@ define(
                     title: __(this.config.labels.title),
                     subtitle: __(this.config.labels.subTitle),
                     picture: this.config.picture,
-                    content: this,
+                    content: '',
                     okText: __('pim_common.save'),
                     okCloses: false,
                     template: this.modalTemplate,
                 });
-
                 modal.open();
+                this.setElement(modal.$('.modal-body')).render();
 
                 // TODO Find why this is used. Probably behats.
                 modal.$('.modal-body').addClass('creation');
