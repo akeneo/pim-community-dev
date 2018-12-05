@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Association;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use InvalidArgumentException;
 
 /**
  * For a given association aware entity,
@@ -42,7 +41,7 @@ class AssociationClassResolver
 
         $entityClass = get_class($entity);
 
-        throw new InvalidArgumentException(sprintf(
+        throw new \InvalidArgumentException(sprintf(
             'Cannot find any association class for entity of type "%s"', $entityClass
         ));
     }
