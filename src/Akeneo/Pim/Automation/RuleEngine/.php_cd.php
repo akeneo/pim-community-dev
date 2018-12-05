@@ -42,32 +42,37 @@ $rules = [
         'Symfony\Component',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
-        // TODO: The rule engine sends notifications
-        'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
-        'Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface',
-        // TODO: the component should not use a bundle => split the Tool\RuleEngine into Bundle + Component
-        'Akeneo\Tool\Bundle\RuleEngineBundle',
-        // TODO: remove all links by reference
+
+        // TODO: Check how to decouple that from the enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
-        // TODO: relationship between bounded context (query data though repository)
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        // TODO: called in ProductRuleSelector but not used => remove the dependency
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        // TODO: relationship between bounded context (check if a service is available to do some action on the product)
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
+
         // TODO: relationship between bounded context (the engine creates a fake product to allow validation)
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
+
+        // TODO: The rule engine sends notifications
+        'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
+        'Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface',
+
+        // TODO: the component should not use a bundle => split the Tool\RuleEngine into Bundle + Component
+        'Akeneo\Tool\Bundle\RuleEngineBundle',
+
+        // TODO: called in ProductRuleSelector but not used => remove the dependency
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
+
         // TODO: public constant
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
+
         // TODO: versioning
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext',
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
