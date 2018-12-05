@@ -33,6 +33,12 @@ class ConnectorAttribute
         'option_collection' => 'multiple_options'
     ];
 
+    private const ATTRIBUTE_NAMES = [
+        'max_length' => 'max_characters',
+        'regular_expression' => 'validation_regexp',
+        'record_type' => 'reference_entity_code'
+    ];
+
     /** @var AttributeIdentifier */
     private $code;
 
@@ -77,6 +83,11 @@ class ConnectorAttribute
         return self::ATTRIBUTE_TYPES[$this->type] ?? $type;
     }
 
+    public function mapAttributeName(string $name)
+    {
+        return self::ATTRIBUTE_NAMES[$name] ?? $name;
+    }
+
     public function normalize(): array
     {
         $commonProperties = [
@@ -88,6 +99,12 @@ class ConnectorAttribute
             'is_required_for_completeness' => $this->isRequired->normalize()
         ];
 
-        return array_merge($commonProperties, $this->additionalProperties);
+        $additionalProperties = [];
+
+        foreach ($this->additionalProperties as $key => $value) {
+            $additionalProperties[$this->mapAttributeName($key)] = $value;
+        }
+
+        return array_merge($commonProperties, $additionalProperties);
     }
 }
