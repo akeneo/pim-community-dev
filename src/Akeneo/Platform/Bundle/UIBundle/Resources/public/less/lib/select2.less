@@ -796,7 +796,7 @@
   &.select2-container {
     .select2-choice {
       height: @recordSelectorHeight;
-      background: white;
+      background-color: white;
 
       .select2-chosen {
         line-height: @recordSelectorHeight;
@@ -812,6 +812,12 @@
         margin-top: 11px;
         background-size: 16px 16px !important;
       }
+    }
+  }
+
+  &.select2-container-disabled {
+    .select2-choice {
+      background-color: #e9ebee;
     }
   }
 
