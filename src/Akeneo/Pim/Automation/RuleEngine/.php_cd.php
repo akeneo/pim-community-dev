@@ -56,9 +56,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
-
-        // TODO: relationship between bounded context (the engine creates a fake product to allow validation)
-        'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
+        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied
+        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager', // used to version products when a rule is applied
 
         // TODO: The rule engine sends notifications
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
@@ -70,12 +70,6 @@ $rules = [
         // TODO: called in ProductRuleSelector but not used => remove the dependency
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
-        // TODO: public constant
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
-
-        // TODO: versioning
-        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext',
-        'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),
 ];
 
