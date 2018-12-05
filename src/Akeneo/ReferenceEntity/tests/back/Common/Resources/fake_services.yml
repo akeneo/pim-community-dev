@@ -46,6 +46,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier:
         class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
+        class: Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeByIdentifierAndCode
+
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:
