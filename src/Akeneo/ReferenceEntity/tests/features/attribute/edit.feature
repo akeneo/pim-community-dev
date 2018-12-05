@@ -160,7 +160,7 @@ Feature: Lists all attributes related to a reference entity
     # Then the user cannot save the options successfully because the option is not valid
     # And there is an error message next to the "gre-een" field
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: A validation occured because the code is duplicated
     Given a valid reference entity
     And the user asks for the reference entity "designer"
