@@ -12,7 +12,8 @@
 namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
 
 /**
- * TODO
+ * Identifies a Service Provider or an Identity Provider. It's usually the URI to the metadata document but any
+ * arbitrary unique value can be used.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */

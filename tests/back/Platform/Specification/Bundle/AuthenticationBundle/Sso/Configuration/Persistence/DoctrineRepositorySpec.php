@@ -13,18 +13,15 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Types\Type;
 use PDO;
 use PhpSpec\ObjectBehavior;
 
 class DoctrineRepositorySpec extends ObjectBehavior
 {
-    function let(
-        Connection $connection
-    ) {
-        $this->beConstructedWith(
-            $connection,
-            'akeneo_pim_configuration'
-        );
+    function let(Connection $connection)
+    {
+        $this->beConstructedWith($connection);
     }
 
     function it_is_initializable()
@@ -37,7 +34,7 @@ class DoctrineRepositorySpec extends ObjectBehavior
         $this->shouldImplement(Repository::class);
     }
 
-    function it_saves_a_configuration_object($connection)
+    function it_saves_a_configuration_object($connection, Statement $statement)
     {
         $config = new Root(
             Code::fromString('authentication_sso'),
@@ -53,13 +50,24 @@ class DoctrineRepositorySpec extends ObjectBehavior
             )
         );
 
-        $connection->executeQuery(
-            'INSERT INTO akeneo_pim_configuration (code, values) VALUES(:code, :values) ON DUPLICATE KEY UPDATE values = VALUES(:values)',
-            [
-                'code'   => 'authentication_sso',
-                'values' => '{"identityProvider":{"entityId":"https:\/\/idp.jambon.com","url":"https:\/\/idp.jambon.com\/","publicCertificate":"public_certificate"},"serviceProvider":{"entityId":"https:\/\/sp.jambon.com","publicCertificate":"public_certificate","privateCertificate":"private_certificate"}}',
-            ]
-        )->shouldBeCalled();
+        $connection->prepare('INSERT INTO pim_configuration (`code`, `values`) VALUES(:code, :values) ON DUPLICATE KEY UPDATE `values` = :values;')
+            ->shouldBeCalled()
+            ->willReturn($statement)
+        ;
+        $statement->bindValue('code', 'authentication_sso', Type::STRING)->shouldBeCalled();
+        $statement->bindValue('values', [
+            'identityProvider' => [
+                'entityId'          => 'https://idp.jambon.com',
+                'url'               => 'https://idp.jambon.com/',
+                'publicCertificate' => 'public_certificate',
+            ],
+            'serviceProvider' => [
+                'entityId'           => 'https://sp.jambon.com',
+                'publicCertificate'  => 'public_certificate',
+                'privateCertificate' => 'private_certificate',
+            ],
+        ], Type::JSON_ARRAY)->shouldBeCalled();
+        $statement->execute()->shouldBeCalled();
 
         $this->save($config);
     }
@@ -67,12 +75,11 @@ class DoctrineRepositorySpec extends ObjectBehavior
     function it_finds_an_existing_configuration($connection, Statement $statement)
     {
         $connection
-            ->prepare('SELECT * FROM akeneo_pim_configuration WHERE code = :code')
+            ->prepare('SELECT * FROM pim_configuration WHERE code = :code;')
             ->shouldBeCalled()
             ->willReturn($statement)
         ;
-
-        $statement->bindValue('code', 'authentication_sso')->shouldBeCalled();
+        $statement->execute(['code' => 'authentication_sso'])->shouldBeCalled();
         $statement
             ->fetch(PDO::FETCH_ASSOC)
             ->willReturn(
