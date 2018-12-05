@@ -45,7 +45,7 @@ $rules = [
         // TODO: The rule engine sends notifications
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory',
         'Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface',
-        // TODO: the component should not use a bundle
+        // TODO: the component should not use a bundle => split the Tool\RuleEngine into Bundle + Component
         'Akeneo\Tool\Bundle\RuleEngineBundle',
         // TODO: remove all links by reference
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -54,9 +54,10 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
         // TODO: relationship between bounded context (query data though repository)
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        // TODO: called in ProductRuleSelector but not used => remove the dependency
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         // TODO: relationship between bounded context (check if a service is available to do some action on the product)
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface',
