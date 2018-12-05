@@ -139,7 +139,7 @@ class ParsedFilename implements ParsedFilenameInterface
     private function sanitizeFileName(string $filename): string
     {
         $filename = basename(trim($filename));
-        $filename = mb_ereg_replace('[^A-Za-z0-9.-]', '_', $filename);
+        $filename = preg_replace('~[^A-Za-z0-9.-]~u', '_', $filename);
 
         return $filename;
     }
