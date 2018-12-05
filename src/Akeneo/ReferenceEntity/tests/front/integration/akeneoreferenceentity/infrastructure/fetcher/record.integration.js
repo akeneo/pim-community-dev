@@ -47,7 +47,10 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           reference_entity_identifier: 'designer',
           image: null,
           values: {},
-          completeness_percentage: null,
+          completeness: {
+            complete: 0,
+            required: 1,
+          },
         },
         {
           code: 'starck',
@@ -63,7 +66,10 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
               'locale': 'en_US'
             },
           },
-          completeness_percentage: null,
+          completeness: {
+            complete: 1,
+            required: 1,
+          },
         },
       ],
       total: 2,
