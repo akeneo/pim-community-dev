@@ -182,11 +182,11 @@ class GetConnectorReferenceEntityAttributesContext implements Context
             AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
             AttributeIsRequired::fromBoolean(true),
             [
-                'max_characters' => $textAttribute->getMaxLength()->intValue(),
+                'max_length' => $textAttribute->getMaxLength()->intValue(),
                 'is_textarea' => false,
                 'is_rich_text_editor' => false,
                 'validation_rule' => null,
-                'validation_regexp' => null
+                'regular_expression' => null
             ]
         );
 
