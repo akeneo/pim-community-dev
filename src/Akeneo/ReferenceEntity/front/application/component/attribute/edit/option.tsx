@@ -320,14 +320,16 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
         {this.props.isActive ? (
           <div className="modal in manageOptionModal" aria-hidden="false" style={{zIndex: 1041}}>
             <div>
-              <div className="AknFullPage">
-                <div className="AknFullPage-subTitle">
-                  {__('pim_reference_entity.attribute.options.sub_title')} / {this.props.referenceEntity.code}
-                </div>
-                <div className="AknFullPage-title">
-                  {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
-                </div>
+              <div className="AknFullPage AknFullPage--full">
                 <div className="AknFullPage-content">
+                  <div className="AknFullPage-titleContainer">
+                    <div className="AknFullPage-subTitle">
+                      {__('pim_reference_entity.attribute.options.sub_title')} / {this.props.referenceEntity.code}
+                    </div>
+                    <div className="AknFullPage-title">
+                      {__('pim_reference_entity.attribute.edit.input.manage_options.quick_edit.label')}
+                    </div>
+                  </div>
                   <div className="AknOptionEditor">
                     <div className="AknSubsection AknOptionEditor-translator">
                       <div className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--light">
@@ -403,22 +405,22 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
                     </div>
                   </div>
                 </div>
-                <button
-                  className="AknButton AknButton--apply AknFullPage-ok ok confirm"
-                  onClick={this.props.events.onOptionEditionSubmission}
-                >
-                  {__('pim_reference_entity.attribute.create.confirm')}
-                </button>
-                <div
-                  title={__('pim_reference_entity.attribute.create.cancel')}
-                  className="AknFullPage-cancel cancel"
-                  onClick={this.cancelManageOptions.bind(this)}
-                  tabIndex={0}
-                  onKeyPress={event => {
-                    if (Key.Space === event.key) this.cancelManageOptions();
-                  }}
-                >
-                </div>
+              </div>
+              <button
+                className="AknButton AknButton--apply AknFullPage-ok ok confirm"
+                onClick={this.props.events.onOptionEditionSubmission}
+              >
+                {__('pim_reference_entity.attribute.create.confirm')}
+              </button>
+              <div
+                title={__('pim_reference_entity.attribute.create.cancel')}
+                className="AknFullPage-cancel cancel"
+                onClick={this.cancelManageOptions.bind(this)}
+                tabIndex={0}
+                onKeyPress={event => {
+                  if (Key.Space === event.key) this.cancelManageOptions();
+                }}
+              >
               </div>
             </div>
           </div>

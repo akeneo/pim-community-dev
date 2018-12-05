@@ -8,6 +8,7 @@
  */
 
 import {EventsHash} from 'backbone';
+import * as Backbone from 'backbone';
 import * as $ from 'jquery';
 import NormalizedAttribute from 'pim/model/attribute';
 import BaseView = require('pimui/js/view/base');
@@ -16,7 +17,6 @@ import {EscapeHtml} from '../../common/escape-html';
 import {Filterable} from '../../common/filterable';
 import AttributeOptionsMapping = require('../attribute-options-mapping/edit');
 import SimpleSelectAttributeWithWarning = require('./simple-select-attribute-with-warning');
-import * as Backbone from "backbone";
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -335,19 +335,19 @@ class AttributeMapping extends BaseView {
         .setCatalogAttributeCode(catalogAttributeCode)
         .setFranklinAttributeCode(franklinAttributeCode);
 
-      this.attributeOptionsMappingModal = new (<any>Backbone).BootstrapModal({
+      this.attributeOptionsMappingModal = new (Backbone as any).BootstrapModal({
         modalOptions: {
           backdrop: 'static',
           keyboard: false,
         },
         okCloses: false,
         title: __('akeneo_suggest_data.entity.attribute_options_mapping.module.edit.title', {
-          familyLabel: familyLabel,
-          franklinAttributeLabel: franklinAttributeLabel,
+          familyLabel,
+          franklinAttributeLabel,
         }),
         content: form,
         template: this.modalTemplate,
-        className: 'AknFullPage--full AknFullPage--fixedWidth',
+        innerClassName: 'AknFullPage--full AknFullPage--fixedWidth',
         okText: '',
       });
       this.attributeOptionsMappingModal.open();

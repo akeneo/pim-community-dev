@@ -2,13 +2,13 @@
 <div class="AknFilterBox AknFilterBox--search" data-drop-zone="filters"></div>
 <table class="AknGrid AknGrid--unclickable">
     <tr class="AknGrid-header">
-        <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- franklinAttributeOption %></th>
+        <th class="AknGrid-headerCell"><%- franklinAttributeOption %></th>
         <th class="AknGrid-headerCell"><%- catalogAttributeOption %></th>
         <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- attributeOptionStatus %></th>
     </tr>
     <% Object.keys(mapping).forEach((franklinAttributeOptionCode) => { %>
     <tr
-            class="AknGrid-bodyRow AknGrid-bodyRow--sixteen searchable-row"
+            class="AknGrid-bodyRow searchable-row"
             data-franklin-attribute-option="<%- mapping[franklinAttributeOptionCode].franklinAttributeOptionCode.label %>"
             data-status="<%- mapping[franklinAttributeOptionCode].status %>"
     >

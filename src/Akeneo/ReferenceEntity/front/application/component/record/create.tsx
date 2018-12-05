@@ -83,11 +83,13 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
               </div>
               <div>
                 <div className="AknFormContainer">
-                  <div className="AknFullPage-subTitle">{__('pim_reference_entity.record.create.subtitle')}</div>
-                  <div className="AknFullPage-title">
-                    {__('pim_reference_entity.record.create.title', {
-                      entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale).toLowerCase(),
-                    })}
+                  <div className="AknFullPage-titleContainer">
+                    <div className="AknFullPage-subTitle">{__('pim_reference_entity.record.create.subtitle')}</div>
+                    <div className="AknFullPage-title">
+                      {__('pim_reference_entity.record.create.title', {
+                        entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale).toLowerCase(),
+                      })}
+                    </div>
                   </div>
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
@@ -137,9 +139,27 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                     </div>
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
+                  <div className="AknFieldContainer" data-code="create_another">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                      <label
+                        className="AknFieldContainer-label"
+                        htmlFor="pim_reference_entity.record.create.input.create_another"
+                      >
+                        <Checkbox
+                          id="pim_reference_entity.record.create.input.create_another"
+                          value={this.state.createAnother}
+                          onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
+                        />
+                        <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
+                      </label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer" />
+                  </div>
                   <button
                     className="AknButton AknButton--apply ok"
-                    onClick={this.props.events.onSubmit}
+                    onClick={() => {
+                      this.props.events.onSubmit(this.state.createAnother);
+                    }}
                   >
                     {__('pim_reference_entity.record.create.confirm')}
                   </button>

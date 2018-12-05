@@ -173,8 +173,10 @@ class Create extends React.Component<CreateProps> {
                 <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
               </div>
               <div>
-                <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
-                <div className="AknFullPage-title">{__('pim_reference_entity.attribute.create.title')}</div>
+                <div className="AknFullPage-titleContainer">
+                  <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
+                  <div className="AknFullPage-title">{__('pim_reference_entity.attribute.create.title')}</div>
+                </div>
                 <div className="AknFormContainer">
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">

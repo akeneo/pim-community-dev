@@ -35,9 +35,11 @@ class DeleteModal extends React.Component<Props> {
               <div className="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--delete" />
             </div>
             <div>
-              <div className="AknFullPage-subTitle">{title}</div>
-              <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
-              <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
+              <div className="AknFullPage-titleContainer">
+                <div className="AknFullPage-subTitle">{title}</div>
+                <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
+                <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
+              </div>
               <div className="AknButtonList">
                 <button
                   ref={this.cancelButton}

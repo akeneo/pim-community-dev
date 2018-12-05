@@ -1,48 +1,49 @@
 <div class="AknFullPage AknFullPage--full">
   <div class="AknFullPage-content">
-    <div class="AknFullPage-subTitle"><%- __('pim_title.pimee_product_asset_index') %></div>
-    <div class="AknFullPage-title">
-      <%- __('pimee_product_asset.mass_upload.menu') %>
+    <div class="AknFullPage-titleContainer">
+      <div class="AknFullPage-subTitle"><%- __('pim_title.pimee_product_asset_index') %></div>
+      <div class="AknFullPage-title">
+        <%- __('pimee_product_asset.mass_upload.menu') %>
+      </div>
     </div>
 
-      <div class="AknFormContainer AknFormContainer--centered AknFormContainer--expanded control-group upload-zone-container">
-        <div class="AknMediaField controls">
-          <label class="upload-zone file empty">
-            <div class="upload-info">
+    <div class="AknFormContainer AknFormContainer--centered AknFormContainer--expanded control-group upload-zone-container">
+      <div class="AknMediaField controls">
+        <label class="upload-zone file empty">
+          <div class="upload-info">
+            <div class="AknMediaField-emptyContainer">
+              <div class="AknMediaField-fileUploaderInput mass-upload-dropzone"></div>
               <div class="AknMediaField-emptyContainer">
-                <div class="AknMediaField-fileUploaderInput mass-upload-dropzone"></div>
-                <div class="AknMediaField-emptyContainer">
-                    <span title="upload icon" class="AknMediaField-uploadIcon" />
-                    <span class="upload-filename" data-empty-title="<%- __('pimee_product_asset.mass_upload.drag_and_drop') %>">
-                      <%- __('pimee_product_asset.mass_upload.drag_and_drop') %>
-                    </span>
-                </div>
-            </div>
-          </label>
-          <div class="icons-container"></div>
-        </div>
-      </div>
-      <div class="AknGridContainer AknGridContainer--expanded grid-container">
-        <div class="tabsection-title">Assets uploaded</div>
-        <table class="AknGrid AknGrid--unclickable grid files">
-          <tbody class="mass-upload-container"></tbody>
-        </table>
+                  <span title="upload icon" class="AknMediaField-uploadIcon" />
+                  <span class="upload-filename" data-empty-title="<%- __('pimee_product_asset.mass_upload.drag_and_drop') %>">
+                    <%- __('pimee_product_asset.mass_upload.drag_and_drop') %>
+                  </span>
+              </div>
+          </div>
+        </label>
+        <div class="icons-container"></div>
       </div>
     </div>
+    <div class="AknGridContainer AknGridContainer--expanded grid-container">
+      <div class="tabsection-title">Assets uploaded</div>
+      <table class="AknGrid AknGrid--unclickable grid files">
+        <tbody class="mass-upload-container"></tbody>
+      </table>
+    </div>
   </div>
+</div>
 
-  <span class="AknFullPage-cancel cancel"/>
-  <div class="AknFullPage-ok AknButtonList AknButtonList--right navbar-buttons" data-drop-zone="buttons">
-    <button class="AknButtonList-item AknButton AknButton--grey remove AknButton--hidden">
-      <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
-    </button>
-    <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled"
-            type="submit">
-      <%- __('pimee_product_asset.mass_upload.btn.upload') %>
-    </button>
-    <button class="AknButtonList-item AknButton AknButton--apply import AknButton--disabled">
-      <%- __('pimee_product_asset.mass_upload.btn.import') %>
-    </button>
-  </div>
+<span class="AknFullPage-cancel cancel"/>
+<div class="AknFullPage-ok AknButtonList AknButtonList--right navbar-buttons" data-drop-zone="buttons">
+  <button class="AknButtonList-item AknButton AknButton--grey remove AknButton--hidden">
+    <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
+  </button>
+  <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled"
+          type="submit">
+    <%- __('pimee_product_asset.mass_upload.btn.upload') %>
+  </button>
+  <button class="AknButtonList-item AknButton AknButton--apply import AknButton--disabled">
+    <%- __('pimee_product_asset.mass_upload.btn.import') %>
+  </button>
 </div>
 

@@ -168,7 +168,7 @@ define(
                         content: '',
                         okText: __('pim_common.confirm'),
                         template: this.manageAssetModalTemplate,
-                        className: 'AknFullPage--full',
+                        innerClassName: 'AknFullPage--full',
                     });
                     modal.open();
 
