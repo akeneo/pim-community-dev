@@ -14,6 +14,7 @@ namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persiste
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Root;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 use PDO;
 
 /**
@@ -26,35 +27,27 @@ final class DoctrineRepository implements Repository
     /** @var Connection */
     private $connection;
 
-    /** @var string */
-    private $configTableName;
-
-    public function __construct(
-        Connection $connection,
-        string $configTableName
-    ) {
+    public function __construct(Connection $connection)
+    {
         $this->connection = $connection;
-        $this->configTableName = $configTableName;
     }
 
     public function save(Root $config): void
     {
-        $this->connection->executeQuery(
-            'INSERT INTO akeneo_pim_configuration (code, values) VALUES(:code, :values) ON DUPLICATE KEY UPDATE values = VALUES(:values)',
-            [
-                'code'   => $config->code(),
-                'values' => json_encode($config->toArray()),
-            ]
-        );
+        $statement = $this->connection->prepare('INSERT INTO pim_configuration (`code`, `values`) VALUES(:code, :values) ON DUPLICATE KEY UPDATE `values` = :values;');
+        $statement->bindValue('code', $config->code(), Type::STRING);
+        $statement->bindValue('values', $config->toArray(), Type::JSON_ARRAY);
+
+        $statement->execute();
     }
 
     public function find(string $code): ?Root
     {
-        $statement = $this->connection->prepare('SELECT * FROM akeneo_pim_configuration WHERE code = :code');
-        $statement->bindValue('code', $code);
+        $statement = $this->connection->prepare('SELECT * FROM pim_configuration WHERE code = :code;');
+        $statement->execute(['code' => $code]);
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if (null === $result) {
+        if (false === $result) {
             return null;
         }
 
