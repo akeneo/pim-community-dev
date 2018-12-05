@@ -32,6 +32,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
+            'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
 
             //Subscribers
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
