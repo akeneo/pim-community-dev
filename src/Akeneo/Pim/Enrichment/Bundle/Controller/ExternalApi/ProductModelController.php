@@ -30,7 +30,6 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -249,7 +248,6 @@ class ProductModelController
      * @param Request $request
      *
      * @throws UnprocessableEntityHttpException
-     * @throws ServerErrorResponseException
      *
      * @return JsonResponse
      */
@@ -344,7 +342,6 @@ class ProductModelController
      * @return array
      *
      * @throws DocumentedHttpException
-     * @throws ServerErrorResponseException
      */
     protected function listOffset(
         Request $request,
@@ -379,26 +376,12 @@ class ProductModelController
             'item_identifier_key' => 'code',
         ];
 
-        try {
-            $count = 'true' === $queryParameters['with_count'] ? $productModels->count() : null;
-            $paginatedProductModels = $this->offsetPaginator->paginate(
-                $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
-                $paginationParameters,
-                $count
-            );
-        } catch (ServerErrorResponseException $e) {
-            $message = json_decode($e->getMessage(), true);
-            if (null !== $message && isset($message['error']['root_cause'][0]['type'])
-                && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
-                throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
-                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
-                    $e
-                );
-            }
-
-            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
-        }
+        $count = 'true' === $queryParameters['with_count'] ? $productModels->count() : null;
+        $paginatedProductModels = $this->offsetPaginator->paginate(
+            $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
+            $paginationParameters,
+            $count
+        );
 
         return $paginatedProductModels;
     }

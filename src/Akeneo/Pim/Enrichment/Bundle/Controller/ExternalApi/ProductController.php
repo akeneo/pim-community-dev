@@ -34,7 +34,6 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -670,8 +669,6 @@ class ProductController
      * @param array                 $normalizerOptions
      *
      * @return array
-     *
-     * @throws ServerErrorResponseException
      */
     protected function searchAfterOffset(
         Request $request,
@@ -706,26 +703,12 @@ class ProductController
             'item_identifier_key' => 'identifier',
         ];
 
-        try {
-            $count = 'true' === $queryParameters['with_count'] ? $products->count() : null;
-            $paginatedProducts = $this->offsetPaginator->paginate(
-                $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
-                $paginationParameters,
-                $count
-            );
-        } catch (ServerErrorResponseException $e) {
-            $message = json_decode($e->getMessage(), true);
-            if (null !== $message && isset($message['error']['root_cause'][0]['type'])
-                && 'query_phase_execution_exception' === $message['error']['root_cause'][0]['type']) {
-                throw new DocumentedHttpException(
-                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
-                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
-                    $e
-                );
-            }
-
-            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
-        }
+        $count = 'true' === $queryParameters['with_count'] ? $products->count() : null;
+        $paginatedProducts = $this->offsetPaginator->paginate(
+            $this->normalizer->normalize($products, 'external_api', $normalizerOptions),
+            $paginationParameters,
+            $count
+        );
 
         return $paginatedProducts;
     }
@@ -738,7 +721,6 @@ class ProductController
      *
      * @throws UnprocessableEntityHttpException
      * @throws DocumentedHttpException
-     * @throws ServerErrorResponseException
      *
      * @return array
      */
