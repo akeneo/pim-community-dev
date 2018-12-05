@@ -41,6 +41,6 @@ class InMemoryFindConnectorAttributeByIdentifierAndCode implements FindConnector
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ConnectorAttribute
     {
-        return $this->attributes[(string) $referenceEntityIdentifier][$attributeCode] ?? null;
+        return $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] ?? null;
     }
 }

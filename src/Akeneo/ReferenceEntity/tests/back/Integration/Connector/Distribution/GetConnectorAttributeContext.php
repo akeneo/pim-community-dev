@@ -16,6 +16,21 @@ namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeByIdentifierAndCode;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -33,7 +48,7 @@ class GetConnectorAttributeContext implements Context
     private $webClientHelper;
 
     /** @var InMemoryFindConnectorAttributeByIdentifierAndCode */
-    private $findConnectorReferenceEntityAttributes;
+    private $findConnectorAttribute;
 
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
@@ -53,7 +68,7 @@ class GetConnectorAttributeContext implements Context
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorReferenceEntityAttributes = $findConnectorReferenceEntityAttributes;
+        $this->findConnectorAttribute = $findConnectorReferenceEntityAttributes;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
     }
@@ -63,7 +78,54 @@ class GetConnectorAttributeContext implements Context
      */
     public function theDescriptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $referenceEntityIdentifier = 'brand_test';
+        $attributeIdentifier = 'description';
+
+        $textAttribute = TextAttribute::createText(
+            AttributeIdentifier::create($referenceEntityIdentifier, $attributeIdentifier, 'test'),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            AttributeCode::fromString('description'),
+            LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/\w+/')
+        );
+
+        $this->attributeRepository->create($textAttribute);
+
+        $textConnectorAttribute = new ConnectorAttribute(
+            $textAttribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
+            'text',
+            AttributeValuePerLocale::fromBoolean($textAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($textAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            [
+                'max_length' => $textAttribute->getMaxLength()->intValue(),
+                'is_textarea' => false,
+                'is_rich_text_editor' => false,
+                'validation_rule' => null,
+                'regular_expression' => null
+            ]
+        );
+
+        $this->findConnectorAttribute->save(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            $textAttribute->getCode(),
+            $textConnectorAttribute
+        );
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            [],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
     }
 
     /**
@@ -71,7 +133,12 @@ class GetConnectorAttributeContext implements Context
      */
     public function theConnectorRequestsTheDescriptionAttributeOfTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->attributeForReferenceEntity = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_brand_reference_entity_description_attribute.json"
+        );
     }
 
     /**
@@ -79,7 +146,10 @@ class GetConnectorAttributeContext implements Context
      */
     public function thePIMReturnsTheDescriptionReferenceAttribute()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->attributeForReferenceEntity,
+            self::REQUEST_CONTRACT_DIR . "successful_brand_reference_entity_description_attribute.json"
+        );
     }
 
     /**
