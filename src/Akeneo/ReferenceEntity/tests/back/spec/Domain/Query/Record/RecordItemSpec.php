@@ -35,6 +35,7 @@ class RecordItemSpec extends ObjectBehavior
                 'data' => 'A nice name'
             ]
         ];
+        $this->completeness = ['complete' => 0, 'required' => 0];
 
         $this->normalize()->shouldReturn(
             [

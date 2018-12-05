@@ -199,6 +199,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
         ];
         $starkRecordItem->image = null;
         $starkRecordItem->values = [];
+        $starkRecordItem->completeness = ['complete' => 0, 'required' => 0];
 
         $cocoRecordItem = new RecordItem();
         $cocoRecordItem->identifier = (string) $this->cocoIdentifier;
@@ -209,6 +210,7 @@ class InMemoryFindRecordItemsForIdentifiersAndQueryTest extends TestCase
         ];
         $cocoRecordItem->image = null;
         $cocoRecordItem->values = [];
+        $cocoRecordItem->completeness = ['complete' => 0, 'required' => 0];
 
         $normalizedResults = array_map(function (RecordItem $item) {
             return $item->normalize();

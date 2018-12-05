@@ -52,8 +52,6 @@ class RecordItem
 
     public function normalize(): array
     {
-        $defaultCompleteness = ['complete' => 0, 'required' => 0];
-
         return [
             self::IDENTIFIER                  => $this->identifier,
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier,
@@ -61,7 +59,7 @@ class RecordItem
             self::LABELS                      => $this->labels,
             self::IMAGE                       => $this->image,
             self::VALUES                      => $this->values,
-            self::COMPLETENESS                => (null === $this->completeness) ? $defaultCompleteness : $this->completeness,
+            self::COMPLETENESS                => $this->completeness,
         ];
     }
 }
