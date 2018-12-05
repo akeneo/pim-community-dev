@@ -34,7 +34,7 @@ class AttributeRecordTypeShouldBeRequiredValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        if ('none' === $command->recordType) {
+        if (null === $command->recordType) {
             $this->context->buildViolation(AttributeRecordTypeShouldBeRequired::ERROR_MESSAGE)
                 ->atPath('recordType')
                 ->addViolation();

@@ -153,10 +153,6 @@ Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery:
                       standardPropertyName: locales
 
 # Attributes
-Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateNoneAttributeCommand:
-    constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeTypeShouldBeRequired: ~
-
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\EditUploadedFileValueCommand:
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
@@ -213,7 +209,6 @@ Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordAttribu
     constraints:
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ThereShouldBeLessAttributesThanLimit: { groups: [other_constraints] }
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeTypeShouldBeRequired: { groups: [other_constraints] }
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeShouldBeRequired: { groups: [other_constraints] }
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateRecordCollectionAttributeCommand:

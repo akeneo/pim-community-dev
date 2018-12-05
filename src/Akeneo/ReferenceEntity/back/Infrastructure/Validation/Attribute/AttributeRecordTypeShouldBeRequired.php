@@ -23,4 +23,3 @@ class AttributeRecordTypeShouldBeRequired extends Constraint
         return 'akeneo_referenceentity.validator.attribute.attribute_record_type_should_be_required';
     }
 }
-

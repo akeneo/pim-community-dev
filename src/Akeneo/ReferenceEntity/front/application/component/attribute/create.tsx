@@ -243,8 +243,6 @@ class Create extends React.Component<CreateProps> {
                       elements={this.getTypeOptions()}
                       selectedElement={this.props.data.type}
                       onSelectionChange={this.onTypeUpdate}
-                      allowEmpty={true}
-                      placeholder={__('pim_reference_entity.attribute.create.placeholder.type')}
                     />
                   </div>
                   {getErrorsView(this.props.errors, 'type')}

@@ -11,16 +11,16 @@ const DefaultButtonView = ({
   selectedElement,
   onClick,
   allowEmpty,
-  placeholder
+  placeholder,
 }: {
   open: boolean;
   selectedElement: DropdownElement;
   onClick: () => void;
   allowEmpty?: boolean;
-  placeholder?: string
+  placeholder?: string;
 }) => (
   <React.Fragment>
-    {allowEmpty && placeholder && selectedElement.identifier === 'none' ? (
+    {allowEmpty && placeholder && selectedElement.identifier === null ? (
       <div
         className="AknButton"
         tabIndex={0}
@@ -143,13 +143,15 @@ class Dropdown extends React.Component<Props, State> {
     const dropdownButton = (selectedElement: string, label: string, allowEmpty?: boolean, placeholder?: string) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
-      return <Button
-        label={label}
-        selectedElement={this.getElement(selectedElement)}
-        onClick={this.open.bind(this)}
-        allowEmpty={allowEmpty}
-        placeholder={placeholder}
-      />;
+      return (
+        <Button
+          label={label}
+          selectedElement={this.getElement(selectedElement)}
+          onClick={this.open.bind(this)}
+          allowEmpty={allowEmpty}
+          placeholder={placeholder}
+        />
+      );
     };
 
     const ElementViews = this.props.elements.map((element: DropdownElement) => {
