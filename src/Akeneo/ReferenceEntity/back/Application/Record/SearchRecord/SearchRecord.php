@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Record\SearchRecord;
 
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Domain\Query\Record\SearchRecordResult;
 
@@ -28,21 +28,21 @@ class SearchRecord
     /** @var FindIdentifiersForQueryInterface */
     private $findIdentifiersForQuery;
 
-    /** @var FindRecordItemsForIdentifiersInterface */
-    private $findRecordItemsForIdentifiers;
+    /** @var FindRecordItemsForIdentifiersAndQueryInterface */
+    private $findRecordItemsForIdentifiersAndQuery;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
-        FindRecordItemsForIdentifiersInterface $findRecordItemsForIdentifiers
+        FindRecordItemsForIdentifiersAndQueryInterface $findRecordItemsForIdentifiersAndQuery
     ) {
         $this->findIdentifiersForQuery = $findIdentifiersForQuery;
-        $this->findRecordItemsForIdentifiers = $findRecordItemsForIdentifiers;
+        $this->findRecordItemsForIdentifiersAndQuery = $findRecordItemsForIdentifiersAndQuery;
     }
 
     public function __invoke(RecordQuery $query): SearchRecordResult
     {
         $result = ($this->findIdentifiersForQuery)($query);
-        $records = ($this->findRecordItemsForIdentifiers)($result->identifiers);
+        $records = ($this->findRecordItemsForIdentifiersAndQuery)($result->identifiers, $query);
 
         $queryResult = new SearchRecordResult();
         $queryResult->total = $result->total;

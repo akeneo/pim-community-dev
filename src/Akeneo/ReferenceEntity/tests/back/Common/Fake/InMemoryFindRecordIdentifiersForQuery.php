@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -28,6 +28,15 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
 {
     /** @var Record[] */
     private $records = [];
+
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
+    private $findRequiredValueKeyCollectionForChannelAndLocale;
+
+    public function __construct(
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+    ) {
+        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+    }
 
     public function add(Record $record): void
     {
@@ -76,20 +85,36 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             );
         }));
 
-        $records = array_values(array_filter($records, function (Record $record) use ($completeFilter): bool {
+        $records = array_values(array_filter($records, function (Record $record) use ($completeFilter, $query): bool {
             if (null === $completeFilter) {
                 return true;
             }
 
-            $valueKey = ValueKey::createFromNormalized('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US');
+            $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+                $record->getReferenceEntityIdentifier(),
+                ChannelIdentifier::fromCode($query->getChannel()),
+                LocaleIdentifier::fromCode($query->getLocale())
+            );
 
-            if (true === $completeFilter['value']) {
-                return !is_null($record->getValues()->findValue($valueKey));
+            $recordValues = $record->getValues();
+            $requiredValuesComplete = 0;
+            $requiredValues = 0;
+
+            foreach ($requiredValueKeyCollection as $requiredValueKey) {
+                $requiredValues++;
+                if (null !== $recordValues->findValue($requiredValueKey)) {
+                    $requiredValuesComplete++;
+                }
             }
 
-            if (false === $completeFilter['value']) {
-                return is_null($record->getValues()->findValue($valueKey));
+            if ($requiredValues > 0) {
+                $completeness['complete'] = $requiredValuesComplete;
+                $completeness['required'] = $requiredValues;
             }
+
+            $isComplete = ($requiredValuesComplete === $requiredValues);
+
+            return $completeFilter['value'] ? $isComplete : !$isComplete;
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {

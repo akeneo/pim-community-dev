@@ -39,7 +39,11 @@
                       "fr_FR": "Dyson"
                   },
                   "image": null,
-                  "values": {}
+                  "values": {},
+                  "completeness": {
+                      "complete": 0,
+                      "required": 1
+                  }
               },
               {
                   "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
@@ -56,6 +60,10 @@
                           "locale": "en_US",
                           "data": "an awesome designer!"
                       }
+                  },
+                  "completeness": {
+                      "complete": 1,
+                      "required": 1
                   }
               }
             ],

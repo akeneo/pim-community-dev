@@ -13,32 +13,45 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocale;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
 /**
+ *
+ * Find record items for the given record identifiers & the given record query.
+ * Note that this query searches only records with the same reference entity.
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordItemsForIdentifiers implements FindRecordItemsForIdentifiersInterface
+class SqlFindRecordItemsForIdentifiersAndQuery implements FindRecordItemsForIdentifiersAndQueryInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
-    {
+    /** @var SqlFindRequiredValueKeyCollectionForChannelAndLocale */
+    private $findRequiredValueKeyCollectionForChannelAndLocale;
+
+    public function __construct(
+        Connection $sqlConnection,
+        SqlFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+    ) {
         $this->sqlConnection = $sqlConnection;
+        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
     }
 
     /**
      * @return string[]
      */
-    public function __invoke(array $identifiers): array
+    public function __invoke(array $identifiers, RecordQuery $query): array
     {
         $sqlQuery = <<<SQL
         SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, fi.image, ee.value_collection
@@ -56,17 +69,41 @@ SQL;
         ], ['identifiers' => Connection::PARAM_STR_ARRAY]);
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
+        $referenceEntityFilter = $query->getFilter('reference_entity');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityFilter['value']);
+        $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
+        $localeIdentifier = LocaleIdentifier::fromCode($query->getLocale());
+
+        /** @var ValueKeyCollection $requiredValueKeyCollection */
+        $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+            $referenceEntityIdentifier,
+            $channelIdentifier,
+            $localeIdentifier
+        );
+        $requiredValueKeys = $requiredValueKeyCollection->normalize();
+
         $recordItems = [];
         foreach ($results as $result) {
             $image = null !== $result['image'] ? json_decode($result['image'], true) : null;
             $image = null !== $result['image'] ? ['filePath' => $image['file_key'], 'originalFilename' => $image['original_filename']] : null;
+
+            $valueCollection = $this->cleanValues($result['value_collection']);
+            $completeness = ['complete' => 0, 'required' => 0];
+
+            if (count($requiredValueKeys) > 0) {
+                $existingValueKeys = array_keys($valueCollection);
+                $completeness['complete'] = count(array_intersect($requiredValueKeys, $existingValueKeys));
+                $completeness['required'] = count($requiredValueKeys);
+            }
+
             $recordItems[] = $this->hydrateRecordItem(
                 $result['identifier'],
                 $result['reference_entity_identifier'],
                 $result['code'],
                 $image,
                 $result['labels'],
-                $this->cleanValues($result['value_collection'])
+                $valueCollection,
+                $completeness
             );
         }
 
@@ -79,7 +116,8 @@ SQL;
         string $code,
         ?array $image,
         string $normalizedLabels,
-        array $values
+        array $values,
+        array $completeness
     ): RecordItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -96,6 +134,7 @@ SQL;
         $recordItem->labels = $labels;
         $recordItem->image = $image;
         $recordItem->values = $values;
+        $recordItem->completeness = $completeness;
 
         return $recordItem;
     }

@@ -20,14 +20,15 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForIdentifiersAndQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
-class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
+class SqlFindRecordItemsForIdentifiersAndQueryTest extends SqlIntegrationTestCase
 {
-    /** @var FindRecordItemsForIdentifiersInterface */
-    private $findRecordItemsForIdentifiers;
+    /** @var FindRecordItemsForIdentifiersAndQueryInterface */
+    private $findRecordItemsForIdentifiersAndQuery;
 
     /** @var RecordIdentifier */
     private $starckIdentifier;
@@ -39,7 +40,7 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findRecordItemsForIdentifiers = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers');
+        $this->findRecordItemsForIdentifiersAndQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query');
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
     }
@@ -49,7 +50,21 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
      */
     public function it_returns_empty_collection_if_there_is_no_matching_identifiers()
     {
-        $this->assertEmpty(($this->findRecordItemsForIdentifiers)(['michel_sardou', 'bob_ross']));
+        $query = RecordQuery::createFromNormalized([
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+            'filters' => [
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'designer'
+                ]
+            ],
+            'page' => 1,
+            'size' => 10,
+        ]);
+
+        $this->assertEmpty(($this->findRecordItemsForIdentifiersAndQuery)(['michel_sardou', 'bob_ross'], $query));
     }
 
     /**
@@ -57,7 +72,24 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
      */
     public function it_returns_record_items_for_matching_identifiers_with_same_order()
     {
-        $recordItems = ($this->findRecordItemsForIdentifiers)([(string) $this->starckIdentifier, (string) $this->cocoIdentifier]);
+        $query = RecordQuery::createFromNormalized([
+            'channel' => 'ecommerce',
+            'locale' => 'en_US',
+            'filters' => [
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'designer'
+                ]
+            ],
+            'page' => 1,
+            'size' => 10,
+        ]);
+
+        $recordItems = ($this->findRecordItemsForIdentifiersAndQuery)(
+            [(string) $this->starckIdentifier, (string) $this->cocoIdentifier],
+            $query
+        );
 
         $starck = new RecordItem();
         $starck->identifier = (string) $this->starckIdentifier;
@@ -65,6 +97,7 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
         $starck->code = 'starck';
         $starck->labels = ['fr_FR' => 'Philippe Starck'];
         $starck->values = [];
+        $starck->completeness = ['complete' => 0, 'required' => 0];
         $starck->image = [
             'filePath' => null,
             'originalFilename' => null
@@ -76,6 +109,7 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
         $coco->code = 'coco';
         $coco->labels = ['fr_FR' => 'Coco Chanel'];
         $coco->values = [];
+        $coco->completeness = ['complete' => 0, 'required' => 0];
         $coco->image = [
             'filePath' => null,
             'originalFilename' => null
@@ -158,5 +192,6 @@ class SqlFindRecordItemsForIdentifiersTest extends SqlIntegrationTestCase
             $actual->image,
             'Image are not the same'
         );
+        $this->assertEquals($expected->completeness, $actual->completeness);
     }
 }
