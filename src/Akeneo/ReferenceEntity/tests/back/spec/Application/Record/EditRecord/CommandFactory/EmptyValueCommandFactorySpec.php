@@ -24,6 +24,22 @@ class EmptyValueCommandFactorySpec extends ObjectBehavior
         ];
 
         $this->supports($attribute, $normalizedValue)->shouldReturn(true);
+
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale'  => 'fr_FR',
+            'data'    => ''
+        ];
+
+        $this->supports($attribute, $normalizedValue)->shouldReturn(true);
+
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale'  => 'fr_FR',
+            'data'    => []
+        ];
+
+        $this->supports($attribute, $normalizedValue)->shouldReturn(true);
     }
 
     function it_creates_empty_value(AbstractAttribute $attribute)

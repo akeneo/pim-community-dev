@@ -25,7 +25,8 @@ class EditRecordCollectionValueCommandFactory implements EditValueCommandFactory
     {
         return
             $attribute instanceof RecordCollectionAttribute &&
-            is_array($normalizedValue['data']);
+            is_array($normalizedValue['data']) &&
+            !empty($normalizedValue['data']);
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand

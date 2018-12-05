@@ -24,7 +24,7 @@ class EmptyValueCommandFactory implements EditValueCommandFactoryInterface
     {
         return
             $attribute instanceof AbstractAttribute &&
-            (null === $normalizedValue['data'] || '' === $normalizedValue['data']);
+            (null === $normalizedValue['data'] || '' === $normalizedValue['data'] || [] === $normalizedValue['data']);
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
