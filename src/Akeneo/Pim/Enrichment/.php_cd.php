@@ -35,9 +35,6 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
         'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
 
-        // TODO: EASY PICK! it should be registered in the structure bundle
-        'Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass',
-
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters
         'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',

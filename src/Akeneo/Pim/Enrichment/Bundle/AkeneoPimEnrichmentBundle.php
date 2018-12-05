@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterRendererPa
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterValueFactoryPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
-use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,7 +39,6 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('pim_repository'))
             ->addCompilerPass(new RegisterAttributeConstraintGuessersPass())
-            ->addCompilerPass(new RegisterAttributeTypePass())
             ->addCompilerPass(new RegisterValueFactoryPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass('product'))
             ->addCompilerPass(new RegisterProductQueryFilterPass('product_model'))
