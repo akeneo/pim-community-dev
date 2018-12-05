@@ -42,7 +42,7 @@ export const searchUpdated = (searchInput: string) => (dispatch: any) => {
   dispatch(gridStateUpdated());
 };
 
-export const completenessFilterUpdated = (completenessValue: string) => (dispatch: any) => {
+export const completenessFilterUpdated = (completenessValue: CompletenessValue) => (dispatch: any) => {
   switch (completenessValue) {
     case CompletenessValue.All:
       dispatch(removeFilter('complete'));

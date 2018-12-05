@@ -31,6 +31,7 @@ import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
+import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 interface StateProps {
   context: {
@@ -67,7 +68,7 @@ interface DispatchProps {
     onSearchUpdated: (userSearch: string) => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
-    onCompletenessFilterUpdated: (completenessValue: string) => void;
+    onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
     onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onOpenDeleteAllRecordsModal: () => void;
@@ -263,7 +264,7 @@ export default connect(
         onSearchUpdated: (userSearch: string) => {
           dispatch(searchUpdated(userSearch));
         },
-        onCompletenessFilterUpdated: (completenessValue: string) => {
+        onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => {
           dispatch(completenessFilterUpdated(completenessValue));
         },
         onRecordCreationStart: () => {

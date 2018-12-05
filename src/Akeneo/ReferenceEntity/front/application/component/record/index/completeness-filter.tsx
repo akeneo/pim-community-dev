@@ -4,8 +4,8 @@ import Key from 'akeneoreferenceentity/tools/key';
 import __ from 'akeneoreferenceentity/tools/translator';
 
 type Props = {
-  value: string;
-  onChange: (newValue: string) => void;
+  value: CompletenessValue;
+  onChange: (newValue: CompletenessValue) => void;
 };
 
 const CompletenessFilterButtonView = ({
@@ -85,7 +85,7 @@ export default class CompletenessFilter extends React.Component<Props> {
   };
 
   onCompletenessUpdated(event: DropdownElement) {
-    this.props.onChange(event.identifier);
+    this.props.onChange(event.identifier as CompletenessValue);
   }
 
   render() {
