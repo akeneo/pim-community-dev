@@ -126,6 +126,11 @@ export default <Element>(
 
       state = {...state, query: {...state.query, filters: [...filters, filter]}};
       break;
+    case 'GRID_REMOVE_FILTER':
+      const filtersUpdated = state.query.filters.filter((filter: Filter) => filter.field !== action.field);
+
+      state = {...state, query: {...state.query, filters: filtersUpdated}};
+      break;
     default:
       break;
   }

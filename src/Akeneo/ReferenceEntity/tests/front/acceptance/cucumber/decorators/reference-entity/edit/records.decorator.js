@@ -49,7 +49,27 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  return {hasRecord, isLoaded, isEmpty, getRecordLabel, hasSuccessNotification, hasErrorNotification, search};
+  const completeFilter = async value => {
+    await page.waitForSelector('.complete-filter.AknDropdown');
+    const openButton = await nodeElement.$('.complete-filter.AknDropdown .AknActionButton[data-identifier]');
+    await openButton.click();
+    await page.waitForSelector('.complete-filter.AknDropdown .AknDropdown-menuLink');
+    const valueButton = await nodeElement.$(`.AknDropdown-menuLink[data-identifier="${value}"]`);
+    await valueButton.click();
+
+    await page.waitForSelector(`.AknActionButton-highlight[data-identifier="${value}"]`);
+  };
+
+  return {
+    hasRecord,
+    isLoaded,
+    isEmpty,
+    getRecordLabel,
+    hasSuccessNotification,
+    hasErrorNotification,
+    search,
+    completeFilter
+  };
 };
 
 module.exports = Records;

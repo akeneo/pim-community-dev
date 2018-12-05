@@ -176,6 +176,24 @@ module.exports = async function(cucumber) {
     await recordList.search(searchInput);
   });
 
+  When('the user filters on the complete records', async function () {
+    const requestContract = getRequestContract('Record/Search/complete_filtered.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const recordList = await await getElement(this.page, 'Records');
+    await recordList.completeFilter('yes');
+  });
+
+  When('the user filters on the uncomplete records', async function () {
+    const requestContract = getRequestContract('Record/Search/uncomplete_filtered.json');
+
+    await listenRequest(this.page, requestContract);
+
+    const recordList = await await getElement(this.page, 'Records');
+    await recordList.completeFilter('no');
+  });
+
   Then('the user should see a filtered list of records', async function() {
     const recordList = await await getElement(this.page, 'Records');
     const isValid = await [
@@ -200,6 +218,27 @@ module.exports = async function(cucumber) {
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
       'designer_coco_34aee120-fa95-4ff2-8439-bea116120e34',
+    ];
+
+    for (const expectedRecordIdentifier of expectedRecordIdentifiers) {
+      await recordList.hasRecord(expectedRecordIdentifier);
+    }
+  });
+
+  Then('the user should see a list of complete records', async function () {
+    const recordList = await await getElement(this.page, 'Records');
+    const isValid = await [
+      'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
+    ].reduce(async (isValid, expectedRecord) => {
+      return (await isValid) && (await recordList.hasRecord(expectedRecord));
+    }, true);
+    assert.strictEqual(isValid, true);
+  });
+
+  Then('the user should see a list of uncomplete records', async function () {
+    const recordList = await await getElement(this.page, 'Records');
+    const expectedRecordIdentifiers = [
+      'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
     ];
 
     for (const expectedRecordIdentifier of expectedRecordIdentifiers) {

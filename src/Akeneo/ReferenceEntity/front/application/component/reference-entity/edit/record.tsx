@@ -16,6 +16,7 @@ import {
   needMoreResults,
   searchUpdated,
   updateRecordResults,
+  completenessFilterUpdated,
 } from 'akeneoreferenceentity/application/action/record/search';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import ReferenceEntityIdentifier, {
@@ -30,6 +31,7 @@ import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import Channel from 'akeneoreferenceentity/domain/model/channel';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
+import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 interface StateProps {
   context: {
@@ -66,6 +68,7 @@ interface DispatchProps {
     onSearchUpdated: (userSearch: string) => void;
     onLocaleChanged: (locale: Locale) => void;
     onChannelChanged: (locale: Channel) => void;
+    onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
     onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onOpenDeleteAllRecordsModal: () => void;
@@ -149,6 +152,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             onDeleteRecord={events.onOpenDeleteRecordModal}
             onNeedMoreResults={events.onNeedMoreResults}
             onSearchUpdated={events.onSearchUpdated}
+            onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
             recordCount={recordCount}
             locale={context.locale}
             channel={context.channel}
@@ -259,6 +263,9 @@ export default connect(
         },
         onSearchUpdated: (userSearch: string) => {
           dispatch(searchUpdated(userSearch));
+        },
+        onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => {
+          dispatch(completenessFilterUpdated(completenessValue));
         },
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
