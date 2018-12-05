@@ -62,3 +62,14 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.record'
         tags:
             - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.integration.connector.distribution.get_connector_reference_entity_attributes_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Distribution\GetConnectorReferenceEntityAttributesContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+        tags:
+            - { name: fob.context_service }

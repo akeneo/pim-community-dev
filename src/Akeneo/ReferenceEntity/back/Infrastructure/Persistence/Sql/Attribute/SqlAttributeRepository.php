@@ -104,6 +104,7 @@ SQL;
                 'value_per_locale'  => Type::getType(Type::BOOLEAN),
             ]
         );
+
         if ($affectedRows > 1) {
             throw new \RuntimeException(
                 sprintf('Expected to create one attribute, but %d rows were affected', $affectedRows)

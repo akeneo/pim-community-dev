@@ -27,6 +27,7 @@ class NotFoundReferenceEntityContext implements Context
 {
     private const RECORD_REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
     private const REFERENCE_ENTITY_REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Distribute/';
+    private const ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -81,6 +82,16 @@ class NotFoundReferenceEntityContext implements Context
     {
         $client = $this->clientFactory->logIn('julia');
         $this->notFoundReferenceEntityRequestContract = self::REFERENCE_ENTITY_REQUEST_CONTRACT_DIR. "not_found_reference_entity.json";
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
+
+    /**
+     * @When /^the connector requests the structure of a non\-existent reference entity$/
+     */
+    public function theConnectorRequestsTheStructureOfANonExistentReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attributes.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
     }
 }
