@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.20 (2018-12-06)
+
 ## Bug fixes
 
 - PIM-7897: Fix multiple calls to get all attribute groups in the PEF.
