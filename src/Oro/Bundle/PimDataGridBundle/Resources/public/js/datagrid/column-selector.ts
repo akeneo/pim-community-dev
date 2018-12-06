@@ -239,7 +239,7 @@ class ColumnSelector extends BaseView {
   /**
    * When an attribute group is clicked, set it as active and trigger a fetch
    */
-  filterByAttributeGroup(event: JQuery.Event): void {
+  filterByAttributeGroup(event: JQueryEventObject): void {
     this.modal.$el.find(this.attributeGroupSelector).removeClass('active');
     $(event.currentTarget).addClass('active');
     this.fetchColumnsWithSelected();
@@ -258,7 +258,7 @@ class ColumnSelector extends BaseView {
   /**
    * Executes the search after a timeout
    */
-  debounceSearch(event: JQuery.Event): void {
+  debounceSearch(event: JQueryEventObject): void {
     if (null !== this.debounceSearchTimer) {
       clearTimeout(this.debounceSearchTimer);
     }
@@ -389,7 +389,7 @@ class ColumnSelector extends BaseView {
    * When the user clicks 'x' on a selected column, move it to the correct list and
    * display the validation error if necessary
    */
-  unselectColumn(event: JQuery.Event): void {
+  unselectColumn(event: JQueryEventObject): void {
     const column = $(event.currentTarget).parent();
     const code = $(event.currentTarget)
       .parents('[data-value]')
