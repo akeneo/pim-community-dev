@@ -222,6 +222,7 @@ class AttributeOptionsMapping extends BaseForm {
       },
       className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
     });
+    attributeSelector.allowClear = true;
     attributeSelector.setChoiceUrl(
       Routing.generate('pim_enrich_attributeoption_get', {identifier: this.catalogAttributeCode}),
     );
