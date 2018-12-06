@@ -106,7 +106,7 @@ const CommonRow = memo(
         <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={record.code}>
           {record.code}
         </td>
-        <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier">
+        <td className="AknGrid-bodyCell">
           <CompleteLabel completeness={Completeness.createFromNormalized(record.completeness)} />
         </td>
       </tr>

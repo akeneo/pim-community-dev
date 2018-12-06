@@ -14,6 +14,7 @@ const {
 module.exports = async function(cucumber) {
   const {Given, When, Then} = cucumber;
   const assert = require('assert');
+  let currentRequestContract;
 
   const config = {
     Sidebar: {
@@ -163,6 +164,46 @@ module.exports = async function(cucumber) {
 
     await askForReferenceEntity.apply(this, ['designer']);
     await showRecordTab(this.page);
+  });
+
+  Given('the user asks for a list of records containing with different completeness', async function() {
+    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
+    await listenRequest(this.page, requestContract);
+    currentRequestContract = getRequestContract('Record/Search/not_filtered.json');
+    await listenRequest(this.page, currentRequestContract);
+
+    await askForReferenceEntity.apply(this, ['designer']);
+    await showRecordTab(this.page);
+  });
+
+  Then('the user should see that "starck" is complete at 50%', async function() {
+    const recordCode = 'starck';
+    const recordList = await await getElement(this.page, 'Records');
+
+    const starckRecord = currentRequestContract.response.body.items.find((item) => item.code === recordCode);
+    const completeness = await recordList.getRecordCompleteness(starckRecord.identifier);
+
+    assert.strictEqual(completeness, '50%');
+  });
+
+  Then('the user should see that "dyson" is complete at 0%', async function() {
+    const recordCode = 'dyson';
+    const recordList = await await getElement(this.page, 'Records');
+
+    const starckRecord = currentRequestContract.response.body.items.find((item) => item.code === recordCode);
+    const completeness = await recordList.getRecordCompleteness(starckRecord.identifier);
+
+    assert.strictEqual(completeness, '0%');
+  });
+
+  Then('the user should see that "coco" is complete at 100%', async function() {
+    const recordCode = 'coco';
+    const recordList = await await getElement(this.page, 'Records');
+
+    const starckRecord = currentRequestContract.response.body.items.find((item) => item.code === recordCode);
+    const completeness = await recordList.getRecordCompleteness(starckRecord.identifier);
+
+    assert.strictEqual(completeness, '100%');
   });
 
   When('the user searches for {string}', async function(searchInput) {
