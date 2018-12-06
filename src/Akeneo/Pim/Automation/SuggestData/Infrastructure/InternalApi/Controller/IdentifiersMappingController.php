@@ -17,7 +17,8 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifi
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\IdentifiersMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\IdentifiersMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,16 +60,17 @@ class IdentifiersMappingController
             $this->updateIdentifiersMappingHandler->handle($command);
 
             return new JsonResponse(json_encode($identifiersMapping));
-        } catch (InvalidMappingException $invalidMapping) {
-            return new JsonResponse([
+        } catch (InvalidMappingException | IdentifiersMappingException $exception) {
+            return new JsonResponse(
+                [
                     [
-                        'message' => $invalidMapping->getMessage(),
-                        'messageParams' => $invalidMapping->getMessageParams(),
-                        'path' => $invalidMapping->getPath(),
+                        'message' => $exception->getMessage(),
+                        'messageParams' => $exception->getMessageParams(),
+                        'path' => $exception->getPath(),
                         'global' => false,
                     ],
                 ],
-                $invalidMapping->getCode()
+                $exception->getCode()
             );
         }
     }

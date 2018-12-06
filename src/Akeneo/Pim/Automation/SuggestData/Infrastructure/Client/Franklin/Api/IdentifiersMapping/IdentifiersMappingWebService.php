@@ -15,6 +15,10 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\I
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AbstractApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 
 /**
  * API Web Service to manage identifiers mapping.
@@ -24,14 +28,29 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authent
 class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
-     * {@inheritdoc}
+     * @param array $mapping
+     *
+     * @throws BadRequestException
+     * @throws FranklinServerException
      */
     public function update(array $mapping): void
     {
         $route = $this->uriGenerator->generate('/api/mapping/identifiers');
 
-        $this->httpClient->request('PUT', $route, [
-            'form_params' => $mapping,
-        ]);
+        try {
+            $this->httpClient->request('PUT', $route, [
+                'form_params' => $mapping,
+            ]);
+        } catch (ServerException $e) {
+            throw new FranklinServerException(sprintf(
+                'Something went wrong on Franklin side when updating the attribute mapping : %s',
+                $e->getMessage()
+            ));
+        } catch (ClientException $e) {
+            throw new BadRequestException(sprintf(
+                'Something went wrong when updating the attribute mapping : %s',
+                $e->getMessage()
+            ));
+        }
     }
 }

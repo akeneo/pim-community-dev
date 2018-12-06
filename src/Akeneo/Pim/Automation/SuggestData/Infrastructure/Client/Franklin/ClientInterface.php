@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin;
 
+use GuzzleHttp\Exception\BadResponseException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -26,6 +27,8 @@ interface ClientInterface
      * @param string $method
      * @param string $uri
      * @param array $options
+     *
+     * @throws BadResponseException
      *
      * @return ResponseInterface
      */

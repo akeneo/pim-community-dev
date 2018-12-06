@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\IdentifiersMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 
 /**
@@ -24,6 +25,8 @@ interface IdentifiersMappingProviderInterface
      * Updates the identifiers mapping.
      *
      * @param IdentifiersMapping $identifiersMapping
+     *
+     * @throws IdentifiersMappingException
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
 }
