@@ -38,13 +38,35 @@ class CacheFindActivatedLocalesByIdentifiersSpec extends ObjectBehavior
     function it_keeps_in_cache_the_activated_locales_by_identifiers_found($findActivatedLocalesByIdentifiers)
     {
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'de_DE']);
-        $activatedLocales = LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR']);
+        $expectedActivatedLocales = LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR']);
 
         $findActivatedLocalesByIdentifiers->__invoke($localeIdentifiers)
             ->shouldBeCalledOnce()
-            ->willReturn($activatedLocales);
+            ->willReturn($expectedActivatedLocales);
 
-        $this->__invoke($localeIdentifiers)->shouldReturn($activatedLocales);
-        $this->__invoke($localeIdentifiers)->shouldReturn($activatedLocales);
+        $this->__invoke($localeIdentifiers)->shouldBeLike($expectedActivatedLocales);
+        $this->__invoke($localeIdentifiers)->shouldBeLike($expectedActivatedLocales);
+
+        $this->__invoke(LocaleIdentifierCollection::fromNormalized(['en_US', 'de_DE']))
+            ->shouldBeLike(LocaleIdentifierCollection::fromNormalized(['en_US']));
+    }
+
+    function it_loads_only_the_locales_that_are_not_in_cache($findActivatedLocalesByIdentifiers)
+    {
+        $findActivatedLocalesByIdentifiers
+            ->__invoke(LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'de_DE']))
+            ->shouldBeCalledOnce()
+            ->willReturn(LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR']));
+
+        $findActivatedLocalesByIdentifiers
+            ->__invoke(LocaleIdentifierCollection::fromNormalized(['en_AU', 'fr_BE']))
+            ->shouldBeCalledOnce()
+            ->willReturn(LocaleIdentifierCollection::fromNormalized(['en_AU']));
+
+        $this->__invoke(LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'de_DE']))
+            ->shouldBeLike(LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR']));
+
+        $this->__invoke(LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'en_AU', 'fr_BE']))
+            ->shouldBeLike(LocaleIdentifierCollection::fromNormalized(['en_US', 'fr_FR', 'en_AU']));
     }
 }

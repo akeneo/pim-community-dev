@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale;
 
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 
@@ -25,27 +26,41 @@ class CacheFindActivatedLocalesByIdentifiers implements FindActivatedLocalesById
     /** @var FindActivatedLocalesByIdentifiersInterface */
     private $findActivatedLocalesByIdentifiers;
 
-    /** @var LocaleIdentifierCollection[] */
-    private $activatedLocales;
+    /** @var LocaleIdentifier[] */
+    private $localesCache;
 
     public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers)
     {
         $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
-        $this->activatedLocales = [];
+        $this->localesCache = [];
     }
 
     public function __invoke(LocaleIdentifierCollection $localeIdentifiers): LocaleIdentifierCollection
     {
-        $localeIdentifiersKey = array_reduce(iterator_to_array($localeIdentifiers), function ($key, $localIdentifier) {
-            $key .= $localIdentifier->normalize();
+        $requestedLocales = array_flip($localeIdentifiers->normalize());
+        $missingLocalesInCache = array_keys(array_diff_key($requestedLocales, $this->localesCache));
 
-            return $key;
-        }, '');
-
-        if (!array_key_exists($localeIdentifiersKey, $this->activatedLocales)) {
-            $this->activatedLocales[$localeIdentifiersKey] = ($this->findActivatedLocalesByIdentifiers)($localeIdentifiers);
+        if (!empty($missingLocalesInCache)) {
+            $this->loadLocalesInCache($missingLocalesInCache);
         }
 
-        return $this->activatedLocales[$localeIdentifiersKey];
+        $localesInCache = array_intersect_key($this->localesCache, $requestedLocales);
+        $activatedLocales = array_values(array_filter($localesInCache, function ($localeIdentifier) {
+            return null !== $localeIdentifier;
+        }));
+
+        return new LocaleIdentifierCollection($activatedLocales);
+    }
+
+    private function loadLocalesInCache(array $locales): void
+    {
+        foreach ($locales as $locale) {
+            $this->localesCache[$locale] = null;
+        }
+
+        $activatedLocales = ($this->findActivatedLocalesByIdentifiers)(LocaleIdentifierCollection::fromNormalized($locales));
+        foreach ($activatedLocales as $activatedLocale) {
+            $this->localesCache[$activatedLocale->normalize()] = $activatedLocale;
+        }
     }
 }

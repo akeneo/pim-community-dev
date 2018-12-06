@@ -27,7 +27,7 @@ class LocaleIdentifierCollection implements \IteratorAggregate
     /**
      * @param LocaleIdentifier[] $localeIdentifiers
      */
-    private function __construct(array $localeIdentifiers)
+    public function __construct(array $localeIdentifiers)
     {
         Assert::allIsInstanceOf($localeIdentifiers, LocaleIdentifier::class);
         $this->localeIdentifiers = $localeIdentifiers;
