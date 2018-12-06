@@ -3,7 +3,54 @@ import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
+import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
+
+const __ = require('oro/translator');
 const memo = (React as any).memo;
+
+const CompleteLabel = memo(({completeness}: {completeness: Completeness}) => {
+  if (completeness.hasNoRequiredAttribute()) {
+    return <span title={__('pim_reference_entity.record.grid.completeness.title_no_required')}>-</span>;
+  }
+
+  if (completeness.hasNoCompleteAttribute()) {
+    return (
+      <span
+        title={__('pim_reference_entity.record.grid.completeness.title_non_complete', {
+          required: completeness.getRequiredAttributeCount(),
+        })}
+        className="AknBadge AknBadge--medium AknBadge--invalid"
+      >
+        0%
+      </span>
+    );
+  }
+
+  if (completeness.isComplete()) {
+    return (
+      <span
+        title={__('pim_reference_entity.record.grid.completeness.title_complete', {
+          required: completeness.getRequiredAttributeCount(),
+        })}
+        className="AknBadge AknBadge--medium AknBadge--success"
+      >
+        100%
+      </span>
+    );
+  }
+
+  return (
+    <span
+      title={__('pim_reference_entity.record.grid.completeness.title_ongoing', {
+        complete: completeness.getCompleteAttributeCount(),
+        required: completeness.getRequiredAttributeCount(),
+      })}
+      className="AknBadge AknBadge--medium AknBadge--warning"
+    >
+      {completeness.getRatio()}%
+    </span>
+  );
+});
 
 const CommonRow = memo(
   ({
@@ -58,6 +105,9 @@ const CommonRow = memo(
         </td>
         <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={record.code}>
           {record.code}
+        </td>
+        <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier">
+          <CompleteLabel completeness={Completeness.createFromNormalized(record.completeness)} />
         </td>
       </tr>
     );

@@ -39,6 +39,18 @@ class Completeness {
     return this.required;
   }
 
+  public hasNoRequiredAttribute() {
+    return this.required === 0;
+  }
+
+  public hasNoCompleteAttribute() {
+    return this.complete === 0;
+  }
+
+  public isComplete() {
+    return this.complete === this.required;
+  }
+
   public getRatio() {
     return Math.round((100 * this.complete) / this.required);
   }
