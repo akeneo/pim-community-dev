@@ -35,12 +35,10 @@ class SqlFindConnectorAttributeByIdentifierAndCode implements FindConnectorAttri
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
     {
-        $results = $this->fetchAll($referenceEntityIdentifier, $attributeCode);
-
-        return $this->hydrateAttribute($results);
+        return $this->fetch($referenceEntityIdentifier, $attributeCode);
     }
 
-    private function fetchAll(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): array
+    private function fetch(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): ?ConnectorAttribute
     {
         $query = <<<SQL
         SELECT
@@ -65,9 +63,14 @@ SQL;
                 'attribute_code' => $attributeCode->__toString()
             ]
         );
+
         $result = $statement->fetch();
 
-        return !$result ? null : $result;
+        if (!$result) {
+            return null;
+        }
+
+        return $this->hydrateAttribute($result);
     }
 
     /**
