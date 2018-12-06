@@ -31,6 +31,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -255,5 +256,9 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
             ->create($portraitAttribute);
+
+        $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }
 }

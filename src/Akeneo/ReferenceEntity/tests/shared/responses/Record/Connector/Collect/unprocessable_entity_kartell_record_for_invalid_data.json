@@ -1,0 +1,54 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_record_rest_connector_patch",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "code": "kartell"
+        },
+        "body": {
+            "code": "kartell",
+            "labels": {
+                "en_US": "Kartell english label",
+                "en_AU": "label for a locale that is not activated"
+            },
+            "main_image": null,
+            "values": {
+                "description": [
+                    {
+                        "locale": "en_US",
+                        "channel": "unknown_channel",
+                        "data": "Kartell english description"
+                    },
+                    {
+                        "locale": "fr_FR",
+                        "channel": "ecommerce",
+                        "data": "Kartell french description."
+                    },
+                    {
+                        "locale": "de_DE",
+                        "channel": "ecommerce",
+                        "data": "Kartell german description."
+                    }
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The record has data that does not comply with the business rules.",
+            "errors": [
+                {
+                    "property": "values.description",
+                    "message": "The channel \"unknown_channel\" does not exist."
+                },
+                {
+                    "property": "values.description",
+                    "message": "The locale \"de_DE\" is not activated for the channel \"ecommerce\"."
+                }
+            ]
+        }
+    }
+}

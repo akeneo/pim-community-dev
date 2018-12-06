@@ -20,3 +20,9 @@ Feature: Connection to MDM or ERP systems
     Given the Brand reference entity with some records
     When the connector collects a record that has an invalid format
     Then the PIM notifies the connector about an error indicating that the record has an invalid format
+
+  @integration-back
+  Scenario: Notify an error when collecting a record whose data does not comply with the business rules
+    Given the Brand reference entity with some records
+    When the connector collects a record whose data does not comply with the business rules
+    Then the PIM notifies the connector about an error indicating that the record has data that does not comply with the business rules

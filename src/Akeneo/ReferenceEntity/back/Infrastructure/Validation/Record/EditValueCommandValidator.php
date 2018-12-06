@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Channel\FindActivatedLocalesPerChannelsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -20,39 +24,43 @@ use Symfony\Component\Validator\Validation;
  */
 class EditValueCommandValidator extends ConstraintValidator
 {
+    /** @var ChannelExistsInterface */
+    private $channelExists;
+
+    /** @var FindActivatedLocalesPerChannelsInterface */
+    private $findActivatedLocalesPerChannels;
+
+    /** @var FindActivatedLocalesByIdentifiersInterface */
+    private $findActivatedLocalesByIdentifiers;
+
+    public function __construct(
+        ChannelExistsInterface $channelExists,
+        FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels,
+        FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers
+    ) {
+        $this->channelExists = $channelExists;
+        $this->findActivatedLocalesPerChannels = $findActivatedLocalesPerChannels;
+        $this->findActivatedLocalesByIdentifiers = $findActivatedLocalesByIdentifiers;
+    }
+
     public function validate($command, Constraint $constraint)
     {
-        if (null === $command->channel && $command->attribute->hasValuePerChannel()) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'A channel is expected for attribute "%s" because it has a value per channel', $command->attribute->getCode()
-                )
-            );
-        }
-
-        if (null === $command->locale && $command->attribute->hasValuePerLocale()) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                'A locale is expected for attribute "%s" because it has a value per locale', $command->attribute->getCode()
-                )
-            );
-        }
-
         $this->checkCommandType($command);
         $this->checkConstraintType($constraint);
-        $violations = $this->checkChannel($command);
-        $violations->addAll($this->checkLocale($command));
+
+        $violations = $this->checkChannelType($command);
+        $violations->addAll($this->checkLocaleType($command));
 
         if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation($violation->getMessage())
-                    ->setParameters($violation->getParameters())
-                    ->atPath((string) $command->attribute->getCode())
-                    ->setCode($violation->getCode())
-                    ->setPlural($violation->getPlural())
-                    ->setInvalidValue($violation->getInvalidValue())
-                    ->addViolation();
-            }
+            $this->addViolations($command, $violations);
+
+            return;
+        }
+
+        if ($command->attribute->hasValuePerChannel()) {
+            $this->checkScopableValue($command);
+        } elseif ($command->attribute->hasValuePerLocale()) {
+            $this->checkLocalizableValue($command);
         }
     }
 
@@ -81,19 +89,96 @@ class EditValueCommandValidator extends ConstraintValidator
         }
     }
 
-    private function checkChannel(AbstractEditValueCommand $command): ConstraintViolationListInterface
+    private function checkChannelType(AbstractEditValueCommand $command): ConstraintViolationListInterface
     {
+        if ($command->attribute->hasValuePerChannel()) {
+            $constraintNotNull = new Constraints\NotNull();
+            $constraintNotNull->message = EditValueCommand::CHANNEL_IS_EXPECTED;
+            $constraints = [ $constraintNotNull, new Constraints\Type('string')];
+        } else {
+            $constraintNull = new Constraints\IsNull();
+            $constraintNull->message = EditValueCommand::CHANNEL_IS_NOT_EXPECTED;
+            $constraints = [$constraintNull];
+        }
+
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->channel, [ new Constraints\Type('string')]);
+        $violations = $validator->validate($command->channel, $constraints);
 
         return $violations;
     }
 
-    private function checkLocale(AbstractEditValueCommand $command): ConstraintViolationListInterface
+    private function checkLocaleType(AbstractEditValueCommand $command): ConstraintViolationListInterface
     {
+        if ($command->attribute->hasValuePerLocale()) {
+            $constraintNotNull = new Constraints\NotNull();
+            $constraintNotNull->message = EditValueCommand::LOCALE_IS_EXPECTED;
+            $constraints = [ $constraintNotNull, new Constraints\Type('string')];
+        } else {
+            $constraintNull = new Constraints\IsNull();
+            $constraintNull->message = EditValueCommand::LOCALE_IS_NOT_EXPECTED;
+            $constraints = [$constraintNull];
+        }
+
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->locale, [new Constraints\Type('string')]);
+        $violations = $validator->validate($command->locale, $constraints);
 
         return $violations;
+    }
+
+    private function checkScopableValue(AbstractEditValueCommand $command): void
+    {
+        if (!($this->channelExists)(ChannelIdentifier::fromCode($command->channel))) {
+            $this->context->buildViolation(EditValueCommand::CHANNEL_SHOULD_EXIST)
+                ->setParameter('%channel_identifier%', $command->channel)
+                ->atPath((string) $command->attribute->getCode())
+                ->addViolation();
+
+            return;
+        }
+
+        if ($command->attribute->hasValuePerLocale()) {
+            $this->checkLocaleIsActivatedForChannel($command);
+        }
+    }
+
+    private function checkLocalizableValue(AbstractEditValueCommand $command): void
+    {
+        $activatedLocales = ($this->findActivatedLocalesByIdentifiers)(LocaleIdentifierCollection::fromNormalized([$command->locale]));
+
+        if ($activatedLocales->isEmpty()) {
+            $this->context->buildViolation(EditValueCommand::LOCALE_IS_NOT_ACTIVATED)
+                ->setParameter('%locale_identifier%', $command->locale)
+                ->atPath((string) $command->attribute->getCode())
+                ->addViolation();
+        }
+    }
+
+    private function checkLocaleIsActivatedForChannel(AbstractEditValueCommand $command): void
+    {
+        $activatedLocalesPerChannels = ($this->findActivatedLocalesPerChannels)();
+
+        if (!array_key_exists($command->channel, $activatedLocalesPerChannels)
+            || !in_array($command->locale, $activatedLocalesPerChannels[$command->channel])
+        ) {
+            $this->context->buildViolation(EditValueCommand::LOCALE_IS_NOT_ACTIVATED_FOR_CHANNEL)
+                ->setParameter('%locale_identifier%', $command->locale)
+                ->setParameter('%channel_identifier%', $command->channel)
+                ->atPath((string) $command->attribute->getCode())
+                ->addViolation();
+        }
+    }
+
+    private function addViolations(AbstractEditValueCommand $command, ConstraintViolationListInterface $violations): void
+    {
+        $attributeCode = (string) $command->attribute->getCode();
+        foreach ($violations as $violation) {
+            $this->context->buildViolation($violation->getMessage())
+                ->setParameter('%attribute_code%', $attributeCode)
+                ->atPath($attributeCode)
+                ->setCode($violation->getCode())
+                ->setPlural($violation->getPlural())
+                ->setInvalidValue($violation->getInvalidValue())
+                ->addViolation();
+        }
     }
 }

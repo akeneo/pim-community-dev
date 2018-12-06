@@ -95,6 +95,9 @@ services:
             - '@__symfony__.validator'
             - '@akeneo_referenceentity.tests.back.acceptance.context.exception_context'
             - '@akeneo_referenceentity.tests.back.acceptance.context.constraint_violations_context'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
         tags:
             - { name: fob.context_service }
 

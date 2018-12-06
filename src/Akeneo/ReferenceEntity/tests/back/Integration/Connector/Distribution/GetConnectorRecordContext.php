@@ -161,6 +161,7 @@ class GetConnectorRecordContext implements Context
      */
     public function theReferenceEntityWithSomeRecords(string $referenceEntityIdentifier): void
     {
+        $referenceEntityIdentifier = strtolower($referenceEntityIdentifier);
         for ($i = 0; $i < 10 ; $i++) {
             $record = new ConnectorRecord(
                 RecordCode::fromString('record_code_' . $i),

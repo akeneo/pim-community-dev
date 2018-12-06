@@ -163,7 +163,8 @@ services:
             - '@akeneo_referenceentity.application.record.create_record_handler'
             - '@router'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
-            -
+            - '@validator'
+
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorReferenceEntityAttributesAction
         arguments:
