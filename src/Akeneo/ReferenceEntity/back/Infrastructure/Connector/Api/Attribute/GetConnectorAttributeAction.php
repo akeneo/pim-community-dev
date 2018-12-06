@@ -23,12 +23,12 @@ class GetConnectorAttributeAction
     private $addHalSelfLinkToNormalizedConnectorAttribute;
 
     public function __construct(
-        FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorReferenceEntityAttributes,
+        FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
         ReferenceEntityExistsInterface $referenceEntityExists,
         AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
-        $this->findConnectorAttributeQuery = $findConnectorReferenceEntityAttributes;
+        $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
         $this->addHalSelfLinkToNormalizedConnectorAttribute = $addHalSelfLinkToNormalizedConnectorAttribute;
     }
 

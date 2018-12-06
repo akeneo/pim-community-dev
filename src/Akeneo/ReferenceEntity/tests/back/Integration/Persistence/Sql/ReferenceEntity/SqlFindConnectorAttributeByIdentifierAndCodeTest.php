@@ -66,24 +66,14 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
     {
         $referenceEntityIdentifier = 'reference_entity';
         $this->createReferenceEntity($referenceEntityIdentifier);
-        $connectorAttributes = $this->createConnectorAttribute($referenceEntityIdentifier);
+        $connectorAttribute = $this->createConnectorAttribute($referenceEntityIdentifier);
 
-        $foundAttributes = ($this->findConnectorReferenceEntityAttribute)(
+        $foundAttribute = ($this->findConnectorReferenceEntityAttribute)(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString('image')
         );
 
-        $normalizedAttributes = [];
-        foreach ($connectorAttributes as $attribute) {
-            $normalizedAttributes[] = $attribute->normalize();
-        }
-
-        $normalizedFoundAttributes = [];
-        foreach ($foundAttributes as $foundAttribute) {
-            $normalizedFoundAttributes[] = $foundAttribute->normalize();
-        }
-
-        $this->assertSame($normalizedAttributes, $normalizedFoundAttributes);
+        $this->assertSame($connectorAttribute->normalize(), $foundAttribute->normalize());
     }
 
     /**
@@ -91,12 +81,12 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
      */
     public function it_returns_null_if_no_attribute_found()
     {
-        $foundAttributes = ($this->findConnectorReferenceEntityAttribute)(
+        $foundAttribute = ($this->findConnectorReferenceEntityAttribute)(
             ReferenceEntityIdentifier::fromString('reference_entity'),
             AttributeCode::fromString('none')
         );
 
-        $this->assertSame(null, $foundAttributes);
+        $this->assertSame(null, $foundAttribute);
     }
 
     private function resetDB(): void
