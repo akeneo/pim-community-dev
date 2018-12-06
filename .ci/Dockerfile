@@ -7,7 +7,7 @@ ENV COMPOSER_CACHE_DIR=/tmp/composer/cache \
     YARN_CACHE_FOLDER=/tmp/yarn \
     PIM_DATABASE_HOST=127.0.0.1 \
     PIM_INDEX_HOSTS=elastic:changeme@127.0.0.1:9200 \
-    BEHAT_TMPDIR=/var/www/pim/var/cache/tmp \
+    BEHAT_TMPDIR=/var/www/pim/var/cache/tmp
 
 WORKDIR /var/www/pim
 
