@@ -23,6 +23,7 @@ const listenRequest = async function(page, requestContract) {
   );
 
   const answerRequest = request => {
+    debugger;
     if (
       url === request.url() &&
       requestContract.request.method === request.method() &&

@@ -308,7 +308,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeCode::fromString('linked_brand'),
             LabelCollection::fromArray(['fr_FR' => 'Marque liée', 'en_US' => 'Linked brand']),
             AttributeOrder::fromInteger(4),
-            AttributeIsRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             ReferenceEntityIdentifier::fromString('brand')
@@ -351,7 +351,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeCode::fromString('linked_cities'),
             LabelCollection::fromArray(['fr_FR' => 'Ville', 'en_US' => 'Cities']),
             AttributeOrder::fromInteger(5),
-            AttributeIsRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             ReferenceEntityIdentifier::fromString('city')

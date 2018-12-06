@@ -44,6 +44,18 @@
           "channel":null,
           "locale":null,
           "data":null
+        },
+        {
+          "attribute":"linked_brand_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":null
+        },
+        {
+          "attribute":"linked_cities_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":null
         }
       ]
     }
