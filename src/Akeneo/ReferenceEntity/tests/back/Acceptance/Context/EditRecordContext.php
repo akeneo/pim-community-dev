@@ -700,9 +700,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the localizable attribute of the record without locale$/
+     * @When /^the user updates the localizable attribute value of the record without specifying the locale$/
      */
-    public function theUserUpdatesTheLocalizableAttributeOfTheRecordWithoutLocale()
+    public function theUserUpdatesTheLocalizableAttributeValueOfTheRecordWithoutSpecifyingTheLocale()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -748,9 +748,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the not localizable attribute of the record with a locale$/
+     * @When /^the user updates the not localizable attribute value of the record by specifying the locale$/
      */
-    public function theUserUpdatesTheNotLocalizableAttributeOfTheRecordWithALocale()
+    public function theUserUpdatesTheNotLocalizableAttributeValueOfTheRecordBySpecifyingTheLocale()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -769,9 +769,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute of the record for a not activated locale$/
+     * @When /^the user updates the attribute value of the record by specifying a not activated locale$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordWithANotActivatedLocale()
+    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingANotActivatedLocale()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -790,9 +790,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute of the record for a not activated locale for the ecommerce channel$/
+     * @When /^the user updates the attribute value of the record by specifying a locale not activated for the ecommerce channel$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordWithANotActivatedLocaleForTheEcommerceChannel()
+    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingALocaleNotActivatedForTheEcommerceChannel()
     {
         $this->channelExists->save(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE));
 
@@ -1127,9 +1127,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the scopable attribute of the record without channel$/
+     * @When /^the user enriches a scopable attribute value of a record without specifying the channel$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordWithoutChannel()
+    public function theUserEnrichesAnScopableAttributeValueOfARecordWithoutChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -1148,9 +1148,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the not scopable attribute of the record with a channel$/
+     * @When /^the user updates the not scopable attribute of the record by specifying a channel$/
      */
-    public function theUserUpdatesTheNotScopableAttributeOfTheRecordWithAChannel()
+    public function theUserUpdatesTheNotScopableAttributeOfTheRecordBySpecifyingAChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -1169,9 +1169,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute of the record for an unknown channel$/
+     * @When /^the user updates the attribute value of the record by specifying an unknown channel$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordForAnUnknownChannel()
+    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingAnUnknownChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,

@@ -55,21 +55,21 @@ Feature: Edit an record
     And the record should have the updated value for this attribute and the french locale
 
   @acceptance-back
-  Scenario: Updating a localizable value of a record without locale
+  Scenario: Record is not valid when enriching a localizable attribute value of a record without specifying the locale in the value
     Given a reference entity with a localizable attribute
-    When the user updates the localizable attribute of the record without locale
+    When the user updates the localizable attribute value of the record without specifying the locale
     Then there should be a validation error on the property text attribute with message "A locale is expected for attribute "name" because it has a value per locale."
 
   @acceptance-back
-  Scenario: Updating a not localizable value of a record with a locale
+  Scenario: Record is not valid when enriching a not localizable attribute value of a record by specifying the locale in the value
     Given a reference entity with a not localizable attribute
-    When the user updates the not localizable attribute of the record with a locale
+    When the user updates the not localizable attribute value of the record by specifying the locale
     Then there should be a validation error on the property text attribute with message "A locale is not expected for attribute "name" because it has not a value per locale."
 
   @acceptance-back
-  Scenario: Updating a localizable value of a record with a not activated locale
+  Scenario: Record is not valid when enriching a localizable attribute value of a record by specifying a not activated locale in the value
     Given a reference entity with a localizable attribute
-    When the user updates the attribute of the record for a not activated locale
+    When the user updates the attribute value of the record by specifying a not activated locale
     Then there should be a validation error on the property text attribute with message "The locale "de_DE" is not activated."
 
   @acceptance-back
@@ -89,24 +89,24 @@ Feature: Edit an record
     Then there should be a validation error on the property text attribute with message "This value should be of type string."
 
   @acceptance-back
-  Scenario: Updating a scopable value without channel
+  Scenario: Record is not valid when enriching a scopable attribute value without specifying the channel in the value
     Given a reference entity with a scopable attribute
     And a record belonging to this reference entity with a value for the ecommerce channel
-    When the user updates the scopable attribute of the record without channel
+    When the user enriches a scopable attribute value of a record without specifying the channel
     Then there should be a validation error on the property text attribute with message "A channel is expected for attribute "name" because it has a value per channel."
 
   @acceptance-back
-  Scenario: Updating a not scopable value with a channel
+  Scenario: Record is not valid when enriching a not scopable attribute value by specifying the channel in the value
     Given a reference entity with a not scopable attribute
     And a record belonging to this reference entity with a value for the not scopable attribute
-    When the user updates the not scopable attribute of the record with a channel
+    When the user updates the not scopable attribute of the record by specifying a channel
     Then there should be a validation error on the property text attribute with message "A channel is not expected for attribute "name" because it has not a value per channel."
 
   @acceptance-back
-  Scenario: Updating a scopable value of a record for an unknown channel
+  Scenario: Record is not valid when enriching a scopable attribute value by specifying an unknown channel in the value
     Given a reference entity with a scopable attribute
     And a record belonging to this reference entity with a value for the ecommerce channel
-    When the user updates the attribute of the record for an unknown channel
+    When the user updates the attribute value of the record by specifying an unknown channel
     Then there should be a validation error on the property text attribute with message "The channel "unknown_channel" does not exist."
 
   @acceptance-back
@@ -119,9 +119,9 @@ Feature: Edit an record
     And the record should have the updated value for this attribute and the ecommerce channel and the french locale
 
   @acceptance-back
-  Scenario: Updating a scopable and localizable value of a record with a not activated locale for the channel
+  Scenario: Record is not valid when enriching a scopable and localizable attribute value by specifying a locale not activated for the channel in the value
     Given a reference entity with a scopable and localizable attribute
-    When the user updates the attribute of the record for a not activated locale for the ecommerce channel
+    When the user updates the attribute value of the record by specifying a locale not activated for the ecommerce channel
     Then there should be a validation error on the property text attribute with message "The locale "de_DE" is not activated for the channel "ecommerce"."
 
   # Text
