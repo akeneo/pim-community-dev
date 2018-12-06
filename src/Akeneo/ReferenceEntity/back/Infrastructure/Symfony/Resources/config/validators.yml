@@ -146,7 +146,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommandValidator
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists'
-            - '@akeneo.referencentity.infratructure.persistence.cache.query.find_activated_locales_per_channels'
-            - '@akeneo.referencentity.infratructure.persistence.cache.query.find_activated_locales_by_identifiers'
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.record.edit_value_command' }
