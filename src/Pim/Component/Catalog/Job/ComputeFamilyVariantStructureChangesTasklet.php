@@ -6,7 +6,6 @@ namespace Pim\Component\Catalog\Job;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
@@ -49,6 +48,9 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var int */
+    private $batchSize;
+
     /**
      * @param EntityRepository                               $familyVariantRepository
      * @param ObjectRepository                               $variantProductRepository
@@ -57,6 +59,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
      * @param BulkSaverInterface                             $productModelSaver
      * @param KeepOnlyValuesForVariation                     $keepOnlyValuesForVariation
      * @param ValidatorInterface                             $validator
+     * @param int                                            $batchSize
      */
     public function __construct(
         EntityRepository $familyVariantRepository,
@@ -65,7 +68,8 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        int $batchSize = 100
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->variantProductRepository = $variantProductRepository;
@@ -74,6 +78,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->productModelSaver = $productModelSaver;
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -125,11 +130,33 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 
         if (!empty($productModels)) {
             $this->validateProductModels($productModels);
-            $this->productModelSaver->saveAll($productModels);
+            $this->saveAllProductModels($productModels);
         }
 
         if (!empty($products)) {
             $this->validateProducts($products);
+            $this->saveAllProducts($products);
+        }
+    }
+
+    private function saveAllProductModels($productModels)
+    {
+        if (count($productModels) > $this->batchSize) {
+            while (count($productModels) > 0) {
+                $this->productModelSaver->saveAll(array_splice($productModels, 0, $this->batchSize));
+            }
+        } else {
+            $this->productModelSaver->saveAll($productModels);
+        }
+    }
+
+    private function saveAllProducts($products)
+    {
+        if (count($products) > $this->batchSize) {
+            while (count($products) > 0) {
+                $this->productSaver->saveAll(array_splice($products, 0, $this->batchSize));
+            }
+        } else {
             $this->productSaver->saveAll($products);
         }
     }
