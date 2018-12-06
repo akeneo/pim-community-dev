@@ -36,18 +36,22 @@ define([
          *
          * {@inheritdoc}
          */
-        fetchAll: function () {
-            if (!_.has(this.options.urls, 'list')) {
-                return $.Deferred().reject().promise();
-            }
+        fetchAll: function (options) {
+            options = options || {};
 
-            this.entityListPromise = $.getJSON(
-                Routing.generate(this.options.urls.list, {
-                    options: {
-                        limit: -1
-                    }
-                })
-            ).then(_.identity).promise();
+            if (null === this.entityListPromise || false === options.cached) {
+                if (!_.has(this.options.urls, 'list')) {
+                    return $.Deferred().reject().promise();
+                }
+
+                this.entityListPromise = $.getJSON(
+                    Routing.generate(this.options.urls.list, {
+                        options: {
+                            limit: -1
+                        }
+                    })
+                ).then(_.identity).promise();
+            }
 
             return this.entityListPromise;
         }
