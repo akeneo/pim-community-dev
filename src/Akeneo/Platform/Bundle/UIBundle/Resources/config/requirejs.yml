@@ -115,7 +115,7 @@ config:
         pimee/common/select2/asset-tag:                               pimenterpriseui/js/common/select2/asset-tag
 
         # Common
-        pimee/common/tab/permission:       pimenterpriseui/js/form/common/tab/permission
+        pimee/common/tab/permission:       pimenterpriseui/js/form/common/tab/permission.tsx
         pimee/job/common/edit/launch:      pimenterpriseui/js/job/common/edit/launch
 
         #Job

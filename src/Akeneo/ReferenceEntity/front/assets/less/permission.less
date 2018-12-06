@@ -1,0 +1,54 @@
+
+.AknPermission {
+  @barThickness: 5px;
+  @barLength: 100px;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  &-groupName {
+    padding: 6px 0;
+  }
+
+  &-level {
+    padding: 0;
+  }
+
+  &-rightLevel {
+    display: flex;
+    align-items: center;
+  }
+
+  &-barLeft {
+    width: @barLength;
+    height: @barThickness;
+  }
+
+  &-barRight {
+    width: @barLength;
+    height: @barThickness;
+  }
+
+  &-pill {
+    z-index: 10;
+    margin: 0 -1px;
+    width: @barThickness + 5px;
+    height: @barThickness + 5px;
+    border-radius: @barThickness + 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &-pill, &-barRight, &-barLeft {
+    background-color: #D9DDE2;
+    transition: background-color .3s ease-in-out;
+
+    &--active {
+      background-color: #67b373;
+    }
+    &--transparent {
+      background-color: transparent;
+    }
+  }
+}
