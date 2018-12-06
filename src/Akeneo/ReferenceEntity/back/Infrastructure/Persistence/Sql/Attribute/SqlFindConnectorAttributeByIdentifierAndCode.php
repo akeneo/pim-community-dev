@@ -60,7 +60,7 @@ SQL;
             $query,
             [
                 'reference_entity_identifier' => $referenceEntityIdentifier->normalize(),
-                'attribute_code' => $attributeCode->__toString()
+                'attribute_code' => (string) $attributeCode
             ]
         );
 
