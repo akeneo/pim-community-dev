@@ -16,7 +16,7 @@ export type RecordSelectorProps = {
   value: RecordCode[] | RecordCode | null;
   referenceEntityIdentifier: ReferenceEntityIdentifier;
   multiple?: boolean;
-  readonly?: boolean;
+  readOnly?: boolean;
   locale: LocaleReference;
   channel: ChannelReference;
   placeholder: string;
@@ -29,7 +29,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   PAGE_SIZE = 200;
   static defaultProps = {
     multiple: false,
-    readonly: false,
+    readOnly: false,
   };
   private el: any;
 
@@ -171,9 +171,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
         },
       });
 
-      if (!this.props.readonly) {
-        this.el.select2('readonly', true);
-
+      if (!this.props.readOnly) {
         this.el.on('change', (event: any) => {
           const newValue = this.props.multiple
             ? event.val.map((recordCode: string) => RecordCode.create(recordCode))
@@ -209,6 +207,6 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   render(): JSX.Element | JSX.Element[] {
     const {referenceEntityIdentifier, ...props} = this.props;
 
-    return <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} disabled={this.props.readonly}/>;
+    return <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} disabled={this.props.readOnly}/>;
   }
 }
