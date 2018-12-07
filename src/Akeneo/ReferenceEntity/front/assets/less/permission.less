@@ -1,7 +1,6 @@
 
 .AknPermission {
   @barThickness: 5px;
-  @barLength: 100px;
   border-collapse: collapse;
   font-size: 13px;
 
@@ -10,21 +9,20 @@
   }
 
   &-level {
-    padding: 0;
+    padding: 0 !important;
   }
 
   &-rightLevel {
     display: flex;
     align-items: center;
   }
-
   &-barLeft {
-    width: @barLength;
+    flex: 1;
     height: @barThickness;
   }
 
   &-barRight {
-    width: @barLength;
+    flex: 1;
     height: @barThickness;
   }
 
@@ -37,6 +35,13 @@
 
     &:hover {
       cursor: pointer;
+    }
+
+    &--active {
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      padding: 2px;
     }
   }
 

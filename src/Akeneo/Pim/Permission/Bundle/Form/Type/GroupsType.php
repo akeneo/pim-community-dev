@@ -33,8 +33,7 @@ class GroupsType extends AbstractType
                 'class'    => Group::class,
                 'property' => 'name',
                 'multiple' => true,
-                'required' => false,
-                'select2'  => true,
+                'required' => false
             ]
         );
     }

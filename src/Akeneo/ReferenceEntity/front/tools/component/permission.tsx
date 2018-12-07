@@ -1,5 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
+import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
 
 export enum RightLevel {
   None = 'none',
@@ -7,6 +8,8 @@ export enum RightLevel {
   Edit = 'edit',
   Own = 'own'
 }
+const ALL_GROUP = 'All';
+
 type GroupName = string;
 type EntityName = string;
 type GroupRight = {
@@ -46,7 +49,9 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
 
     return (
       <tr className="AknPermission-row">
-        <td className="AknPermission-groupName">{group.name}</td>
+        <td className="AknPermission-groupName AknGrid-bodyCell AknGrid-bodyCell--big">
+          {group.name}
+        </td>
         {rightLevels.map((rightLevel: RightLevel, currentRightLevelIndex: number) => {
           const isFirstColumn = currentRightLevelIndex === 0;
           const isLastColumn = currentRightLevelIndex === rightLevels.length - 1;
@@ -55,7 +60,7 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
 
           return (
             <td
-              className="AknPermission-level"
+              className="AknPermission-level AknGrid-bodyCell"
               key={rightLevel}
             >
               <div className="AknPermission-rightLevel">
@@ -73,7 +78,9 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                   onClick={() => {
                     onChange(group.name, rightLevel)
                   }}
-                />
+                >
+                  {!isFirstColumn && pillIsLowerOrAtThisLevel ? <Tick className="AknPermission-pillTick"/> : null}
+                </div>
                 <div className={`AknPermission-barRight ${
                   pillIsHigher ? 'AknPermission-barRight--active' : ''
                 } ${
@@ -99,7 +106,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
 
   private onPermissionUpdated(groupCode: GroupName, newValue: RightLevel) {
     const newRights = this.state.rights.map((groupRight: GroupRight) => {
-      if (groupRight.group.name === groupCode) {
+      if (groupRight.group.name === groupCode || ALL_GROUP === groupCode) {
         return {
           group: groupRight.group,
           rightLevel: newValue
@@ -155,14 +162,14 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
     const prioritizedRightLevels = PermissionCollectionEditor.getPrioritizedRigthLevels(this.props.value);
 
     return (
-      <React.Fragment>
-        <table className="AknPermission">
+      <div className="AknGridContainer">
+        <table className="AknPermission AknGrid">
         <thead className="AknPermission-header">
-          <tr>
-            <th></th>
-            <th>none</th>
+          <tr className="AknGrid-bodyRow">
+            <th className="AknGrid-headerCell AknGrid-headerCell--center"></th>
+            <th className="AknGrid-headerCell AknGrid-headerCell--center">none</th>
             {prioritizedRightLevels.map((rightLevel: RightLevel) => (
-              <th key={rightLevel}>
+              <th key={rightLevel} className="AknGrid-headerCell AknGrid-headerCell--center">
                 {rightLevel}
               </th>
             ))}
@@ -180,7 +187,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
           ))}
         </tbody>
         </table>
-      </React.Fragment>
+      </div>
     )
   }
 }
