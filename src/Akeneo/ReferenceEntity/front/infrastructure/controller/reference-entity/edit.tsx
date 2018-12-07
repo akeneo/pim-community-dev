@@ -64,7 +64,6 @@ class ReferenceEntityEditController extends BaseController {
         this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateFilter('full_text', '=', userSearch));
-        this.store.dispatch(updateRecordResults());
         this.store.dispatch(attributeListGotUpdated(referenceEntityResult.attributes) as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
