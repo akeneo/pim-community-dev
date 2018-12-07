@@ -83,7 +83,7 @@ define(
                     code: event.code,
                     isVisible: event.isVisible,
                     label: event.label,
-                    route: event.code,
+                    route: event.code
                 };
                 this.tabs.push(tab);
                 this.trigger('pim_menu:column:register_navigation_item', tab);

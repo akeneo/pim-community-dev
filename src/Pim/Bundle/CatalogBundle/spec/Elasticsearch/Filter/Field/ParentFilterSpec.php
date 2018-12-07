@@ -47,19 +47,6 @@ class ParentFilterSpec extends ObjectBehavior
         $this->supportsField('a_not_supported_field')->shouldReturn(false);
     }
 
-    function it_adds_a_case_insensitive_filter(
-        SearchQueryBuilder $sqb
-    ) {
-        $sqb->addFilter(
-            [
-                'terms' => ['parent' => ['foo', 'bar', 'baz']],
-            ]
-        )->shouldBeCalled();
-
-        $this->setQueryBuilder($sqb);
-        $this->addFieldFilter('parent', Operators::IN_LIST, ['foo', 'BAR', 'BaZ'], null, null, []);
-    }
-
     function it_adds_a_filter_with_operator_is_empty(
         SearchQueryBuilder $sqb
     ) {
