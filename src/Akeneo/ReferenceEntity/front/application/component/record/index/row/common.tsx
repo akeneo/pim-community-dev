@@ -71,7 +71,7 @@ const CommonRow = memo(
           <td className="AknGrid-bodyCell AknGrid-bodyCell--image">
             <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
           </td>
-          <td className="AknGrid-bodyCell" colSpan={2}>
+          <td className="AknGrid-bodyCell" colSpan={3}>
             <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
           </td>
         </tr>
