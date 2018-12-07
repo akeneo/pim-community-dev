@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7886: Fix translations of boolean attributes
+
 # 2.0.44 (2018-11-29)
 
 ## Bug fixes
