@@ -1,0 +1,44 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_record_get_rest",
+    "query": {
+      "referenceEntityIdentifier": "designer",
+      "recordCode": "starck"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "reference_entity_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values": [
+        {
+          "attribute": {
+            "identifier": "linked_brand_designer_fingerprint",
+            "reference_entity_identifier": "designer",
+            "code": "linked_brand",
+            "labels": {
+              "fr_FR": "Marque li\u00e9e",
+              "en_US": "Linked brand"
+            },
+            "order": 4,
+            "is_required": false,
+            "value_per_channel": false,
+            "value_per_locale": true,
+            "type": "record",
+            "record_type": "brand"
+          },
+          "channel": null,
+          "locale": "en_US",
+          "data": null
+        }
+      ]
+    }
+  }
+}

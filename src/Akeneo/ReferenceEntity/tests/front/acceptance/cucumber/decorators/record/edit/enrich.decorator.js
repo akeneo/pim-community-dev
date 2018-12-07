@@ -28,6 +28,20 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     await page.select(`.AknSelectField[id="${id}"]`, value);
   };
 
+  const fillRecordSelectField = async (id, value) => {
+    const field = await nodeElement.$(`.record-selector[id="${id}"]`);
+    await page.evaluate(
+      (properties, id, value) => {
+        return (properties.querySelector(`.record-selector[id="${id}"]`).value = '');
+      },
+      nodeElement,
+      id,
+      value
+    );
+
+    await field.type(value);
+  };
+
   const fillUploadField = async (id, value) => {
     const field = await nodeElement.$(`.AknImage-updater[id="${id}"]`);
     await page.evaluate(
@@ -98,6 +112,7 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     fillField,
     fillUploadField,
     fillSelectField,
+    fillRecordSelectField,
     clickOnDeleteButton,
     hasDeleteButton,
     isFilled,

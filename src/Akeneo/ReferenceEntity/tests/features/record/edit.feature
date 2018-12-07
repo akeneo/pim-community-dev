@@ -500,6 +500,18 @@ Feature: Edit an record
     When the user fill the "website" field with: "http://the-website.com"
     Then the user should see the completeness percentage with a value of "100%"
 
+  @acceptance-front
+  Scenario: Updating a record with a single record linked
+    Given a valid record with a reference entity single link attribute
+    When the user saves the valid record with a single record linked
+    Then the user should see a success message on the edit page
+
+  @acceptance-front
+  Scenario: Updating a record with a multiple record linked
+    Given a valid record with a reference entity multiple link attribute
+    When the user saves the valid record with a multiple record linked
+    Then the user should see a success message on the edit page
+
 #  Todo : Fix random call for the preview image
 #  @acceptance-front
 #  Scenario: Updating a record with an image value

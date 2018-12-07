@@ -16,36 +16,6 @@
       "image": null,
       "values":[
         {
-          "attribute":"name_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":"Philippe Starck"
-        },
-        {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"en_US",
-          "data":null
-        },
-        {
-          "attribute":"description_designer_fingerprint",
-          "channel":null,
-          "locale":"fr_FR",
-          "data":null
-        },
-        {
-          "attribute":"website_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
-        },
-        {
-          "attribute":"portrait_designer_fingerprint",
-          "channel":null,
-          "locale":null,
-          "data":null
-        },
-        {
           "attribute":"linked_brand_designer_fingerprint",
           "channel":null,
           "locale":null,
