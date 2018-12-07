@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.21 (2018-12-07)
+
 ## Bug fixes
 
 - PIM-7908: Fix variant family creation if an attribute doesn't have a translation for the current locale
