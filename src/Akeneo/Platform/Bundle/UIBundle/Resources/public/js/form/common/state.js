@@ -82,7 +82,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        message: this.message
+                        message: this.message + " --- " + this.state + ' --- ' + JSON.stringify(this.getFormData())
                     })
                 ).css('opacity', this.hasModelChanged() ? 1 : 0);
 
