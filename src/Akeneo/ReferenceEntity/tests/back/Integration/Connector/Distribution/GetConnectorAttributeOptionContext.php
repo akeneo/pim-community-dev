@@ -162,5 +162,4 @@ class GetConnectorAttributeOptionContext implements Context
     {
         throw new PendingException();
     }
-
 }
