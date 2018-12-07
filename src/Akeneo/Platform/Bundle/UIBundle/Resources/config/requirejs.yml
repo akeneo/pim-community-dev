@@ -1012,6 +1012,7 @@ config:
     # Values fields
     pim/form/common/fields/values/boolean:              pimui/js/form/common/fields/values/boolean
     pim/form/common/fields/values/simple-select-async:  pimui/js/form/common/fields/values/simple-select-async
+    pim/form/common/fields/values/reference-entity:     pimui/js/form/common/fields/values/reference-entity
     pim/form/common/fields/values/text:                 pimui/js/form/common/fields/values/text
     pim/form/common/fields/values/metric:               pimui/js/form/common/fields/values/metric
     pim/form/common/fields/values/values-behavior:      pimui/js/form/common/fields/values/values-behavior
