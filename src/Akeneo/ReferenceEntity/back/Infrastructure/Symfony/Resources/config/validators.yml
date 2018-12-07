@@ -34,6 +34,11 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_should_exist' }
 
+    akeneo_referenceentity.infrastructure.validation.attribute.attribute_record_type_is_required:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeIsRequiredValidator
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_record_type_is_required' }
+
     akeneo_referenceentity.infrastructure.validation.reference_entity.reference_entity_should_have_no_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldHaveNoRecordValidator
         arguments:

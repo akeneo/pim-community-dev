@@ -39,7 +39,7 @@ export default (
     attribute_type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    record_type: string;
+    record_type: string | null;
   }
 ) => {
   switch (action.type) {
