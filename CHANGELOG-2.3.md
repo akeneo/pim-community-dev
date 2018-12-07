@@ -1,4 +1,8 @@
 # 2.3.x
+ 
+## Bug fixes
+
+- PIM-7899: Norm RGPD - Hide the field "Date of Birth"
 
 # 2.3.22 (2018-12-21)
 
@@ -13,7 +17,7 @@
  ## Elasticsearch
  
  - Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
- 
+
 # 2.3.21 (2018-12-07)
 
 ## Bug fixes

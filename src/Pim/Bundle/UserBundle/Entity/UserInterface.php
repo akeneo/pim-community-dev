@@ -46,6 +46,8 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function getEmail();
 
     /**
+     * @deprecated - Will be removed in 3.0
+     *
      * Return birthday
      *
      * @return DateTime
@@ -193,6 +195,8 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function getFullName();
 
     /**
+     * @deprecated - Will be removed in 3.0
+     *
      * @param  DateTime $birthday [optional] New birthday value. Null by default.
      *
      * @return UserInterface
