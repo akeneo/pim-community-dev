@@ -31,12 +31,11 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
   const fillRecordSelectField = async (id, value) => {
     const field = await nodeElement.$(`.record-selector[id="${id}"]`);
     await page.evaluate(
-      (properties, id, value) => {
+      (properties, id) => {
         return (properties.querySelector(`.record-selector[id="${id}"]`).value = '');
       },
       nodeElement,
-      id,
-      value
+      id
     );
 
     await field.type(value);

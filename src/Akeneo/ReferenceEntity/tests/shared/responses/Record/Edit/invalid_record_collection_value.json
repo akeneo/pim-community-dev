@@ -48,7 +48,7 @@
         {
           "attribute":"linked_cities_designer_fingerprint",
           "channel":null,
-          "locale":null,
+          "locale":"en_US",
           "data":["unknow_city", "wrong_city"]
         }
       ]
@@ -233,14 +233,14 @@
                 "order":[
                 ],
                 "valuePerChannel":false,
-                "valuePerLocale":false
+                "valuePerLocale":true
               },
               "recordCodes":[
                 "unknow_city",
                 "wrong_city"
               ],
               "channel":null,
-              "locale":null
+              "locale":"en_US"
             }
           ]
         },
@@ -262,14 +262,14 @@
             "order":[
             ],
             "valuePerChannel":false,
-            "valuePerLocale":false
+            "valuePerLocale":true
           },
           "recordCodes":[
             "unknow_city",
             "wrong_city"
           ],
           "channel":null,
-          "locale":null
+          "locale":"en_US"
         },
         "constraint":{
           "targets":"class",

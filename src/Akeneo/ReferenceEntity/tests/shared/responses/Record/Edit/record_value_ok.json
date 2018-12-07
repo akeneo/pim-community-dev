@@ -18,7 +18,7 @@
         {
           "attribute":"linked_brand_designer_fingerprint",
           "channel":null,
-          "locale":null,
+          "locale":"en_US",
           "data":"ikea"
         }
       ]

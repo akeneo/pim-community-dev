@@ -18,7 +18,7 @@
         {
           "attribute":"linked_cities_designer_fingerprint",
           "channel":null,
-          "locale":null,
+          "locale":"en_US",
           "data":["paris","lisbonne","moscou"]
         }
       ]

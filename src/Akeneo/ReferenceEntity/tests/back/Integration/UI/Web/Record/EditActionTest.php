@@ -310,7 +310,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeOrder::fromInteger(4),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
             ReferenceEntityIdentifier::fromString('brand')
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
@@ -353,7 +353,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeOrder::fromInteger(5),
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
             ReferenceEntityIdentifier::fromString('city')
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')

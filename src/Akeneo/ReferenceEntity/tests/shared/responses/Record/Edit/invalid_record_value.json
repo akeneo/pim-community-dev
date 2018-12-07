@@ -48,7 +48,7 @@
         {
           "attribute":"linked_brand_designer_fingerprint",
           "channel":null,
-          "locale":null,
+          "locale":"en_US",
           "data":"test"
         }
       ]
@@ -233,11 +233,11 @@
                 "order":[
                 ],
                 "valuePerChannel":false,
-                "valuePerLocale":false
+                "valuePerLocale":true
               },
               "recordCode":"test",
               "channel":null,
-              "locale":null
+              "locale":"en_US"
             }
           ]
         },
@@ -259,11 +259,11 @@
             "order":[
             ],
             "valuePerChannel":false,
-            "valuePerLocale":false
+            "valuePerLocale":true
           },
           "recordCode":"test",
           "channel":null,
-          "locale":null
+          "locale":"en_US"
         },
         "constraint":{
           "targets":"class",
