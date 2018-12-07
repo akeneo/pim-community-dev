@@ -21,7 +21,6 @@ import {
   uiLocaleChanged,
 } from 'akeneoreferenceentity/domain/event/user';
 import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
-import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
 import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
 import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
