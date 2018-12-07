@@ -1,6 +1,6 @@
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 
-type NormalizedCompleteness = {complete: number; required: number};
+export type NormalizedCompleteness = {complete: number; required: number};
 
 class Completeness {
   private constructor(private complete: number, private required: number) {
