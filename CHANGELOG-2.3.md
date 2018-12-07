@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7908: Fix variant family creation if an attribute doesn't have a translation for the current locale
 - PIM-7901: Fix memory leak on "compute_family_variant_structure_changes" job
 
 # 2.3.20 (2018-12-06)
