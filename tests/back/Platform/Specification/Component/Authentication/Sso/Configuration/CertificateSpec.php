@@ -7,6 +7,11 @@ use PhpSpec\ObjectBehavior;
 
 class CertificateSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('Ib3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMw');
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(Certificate::class);
@@ -14,7 +19,6 @@ class CertificateSpec extends ObjectBehavior
 
     function it_can_be_represented_as_string()
     {
-        $this->beConstructedThrough('fromString', ['Ib3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMw']);
-        $this->toString()->shouldReturn('Ib3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMw');
+        $this->__toString()->shouldReturn('Ib3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMw');
     }
 }

@@ -1,23 +1,24 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence;
+namespace Specification\Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence\Sql;
 
-use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence\DoctrineRepository;
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence\Sql\SqlRepository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Repository;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Root;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
-use PDO;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
-class DoctrineRepositorySpec extends ObjectBehavior
+class SqlRepositorySpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
@@ -26,7 +27,7 @@ class DoctrineRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DoctrineRepository::class);
+        $this->shouldHaveType(SqlRepository::class);
     }
 
     function it_is_a_configuration_repository()
@@ -36,22 +37,21 @@ class DoctrineRepositorySpec extends ObjectBehavior
 
     function it_saves_a_configuration_object($connection, Statement $statement)
     {
-        $config = new Root(
-            Code::fromString('authentication_sso'),
+        $config = new Configuration(
+            new Code('authentication_sso'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
 
-        $connection->prepare('INSERT INTO pim_configuration (`code`, `values`) VALUES(:code, :values) ON DUPLICATE KEY UPDATE `values` = :values;')
-            ->shouldBeCalled()
+        $connection->prepare(Argument::type('string'))
             ->willReturn($statement)
         ;
         $statement->bindValue('code', 'authentication_sso', Type::STRING)->shouldBeCalled();
@@ -75,13 +75,12 @@ class DoctrineRepositorySpec extends ObjectBehavior
     function it_finds_an_existing_configuration($connection, Statement $statement)
     {
         $connection
-            ->prepare('SELECT * FROM pim_configuration WHERE code = :code;')
-            ->shouldBeCalled()
+            ->prepare(Argument::type('string'))
             ->willReturn($statement)
         ;
         $statement->execute(['code' => 'authentication_sso'])->shouldBeCalled();
         $statement
-            ->fetch(PDO::FETCH_ASSOC)
+            ->fetch(\PDO::FETCH_ASSOC)
             ->willReturn(
                 [
                     'code'   => 'authentication_sso',
@@ -90,23 +89,44 @@ class DoctrineRepositorySpec extends ObjectBehavior
             )
         ;
 
-        $expectedConfig = new Root(
-            Code::fromString('authentication_sso'),
+        $expectedConfig = new Configuration(
+            new Code('authentication_sso'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
 
         $this
             ->find('authentication_sso')
             ->shouldBeLike($expectedConfig)
+        ;
+    }
+
+    function it_throws_an_exception_when_no_configuration_is_found($connection, Statement $statement)
+    {
+        $connection
+            ->prepare(Argument::type('string'))
+            ->willReturn($statement)
+        ;
+        $statement->execute(['code' => 'authentication_sso'])->shouldBeCalled();
+        $statement
+            ->fetch(\PDO::FETCH_ASSOC)
+            ->willReturn(false)
+        ;
+
+        $this
+            ->shouldThrow(new ConfigurationNotFound(
+                'authentication_sso',
+                'No configuration found for code "authentication_sso".'
+            ))
+            ->during('find', ['authentication_sso'])
         ;
     }
 }

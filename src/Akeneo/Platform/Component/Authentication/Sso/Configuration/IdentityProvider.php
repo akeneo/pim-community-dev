@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -40,18 +42,18 @@ final class IdentityProvider
     public static function fromArray(array $content): self
     {
         return new self(
-            EntityId::fromString($content['entityId']),
-            Url::fromString($content['url']),
-            Certificate::fromString($content['publicCertificate'])
+            new EntityId($content['entityId']),
+            new Url($content['url']),
+            new Certificate($content['publicCertificate'])
         );
     }
 
     public function toArray(): array
     {
         return [
-            'entityId'          => $this->entityId->toString(),
-            'url'               => $this->url->toString(),
-            'publicCertificate' => $this->publicCertificate->toString(),
+            'entityId'          => (string) $this->entityId,
+            'url'               => (string) $this->url,
+            'publicCertificate' => (string) $this->publicCertificate,
         ];
     }
 }

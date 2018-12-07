@@ -2,34 +2,34 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Configuration\Persistence;
+namespace AkeneoTestEnterprise\Platform\Integration\Authentication\Sso\Configuration\Persistence\Sql;
 
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Root;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use Akeneo\Test\Integration\TestCase;
 
-class DoctrineRepositoryIntegration extends TestCase
+class SqlRepositoryIntegration extends TestCase
 {
     public function testSaveAndFindANewConfiguration()
     {
         $configRepository = $this->get('akeneo_authentication.sso.configuration.repository');
 
-        $config = new Root(
-            Code::fromString('sso'),
+        $config = new Configuration(
+            new Code('sso'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
 
@@ -43,32 +43,32 @@ class DoctrineRepositoryIntegration extends TestCase
     {
         $configRepository = $this->get('akeneo_authentication.sso.configuration.repository');
 
-        $config = new Root(
-            Code::fromString('sso'),
+        $config = new Configuration(
+            new Code('sso'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
         $configRepository->save($config);
 
-        $newConfig = new Root(
-            Code::fromString('sso'),
+        $newConfig = new Configuration(
+            new Code('sso'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon-sso.com'),
-                Url::fromString('https://idp.jambon-sso.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon-sso.com'),
+                new Url('https://idp.jambon-sso.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon-sso.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon-sso.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
         $configRepository->save($newConfig);

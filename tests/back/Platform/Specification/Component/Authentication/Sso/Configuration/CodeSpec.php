@@ -9,12 +9,13 @@ class CodeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
+        $this->beConstructedWith('jambon');
         $this->shouldHaveType(Code::class);
     }
 
     function it_can_be_represented_as_string()
     {
-        $this->beConstructedThrough('fromString', ['jambon']);
-        $this->toString()->shouldReturn('jambon');
+        $this->beConstructedWith('jambon');
+        $this->__toString()->shouldReturn('jambon');
     }
 }

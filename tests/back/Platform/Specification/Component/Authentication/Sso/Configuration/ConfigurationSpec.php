@@ -6,45 +6,45 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Root;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use PhpSpec\ObjectBehavior;
 
-class RootSpec extends ObjectBehavior
+class ConfigurationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith(
-            Code::fromString('jambon'),
+            new Code('jambon'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
 
-        $this->shouldHaveType(Root::class);
+        $this->shouldHaveType(Configuration::class);
     }
 
     function it_can_be_represented_as_an_array()
     {
         $this->beConstructedWith(
-            Code::fromString('jambon'),
+            new Code('jambon'),
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
 
@@ -66,21 +66,23 @@ class RootSpec extends ObjectBehavior
 
     function it_exposes_its_code()
     {
+        $code = new Code('jambon');
+
         $this->beConstructedWith(
-            Code::fromString('jambon'),
+            $code,
             new IdentityProvider(
-                EntityId::fromString('https://idp.jambon.com'),
-                Url::fromString('https://idp.jambon.com/'),
-                Certificate::fromString('public_certificate')
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/'),
+                new Certificate('public_certificate')
             ),
             new ServiceProvider(
-                EntityId::fromString('https://sp.jambon.com'),
-                Certificate::fromString('public_certificate'),
-                Certificate::fromString('private_certificate')
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
             )
         );
 
-        $this->code()->shouldReturn('jambon');
+        $this->code()->shouldReturn($code);
     }
 
     function it_can_be_built_from_an_array()

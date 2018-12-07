@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -22,21 +24,16 @@ final class EntityId
     /** @var string */
     private $entityId;
 
-    private function __construct(string $entityId)
-    {
-        $this->entityId = $entityId;
-    }
-
-    public static function fromString(string $entityId): self
+    public function __construct(string $entityId)
     {
         if (!filter_var($entityId, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException(sprintf('Value must be a valid URL, "%s" given.', $entityId));
         }
 
-        return new self($entityId);
+        $this->entityId = $entityId;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->entityId;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -17,7 +19,7 @@ namespace Akeneo\Platform\Component\Authentication\Sso\Configuration;
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-final class Root
+final class Configuration
 {
     /** @var Code */
     private $code;
@@ -41,7 +43,7 @@ final class Root
     public static function fromArray(string $code, array $content): self
     {
         return new self(
-            Code::fromString($code),
+            new Code($code),
             IdentityProvider::fromArray($content['identityProvider']),
             ServiceProvider::fromArray($content['serviceProvider'])
         );
@@ -55,8 +57,8 @@ final class Root
         ];
     }
 
-    public function code(): string
+    public function code(): Code
     {
-        return $this->code->toString();
+        return $this->code;
     }
 }

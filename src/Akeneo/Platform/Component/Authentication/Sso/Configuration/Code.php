@@ -14,17 +14,12 @@ final class Code
     /** @var string */
     private $code;
 
-    private function __construct(string $code)
+    public function __construct(string $code)
     {
         $this->code = $code;
     }
 
-    public static function fromString(string $code): self
-    {
-        return new self($code);
-    }
-
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->code;
     }

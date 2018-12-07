@@ -12,9 +12,9 @@ class ServiceProviderSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith(
-            EntityId::fromString('https://sp.jambon.com'),
-            Certificate::fromString('public_certificate'),
-            Certificate::fromString('private_certificate')
+            new EntityId('https://sp.jambon.com'),
+            new Certificate('public_certificate'),
+            new Certificate('private_certificate')
         );
 
         $this->shouldHaveType(ServiceProvider::class);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -21,17 +23,12 @@ final class Certificate
     /** @var string */
     private $certificate;
 
-    private function __construct(string $certificate)
+    public function __construct(string $certificate)
     {
         $this->certificate = $certificate;
     }
 
-    public static function fromString(string $certificate): self
-    {
-        return new self($certificate);
-    }
-
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->certificate;
     }

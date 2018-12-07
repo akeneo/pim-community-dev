@@ -13,9 +13,9 @@ class IdentityProviderSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->beConstructedWith(
-            EntityId::fromString('https://idp.jambon.com'),
-            Url::fromString('https://idp.jambon.com/'),
-            Certificate::fromString('public_certificate')
+            new EntityId('https://idp.jambon.com'),
+            new Url('https://idp.jambon.com/'),
+            new Certificate('public_certificate')
         );
 
         $this->shouldHaveType(IdentityProvider::class);
