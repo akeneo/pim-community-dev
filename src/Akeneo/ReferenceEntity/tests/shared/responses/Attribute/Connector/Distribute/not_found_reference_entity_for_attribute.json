@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attribute_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "wrong_reference_entity",
+      "code": "description"
+    }
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "code": 404,
+      "message":"Reference entity \"wrong_reference_entity\" does not exist."
+    }
+  }
+}

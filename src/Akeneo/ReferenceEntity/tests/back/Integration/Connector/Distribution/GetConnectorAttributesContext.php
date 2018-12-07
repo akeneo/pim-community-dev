@@ -39,9 +39,10 @@ use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetConnectorReferenceEntityAttributesContext implements Context
+class GetConnectorAttributesContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
