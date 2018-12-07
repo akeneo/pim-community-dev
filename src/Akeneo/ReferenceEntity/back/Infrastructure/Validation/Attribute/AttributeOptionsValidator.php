@@ -84,7 +84,7 @@ class AttributeOptionsValidator extends ConstraintValidator
 
     private function areOptionsValid(array $attributeOptions): bool
     {
-        $validator = Validation::createValidator();
+        $validator = $this->context->getValidator();
 
         foreach ($attributeOptions as $index => $attributeOption) {
             $violations = new ConstraintViolationList();

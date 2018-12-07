@@ -15,7 +15,9 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
@@ -47,6 +49,9 @@ final class EditReferenceEntityContext implements Context
     /** @var ConstraintViolationsContext */
     private $constraintViolationsContext;
 
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
     /**
      * @param ReferenceEntityRepositoryInterface $referenceEntityRepository
      * @param EditReferenceEntityHandler         $editReferenceEntityHandler
@@ -57,12 +62,14 @@ final class EditReferenceEntityContext implements Context
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         EditReferenceEntityHandler $editReferenceEntityHandler,
         ValidatorInterface $validator,
-        ConstraintViolationsContext $constraintViolationsContext
+        ConstraintViolationsContext $constraintViolationsContext,
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
+        $this->activatedLocales = $activatedLocales;
     }
 
     /**
@@ -70,6 +77,9 @@ final class EditReferenceEntityContext implements Context
      */
     public function theFollowingReferenceEntity()
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
         $this->referenceEntityRepository->create(
             ReferenceEntity::create(
                 ReferenceEntityIdentifier::fromString('designer'),

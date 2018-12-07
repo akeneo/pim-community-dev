@@ -123,6 +123,9 @@ services:
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels
 
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels
+
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Common\Fake\RecordIndexerSpy

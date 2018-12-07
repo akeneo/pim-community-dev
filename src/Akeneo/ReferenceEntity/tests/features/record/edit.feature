@@ -20,6 +20,12 @@ Feature: Edit an record
     And the record should not have a french label
 
   @acceptance-back
+  Scenario: Record is not valid when enriching a record label by specifying a not activated locale for the label
+    Given a reference entity and a record with french label "My label"
+    When the user updates the german label to "My updated label"
+    Then there should be a validation error on the property labels with message "The locale "de_DE" is not activated."
+
+  @acceptance-back
   Scenario: Updating a record default image
     Given a referenceEntity and a record with an image
     When the user updates the record default image with a valid file

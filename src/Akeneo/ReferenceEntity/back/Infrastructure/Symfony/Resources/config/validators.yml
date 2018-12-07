@@ -155,3 +155,10 @@ services:
             - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.record.edit_value_command' }
+
+    akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollectionValidator
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection' }

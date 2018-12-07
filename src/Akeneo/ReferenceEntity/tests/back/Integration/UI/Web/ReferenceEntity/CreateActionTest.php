@@ -15,8 +15,8 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -225,6 +225,10 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_create', true);
+
+        $findActivatedLocalesByIdentifiers = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('en_US'));
+        $findActivatedLocalesByIdentifiers->save(LocaleIdentifier::fromCode('fr_FR'));
     }
 
     public function invalidIdentifiers()
