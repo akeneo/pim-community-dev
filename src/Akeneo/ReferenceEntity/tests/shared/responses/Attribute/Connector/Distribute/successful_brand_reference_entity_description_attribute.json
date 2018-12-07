@@ -23,12 +23,7 @@
         "is_textarea": false,
         "is_rich_text_editor": false,
         "validation_rule": null,
-        "validation_regexp": null,
-        "_links": {
-          "self": {
-            "href": "http://localhost/api/rest/v1/reference-entities/brand_test/attributes/description"
-          }
-        }
+        "validation_regexp": null
     }
   }
 }

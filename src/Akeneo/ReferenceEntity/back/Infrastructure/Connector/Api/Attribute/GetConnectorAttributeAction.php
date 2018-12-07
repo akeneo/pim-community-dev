@@ -19,17 +19,12 @@ class GetConnectorAttributeAction
     /** @var ReferenceEntityExistsInterface */
     private $referenceEntityExists;
 
-    /** @var AddHalSelfLinkToNormalizedConnectorAttribute */
-    private $addHalSelfLinkToNormalizedConnectorAttribute;
-
     public function __construct(
         FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttributeQuery,
-        ReferenceEntityExistsInterface $referenceEntityExists,
-        AddHalSelfLinkToNormalizedConnectorAttribute $addHalSelfLinkToNormalizedConnectorAttribute
+        ReferenceEntityExistsInterface $referenceEntityExists
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->findConnectorAttributeQuery = $findConnectorAttributeQuery;
-        $this->addHalSelfLinkToNormalizedConnectorAttribute = $addHalSelfLinkToNormalizedConnectorAttribute;
     }
 
     /**
@@ -58,7 +53,6 @@ class GetConnectorAttributeAction
         }
 
         $normalizedAttribute = $attribute->normalize();
-        $normalizedAttribute = ($this->addHalSelfLinkToNormalizedConnectorAttribute)($referenceEntityIdentifier, $normalizedAttribute);
 
         return new JsonResponse($normalizedAttribute);
     }
