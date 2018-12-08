@@ -38,10 +38,11 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details'
 
-    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiers
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_identifiers_and_query:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForIdentifiersAndQuery
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale'
 
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityHasRecords
@@ -96,6 +97,18 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.reference_entity.hydrator.connector_reference_entity'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_reference_entity_attributes_by_reference_entity_identifier:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributesByReferenceEntityIdentifier
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindConnectorAttributeByIdentifierAndCode
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_connector_records_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindConnectorRecordsByIdentifiers
         arguments:
@@ -130,7 +143,6 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollection
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindRequiredValueKeyCollectionForChannelAndLocale
@@ -292,7 +304,22 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocalesByIdentifiers
         arguments:
             - '@database_connection'
+
+    akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+
+    akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'

@@ -12,8 +12,9 @@ import {MAX_DISPLAYED_RECORDS} from 'akeneoreferenceentity/application/action/re
 import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
-import {getFilter} from 'akeneoreferenceentity/tools/filter';
+import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
+import CompletenessFilter, {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 interface TableState {
   locale: string;
@@ -57,6 +58,7 @@ interface TableDispatch {
   onDeleteRecord: (recordCode: RecordCode, label: string) => void;
   onNeedMoreResults: () => void;
   onSearchUpdated: (userSearch: string) => void;
+  onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
 }
 
 interface TableProps extends TableState, TableDispatch {}
@@ -165,6 +167,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   render(): JSX.Element | JSX.Element[] {
     const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
     const userSearch = getFilter(grid.filters, 'full_text').value;
+    const completenessValue = getCompletenessFilter(grid.filters);
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
 
     const noResult = 0 === grid.records.length && false === grid.isLoading;
@@ -172,7 +175,10 @@ export default class Table extends React.Component<TableProps, {columns: Column[
 
     return (
       <React.Fragment>
-        <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
+        <div className="AknTitleContainer-line">
+          <SearchField value={userSearch} onChange={this.props.onSearchUpdated} changeThreshold={250} />
+          <CompletenessFilter value={completenessValue} onChange={this.props.onCompletenessFilterUpdated} />
+        </div>
         {noResult ? (
           <NoResult entityLabel={this.props.referenceEntity.getLabel(locale)} />
         ) : (

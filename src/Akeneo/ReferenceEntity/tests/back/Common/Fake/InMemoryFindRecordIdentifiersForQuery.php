@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
@@ -27,6 +29,15 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
     /** @var Record[] */
     private $records = [];
 
+    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale */
+    private $findRequiredValueKeyCollectionForChannelAndLocale;
+
+    public function __construct(
+        InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredValueKeyCollectionForChannelAndLocale
+    ) {
+        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
+    }
+
     public function add(Record $record): void
     {
         $this->records[] = $record;
@@ -40,6 +51,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $fullTextFilter = ($query->hasFilter('full_text')) ? $query->getFilter('full_text') : null;
         $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
+        $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
             return '' === $referenceEntityFilter['value']
@@ -71,6 +83,38 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             throw new \LogicException(
                 sprintf('Unknown operator %s for code filter', $codeFilter['operator'])
             );
+        }));
+
+        $records = array_values(array_filter($records, function (Record $record) use ($completeFilter, $query): bool {
+            if (null === $completeFilter) {
+                return true;
+            }
+
+            $requiredValueKeyCollection = ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+                $record->getReferenceEntityIdentifier(),
+                ChannelIdentifier::fromCode($query->getChannel()),
+                LocaleIdentifier::fromCode($query->getLocale())
+            );
+
+            $recordValues = $record->getValues();
+            $requiredValuesComplete = 0;
+            $requiredValues = 0;
+
+            foreach ($requiredValueKeyCollection as $requiredValueKey) {
+                $requiredValues++;
+                if (null !== $recordValues->findValue($requiredValueKey)) {
+                    $requiredValuesComplete++;
+                }
+            }
+
+            if ($requiredValues > 0) {
+                $completeness['complete'] = $requiredValuesComplete;
+                $completeness['required'] = $requiredValues;
+            }
+
+            $isComplete = ($requiredValuesComplete === $requiredValues);
+
+            return $completeFilter['value'] ? $isComplete : !$isComplete;
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {

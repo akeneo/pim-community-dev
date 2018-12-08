@@ -6,6 +6,7 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -27,6 +28,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -61,13 +63,17 @@ class EditAttributeContext implements Context
     /** @var array AttributeIdentifier */
     private $attributeIdentifiers = [];
 
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
         EditAttributeHandler $handler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales
     ) {
         $this->validator = $validator;
         $this->attributeRepository = $attributeRepository;
@@ -75,6 +81,7 @@ class EditAttributeContext implements Context
         $this->handler = $handler;
         $this->exceptionContext = $exceptionContext;
         $this->constraintViolationsContext = $constraintViolationsContext;
+        $this->activatedLocales = $activatedLocales;
     }
 
     /**
@@ -129,6 +136,8 @@ class EditAttributeContext implements Context
         string $localeCode,
         string $label
     ): void {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode($localeCode));
+
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -256,9 +265,11 @@ class EditAttributeContext implements Context
      */
     public function anReferenceEntityWithAImageAttributeAndTheLabelEqualTo(
         string $attributeCode,
-        string $label,
-        string $localeCode
+        string $localeCode,
+        string $label
     ) {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode($localeCode));
+
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -284,6 +295,8 @@ class EditAttributeContext implements Context
         string $label,
         string $localeCode
     ) {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -308,6 +321,8 @@ class EditAttributeContext implements Context
         string $label,
         string $localeCode
     ) {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -1086,6 +1101,9 @@ class EditAttributeContext implements Context
      */
     public function aReferenceEntityWithAnOptionAttributeWithSomeOptions()
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
         $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
 
@@ -1308,6 +1326,9 @@ class EditAttributeContext implements Context
      */
     public function aReferenceEntityWithAnOptionCollectionAttributeWithSomeOptions()
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
         $identifier = AttributeIdentifier::create('designer', 'favorite_color', md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier']['favorite_color'] = $identifier;
 

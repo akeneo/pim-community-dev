@@ -45,7 +45,7 @@ class CodeValidator extends ConstraintValidator
                     ]
                 ),
                 new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
-                    if (in_array($value, AttributeCode::RESERVED_CODES)) {
+                    if (in_array(strtolower($value), AttributeCode::RESERVED_CODES)) {
                         $context->buildViolation(Code::MESSAGE_RESERVED_CODE)
                             ->setParameter(
                                 'comma_separated_reserved_keywords',

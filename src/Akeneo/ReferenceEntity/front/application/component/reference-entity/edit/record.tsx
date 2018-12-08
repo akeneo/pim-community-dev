@@ -12,7 +12,12 @@ import Header from 'akeneoreferenceentity/application/component/reference-entity
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
-import {needMoreResults, searchUpdated} from 'akeneoreferenceentity/application/action/record/search';
+import {
+  needMoreResults,
+  searchUpdated,
+  updateRecordResults,
+  completenessFilterUpdated,
+} from 'akeneoreferenceentity/application/action/record/search';
 import {Column} from 'akeneoreferenceentity/application/reducer/grid';
 import ReferenceEntityIdentifier, {
   createIdentifier as createReferenceIdentifier,
@@ -23,6 +28,10 @@ import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
 import {getDataCellView, CellView} from 'akeneoreferenceentity/application/configuration/value';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+import Channel from 'akeneoreferenceentity/domain/model/channel';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
+import {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 interface StateProps {
   context: {
@@ -57,6 +66,9 @@ interface DispatchProps {
     onDeleteRecord: (referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode) => void;
     onNeedMoreResults: () => void;
     onSearchUpdated: (userSearch: string) => void;
+    onLocaleChanged: (locale: Locale) => void;
+    onChannelChanged: (locale: Channel) => void;
+    onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
     onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
     onOpenDeleteAllRecordsModal: () => void;
@@ -110,9 +122,9 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
         <Header
           label={referenceEntity.getLabel(context.locale)}
           image={referenceEntity.getImage()}
-          primaryAction={() => {
+          primaryAction={(defaultFocus: React.RefObject<any>) => {
             return acls.createRecord ? (
-              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart}>
+              <button className="AknButton AknButton--action" onClick={events.onRecordCreationStart} ref={defaultFocus}>
                 {__('pim_reference_entity.record.button.create')}
               </button>
             ) : null;
@@ -131,6 +143,8 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           isDirty={false}
           isLoading={grid.isLoading}
           breadcrumbConfiguration={breadcrumbConfiguration}
+          onLocaleChanged={events.onLocaleChanged}
+          onChannelChanged={events.onChannelChanged}
         />
         {0 !== recordCount ? (
           <Table
@@ -138,6 +152,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             onDeleteRecord={events.onOpenDeleteRecordModal}
             onNeedMoreResults={events.onNeedMoreResults}
             onSearchUpdated={events.onSearchUpdated}
+            onCompletenessFilterUpdated={events.onCompletenessFilterUpdated}
             recordCount={recordCount}
             locale={context.locale}
             channel={context.channel}
@@ -249,6 +264,9 @@ export default connect(
         onSearchUpdated: (userSearch: string) => {
           dispatch(searchUpdated(userSearch));
         },
+        onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => {
+          dispatch(completenessFilterUpdated(completenessValue));
+        },
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
         },
@@ -263,6 +281,14 @@ export default connect(
         },
         onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => {
           dispatch(openDeleteModal(recordCode.stringValue(), label));
+        },
+        onLocaleChanged: (locale: Locale) => {
+          dispatch(catalogLocaleChanged(locale.code));
+          dispatch(updateRecordResults(false));
+        },
+        onChannelChanged: (channel: Channel) => {
+          dispatch(catalogChannelChanged(channel.code));
+          dispatch(updateRecordResults(false));
         },
       },
     };

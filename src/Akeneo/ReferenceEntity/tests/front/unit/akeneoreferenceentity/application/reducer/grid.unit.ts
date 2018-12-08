@@ -239,6 +239,50 @@ describe('akeneo > reference entity > application > reducer --- grid', () => {
     });
   });
 
+  test('I can remove a filter', () => {
+    const state = createState({
+      query: {
+        filters: [
+          {
+            field: 'full_text',
+            operator: '=',
+            value: 'sear',
+            context: {},
+          },
+          {
+            field: 'complete',
+            operator: '=',
+            value: true,
+            context: {},
+          },
+        ],
+      },
+      items: [],
+      total: 0,
+      isFetching: false,
+    });
+    const newState = reducer(state, {
+      type: 'GRID_REMOVE_FILTER',
+      field: 'complete',
+    });
+
+    expect(newState).toEqual({
+      query: {
+        filters: [
+          {
+            field: 'full_text',
+            operator: '=',
+            value: 'sear',
+            context: {},
+          },
+        ],
+      },
+      items: [],
+      total: 0,
+      isFetching: false,
+    });
+  });
+
   test('I can create a query', () => {
     expect(createQuery({})).toEqual({
       columns: [],

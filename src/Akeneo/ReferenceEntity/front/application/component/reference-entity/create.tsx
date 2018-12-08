@@ -67,7 +67,7 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage AknFullPage--modal">
             <div className="AknFullPage-content">
               <div className="AknFullPage-left">
-                <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image" />
+                <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
                 <div className="AknFullPage-subTitle">

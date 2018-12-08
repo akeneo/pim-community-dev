@@ -71,9 +71,9 @@ Feature: Create an attribute linked to a reference entity
     And there is no exception thrown
 
     Examples:
-      | invalid_attribute_code | message                                                  |
-      | labels                 | The code cannot be any of those values: "%code, labels, image%" |
-      | code                   | The code cannot be any of those values: "%code, labels, image%" |
+      | invalid_attribute_code | message                                                            |
+      | label                  | The code cannot be any of those values: "{{ code, label, image }}" |
+      | code                   | The code cannot be any of those values: "{{ code, label, image }}" |
 
   @acceptance-front
   Scenario: Create a simple valid text attribute

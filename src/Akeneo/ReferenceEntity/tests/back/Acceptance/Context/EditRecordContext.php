@@ -19,6 +19,9 @@ use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditReco
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
@@ -79,6 +82,7 @@ final class EditRecordContext implements Context
 
     private const ECOMMERCE_CHANNEL_CODE = 'ecommerce';
     private const FRENCH_LOCALE_CODE = 'fr_FR';
+    private const NOT_ACTIVATED_LOCALE_CODE = 'de_DE';
 
     private const DUMMY_IMAGE_FILEPATH = '/a/b/dummy_filename.png';
     private const DUMMY_IMAGE_FILENAME = 'dummy_filename.png';
@@ -149,6 +153,15 @@ final class EditRecordContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
+    /** @var InMemoryChannelExists */
+    private $channelExists;
+
+    /** @var InMemoryFindActivatedLocalesByIdentifiers */
+    private $activatedLocales;
+
+    /** @var InMemoryFindActivatedLocalesPerChannels */
+    private $activatedLocalesPerChannels;
+
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -157,7 +170,10 @@ final class EditRecordContext implements Context
         EditRecordHandler $editRecordHandler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext,
-        ConstraintViolationsContext $violationsContext
+        ConstraintViolationsContext $violationsContext,
+        InMemoryChannelExists $channelExists,
+        InMemoryFindActivatedLocalesByIdentifiers $activatedLocales,
+        InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels
     ) {
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
@@ -167,6 +183,9 @@ final class EditRecordContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
+        $this->channelExists = $channelExists;
+        $this->activatedLocales = $activatedLocales;
+        $this->activatedLocalesPerChannels = $activatedLocalesPerChannels;
     }
 
     /**
@@ -644,6 +663,8 @@ final class EditRecordContext implements Context
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueForTheFrenchLocale()
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE));
+
         $localizedValue = Value::create(
             AttributeIdentifier::create(
                 self::REFERENCE_ENTITY_IDENTIFIER,
@@ -671,6 +692,119 @@ final class EditRecordContext implements Context
                     'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
                     'channel'   => null,
                     'locale'    => self::FRENCH_LOCALE_CODE,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the localizable attribute value of the record without specifying the locale$/
+     */
+    public function theUserUpdatesTheLocalizableAttributeValueOfTheRecordWithoutSpecifyingTheLocale()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^a reference entity with a not localizable attribute$/
+     */
+    public function anReferenceEntityWithANotLocalizableAttribute()
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @When /^the user updates the not localizable attribute value of the record by specifying the locale$/
+     */
+    public function theUserUpdatesTheNotLocalizableAttributeValueOfTheRecordBySpecifyingTheLocale()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => self::FRENCH_LOCALE_CODE,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the attribute value of the record by specifying a not activated locale$/
+     */
+    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingANotActivatedLocale()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => self::NOT_ACTIVATED_LOCALE_CODE,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the attribute value of the record by specifying a locale not activated for the ecommerce channel$/
+     */
+    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingALocaleNotActivatedForTheEcommerceChannel()
+    {
+        $this->channelExists->save(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE));
+
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => self::ECOMMERCE_CHANNEL_CODE,
+                    'locale'    => self::NOT_ACTIVATED_LOCALE_CODE,
                     'data'      => self::DUMMY_UPDATED_VALUE,
                 ],
             ],
@@ -773,6 +907,8 @@ final class EditRecordContext implements Context
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueForTheEcommerceChannel()
     {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+
         $localizedValue = Value::create(
             AttributeIdentifier::create(
                 self::REFERENCE_ENTITY_IDENTIFIER,
@@ -805,6 +941,51 @@ final class EditRecordContext implements Context
             ],
         ]);
         $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^a reference entity with a not scopable attribute$/
+     */
+    public function aReferenceEntityWithANotScopableAttribute()
+    {
+        $this->createReferenceEntity();
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this reference entity with a value for the not scopable attribute$/
+     */
+    public function aRecordBelongingToThisReferenceEntityWithAValueForTheNotScopableAttribute()
+    {
+        $localizedValue = Value::create(
+            AttributeIdentifier::create(
+                self::REFERENCE_ENTITY_IDENTIFIER,
+                self::TEXT_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
+        );
+        $this->createRecord($localizedValue);
     }
 
     /**
@@ -863,6 +1044,9 @@ final class EditRecordContext implements Context
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueForTheEcommerceChannelAndFrenchLocale()
     {
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save(self::ECOMMERCE_CHANNEL_CODE, [self::FRENCH_LOCALE_CODE]);
+
         $localizedValue = Value::create(
             AttributeIdentifier::create(
                 self::REFERENCE_ENTITY_IDENTIFIER,
@@ -943,9 +1127,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute of the record for an unknown channel$/
+     * @When /^the user enriches a scopable attribute value of a record without specifying the channel$/
      */
-    public function theUserUpdatesTheAttributeOfTheRecordForAnUnknownChannel()
+    public function theUserEnrichesAnScopableAttributeValueOfARecordWithoutChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
@@ -954,7 +1138,49 @@ final class EditRecordContext implements Context
             'values'                     => [
                 [
                     'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
-                    'channel'   => 'Unknown channel',
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the not scopable attribute of the record by specifying a channel$/
+     */
+    public function theUserUpdatesTheNotScopableAttributeOfTheRecordBySpecifyingAChannel()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => self::ECOMMERCE_CHANNEL_CODE,
+                    'locale'    => null,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the attribute value of the record by specifying an unknown channel$/
+     */
+    public function theUserUpdatesTheAttributeValueOfTheRecordBySpecifyingAnUnknownChannel()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => 'unknown_channel',
                     'locale'    => null,
                     'data'      => self::DUMMY_UPDATED_VALUE,
                 ],
@@ -1416,6 +1642,7 @@ final class EditRecordContext implements Context
      */
     public function aReferenceEntityAndARecordWithLabel(string $label): void
     {
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
         $this->createReferenceEntity();
         $this->recordRepository->create(
             Record::create(
@@ -1507,6 +1734,31 @@ final class EditRecordContext implements Context
             RecordCode::fromString(self::RECORD_CODE)
         );
         Assert::assertNull($record->getLabel('fr_FR'), 'French label is not null');
+    }
+
+    /**
+     * @When /^the user updates the german label to "([^"]*)"$/
+     */
+    public function theUserUpdatesTheGermanLabelTo(string $updatedLabel)
+    {
+        $editLabelCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code'                        => self::RECORD_CODE,
+            'labels'                      => [
+                'de_DE' => $updatedLabel
+            ],
+            'values'                      => [],
+        ]);
+        $this->executeCommand($editLabelCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property labels with message "(.*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyLabelsWithMessage($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage('labels', $expectedMessage);
     }
 
     /**

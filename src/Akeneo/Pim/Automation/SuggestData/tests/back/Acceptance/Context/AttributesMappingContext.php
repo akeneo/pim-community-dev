@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -41,6 +42,12 @@ final class AttributesMappingContext implements Context
     /** @var array */
     private $retrievedFamilies;
 
+    /** @var array */
+    private $retrievedAttributesMapping;
+
+    /** @var \Exception */
+    private $thrownException;
+
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
@@ -56,6 +63,65 @@ final class AttributesMappingContext implements Context
         $this->searchFamiliesHandler = $searchFamiliesHandler;
 
         $this->retrievedFamilies = [];
+    }
+
+    /**
+     * @When the attributes are mapped for the family :familyCode as follows:
+     *
+     * @param string $familyCode
+     * @param TableNode $table
+     */
+    public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $table): void
+    {
+        $requestMapping = [];
+        foreach ($table->getColumnsHash() as $mapping) {
+            $requestMapping[$mapping['target_attribute_code']] = [
+                'franklinAttribute' => [
+                    'label' => 'A label',
+                    'type' => 'text',
+                ],
+                'attribute' => $mapping['pim_attribute_code'],
+                'status' => (int) $this->getStatusMapping()[$mapping['status']],
+            ];
+        }
+
+        try {
+            $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
+            $this->updateAttributesMappingByFamilyHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
+    }
+
+    /**
+     * @When I search for all the families
+     */
+    public function iRetrieveTheFamilies(): void
+    {
+        $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, null));
+    }
+
+    /**
+     * @param $familyCodeOrLabel
+     *
+     * @When I search a family with the query :familyCodeOrLabel
+     */
+    public function iSearchOneFamilyWithTheQuery(string $familyCodeOrLabel): void
+    {
+        $this->retrievedFamilies = $this->searchFamiliesHandler->handle(
+            new SearchFamiliesQuery(20, 0, $familyCodeOrLabel)
+        );
+    }
+
+    /**
+     * @When I retrieves the attributes mapping for the family :familyCode
+     *
+     * @param mixed $familyCode
+     */
+    public function iRetrievesTheAttributesMappingForTheFamily($familyCode): void
+    {
+        $query = new GetAttributesMappingByFamilyQuery($familyCode);
+        $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
     }
 
     /**
@@ -80,55 +146,6 @@ final class AttributesMappingContext implements Context
         }
 
         Assert::eq($this->buildExpectedAttributesMapping($expectedAttributes), $attributesMapping);
-    }
-
-    /**
-     * @When the attributes are mapped for the family :familyCode as follows:
-     *
-     * @param string $familyCode
-     * @param TableNode $mappings
-     */
-    public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $mappings): void
-    {
-        $requestMapping = [];
-        foreach ($mappings->getColumnsHash() as $mapping) {
-            $requestMapping[$mapping['target_attribute_code']] = [
-                'franklinAttribute' => [
-                    'label' => 'A label',
-                    'type' => 'text',
-                ],
-                'attribute' => $mapping['pim_attribute_code'],
-                'status' => (int) $this->getStatusMapping()[$mapping['status']],
-            ];
-        }
-
-        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
-        $this->updateAttributesMappingByFamilyHandler->handle($command);
-    }
-
-    /**
-     * @When I search for all the families
-     */
-    public function iRetrieveTheFamilies(): void
-    {
-        $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, [], null));
-    }
-
-    /**
-     * @param $familyCodeOrLabel
-     *
-     * @When I search a family with the query :familyCodeOrLabel
-     */
-    public function iSearchOneFamilyWithTheQuery(string $familyCodeOrLabel): void
-    {
-        $this->retrievedFamilies = $this->searchFamiliesHandler->handle(
-            new SearchFamiliesQuery(
-                20,
-                0,
-                [],
-                $familyCodeOrLabel
-            )
-        );
     }
 
     /**

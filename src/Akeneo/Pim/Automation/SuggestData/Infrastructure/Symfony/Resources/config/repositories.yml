@@ -16,6 +16,6 @@ services:
             - '@doctrine.orm.entity_manager'
 
     akeneo.pim.automation.suggest_data.repository.search_family:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\FamilySearchableRepository'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\FamilyRepository'
         arguments:
-            - '@pim_enrich.repository.family.search'
+            - '@database_connection'

@@ -24,23 +24,18 @@ class SearchFamiliesQuery
     /** @var int */
     private $page;
 
-    /** @var array|null */
-    private $familyIdentifiers;
-
     /** @var string */
     private $search;
 
     /**
      * @param int $limit
      * @param int $page
-     * @param array|null $familyIdentifiers
      * @param null|string $search
      */
-    public function __construct(int $limit, int $page, array $familyIdentifiers, ?string $search)
+    public function __construct(int $limit, int $page, ?string $search)
     {
         $this->limit = $limit;
         $this->page = $page;
-        $this->familyIdentifiers = $familyIdentifiers;
         $this->search = $search;
     }
 
@@ -58,14 +53,6 @@ class SearchFamiliesQuery
     public function getPage(): int
     {
         return $this->page;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getFamilyIdentifiers(): ?array
-    {
-        return $this->familyIdentifiers;
     }
 
     /**

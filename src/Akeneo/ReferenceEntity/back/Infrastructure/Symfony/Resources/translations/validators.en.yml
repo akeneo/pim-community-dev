@@ -32,6 +32,15 @@ pim_reference_entity:
             record_collection:
                 should_exist: 'The records "%record_codes%" were not found.'
             limit_reached: 'You cannot create the record "%record_label%" because you have reached the limit of %limit% records for this reference entity'
+            channel:
+                is_expected: 'A channel is expected for attribute "%attribute_code%" because it has a value per channel.'
+                is_not_expected: 'A channel is not expected for attribute "%attribute_code%" because it has not a value per channel.'
+                should_exist: 'The channel "%channel_identifier%" does not exist.'
+            locale:
+                is_expected: 'A locale is expected for attribute "%attribute_code%" because it has a value per locale.'
+                is_not_expected: 'A locale is not expected for attribute "%attribute_code%" because it has not a value per locale.'
+                is_not_activated: 'The locale "%locale_identifier%" is not activated.'
+                is_not_activated_for_channel: 'The locale "%locale_identifier%" is not activated for the channel "%channel_identifier%".'
     attribute:
         validation:
             options:
@@ -46,8 +55,8 @@ pim_reference_entity:
                 should_be_a_number: 'This value should be a number.'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
-                reserved_codes: 'The code cannot be any of those values: "%comma_separated_reserved_keywords%"'
-                should_not_exist: 'The attribute already exists for the reference entity "%reference_entity_identifier%" and the attribute code "%code%"'
+                reserved_codes: 'The code cannot be any of those values: "{{ comma_separated_reserved_keywords }}"'
+                should_not_exist: 'The attribute already exists for the reference entity "{{ reference_entity_identifier }}" and the attribute code "{{ code }}"'
                 should_exist: 'The attribute was not found'
             regular_expression:
                 invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
@@ -57,3 +66,5 @@ pim_reference_entity:
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
             cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
             limit_reached: 'You cannot create the attribute "%attribute_label%" because you have reached the limit of %limit% attributes for this reference entity'
+            record_type:
+                is_required: 'You need to specify the reference entity type to create a Reference Entity link attribute'

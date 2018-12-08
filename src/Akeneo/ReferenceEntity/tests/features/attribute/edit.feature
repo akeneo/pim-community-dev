@@ -149,18 +149,18 @@ Feature: Lists all attributes related to a reference entity
     And the translation helper displays "Red"
 
   # @acceptance-front
-  # Scenario: A validation occured because the code is not valid
-    # Given a valid reference entity
-    # And the user asks for the reference entity "designer"
-    # And the user edit the attribute "favorite_color"
-    # And the user manages the options of the attribute
-    # And the user removes the option "red"
-    # And the user removes the option "green"
-    # When the user adds the new option code "gre-een"
-    # Then the user cannot save the options successfully because the option is not valid
-    # And there is an error message next to the "gre-een" field
+   Scenario: A validation occured because the code is not valid
+    Given a valid reference entity
+    And the user asks for the reference entity "designer"
+    And the user edit the attribute "favorite_color"
+    And the user manages the options of the attribute
+    And the user removes the option "red"
+    And the user removes the option "green"
+    When the user adds the new option code "gre-een"
+    Then the user cannot save the options successfully because the option is not valid
+    And there is an error message next to the "gre-een" field
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: A validation occured because the code is duplicated
     Given a valid reference entity
     And the user asks for the reference entity "designer"

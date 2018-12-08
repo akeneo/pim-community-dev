@@ -6,7 +6,19 @@ export default interface ValidationError {
   message: string;
   propertyPath: string;
   invalidValue: any;
+
+  normalize(): NormalizedValidationError;
 }
+
+export type NormalizedValidationError = {
+  messageTemplate: string;
+  parameters: {
+    [key: string]: string;
+  };
+  message: string;
+  propertyPath: string;
+  invalidValue: any;
+};
 
 class ConcreteValidationError implements ValidationError {
   readonly messageTemplate: string;
@@ -23,6 +35,16 @@ class ConcreteValidationError implements ValidationError {
     this.message = error.message;
     this.propertyPath = error.propertyPath;
     this.invalidValue = error.invalidValue;
+  }
+
+  public normalize() {
+    return {
+      messageTemplate: this.messageTemplate,
+      parameters: this.parameters,
+      message: this.message,
+      propertyPath: this.propertyPath,
+      invalidValue: this.invalidValue,
+    };
   }
 
   static fromError(error: ValidationError) {

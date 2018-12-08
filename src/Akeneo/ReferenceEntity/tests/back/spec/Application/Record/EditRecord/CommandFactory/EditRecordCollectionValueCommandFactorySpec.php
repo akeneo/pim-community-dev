@@ -30,6 +30,12 @@ class EditRecordCollectionValueCommandFactorySpec extends ObjectBehavior
         $this->supports($recordCollectionAttribute, $normalizedValue)->shouldReturn(true);
     }
 
+    function it_only_supports_values_with_an_not_empty_array_as_data(RecordCollectionAttribute $recordCollectionAttribute)
+    {
+        $this->supports($recordCollectionAttribute, ['data' => []])->shouldReturn(false);
+        $this->supports($recordCollectionAttribute, ['data' => 'starck'])->shouldReturn(false);
+    }
+
     function it_creates_record_collection_value(RecordCollectionAttribute $recordAttribute)
     {
         $normalizedValue = [

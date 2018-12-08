@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindRequiredValueKeyCollectionForChannelAndLocaleInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindIdentifiersForQueryInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\IdentifiersForQueryResult;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
@@ -30,12 +35,19 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
     /** @var Client */
     private $recordClient;
 
+    /** @var FindRequiredValueKeyCollectionForChannelAndLocaleInterface  */
+    private $findRequiredValueKeyCollectionForChannelAndLocale;
+
     /**
      * @param Client $recordClient
+     * @param FindRequiredValueKeyCollectionForChannelAndLocaleInterface $findRequiredValueKeyCollectionForChannelAndLocale
      */
-    public function __construct(Client $recordClient)
-    {
+    public function __construct(
+        Client $recordClient,
+        FindRequiredValueKeyCollectionForChannelAndLocaleInterface $findRequiredValueKeyCollectionForChannelAndLocale
+    ) {
         $this->recordClient = $recordClient;
+        $this->findRequiredValueKeyCollectionForChannelAndLocale = $findRequiredValueKeyCollectionForChannelAndLocale;
     }
 
     /**
@@ -58,10 +70,12 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
 
     private function getElasticSearchQuery(RecordQuery $recordQuery): array
     {
-        $referenceEntityCode = $recordQuery->getFilter('reference_entity');
+        $referenceEntityCode = $recordQuery->getFilter('reference_entity')['value'];
         $fullTextFilter = ($recordQuery->hasFilter('full_text')) ? $recordQuery->getFilter('full_text') : null;
         $codeLabelFilter = ($recordQuery->hasFilter('code_label')) ? $recordQuery->getFilter('code_label') : null;
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
+        $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
+
         $query = [
             '_source' => '_id',
             'size' => $recordQuery->getSize(),
@@ -72,7 +86,7 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
                             'filter' => [
                                 [
                                     'term' => [
-                                        'reference_entity_code' => $referenceEntityCode['value'],
+                                        'reference_entity_code' => $referenceEntityCode,
                                     ],
                                 ],
                             ],
@@ -130,6 +144,10 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             ];
         }
 
+        if (null !== $completeFilter) {
+            $query = $this->getCompleteFilterQuery($recordQuery, $referenceEntityCode, $completeFilter, $query);
+        }
+
         return $query;
     }
 
@@ -141,6 +159,57 @@ class FindIdentifiersForQuery implements FindIdentifiersForQueryInterface
             return sprintf('*%s*', QueryString::escapeValue($term));
         }, $terms);
         $query = implode(' AND ', $wildcardTerms);
+
+        return $query;
+    }
+
+    private function getRequiredValueKeys(
+        $referenceEntityCode,
+        ChannelIdentifier $channel,
+        LocaleIdentifier $locale
+    ): ValueKeyCollection {
+        return ($this->findRequiredValueKeyCollectionForChannelAndLocale)(
+            ReferenceEntityIdentifier::fromString($referenceEntityCode),
+            $channel,
+            $locale
+        );
+    }
+
+    private function getCompleteFilterQuery(RecordQuery $recordQuery, $referenceEntityCode, $completeFilter, $query)
+    {
+        $requiredValueKeys = $this->getRequiredValueKeys(
+            $referenceEntityCode,
+            ChannelIdentifier::fromCode($recordQuery->getChannel()),
+            LocaleIdentifier::fromCode($recordQuery->getLocale())
+        );
+        if (true === $completeFilter['value']) {
+            $clauses = array_map(function (string $requiredValueKey) {
+                return [
+                    'exists' => [
+                        'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                    ],
+                ];
+            }, $requiredValueKeys->normalize());
+            $query['query']['constant_score']['filter']['bool']['filter'] = array_merge($query['query']['constant_score']['filter']['bool']['filter'],
+                $clauses);
+        }
+        if (false === $completeFilter['value']) {
+            $clauses = array_map(function (string $requiredValueKey) {
+                return [
+                    'bool' => [
+                        'must_not' => [
+                            [
+                                'exists' => [
+                                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+            }, $requiredValueKeys->normalize());
+            $query['query']['constant_score']['filter']['bool']['should'] = array_merge($query['query']['constant_score']['filter']['bool']['should'] ?? [],
+                $clauses);
+        }
 
         return $query;
     }

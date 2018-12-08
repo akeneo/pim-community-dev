@@ -1,0 +1,119 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attributes_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "code": "description",
+        "labels": {
+          "en_US": "Description",
+          "fr_FR": "Description"
+        },
+        "type": "text",
+        "localizable": true,
+        "scopable": false,
+        "is_required_for_completeness": true,
+        "max_characters": 155,
+        "is_textarea": false,
+        "is_rich_text_editor": false,
+        "validation_rule": null,
+        "validation_regexp": null,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/description"
+          }
+        }
+      },
+      {
+        "code": "image",
+        "labels": {
+          "en_US": "Photo",
+          "fr_FR": "Photo"
+        },
+        "type": "image",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": true,
+        "allowed_extensions": ["jpg"],
+        "max_file_size": "10",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/image"
+          }
+        }
+      },
+      {
+        "code": "nationality",
+        "labels": {
+          "en_US": "Nationality",
+          "fr_FR": "Nationalité"
+        },
+        "type": "single_option",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": false,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/nationality"
+          }
+        }
+      },
+      {
+        "code": "sales_areas",
+        "labels": {
+          "fr_FR": "Zones de vente",
+          "en_US": "Sales areas"
+        },
+        "type": "multiple_options",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": false,
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/sales_areas"
+          }
+        }
+      },
+      {
+        "code": "country",
+        "labels": {
+          "en_US": "Country",
+          "fr_FR": "Pays"
+        },
+        "type": "reference_entity_single_link",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": false,
+        "reference_entity_code": "country",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/country"
+          }
+        }
+      },
+      {
+        "code": "designers",
+        "labels": {
+          "en_US": "Designers",
+          "fr_FR": "Designeurs"
+        },
+        "type": "reference_entity_multiple_links",
+        "localizable": false,
+        "scopable": false,
+        "is_required_for_completeness": true,
+        "reference_entity_code": "designer",
+        "_links": {
+          "self": {
+            "href": "http://localhost/api/rest/v1/reference-entities/brand/attributes/designers"
+          }
+        }
+      }
+    ]
+  }
+}

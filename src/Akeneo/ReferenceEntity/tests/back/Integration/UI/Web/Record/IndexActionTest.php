@@ -13,12 +13,30 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRequiredValueKeyCollectionForChannelAndLocale;
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
@@ -79,6 +97,22 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_a_list_of_records_filtered_by_complete()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'complete_filtered.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_list_of_records_filtered_by_uncomplete()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'uncomplete_filtered.json');
+    }
+
+    /**
+     * @test
+     */
     public function it_fails_if_invalid_reference_entity_identifier()
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_reference_entity_identifier.json');
@@ -95,17 +129,39 @@ class IndexActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create('designer', 'description', '29aea250-bc94-49b2-8259-bbc116410eb2'),
+                ReferenceEntityIdentifier::fromString('designer'),
+                AttributeCode::fromString('description'),
+                LabelCollection::fromArray(['fr_FR' => 'Nom']),
+                AttributeOrder::fromInteger(0),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxLength::fromInteger(512),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
 
         $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $identifier = RecordIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
+        $descriptionValue = Value::create(
+            AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('an awesome designer!')
+        );
         $recordStarck = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck'],
             Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$descriptionValue])
         );
         $recordRepository->create($recordStarck);
 
@@ -137,6 +193,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $recordRepository->create($recordDyson);
 
+        /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredKeyCollectionQuery */
+        $findRequiredKeyCollectionQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_required_value_key_collection_for_channel_and_locale');
+        $findRequiredKeyCollectionQuery->setActivatedLocales(['en_US', 'fr_FR']);
+        $findRequiredKeyCollectionQuery->setActivatedChannels(['ecommerce']);
         $findIdentifiersForQuery = $this->get('akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_identifiers_for_query');
 
         $findIdentifiersForQuery->add($recordDyson);

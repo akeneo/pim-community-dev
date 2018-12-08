@@ -17,11 +17,11 @@ use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,5 +150,9 @@ class EditActionTest extends ControllerIntegrationTestCase
         $fr->setId(1);
         $fr->setCode('fr_FR');
         $this->get('pim_catalog.repository.locale')->save($fr);
+
+        $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }
 }

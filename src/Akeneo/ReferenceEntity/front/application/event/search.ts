@@ -16,8 +16,12 @@ export const goFirstPage = () => {
   return {type: 'GRID_GO_FIRST_PAGE'};
 };
 
-export const updateFilter = (field: string, operator: string, value: string) => {
+export const updateFilter = (field: string, operator: string, value: string | boolean) => {
   return {type: 'GRID_UPDATE_FILTER', field, operator, value};
+};
+
+export const removeFilter = (field: string) => {
+  return {type: 'GRID_REMOVE_FILTER', field};
 };
 
 export const gridStateUpdated = () => {

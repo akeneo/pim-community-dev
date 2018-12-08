@@ -15,8 +15,8 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -193,6 +193,10 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_referenceentity_record_create', true);
+
+        $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }
 
     private function revokeCreationRights(): void

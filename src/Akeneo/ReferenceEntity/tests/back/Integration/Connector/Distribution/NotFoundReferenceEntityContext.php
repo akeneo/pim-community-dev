@@ -27,6 +27,7 @@ class NotFoundReferenceEntityContext implements Context
 {
     private const RECORD_REQUEST_CONTRACT_DIR = 'Record/Connector/Distribute/';
     private const REFERENCE_ENTITY_REQUEST_CONTRACT_DIR = 'ReferenceEntity/Connector/Distribute/';
+    private const ATTRIBUTE_REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
     /** @var OauthAuthenticatedClientFactory */
     private $clientFactory;
@@ -39,6 +40,12 @@ class NotFoundReferenceEntityContext implements Context
 
     /** @var null|string */
     private $notFoundReferenceEntityRequestContract;
+
+    /** @var null|Response */
+    private $notFoundAttributeForReferenceEntityResponse;
+
+    /** @var null|string */
+    private $notFoundAttributeForReferenceEntityRequestContract;
 
     public function __construct(OauthAuthenticatedClientFactory $clientFactory, WebClientHelper $webClientHelper)
     {
@@ -82,5 +89,44 @@ class NotFoundReferenceEntityContext implements Context
         $client = $this->clientFactory->logIn('julia');
         $this->notFoundReferenceEntityRequestContract = self::REFERENCE_ENTITY_REQUEST_CONTRACT_DIR. "not_found_reference_entity.json";
         $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
+
+    /**
+     * @When /^the connector requests the structure of a non\-existent reference entity$/
+     */
+    public function theConnectorRequestsTheStructureOfANonExistentReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attributes.json";
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
+
+    /**
+     * @When /^the connector requests a given attribute of a non\-existent reference entity$/
+     */
+    public function theConnectorRequestsAGivenAttributeOfANonExistentReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_reference_entity_for_attribute.json";
+        $this->notFoundReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundReferenceEntityRequestContract);
+    }
+
+
+    /**
+     * @When /^the connector requests a non\-existent attribute of a given reference entity$/
+     */
+    public function theConnectorRequestsANonExistentAttributeOfAGivenReferenceEntity()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->notFoundAttributeForReferenceEntityRequestContract = self::ATTRIBUTE_REQUEST_CONTRACT_DIR . "not_found_attribute_for_reference_entity.json";
+        $this->notFoundAttributeForReferenceEntityResponse = $this->webClientHelper->requestFromFile($client, $this->notFoundAttributeForReferenceEntityRequestContract);
+    }
+
+    /**
+     * @Then /^the PIM notifies the connector about an error indicating that the attribute does not exist for the Brand reference entity$/
+     */
+    public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheAttributeDoesNotExistForTheBrandReferenceEntity()
+    {
+        $this->webClientHelper->assertJsonFromFile($this->notFoundAttributeForReferenceEntityResponse, $this->notFoundAttributeForReferenceEntityRequestContract);
     }
 }

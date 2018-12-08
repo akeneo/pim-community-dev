@@ -37,7 +37,7 @@ interface StateProps {
     type: string;
     value_per_locale: boolean;
     value_per_channel: boolean;
-    record_type: string | null;
+    record_type: string;
   };
   errors: ValidationError[];
 }
@@ -131,7 +131,6 @@ class Create extends React.Component<CreateProps> {
 
     const referenceEntities = await referenceEntityFetcher.fetchAll();
     this.setState({referenceEntities: referenceEntities});
-    this.props.events.onRecordTypeUpdated(referenceEntities[0].getIdentifier().stringValue());
   }
 
   private onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,18 +164,13 @@ class Create extends React.Component<CreateProps> {
   };
 
   render(): JSX.Element | JSX.Element[] | null {
-    const defaultRecordType =
-      undefined !== this.state.referenceEntities[0]
-        ? this.state.referenceEntities[0].getIdentifier().stringValue()
-        : '';
-
     return (
       <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
         <div>
           <div className="AknFullPage AknFullPage--modal">
             <div className="AknFullPage-content AknFullPage-content--visible">
               <div className="AknFullPage-left">
-                <img src="bundles/pimui/images/illustrations/Attribute.svg" className="AknFullPage-image" />
+                <img src="bundles/pimui/images/illustrations/Reference-entities.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
                 <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
@@ -272,10 +266,10 @@ class Create extends React.Component<CreateProps> {
                           label: referenceEntity.getLabel(this.props.context.locale),
                           original: referenceEntity,
                         }))}
-                        selectedElement={
-                          null === this.props.data.record_type ? defaultRecordType : this.props.data.record_type
-                        }
+                        selectedElement={this.props.data.record_type}
                         onSelectionChange={this.onRecordTypeUpdate}
+                        allowEmpty={true}
+                        placeholder={__('pim_reference_entity.attribute.create.placeholder.record_type')}
                       />
                     </div>
                     {getErrorsView(this.props.errors, 'recordType')}

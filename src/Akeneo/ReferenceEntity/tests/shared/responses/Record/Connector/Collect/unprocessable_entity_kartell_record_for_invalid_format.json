@@ -1,0 +1,47 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_record_rest_connector_patch",
+        "query": {
+            "referenceEntityIdentifier": "brand",
+            "code": "kartell"
+        },
+        "body": {
+            "code": "kartell",
+            "labels": {
+                "en_US": "Kartell english label",
+                "fr_FR": null
+            },
+            "main_image": null,
+            "values":  [
+                {
+                    "locale": "en_US",
+                    "channel": null,
+                    "data": null
+                },
+                {
+                    "locale": "fr_FR",
+                    "channel": null,
+                    "data": "Kartell french description."
+                }
+            ]
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The record has an invalid format.",
+            "errors": [
+                {
+                    "property": "labels.fr_FR",
+                    "message": "NULL value found, but a string is required"
+                },
+                {
+                    "property": "values",
+                    "message": "Array value found, but an object is required"
+                }
+            ]
+        }
+    }
+}

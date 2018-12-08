@@ -107,12 +107,18 @@ pim_reference_entity:
         code: Code (required)
       confirm: Save
     delete:
-      message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
+      message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products or records, the links will be removed.
       title: Record
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
     grid:
       search: Search on label, code and text attributes
+      filter:
+        completeness:
+          label: Complete
+          all: ALL
+          yes: YES
+          no: NO
       column:
         code: Code
         image: Image
@@ -163,14 +169,16 @@ pim_reference_entity:
       header:
         title: Create
       subtitle: Entities
-      title: Add a new attribute
+      title: Add new record attribute
       input:
         code: Code (required)
         label: Label
         type: Attribute type
-        record_type: Reference entity to link
+        record_type: Reference entity to link (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
+      placeholder:
+        record_type: Select your linked reference entity
       confirm: Save
     edit:
       delete: Delete the attribute

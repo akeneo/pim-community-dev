@@ -34,6 +34,11 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_should_exist' }
 
+    akeneo_referenceentity.infrastructure.validation.attribute.attribute_record_type_is_required:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeRecordTypeIsRequiredValidator
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.attribute.attribute_record_type_is_required' }
+
     akeneo_referenceentity.infrastructure.validation.reference_entity.reference_entity_should_have_no_record:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldHaveNoRecordValidator
         arguments:
@@ -141,3 +146,19 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.validator.channel.locales_should_be_activated' }
+
+    akeneo_referenceentity.infrastructure.validation.record.edit_value_command:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommandValidator
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists'
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.record.edit_value_command' }
+
+    akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection:
+        class: Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollectionValidator
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_referenceentity.infrastructure.validation.reference_entity.label_collection' }

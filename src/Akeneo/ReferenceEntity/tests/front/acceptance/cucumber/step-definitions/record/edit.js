@@ -313,7 +313,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasDeleteButton, false);
   });
 
-  Then('the user should see a completeness bullet point on the required field: {string}', async function (field) {
+  Then('the user should see a completeness bullet point on the required field: {string}', async function(field) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isFilled = await enrich.isFilled(field);
@@ -321,13 +321,13 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isFilled, false);
   });
 
-  When('the user fill the {string} field with: {string}', async function (fieldCode, value) {
+  When('the user fill the {string} field with: {string}', async function(fieldCode, value) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     await enrich.fillField('pim_reference_entity.record.enrich.' + fieldCode, value);
   });
 
-  Then('the user should not see a completeness bullet point on the required field: {string}', async function (field) {
+  Then('the user should not see a completeness bullet point on the required field: {string}', async function(field) {
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
     const isFilled = await enrich.isFilled(field);
