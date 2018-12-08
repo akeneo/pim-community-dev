@@ -6,3 +6,8 @@ pimee_dashboard:
       product: Produit
       review: Relire
       empty: Il n'y a aucune proposition à examiner
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        compute_completeness_of_products_linked_to_assets: Calcul de la complétude des produits liés aux ressources
