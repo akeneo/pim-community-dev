@@ -287,6 +287,7 @@ class FamilyVariant implements FamilyVariantInterface
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::BOOLEAN,
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT
         ];
     }
 }

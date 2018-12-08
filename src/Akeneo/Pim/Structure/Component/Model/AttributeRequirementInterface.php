@@ -3,8 +3,6 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * The attribute requirement for a channel and a family
