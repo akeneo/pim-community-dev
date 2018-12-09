@@ -1,0 +1,155 @@
+extensions:
+    authentication-sso-configuration:
+        module: pim/form/common/edit-form
+
+    authentication-sso-configuration-user-navigation:
+        module: pim/menu/user-navigation
+        parent: authentication-sso-configuration
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    authentication-sso-configuration-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: authentication-sso-configuration
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-sso
+
+    authentication-sso-configuration-label:
+        module: pim/form/common/label
+        parent: authentication-sso-configuration
+        targetZone: title
+        position: 100
+
+    authentication-sso-configuration-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: authentication-sso-configuration
+        targetZone: buttons
+        position: 0
+
+    authentication-sso-configuration-save:
+        module: pim/form/common/save-form
+        parent: authentication-sso-configuration
+        targetZone: buttons
+        position: 100
+        config:
+            updateSuccessMessage: authentication.sso.configuration.info.update_successful
+            updateFailureMessage: authentication.sso.configuration.info.update_failed
+            notReadyMessage: authentication.sso.configuration.info.field_not_ready
+            url: authentication_sso_configuration_save
+            method: POST
+
+    authentication-sso-configuration-state:
+        module: pim/form/common/state
+        parent: authentication-sso-configuration
+        targetZone: state
+        position: 100
+        config:
+            entity: sso_configuration
+
+    authentication-sso-configuration-sections:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration
+        targetZone: content
+        position: 100
+        config:
+            template: pim/template/form/tab/sections
+
+    authentication-sso-configuration-activation-section:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-sections
+        targetZone: accordion
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: authentication.sso.configuration.section.activation.title
+                dropZone: content
+
+    authentication-sso-configuration-activation-field:
+        module: pim/form/common/fields/boolean
+        parent: authentication-sso-configuration-activation-section
+        targetZone: content
+        position: 100
+        config:
+            fieldName: enabled
+            label: authentication.sso.configuration.field.activation.label
+
+    authentication-sso-configuration-identity-provider-section:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-sections
+        targetZone: accordion
+        position: 110
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: authentication.sso.configuration.section.identity_provider.title
+                dropZone: content
+
+    authentication-sso-configuration-identity-provider-entity-id-field:
+        module: pim/authentication/sso/configuration/fields/text
+        parent: authentication-sso-configuration-identity-provider-section
+        targetZone: content
+        position: 100
+        config:
+            fieldName: identityProvider.entityId
+            label: authentication.sso.configuration.field.entity_id.label
+
+    authentication-sso-configuration-identity-provider-url-field:
+        module: pim/authentication/sso/configuration/fields/text
+        parent: authentication-sso-configuration-identity-provider-section
+        targetZone: content
+        position: 110
+        config:
+            fieldName: identityProvider.url
+            label: authentication.sso.configuration.field.url.label
+
+    authentication-sso-configuration-identity-provider-public-certificate-field:
+        module: pim/authentication/sso/configuration/fields/textarea
+        parent: authentication-sso-configuration-identity-provider-section
+        targetZone: content
+        position: 120
+        config:
+            fieldName: identityProvider.publicCertificate
+            label: authentication.sso.configuration.field.public_certificate.label
+
+    authentication-sso-configuration-service-provider-section:
+        module: pim/common/simple-view
+        parent: authentication-sso-configuration-sections
+        targetZone: accordion
+        position: 120
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: authentication.sso.configuration.section.service_provider.title
+                dropZone: content
+
+    authentication-sso-configuration-service-provider-entity-id-field:
+        module: pim/authentication/sso/configuration/fields/text
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        position: 100
+        config:
+            fieldName: serviceProvider.entityId
+            label: authentication.sso.configuration.field.entity_id.label
+
+    authentication-sso-configuration-service-provider-public-certificate-field:
+        module: pim/authentication/sso/configuration/fields/textarea
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        position: 110
+        config:
+            fieldName: serviceProvider.publicCertificate
+            label: authentication.sso.configuration.field.public_certificate.label
+
+    authentication-sso-configuration-service-provider-private-certificate-field:
+        module: pim/authentication/sso/configuration/fields/textarea
+        parent: authentication-sso-configuration-service-provider-section
+        targetZone: content
+        position: 120
+        config:
+            fieldName: serviceProvider.privateCertificate
+            label: authentication.sso.configuration.field.private_certificate.label

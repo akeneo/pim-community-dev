@@ -1,0 +1,8 @@
+extensions:
+    pim-menu-system-sso:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        position: 125
+        config:
+            title: pim_menu.item.sso
+            to: authentication_sso_configuration_edit

@@ -1,0 +1,27 @@
+pim_menu.item.sso: SSO
+
+authentication:
+    sso:
+        configuration:
+            info:
+                update_successful: The configuration has been saved
+                update_failed: The configuration could not be saved
+                fields_not_ready: "The configuration cannot be saved right now. The following fields are not ready: {{ fields }}"
+            section:
+                activation:
+                    title: SSO activation
+                identity_provider:
+                    title: Identity provider
+                service_provider:
+                    title: Service provider
+            field:
+                activation:
+                    label: SSO enabled
+                entity_id:
+                    label: Entity ID
+                url:
+                    label: URL
+                public_certificate:
+                    label: Public certificate
+                private_certificate:
+                    label: Private certificate

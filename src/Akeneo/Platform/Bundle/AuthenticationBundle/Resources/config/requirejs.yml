@@ -1,0 +1,11 @@
+config:
+    config:
+        pim/controller-registry:
+            controllers:
+                authentication_sso_configuration_edit:
+                    module: pim/authentication/sso/configuration/controller
+
+    paths:
+        pim/authentication/sso/configuration/controller: akeneoauthentication/js/sso/configuration/controller.ts
+        pim/authentication/sso/configuration/fields/text: akeneoauthentication/js/sso/configuration/fields/text.ts
+        pim/authentication/sso/configuration/fields/textarea: akeneoauthentication/js/sso/configuration/fields/textarea.ts
