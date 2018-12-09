@@ -3,3 +3,15 @@ services:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence\Sql\SqlRepository'
         arguments:
             - '@database_connection'
+
+    akeneo_authentication.sso.configuration.create_or_update_handler:
+        class: 'Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler'
+        arguments:
+            - '@akeneo_authentication.sso.configuration.repository'
+
+    akeneo_authentication.sso.configuration.controller:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Controller'
+        arguments:
+            - '@validator'
+            - '@pim_internal_api_serializer'
+            - '@akeneo_authentication.sso.configuration.create_or_update_handler'

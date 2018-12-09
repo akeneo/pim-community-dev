@@ -95,7 +95,7 @@ extensions:
         targetZone: content
         position: 100
         config:
-            fieldName: identityProvider.entityId
+            fieldName: identityProviderEntityId
             label: authentication.sso.configuration.field.entity_id.label
 
     authentication-sso-configuration-identity-provider-url-field:
@@ -104,7 +104,7 @@ extensions:
         targetZone: content
         position: 110
         config:
-            fieldName: identityProvider.url
+            fieldName: identityProviderUrl
             label: authentication.sso.configuration.field.url.label
 
     authentication-sso-configuration-identity-provider-public-certificate-field:
@@ -113,7 +113,7 @@ extensions:
         targetZone: content
         position: 120
         config:
-            fieldName: identityProvider.publicCertificate
+            fieldName: identityProviderPublicCertificate
             label: authentication.sso.configuration.field.public_certificate.label
 
     authentication-sso-configuration-service-provider-section:
@@ -133,7 +133,7 @@ extensions:
         targetZone: content
         position: 100
         config:
-            fieldName: serviceProvider.entityId
+            fieldName: serviceProviderEntityId
             label: authentication.sso.configuration.field.entity_id.label
 
     authentication-sso-configuration-service-provider-public-certificate-field:
@@ -142,7 +142,7 @@ extensions:
         targetZone: content
         position: 110
         config:
-            fieldName: serviceProvider.publicCertificate
+            fieldName: serviceProviderPublicCertificate
             label: authentication.sso.configuration.field.public_certificate.label
 
     authentication-sso-configuration-service-provider-private-certificate-field:
@@ -151,5 +151,5 @@ extensions:
         targetZone: content
         position: 120
         config:
-            fieldName: serviceProvider.privateCertificate
+            fieldName: serviceProviderPrivateCertificate
             label: authentication.sso.configuration.field.private_certificate.label

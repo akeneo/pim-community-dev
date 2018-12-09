@@ -1,5 +1,8 @@
 pim_menu.item.sso: SSO
 
+pim_title:
+    authentication_sso_configuration_edit: SSO configuration
+
 authentication:
     sso:
         configuration:
