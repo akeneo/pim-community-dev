@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttribut
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributeOptionsMappingProvider;
@@ -29,7 +29,7 @@ use Prophecy\Argument;
 
 class AttributeOptionsMappingProviderSpec extends ObjectBehavior
 {
-    public function let(OptionsMappingInterface $api, ConfigurationRepositoryInterface $configurationRepo): void
+    public function let(OptionsMappingWebService $api, ConfigurationRepositoryInterface $configurationRepo): void
     {
         $configuration = new Configuration();
         $configuration->setToken(new Token('valid-token'));
