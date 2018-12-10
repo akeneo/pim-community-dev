@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject
  */
 class SubscriptionsCollection implements \Iterator
 {
-    /** @var SubscriptionWebservice */
+    /** @var SubscriptionWebService */
     private $subscriptionWebservice;
 
     /** @var array */
@@ -33,11 +33,11 @@ class SubscriptionsCollection implements \Iterator
     private $index;
 
     /**
-     * @param SubscriptionWebservice $subscriptionWebservice
+     * @param SubscriptionWebService $subscriptionWebservice
      * @param array $collection
      */
     public function __construct(
-        SubscriptionWebservice $subscriptionWebservice,
+        SubscriptionWebService $subscriptionWebservice,
         array $collection
     ) {
         $this->subscriptionWebservice = $subscriptionWebservice;

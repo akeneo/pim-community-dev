@@ -25,7 +25,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResp
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\WarningCollection;
@@ -46,7 +46,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
 {
     public function let(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        SubscriptionWebservice $subscriptionApi,
+        SubscriptionWebService $subscriptionApi,
         ConfigurationRepositoryInterface $configurationRepo
     ): void {
         $configuration = new Configuration();

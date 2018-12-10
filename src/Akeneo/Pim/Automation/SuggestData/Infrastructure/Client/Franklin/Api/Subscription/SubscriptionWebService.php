@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SubscriptionWebservice extends AbstractApi implements AuthenticatedApiInterface
+class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
      * {@inheritdoc}
