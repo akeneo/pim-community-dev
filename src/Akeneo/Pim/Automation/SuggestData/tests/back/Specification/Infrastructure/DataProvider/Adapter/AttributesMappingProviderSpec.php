@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMapping
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AttributesMapping\AttributesMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AttributesMappingProvider;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +26,7 @@ use Prophecy\Argument;
 class AttributesMappingProviderSpec extends ObjectBehavior
 {
     public function let(
-        AttributesMappingApiInterface $api,
+        AttributesMappingWebService $api,
         ConfigurationRepositoryInterface $configurationRepo
     ): void {
         $this->beConstructedWith($api, $configurationRepo);

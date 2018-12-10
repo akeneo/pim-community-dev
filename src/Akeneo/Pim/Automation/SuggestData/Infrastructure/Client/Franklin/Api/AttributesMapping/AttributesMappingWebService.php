@@ -23,7 +23,7 @@ use GuzzleHttp\Exception\ServerException;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributesMappingWebService extends AbstractApi implements AttributesMappingApiInterface
+class AttributesMappingWebService extends AbstractApi
 {
     /**
      * @param string $familyCode
