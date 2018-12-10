@@ -22,28 +22,28 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     /** @var Sql\ProductGrid\FetchProductModelRowsFromCodes */
     private $fetchProductModelRowsFromCodes;
 
-    /** @var Query\AddAdditionalProductProperties */
-    private $addAdditionalProductProperties;
+    /** @var Query\AddAdditionalProductPropertiesRegistry */
+    private $addAdditionalProductPropertiesRegistry;
 
-    /** @var Query\AddAdditionalProductModelProperties */
-    private $addAdditionalProductModelProperties;
+    /** @var Query\AddAdditionalProductModelPropertiesRegistry */
+    private $addAdditionalProductModelPropertiesRegistry;
 
     /**
-     * @param Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers
-     * @param Sql\ProductGrid\FetchProductModelRowsFromCodes  $fetchProductModelRowsFromCodes
-     * @param Query\AddAdditionalProductProperties            $addAdditionalProductProperties
-     * @param Query\AddAdditionalProductModelProperties       $addAdditionalProductModelProperties
+     * @param Sql\ProductGrid\FetchProductRowsFromIdentifiers   $fetchProductRowsFromIdentifiers
+     * @param Sql\ProductGrid\FetchProductModelRowsFromCodes    $fetchProductModelRowsFromCodes
+     * @param Query\AddAdditionalProductPropertiesRegistry      $addAdditionalProductProperties
+     * @param Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties
      */
     public function __construct(
         Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
         Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
-        Query\AddAdditionalProductProperties $addAdditionalProductProperties,
-        Query\AddAdditionalProductModelProperties $addAdditionalProductModelProperties
+        Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
+        Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties
     ) {
         $this->fetchProductRowsFromIdentifiers = $fetchProductRowsFromIdentifiers;
         $this->fetchProductModelRowsFromCodes = $fetchProductModelRowsFromCodes;
-        $this->addAdditionalProductProperties = $addAdditionalProductProperties;
-        $this->addAdditionalProductModelProperties = $addAdditionalProductModelProperties;
+        $this->addAdditionalProductPropertiesRegistry = $addAdditionalProductProperties;
+        $this->addAdditionalProductModelPropertiesRegistry = $addAdditionalProductModelProperties;
     }
 
     /**
@@ -70,7 +70,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             $queryParameters->channelCode(),
             $queryParameters->localeCode()
         );
-        $productRows = $this->addAdditionalProductProperties->add($queryParameters, $productRows);
+        $productRows = $this->addAdditionalProductPropertiesRegistry->add($queryParameters, $productRows);
 
         $productModelRows = ($this->fetchProductModelRowsFromCodes)(
             $productModelCodes,
@@ -78,7 +78,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
             $queryParameters->channelCode(),
             $queryParameters->localeCode()
         );
-        $productModelRows = $this->addAdditionalProductModelProperties->add($queryParameters, $productModelRows);
+        $productModelRows = $this->addAdditionalProductModelPropertiesRegistry->add($queryParameters, $productModelRows);
 
         $rows = array_merge($productRows, $productModelRows);
         $sortedRows = [];
