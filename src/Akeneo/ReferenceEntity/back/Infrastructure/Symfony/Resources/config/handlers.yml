@@ -73,3 +73,6 @@ services:
         class: Akeneo\ReferenceEntity\Application\Record\IndexRecords\IndexRecordsByReferenceEntityHandler
         arguments:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer'
+
+    akeneo_referenceentity.application.permission.permission_query_handler:
+        class: Akeneo\ReferenceEntity\Application\Permission\PermissionQueryHandler

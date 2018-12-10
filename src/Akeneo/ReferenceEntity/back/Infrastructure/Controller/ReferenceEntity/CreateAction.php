@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
+use Akeneo\ReferenceEntity\Application\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\Permission\PermissionCheckQueryHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,16 +47,26 @@ class CreateAction
     /** @var SecurityFacade */
     private $securityFacade;
 
+    /** @var PermissionCheckQueryHandler $permissionCheckQueryHandler */
+    private $permissionCheckQueryHandler;
+
+    /** @var UserContext */
+    private $userContext;
+
     public function __construct(
         CreateReferenceEntityHandler $createReferenceEntityHandler,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        PermissionCheckQueryHandler $permissionCheckQueryHandler,
+        UserContext $userContext
     ) {
         $this->createReferenceEntityHandler = $createReferenceEntityHandler;
-        $this->normalizer                  = $normalizer;
-        $this->validator                   = $validator;
-        $this->securityFacade              = $securityFacade;
+        $this->normalizer = $normalizer;
+        $this->validator = $validator;
+        $this->securityFacade = $securityFacade;
+        $this->permissionCheckQueryHandler = $permissionCheckQueryHandler;
+        $this->userContext = $userContext;
     }
 
     public function __invoke(Request $request): Response
@@ -62,14 +75,15 @@ class CreateAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_create')) {
+        if (!$this->isAllowed($request)) {
             throw new AccessDeniedException();
         }
 
         $command = $this->getCreateCommand($request);
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
-            return new JsonResponse($this->normalizer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->normalizer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST);
         }
 
         ($this->createReferenceEntityHandler)($command);
@@ -86,5 +100,26 @@ class CreateAction
         $command->labels = $normalizedCommand['labels'] ?? [];
 
         return $command;
+    }
+
+    protected function isAllowed(Request $request): bool
+    {
+        return $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_create')
+            && $this->userHasPermission($request);
+    }
+
+    protected function userHasPermission(Request $request): bool
+    {
+        $user = $this->userContext->getUser();
+        $referenceEntityCode = json_decode($request->getContent(), true)['code'] ?? null;
+        if (null === $user || null === $referenceEntityCode) {
+            return false;
+        }
+
+        $permissionCheckQuery = new CanEditReferenceEntityQuery();
+        $permissionCheckQuery->userIdentifier = $user->getId();
+        $permissionCheckQuery->referenceEntityIdentifier = $referenceEntityCode;
+
+        return $this->permissionCheckQueryHandler->isAllowed($permissionCheckQuery);
     }
 }

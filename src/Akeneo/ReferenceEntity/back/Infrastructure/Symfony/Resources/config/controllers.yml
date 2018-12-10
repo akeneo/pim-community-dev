@@ -7,6 +7,7 @@ services:
             - '@reference_entity_serializer'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@pim_user.context.user'
 
     akeneo_referenceentity.infrastructure.action.reference_entity.index:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\IndexAction

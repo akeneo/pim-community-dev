@@ -323,3 +323,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+
+    akeneo.referencentity.infrastructure.persistence.perission.query.can_edit_reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Permission\SqlCanEditReferenceEntity
+        arguments:
+            - '@database_connection'
