@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -24,15 +24,15 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Ide
  */
 class IdentifiersMappingProvider extends AbstractProvider implements IdentifiersMappingProviderInterface
 {
-    /** @var IdentifiersMappingApiInterface */
+    /** @var IdentifiersMappingApiWebService */
     private $api;
 
     /**
-     * @param IdentifiersMappingApiInterface $api
+     * @param IdentifiersMappingApiWebService $api
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
-        IdentifiersMappingApiInterface $api,
+        IdentifiersMappingApiWebService $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);
