@@ -1,5 +1,5 @@
 services:
   pim_user.validator.constraints.value_should_not_contains_blacklisted_characters:
-    class: Pim\Bundle\UserBundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharactersValidator
+    class: Akeneo\UserManagement\Bundle\Validator\Constraints\ValueShouldNotContainsBlacklistedCharactersValidator
     tags:
     - { name: validator.constraint_validator }

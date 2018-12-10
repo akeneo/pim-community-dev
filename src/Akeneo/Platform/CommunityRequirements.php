@@ -31,6 +31,7 @@ class CommunityRequirements
         'apcu',
         'bcmath',
         'curl',
+        'fileinfo',
         'gd',
         'intl',
         'pdo_mysql',

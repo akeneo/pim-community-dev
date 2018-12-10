@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FileValidator extends ConstraintValidator
 {
-    /** @var array|null */
+    /** @var array */
     private $extensionToMimeTypeMapping;
 
     protected static $suffices = [
@@ -28,10 +28,9 @@ class FileValidator extends ConstraintValidator
     ];
 
     /**
-     * @TODO Remove null parameter in merge master
-     * @param array|null $extensionToMimeTypeMapping
+     * @param array $extensionToMimeTypeMapping
      */
-    public function __construct(array $extensionToMimeTypeMapping = null)
+    public function __construct(array $extensionToMimeTypeMapping)
     {
         $this->extensionToMimeTypeMapping = $extensionToMimeTypeMapping;
     }
@@ -151,7 +150,7 @@ class FileValidator extends ConstraintValidator
      */
     private function validateMimeType(FileInfoInterface $fileInfo, Constraint $constraint)
     {
-        if (empty($constraint->allowedExtensions) || empty($this->extensionToMimeTypeMapping)) {
+        if (empty($constraint->allowedExtensions)) {
             return;
         }
 
@@ -161,15 +160,9 @@ class FileValidator extends ConstraintValidator
 
         $mappedMimeTypes = $this->extensionToMimeTypeMapping[$this->getExtension($fileInfo)];
 
-        try {
-            $mimeType = null !== $fileInfo->getUploadedFile() ?
-                $fileInfo->getUploadedFile()->getMimeType() :
-                $fileInfo->getMimeType();
-        } catch (\LogicException $e) {
-            // TODO Add requirement for fileinfo extension on merge master
-            // TODO Remove this try-catch on merge master
-            return;
-        }
+        $mimeType = null !== $fileInfo->getUploadedFile() ?
+            $fileInfo->getUploadedFile()->getMimeType() :
+            $fileInfo->getMimeType();
 
         if (null !== $mimeType && !in_array($mimeType, $mappedMimeTypes)) {
             $this->context->buildViolation(

@@ -106,7 +106,6 @@ class ChoiceFilter extends AjaxChoiceFilter
     {
         $attribute = $this->getAttribute();
 
-        /* TODO @merge remove null condition on master, optionRepoClass to delete*/
         return array_merge(
             parent::getFormOptions(),
             [
