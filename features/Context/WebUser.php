@@ -1598,6 +1598,12 @@ class WebUser extends RawMinkContext
      */
     public function iPressOnTheDropdownButton($item, $button)
     {
+        $this->spin(function () {
+            $loading = $this->getCurrentPage()->find('css', '#loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, 'Could press the dropdown buttons because of loading wrapper');
+
         $this
             ->getCurrentPage()
             ->getDropdownButtonItem($item, $button)
