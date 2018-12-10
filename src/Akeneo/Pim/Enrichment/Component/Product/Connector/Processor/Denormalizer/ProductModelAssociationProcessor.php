@@ -197,7 +197,6 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
 
     /**
      * It there association(s) in new values ?
-     * TODO master: rename to hasAssociationToImport
      *
      * @param array $item
      *
