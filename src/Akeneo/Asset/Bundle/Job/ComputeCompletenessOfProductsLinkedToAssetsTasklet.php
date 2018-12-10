@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\Job;
 
-
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -15,8 +14,8 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-    use Doctrine\DBAL\Connection;
-    use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * This tasklet is meant to be launched by a job after some assets or asset references are updated.

@@ -148,16 +148,6 @@ final class ComputeCompletenessOfProductsLinkedToAssetsSubscriber implements Eve
     {
         $computeCompletenessJobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_CODE);
 
-        // Here for backward compatibility if the migration creating the job has not been run.
-        // TO REMOVE ON MASTER
-        if (null === $computeCompletenessJobInstance) {
-            foreach ($assets as $asset) {
-                $this->completenessRemover->removeForAsset($asset);
-            }
-
-            return;
-        }
-
         $assetCodes = array_map(
             function (AssetInterface $asset) {
                 return $asset->getCode();
