@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerato
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AbstractApi implements AuthenticatedApi
+class AbstractApi
 {
     /** @var UriGenerator */
     protected $uriGenerator;

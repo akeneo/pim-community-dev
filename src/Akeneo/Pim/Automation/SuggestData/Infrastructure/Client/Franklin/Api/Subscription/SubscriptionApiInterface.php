@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
@@ -23,7 +23,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\I
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface SubscriptionApiInterface extends AuthenticatedApi
+interface SubscriptionApiInterface extends AuthenticatedApiInterface
 {
     /**
      * @param RequestCollection $request

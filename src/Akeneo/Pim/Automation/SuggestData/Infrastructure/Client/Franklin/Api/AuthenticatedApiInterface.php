@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api;
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-interface AuthenticatedApi
+interface AuthenticatedApiInterface
 {
     /**
      * @param string $token

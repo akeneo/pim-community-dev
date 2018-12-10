@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
 
 /**
@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface OptionsMappingInterface extends AuthenticatedApi
+interface OptionsMappingInterface extends AuthenticatedApiInterface
 {
     /**
      * Fetches options mapping from family and attribute.

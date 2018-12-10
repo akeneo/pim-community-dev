@@ -13,14 +13,14 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\I
  * file that was distributed with this source code.
  */
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 
 /**
  * Interface for the API Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-interface IdentifiersMappingApiInterface extends AuthenticatedApi
+interface IdentifiersMappingApiInterface extends AuthenticatedApiInterface
 {
     /**
      * Call the API to update the identifiers mapping.
