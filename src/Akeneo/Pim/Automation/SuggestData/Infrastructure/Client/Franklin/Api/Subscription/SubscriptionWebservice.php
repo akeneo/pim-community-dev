@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\S
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AbstractApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
@@ -30,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInterface
+class SubscriptionWebservice extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
      * {@inheritdoc}

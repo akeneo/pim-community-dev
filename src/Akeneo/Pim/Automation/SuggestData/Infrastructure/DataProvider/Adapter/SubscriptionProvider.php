@@ -24,7 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSub
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
@@ -43,17 +43,17 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var SubscriptionApiInterface */
+    /** @var SubscriptionWebservice */
     private $api;
 
     /**
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param SubscriptionApiInterface $api
+     * @param SubscriptionWebservice $api
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        SubscriptionApiInterface $api,
+        SubscriptionWebservice $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);

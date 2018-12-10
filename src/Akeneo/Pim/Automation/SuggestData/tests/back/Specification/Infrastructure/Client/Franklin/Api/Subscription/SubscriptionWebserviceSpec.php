@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
@@ -53,7 +52,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
 
     public function it_is_a_subscription_api(): void
     {
-        $this->shouldImplement(SubscriptionApiInterface::class);
+        $this->shouldImplement(SubscriptionWebservice::class);
     }
 
     public function it_calls_a_delete_request_on_subscription_id($uriGenerator, $httpClient): void
