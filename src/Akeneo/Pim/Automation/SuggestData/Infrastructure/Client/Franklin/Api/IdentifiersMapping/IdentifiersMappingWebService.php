@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authent
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class IdentifiersMappingApiWebService extends AbstractApi implements AuthenticatedApiInterface
+class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
      * {@inheritdoc}

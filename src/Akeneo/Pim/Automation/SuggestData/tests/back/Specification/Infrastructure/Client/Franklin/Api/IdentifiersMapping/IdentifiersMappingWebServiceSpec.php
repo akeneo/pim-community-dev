@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\GuzzleClien
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\UriGenerator;
 use PhpSpec\ObjectBehavior;
 
-class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
+class IdentifiersMappingWebServiceSpec extends ObjectBehavior
 {
     public function let(
         UriGenerator $uriGenerator,
@@ -30,7 +30,7 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
 
     public function it_is_subscription_collection(): void
     {
-        $this->shouldHaveType(IdentifiersMapping\IdentifiersMappingApiWebService::class);
+        $this->shouldHaveType(IdentifiersMapping\IdentifiersMappingWebService::class);
     }
 
     public function it_is_an_authenticated_webservice(): void
