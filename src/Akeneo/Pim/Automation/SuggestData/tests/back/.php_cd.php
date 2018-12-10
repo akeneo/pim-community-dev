@@ -35,8 +35,6 @@ $rules = [
 
             //Subscribers
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
-            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -151,8 +149,16 @@ $rules = [
 
             // External dependencies
             'Doctrine',
+
+            // TODO: link by ID instead of reference
+            'Akeneo\Pim\Structure\Component\Model\Family',
+            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+
+            // Oro config is used
+            'Oro\Bundle\ConfigBundle\Entity\Config',
         ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository'),
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence'),
 
     $builder->only(
         [

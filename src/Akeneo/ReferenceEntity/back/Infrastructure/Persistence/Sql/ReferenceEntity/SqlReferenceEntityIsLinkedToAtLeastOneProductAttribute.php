@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use PDO;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -50,7 +49,7 @@ SQL;
             'attribute_type' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
         ]);
 
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
 
         return $results;

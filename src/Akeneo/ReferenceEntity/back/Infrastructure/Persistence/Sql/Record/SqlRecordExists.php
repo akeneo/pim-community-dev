@@ -20,7 +20,6 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
-use PDO;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -73,7 +72,7 @@ SQL;
     private function isIdentifierExisting(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
         return $isExisting;

@@ -24,7 +24,6 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\Att
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
-use PDO;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -211,7 +210,7 @@ SQL;
                 'reference_entity_identifier' => $referenceEntityIdentifier,
             ]
         );
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         $attributes = [];
         foreach ($results as $result) {
