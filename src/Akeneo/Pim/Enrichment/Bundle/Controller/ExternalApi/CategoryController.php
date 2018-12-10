@@ -15,7 +15,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -245,7 +244,7 @@ class CategoryController
 
         try {
             $this->saver->save($category);
-        } catch (UnexpectedValueException $e) {
+        } catch (\UnexpectedValueException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
