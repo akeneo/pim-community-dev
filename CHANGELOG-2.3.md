@@ -1,4 +1,27 @@
 # 2.3.x
+ 
+# 2.3.21 (2018-12-07)
+
+## Bug fixes
+
+- PIM-7908: Fix variant family creation if an attribute doesn't have a translation for the current locale
+- PIM-7901: Fix memory leak on "compute_family_variant_structure_changes" job
+
+# 2.3.20 (2018-12-06)
+
+## Bug fixes
+
+- PIM-7897: Fix multiple calls to get all attribute groups in the PEF.
+
+# 2.3.19 (2018-12-03)
+
+# 2.3.18 (2018-11-28)
+
+## Bug fixes
+
+- PIM-7775: Security patch: check MIME type to be coherent with extension file. Saving products with incoherent file extension and MIME type is now forbidden.
+- PIM-7865: Improve performances on Product model export
+- PIM-7885: Allow "0" for non decimal metric value
 
 # 2.3.17 (2018-11-15)
 

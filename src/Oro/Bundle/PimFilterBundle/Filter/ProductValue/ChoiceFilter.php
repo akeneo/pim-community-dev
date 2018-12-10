@@ -106,6 +106,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     {
         $attribute = $this->getAttribute();
 
+        /* TODO @merge remove null condition on master, optionRepoClass to delete*/
         return array_merge(
             parent::getFormOptions(),
             [
@@ -128,7 +129,7 @@ class ChoiceFilter extends AjaxChoiceFilter
      * @param $optionCodes
      * @return array
      */
-    protected function filterOnlyExistingOptions($optionCodes)
+    private function filterOnlyExistingOptions($optionCodes)
     {
         $attribute = $this->getAttribute();
         $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers(

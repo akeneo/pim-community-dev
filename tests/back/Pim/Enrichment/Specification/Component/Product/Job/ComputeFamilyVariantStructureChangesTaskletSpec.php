@@ -34,7 +34,8 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             $productSaver,
             $productModelSaver,
             $keepOnlyValuesForVariation,
-            $validator
+            $validator,
+            10
         );
     }
 
@@ -215,5 +216,95 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
         $this->shouldThrow(\LogicException::class)->during('execute');
+    }
+
+    function it_saves_multiple_products_and_product_models(
+        $familyVariantRepository,
+        $variantProductRepository,
+        $productModelRepository,
+        $productSaver,
+        $productModelSaver,
+        $keepOnlyValuesForVariation,
+        $validator,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        FamilyVariantInterface $familyVariant,
+        ProductInterface $variantProduct1,
+        ProductInterface $variantProduct2,
+        ProductInterface $variantProduct3,
+        ProductInterface $variantProduct4,
+        ProductInterface $variantProduct5,
+        ProductModelInterface $subProductModel,
+        ProductModelInterface $rootProductModel,
+        ProductModelInterface $rootProductModel2,
+        ProductModelInterface $rootProductModel3,
+        ProductModelInterface $rootProductModel4,
+        ProductModelInterface $rootProductModel5,
+        ConstraintViolationListInterface $variantProductViolations,
+        ConstraintViolationListInterface $subProductModelViolations,
+        ConstraintViolationListInterface $rootProductModelViolations
+    ) {
+        $this->beConstructedWith(
+            $familyVariantRepository,
+            $variantProductRepository,
+            $productModelRepository,
+            $productSaver,
+            $productModelSaver,
+            $keepOnlyValuesForVariation,
+            $validator,
+            2
+        );
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('family_variant_codes')->willReturn(['tshirt']);
+
+        $familyVariantRepository->findBy(['code' => ['tshirt']])->willReturn([$familyVariant]);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
+
+        // Process the variant products
+        $variantProductRepository->findBy(['familyVariant' => $familyVariant])
+            ->willReturn([$variantProduct1, $variantProduct2, $variantProduct3, $variantProduct4, $variantProduct5]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant(
+            [$variantProduct1, $variantProduct2, $variantProduct3, $variantProduct4, $variantProduct5]
+        )->shouldBeCalled();
+        $validator->validate($variantProduct1)->willReturn($variantProductViolations);
+        $validator->validate($variantProduct2)->willReturn($variantProductViolations);
+        $validator->validate($variantProduct3)->willReturn($variantProductViolations);
+        $validator->validate($variantProduct4)->willReturn($variantProductViolations);
+        $validator->validate($variantProduct5)->willReturn($variantProductViolations);
+        $variantProductViolations->count()->willReturn(0);
+        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3, $variantProduct4])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct5])->shouldBeCalled();
+
+        // Process the sub product models
+        $productModelRepository->findSubProductModels($familyVariant)
+            ->willReturn([$subProductModel]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$subProductModel])
+            ->shouldBeCalled();
+        $validator->validate($subProductModel)->willReturn($subProductModelViolations);
+        $subProductModelViolations->count()->willReturn(0);
+        $productModelSaver->saveAll([$subProductModel])->shouldBeCalled();
+
+
+        // Process the root product models
+        $productModelRepository->findRootProductModels($familyVariant)
+            ->willReturn(
+                [$rootProductModel, $rootProductModel2, $rootProductModel3, $rootProductModel4, $rootProductModel5]
+            );
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant(
+            [$rootProductModel, $rootProductModel2, $rootProductModel3, $rootProductModel4, $rootProductModel5]
+        )->shouldBeCalled();
+        $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
+        $validator->validate($rootProductModel2)->willReturn($rootProductModelViolations);
+        $validator->validate($rootProductModel3)->willReturn($rootProductModelViolations);
+        $validator->validate($rootProductModel4)->willReturn($rootProductModelViolations);
+        $validator->validate($rootProductModel5)->willReturn($rootProductModelViolations);
+        $rootProductModelViolations->count()->willReturn(0);
+        $productModelSaver->saveAll([$rootProductModel, $rootProductModel2])->shouldBeCalled();
+        $productModelSaver->saveAll([$rootProductModel3, $rootProductModel4])->shouldBeCalled();
+        $productModelSaver->saveAll([$rootProductModel5])->shouldBeCalled();
+
+        $this->setStepExecution($stepExecution);
+        $this->execute();
     }
 }

@@ -30,7 +30,7 @@ class MetricNormalizer implements NormalizerInterface
                 ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
         }
 
-        if (null == $amount) {
+        if (null === $amount) {
             return [
                 'amount' => null,
                 'unit'   => null,

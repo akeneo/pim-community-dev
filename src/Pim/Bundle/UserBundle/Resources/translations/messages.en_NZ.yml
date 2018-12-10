@@ -1,0 +1,159 @@
+pim_user:
+  user:
+    tab:
+      general.title: General
+      additional.title: Additional
+      group_and_role.title: Groups and Roles
+      password.title: Password
+      business_unit.title: Business Units
+      email_synchronization.title: Email synchronization settings
+      interfaces.title: Interfaces
+  group:
+    tab:
+      general.title: General
+      users.title: Users
+oro.user.controller:
+  group.message.saved: "Group saved"
+  role.message.saved: "Role saved"
+  user.message.saved: "User saved"
+  status.message.saved: "Status saved"
+oro.user.grid.users:
+  columns:
+    username: "Username"
+    email: "Email"
+    firstName: "First name"
+    lastName: "Last name"
+    createdAt: "Created at"
+    updatedAt: "Updated at"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Label"
+oro.user.grid.groups:
+  columns:
+    name: "Name"
+pim_title:
+  user.index: Users
+  user_role.index: Roles
+  user_group.index: Groups
+  system_configuration.index: Configuration
+user.title: User
+user.overview: User
+Users Management: Users Management
+Create user: Create user
+btn.create.user: Create user
+New user: New user
+Additional: Additional
+Groups and Roles: Groups and Roles
+Username: Username
+Password: Password
+Password (again): Password (again)
+Re-enter password: Re-enter password
+Name prefix: Name prefix
+First name: First name
+Middle name: Middle name
+Last name: Last name
+Name suffix: Name suffix
+Date of birth: Date of birth
+Avatar: Avatar
+Additional emails: Additional emails
+Add another email: Add another email
+Catalog locale: Catalog locale
+Catalog scope: Catalog scope
+Default tree: Default tree
+Business Units: Business Units
+Email synchronization settings: Email synchronization settings
+Host: Host
+Port: Port
+Ssl: SSL
+Last logged in: Last logged in
+Login count: Login count
+Additional Information: Additional Information
+Interfaces: Interfaces
+Basic Information: Basic Information
+Contact Information: Contact Information
+User name: User name
+Birthday: Birthday
+API key: API key
+Ui locale: UI locale
+UI locale: UI locale
+User salt: User salt
+Current password: Current password
+New password: New password
+Repeat new password: New password (repeat)
+Generate key: Generate key
+Primary: primary
+Removed user: Removed user
+user:
+  product_grid_filters: Product grid filters
+  default_product_grid_view:
+    label: Default product grid view
+  default_grid_view:
+    none: None
+  timezone: Timezone
+Role: Role
+Owner: Owner
+General: General
+Entity: Entity
+Capabilities: Capabilities
+Save and close: Save and close
+Has role: Has role
+role:
+  title: role
+  overview: role
+  edit: Edit role
+  create: Create role
+btn.create.role: Create role
+rights:
+  action: Permissions
+oro_security:
+  acl_group:
+    user: Users
+    role: Roles
+    group: User groups
+  acl:
+    user:
+      view: List users
+      create: Create a user
+      edit: Edit users
+      delete: Remove a user
+    role:
+      view: List roles
+      create: Create a role
+      edit: Edit roles
+      delete: Remove a role
+    group:
+      view: List user groups
+      create: Create a user group
+      edit: Edit user groups
+      delete: Remove a user group
+(default): Default permission on entities
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Delete
+ASSIGN: Assign
+SHARE: Share
+oro:
+  security:
+    access-level:
+      BASIC: User
+      LOCAL: Business Unit
+      DEEP: Division
+      GLOBAL: Organization
+      SYSTEM: System
+      NONE: None
+Create group: Create group
+btn.create.user-group: Create group
+Has group: Has group
+Save and Close: Save and close
+user-group.overview: Groups
+Log in: Log in
+Remember me on this computer: Remember me on this computer
+Forgot your password?: Forgot your password?
+Username or Email: Username or Email
+Forgot Password: Forgot Password
+Request: Request
+Check Email: Check Email
+password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
+Go to homepage: Go to homepage
