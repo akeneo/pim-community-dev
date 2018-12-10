@@ -1,29 +1,40 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Process\Process;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Simon CARRE <simon.carre@clickandmortar.fr>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 {
+    /** @var integer */
+    const BATCH_SIZE = 50;
+
+    /** @var string */
+    const TYPE_PRODUCT_MODEL = 'ProductModel';
+
+    /** @var string */
+    const TYPE_PRODUCT = 'Product';
+
+    /** @var integer */
+    const COMMAND_SEPARATOR = ',';
+
     /** @var StepExecution */
     private $stepExecution;
 
@@ -36,43 +47,27 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var BulkSaverInterface */
-    private $productSaver;
-
-    /** @var BulkSaverInterface */
-    private $productModelSaver;
-
-    /** @var KeepOnlyValuesForVariation */
-    private $keepOnlyValuesForVariation;
-
-    /** @var ValidatorInterface */
-    private $validator;
+    /** @var KernelInterface */
+    private $kernel;
 
     /**
-     * @param EntityRepository                               $familyVariantRepository
-     * @param ObjectRepository                               $variantProductRepository
-     * @param ProductModelRepositoryInterface                $productModelRepository
-     * @param BulkSaverInterface                             $productSaver
-     * @param BulkSaverInterface                             $productModelSaver
-     * @param KeepOnlyValuesForVariation                     $keepOnlyValuesForVariation
-     * @param ValidatorInterface                             $validator
+     * @param EntityRepository                $familyVariantRepository
+     * @param ObjectRepository                $variantProductRepository
+     * @param ProductModelRepositoryInterface $productModelRepository
+     * @param KernelInterface                 $kernel
      */
     public function __construct(
         EntityRepository $familyVariantRepository,
         ObjectRepository $variantProductRepository,
         ProductModelRepositoryInterface $productModelRepository,
-        BulkSaverInterface $productSaver,
-        BulkSaverInterface $productModelSaver,
-        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        ValidatorInterface $validator
-    ) {
-        $this->familyVariantRepository = $familyVariantRepository;
+        KernelInterface $kernel
+    )
+    {
+        $this->familyVariantRepository  = $familyVariantRepository;
         $this->variantProductRepository = $variantProductRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->productSaver = $productSaver;
-        $this->productModelSaver = $productModelSaver;
-        $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
-        $this->validator = $validator;
+        $this->productModelRepository   = $productModelRepository;
+        $this->kernel                   = $kernel;
+
     }
 
     /**
@@ -117,93 +112,40 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
      */
     private function updateValuesOfEntities(array $entities): void
     {
-        $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant($entities);
-
-        $productModels = $this->filterProductModels($entities);
-        $products = $this->filterProducts($entities);
-
-        if (!empty($productModels)) {
-            $this->validateProductModels($productModels);
-            $this->productModelSaver->saveAll($productModels);
-        }
-
-        if (!empty($products)) {
-            $this->validateProducts($products);
-            $this->productSaver->saveAll($products);
-        }
-    }
-
-    /**
-     * @param ProductModelInterface[] $productModels
-     *
-     * @throws \LogicException
-     */
-    private function validateProductModels(array $productModels): void
-    {
-        foreach ($productModels as $productModel) {
-            $violations = $this->validator->validate($productModel);
-
-            if ($violations->count() !== 0) {
-                throw new \LogicException(
-                    sprintf(
-                        'Validation error for ProductModel with code "%s" during family variant structure change',
-                        $productModel->getCode()
-                    )
-                );
+        // Sort products models and products
+        $productModelsIds = [];
+        $productsIds      = [];
+        foreach ($entities as $entity) {
+            if ($entity instanceof ProductModelInterface) {
+                $productModelsIds[] = $entity->getId();
+            } else {
+                $productsIds[] = $entity->getId();
             }
         }
+
+        $this->processByType(self::TYPE_PRODUCT_MODEL, $productModelsIds);
+        $this->processByType(self::TYPE_PRODUCT, $productsIds);
     }
 
     /**
-     * @param ProductInterface[] $products
+     * @param string $type
+     * @param array $productsIds
      *
-     * @throws \LogicException
+     * @return void
      */
-    private function validateProducts(array $products): void
+    private function processByType($type, $productsIds)
     {
-        foreach ($products as $product) {
-            $violations = $this->validator->validate($product);
-
-            if ($violations->count() !== 0) {
-                throw new \LogicException(
-                    sprintf(
-                        'Validation error for Product with identifier "%s" during family variant structure change',
-                        $product->getIdentifier()
-                    )
-                );
-            }
+        $pathFinder = new PhpExecutableFinder();
+        foreach (array_chunk($productsIds, self::BATCH_SIZE) as $productsIdsChunk) {
+            $command = sprintf(
+                '%s %s/../bin/console pim:catalog:compute-family-variant-changes -t \'%s\' %s',
+                $pathFinder->find(),
+                $this->kernel->getRootDir(),
+                $type,
+                implode(self::COMMAND_SEPARATOR, $productsIdsChunk)
+            );
+            $process = new Process($command);
+            $process->mustRun();
         }
-    }
-
-    /**
-     * Returns only product models from the given array.
-     *
-     * @param array $entities
-     *
-     * @return ProductModelInterface[]
-     */
-    private function filterProductModels(array $entities): array
-    {
-        return array_values(
-            array_filter($entities, function ($item) {
-                return $item instanceof ProductModelInterface;
-            })
-        );
-    }
-
-    /**
-     * Returns only products from the given array.
-     *
-     * @param array $entities
-     *
-     * @return ProductInterface[]
-     */
-    private function filterProducts(array $entities): array
-    {
-        return array_values(
-            array_filter($entities, function ($item) {
-                return $item instanceof ProductInterface;
-            })
-        );
     }
 }
