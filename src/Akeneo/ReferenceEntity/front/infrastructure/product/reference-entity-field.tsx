@@ -37,7 +37,7 @@ class ReferenceEntityField extends (Field as {new (config: any): any}) {
         locale={LocaleReference.create(UserContext.get('catalogLocale'))}
         channel={ChannelReference.create(UserContext.get('catalogScope'))}
         multiple={false}
-        readonly={'view' === templateContext.editMode}
+        readOnly={'view' === templateContext.editMode}
         placeholder={__('pim_reference_entity.record.selector.no_value')}
         onChange={(recordCode: RecordCode) => {
           this.errors = [];
