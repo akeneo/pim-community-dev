@@ -15,13 +15,13 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AuthenticationProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Authentication\AuthenticationWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\AuthenticationProvider;
 use PhpSpec\ObjectBehavior;
 
 class AuthenticationProviderSpec extends ObjectBehavior
 {
-    public function let(AuthenticationApiInterface $api): void
+    public function let(AuthenticationWebService $api): void
     {
         $this->beConstructedWith($api);
     }
