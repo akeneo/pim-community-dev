@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7898: Fix tab navigation when the column is collapsed
+
 # 2.3.21 (2018-12-07)
 
 ## Bug fixes
