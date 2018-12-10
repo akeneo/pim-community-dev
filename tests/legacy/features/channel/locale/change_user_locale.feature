@@ -31,3 +31,5 @@ Feature: Change user locale
     And I visit the "Interfaces" tab
     Then I should see English (United States) locale option
     And I should not see Breton (France) locale option
+
+#  legacy/features/channel/locale/change_user_locale.feature,tests/legacy/features/channel/locale/change_system_locale.feature

@@ -2390,7 +2390,6 @@ class WebUser extends PimContext
     {
         $this->spin(function () use ($language) {
             $this->getCurrentPage()->selectFieldOption('system-locale', $language);
-
             return true;
         }, 'System locale field was not found');
     }
