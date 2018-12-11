@@ -7,6 +7,7 @@ jobs:
         COMPOSER_MEMORY_LIMIT: 5G
       user: docker
     steps:
+    - checkout
     - run:
         name: Install Docker Compose
         command: |
@@ -22,7 +23,6 @@ jobs:
           ./bin/docker/pim-dependencies.sh
           ./bin/docker/pim-initialize.sh
           docker-compose exec fpm bin/console
-    - checkout
     - run:
         name: Composer
         command: composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
