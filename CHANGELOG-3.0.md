@@ -1245,3 +1245,4 @@
 - Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter`, add argument `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface`
 - Change constructor of `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface\FamilySaver`, remove second argument `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator` to add an array of string (extension to mime type mapping) 
+- Add `pim_configuration` table. Don't forget to run the `doctrine:migrations:migrate` command.
