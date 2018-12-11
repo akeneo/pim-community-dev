@@ -195,7 +195,7 @@ pim_reference_entity:
         code: Code (required)
         label: Label
         type: Attribute type
-        record_type: Related reference entity
+        record_type: Related reference entity (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
         is_required: Required for completeness
@@ -261,5 +261,5 @@ pim_enrich:
         section:
           type_specific: Type specific parameters
         reference_entity:
-          identifier: Related reference entity
+          identifier: Related reference entity (required)
           default_label: Please select a reference entity

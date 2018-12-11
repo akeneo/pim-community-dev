@@ -34,6 +34,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         - Akeneo\Pim\Enrichment\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfigured:
             groups:
                 - akeneo_reference_entity_collection
+                - akeneo_reference_entity
 
 # Records
 Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:

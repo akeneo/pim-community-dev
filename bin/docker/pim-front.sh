@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker-compose exec fpm rm -rf var/cache/*
+docker-compose exec fpm rm -rf var/cache/* web/bundles web/dist
 
 docker-compose exec fpm bin/console --env=prod pim:installer:assets --symlink --clean
 
