@@ -42,6 +42,7 @@ jobs:
     - store_test_results:
         path: ~/test/results
 
+
   test_static_front:
     docker:
     - image: akeneo/fpm:php-7.2
