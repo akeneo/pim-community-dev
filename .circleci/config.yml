@@ -2,7 +2,9 @@ version: 2
 jobs:
   test_back:
     docker:
-    - image: circleci/php:7.2-fpm
+    - image: akeneo/fpm:php-7.2
+      environment:
+        COMPOSER_MEMORY_LIMIT: 5G
       user: docker
     steps:
     - checkout
