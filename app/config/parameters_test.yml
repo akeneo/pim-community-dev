@@ -1,0 +1,14 @@
+parameters:
+    database_driver:                       pdo_mysql
+    database_host:                         mysql-behat
+    database_port:                         ~
+    database_name:                         ce_30_behat
+    database_user:                         akeneo_pim
+    database_password:                     akeneo_pim
+    locale:                                en
+    secret:                                ThisTokenIsNotSoSecretChangeIt
+    installer_data:                        PimInstallerBundle:minimal
+    product_index_name:                    akeneo_pim_product_ce_30_behat
+    product_model_index_name:              akeneo_pim_product_model_ce_30_behat
+    product_and_product_model_index_name:  akeneo_pim_product_and_product_model_ce_30_behat
+    index_hosts:                          'elastic:changeme@elasticsearch:9200'
