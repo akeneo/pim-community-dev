@@ -1602,7 +1602,7 @@ class WebUser extends RawMinkContext
             $loading = $this->getCurrentPage()->find('css', '#loading-wrapper');
 
             return null === $loading || !$loading->isVisible();
-        }, 'Could press the dropdown buttons because of loading wrapper');
+        }, 'Could not press the dropdown buttons because of loading wrapper');
 
         $this
             ->getCurrentPage()
