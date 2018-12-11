@@ -117,7 +117,7 @@ workflows:
   version: 2
   workflow:
     jobs:
-#    - test_static_back
-      - test_static_front
+      - test_static_back
+#      - test_static_front
 #          requires:
 #            - test_static_back
