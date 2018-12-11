@@ -1,21 +1,36 @@
 version: 2
 jobs:
   test_back:
-    docker:
-    - image: akeneo/fpm:php-7.2
-      environment:
-        COMPOSER_MEMORY_LIMIT: 5G
-      user: docker
-    - image: mysql:5.7
-      environment:
-        MYSQL_ROOT_PASSWORD: 'root'
-        MYSQL_USER: 'akeneo_pim'
-        MYSQL_PASSWORD: 'akeneo_pim'
-        MYSQL_DATABASE: 'akeneo_pim'
-    - image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
-      environment:
-        ES_JAVA_OPTS: '-Xms512m -Xmx512m'
-        discovery.type: 'single-node'
+    - run:
+        name: Install Docker Compose
+        command: |
+          curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+          chmod +x ~/docker-compose
+          sudo mv ~/docker-compose /usr/local/bin/docker-compose
+    - setup_remote_docker
+    - run:
+        name: Start containers
+        command: |
+          set -x
+          docker-compose up -d
+          ./bin/docker/pim-dependencies.sh
+          ./bin/docker/pim-initialize.sh
+          docker-compose exec fpm bin/console
+#    docker:
+#    - image: akeneo/fpm:php-7.2
+#      environment:
+#        COMPOSER_MEMORY_LIMIT: 5G
+#      user: docker
+#    - image: mysql:5.7
+#      environment:
+#        MYSQL_ROOT_PASSWORD: 'root'
+#        MYSQL_USER: 'akeneo_pim'
+#        MYSQL_PASSWORD: 'akeneo_pim'
+#        MYSQL_DATABASE: 'akeneo_pim'
+#    - image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+#      environment:
+#        ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+#        discovery.type: 'single-node'
     steps:
     - checkout
     - run:
