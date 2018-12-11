@@ -48,7 +48,7 @@ class FilterExtension extends Twig_Extension
         $label = $configuration->offsetGetByPath(sprintf('[filters][columns][%s][label]', $code));
 
         if (null === $label) {
-            throw new \LogicException(sprintf('Attribute "%s" does not exists', $code));
+            return null;
         }
 
         $label = $this->container->get('translator')->trans($label);

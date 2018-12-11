@@ -16,6 +16,9 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FileValidator extends ConstraintValidator
 {
+    /** @var array */
+    private $extensionToMimeTypeMapping;
+
     protected static $suffices = [
         1                            => 'bytes',
         BaseFileValidator::KB_BYTES  => 'kB',
@@ -25,6 +28,14 @@ class FileValidator extends ConstraintValidator
     ];
 
     /**
+     * @param array $extensionToMimeTypeMapping
+     */
+    public function __construct(array $extensionToMimeTypeMapping)
+    {
+        $this->extensionToMimeTypeMapping = $extensionToMimeTypeMapping;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint)
@@ -32,6 +43,7 @@ class FileValidator extends ConstraintValidator
         if ($value instanceof FileInfoInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
             $this->validateFileSize($value, $constraint);
             $this->validateFileExtension($value, $constraint);
+            $this->validateMimeType($value, $constraint);
         }
     }
 
@@ -43,17 +55,15 @@ class FileValidator extends ConstraintValidator
      */
     protected function validateFileExtension(FileInfoInterface $fileInfo, Constraint $constraint)
     {
-        if (!empty($constraint->allowedExtensions)) {
-            $extension = null !== $fileInfo->getUploadedFile() ?
-                $fileInfo->getUploadedFile()->getClientOriginalExtension() :
-                $fileInfo->getExtension();
+        if (empty($constraint->allowedExtensions)) {
+            return;
+        }
 
-            if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
-                $this->context->buildViolation(
-                    $constraint->extensionsMessage,
-                    ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
-                )->addViolation();
-            }
+        if (!in_array($this->getExtension($fileInfo), $constraint->allowedExtensions)) {
+            $this->context->buildViolation(
+                $constraint->extensionsMessage,
+                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+            )->addViolation();
         }
     }
 
@@ -132,5 +142,49 @@ class FileValidator extends ConstraintValidator
     protected static function moreDecimalsThan($double, $numberOfDecimals)
     {
         return strlen((string)$double) > strlen(round($double, $numberOfDecimals));
+    }
+
+    /**
+     * @param FileInfoInterface $fileInfo
+     * @param Constraint $constraint
+     */
+    private function validateMimeType(FileInfoInterface $fileInfo, Constraint $constraint)
+    {
+        if (empty($constraint->allowedExtensions)) {
+            return;
+        }
+
+        if (!array_key_exists($this->getExtension($fileInfo), $this->extensionToMimeTypeMapping)) {
+            return;
+        }
+
+        $mappedMimeTypes = $this->extensionToMimeTypeMapping[$this->getExtension($fileInfo)];
+
+        $mimeType = null !== $fileInfo->getUploadedFile() ?
+            $fileInfo->getUploadedFile()->getMimeType() :
+            $fileInfo->getMimeType();
+
+        if (null !== $mimeType && !in_array($mimeType, $mappedMimeTypes)) {
+            $this->context->buildViolation(
+                $constraint->mimeTypeMessage,
+                [
+                    '%extension%' => $this->getExtension($fileInfo),
+                    '%types%' => implode(', ', $mappedMimeTypes),
+                    '%type%' => $mimeType
+                ]
+            )->addViolation();
+        }
+    }
+
+    /**
+     * @param FileInfoInterface $fileInfo
+     *
+     * @return string
+     */
+    private function getExtension(FileInfoInterface $fileInfo)
+    {
+        return null !== $fileInfo->getUploadedFile() ?
+            strtolower($fileInfo->getUploadedFile()->getClientOriginalExtension()) :
+            strtolower($fileInfo->getExtension());
     }
 }

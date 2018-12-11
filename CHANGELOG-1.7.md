@@ -1,4 +1,8 @@
-# 1.7.x
+# 1.7.35 (2018-11-26)
+
+## Bug fixes
+
+PIM-7870: Fix issue in the case of deletion of attribute used in a user default product grid filter.
 
 # 1.7.34 (2018-11-12)
 

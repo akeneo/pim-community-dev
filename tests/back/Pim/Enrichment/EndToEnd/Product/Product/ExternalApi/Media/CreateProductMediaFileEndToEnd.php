@@ -102,6 +102,41 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    public function testErrorWhenMimeTypeIsForbidden()
+    {
+        $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
+        $this->assertCount(0, $this->fileRepository->findAll());
+
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'malicious_file.jpg';
+        copy($this->getFixturePath('malicious_file.jpg'), $path);
+        $file = new UploadedFile($path, 'malicious_file.jpg');
+        $content = [
+            'product' => '{"identifier":"foo", "attribute":"an_image", "locale":null, "scope":null}',
+        ];
+
+        $client->request('POST', '/api/rest/v1/media-files', $content, ['file' => $file]);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertCount(0, $this->fileRepository->findAll());
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "property": "values",
+            "message": "The MIME type is not allowed for jpg (allowed types: image/jpeg, found text/plain).",
+            "attribute": "an_image",
+            "locale": null,
+            "scope": null
+        }
+    ]
+}
+JSON;
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+    }
+
     public function testErrorWhenProductDoesNotExist()
     {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);

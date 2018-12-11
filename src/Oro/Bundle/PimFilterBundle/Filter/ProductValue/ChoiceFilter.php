@@ -128,7 +128,7 @@ class ChoiceFilter extends AjaxChoiceFilter
      * @param $optionCodes
      * @return array
      */
-    protected function filterOnlyExistingOptions($optionCodes)
+    private function filterOnlyExistingOptions($optionCodes)
     {
         $attribute = $this->getAttribute();
         $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers(

@@ -278,7 +278,7 @@ define(
              * @returns {string}
              */
             getEntityLabel(entity, locale) {
-                if (0 === entity.labels.length) {
+                if (0 === entity.labels.length || entity.labels[locale] === undefined) {
                     return '[' + entity.code + ']';
                 }
 
