@@ -1,5 +1,9 @@
 # 2.3.x
- 
+
+## Enhancements
+
+- #9023: `Nesting level too deep – recursive dependency?` for some custom reference_data attributes
+
 # 2.3.21 (2018-12-07)
 
 ## Bug fixes
