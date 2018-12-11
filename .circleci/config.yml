@@ -36,6 +36,10 @@ jobs:
         name: PHPunit
         command: |
           docker-compose exec fpm ./vendor/bin/phpunit -c app tests/back/Integration/integration/BatchBundle/Command/BatchCommandIntegration.php
+    - run:
+        name: Behat
+        command: |
+          docker-compose exec fpm ./vendor/bin/behat tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
     - store_test_results:
         path: ~/test/results
 
