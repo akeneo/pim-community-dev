@@ -4,8 +4,7 @@ jobs:
 #    docker:
 #    - image: circleci/php:7.2-fpm
 #      user: docker
-    machine:
-        enabled: true
+    machine: true
     steps:
     - checkout
     - setup_remote_docker:
