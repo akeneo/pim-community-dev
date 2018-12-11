@@ -41,7 +41,7 @@ class ReferenceEntityField extends (Field as {new (config: any): any}) {
         placeholder={__('pim_reference_entity.record.selector.no_value')}
         onChange={(recordCode: RecordCode) => {
           this.errors = [];
-          this.setCurrentValue('' === recordCode.stringValue() ? null : recordCode.stringValue());
+          this.setCurrentValue((null !== recordCode && '' !== recordCode.stringValue()) ? recordCode.stringValue() : null);
           this.render();
         }}
       />,
