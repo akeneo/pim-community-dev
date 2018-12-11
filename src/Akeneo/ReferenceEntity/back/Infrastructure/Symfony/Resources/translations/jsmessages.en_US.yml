@@ -105,6 +105,7 @@ pim_reference_entity:
       input:
         label: Label
         code: Code (required)
+        create_another: Create another
       confirm: Save
     delete:
       message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products or records, the links will be removed.
