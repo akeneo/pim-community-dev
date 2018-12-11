@@ -79,7 +79,9 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $displayedColumnsOnly = (bool) $this->request->get('_displayedColumnsOnly');
+        // If the parameter _displayedColumnOnly is set, it means it's a grid context. We didn't change the name of the
+        // parameter to avoid BC.
+        $withGridContext = (bool) $this->request->get('_displayedColumnsOnly');
         $jobCode = $this->request->get('_jobCode');
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
@@ -93,7 +95,9 @@ class ProductExportController
         $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
         $dynamicConfiguration = $contextParameters + ['filters' => $filters];
 
-        if ($displayedColumnsOnly) {
+        if ($withGridContext) {
+            $dynamicConfiguration['selected_locales'] = [$this->request->get('dataLocale')];
+
             $gridName = (null !== $this->request->get('gridName')) ? $this->request->get('gridName') : 'product-grid';
             if (isset($this->request->get($gridName)['_parameters'])) {
                 $columns = explode(',', $this->request->get($gridName)['_parameters']['view']['columns']);

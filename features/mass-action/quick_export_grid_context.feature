@@ -39,6 +39,39 @@ Feature: Quick export products according to the product grid context
     pump;blue;Pump;;;15;20;41;;;
     """
 
+  @jira https://akeneo.atlassian.net/browse/PIM-7911
+  Scenario: Successfully quick export only current working locale from grid context as a CSV file
+    Given I add the "french" locale to the "tablet" channel
+    And I add the "french" locale to the "mobile" channel
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information in the popin:
+      | SKU             | blue-suede-shoes |
+      | Choose a family | Sneakers         |
+    And I press the "Save" button in the popin
+    And I wait to be on the "blue-suede-shoes" product page
+    And I fill in the following information:
+      | Description | Blue suede shoes |
+    And I switch the locale to "fr_FR"
+    And I fill in the following information:
+      | [description] | Chaussures en suedine bleues |
+    And I press the "Save" button
+    And I should not see the text "There are unsaved changes."
+    And I am on the products page
+    And I switch the locale to "fr_FR"
+    And I display the columns [sku], [description]
+    And I select row blue-suede-shoes
+    And I press "CSV (Grid context)" on the "Quick Export" dropdown button
+    And I wait for the "csv_product_grid_context_quick_export" quick export to finish
+    When I go on the last executed job resume of "csv_product_grid_context_quick_export"
+    Then I should see "COMPLETED"
+    And the name of the exported file of "csv_product_grid_context_quick_export" should be "products_export_grid_context_fr_FR_tablet.csv"
+    And exported file of "csv_product_grid_context_quick_export" should contain:
+    """
+    sku;description-fr_FR-tablet
+    blue-suede-shoes;"Chaussures en suedine bleues"
+    """
+
   Scenario: Successfully quick export products from grid context as a XSLX file
     Given I am on the products page
     And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight

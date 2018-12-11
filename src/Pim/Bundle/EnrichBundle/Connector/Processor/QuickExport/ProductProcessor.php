@@ -188,7 +188,9 @@ class ProductProcessor extends AbstractProcessor
 
         $normalizerContext = [
             'channels'     => [$parameters->get('scope')],
-            'locales'      => $this->getLocaleCodes($parameters->get('scope')),
+            'locales'      => $parameters->has('selected_locales') ?
+                $parameters->get('selected_locales') :
+                $this->getLocaleCodes($parameters->get('scope')),
             'filter_types' => [
                 'pim.transform.product_value.structured',
                 'pim.transform.product_value.structured.quick_export'
