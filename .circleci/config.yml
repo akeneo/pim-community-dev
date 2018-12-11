@@ -32,6 +32,7 @@ jobs:
     - run:
         name: PHPunit
         command: |
+          ./vendor/bin/phpunit -c app tests/back/Integration/integration/BatchBundle/Command/BatchCommandIntegration.php
     - store_test_results:
         path: ~/test/results
 
