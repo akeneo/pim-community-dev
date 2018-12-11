@@ -28,16 +28,14 @@ jobs:
           set -x
           docker-compose up -d
           ./bin/docker/pim-dependencies.sh
-          ./bin/docker/pim-initialize.sh
-          docker-compose exec fpm bin/console
-    - run:
-        name: Setup tests results folder
-        command: |
+          docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+          docker-compose run --rm node yarn run webpack-dev
+          docker-compose run --rm node yarn run webpack-test
           mkdir -p var/logs
     - run:
         name: PHPunit
         command: |
-          ./vendor/bin/phpunit -c app tests/back/Integration/integration/BatchBundle/Command/BatchCommandIntegration.php
+          docker-compose exec fpm ./vendor/bin/phpunit -c app tests/back/Integration/integration/BatchBundle/Command/BatchCommandIntegration.php
     - store_test_results:
         path: ~/test/results
 
