@@ -124,7 +124,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'sort_order'             => 1,
                 'localizable'            => true,
                 'required'               => false,
-                'options'                => 'Code:size,en_US:big,fr_FR:grand',
+                'options'                => 'Code:size',
                 'scope'                  => 'Channel',
             ]
         );

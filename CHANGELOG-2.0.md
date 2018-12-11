@@ -5,6 +5,7 @@
 - GITHUB-7932: Fix the requirements with mysql port - cheers @Schwierig !
 - PIM-7886: Fix translations of boolean attributes
 - PIM-7902: Fix unnecessary calls for unread messages count on page navigation
+- PIM-7767: Fix "The EntityManager is closed" error that occured when importing a huge attribute option file (_backport of PIM-7767_)
 
 # 2.0.44 (2018-11-29)
 

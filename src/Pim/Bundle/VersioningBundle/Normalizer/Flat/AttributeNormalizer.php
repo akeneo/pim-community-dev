@@ -94,13 +94,7 @@ class AttributeNormalizer implements NormalizerInterface
         } else {
             $data = [];
             foreach ($options as $option) {
-                $item = [];
-                foreach ($option->getOptionValues() as $value) {
-                    $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
-                    $label = str_replace('{value}', $value->getValue(), $label);
-                    $item[] = $label;
-                }
-                $data[] = 'Code:' . $option->getCode() . self::ITEM_SEPARATOR . implode(self::ITEM_SEPARATOR, $item);
+                $data[] = 'Code:' . $option->getCode();
             }
             $options = implode(self::GROUP_SEPARATOR, $data);
         }
