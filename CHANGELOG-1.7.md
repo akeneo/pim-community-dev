@@ -1,5 +1,7 @@
 # 1.7.x
 
+# 1.7.36 (2018-12-11)
+
 ## Bug fixes
 
 - PIM-7841: Allow users to set regional locales for UI (en_NZ, pt_PT and pt_BR)
