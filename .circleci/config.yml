@@ -1,9 +1,11 @@
 version: 2
 jobs:
   test_back:
-    docker:
-    - image: circleci/php:7.2-fpm
-      user: docker
+#    docker:
+#    - image: circleci/php:7.2-fpm
+#      user: docker
+    machine:
+      enabled: true
     steps:
     - checkout
     - setup_remote_docker:
