@@ -65,6 +65,7 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.data_provider.attributes_mapping'
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_and_missing_mapping_query'
 
     akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\SaveAttributeOptionsMappingHandler'

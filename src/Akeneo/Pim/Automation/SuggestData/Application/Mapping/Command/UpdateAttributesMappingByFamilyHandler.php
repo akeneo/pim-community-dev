@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataAndMissingMappingQueryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -33,19 +34,25 @@ class UpdateAttributesMappingByFamilyHandler
     /** @var AttributesMappingProviderInterface */
     private $attributesMappingProvider;
 
+    /** @var EmptySuggestedDataAndMissingMappingQueryInterface */
+    private $emptySuggestedDataAndMissingMappingQuery;
+
     /**
      * @param FamilyRepositoryInterface $familyRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributesMappingProviderInterface $attributesMappingProvider
+     * @param EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        AttributesMappingProviderInterface $attributesMappingProvider
+        AttributesMappingProviderInterface $attributesMappingProvider,
+        EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
     ) {
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->attributesMappingProvider = $attributesMappingProvider;
+        $this->emptySuggestedDataAndMissingMappingQuery = $emptySuggestedDataAndMissingMappingQuery;
     }
 
     /**
@@ -59,6 +66,7 @@ class UpdateAttributesMappingByFamilyHandler
             $command->getFamilyCode(),
             $command->getAttributesMapping()
         );
+        $this->emptySuggestedDataAndMissingMappingQuery->execute($command->getFamilyCode());
     }
 
     /**
