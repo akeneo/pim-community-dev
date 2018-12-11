@@ -30,44 +30,46 @@
         "status": 200,
         "body": {
             "items": [
-              {
-                  "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
-                  "reference_entity_identifier": "designer",
-                  "code": "dyson",
-                  "labels": {
-                      "en_US": "Dyson",
-                      "fr_FR": "Dyson"
-                  },
-                  "image": null,
-                  "values": {},
-                  "completeness": {
-                      "complete": 0,
-                      "required": 1
-                  }
-              },
-              {
-                  "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
-                  "reference_entity_identifier": "designer",
-                  "code": "starck",
-                  "labels": {
-                      "en_US": "Starck"
-                  },
-                  "image": null,
-                  "values": {
-                      "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
-                          "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
-                          "channel": "ecommerce",
-                          "locale": "en_US",
-                          "data": "an awesome designer!"
-                      }
-                  },
-                  "completeness": {
-                      "complete": 1,
-                      "required": 1
-                  }
-              }
+                {
+                    "identifier": "designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd",
+                    "reference_entity_identifier": "designer",
+                    "code": "dyson",
+                    "labels": {
+                        "en_US": "Dyson",
+                        "fr_FR": "Dyson"
+                    },
+                    "image": null,
+                    "values": {},
+                    "completeness": {
+                        "complete": 0,
+                        "required": 2
+                    }
+                },
+                {
+                    "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
+                    "reference_entity_identifier": "designer",
+                    "code": "starck",
+                    "labels": {
+                        "en_US": "Starck"
+                    },
+                    "image": null,
+                    "values": {
+                        "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
+                            "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+                            "channel": "ecommerce",
+                            "locale": "en_US",
+                            "data": "an awesome designer!"
+                        }
+                    },
+                    "completeness": {
+                        "complete": 1,
+                        "required": 2
+                    }
+                }
             ],
             "total": 2
         }
     }
 }
+
+

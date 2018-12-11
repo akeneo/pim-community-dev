@@ -37,11 +37,12 @@
         "body": {
             "items": [
                 {
-                    "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
+                    "identifier": "brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd",
                     "reference_entity_identifier": "designer",
-                    "code": "starck",
+                    "code": "coco",
                     "labels": {
-                        "en_US": "Starck"
+                        "en_US": "Coco Chanel",
+                        "fr_FR": "Coco Chanel"
                     },
                     "image": null,
                     "values": {
@@ -49,12 +50,18 @@
                             "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
                             "channel": "ecommerce",
                             "locale": "en_US",
-                            "data": "an awesome designer!"
+                            "data": "You will love coco."
+                        },
+                        "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2": {
+                            "attribute": "nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+                            "channel": null,
+                            "locale": null,
+                            "data": "Mr coco"
                         }
                     },
                     "completeness": {
-                        "complete": 1,
-                        "required": 1
+                        "complete": 2,
+                        "required": 2
                     }
                 }
             ],

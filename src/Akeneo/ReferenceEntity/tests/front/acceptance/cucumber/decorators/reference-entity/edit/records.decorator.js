@@ -28,6 +28,14 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return await labelProperty.jsonValue();
   };
 
+  const getRecordCompleteness = async identifier => {
+    await page.waitFor(`tr[data-identifier="${identifier}"] .AknBadge`);
+    const span = await nodeElement.$(`tr[data-identifier="${identifier}"] .AknBadge`);
+    const completeness = await span.getProperty('textContent');
+
+    return Number.parseInt((await completeness.jsonValue()).replace('%', ''));
+  };
+
   const hasSuccessNotification = async () => {
     await page.waitForSelector('.AknFlash--success');
 
@@ -65,10 +73,11 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     isLoaded,
     isEmpty,
     getRecordLabel,
+    getRecordCompleteness,
     hasSuccessNotification,
     hasErrorNotification,
     search,
-    completeFilter
+    completeFilter,
   };
 };
 

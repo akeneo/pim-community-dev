@@ -49,7 +49,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           values: {},
           completeness: {
             complete: 0,
-            required: 1,
+            required: 2,
           },
         },
         {
@@ -68,7 +68,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
           },
           completeness: {
             complete: 1,
-            required: 1,
+            required: 2,
           },
         },
       ],

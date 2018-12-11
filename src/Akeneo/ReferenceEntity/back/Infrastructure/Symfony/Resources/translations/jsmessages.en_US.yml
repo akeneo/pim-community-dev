@@ -123,10 +123,16 @@ pim_reference_entity:
         code: Code
         image: Image
         label: Label
+        complete: Complete
         action: Actions
       more_result:
         title: That's not it!
         description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
+      completeness:
+        title_no_required: No attribute required
+        title_non_complete: 0 out of {{ required }} attributes complete
+        title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+        title_complete: All {{ required }} attributes complete
     tab:
       enrich: Enrich
     notification:

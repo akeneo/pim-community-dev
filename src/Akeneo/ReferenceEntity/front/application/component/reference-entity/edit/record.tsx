@@ -71,6 +71,7 @@ interface DispatchProps {
     onCompletenessFilterUpdated: (completenessValue: CompletenessValue) => void;
     onDeleteAllRecords: (referenceEntity: ReferenceEntity) => void;
     onRecordCreationStart: () => void;
+    onFirstLoad: () => void;
     onOpenDeleteAllRecordsModal: () => void;
     onOpenDeleteRecordModal: (recordCode: RecordCode, label: string) => void;
     onCancelDeleteModal: () => void;
@@ -99,6 +100,10 @@ const SecondaryAction = ({onOpenDeleteAllRecordsModal}: {onOpenDeleteAllRecordsM
 
 class Records extends React.Component<StateProps & DispatchProps, {cellViews: CellViews}> {
   state = {cellViews: {}};
+
+  componentDidMount() {
+    this.props.events.onFirstLoad();
+  }
 
   static getDerivedStateFromProps(props: StateProps & DispatchProps, {cellViews}: {cellViews: CellViews}) {
     if (0 === Object.keys(cellViews).length && 0 !== props.grid.columns.length) {
@@ -288,6 +293,9 @@ export default connect(
         },
         onChannelChanged: (channel: Channel) => {
           dispatch(catalogChannelChanged(channel.code));
+          dispatch(updateRecordResults(false));
+        },
+        onFirstLoad: () => {
           dispatch(updateRecordResults(false));
         },
       },

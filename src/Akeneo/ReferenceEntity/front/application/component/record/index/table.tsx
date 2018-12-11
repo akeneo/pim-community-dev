@@ -14,7 +14,9 @@ import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
-import CompletenessFilter, {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
+import CompletenessFilter, {
+  CompletenessValue,
+} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 interface TableState {
   locale: string;
@@ -194,6 +196,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                     <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.image')}</th>
                     <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.label')}</th>
                     <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.code')}</th>
+                    <th className="AknGrid-headerCell">{__('pim_reference_entity.record.grid.column.complete')}</th>
                   </tr>
                 </thead>
                 <tbody className="AknGrid-body">

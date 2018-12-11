@@ -21,7 +21,7 @@ export type RecordSelectorProps = {
   channel: ChannelReference;
   placeholder: string;
   onChange: (value: RecordCode[] | RecordCode | null) => void;
-}
+};
 
 type Select2Item = {id: string; text: string; original: NormalizedRecord};
 
@@ -207,6 +207,14 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
   render(): JSX.Element | JSX.Element[] {
     const {referenceEntityIdentifier, ...props} = this.props;
 
-    return <input className="record-selector" {...props} type="hidden" value={this.normalizeValue(this.props.value)} disabled={this.props.readOnly}/>;
+    return (
+      <input
+        className="record-selector"
+        {...props}
+        type="hidden"
+        value={this.normalizeValue(this.props.value)}
+        disabled={this.props.readOnly}
+      />
+    );
   }
 }

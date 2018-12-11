@@ -1,8 +1,11 @@
 import * as React from 'react';
-import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import {NormalizedItemRecord} from 'akeneoreferenceentity/domain/model/record/record';
 import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
+import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
+import CompletenessLabel from 'akeneoreferenceentity/application/component/app/completeness';
+
 const memo = (React as any).memo;
 
 const CommonRow = memo(
@@ -12,11 +15,11 @@ const CommonRow = memo(
     placeholder = false,
     onRedirectToRecord,
   }: {
-    record: NormalizedRecord;
+    record: NormalizedItemRecord;
     locale: string;
     placeholder?: boolean;
   } & {
-    onRedirectToRecord: (record: NormalizedRecord) => void;
+    onRedirectToRecord: (record: NormalizedItemRecord) => void;
   }) => {
     if (true === placeholder) {
       return (
@@ -24,7 +27,7 @@ const CommonRow = memo(
           <td className="AknGrid-bodyCell AknGrid-bodyCell--image">
             <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
           </td>
-          <td className="AknGrid-bodyCell" colSpan={2}>
+          <td className="AknGrid-bodyCell" colSpan={3}>
             <div className="AknGrid-bodyCellContainer AknLoadingPlaceHolder" />
           </td>
         </tr>
@@ -59,6 +62,9 @@ const CommonRow = memo(
         <td className="AknGrid-bodyCell AknGrid-bodyCell--identifier" title={record.code}>
           {record.code}
         </td>
+        <td className="AknGrid-bodyCell">
+          <CompletenessLabel completeness={Completeness.createFromNormalized(record.completeness)} expanded={false} />
+        </td>
       </tr>
     );
   }
@@ -72,10 +78,10 @@ const CommonRows = memo(
     onRedirectToRecord,
     recordCount,
   }: {
-    records: NormalizedRecord[];
+    records: NormalizedItemRecord[];
     locale: string;
     placeholder: boolean;
-    onRedirectToRecord: (record: NormalizedRecord) => void;
+    onRedirectToRecord: (record: NormalizedItemRecord) => void;
     nextItemToAddPosition: number;
     recordCount: number;
   }) => {
@@ -87,6 +93,7 @@ const CommonRows = memo(
         labels: {},
         image: null,
         values: [],
+        completeness: {},
       };
 
       const placeholderCount = recordCount < 30 ? recordCount : 30;
@@ -96,7 +103,7 @@ const CommonRows = memo(
       ));
     }
 
-    return records.map((record: NormalizedRecord) => {
+    return records.map((record: NormalizedItemRecord) => {
       return (
         <CommonRow
           placeholder={false}

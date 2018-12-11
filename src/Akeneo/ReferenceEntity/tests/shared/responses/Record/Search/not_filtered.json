@@ -39,7 +39,11 @@
                         "fr_FR": "Dyson"
                     },
                     "image": null,
-                    "values": {}
+                    "values": {},
+                    "completeness": {
+                        "complete": 0,
+                        "required": 2
+                    }
                 },
                 {
                     "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
@@ -49,7 +53,11 @@
                         "en_US": "Starck"
                     },
                     "image": null,
-                    "values": {}
+                    "values": {},
+                    "completeness": {
+                        "complete": 1,
+                        "required": 2
+                    }
                 },
                 {
                     "identifier": "designer_coco_34aee120-fa95-4ff2-8439-bea116120e34",
@@ -59,7 +67,11 @@
                         "en_US": "Coco Chanel"
                     },
                     "image": null,
-                    "values": {}
+                    "values": {},
+                    "completeness": {
+                        "complete": 2,
+                        "required": 2
+                    }
                 }
             ],
             "total": 3

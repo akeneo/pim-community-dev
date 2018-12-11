@@ -458,3 +458,22 @@ On the PIM today, the operators use a mix of algebric symbols (`<`, `=`, `!=`), 
 We think that we should still use a class to contains all the operators. But we should also normalize those operators to avoid mapping as much as possible.
 
 To sum up, the operator to check equality should be named 'EQUALS' and be used by the front and the backend.
+
+## 10/12/2018
+
+### Right management discussion
+
+Right now, the EE permissions only applies to products and product informations. So it has been implicit that those rights were products permissions for the categories, attribute groups and locales.
+With the reference entity subject we needed to add new permission controls over localizable values of records.
+
+### Propositions:
+
+So we asked our product owner what was the best solution among those two:
+- The first one was to add a new dedicated permission "Allowed to edit reference entity information". This solution will imply to split permission by object type (product, reference entity, etc).
+- The second one, consist of generalize the existing permission "Allowed to edit product information" to become "Allowed to edit information" (wording may change of course).
+
+### Solution
+
+The response from the product owner is as follow: It doesn't make sense to differenciate rights on locales for products and reference entities.
+For example, a translator that could view the English and edit the German product attributes will not need to have rights to edit English attributes and view Spanish on records.
+If the need is to restrict rights on a particular type of entity, it's more of an ACL concern or a permission by reference entity (which will also be provided).

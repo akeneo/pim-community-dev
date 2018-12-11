@@ -51,6 +51,7 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
         $referenceEntityFilter = $query->getFilter('reference_entity');
         $fullTextFilter = ($query->hasFilter('full_text')) ? $query->getFilter('full_text') : null;
         $codeFilter = ($query->hasFilter('code')) ? $query->getFilter('code') : null;
+        $codeLabelFilter = ($query->hasFilter('code_label')) ? $query->getFilter('code_label') : null;
         $completeFilter = ($query->hasFilter('complete')) ? $query->getFilter('complete') : null;
 
         $records = array_values(array_filter($this->records, function (Record $record) use ($referenceEntityFilter) {
@@ -115,6 +116,16 @@ class InMemoryFindRecordIdentifiersForQuery implements FindIdentifiersForQueryIn
             $isComplete = ($requiredValuesComplete === $requiredValues);
 
             return $completeFilter['value'] ? $isComplete : !$isComplete;
+        }));
+
+        $records = array_values(array_filter($records, function (Record $record) use ($codeLabelFilter, $query) {
+            if (null === $codeLabelFilter) {
+                return true;
+            }
+
+            $field = sprintf('%s %s', $record->getCode(), $record->getLabel($query->getLocale()));
+
+            return false !== strpos($field, $codeLabelFilter['value']);
         }));
 
         if ($query->isPaginatedUsingSearchAfter()) {
