@@ -4,6 +4,7 @@ jobs:
     machine:
         enabled: true
         docker_layer_caching: true
+        user: ubuntu
     steps:
     - checkout
     - run:
