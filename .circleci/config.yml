@@ -4,8 +4,10 @@ jobs:
     machine:
         enabled: true
         docker_layer_caching: true
-        user: ubuntu
     steps:
+    - run:
+        name: Change user to match uid for Docker
+        command: sudo su ubuntu
     - checkout
     - run:
         name: Copy env file
