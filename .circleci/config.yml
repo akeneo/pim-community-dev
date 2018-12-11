@@ -6,6 +6,16 @@ jobs:
       environment:
         COMPOSER_MEMORY_LIMIT: 5G
       user: docker
+    - image: mysql:5.7
+      environment:
+        MYSQL_ROOT_PASSWORD: 'root'
+        MYSQL_USER: 'akeneo_pim'
+        MYSQL_PASSWORD: 'akeneo_pim'
+        MYSQL_DATABASE: 'akeneo_pim'
+    - image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+      environment:
+        ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+        discovery.type: 'single-node'
     steps:
     - checkout
     - run:
