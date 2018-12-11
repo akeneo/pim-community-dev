@@ -39,7 +39,7 @@ jobs:
     - run:
         name: Behat
         command: |
-          docker-compose exec fpm ./vendor/bin/behat tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
+          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
     - store_test_results:
         path: ~/test/results
 
