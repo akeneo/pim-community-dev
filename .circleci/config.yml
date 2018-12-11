@@ -1,14 +1,15 @@
 version: 2
 jobs:
   test_back:
-    docker:
-    - image: akeneo/fpm:php-7.2
-      environment:
-        COMPOSER_MEMORY_LIMIT: 5G
-      user: docker
+    machine:
+        enabled: true
+#    - image: akeneo/fpm:php-7.2
+#      environment:
+#        COMPOSER_MEMORY_LIMIT: 5G
+#      user: docker
     steps:
     - checkout
-    - setup_remote_docker
+#    - setup_remote_docker
     - run:
         name: Install Docker client
         command: |
