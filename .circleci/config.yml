@@ -2,7 +2,7 @@ version: 2
 jobs:
   test_back:
     docker:
-    - image: akeneo/fpm:php-7.2
+    - image: circleci/php:7.2-fpm
       user: docker
     steps:
     - checkout
