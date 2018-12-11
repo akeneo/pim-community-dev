@@ -46,12 +46,12 @@ final class Controller
         $createOrUpdateConfig = new CreateOrUpdateConfiguration(
             self::CONFIGURATION_CODE,
             $data['enabled'] ?? false,
-            $data['identityProviderEntityId'] ?? '',
-            $data['identityProviderUrl'] ?? '',
-            $data['identityProviderPublicCertificate'] ?? '',
-            $data['serviceProviderEntityId'] ?? '',
-            $data['serviceProviderPublicCertificate'] ?? '',
-            $data['serviceProviderPrivateCertificate'] ?? ''
+            $data['identity_provider_entity_id'] ?? '',
+            $data['identity_provider_url'] ?? '',
+            $data['identity_provider_public_certificate'] ?? '',
+            $data['service_provider_entity_id'] ?? '',
+            $data['service_provider_public_certificate'] ?? '',
+            $data['service_provider_private_certificate'] ?? ''
         );
 
         $errors = $this->validator->validate($createOrUpdateConfig);
