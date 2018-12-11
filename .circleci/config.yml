@@ -16,6 +16,9 @@ jobs:
           sudo mv ~/docker-compose /usr/local/bin/docker-compose
     - setup_remote_docker
     - run:
+        name: Copy env file
+        command: cp .env.dist .env
+    - run:
         name: Start containers
         command: |
           set -x
