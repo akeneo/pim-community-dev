@@ -36,9 +36,9 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const getCompletenessValue = async () => {
     return await page.evaluate(edit => {
-      return edit.querySelector('.completeness-badge span').innerText;
+      return edit.querySelector('.AknBadge--big').innerText;
     }, nodeElement);
-  }
+  };
 
   const getEnrich = async () => {
     const sidebar = await await getElement(page, 'Sidebar');

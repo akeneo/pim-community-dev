@@ -29,6 +29,7 @@ import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/applicat
 import Key from 'akeneoreferenceentity/tools/key';
 import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import CompletenessLabel from '../app/completeness';
 
 interface StateProps {
   sidebar: {
@@ -211,18 +212,9 @@ class RecordEditView extends React.Component<EditProps> {
                         </div>
                       </div>
                     </div>
-                    {0 !== completeness.getRequiredAttributeCount() ? (
+                    {completeness.hasRequiredAttribute() ? (
                       <div>
-                        <div
-                          className={`AknBadge AknBadge--big completeness-badge ${
-                            completeness.getRequiredAttributeCount() === completeness.getCompleteAttributeCount()
-                              ? 'AknBadge--success '
-                              : 'AknBadge--warning'
-                          }`}
-                        >
-                          {__('pim_reference_entity.record.completeness.label')}:{' '}
-                          <span>{completeness.getRatio()}%</span>
-                        </div>
+                        <CompletenessLabel completeness={completeness} />
                       </div>
                     ) : null}
                   </div>

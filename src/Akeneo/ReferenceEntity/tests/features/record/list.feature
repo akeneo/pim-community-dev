@@ -74,7 +74,7 @@ Feature: Lists all records of a reference entity
 
   @acceptance-front
   Scenario: Display completeness of records on the grid
-    Given the user asks for a list of records containing with different completeness
+    Given the user asks for a list of records having different completenesses
     Then the user should see that "starck" is complete at 50%
     And the user should see that "dyson" is complete at 0%
     And the user should see that "coco" is complete at 100%

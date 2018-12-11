@@ -114,24 +114,24 @@ describe('akeneo > record > domain > model --- completeness', () => {
     const completeness = Completeness.createFromValues(
       valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr)
     );
-    expect(completeness.hasNoRequiredAttribute()).toBe(false);
+    expect(!completeness.hasRequiredAttribute()).toBe(false);
 
     const completenessWithNoRequired = Completeness.createFromValues(
       valueCollectionWithNoRequired.getValuesForChannelAndLocale(channelEcommerce, localeFr)
     );
-    expect(completenessWithNoRequired.hasNoRequiredAttribute()).toBe(true);
+    expect(!completenessWithNoRequired.hasRequiredAttribute()).toBe(true);
   });
 
   test('I can know if there is no complete attribute', () => {
     const completeness = Completeness.createFromValues(
       valueCollection.getValuesForChannelAndLocale(channelEcommerce, localeFr)
     );
-    expect(completeness.hasNoCompleteAttribute()).toBe(false);
+    expect(completeness.hasCompleteAttribute()).toBe(true);
 
     const completenessWithNoComplete = Completeness.createFromValues(
       valueCollectionIncomplete.getValuesForChannelAndLocale(channelEcommerce, localeFr)
     );
-    expect(completenessWithNoComplete.hasNoCompleteAttribute()).toBe(true);
+    expect(completenessWithNoComplete.hasCompleteAttribute()).toBe(false);
   });
 
   test('I can know if the completeness is complete', () => {

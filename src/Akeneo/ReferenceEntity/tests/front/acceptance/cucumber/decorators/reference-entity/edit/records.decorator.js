@@ -33,7 +33,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     const span = await nodeElement.$(`tr[data-identifier="${identifier}"] .AknBadge`);
     const completeness = await span.getProperty('textContent');
 
-    return await completeness.jsonValue();
+    return Number.parseInt((await completeness.jsonValue()).replace('%', ''));
   };
 
   const hasSuccessNotification = async () => {
@@ -77,7 +77,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     hasSuccessNotification,
     hasErrorNotification,
     search,
-    completeFilter
+    completeFilter,
   };
 };
 

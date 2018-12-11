@@ -20,14 +20,14 @@ const DefaultButtonView = ({
   placeholder?: string;
 }) => {
   const hasPlaceholder = allowEmpty && placeholder && selectedElement.identifier === null;
-  const highlight = (hasPlaceholder) ? placeholder : selectedElement.label;
-  
+  const highlight = hasPlaceholder ? placeholder : selectedElement.label;
+
   return (
     <React.Fragment>
       <div
         className="AknButton"
         tabIndex={0}
-        data-selected={(hasPlaceholder) ? '' : selectedElement.identifier}
+        data-selected={hasPlaceholder ? '' : selectedElement.identifier}
         onClick={() => onClick()}
         onKeyPress={event => {
           if (Key.Space === event.key) onClick();
@@ -39,7 +39,7 @@ const DefaultButtonView = ({
       </div>
     </React.Fragment>
   );
-}
+};
 
 const DefaultItemView = ({
   isOpen,

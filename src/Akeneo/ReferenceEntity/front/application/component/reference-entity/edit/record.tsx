@@ -297,7 +297,7 @@ export default connect(
         },
         onFirstLoad: () => {
           dispatch(updateRecordResults(false));
-        }
+        },
       },
     };
   }

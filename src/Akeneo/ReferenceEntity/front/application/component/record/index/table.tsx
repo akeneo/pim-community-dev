@@ -14,7 +14,9 @@ import {getLabel} from 'pimui/js/i18n';
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import {getFilter, getCompletenessFilter} from 'akeneoreferenceentity/tools/filter';
 import SearchField from 'akeneoreferenceentity/application/component/record/index/search-field';
-import CompletenessFilter, {CompletenessValue} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
+import CompletenessFilter, {
+  CompletenessValue,
+} from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 
 interface TableState {
   locale: string;

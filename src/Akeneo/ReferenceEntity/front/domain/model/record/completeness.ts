@@ -39,12 +39,12 @@ class Completeness {
     return this.required;
   }
 
-  public hasNoRequiredAttribute() {
-    return this.required === 0;
+  public hasRequiredAttribute() {
+    return this.required > 0;
   }
 
-  public hasNoCompleteAttribute() {
-    return this.complete === 0;
+  public hasCompleteAttribute() {
+    return this.complete > 0;
   }
 
   public isComplete() {
