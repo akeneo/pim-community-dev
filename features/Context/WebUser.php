@@ -1839,6 +1839,12 @@ class WebUser extends PimContext
      */
     public function iPressOnTheDropdownButton($item, $button)
     {
+        $this->spin(function () {
+            $loading = $this->getCurrentPage()->find('css', '#loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, 'Could not press the dropdown buttons because of loading wrapper');
+
         $this->spin(function () use ($item, $button) {
             $this
                 ->getCurrentPage()
