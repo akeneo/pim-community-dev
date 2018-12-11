@@ -5,9 +5,9 @@ jobs:
         enabled: true
         docker_layer_caching: true
     steps:
-    - run:
-        name: Change user to match uid for Docker
-        command: sudo su ubuntu
+#    - run:
+#        name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+#        command:
     - checkout
     - run:
         name: Copy env file
@@ -16,7 +16,7 @@ jobs:
         name: Start containers
         command: |
           set -x
-          docker-compose up -d
+          docker-compose -d --user 1001 up
           ./bin/docker/pim-dependencies.sh
           ./bin/docker/pim-initialize.sh
           docker-compose exec fpm bin/console
