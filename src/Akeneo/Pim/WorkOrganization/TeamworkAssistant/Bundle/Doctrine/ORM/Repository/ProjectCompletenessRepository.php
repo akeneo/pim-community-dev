@@ -179,22 +179,19 @@ SQL;
      */
     private function findProductIdentifiersAsOwner(ProjectInterface $project, $status)
     {
-        $parameters = [
-            'locale_code' => $project->getLocale()->getCode(),
-            'channel_code' => $project->getChannel()->getCode(),
-        ];
+        $parameters = $this->buildQueryParameters($project);
 
         $sql = <<<SQL
 SELECT `product`.`identifier`
-FROM `@pim_catalog.entity.product@` AS `product`
-INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
-    ON `product`.`id` = `completeness_per_attribute_group`.`product_id`
-INNER JOIN `@pim_catalog.entity.channel@` AS `channel`
-	ON `completeness_per_attribute_group`.`channel_id` = `channel`.`id`
-INNER JOIN `@pim_catalog.entity.locale@` AS `locale`
-	ON `completeness_per_attribute_group`.`locale_id` = `locale`.`id`
-AND `channel`.`code` = :channel_code
-AND `locale`.`code` = :locale_code
+FROM 
+     `@pim_catalog.entity.product@` AS `product`
+      INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+        ON `product`.`id` = `completeness_per_attribute_group`.`product_id` 
+        AND completeness_per_attribute_group.channel_id = :channel_id 
+        AND completeness_per_attribute_group.locale_id = :locale_id 
+      INNER JOIN `@pimee_teamwork_assistant.project_product@` AS `project_product`
+        ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
+        AND `project_product`.`project_id` = :project_id
 GROUP BY `product`.`identifier`
 SQL;
 
@@ -259,7 +256,7 @@ SQL;
     private function buildSqlQuery($username = null)
     {
         $sql =
-<<<SQL
+            <<<SQL
 SELECT
     COALESCE(
         SUM(
@@ -293,7 +290,7 @@ SQL;
 
         if (null === $username) {
             $sql .=
-<<<SQL
+                <<<SQL
 (
     SELECT
             SUM(completeness_attribute_group.has_at_least_one_required_attribute_filled) AS attribute_group_in_progress,
@@ -311,7 +308,7 @@ SQL;
 SQL;
         } else {
             $sql .=
-<<<SQL
+                <<<SQL
 (
 SELECT *
 FROM

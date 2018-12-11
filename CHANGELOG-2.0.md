@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7873: Fix consistency between TWA widget numbers and the datagrid view (backport PIM-7723)
+
 # 2.0.42 (2018-11-12)
 
 ## Bug fixes

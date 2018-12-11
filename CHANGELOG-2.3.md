@@ -1,5 +1,17 @@
 # 2.3.x
 
+# 2.3.21 (2018-12-07)
+
+# 2.3.20 (2018-12-06)
+
+# 2.3.19 (2018-12-03)
+
+## Bug fixes
+
+- PIM-7864: Move completeness reset to a job when an asset or asset reference is modified to avoid scalability issues
+
+# 2.3.18 (2018-11-28)
+
 # 2.3.17 (2018-11-15)
 
 ## Bug fixes
