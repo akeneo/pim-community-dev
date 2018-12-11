@@ -3,28 +3,9 @@ jobs:
   test_back:
     machine:
         enabled: true
-#    - image: akeneo/fpm:php-7.2
-#      environment:
-#        COMPOSER_MEMORY_LIMIT: 5G
-#      user: docker
+        docker_layer_caching: true
     steps:
     - checkout
-#    - setup_remote_docker
-#    - run:
-#        name: Install Docker client
-#        command: |
-#          set -x
-#          VER="18.09.0"
-#          curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-18.09.0.tgz
-#          tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-#          sudo mv /tmp/docker/* /usr/bin
-#    - run:
-#        name: Install Docker Compose
-#        command: |
-#          set -x
-#          curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-#          chmod +x ~/docker-compose
-#          sudo mv ~/docker-compose /usr/local/bin/docker-compose
     - run:
         name: Copy env file
         command: cp .env.dist .env
