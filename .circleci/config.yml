@@ -5,13 +5,14 @@ jobs:
     - image: circleci/cci-demo-docker-primary:0.0.2
     steps:
     - checkout
+    - setup_remote_docker
     - run:
         name: Install Docker Compose
         command: |
+          set -x
           curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
           chmod +x ~/docker-compose
-          sudo mv ~/docker-compose /usr/local/bin/docker-compose
-    - setup_remote_docker
+          mv ~/docker-compose /usr/local/bin/docker-compose
     - run:
         name: Copy env file
         command: cp .env.dist .env
