@@ -27,7 +27,7 @@ $config = array(
             'uid' => array('pamela'),
         ),
         'julien:julien' => array(
-            'julien' => array('julien'),
+            'uid' => array('julien'),
         ),
     ),
 
