@@ -16,7 +16,7 @@ jobs:
           VER="18.09.0"
           curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-18.09.0.tgz
           tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-          mv /tmp/docker/* /usr/bin
+          sudo mv /tmp/docker/* /usr/bin
     - run:
         name: Install Docker Compose
         command: |
