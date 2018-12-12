@@ -23,6 +23,7 @@ class PartialUpdateListProductEndToEnd extends AbstractProductTestCase
     }
 
     /**
+     * @critical
      * @validate-migration
      */
     public function testCreateAndUpdateAListOfProducts()

@@ -14,6 +14,7 @@ Feature: Classify many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @critical
   Scenario: Add several products to categories at once
     Given I select rows bigfoot and horseshoe
     And I press the "Bulk actions" button

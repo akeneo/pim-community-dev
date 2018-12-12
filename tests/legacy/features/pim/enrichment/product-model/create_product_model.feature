@@ -9,6 +9,7 @@ Feature: Create a product model
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @critical
   Scenario: Create a product model with a single level variant
     When I create a product model
     And I should see the Code, Family and Variant fields
@@ -21,6 +22,7 @@ Feature: Create a product model
     And I should be on the product model "shoes_variant" edit page
     And I should see the text "shoes_variant"
 
+  @critical
   Scenario: Create a product model with multiple level variant
     When I create a product model
     And I should see the Code, Family and Variant fields
