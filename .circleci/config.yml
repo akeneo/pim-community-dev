@@ -86,6 +86,8 @@ jobs:
 #        command: vendor/bin/behat --strict -p acceptance -vv
     - store_test_results:
         path: ~/test/results
+    - store_artifacts:
+        path: ~/test/results
 
   test_static_front:
     docker:
