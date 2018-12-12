@@ -70,7 +70,7 @@ final class FamilyRepositoryIntegration extends TestCase
         $this->insertSubscription($controlProduct->getId(), false);
     }
 
-    public function test_that_families_with_subscribed_products_are_found(): void
+    public function test_that_families_with_subscribed_products_are_found_and_paginated(): void
     {
         $product1 = $this->createProduct('product_1', self::TEST_FAMILY_CODE);
         $this->insertSubscription($product1->getId(), false);
@@ -86,19 +86,15 @@ final class FamilyRepositoryIntegration extends TestCase
                 new Family(self::CONTROL_FAMILY_CODE, self::CONTROL_FAMILY_LABELS, Family::MAPPING_FULL),
             ]
         );
-    }
 
-    public function test_that_families_with_subscribed_products_are_paginated(): void
-    {
-        $product = $this->createProduct('a_product', self::TEST_FAMILY_CODE);
-        $this->insertSubscription($product->getId(), false);
-
+        // Assert 1st page of 1 element
         $familyCollection = $this->getRepository()->findBySearch(1, 1, null);
         $this->assertFamilyCollection(
             $familyCollection,
             [new Family(self::TEST_FAMILY_CODE, self::TEST_FAMILY_LABELS, Family::MAPPING_PENDING)]
         );
 
+        // Assert 2nd page of 1 element
         $familyCollection = $this->getRepository()->findBySearch(2, 1, null);
         $this->assertFamilyCollection(
             $familyCollection,
@@ -106,7 +102,7 @@ final class FamilyRepositoryIntegration extends TestCase
         );
     }
 
-    public function test_that_only_families_with_subscribed_products_are_searched(): void
+    public function test_that_only_families_with_subscribed_products_are_fetched(): void
     {
         $product = $this->createProduct('a_product', self::TEST_FAMILY_CODE);
         $this->insertSubscription($product->getId(), false);
