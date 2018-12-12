@@ -1,0 +1,5 @@
+services:
+    pim_user.ACL.find_authenticated_user_identifier:
+        class: Akeneo\UserManagement\ACL\Application\Query\FindAuthenticatedUserIdentifier
+        arguments:
+            - '@pim_user.context.user'
