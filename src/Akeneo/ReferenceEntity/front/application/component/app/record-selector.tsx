@@ -21,7 +21,7 @@ const renderRow = (label: string, record: NormalizedRecord, withLink: boolean) =
     label
   }</span><span class="select2-result-label-hint">${record.code}</span>${withLink ?
     `<a
-      class="select2-result-label-link AknIconButton AknIconButton--small AknIconButton--view"
+      class="select2-result-label-link AknIconButton AknIconButton--small AknIconButton--link"
       data-reference-entity-identifier="${record.reference_entity_identifier}"
       data-record-code="${record.code}"
       href="#${routing.generate('akeneo_reference_entities_record_edit', {

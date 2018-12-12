@@ -132,14 +132,15 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                   </div>
                   {getErrorsView(this.props.errors, 'code')}
                 </div>
-                <div className="AknFieldContainer" data-code="code">
+                <div className="AknFieldContainer" data-code="create_another">
                   <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.code">
-                      {__('pim_reference_entity.record.create.input.create_another')}
+                    <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.create_another">
+                      <Checkbox id="pim_reference_entity.record.create.input.create_another" value={this.state.createAnother} onChange={(newValue: boolean) => this.setState({createAnother: newValue})}/>
+                      <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
                     </label>
                   </div>
                   <div className="AknFieldContainer-inputContainer">
-                    <Checkbox id="pim_reference_entity.record.create.input.create_another" value={this.state.createAnother} onChange={(newValue: boolean) => this.setState({createAnother: newValue})}/>
+
                   </div>
                 </div>
               </div>
