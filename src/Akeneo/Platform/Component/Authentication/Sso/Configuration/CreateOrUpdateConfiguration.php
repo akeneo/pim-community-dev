@@ -15,7 +15,7 @@ final class CreateOrUpdateConfiguration
     public $code;
 
     /** @var bool */
-    public $enabled;
+    public $isEnabled;
 
     /** @var string */
     public $identityProviderEntityId;
@@ -37,7 +37,7 @@ final class CreateOrUpdateConfiguration
 
     public function __construct(
         string $code,
-        bool $enabled,
+        bool $isEnabled,
         string $identityProviderEntityId,
         string $identityProviderUrl,
         string $identityProviderPublicCertificate,
@@ -47,7 +47,7 @@ final class CreateOrUpdateConfiguration
     ) {
 
         $this->code = $code;
-        $this->enabled = $enabled;
+        $this->isEnabled = $isEnabled;
         $this->identityProviderEntityId = $identityProviderEntityId;
         $this->identityProviderUrl = $identityProviderUrl;
         $this->identityProviderPublicCertificate = $identityProviderPublicCertificate;

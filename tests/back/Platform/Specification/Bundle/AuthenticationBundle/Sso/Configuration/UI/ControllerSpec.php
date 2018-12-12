@@ -11,6 +11,7 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateCon
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
@@ -38,7 +39,7 @@ class ControllerSpec extends ObjectBehavior
     {
         $requestContent = json_encode(
             [
-                'enabled'                              => true,
+                'is_enabled'                           => true,
                 'identity_provider_entity_id'          => 'https://idp.jambon.com',
                 'identity_provider_url'                => 'https://idp.jambon.com/',
                 'identity_provider_public_certificate' => 'public_certificate',
@@ -65,7 +66,7 @@ class ControllerSpec extends ObjectBehavior
     ) {
         $requestContent = json_encode(
             [
-                'enabled'                              => true,
+                'is_enabled'                           => true,
                 'identity_provider_entity_id'          => '',
                 'identity_provider_url'                => 'https://idp.jambon.com/',
                 'identity_provider_public_certificate' => 'public_certificate',
@@ -123,6 +124,7 @@ class ControllerSpec extends ObjectBehavior
     {
         $config = new Configuration(
             new Code('authentication_sso'),
+            new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/'),
@@ -138,7 +140,7 @@ class ControllerSpec extends ObjectBehavior
         $repository->find('authentication_sso')->willReturn($config);
 
         $normalizedConfig = [
-            'enabled'                              => true,
+            'is_enabled'                           => true,
             'identity_provider_entity_id'          => 'https://idp.jambon.com',
             'identity_provider_url'                => 'https://idp.jambon.com/',
             'identity_provider_public_certificate' => 'public_certificate',

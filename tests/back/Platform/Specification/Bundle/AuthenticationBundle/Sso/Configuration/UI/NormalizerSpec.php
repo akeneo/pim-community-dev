@@ -6,6 +6,7 @@ use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
@@ -45,7 +46,7 @@ class NormalizerSpec extends ObjectBehavior
         $config = $this->getConfigInstance();
         $this->normalize($config)->shouldReturn(
             [
-//                'enabled'                              => true,
+                'is_enabled'                              => true,
                 'identity_provider_entity_id'          => 'https://idp.jambon.com',
                 'identity_provider_url'                => 'https://idp.jambon.com/',
                 'identity_provider_public_certificate' => 'public_certificate',
@@ -60,6 +61,7 @@ class NormalizerSpec extends ObjectBehavior
     {
         return new Configuration(
             new Code('authentication_sso'),
+            new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/'),

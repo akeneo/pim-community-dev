@@ -52,7 +52,7 @@ final class Controller
 
         $createOrUpdateConfig = new CreateOrUpdateConfiguration(
             self::CONFIGURATION_CODE,
-            $data['enabled'] ?? false,
+            $data['is_enabled'] ?? false,
             $data['identity_provider_entity_id'] ?? '',
             $data['identity_provider_url'] ?? '',
             $data['identity_provider_public_certificate'] ?? '',
@@ -86,7 +86,7 @@ final class Controller
             return new JsonResponse($normalizedConfig);
         } catch (ConfigurationNotFound $e) {
             return new JsonResponse([
-                'enabled'                              => false,
+                'is_enabled'                           => false,
                 'identity_provider_entity_id'          => '',
                 'identity_provider_url'                => '',
                 'identity_provider_public_certificate' => '',

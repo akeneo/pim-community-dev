@@ -2,8 +2,6 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigu
     properties:
         code:
             - NotBlank: ~
-        enabled:
-            - NotBlank: ~
         identityProviderEntityId:
             - NotBlank: ~
             - Url: ~

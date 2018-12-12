@@ -75,7 +75,7 @@ extensions:
         targetZone: content
         position: 100
         config:
-            fieldName: enabled
+            fieldName: is_enabled
             label: authentication.sso.configuration.field.activation.label
 
     authentication-sso-configuration-identity-provider-section:

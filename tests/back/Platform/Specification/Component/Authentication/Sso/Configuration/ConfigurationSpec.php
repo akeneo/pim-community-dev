@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Platform\Component\Authentication\Sso\Configurati
 
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Certificate;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
@@ -17,6 +18,7 @@ class ConfigurationSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             new Code('jambon'),
+            new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/'),
@@ -36,6 +38,7 @@ class ConfigurationSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             new Code('jambon'),
+            new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/'),
@@ -50,6 +53,7 @@ class ConfigurationSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
+                'isEnabled'        => true,
                 'identityProvider' => [
                     'entityId'          => 'https://idp.jambon.com',
                     'url'               => 'https://idp.jambon.com/',
@@ -70,6 +74,7 @@ class ConfigurationSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $code,
+            new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
                 new Url('https://idp.jambon.com/'),
@@ -92,6 +97,7 @@ class ConfigurationSpec extends ObjectBehavior
             [
                 'jambon',
                 [
+                    'isEnabled'        => true,
                     'identityProvider' => [
                         'entityId'          => 'https://idp.jambon.com',
                         'url'               => 'https://idp.jambon.com/',

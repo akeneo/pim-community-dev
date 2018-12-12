@@ -26,6 +26,7 @@ final class Normalizer implements NormalizerInterface
         $configArray = $object->toArray();
 
         return [
+            'is_enabled'                           => $configArray['isEnabled'],
             'identity_provider_entity_id'          => $configArray['identityProvider']['entityId'],
             'identity_provider_url'                => $configArray['identityProvider']['url'],
             'identity_provider_public_certificate' => $configArray['identityProvider']['publicCertificate'],

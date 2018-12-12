@@ -25,6 +25,7 @@ class CreateOrUpdateConfigurationHandler
     {
         $config = new Configuration(
             new Code($command->code),
+            new IsEnabled($command->isEnabled),
             new IdentityProvider(
                 new EntityId($command->identityProviderEntityId),
                 new Url($command->identityProviderUrl),

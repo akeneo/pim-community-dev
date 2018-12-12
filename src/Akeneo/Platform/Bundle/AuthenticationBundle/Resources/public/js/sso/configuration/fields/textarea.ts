@@ -2,7 +2,7 @@ const BaseTextarea = require('pim/form/common/fields/textarea');
 
 class Textarea extends BaseTextarea {
   isReadOnly() {
-    return !this.getFormData().enabled;
+    return !this.getFormData().is_enabled;
   }
 }
 
