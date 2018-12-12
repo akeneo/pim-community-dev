@@ -164,7 +164,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames',
+            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool',

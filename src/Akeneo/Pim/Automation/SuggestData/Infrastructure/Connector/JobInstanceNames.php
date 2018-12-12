@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Connector;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\ConstraintProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;

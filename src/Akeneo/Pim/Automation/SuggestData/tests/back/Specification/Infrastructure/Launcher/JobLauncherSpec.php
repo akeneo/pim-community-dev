@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Launcher;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;

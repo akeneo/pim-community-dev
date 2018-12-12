@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
