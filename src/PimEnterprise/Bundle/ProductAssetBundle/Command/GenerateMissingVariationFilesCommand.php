@@ -93,7 +93,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
-                    $msg = sprintf('<error>%s\n%s</error>', $msg, $item->getReason());
+                    $msg = sprintf("<error>%s\n%s</error>", $msg, $item->getReason());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
                     $msg = sprintf('%s <comment>Skipped (%s)</comment>', $msg, $item->getReason());
