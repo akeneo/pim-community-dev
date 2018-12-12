@@ -28,7 +28,7 @@ Feature: Update a single product by applying rules
     Given the family "heels" has the attributes "cap_color, lace_fabric"
     And the following products:
       | sku       | family |
-      | red-heels | heels  |
+      | red-heels |        |
     And the following product values:
       | product   | attribute   | value          | locale | scope  |
       | red-heels | sole_color  | yellow         |        |        |
@@ -93,7 +93,7 @@ Feature: Update a single product by applying rules
     Given the family "heels" has the attributes "cap_color"
     And the following products:
       | sku       | family |
-      | red-heels | heels  |
+      | red-heels |        |
     And the following product values:
       | product   | attribute   | value          | locale | scope  |
       | red-heels | sole_color  | yellow         |        |        |
