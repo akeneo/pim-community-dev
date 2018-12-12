@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence\Sql;
 
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Code;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
-use Akeneo\Platform\Component\Authentication\Sso\Configuration\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
