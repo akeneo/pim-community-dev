@@ -73,7 +73,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any())->shouldBeCalled();
 
-        $product = $this->createProduct('mysku', 'tshirt');
+        $product = $this->createProduct('mysku', 'toto');
         $product->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 }
