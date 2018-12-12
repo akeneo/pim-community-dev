@@ -167,7 +167,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           />
         ) : (
           <div className="AknGridContainer-noData">
-            <div className="AknGridContainer-noDataImage" />
+            <div className="AknGridContainer-noDataImage AknGridContainer-noDataImage--reference-entity" />
             <div className="AknGridContainer-noDataTitle">
               {__('pim_reference_entity.record.no_data.title', {
                 entityLabel: referenceEntity.getLabel(context.locale),

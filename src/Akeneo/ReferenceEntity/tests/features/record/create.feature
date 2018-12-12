@@ -51,6 +51,19 @@ Feature: Create a record
     Then the record will be saved
     And the user saves the record
 
+  @acceptance-front
+  Scenario: Creating multiple records in sequence
+    When the user asks for the reference entity "designer"
+    Given the user has the following rights:
+      | akeneo_referenceentity_record_create | true |
+    And the user creates a record of "designer" with:
+      | code  | labels             |
+      | stark | {"en_US": "Stark"} |
+    Then the record will be saved
+    And the user toggles the sequantial creation
+    And the user saves the record
+    Then the record creation form should be displayed
+
 #  @acceptance-front
 #  Scenario: Cannot create a record with invalid identifier
 #    When the user asks for the reference entity "designer"

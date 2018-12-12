@@ -16,6 +16,7 @@ import ReferenceEntity, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 import Key from 'akeneoreferenceentity/tools/key';
+import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 
 interface StateProps {
   context: {
@@ -36,14 +37,15 @@ interface DispatchProps {
     onRecordCodeUpdated: (value: string) => void;
     onLabelUpdated: (value: string, locale: string) => void;
     onCancel: () => void;
-    onSubmit: () => void;
+    onSubmit: (createAnother: boolean) => void;
   };
 }
 
 interface CreateProps extends StateProps, DispatchProps {}
 
-class Create extends React.Component<CreateProps> {
+class Create extends React.Component<CreateProps, {createAnother: boolean}> {
   private labelInput: React.RefObject<HTMLInputElement>;
+  state = {createAnother: false};
   public props: CreateProps;
 
   constructor(props: CreateProps) {
@@ -67,7 +69,7 @@ class Create extends React.Component<CreateProps> {
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (Key.Enter === event.key) this.props.events.onSubmit();
+    if (Key.Enter === event.key) this.props.events.onSubmit(this.state.createAnother);
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -99,7 +101,11 @@ class Create extends React.Component<CreateProps> {
                       className="AknTextField AknTextField--light"
                       id="pim_reference_entity.record.create.input.label"
                       name="label"
-                      value={this.props.data.labels[this.props.context.locale]}
+                      value={
+                        undefined === this.props.data.labels[this.props.context.locale]
+                          ? ''
+                          : this.props.data.labels[this.props.context.locale]
+                      }
                       onChange={this.onLabelUpdate}
                       onKeyPress={this.onKeyPress}
                     />
@@ -130,6 +136,22 @@ class Create extends React.Component<CreateProps> {
                   </div>
                   {getErrorsView(this.props.errors, 'code')}
                 </div>
+                <div className="AknFieldContainer" data-code="create_another">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.record.create.input.create_another"
+                    >
+                      <Checkbox
+                        id="pim_reference_entity.record.create.input.create_another"
+                        value={this.state.createAnother}
+                        onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
+                      />
+                      <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
+                    </label>
+                  </div>
+                  <div className="AknFieldContainer-inputContainer" />
+                </div>
               </div>
             </div>
           </div>
@@ -144,7 +166,9 @@ class Create extends React.Component<CreateProps> {
           </span>
           <button
             className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
-            onClick={this.props.events.onSubmit}
+            onClick={() => {
+              this.props.events.onSubmit(this.state.createAnother);
+            }}
           >
             {__('pim_reference_entity.record.create.confirm')}
           </button>
@@ -180,8 +204,8 @@ export default connect(
         onCancel: () => {
           dispatch(recordCreationCancel());
         },
-        onSubmit: () => {
-          dispatch(createRecord());
+        onSubmit: (createAnother: boolean) => {
+          dispatch(createRecord(createAnother));
         },
       },
     };

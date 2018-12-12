@@ -47,6 +47,11 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
     return await property.jsonValue();
   };
 
+  const toggleCreateAnother = async () => {
+    const checkbox = await page.$('.AknFieldContainer[data-code="create_another"] .AknCheckbox');
+    checkbox.click();
+  };
+
   const select = async (selector, value) => {
     await page.waitForSelector(`${selector} .AknDropdown`);
     const openButton = await page.$(`${selector} .AknButton`);
@@ -58,7 +63,7 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
     return await page.waitForSelector(`.AknDropdown-menuLink--active[data-identifier="${value}"]`);
   };
 
-  return {fillField, switchField, save, getValidationMessageForCode, select};
+  return {fillField, switchField, save, getValidationMessageForCode, select, toggleCreateAnother};
 };
 
 module.exports = Modal;

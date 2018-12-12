@@ -12,6 +12,27 @@ import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import {denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import {getLabel} from 'pimui/js/i18n';
 
+const renderRow = (label: string, record: NormalizedRecord, withLink: boolean) => {
+  return `
+  <img width="34" height="34" src="${getImageShowUrl(denormalizeFile(record.image), 'thumbnail_small')}"/>
+  <span class="select2-result-label-main">${label}</span>
+  <span class="select2-result-label-hint">${record.code}</span>
+  ${
+    withLink
+      ? `<a
+      class="select2-result-label-link AknIconButton AknIconButton--small AknIconButton--link"
+      data-reference-entity-identifier="${record.reference_entity_identifier}"
+      data-record-code="${record.code}"
+      target="_blank"
+      href="#${routing.generate('akeneo_reference_entities_record_edit', {
+        referenceEntityIdentifier: record.reference_entity_identifier,
+        recordCode: record.code,
+        tab: 'enrich',
+      })}"></a>`
+      : ''
+  }`;
+};
+
 export type RecordSelectorProps = {
   value: RecordCode[] | RecordCode | null;
   referenceEntityIdentifier: ReferenceEntityIdentifier;
@@ -142,32 +163,10 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
           if (Array.isArray(record) && 0 === record.length) {
             return;
           }
-          container
-            .addClass('select2-search-choice-value')
-            .append(
-              $(
-                `<img width="34" height="34" src="${getImageShowUrl(
-                  denormalizeFile(record.original.image),
-                  'thumbnail_small'
-                )}"/><span class="select2-result-label-main">${
-                  record.text
-                }</span><span class="select2-result-label-hint">${record.original.code}</span>`
-              )
-            );
+          container.addClass('select2-search-choice-value').append($(renderRow(record.text, record.original, false)));
         },
         formatResult: (record: Select2Item, container: any) => {
-          container
-            .addClass('select2-search-choice-value')
-            .append(
-              $(
-                `<img width="34" height="34" src="${getImageShowUrl(
-                  denormalizeFile(record.original.image),
-                  'thumbnail_small'
-                )}"/><span class="select2-result-label-main">${
-                  record.text
-                }</span><span class="select2-result-label-hint">${record.original.code}</span>`
-              )
-            );
+          container.addClass('select2-search-choice-value').append($(renderRow(record.text, record.original, true)));
         },
       });
 
@@ -180,6 +179,16 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
               : RecordCode.create(event.val);
           this.props.onChange(newValue);
         });
+
+        const select2 = this.el.data('select2');
+        select2.onSelect = (function(fn) {
+          return function(_data: any, options: any) {
+            if (null === options || 'A' !== options.target.nodeName) {
+              //@ts-ignore Dirty but commiong from select2...
+              fn.apply(this, arguments);
+            }
+          };
+        })(select2.onSelect);
       }
     }
   }
@@ -208,13 +217,26 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
     const {referenceEntityIdentifier, ...props} = this.props;
 
     return (
-      <input
-        className="record-selector"
-        {...props}
-        type="hidden"
-        value={this.normalizeValue(this.props.value)}
-        disabled={this.props.readOnly}
-      />
+      <React.Fragment>
+        <input
+          className="record-selector"
+          {...props}
+          type="hidden"
+          value={this.normalizeValue(this.props.value)}
+          disabled={this.props.readOnly}
+        />
+        {!props.multiple && null !== this.props.value ? (
+          <a
+            className="AknFieldContainer-inputLink AknIconButton AknIconButton--small AknIconButton--link"
+            href={`#${routing.generate('akeneo_reference_entities_record_edit', {
+              referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
+              recordCode: this.props.value.stringValue(),
+              tab: 'enrich',
+            })}`}
+            target="_blank"
+          />
+        ) : null}
+      </React.Fragment>
     );
   }
 }
