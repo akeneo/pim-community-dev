@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobInstanceNames;
-use Akeneo\Pim\Automation\SuggestData\Application\Connector\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -30,22 +29,21 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
     private $familyCodesByAttributeQuery;
 
     /** @var array */
-    private $familyCodes;
+    private $familyCodes = [];
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
+    /** @var RemoveAttributesFromMappingInterface */
+    private $removeAttributesFromMapping;
 
     /**
      * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
-     * @param JobLauncherInterface $jobLauncher
+     * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
      */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        JobLauncherInterface $jobLauncher
+        RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ) {
         $this->familyCodesByAttributeQuery = $familyCodesByAttributeQuery;
-        $this->jobLauncher = $jobLauncher;
-        $this->familyCodes = [];
+        $this->removeAttributesFromMapping = $removeAttributesFromMapping;
     }
 
     /**
@@ -82,11 +80,6 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        foreach ($this->familyCodes as $familyCode) {
-            $this->jobLauncher->launch(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING, [
-                'pim_attribute_codes' => [$attribute->getCode()],
-                'family_code' => $familyCode,
-            ]);
-        }
+        $this->removeAttributesFromMapping->process($this->familyCodes, [$attribute->getCode()]);
     }
 }
