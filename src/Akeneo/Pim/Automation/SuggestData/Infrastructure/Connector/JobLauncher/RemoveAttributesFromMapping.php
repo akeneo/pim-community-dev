@@ -53,7 +53,9 @@ class RemoveAttributesFromMapping implements RemoveAttributesFromMappingInterfac
      */
     public function process(array $familyCodes, array $removedAttributes): void
     {
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING);
+        $jobInstance = $this
+            ->jobInstanceRepository
+            ->findOneByIdentifier(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING);
         if (null === $jobInstance) {
             // TODO: Should throw an exception. Should be done in APAI-450
             return;
