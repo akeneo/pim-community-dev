@@ -19,7 +19,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service;
 interface RemoveAttributesFromMappingInterface
 {
     /**
-     * @param string $familyCodes
+     * @param array $familyCodes
      * @param array $removedAttributes
      */
     public function process(array $familyCodes, array $removedAttributes): void;

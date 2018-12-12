@@ -24,17 +24,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class RemoveAttributesFromMapping implements RemoveAttributesFromMappingInterface
 {
-    /**
-     * @var JobInstanceRepository
-     */
+    /** @var JobInstanceRepository */
     private $jobInstanceRepository;
-    /**
-     * @var JobLauncherInterface
-     */
+
+    /** @var JobLauncherInterface */
     private $jobLauncher;
-    /**
-     * @var TokenStorageInterface
-     */
+
+    /** @var TokenStorageInterface */
     private $tokenStorage;
 
     /**
@@ -59,11 +55,14 @@ class RemoveAttributesFromMapping implements RemoveAttributesFromMappingInterfac
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING);
         if (null === $jobInstance) {
-            // TODO: Should throw an exception. Done for
+            // TODO: Should throw an exception. Should be done in APAI-450
             return;
         }
         $user = $this->tokenStorage->getToken()->getUser();
 
+        if (empty($familyCodes) || empty($removedAttributes)) {
+            return;
+        }
         foreach ($familyCodes as $familyCode) {
             $jobParameters = [
                 'pim_attribute_codes' => $removedAttributes,
