@@ -33,7 +33,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'term' => [
-                                        'links.brand' => 'brand_kartell',
+                                        'links.record.brand' => 'brand_kartell',
                                     ],
                                 ],
                             ],
@@ -61,7 +61,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'term' => [
-                                        'links.brand' => 'unknown_record',
+                                        'links.record.brand' => 'unknown_record',
                                     ],
                                 ],
                             ],
@@ -90,7 +90,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'exists' => [
-                                        'field' => 'links.brand'
+                                        'field' => 'links.record.brand'
                                     ],
                                 ],
                             ],
@@ -118,7 +118,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'exists' => [
-                                        'field' => 'links.unknown'
+                                        'field' => 'links.record.unknown'
                                     ],
                                 ],
                             ],
@@ -146,7 +146,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'terms' => [
-                                        'links.color_brand_fingerprint' => ['blue', 'yellow']
+                                        'links.option.color_brand_fingerprint' => ['blue', 'yellow']
                                     ],
                                 ],
                             ],
@@ -174,7 +174,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'terms' => [
-                                        'links.color_brand_fingerprint' => ['yellow']
+                                        'links.option.color_brand_fingerprint' => ['yellow']
                                     ],
                                 ],
                             ],
@@ -196,8 +196,12 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
             'code'                    => 'stark',
             'updated_at'              => date_create('2018-01-01')->getTimestamp(),
             'links'       => [
-                'brand' => ['brand_kartell'], // Link to a specific reference entity and a specific record
-                'color_brand_fingerprint' => ['red', 'blue'] // link to a specific attribute and a specific attribute option
+                'record' => [
+                    'brand' => ['brand_kartell'], // Link to a specific reference entity and a specific record
+                ],
+                'option' => [
+                    'color_brand_fingerprint' => ['red', 'blue'] // link to a specific attribute and a specific attribute option
+                ]
             ],
         ];
         $to = [

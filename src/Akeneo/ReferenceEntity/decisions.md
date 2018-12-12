@@ -491,7 +491,7 @@ For instance:
 - When all records are removed, what happens to other records referencing the removed records ?
 - The same goes for the assets (maybe in the future).
 
-Basically, an entity deletion that is referenced in the values of the records imply that those record's values are refreshed (or cleaned) and reindexed to keep the search on completeness and read models synchronized with the structure and the other entities (Eventual consistency).
+Basically, an entity deletion that is linked in the values of the records imply that those record's values are refreshed (or cleaned) and reindexed to keep the search on completeness and read models synchronized with the structure and the other entities (Eventual consistency).
 
 #### Solutions:
 
@@ -507,8 +507,12 @@ To support our new search usecases, we need to update the index with the "links"
         'code'                    => 'stark',
         'updated_at'              => date_create('2018-01-01')->getTimestamp(),
         'links'       => [
-            'brand' => ['brand_kartell'], // Link to a specific reference entity and a specific record
-            'color_brand_fingerprint' => ['red', 'blue'] // link to a specific attribute and a specific attribute option
+            'record' => [
+                'brand' => ['brand_kartell'], // Link to a specific reference entity and a specific record
+            ],
+            'option' => [
+                'color_brand_fingerprint' => ['red', 'blue'] // link to a specific attribute and a specific attribute option
+            ]
         ],
     ]
 
@@ -524,7 +528,7 @@ To support our new search usecases, we need to update the index with the "links"
                         'filter' => [
                             [
                                 'term' => [
-                                    'links.brand' => 'brand_kartell',
+                                    'links.record.brand' => 'brand_kartell',
                                 ],
                             ],
                         ],
@@ -540,14 +544,15 @@ To support our new search usecases, we need to update the index with the "links"
     // All the records of 'brand' have been removed, let's find all the records linked to them to refresh them
     [
         '_source' => '_id',
+        'sort'    => ['updated_at' => 'desc'],
         'query'   => [
             'constant_score' => [
                 'filter' => [
                     'bool' => [
                         'filter' => [
                             [
-                                'terms' => [
-                                    'links.color_brand_fingerprint' => ['blue', 'yellow']
+                                'exists' => [
+                                    'field' => 'links.record.brand'
                                 ],
                             ],
                         ],
@@ -569,7 +574,7 @@ To support our new search usecases, we need to update the index with the "links"
                         'filter' => [
                             [
                                 'terms' => [ // <-- See the usage of 'terms' operator here as it is likely that multiple options might be removed at once
-                                    'links.color_brand_fingerprint' => ['blue', 'yellow']
+                                    'links.option.color_brand_fingerprint' => ['blue', 'yellow']
                                 ],
                             ],
                         ],
