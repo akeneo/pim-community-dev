@@ -28,11 +28,11 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
     /** @var SelectFamilyCodesByAttributeQueryInterface */
     private $familyCodesByAttributeQuery;
 
-    /** @var array */
-    private $familyCodes = [];
-
     /** @var RemoveAttributesFromMappingInterface */
     private $removeAttributesFromMapping;
+
+    /** @var array */
+    private $familyCodes = [];
 
     /**
      * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
