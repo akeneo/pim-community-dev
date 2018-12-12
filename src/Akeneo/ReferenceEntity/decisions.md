@@ -477,3 +477,109 @@ So we asked our product owner what was the best solution among those two:
 The response from the product owner is as follow: It doesn't make sense to differenciate rights on locales for products and reference entities.
 For example, a translator that could view the English and edit the German product attributes will not need to have rights to edit English attributes and view Spanish on records.
 If the need is to restrict rights on a particular type of entity, it's more of an ACL concern or a permission by reference entity (which will also be provided).
+
+## 11/12/2018
+
+### Bulletproof reference entities
+
+#### Problem:
+
+Today the reference entities suffer the same drawbacks of the product concerning entities linked to it.
+For instance:
+- When an attribute option is removed, the completeness results will be impacted for records who had only this attribute option.
+- When a record is removed, the completeness results will be impacted for records only linked to the removed record.
+- When all records are removed, what happens to other records referencing the removed records ?
+- The same goes for the assets (maybe in the future).
+
+Basically, an entity deletion that is linked in the values of the records imply that those record's values are refreshed (or cleaned) and reindexed to keep the search on completeness and read models synchronized with the structure and the other entities (Eventual consistency).
+
+#### Solutions:
+
+We identified 3 usecases we need to fix. In all of those usecases the solution is to select the impacted records and to refresh them (or clean their values). The way we select those records defers for each usecase.
+
+**Elasticsearch index update**
+
+To support our new search usecases, we need to update the index with the "links" the record is linked to (attribute options or other records):
+
+    [
+        'reference_entity_code'   => 'designer',
+        'identifier'              => 'designer_stark',
+        'code'                    => 'stark',
+        'updated_at'              => date_create('2018-01-01')->getTimestamp(),
+        'links'       => [
+            'record' => [
+                'brand' => ['brand_kartell'], // Link to a specific reference entity and a specific record
+            ],
+            'option' => [
+                'color_brand_fingerprint' => ['red', 'blue'] // link to a specific attribute and a specific attribute option
+            ]
+        ],
+    ]
+
+**When a record is removed**, we need to refresh all the records refencing the removed record.
+
+    // 'brand_kartell' record has been removed, let's find all the record linked to it to refresh them
+    [
+        '_source' => '_id',
+        'query'   => [
+            'constant_score' => [
+                'filter' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'term' => [
+                                    'links.record.brand' => 'brand_kartell',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ]
+
+
+**When all records of a reference entity are removed**, we need to refresh all the records refencing the removed records.
+
+    // All the records of 'brand' have been removed, let's find all the records linked to them to refresh them
+    [
+        '_source' => '_id',
+        'sort'    => ['updated_at' => 'desc'],
+        'query'   => [
+            'constant_score' => [
+                'filter' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'exists' => [
+                                    'field' => 'links.record.brand'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ]
+
+**When an option of an attribute is removed**, we need to refresh all the records refencing the removed option.
+
+    // Options 'blue' and 'yellow' have been removed from attribute 'color_brand_fingerprint'
+    [
+        '_source' => '_id',
+        'query'   => [
+            'constant_score' => [
+                'filter' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'terms' => [ // <-- See the usage of 'terms' operator here as it is likely that multiple options might be removed at once
+                                    'links.option.color_brand_fingerprint' => ['blue', 'yellow']
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ]
