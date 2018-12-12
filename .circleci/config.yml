@@ -51,6 +51,7 @@ jobs:
       environment:
         COMPOSER_MEMORY_LIMIT: 5G
       user: docker
+    parallelism: 2
     steps:
     - checkout
     - run:
@@ -64,7 +65,9 @@ jobs:
           mkdir -p var/logs
     - run:
         name: PhpSpec
-        command: ./vendor/bin/phpspec run --format=junit > ~/test/results/phpspec/junit_output.xml
+        command: |
+          TESTFILES=$(circleci tests glob "tests/back/Pim/Enrichment/Specification/Component/Product/Connector/ArrayConverter/FlatToStandard/*")
+          ./vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
     - run:
         name: PhpCoupling Detector
         command: |
