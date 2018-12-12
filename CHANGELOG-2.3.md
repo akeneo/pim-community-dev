@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7924: Raise more information for error messages on command lines for asset variation generations
+- PIM-7922: Fix commandline for asset variation generation by using by default the asset reference.
 
 # 2.3.21 (2018-12-07)
 
