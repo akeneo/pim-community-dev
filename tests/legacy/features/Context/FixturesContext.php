@@ -128,6 +128,7 @@ class FixturesContext extends BaseFixturesContext
 
         $convertedData = $converter->convert($data);
         $product = $processor->process($convertedData);
+        $this->validate($product);
         $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values

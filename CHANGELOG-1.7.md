@@ -1,14 +1,20 @@
+# 1.7.x
+
+## Bug fixes
+
+-PIM-7841: Allow users to set regional locales for UI (en_NZ, pt_PT and pt_BR)
+
 # 1.7.35 (2018-11-26)
 
 ## Bug fixes
 
-PIM-7870: Fix issue in the case of deletion of attribute used in a user default product grid filter.
+- PIM-7870: Fix issue in the case of deletion of attribute used in a user default product grid filter.
 
 # 1.7.34 (2018-11-12)
 
 ## Bug fixes
 
-PIM-7581: Fix unselect category when its code is numeric
+- PIM-7581: Fix unselect category when its code is numeric
 
 # 1.7.33 (2018-10-10)
 
