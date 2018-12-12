@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7892: Allow to filter on active catalog locale when adding an attribute to the product export filters
 - PIM-7898: Fix tab navigation when the column is collapsed
 - PIM-7866: Do not show delete icon on import/export profile if the user doesn't have the right to delete.
 
