@@ -4,8 +4,14 @@ jobs:
     machine:
         enabled: true
         docker_layer_caching: true
+    parallelism: 4
     steps:
     - checkout
+    - run:
+        name: PHPunit
+        command: |
+          TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
+          echo ${TESTFILES}
     - run:
         name: Copy env file
         command: |
@@ -37,11 +43,12 @@ jobs:
 #    - run:
 #        name: PHPunit
 #        command: |
-#          docker-compose exec fpm ./vendor/bin/phpunit -c app
-    - run:
-        name: Behat
-        command: |
-          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
+#          TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
+#          docker-compose exec fpm ./vendor/bin/phpunit -c app ${TESTFILES}
+#    - run:
+#        name: Behat
+#        command: |
+#          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
     - store_test_results:
         path: ~/test/results
 
@@ -167,8 +174,8 @@ workflows:
   version: 2
   workflow:
     jobs:
-#      - test_back
-      - test_static_back
+      - test_back
+#      - test_static_back
 #      - test_static_front
 #          requires:
 #            - test_static_back
