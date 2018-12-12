@@ -24,13 +24,20 @@
   }
 
   &-noDataImage {
-    background: url("../../../images/illustration-attribute.svg") no-repeat center center;
+    background-image: url("../../../images/illustration-attribute.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
     height: 200px;
     width: 200px;
     margin-bottom: 30px;
+    background-size: 100% auto;
 
     &--associations {
-       background: url("../../../images/illustrations/Association-types.svg") no-repeat center center;
+      background-image: url("../../../images/illustrations/Association-types.svg");
+    }
+
+    &--reference-entity {
+      background-image: url("../../../images/illustrations/NoResult.svg");
     }
   }
 
