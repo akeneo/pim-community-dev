@@ -8,7 +8,9 @@ jobs:
     - checkout
     - run:
         name: Copy env file
-        command: cp .env.dist .env
+        command: |
+          cp .env.dist .env
+          cp behat.yml.dist behat.yml
 #    - run:
 #        name: Create config files
 #        command: |
@@ -32,14 +34,14 @@ jobs:
           docker-compose run --rm node yarn run webpack-dev
           docker-compose run --rm node yarn run webpack-test
           mkdir -p var/logs
-    - run:
-        name: PHPunit
-        command: |
-          docker-compose exec fpm ./vendor/bin/phpunit -c app
 #    - run:
-#        name: Behat
+#        name: PHPunit
 #        command: |
-#          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
+#          docker-compose exec fpm ./vendor/bin/phpunit -c app
+    - run:
+        name: Behat
+        command: |
+          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
     - store_test_results:
         path: ~/test/results
 
