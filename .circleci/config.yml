@@ -84,7 +84,6 @@ jobs:
 #    - run:
 #        name: Acceptance
 #        command: vendor/bin/behat --strict -p acceptance -vv
-
     - store_test_results:
         path: ~/test/results
 
@@ -163,8 +162,8 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - test_back
-#      - test_static_back
+#      - test_back
+      - test_static_back
 #      - test_static_front
 #          requires:
 #            - test_static_back
