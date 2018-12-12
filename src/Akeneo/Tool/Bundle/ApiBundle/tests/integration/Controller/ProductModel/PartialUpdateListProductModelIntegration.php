@@ -47,6 +47,9 @@ class PartialUpdateListProductModelIntegration extends AbstractProductModelTestC
         ]);
     }
 
+    /**
+     * @critical
+     */
     public function testCreateAndUpdateAListOfProductModels()
     {
         $data =

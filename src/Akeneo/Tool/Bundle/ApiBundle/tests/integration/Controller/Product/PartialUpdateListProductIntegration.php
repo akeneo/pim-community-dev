@@ -22,6 +22,9 @@ class PartialUpdateListProductIntegration extends AbstractProductTestCase
         ]);
     }
 
+    /**
+     * @critical
+     */
     public function testCreateAndUpdateAListOfProducts()
     {
         $data =

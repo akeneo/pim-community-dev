@@ -8,6 +8,7 @@ Feature: Navigate among variant entities
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Browse ascendant and descendant entities on 2 levels of variation
     When I edit the "apollon" product model
     Then the variant navigation selected axis values for level 0 should be "Common"
@@ -45,6 +46,7 @@ Feature: Navigate among variant entities
     When I navigate to the selected element for level 0
     Then I should be on the product model "apollon" edit page
 
+  @critical
   Scenario: Browse ascendant and descendant entities on 1 level of variation
     When I edit the "brooksblue" product model
     Then the variant navigation selected axis values for level 0 should be "Common"

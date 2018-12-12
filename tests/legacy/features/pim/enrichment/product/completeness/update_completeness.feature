@@ -22,6 +22,7 @@ Feature: Display the completeness of a product
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
+  @critical
   Scenario: Successfully update the completeness at product save
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab

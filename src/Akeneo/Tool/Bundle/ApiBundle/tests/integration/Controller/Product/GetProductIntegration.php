@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductIntegration extends AbstractProductTestCase
 {
+    /**
+     * @critical
+     */
     public function testGetACompleteProduct()
     {
         $products = $this->get('pim_catalog.repository.product')->findAll();
