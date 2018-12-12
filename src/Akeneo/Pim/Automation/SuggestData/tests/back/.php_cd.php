@@ -34,9 +34,6 @@ $rules = [
             'Symfony\Component\EventDispatcher\GenericEvent',
             'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
 
-            //Subscribers
-            'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
@@ -68,6 +65,7 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
 
