@@ -9,9 +9,15 @@ services:
         arguments:
             - '@akeneo_authentication.sso.configuration.repository'
 
-    akeneo_authentication.sso.configuration.controller:
+    akeneo_authentication.sso.configuration.ui.controller:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Controller'
         arguments:
             - '@validator'
             - '@pim_internal_api_serializer'
             - '@akeneo_authentication.sso.configuration.create_or_update_handler'
+            - '@akeneo_authentication.sso.configuration.repository'
+
+    akeneno_authentication.sso.configuration.ui.normalizer:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

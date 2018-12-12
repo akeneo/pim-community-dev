@@ -1,13 +1,14 @@
-# Internal API
-authentication_sso_configuration_get:
-    path: /sso-configuration
-    methods: [GET]
-
-authentication_sso_configuration_save:
-    path: /sso-configuration
-    methods: [POST]
-    defaults: { _controller: akeneo_authentication.sso.configuration.controller:saveAction }
-
 # UI
 authentication_sso_configuration_edit:
     path: /sso-configuration
+
+# Internal API
+authentication_sso_configuration_get:
+    path: /rest/sso-configuration
+    methods: [GET]
+    defaults: { _controller: akeneo_authentication.sso.configuration.ui.controller:getAction }
+
+authentication_sso_configuration_save:
+    path: /rest/sso-configuration
+    methods: [POST]
+    defaults: { _controller: akeneo_authentication.sso.configuration.ui.controller:saveAction }

@@ -11,7 +11,7 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repos
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-final class CreateOrUpdateConfigurationHandler
+class CreateOrUpdateConfigurationHandler
 {
     /** @var Repository */
     private $repository;

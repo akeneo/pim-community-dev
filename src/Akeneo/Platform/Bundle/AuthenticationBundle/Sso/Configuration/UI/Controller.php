@@ -6,6 +6,8 @@ namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI;
 
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,14 +31,19 @@ final class Controller
     /** @var CreateOrUpdateConfigurationHandler */
     private $createOrUpdateConfigHandler;
 
+    /** @var Repository */
+    private $repository;
+
     public function __construct(
         ValidatorInterface $validator,
         NormalizerInterface $normalizer,
-        CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler
+        CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
+        Repository $repository
     ) {
         $this->validator = $validator;
         $this->normalizer = $normalizer;
         $this->createOrUpdateConfigHandler = $createOrUpdateConfigHandler;
+        $this->repository = $repository;
     }
 
     public function saveAction(Request $request): JsonResponse
@@ -68,5 +75,25 @@ final class Controller
         $this->createOrUpdateConfigHandler->handle($createOrUpdateConfig);
 
         return new JsonResponse();
+    }
+
+    public function getAction()
+    {
+        try {
+            $config = $this->repository->find(self::CONFIGURATION_CODE);
+            $normalizedConfig = $this->normalizer->normalize($config, 'internal_api');
+
+            return new JsonResponse($normalizedConfig);
+        } catch (ConfigurationNotFound $e) {
+            return new JsonResponse([
+                'enabled'                              => false,
+                'identity_provider_entity_id'          => '',
+                'identity_provider_url'                => '',
+                'identity_provider_public_certificate' => '',
+                'service_provider_entity_id'           => '',
+                'service_provider_public_certificate'  => '',
+                'service_provider_private_certificate' => '',
+            ]);
+        }
     }
 }
