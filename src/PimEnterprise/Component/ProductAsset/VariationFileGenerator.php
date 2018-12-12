@@ -167,7 +167,11 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      */
     protected function retrieveSourceFileInfo(VariationInterface $variation)
     {
-        if (null === $sourceFileInfo = $variation->getSourceFileInfo()) {
+        $sourceFileInfo = $variation->getSourceFileInfo();
+        if (null === $sourceFileInfo) {
+            $sourceFileInfo = $variation->getReference()->getFileInfo();
+        }
+        if (null === $sourceFileInfo) {
             throw new \LogicException(sprintf('The variation "%s" has no source file.', $variation->getId()));
         }
 
