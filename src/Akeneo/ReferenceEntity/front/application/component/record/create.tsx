@@ -101,7 +101,11 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                       className="AknTextField AknTextField--light"
                       id="pim_reference_entity.record.create.input.label"
                       name="label"
-                      value={undefined === this.props.data.labels[this.props.context.locale] ? '' : this.props.data.labels[this.props.context.locale]}
+                      value={
+                        undefined === this.props.data.labels[this.props.context.locale]
+                          ? ''
+                          : this.props.data.labels[this.props.context.locale]
+                      }
                       onChange={this.onLabelUpdate}
                       onKeyPress={this.onKeyPress}
                     />
@@ -134,14 +138,19 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
                 </div>
                 <div className="AknFieldContainer" data-code="create_another">
                   <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                    <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.record.create.input.create_another">
-                      <Checkbox id="pim_reference_entity.record.create.input.create_another" value={this.state.createAnother} onChange={(newValue: boolean) => this.setState({createAnother: newValue})}/>
+                    <label
+                      className="AknFieldContainer-label"
+                      htmlFor="pim_reference_entity.record.create.input.create_another"
+                    >
+                      <Checkbox
+                        id="pim_reference_entity.record.create.input.create_another"
+                        value={this.state.createAnother}
+                        onChange={(newValue: boolean) => this.setState({createAnother: newValue})}
+                      />
                       <span>{__('pim_reference_entity.record.create.input.create_another')}</span>
                     </label>
                   </div>
-                  <div className="AknFieldContainer-inputContainer">
-
-                  </div>
+                  <div className="AknFieldContainer-inputContainer" />
                 </div>
               </div>
             </div>
@@ -158,7 +167,7 @@ class Create extends React.Component<CreateProps, {createAnother: boolean}> {
           <button
             className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
             onClick={() => {
-              this.props.events.onSubmit(this.state.createAnother)
+              this.props.events.onSubmit(this.state.createAnother);
             }}
           >
             {__('pim_reference_entity.record.create.confirm')}
