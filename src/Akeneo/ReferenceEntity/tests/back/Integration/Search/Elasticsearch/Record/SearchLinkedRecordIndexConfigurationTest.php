@@ -26,7 +26,6 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
     {
         $query = [
             '_source' => '_id',
-            'sort'    => ['updated_at' => 'desc'],
             'query'   => [
                 'constant_score' => [
                     'filter' => [
@@ -34,7 +33,7 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'term' => [
-                                        'linked_to_records' => 'brand_kartell',
+                                        'links.brand' => 'brand_kartell',
                                     ],
                                 ],
                             ],
@@ -55,7 +54,6 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
     {
         $query = [
             '_source' => '_id',
-            'sort'    => ['updated_at' => 'desc'],
             'query'   => [
                 'constant_score' => [
                     'filter' => [
@@ -63,7 +61,120 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
                             'filter' => [
                                 [
                                     'term' => [
-                                        'linked_to_records' => 'unknown_record',
+                                        'links.brand' => 'unknown_record',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        Assert::assertSame([], $matchingIdentifiers);
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_all_records_linked_to_a_specific_reference_entity()
+    {
+        $query = [
+            '_source' => '_id',
+            'sort'    => ['updated_at' => 'desc'],
+            'query'   => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'exists' => [
+                                        'field' => 'links.brand'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        Assert::assertSame(['designer_stark'], $matchingIdentifiers);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_find_records_linked_to_a_specific_reference_entity()
+    {
+        $query = [
+            '_source' => '_id',
+            'query'   => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'exists' => [
+                                        'field' => 'links.unknown'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        Assert::assertSame([], $matchingIdentifiers);
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_records_linked_to_a_specific_attribute_option()
+    {
+        $query = [
+            '_source' => '_id',
+            'query'   => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => [
+                                        'links.color_brand_fingerprint' => ['blue', 'yellow']
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $matchingIdentifiers = $this->searchRecordIndexHelper->executeQuery($query);
+        Assert::assertSame(['designer_stark'], $matchingIdentifiers);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_find_records_linked_to_an_attribute_option()
+    {
+        $query = [
+            '_source' => '_id',
+            'query'   => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => [
+                                        'links.color_brand_fingerprint' => ['yellow']
                                     ],
                                 ],
                             ],
@@ -84,14 +195,17 @@ class SearchLinkedRecordIndexConfigurationTest extends SearchIntegrationTestCase
             'identifier'              => 'designer_stark',
             'code'                    => 'stark',
             'updated_at'              => date_create('2018-01-01')->getTimestamp(),
-            'linked_to_records'       => ['brand_kartell'],
+            'links'       => [
+                'brand' => ['brand_kartell'], // Link to a specific reference entity and a specific record
+                'color_brand_fingerprint' => ['red', 'blue'] // link to a specific attribute and a specific attribute option
+            ],
         ];
         $to = [
             'reference_entity_code'   => 'brand',
             'identifier'              => 'brand_kartell',
             'code'                    => 'kartell',
             'updated_at'              => date_create('2018-01-01')->getTimestamp(),
-            'linked_to_records'       => [],
+            'links'       => [],
         ];
 
         $this->searchRecordIndexHelper->index([$from, $to]);

@@ -36,15 +36,6 @@ class RemoveRecordFromIndexSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * /!\ Because of the linked attribute, we need to re-save (and reindex) the records that are linked to the deleted
-     * record to update their completeness.
-     *
-     * One idea would be to use a projection to keep track of the linked records between themselves, to easily resave
-     * all the records when the record is removed.
-     *
-     * @param RecordDeletedEvent $recordDeletedEvent
-     */
     public function whenRecordDeleted(RecordDeletedEvent $recordDeletedEvent): void
     {
         $this->recordIndexer->removeRecordByReferenceEntityIdentifierAndCode(

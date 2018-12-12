@@ -6,7 +6,6 @@ namespace spec\Akeneo\ReferenceEntity\Application\Record\Subscribers;
 
 use Akeneo\ReferenceEntity\Application\Record\Subscribers\IndexByReferenceEntityInBackgroundInterface;
 use Akeneo\ReferenceEntity\Domain\Event\AttributeDeletedEvent;
-use Akeneo\ReferenceEntity\Domain\Event\AttributeUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -36,7 +35,6 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
     {
         $this::getSubscribedEvents()->shouldReturn([
             RecordUpdatedEvent::class    => 'whenRecordUpdated',
-            AttributeUpdatedEvent::class => 'whenAttributeIsUpdated',
             AttributeDeletedEvent::class => 'whenAttributeIsDeleted',
         ]);
     }
@@ -47,19 +45,6 @@ class IndexRecordSubscriberSpec extends ObjectBehavior
         $recordIndexer->index($recordIdentifier)->shouldBeCalled();
 
         $this->whenRecordUpdated(new RecordUpdatedEvent($recordIdentifier));
-    }
-
-    function it_runs_a_reindexing_command_when_an_attribute_is_updated(
-        IndexByReferenceEntityInBackgroundInterface $indexByReferenceEntityInBackground
-    ) {
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $this->whenAttributeIsUpdated(
-            new AttributeUpdatedEvent(
-                $referenceEntityIdentifier,
-                AttributeIdentifier::fromString('name_designer_123')
-            )
-        );
-        $indexByReferenceEntityInBackground->execute($referenceEntityIdentifier)->shouldBeCalled();
     }
 
     function it_runs_a_reindexing_command_when_an_attribute_is_removed(

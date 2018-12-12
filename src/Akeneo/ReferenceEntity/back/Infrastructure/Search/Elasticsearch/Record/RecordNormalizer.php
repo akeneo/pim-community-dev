@@ -60,6 +60,7 @@ class RecordNormalizer implements RecordNormalizerInterface
         $fullTextMatrix = $this->fillMatrix($matrixWithValueKeys, $searchableRecordItem);
         $codeLabelMatrix = $this->createCodeLabelMatrix($searchableRecordItem);
         $filledValueKeysMatrix = $this->generateFilledValueKeys($searchableRecordItem);
+        $recordsLinkedTo = $this->getRecordsIdentifierItIsLinkedTo($searchableRecordItem);
 
         return $this->normalize(
             $searchableRecordItem,
@@ -177,5 +178,11 @@ class RecordNormalizer implements RecordNormalizerInterface
         ];
 
         return $normalizedRecord;
+    }
+
+    private function getRecordsIdentifierItIsLinkedTo(SearchableRecordItem $searchableRecordItem)
+    {
+        $this->findRecordAttributeIdentifiers(ReferenceEntityIdentifier::fromString($searchableRecordItem->referenceEntityIdentifier));
+
     }
 }

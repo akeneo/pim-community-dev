@@ -14,8 +14,6 @@ mappings:
                 type: 'keyword'
             updated_at:
                 type: 'date'
-            linked_to_records:
-                type: 'keyword'
         dynamic_templates:
             -
                 record_full_text_search:
@@ -34,3 +32,8 @@ mappings:
                     path_match: 'complete_value_keys.*'
                     mapping:
                         type: 'boolean'
+            -
+                links:
+                    path_match: 'links.*.*'
+                    mapping:
+                        type: 'keyword'
