@@ -53,7 +53,7 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
             case Operators::IN_LIST:
                 $clause = [
                     'terms' => [
-                        $field => $value,
+                        $field => array_map('strtolower', (array) $value),
                     ],
                 ];
 

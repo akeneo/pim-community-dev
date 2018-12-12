@@ -32,7 +32,6 @@ mappings:
                 type: 'keyword'
             parent:
                 type: 'keyword'
-                normalizer: 'identifier_normalizer'
             ancestors.codes:
                 type: 'keyword'
             ancestors.ids:
