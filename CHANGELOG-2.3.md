@@ -4,11 +4,6 @@
 
 - PIM-7898: Fix tab navigation when the column is collapsed
 - PIM-7866: Do not show delete icon on import/export profile if the user doesn't have the right to delete.
-- PIM-7910: Search parent filter is now case insensitive
-
-## Elasticsearch
-
-- Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
 
 # 2.3.21 (2018-12-07)
 
