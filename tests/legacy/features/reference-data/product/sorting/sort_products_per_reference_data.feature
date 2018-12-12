@@ -36,8 +36,8 @@ Feature: Sort products
       | whatever | sku                 | sku                    |
     And the following products:
       | sku      | family   |
-      | productA | whatever |
-      | productB | whatever |
+      | productA |          |
+      | productB |          |
     And the following product values:
       | product  | attribute | value |
       | productA | color     | Red   |
