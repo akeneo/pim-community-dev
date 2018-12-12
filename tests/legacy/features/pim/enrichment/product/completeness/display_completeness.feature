@@ -23,6 +23,7 @@ Feature: Display the completeness of a product
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
+  @critical
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
@@ -51,6 +52,7 @@ Feature: Display the completeness of a product
       | mobile  | en_US  | warning | 3              | 40%   |
       | mobile  | fr_FR  | warning | 2              | 60%   |
 
+  @critical
   Scenario: Successfully display the completeness of the products in the grid
     Given I am on the products grid
     When I switch the locale to "en_US"

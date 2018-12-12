@@ -37,6 +37,7 @@ JSON;
 
     /**
      * @group ce
+     * @critical
      */
     public function testSearchAfterPaginationListProductModelsWithNextLink()
     {

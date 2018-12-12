@@ -14,6 +14,7 @@ Feature: Update the product associations
     And I am on the "spongebob" product page
     And I visit the "Associations" column tab
 
+  @critical
   Scenario: Successfully add an association
     Given I press the "Add associations" button and wait for modal
     And I check the row "patrick"
@@ -35,6 +36,7 @@ Feature: Update the product associations
     Then I should not see product "patrick"
     And I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
+  @critical
   Scenario: Successfully add a product model as association
     Given I should see the text "There are no associated products"
     And I press the "Add associations" button and wait for modal

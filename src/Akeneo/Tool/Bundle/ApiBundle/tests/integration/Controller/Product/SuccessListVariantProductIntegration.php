@@ -129,6 +129,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
 
     /**
      * Get all products, whatever locale, scope, category with the default pagination type that is with an offset.
+     * @critical
      */
     public function testDefaultPaginationListProductsWithoutParameter()
     {

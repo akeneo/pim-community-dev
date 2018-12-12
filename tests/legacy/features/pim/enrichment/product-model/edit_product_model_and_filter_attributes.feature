@@ -12,6 +12,7 @@ Feature: Edit product model and filter attributes
     And I am logged in as "Julia"
     And I am on the "model-nin" product model page
 
+  @critical
   Scenario: Edit the product model and show only missing required attributes
     When I filter attributes with "All missing required attributes"
     And I visit the "All" group

@@ -13,6 +13,7 @@ class GetProductModelIntegration extends ApiTestCase
 {
     /**
      * @group ce
+     * @critical
      */
     public function testSuccessfullyGetProductModel()
     {

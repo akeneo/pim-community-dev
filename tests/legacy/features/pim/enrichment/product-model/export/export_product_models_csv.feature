@@ -8,6 +8,7 @@ Feature: Export variant products through CSV export
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Export product models through CSV
     Given the following associations for the product model "amor":
       | type   | products   |
