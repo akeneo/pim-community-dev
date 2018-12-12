@@ -172,6 +172,7 @@ Feature: Datagrid views
     And I should see the text "Default view"
     And I should not see the text "Sneakers only"
 
+  @critical
   Scenario: Successfully display values in grid when using a custom default view
     Given I am on the products grid
     And I display the columns SKU, Name, Family and Manufacturer
@@ -216,6 +217,7 @@ Feature: Datagrid views
     And I should see the text "Mobile only"
     And I should see the text "Mobile"
 
+  @critical
   Scenario: Successfully display the default view if my custom default view has been deleted
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
