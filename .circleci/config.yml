@@ -67,8 +67,7 @@ jobs:
         name: PhpSpec
         command: |
           TESTFILES=$(circleci tests split toto.txt)
-#          TESTFILES=$(circleci tests glob "tests/back/Pim/Enrichment/Specification/Component/Product/Connector/ArrayConverter/FlatToStandard/*" | circleci tests split)
-          ./vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
+          vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
     - run:
         name: PhpCoupling Detector
         command: |
