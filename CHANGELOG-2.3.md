@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7924: Raise more information for error messages on command lines for asset variation generations
+
 # 2.3.21 (2018-12-07)
 
 # 2.3.20 (2018-12-06)

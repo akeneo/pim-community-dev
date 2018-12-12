@@ -53,7 +53,7 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
                     $this->variationFileGenerator->generate($variation);
                     $processedVariations->addItem($variation, ProcessedItem::STATE_SUCCESS);
                 } catch (\Exception $e) {
-                    $processedVariations->addItem($variation, ProcessedItem::STATE_ERROR, null, $e);
+                    $processedVariations->addItem($variation, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
                 }
             } else {
                 $processedVariations->addItem(
