@@ -2,7 +2,21 @@
 
 ## Bug fixes
 
--GITHUB-7532: Fix the prepopulation of textarea field - cheers MarieMinasyan, userz58, kanduvisla & oliverde8 !    
+- GITHUB-7932: Fix the requirements with mysql port - cheers @Schwierig !
+- PIM-7886: Fix translations of boolean attributes
+- PIM-7902: Fix unnecessary calls for unread messages count on page navigation
+
+# 2.0.44 (2018-11-29)
+
+## Bug fixes
+
+- PIM-7855: Fix the add of optional attributes on product with family, if imported file doesn't have the family column    
+
+# 2.0.43 (2018-11-27)
+
+## Bug fixes
+
+- GITHUB-7532: Fix the prepopulation of textarea field - cheers @MarieMinasyan, @userz58, kanduvisla & @oliverde8 !
 
 # 2.0.42 (2018-11-12)
 
