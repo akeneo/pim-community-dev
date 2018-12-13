@@ -35,7 +35,7 @@ class FileIntegration extends AbstractAttributeTestCase
 
         $violations = $this->validateAttribute($attribute);
 
-        $this->assertCount(1, $violations);
+        $this->assertCount(69, $violations);
         $this->assertSame('"invalid" is not a supported file extension. Valid extensions are: csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav', $violations->get(0)->getMessage());
         $this->assertSame('allowedExtensions', $violations->get(0)->getPropertyPath());
     }
