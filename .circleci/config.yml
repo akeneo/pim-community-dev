@@ -39,13 +39,15 @@ jobs:
         name: PHPunit
         command: |
           TESTFILES=$(circleci tests glob "tests/back/Pim/Structure/Integration/Attribute/Validation/*Integration.php" | circleci tests split)
-          echo ${TESTFILES} | xargs -n 1 docker-compose exec -T fpm ./vendor/bin/phpunit -c app
+          echo ${TESTFILES} | xargs -n 1 docker-compose exec -T fpm ./vendor/bin/phpunit -c app --log-junit ~/test/results/phpunit_$(uuidgen).xml
 #          docker-compose exec fpm ./vendor/bin/phpunit -c app ${TESTFILES}
 #    - run:
 #        name: Behat
 #        command: |
 #          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
     - store_test_results:
+        path: ~/test/results
+    - store_artifacts:
         path: ~/test/results
 
   test_static_back:
