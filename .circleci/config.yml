@@ -39,7 +39,7 @@ jobs:
         name: PHPunit
         command: |
           TESTFILES=$(circleci tests glob "tests/back/Pim/Structure/Integration/Attribute/Validation/*Integration.php" | circleci tests split)
-          echo ${TESTFILES} | xargs -n 1 docker-compose exec fpm ./vendor/bin/phpunit -c app
+          echo ${TESTFILES} | xargs -n 1 docker-compose exec -T fpm ./vendor/bin/phpunit -c app
 #          docker-compose exec fpm ./vendor/bin/phpunit -c app ${TESTFILES}
 #    - run:
 #        name: Behat
