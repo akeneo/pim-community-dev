@@ -12,6 +12,10 @@ jobs:
         command: |
           cp .env.dist .env
           cp behat.yml.dist behat.yml
+    - run:
+        name: Setup tests results folder
+        command: |
+          mkdir -p ~/test/results
 #    - run:
 #        name: Create config files
 #        command: |
