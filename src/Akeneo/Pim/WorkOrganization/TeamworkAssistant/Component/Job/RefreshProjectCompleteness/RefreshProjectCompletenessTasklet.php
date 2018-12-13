@@ -12,7 +12,6 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\RefreshProjectCompleteness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\RefreshProjectCompletenessJobLauncher;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -29,7 +28,7 @@ class RefreshProjectCompletenessTasklet implements TaskletInterface
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var RefreshProjectCompletenessJobLauncher */
+    /** @var ProjectItemCalculatorInterface */
     protected $attributeGroupCompletenessCalculator;
 
     /** @var PreProcessingRepositoryInterface */
