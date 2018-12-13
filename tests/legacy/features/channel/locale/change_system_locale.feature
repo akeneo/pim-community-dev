@@ -31,8 +31,8 @@ Feature: Change system locale
   Scenario: Successfully display a localized login form according to the system locale
     Given I am on the System index page
     And I select French locale
-    And I wait 30 seconds
     And I press the "Save" button
+    And I visit the "Notifications" tab
     Then I should not see the text "There are unsaved changes."
     And I logout
     And I should see the "Connexion" button
@@ -41,23 +41,7 @@ Feature: Change system locale
     Given I am on the System index page
     And I select French locale
     And I press the "Save" button
-    And I wait 30 seconds
+    And I visit the "Loading messages" tab
     Then I should not see the text "There are unsaved changes."
     And I logout
     And I should see the "Connexion" button
-
-
-  Scenario: Successfully display a localized login form according to the system locale
-    Given I am on the System index page
-    And I select French locale
-    And I wait 30 seconds
-    And I press the "Save" button
-    And I wait 30 seconds
-    Then I should not see the text "There are unsaved changes."
-    And I logout
-    And I should see the "Connexion" button
-
-  Scenario: Successfully display a localized login form according to the system locale
-    Given I am on the System index page
-    And I select French locale
-    And I should see the text "NOPE THERE IS NOT THIS TEXT"
