@@ -15,7 +15,7 @@ jobs:
     - run:
         name: Setup tests results folder
         command: |
-          mkdir -p ~/test/results
+          mkdir -p var/tests
 #    - run:
 #        name: Create config files
 #        command: |
@@ -30,7 +30,6 @@ jobs:
         name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
         command: |
           chmod 777 ../project -R
-          chmod 777 ~/test/results -R
     - run:
         name: Start containers
         command: |
@@ -45,16 +44,16 @@ jobs:
         name: PHPunit
         command: |
           TESTFILES=$(circleci tests glob "tests/back/Pim/Structure/Integration/Attribute/Validation/*Integration.php" | circleci tests split)
-          echo ${TESTFILES} | xargs -n 1 docker-compose exec -T fpm ./vendor/bin/phpunit -c app --log-junit ~/test/results/phpunit_$(uuidgen).xml
+          echo ${TESTFILES} | xargs -n 1 docker-compose exec -T fpm ./vendor/bin/phpunit -c app --log-junit var/tests/phpunit_$(uuidgen).xml
 #          docker-compose exec fpm ./vendor/bin/phpunit -c app ${TESTFILES}
 #    - run:
 #        name: Behat
 #        command: |
 #          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
     - store_test_results:
-        path: ~/test/results
+        path: var/tests
     - store_artifacts:
-        path: ~/test/results
+        path: var/tests
 
   test_static_back:
     docker:
