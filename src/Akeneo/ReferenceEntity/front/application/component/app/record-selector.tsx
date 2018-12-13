@@ -190,6 +190,8 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
           };
         })(select2.onSelect);
       }
+    } else {
+      this.el.prop("type", "text");
     }
   }
 
@@ -224,6 +226,14 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
           type="hidden"
           value={this.normalizeValue(this.props.value)}
           disabled={this.props.readOnly}
+          onChange={(event: any) => {
+            const newValue = this.props.multiple
+              ? event.target.value.split(',').map((recordCode: string) => RecordCode.create(recordCode))
+              : '' === event.target.value
+                ? null
+                : RecordCode.create(event.target.value);
+            this.props.onChange(newValue);
+          }}
         />
         {!props.multiple && null !== this.props.value ? (
           <a
