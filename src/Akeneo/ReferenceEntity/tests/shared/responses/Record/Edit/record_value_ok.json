@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "route": "akeneo_reference_entities_record_edit_rest",
+    "query": {
+      "recordCode": "starck",
+      "referenceEntityIdentifier": "designer"
+    },
+    "body": {
+      "identifier": "designer_starck_a1677570-a278-444b-ab46-baa1db199392",
+      "reference_entity_identifier": "designer",
+      "code": "starck",
+      "labels": {
+        "fr_FR": "Philippe Starck"
+      },
+      "image": null,
+      "values":[
+        {
+          "attribute":"linked_brand_designer_fingerprint",
+          "channel":null,
+          "locale":"en_US",
+          "data":"ikea"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 204
+  }
+}
