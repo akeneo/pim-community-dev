@@ -28,7 +28,9 @@ jobs:
 #          cp ./app/config/parameters_test.yml ./app/config/parameters.yml
     - run:
         name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
-        command: chmod 777 ../project -R
+        command: |
+          chmod 777 ../project -R
+          chmod 777 ~/test/results -R
     - run:
         name: Start containers
         command: |
