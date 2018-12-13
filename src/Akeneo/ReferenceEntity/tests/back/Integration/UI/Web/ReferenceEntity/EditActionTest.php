@@ -127,9 +127,44 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_an_access_denied_if_the_user_does_not_have_permissions(): void
+    {
+        $this->client->followRedirects(false);
+        $this->forbidsEdit();
+        $postContent = [
+            'identifier' => 'designer',
+            'labels'     => [
+                'en_US' => 'foo',
+            ],
+        ];
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::REFERENCE_ENTITY_EDIT_ROUTE,
+            ['identifier' => 'designer'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $postContent
+        );
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
     private function getEnrichEntityRepository(): ReferenceEntityRepositoryInterface
     {
         return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+    }
+
+    private function forbidsEdit(): void
+    {
+        $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity')
+            ->forbid();
     }
 
     private function loadFixtures(): void

@@ -23,6 +23,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\EditAction
         arguments:
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
+            - '@akeneo_referenceentity.application.permission.permission_query_handler'
+            - '@pim_user.context.user'
             - '@reference_entity_serializer'
             - '@validator'
 

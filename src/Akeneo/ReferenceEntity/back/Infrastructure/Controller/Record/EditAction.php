@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
+use Akeneo\ReferenceEntity\Application\Permission\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
@@ -33,7 +34,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditRecordCommandFactory  */
+    /** @var EditRecordCommandFactory */
     private $editRecordCommandFactory;
 
     /** @var EditRecordHandler */

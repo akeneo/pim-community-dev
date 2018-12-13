@@ -12,12 +12,16 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
+use Akeneo\ReferenceEntity\Application\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\Permission\PermissionQueryHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,14 +42,24 @@ class EditAction
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var PermissionQueryHandler */
+    private $permissionCheckQueryHandler;
+
+    /** @var UserContext */
+    private $userContext;
+
     public function __construct(
         EditReferenceEntityHandler $editReferenceEntityHandler,
+        PermissionQueryHandler $permissionCheckQueryHandler,
+        UserContext $userContext,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
+        $this->permissionCheckQueryHandler = $permissionCheckQueryHandler;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->userContext = $userContext;
     }
 
     public function __invoke(Request $request): Response
@@ -58,6 +72,9 @@ class EditAction
                 'Reference entity identifier provided in the route and the one given in the body of your request are different',
                 Response::HTTP_BAD_REQUEST
             );
+        }
+        if (!$this->isUserAllowedToEdit($request)) {
+            throw new AccessDeniedHttpException();
         }
 
         $command = $this->serializer->deserialize($request->getContent(), EditReferenceEntityCommand::class, 'json');
@@ -80,5 +97,27 @@ class EditAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $normalizedCommand['identifier'] !== $request->get('identifier');
+    }
+
+    private function isUserAllowedToEdit(Request $request): bool
+    {
+        return
+            // $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_create') && // Check ACL?
+            $this->userHasPermission($request);
+    }
+
+    private function userHasPermission(Request $request): bool
+    {
+        $user = $this->userContext->getUser();
+        $referenceEntityCode = json_decode($request->getContent(), true)['code'] ?? null;
+        if (null === $user || null === $referenceEntityCode) {
+            return false;
+        }
+
+        $permissionCheckQuery = new CanEditReferenceEntityQuery();
+        $permissionCheckQuery->userIdentifier = $user->getId();
+        $permissionCheckQuery->referenceEntityIdentifier = $referenceEntityCode;
+
+        return ($this->permissionCheckQueryHandler)($permissionCheckQuery);
     }
 }

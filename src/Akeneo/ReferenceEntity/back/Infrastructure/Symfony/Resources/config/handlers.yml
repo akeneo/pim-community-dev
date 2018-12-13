@@ -76,3 +76,5 @@ services:
 
     akeneo_referenceentity.application.permission.permission_query_handler:
         class: Akeneo\ReferenceEntity\Application\Permission\PermissionQueryHandler
+        arguments:
+            - '@akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity'
