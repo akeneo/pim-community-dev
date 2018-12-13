@@ -179,7 +179,7 @@ SQL;
         $parameters = $this->buildQueryParameters($project);
 
         $sql = <<<SQL
-SELECT `product`.`identifier`
+SELECT `product`.`id`
 FROM 
      `@pim_catalog.entity.product@` AS `product`
       INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
@@ -189,7 +189,7 @@ FROM
       INNER JOIN `@pimee_teamwork_assistant.project_product@` AS `project_product`
         ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
         AND `project_product`.`project_id` = :project_id
-GROUP BY `product`.`identifier`
+GROUP BY `product`.`id`
 SQL;
 
         if ($status === ProjectCompletenessFilter::OWNER_TODO) {
@@ -217,7 +217,7 @@ SQL;
         $sql = $this->tableNameMapper->createQuery($sql);
         $productIds = $connection->fetchAll($sql, $parameters);
 
-        return array_column($productIds, 'identifier');
+        return array_column($productIds, 'id');
     }
 
     /**
