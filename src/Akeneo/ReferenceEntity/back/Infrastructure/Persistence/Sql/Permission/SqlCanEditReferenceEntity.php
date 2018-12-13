@@ -6,7 +6,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Permission;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Permission\CanEditReferenceEntityInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Permission\UserIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\UserIdentifier;
 use Doctrine\DBAL\Driver\Connection;
 
 /**

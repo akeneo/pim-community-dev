@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Domain\Query\Permission;
+namespace Akeneo\ReferenceEntity\Domain\Model;
 
 use Webmozart\Assert\Assert;
 

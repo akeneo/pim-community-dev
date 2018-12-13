@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Application\Permission;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\UserIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Permission\CanEditReferenceEntityInterface;
-use Akeneo\ReferenceEntity\Domain\Query\Permission\UserIdentifier;
 
 /**
  * Query handler that determines wether a an action is authorized.
