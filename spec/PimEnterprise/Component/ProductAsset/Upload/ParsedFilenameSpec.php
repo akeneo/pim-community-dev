@@ -22,11 +22,11 @@ class ParsedFilenameSpec extends ObjectBehavior
 
     function it_cleans_filename_with_invalid_characters(LocaleInterface $locale)
     {
-        $this->beConstructedWith([$locale], 'f+oo-bar.jpg');
+        $this->beConstructedWith([$locale], 'f+oo-bar.test.jpg');
 
-        $this->getAssetCode()->shouldReturn('f_oo_bar');
+        $this->getAssetCode()->shouldReturn('f_oo_bar_test');
         $this->getLocaleCode()->shouldReturn(null);
-        $this->getCleanFilename()->shouldReturn('f_oo_bar.jpg');
+        $this->getCleanFilename()->shouldReturn('f_oo_bar_test.jpg');
     }
 
     function it_parses_a_simple_non_localizable_filename()
