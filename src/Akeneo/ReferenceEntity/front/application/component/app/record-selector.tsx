@@ -191,7 +191,7 @@ export default class RecordSelector extends React.Component<RecordSelectorProps 
         })(select2.onSelect);
       }
     } else {
-      this.el.prop("type", "text");
+      this.el.prop('type', 'text');
     }
   }
 
