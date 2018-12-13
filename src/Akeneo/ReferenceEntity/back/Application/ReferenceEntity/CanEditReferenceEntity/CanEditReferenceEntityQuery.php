@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\Permission;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CanEditValueQuery extends PermissionCheckQuery
+class CanEditReferenceEntityQuery
 {
-    /** @var string $referenceEntityIdentifier */
+    /** @var string */
     public $referenceEntityIdentifier;
 
     /** @var string */
-    public $localeIdentifier;
+    public $principalIdentifier;
 }

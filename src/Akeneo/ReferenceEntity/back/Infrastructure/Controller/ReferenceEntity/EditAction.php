@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Akeneo\ReferenceEntity\Application\Permission\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\Permission\PermissionQueryHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -42,24 +43,24 @@ class EditAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var PermissionQueryHandler */
-    private $permissionCheckQueryHandler;
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
 
-    /** @var UserContext */
-    private $userContext;
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
 
     public function __construct(
         EditReferenceEntityHandler $editReferenceEntityHandler,
-        PermissionQueryHandler $permissionCheckQueryHandler,
-        UserContext $userContext,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
-        $this->permissionCheckQueryHandler = $permissionCheckQueryHandler;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
         $this->serializer = $serializer;
         $this->validator = $validator;
-        $this->userContext = $userContext;
     }
 
     public function __invoke(Request $request): Response
@@ -73,7 +74,7 @@ class EditAction
                 Response::HTTP_BAD_REQUEST
             );
         }
-        if (!$this->isUserAllowedToEdit($request)) {
+        if (!$this->isUserAllowedToEdit($request->get('identifier'))) {
             throw new AccessDeniedHttpException();
         }
 
@@ -99,25 +100,13 @@ class EditAction
         return $normalizedCommand['identifier'] !== $request->get('identifier');
     }
 
-    private function isUserAllowedToEdit(Request $request): bool
+    private function isUserAllowedToEdit(string $referenceEntityCode): bool
     {
-        return
-            // $this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_create') && // Check ACL?
-            $this->userHasPermission($request);
-    }
+        $query = new CanEditReferenceEntityQuery();
+        $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityCode;
+        $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 
-    private function userHasPermission(Request $request): bool
-    {
-        $user = $this->userContext->getUser();
-        $referenceEntityCode = json_decode($request->getContent(), true)['code'] ?? null;
-        if (null === $user || null === $referenceEntityCode) {
-            return false;
-        }
-
-        $permissionCheckQuery = new CanEditReferenceEntityQuery();
-        $permissionCheckQuery->userIdentifier = $user->getId();
-        $permissionCheckQuery->referenceEntityIdentifier = $referenceEntityCode;
-
-        return ($this->permissionCheckQueryHandler)($permissionCheckQuery);
+        return $isAllowedToEdit; // && add Check of ACLs
     }
 }
