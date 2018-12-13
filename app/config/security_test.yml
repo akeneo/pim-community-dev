@@ -1,6 +1,6 @@
 security:
     firewalls:
-        local:
+        main:
             http_basic:
                 realm: "Secured REST Area"
             provider: pim_user
