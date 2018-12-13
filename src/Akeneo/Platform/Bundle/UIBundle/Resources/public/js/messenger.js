@@ -46,7 +46,7 @@ define(
 
             showMessage: function (type, message, options) {
                 var opt = _.extend({}, this.defaults, options || {});
-                var delay = opt.delay || (opt.flash && 5000);
+                var delay = opt.delay || (opt.flash && 500000);
                 var $el = $(opt.template({
                     type: type,
                     message: message,
