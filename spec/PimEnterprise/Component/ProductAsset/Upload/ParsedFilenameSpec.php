@@ -29,6 +29,15 @@ class ParsedFilenameSpec extends ObjectBehavior
         $this->getCleanFilename()->shouldReturn('f_oo_bar.jpg');
     }
 
+    function it_cleans_filename_with_special_characters(LocaleInterface $locale)
+    {
+        $this->beConstructedWith([$locale], 'fooé*!:;,?~-\'()[]§è!çà^°bar.jpg');
+
+        $this->getAssetCode()->shouldReturn('foo_____________________bar');
+        $this->getLocaleCode()->shouldReturn(null);
+        $this->getCleanFilename()->shouldReturn('foo_____________________bar.jpg');
+    }
+
     function it_parses_a_simple_non_localizable_filename()
     {
         $this->getAssetCode()->shouldReturn('foobar');
