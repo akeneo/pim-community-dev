@@ -61,20 +61,10 @@ class RemoveAttributesFromMappingSpec extends ObjectBehavior
     }
 
     public function it_does_not_launch_the_job_when_families_or_attributes_are_empty(
-        $jobInstanceRepository,
-        $tokenStorage,
         $jobLauncher,
         JobInstance $jobInstance,
-        TokenInterface $token,
         UserInterface $user
     ): void {
-        $jobInstanceRepository
-            ->findOneByIdentifier(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING)
-            ->willReturn($jobInstance);
-
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
         $jobLauncher->launch($jobInstance, $user, Argument::any())->shouldNotBeCalled();
 
         $this->process(['my_family'], []);

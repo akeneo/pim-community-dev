@@ -53,6 +53,10 @@ class RemoveAttributesFromMapping implements RemoveAttributesFromMappingInterfac
      */
     public function process(array $familyCodes, array $removedAttributes): void
     {
+        if (empty($familyCodes) || empty($removedAttributes)) {
+            return;
+        }
+
         $jobInstance = $this
             ->jobInstanceRepository
             ->findOneByIdentifier(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING);
@@ -62,9 +66,6 @@ class RemoveAttributesFromMapping implements RemoveAttributesFromMappingInterfac
         }
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if (empty($familyCodes) || empty($removedAttributes)) {
-            return;
-        }
         foreach ($familyCodes as $familyCode) {
             $jobParameters = [
                 'pim_attribute_codes' => $removedAttributes,
