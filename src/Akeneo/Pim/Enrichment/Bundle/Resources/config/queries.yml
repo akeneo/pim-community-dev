@@ -73,6 +73,8 @@ services:
         arguments:
         - '@akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers'
         - '@akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes'
+        - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_properties'
+        - '@akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties'
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes'
@@ -85,3 +87,14 @@ services:
         arguments:
         - '@database_connection'
         - '@pim_catalog.factory.value_collection'
+        -
+    akeneo.pim.enrichment.product.grid.query.add_additional_product_properties:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry'
+        arguments:
+            - !tagged akeneo.pim.enrichment.product.grid.add_additional_product_properties
+
+    akeneo.pim.enrichment.product.grid.query.add_additional_product_model_properties:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelPropertiesRegistry'
+        arguments:
+            - !tagged akeneo.pim.enrichment.product.grid.add_additional_product_model_properties
+
