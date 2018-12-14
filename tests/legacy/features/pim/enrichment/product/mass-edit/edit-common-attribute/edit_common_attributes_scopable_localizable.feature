@@ -13,6 +13,7 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @critical
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit scoped product values
     Given I switch the scope to "Print"
@@ -29,6 +30,7 @@ Feature: Edit common attributes of many products at once
     And the unlocalized print customer_rating of "black_jacket" should be "5"
     And the unlocalized print customer_rating of "white_jacket" should be "5"
 
+  @critical
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
     Given I switch the locale to "de_DE"

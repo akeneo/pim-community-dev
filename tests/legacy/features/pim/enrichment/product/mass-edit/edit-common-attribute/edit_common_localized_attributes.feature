@@ -24,6 +24,7 @@ Feature: Edit common localized attributes of many products at once
     And I am on the products grid
     And I switch the locale to "en_US"
 
+  @critical
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
     And I press the "Actions de masse" button
@@ -38,6 +39,7 @@ Feature: Edit common localized attributes of many products at once
       | 100.50 | USD      |
       | 150.75 | EUR      |
 
+  @critical
   Scenario: Successfully update many metric values at once
     Given I select rows boots and sandals
     And I press the "Actions de masse" button
@@ -48,6 +50,7 @@ Feature: Edit common localized attributes of many products at once
     And I wait for the "edit_common_attributes" job to finish
     Then the metric "Weight" of products boots and sandals should be "600.55"
 
+  @critical
   Scenario: Successfully update many number values at once
     Given I select rows boots and sandals
     And I press the "Actions de masse" button

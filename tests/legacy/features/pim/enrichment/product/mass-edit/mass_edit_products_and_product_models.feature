@@ -49,6 +49,7 @@ Feature: Apply a mass action on products only (and not product models)
     And the family of product "tshirt-unique-size-crimson-red" should be "clothing"
     And the family of product model "model-tshirt-divided-crimson-red" should be "clothing"
 
+  @critical
   Scenario: Mass edits add categories of products and product models
     Given I type "col" in the manage filter input
     And I show the filter "color"
