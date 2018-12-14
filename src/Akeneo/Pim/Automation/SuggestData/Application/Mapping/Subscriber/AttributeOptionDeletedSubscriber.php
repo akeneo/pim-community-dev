@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributeOptionFromMappingInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,18 +24,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
 {
-    /** @var string */
-    public const JOB_INSTANCE_NAME = 'suggest_data_remove_attribute_option_from_mapping';
+    /** @var RemoveAttributeOptionFromMappingInterface */
+    private $removeAttributeOptionsFromMapping;
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
-
-    /**
-     * @param JobLauncherInterface $jobLauncher
-     */
-    public function __construct(JobLauncherInterface $jobLauncher)
+    public function __construct(RemoveAttributeOptionFromMappingInterface $removeAttributeOptionsFromMapping)
     {
-        $this->jobLauncher = $jobLauncher;
+        $this->removeAttributeOptionsFromMapping = $removeAttributeOptionsFromMapping;
     }
 
     /**
@@ -58,9 +52,9 @@ class AttributeOptionDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->jobLauncher->launch(self::JOB_INSTANCE_NAME, [
-            'pim_attribute_code' => $attributeOption->getAttribute()->getCode(),
-            'attribute_option_code' => $attributeOption->getCode(),
-        ]);
+        $this->removeAttributeOptionsFromMapping->process(
+            $attributeOption->getAttribute()->getCode(),
+            $attributeOption->getCode()
+        );
     }
 }

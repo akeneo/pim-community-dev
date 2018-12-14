@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributeOptionFromMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeOptionDeletedSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,9 +29,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
 {
-    public function let(JobLauncherInterface $jobLauncher): void
+    public function let(RemoveAttributeOptionFromMappingInterface $removeAttributeOptionFromMapping): void
     {
-        $this->beConstructedWith($jobLauncher);
+        $this->beConstructedWith($removeAttributeOptionFromMapping);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -52,7 +53,7 @@ class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         AttributeOptionInterface $attributeOption,
         AttributeInterface $attribute,
-        $jobLauncher
+        $removeAttributeOptionFromMapping
     ): void {
         $event->getSubject()->willReturn($attributeOption);
 
@@ -60,21 +61,18 @@ class AttributeOptionDeletedSubscriberSpec extends ObjectBehavior
         $attributeOption->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('color');
 
-        $jobLauncher->launch(AttributeOptionDeletedSubscriber::JOB_INSTANCE_NAME, [
-            'pim_attribute_code' => 'color',
-            'attribute_option_code' => 'red',
-        ])->shouldBeCalled();
+        $removeAttributeOptionFromMapping->process('color', 'red')->shouldBeCalled();
 
         $this->removeAttributeOptionFromMapping($event);
     }
 
     public function it_is_only_applied_when_an_attribute_option_is_removed(
         GenericEvent $event,
-        $jobLauncher
+        $removeAttributeOptionFromMapping
     ): void {
         $event->getSubject()->willReturn(new \stdClass());
 
-        $jobLauncher->launch(Argument::any())->shouldNotBeCalled();
+        $removeAttributeOptionFromMapping->process(Argument::any())->shouldNotBeCalled();
 
         $this->removeAttributeOptionFromMapping($event);
     }

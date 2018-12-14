@@ -30,8 +30,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
- * There are 2 inputs parameters on this.
- *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class RemoveOptionFromAttributeOptionsMappingTasklet implements TaskletInterface
