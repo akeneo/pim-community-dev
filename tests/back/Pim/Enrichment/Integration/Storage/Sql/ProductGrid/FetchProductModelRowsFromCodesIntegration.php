@@ -76,6 +76,54 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
         AssertRows::same($expectedRows, $rows);
     }
 
+    public function test_fetch_product_models_images()
+    {
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $fixturesLoader = new ProductGridFixturesLoader(static::$kernel->getContainer(), $this->getFixturePath('akeneo.jpg'));
+        $rootProductModelWithLabelInProduct = $fixturesLoader->createProductModelsWithLabelInProduct();
+        $subProductModelWithLabelInParent = $fixturesLoader->createProductModelsWithLabelInParentProductModel();
+
+        $query = $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_model_rows_from_codes');
+        $rows = $query(['root_product_model_without_sub_product_model', 'sub_product_model'], [], 'ecommerce', 'en_US', $userId);
+
+        $akeneoImage = current($this
+            ->get('akeneo_file_storage.repository.file_info')
+            ->findAll($this->getFixturePath('akeneo.jpg')));
+
+
+        $expectedRows = [
+            Row::fromProductModel(
+                'root_product_model_without_sub_product_model',
+                '[test_family]',
+                $rootProductModelWithLabelInProduct->getCreated(),
+                $rootProductModelWithLabelInProduct->getUpdated(),
+                '[root_product_model_without_sub_product_model]',
+                MediaValue::value('an_image', $akeneoImage),
+                $rootProductModelWithLabelInProduct->getId(),
+                ['total' => 1, 'complete' => 1],
+                null,
+                new ValueCollection([])
+            ),
+            Row::fromProductModel(
+                'sub_product_model',
+                '[test_family]',
+                $subProductModelWithLabelInParent->getCreated(),
+                $subProductModelWithLabelInParent->getUpdated(),
+                '[sub_product_model]',
+                MediaValue::value('an_image', $akeneoImage),
+                $subProductModelWithLabelInParent->getId(),
+                ['total' => 0, 'complete' => 0],
+                'root_product_model_with_sub_product_model',
+                new ValueCollection()
+            ),
+        ];
+
+        AssertRows::same($expectedRows, $rows);
+    }
+
     /**
      * {@inheritdoc}
      */
