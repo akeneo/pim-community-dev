@@ -1,5 +1,4 @@
 import * as React from 'react';
-import __ from 'akeneoreferenceentity/tools/translator';
 import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
 
 export enum RightLevel {
@@ -17,9 +16,10 @@ type GroupRight = {
   rightLevel: RightLevel
 };
 
-type Group = {
+export type Group = {
   name: GroupName
 };
+
 export type PermissionConfiguration = {[permissionCode: string]: GroupName[]}
 
 type PermissionEditorProps = {
@@ -130,7 +130,7 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
 
   static getDerivedStateFromProps(props: PermissionCollectionEditorProps) {
     return {
-      rights: PermissionCollectionEditor.rightCollectionToGroupCollection(props.value, props.groups)
+      rights: PermissionCollectionEditor.rightCollectionToGroupCollection(props.value, props.groups.filter((group: Group) => ALL_GROUP !== group.name))
     }
   }
 
@@ -151,7 +151,8 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
     // We iterate over all permission and check that the user group is present. If the group is not present, we set the default value to 'none'
     return PermissionCollectionEditor.getPrioritizedRigthLevels(permissions)
       .reduce((permission: RightLevel, currentPermissionCode: RightLevel) => {
-        const isGrantedAtThisLevel = undefined !== permissions[currentPermissionCode] && permissions[currentPermissionCode].includes(groupCode);
+        const isGrantedAtThisLevel = undefined !== permissions[currentPermissionCode] && (permissions[currentPermissionCode].includes(groupCode) || permissions[currentPermissionCode].includes(ALL_GROUP));
+
         return isGrantedAtThisLevel ?
           currentPermissionCode :
           permission;
@@ -176,6 +177,22 @@ export default class PermissionCollectionEditor extends React.Component<Permissi
           </tr>
         </thead>
         <tbody>
+          <tr className="AknPermission-row">
+            <td className="AknPermission-level AknGrid-bodyCell"></td>
+            {[RightLevel.None, ...prioritizedRightLevels].map((rightLevel: RightLevel) => (
+              <td
+                className="AknPermission-level AknGrid-bodyCell"
+                onClick={() => {
+                  this.onPermissionUpdated(ALL_GROUP, rightLevel)
+                }}>
+                  <div className="AknPermission-rightLevel">
+                    <div className="AknPermission-barLeft AknPermission-barLeft--transparent" />
+                    <div className="AknPermission-pill"></div>
+                    <div className="AknPermission-barRight AknPermission-barRight--transparent" />
+                  </div>
+                </td>
+            ))}
+          </tr>
           {this.state.rights.map(({group, rightLevel}: GroupRight) => (
             <PermissionEditor
               key={group.name}

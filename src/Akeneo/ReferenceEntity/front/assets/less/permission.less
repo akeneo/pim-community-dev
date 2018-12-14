@@ -1,6 +1,8 @@
+@AknMediumGrey: #D9DDE2;
+@AknGreen: #67b373;
 
 .AknPermission {
-  @barThickness: 5px;
+  @barThickness: 1px;
   border-collapse: collapse;
   font-size: 13px;
 
@@ -12,10 +14,16 @@
     padding: 0 !important;
   }
 
+  &-row {
+    height: 54px;
+    border-bottom: 1px solid @AknMediumGrey;
+  }
+
   &-rightLevel {
     display: flex;
     align-items: center;
   }
+
   &-barLeft {
     flex: 1;
     height: @barThickness;
@@ -29,31 +37,38 @@
   &-pill {
     z-index: 10;
     margin: 0 -1px;
-    width: @barThickness + 5px;
-    height: @barThickness + 5px;
-    border-radius: @barThickness + 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    padding: 4px;
+
+    &:not(&--active) {
+      border: 1px solid @AknMediumGrey;
+    }
 
     &:hover {
       cursor: pointer;
     }
-
-    &--active {
-      width: 20px;
-      height: 20px;
-      border-radius: 20px;
-      padding: 2px;
-    }
   }
 
-  &-pill, &-barRight, &-barLeft {
-    background-color: #D9DDE2;
+  &-barRight, &-barLeft {
+    background-color: @AknMediumGrey;
     transition: background-color .3s ease-in-out;
 
     &--active {
-      background-color: #67b373;
+      background-color: @AknGreen;
     }
     &--transparent {
       background-color: transparent;
+    }
+  }
+
+  &-pill {
+    background-color: white;
+    transition: background-color .3s ease-in-out;
+
+    &--active {
+      background-color: @AknGreen;
     }
   }
 }
