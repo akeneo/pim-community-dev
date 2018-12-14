@@ -40,15 +40,21 @@ jobs:
           docker-compose run --rm node yarn run webpack-dev
           docker-compose run --rm node yarn run webpack-test
           mkdir -p var/logs
-    - run:
-        name: PHPunit
-        command: |
-          TESTFILES=$(circleci tests glob "tests/back/Pim/Structure/Integration/Attribute/Validation/**/*Integration.php" | circleci tests split)
-          .circleci/run_phpunit.sh $TESTFILES
 #    - run:
-#        name: Behat
+#        name: PHPunit Integration
 #        command: |
-#          docker-compose exec fpm ./vendor/bin/behat -p legacy tests/legacy/features/pim/enrichment/product/completeness/display_completeness.feature
+#          TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
+#          .circleci/run_phpunit.sh $TESTFILES
+#    - run:
+#        name: PHPunit End to End
+#        command: |
+#          TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
+#          .circleci/run_phpunit.sh $TESTFILES
+    - run:
+        name: Behat
+        command: |
+          TESTFILES=$(vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+          .circleci/run_behat.sh $TESTFILES
     - store_test_results:
         path: var/tests
     - store_artifacts:
