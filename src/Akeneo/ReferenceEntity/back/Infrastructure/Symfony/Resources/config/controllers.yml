@@ -7,6 +7,7 @@ services:
             - '@reference_entity_serializer'
             - '@validator'
             - '@oro_security.security_facade'
+            - '@pim_user.context.user'
 
     akeneo_referenceentity.infrastructure.action.reference_entity.index:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\IndexAction
@@ -22,6 +23,8 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\EditAction
         arguments:
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
+            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
+            - '@security.token_storage'
             - '@reference_entity_serializer'
             - '@validator'
 
