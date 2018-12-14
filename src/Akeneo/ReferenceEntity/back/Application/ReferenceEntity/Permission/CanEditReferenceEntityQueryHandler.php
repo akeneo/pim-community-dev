@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission;
 
 use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;

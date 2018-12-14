@@ -16,8 +16,8 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
-    akeneo_referenceentity.application.reference_entity.can_edit_reference_entity_query_handler:
-        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler
+    akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler
         arguments:
             - '@akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity'
 

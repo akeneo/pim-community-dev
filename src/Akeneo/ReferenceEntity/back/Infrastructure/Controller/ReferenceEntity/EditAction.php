@@ -12,11 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,11 +99,11 @@ class EditAction
         return $normalizedCommand['identifier'] !== $request->get('identifier');
     }
 
-    private function isUserAllowedToEdit(string $referenceEntityCode): bool
+    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
         $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityCode;
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
         $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 
         return $isAllowedToEdit; // && add Check of ACLs

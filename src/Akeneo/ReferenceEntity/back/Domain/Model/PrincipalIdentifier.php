@@ -12,6 +12,9 @@ use Webmozart\Assert\Assert;
  */
 class PrincipalIdentifier
 {
+    /** @var string  */
+    private $identifier;
+
     private function __construct(string $identifier)
     {
         Assert::stringNotEmpty($identifier);

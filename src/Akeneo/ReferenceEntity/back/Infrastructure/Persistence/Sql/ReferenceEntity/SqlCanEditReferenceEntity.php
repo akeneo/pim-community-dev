@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Permission;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
+use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
-use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Doctrine\DBAL\Driver\Connection;
 
 /**

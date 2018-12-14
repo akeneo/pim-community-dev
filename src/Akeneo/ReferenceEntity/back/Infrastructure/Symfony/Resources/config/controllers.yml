@@ -23,7 +23,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity\EditAction
         arguments:
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
-            - '@akeneo_referenceentity.application.reference_entity.can_edit_reference_entity_query_handler'
+            - '@akeneo_referenceentity.application.reference_entity.permission.can_edit_reference_entity_query_handler'
             - '@security.token_storage'
             - '@reference_entity_serializer'
             - '@validator'

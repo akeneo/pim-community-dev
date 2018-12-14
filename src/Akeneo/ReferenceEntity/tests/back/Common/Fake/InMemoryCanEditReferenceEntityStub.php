@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
+use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
-use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

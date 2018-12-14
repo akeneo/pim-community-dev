@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CanEditReferenceEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
