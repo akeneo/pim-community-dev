@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # We need the TESTFILES var in $1
-TESTFILES=$1
+TESTFILES=$@
 
 for TESTFILE in $TESTFILES; do
     echo $TESTFILE
