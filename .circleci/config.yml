@@ -4,7 +4,7 @@ jobs:
     machine:
         enabled: true
         docker_layer_caching: true
-    parallelism: 4
+    parallelism: 7
     steps:
     - checkout
     - run:
@@ -40,16 +40,16 @@ jobs:
           docker-compose run --rm node yarn run webpack-dev
           docker-compose run --rm node yarn run webpack-test
           mkdir -p var/logs
-#    - run:
-#        name: PHPunit Integration
-#        command: |
-#          TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
-#          .circleci/run_phpunit.sh $TESTFILES
-#    - run:
-#        name: PHPunit End to End
-#        command: |
-#          TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
-#          .circleci/run_phpunit.sh $TESTFILES
+    - run:
+        name: PHPunit Integration
+        command: |
+          TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
+          .circleci/run_phpunit.sh $TESTFILES
+    - run:
+        name: PHPunit End to End
+        command: |
+          TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
+          .circleci/run_phpunit.sh $TESTFILES
     - run:
         name: Behat
         command: |
