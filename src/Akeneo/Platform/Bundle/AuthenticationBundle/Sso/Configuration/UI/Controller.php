@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI;
 
+use Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Log\CreateArchive;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -36,16 +39,21 @@ final class Controller
     /** @var Repository */
     private $repository;
 
+    /** @var CreateArchive */
+    private $createArchive;
+
     public function __construct(
         ValidatorInterface $validator,
         NormalizerInterface $normalizer,
         CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
-        Repository $repository
+        Repository $repository,
+        CreateArchive $createArchive
     ) {
         $this->validator = $validator;
         $this->normalizer = $normalizer;
         $this->createOrUpdateConfigHandler = $createOrUpdateConfigHandler;
         $this->repository = $repository;
+        $this->createArchive = $createArchive;
     }
 
     public function saveAction(Request $request): Response
@@ -76,7 +84,7 @@ final class Controller
                 'internal_api'
             );
 
-            return new JsonResponse($normalizedErrors, 400);
+            return new JsonResponse($normalizedErrors, Response::HTTP_BAD_REQUEST);
         }
 
         $this->createOrUpdateConfigHandler->handle($createOrUpdateConfig);
@@ -84,7 +92,7 @@ final class Controller
         return new JsonResponse();
     }
 
-    public function getAction()
+    public function getAction(): JsonResponse
     {
         try {
             $config = $this->repository->find(self::CONFIGURATION_CODE);
@@ -102,6 +110,25 @@ final class Controller
                 'service_provider_public_certificate'  => '',
                 'service_provider_private_certificate' => '',
             ]);
+        }
+    }
+
+    public function downloadAuthenticationLogsAction()
+    {
+        try
+        {
+            return new BinaryFileResponse(
+                $this->createArchive->create(),
+                Response::HTTP_OK,
+                [
+                    'Content-Disposition' => sprintf('attachment; filename="%s"', 'authenticationLogs' . date('YmdHis') . '.zip'),
+                    'Content-type' => 'application/zip',
+                ]
+            );
+
+        } catch (\Exception $e)
+        {
+            throw new NotFoundHttpException("Unable to find archive file");
         }
     }
 }

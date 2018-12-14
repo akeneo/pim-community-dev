@@ -24,11 +24,20 @@ extensions:
         targetZone: title
         position: 100
 
+    authentication-sso-configuration-download-logs-buttons:
+        module: pim/authentication/sso/configuration/download-logs-button
+        parent: authentication-sso-configuration
+        targetZone: buttons
+        position: 0
+        config:
+            url: authentication_sso_configuration_download_authentication_logs
+            label: authentication.sso.configuration.download_logs_button
+
     authentication-sso-configuration-save-buttons:
         module: pim/form/common/save-buttons
         parent: authentication-sso-configuration
         targetZone: buttons
-        position: 0
+        position: 50
 
     authentication-sso-configuration-save:
         module: pim/form/common/save-form

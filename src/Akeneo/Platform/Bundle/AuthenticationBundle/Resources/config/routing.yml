@@ -12,3 +12,8 @@ authentication_sso_configuration_save:
     path: /rest/sso-configuration
     methods: [POST]
     defaults: { _controller: akeneo_authentication.sso.configuration.ui.controller:saveAction }
+
+authentication_sso_configuration_download_authentication_logs:
+    path: /rest/sso-configuration/download-authentication-logs
+    methods: [GET]
+    defaults: { _controller: akeneo_authentication.sso.configuration.ui.controller:downloadAuthenticationLogsAction }

@@ -6,6 +6,7 @@ pim_title:
 authentication:
     sso:
         configuration:
+            download_logs_button: Download logs
             info:
                 update_successful: The configuration has been saved
                 update_failed: The configuration could not be saved
