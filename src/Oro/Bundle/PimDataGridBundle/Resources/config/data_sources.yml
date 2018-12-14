@@ -129,6 +129,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
             - '@pim_datagrid_serializer'
+            - '@validator'
             - '@akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows'
         calls:
             - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action'] ]
