@@ -7,11 +7,14 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
 use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -28,6 +31,12 @@ class EditAction
     /** @var EditAttributeHandler */
     private $editAttributeHandler;
 
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -40,12 +49,16 @@ class EditAction
     public function __construct(
         EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
         EditAttributeHandler $editAttributeHandler,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
         $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->editAttributeHandler = $editAttributeHandler;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
@@ -56,7 +69,7 @@ class EditAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_referenceentity_attribute_edit')) {
+        if (!$this->isUserAllowedToEdit($request->get('referenceEntityIdentifier'))) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
@@ -78,6 +91,16 @@ class EditAction
         ($this->editAttributeHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function isUserAllowedToEdit(string $referenceEntityCode): bool
+    {
+        $query = new CanEditReferenceEntityQuery();
+        $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityCode;
+
+        return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_edit')
+            && ($this->canEditReferenceEntityQueryHandler)($query);
     }
 
     /**

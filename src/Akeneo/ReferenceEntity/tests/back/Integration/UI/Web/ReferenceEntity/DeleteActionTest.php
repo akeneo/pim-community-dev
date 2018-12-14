@@ -35,6 +35,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     {
         parent::setUp();
 
+        $this->resetDB();
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
@@ -150,6 +151,31 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $expectedResponse = '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.records.should_have_no_record","parameters":{"%reference_entity_identifier%":[]},"plural":null,"message":"You cannot delete this entity because records exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_if_user_does_have_the_permissions_to_edit_the_reference_entity()
+    {
+        $this->forbidsEdit();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
+            ['identifier' => 'designer'],
+            'DELETE',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
+        );
+
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    private function forbidsEdit(): void
+    {
+        $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity')
+            ->forbid();
     }
 
     private function getEnrichEntityRepository(): ReferenceEntityRepositoryInterface

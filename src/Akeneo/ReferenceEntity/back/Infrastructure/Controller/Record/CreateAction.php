@@ -15,11 +15,14 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -44,14 +47,24 @@ class CreateAction
     /** @var SecurityFacade */
     private $securityFacade;
 
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         CreateRecordHandler $createRecordHandler,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
         $this->createRecordHandler = $createRecordHandler;
         $this->validator           = $validator;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
         $this->normalizer          = $normalizer;
         $this->securityFacade      = $securityFacade;
     }
@@ -61,7 +74,7 @@ class CreateAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_referenceentity_record_create')) {
+        if (!$this->isUserAllowedToCreate($request->get('referenceEntityIdentifier'))) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
@@ -84,6 +97,16 @@ class CreateAction
         ($this->createRecordHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function isUserAllowedToCreate(string $referenceEntityCode): bool
+    {
+        $query = new CanEditReferenceEntityQuery();
+        $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityCode;
+
+        return $this->securityFacade->isGranted('akeneo_referenceentity_record_create')
+            && ($this->canEditReferenceEntityQueryHandler)($query);
     }
 
     /**
