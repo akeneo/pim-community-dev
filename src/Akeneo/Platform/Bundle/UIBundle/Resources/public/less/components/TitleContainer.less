@@ -131,10 +131,13 @@
 
   &-userMenu:not(:empty) {
     display: flex;
+    height: @AknDefaultButtonSize;
+  }
+
+  &-userMenu:not(:empty):not(&--readOnly) {
     border-right: 1px solid @AknBorderColor;
     margin-right: 20px;
     padding-right: 20px;
-    height: @AknDefaultButtonSize;
   }
 
   &-userIcon {
