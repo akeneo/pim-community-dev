@@ -96,7 +96,7 @@ Feature: Notify users after a project creation
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -128,21 +128,21 @@ Feature: Notify users after a project creation
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Claude"
     # Claude can edit Clothing category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Marc"
     # Marc can edit Clothing category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
 
   Scenario: Successfully notify users when creating a project with a product which is in two categories
     Given I am logged in as "Julia"
@@ -154,7 +154,7 @@ Feature: Notify users after a project creation
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -181,28 +181,28 @@ Feature: Notify users after a project creation
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Claude"
     # Claude can edit Clothing category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Marc"
     # Marc can edit Clothing category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Teddy"
     # Teddy can edit High-Tech category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
 
   Scenario: Successfully notify users when creating a project on high-tech
     Given I am logged in as "Marc"
@@ -217,7 +217,7 @@ Feature: Notify users after a project creation
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -249,21 +249,21 @@ Feature: Notify users after a project creation
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Teddy"
     # Teddy can edit High-Tech category and edit on Technical and Others attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Julia"
     # Julia has edit on all categories and attribute groups.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
 
   Scenario: Successfully notify users when creating a project on decoration
     And I am logged in as "Julia"
@@ -274,7 +274,7 @@ Feature: Notify users after a project creation
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -311,14 +311,14 @@ Feature: Notify users after a project creation
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
     When I logout
     And I am logged in as "Kathy"
     # Kathy can edit Decoration category and edit Picture attribute group.
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                                 |
-      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2018". |
+      | success | You have new products to enrich for "2016 summer collection". Due date is "12/13/2118". |
 
   Scenario: Successfully not notify users if the project is 100% done at project creation
     Given the following product values:
@@ -331,7 +331,7 @@ Feature: Notify users after a project creation
     And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     When I press the "Save" button
     And I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -351,7 +351,7 @@ Feature: Notify users after a project creation
     And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -371,7 +371,7 @@ Feature: Notify users after a project creation
     And I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -387,7 +387,7 @@ Feature: Notify users after a project creation
     # Is notified because she has products to enrich
     Then I should have 1 new notification
     Then I open the notification panel
-    And I should see the text "You have new products to enrich for \"2016 summer collection\". Due date is \"12/13/2018\"."
+    And I should see the text "You have new products to enrich for \"2016 summer collection\". Due date is \"12/13/2118\"."
     And I am on the products grid
     And I am on the "my-awesome-car" product page
     And I visit the "All" group
