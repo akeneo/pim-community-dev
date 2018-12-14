@@ -102,11 +102,11 @@ class EditAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToEdit(string $referenceEntityCode): bool
+    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
         $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityCode;
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
 
         return ($this->canEditReferenceEntityQueryHandler)($query); // Check ACL
     }

@@ -99,11 +99,11 @@ class CreateAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToCreate(string $referenceEntityCode): bool
+    private function isUserAllowedToCreate(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
         $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityCode;
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_record_create')
             && ($this->canEditReferenceEntityQueryHandler)($query);

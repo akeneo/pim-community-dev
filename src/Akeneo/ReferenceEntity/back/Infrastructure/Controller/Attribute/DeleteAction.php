@@ -79,11 +79,11 @@ class DeleteAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToDelete(string $referenceEntityCode): bool
+    private function isUserAllowedToDelete(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
         $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityCode;
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_delete')
             && ($this->canEditReferenceEntityQueryHandler)($query);

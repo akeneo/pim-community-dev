@@ -71,11 +71,11 @@ class DeleteAllAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToDeleteAll(string $referenceEntityCode): bool
+    private function isUserAllowedToDeleteAll(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
         $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $query->referenceEntityIdentifier = $referenceEntityCode;
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_records_delete_all')
             && ($this->canEditReferenceEntityQueryHandler)($query);
