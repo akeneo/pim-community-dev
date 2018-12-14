@@ -50,6 +50,7 @@ Feature: Edit common attributes of many products at once
     Then I should not see the "Name" field
     And I should not see a remove link next to the "Name" field
 
+  @critical
   Scenario: Successfully update many text values at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
@@ -64,6 +65,7 @@ Feature: Edit common attributes of many products at once
     And the english localizable value name of "sandals" should be "boots"
     And the english localizable value name of "sneakers" should be "boots"
 
+  @critical
   Scenario: Successfully update many multi-valued values at once
     Given I am on the products grid
     And I select rows boots and sneakers
@@ -92,6 +94,7 @@ Feature: Edit common attributes of many products at once
     Then the english localizable value name of "pump" should be "boots"
     And the english localizable value name of "sneakers" should be "boots"
 
+  @critical
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
     Given I am on the products grid
@@ -156,6 +159,7 @@ Feature: Edit common attributes of many products at once
     And I should not see the text "Weight"
     And I should not see the text "Name"
 
+  @critical
   @jira https://akeneo.atlassian.net/browse/PIM-6008
   Scenario: Successfully mass edit scoped product values with special chars
     Given I am on the products grid

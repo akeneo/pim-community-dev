@@ -28,6 +28,7 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
+  @critical
   Scenario: Successfully update many images values at once
     Given I select rows sandals and sneakers
     And I press the "Bulk actions" button

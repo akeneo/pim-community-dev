@@ -37,6 +37,7 @@ Feature: Edit common attributes of many products and product models at once
       | tool-tee    | clothing |                 | black | m    | ribouk |             |          |
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Mass edit attributes of a product model inside a family variant with 2 levels of hierarchy
     Given I am on the products grid
     And I select rows model-col
@@ -62,6 +63,7 @@ Feature: Edit common attributes of many products and product models at once
     And I should see the text "read 3"
     And I should see the text "processed 3"
 
+  @critical
   Scenario: Mass edit attributes of a sub product model inside a family variant with 2 levels of hierarchy
     Given I am on the products grid
     And I show the filter "color"
@@ -84,6 +86,7 @@ Feature: Edit common attributes of many products and product models at once
     And I should see the text "read 2"
     And I should see the text "processed 2"
 
+  @critical
   Scenario: Mass edit attributes of a product model inside a family variant with 1 levels of hierarchy
     Given I am on the products grid
     And I select rows model-nin
@@ -103,6 +106,7 @@ Feature: Edit common attributes of many products and product models at once
     And I should see the text "read 2"
     And I should see the text "processed 2"
 
+  @critical
   Scenario: Mass edit attributes of a product model and a non variant product at the same time
     Given I am on the products grid
     And I select rows model-col and tool-tee
@@ -154,6 +158,7 @@ Feature: Edit common attributes of many products and product models at once
     And I should see the text "read 1"
     And I should see the text "processed 1"
 
+  @critical
   Scenario: Mass edit attributes of all selected products and product models
     Given I am on the products grid
     And I select rows model-col
