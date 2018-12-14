@@ -1,5 +1,5 @@
 {{ if .Values.backup.enabled }}
-apiVersion: backup.akeneo.com/v1
+apiVersion: backup.akeneo.com/v2
 kind: Backup
 metadata:
   name: {{ template "pim.fullName" . }}
@@ -15,13 +15,16 @@ spec:
   jobLabel: {{ template "pim.fullName" . }}
   projectId: {{ .Values.backup.projectId }}
   zone: {{ .Values.backup.zone }}
-
   snapshot:
     schedule: {{ .Values.backup.snapshot.schedule }}
-    pvcNames:  
+    pvcNames:
       - data-{{ .Release.Name }}-nfs-0
-      - pvc-data-{{ .Release.Name }}-mysql-server-0  
-  export:
-    snapshotAge: {{ .Values.backup.export.snapshotAge }}
-    bucketUrl: gs://{{ .Values.google.project_id }}-exported-backup-store
+      - pvc-data-{{ .Release.Name }}-mysql-server-0
+    export:
+      snapshotAge: {{ .Values.backup.export.snapshotAge }}
+    retention:
+      dailyBackups: 10
+      WeeklyBackups: 4
+      MonthlyBackups: 12
+      MonthlyBackups: 10
 {{ end}}
