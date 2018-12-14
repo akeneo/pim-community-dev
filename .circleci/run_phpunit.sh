@@ -5,5 +5,5 @@ TESTFILES=$@
 
 for TESTFILE in $TESTFILES; do
     echo $TESTFILE
-    docker-compose exec fpm ./vendor/bin/phpunit -c app --log-junit var/tests/phpunit_$(uuidgen).xml $TESTFILE
+    docker-compose exec -T fpm ./vendor/bin/phpunit -c app --log-junit var/tests/phpunit_$(uuidgen).xml $TESTFILE
 done
