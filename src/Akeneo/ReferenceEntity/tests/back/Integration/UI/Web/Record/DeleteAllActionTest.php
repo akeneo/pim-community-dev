@@ -94,7 +94,7 @@ class DeleteAllActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_if_user_does_have_the_permissions_to_edit_the_reference_entity()
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
     {
         $this->forbidsEdit();
         $this->webClientHelper->callRoute(
