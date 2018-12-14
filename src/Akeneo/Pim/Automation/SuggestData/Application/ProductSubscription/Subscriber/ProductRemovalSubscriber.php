@@ -59,8 +59,10 @@ class ProductRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $productId = $event->getSubjectId();
+
         try {
-            $command = new UnsubscribeProductCommand($product->getId());
+            $command = new UnsubscribeProductCommand($productId);
             $this->unsubscribeProductHandler->handle($command);
         } catch (ProductNotSubscribedException $e) {
             // Silently catch exception if the product is not subscribed
