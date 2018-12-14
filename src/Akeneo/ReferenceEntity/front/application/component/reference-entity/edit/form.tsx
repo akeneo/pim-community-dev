@@ -16,6 +16,7 @@ interface FormProps {
   locale: string;
   data: NormalizedReferenceEntity;
   errors: ValidationError[];
+  canEditReferenceEntity: boolean;
   onLabelUpdated: (value: string, locale: string) => void;
   onImageUpdated: (image: File) => void;
   onSubmit: () => void;
@@ -86,11 +87,12 @@ export default class EditForm extends React.Component<FormProps> {
               type="text"
               name="label"
               id="pim_reference_entity.reference_entity.properties.label"
-              className="AknTextField AknTextField--light"
+              className={`AknTextField AknTextField--light ${true === this.props.canEditReferenceEntity ? '' : 'AknTextField--disabled'}`}
               value={referenceEntity.getLabel(this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
               ref={this.labelInput}
+              readOnly={!this.props.canEditReferenceEntity}
             />
             <Flag
               locale={createLocaleFromCode(this.props.locale)}
@@ -118,6 +120,7 @@ export default class EditForm extends React.Component<FormProps> {
               image={referenceEntity.getImage()}
               wide={true}
               onImageChange={this.props.onImageUpdated}
+              readOnly={!this.props.canEditReferenceEntity}
             />
           </div>
           {getErrorsView(this.props.errors, 'image')}

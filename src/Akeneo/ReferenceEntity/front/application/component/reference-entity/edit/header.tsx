@@ -22,6 +22,7 @@ interface OwnProps {
   withChannelSwitcher: boolean;
   isDirty: boolean;
   isLoading?: boolean;
+  canEditReferenceEntity?: boolean; // @todo : It will be mandatory (more convenience for the spike)
   breadcrumbConfiguration: BreadcrumbConfiguration;
   onLocaleChanged?: (locale: Locale) => void;
   onChannelChanged?: (channel: Channel) => void;
@@ -49,6 +50,9 @@ interface HeaderProps extends StateProps, DispatchProps {}
 
 class Header extends React.Component<HeaderProps> {
   private defaultFocus: React.RefObject<any>;
+  static defaultProps = {
+    canEditReferenceEntity: true,
+  };
 
   constructor(props: HeaderProps) {
     super(props);
@@ -72,6 +76,7 @@ class Header extends React.Component<HeaderProps> {
       withLocaleSwitcher,
       isDirty,
       isLoading,
+      canEditReferenceEntity,
       breadcrumbConfiguration,
       context,
       structure,
@@ -92,13 +97,15 @@ class Header extends React.Component<HeaderProps> {
                   <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
                   <div className="user-menu">
                     <PimView
-                      className="AknTitleContainer-userMenu"
+                      className={`AknTitleContainer-userMenu ${canEditReferenceEntity ? '' : 'AknTitleContainer--readOnly'}`}
                       viewName="pim-reference-entity-index-user-navigation"
                     />
                   </div>
                   <div className="AknButtonList">
                     {secondaryActions()}
-                    <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
+                    { canEditReferenceEntity ? (
+                      <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
+                    ) : null }
                   </div>
                 </div>
               </div>
