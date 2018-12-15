@@ -39,13 +39,21 @@ pim_reference_entity:
         label: Etikett
       confirm: Spara
     grid:
+      filter:
+        completeness:
+          label: Klart
+          yes: true
+          no: false
       column:
         code: Kod
         image: Bild
         label: Etikett
+        complete: Klart
         action: Åtgärder
     tab:
       enrich: Berika
+    completeness:
+      label: Klart
   attribute:
     default:
       code: Kod
@@ -81,6 +89,9 @@ pim_reference_entity:
             url: URL
     delete:
       title: Attribut
+    options:
+      helper:
+        title: Etikettsöversättningar
   modal:
     delete:
       subtitle: Bekräfta radering

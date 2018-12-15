@@ -1,0 +1,201 @@
+View the product: View the product
+Unpublish the product: Unpublish the product
+Approve: Approve
+Refuse: Reject
+Approve selected: Approve selected
+Refuse selected: Reject selected
+pim_datagrid:
+  no_entities:
+    proposal: There is no proposal to review.
+    product_draft: There is no product draft to review.
+  no_results:
+    proposal: There is no proposal to review. Try to change your search criteria.
+    product_draft: There is no product draft to review. Try to change your search criteria.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Expand
+      collapse_text: Collapse
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Edit working copy
+    proposal:
+      modal.title: Leave a comment (optional - 255 characters max.)
+  proposal:
+    overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
+    selected: proposals selected
+    mass_action_group:
+      review:
+        label: Bulk Action
+    partial_accept:
+      modal.title: Approve partial information
+      modal.label: Leave a comment (optional)
+      modal.error: An error occured, the proposal has not been partially approved
+      modal.success: The proposal has been successfully partially validated
+    partial_approve:
+      modal:
+        title: Partially approve changes
+        label: Leave a comment (optional)
+        error: An error occured, the proposal has not been partially approved
+        success: The changes have been successfully approved
+    partial_reject:
+      modal:
+        title: Partially reject changes
+        label: Leave a comment (optional)
+        error: An error occured, the proposal has not been partially rejected
+        success: The changes have been successfully rejected
+batch_jobs:
+  csv_published_product_export:
+    label: Published product export in CSV
+    export.label: Published product export
+  csv_product_proposal_import:
+    label: Product proposal import in CSV
+    import.label: Product proposal import
+  approve_product_draft:
+    label: Approve proposal
+    perform.label: Approve proposal
+  refuse_product_draft:
+    label: Refuse proposals
+    perform.label: Refuse proposals
+  xlsx_published_product_export:
+    label: Published product export in XLSX
+    export.label: Published product export
+  xlsx_product_proposal_import:
+    label: Product proposal import in XLSX
+    import.label: Product proposal import in XLSX
+  csv_published_product_quick_export:
+    export.label: Csv published products quick export
+    perform.label: Csv published products quick export
+  csv_published_product_grid_context_quick_export:
+    export.label: Csv published products grid context quick export
+    perform.label: Csv published products grid context quick export
+  xlsx_published_product_quick_export:
+    export.label: Xlsx published products quick export
+    perform.label: Xlsx published products quick export
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsx published products grid context quick export
+    perform.label: Xlsx published products grid context quick export
+  publish_product:
+    perform.label: Publish products
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: New proposal
+    pimee_workflow_import_notification_new_proposals: New proposals from import
+    pimee_workflow_product_draft_notification_partial_approve: Proposal partially approved
+    pimee_workflow_product_draft_notification_partial_reject: Proposal partially rejected
+    pimee_workflow_product_draft_notification_partial_remove: Proposal partially deleted
+    pimee_workflow_product_draft_notification_approve: Proposal approved
+    pimee_workflow_product_draft_notification_refuse: Proposal rejected
+    pimee_workflow_product_draft_notification_remove: Proposal deleted
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Date
+      author: Author
+      product: Product
+      review: Review
+      empty: No proposals to review
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Published
+      revert: Restore
+    attribute:
+      can_be_updated_by_a_rule: "This attribute can be updated by a rule: {{ rule }}"
+      value_updated: This value is updated by the current draft
+    meta:
+      published_version: Published version
+      owner_groups: Owner groups
+      draft_status: Draft status
+      draft:
+        in_progress: In progress
+        sent_for_approval: Waiting for approval
+        working_copy: Working copy
+    revert:
+      title: Restore confirmation
+      content: Are you sure you want to restore the product to this version?
+    publish:
+      title: Publish this product
+      content: Are you sure you want to publish this product?
+    unpublish:
+      title: Unpublish this product
+      content: Are you sure you want to unpublish this product?
+    copy:
+      working_copy: Working copy
+      draft: My draft
+      draft_of: "{{ author }}'s draft"
+    approval:
+      send: Send for approval
+      sent: Sent for approval
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Product successfully published
+      fail: Failed to publish this product
+    unpublish:
+      success: Product successfully unpublished
+      fail: Failed to unpublish this product
+    revert:
+      success: Product successfully restored
+  page_title:
+    index: "]-Inf, 1]{{ count }} published product|]1, Inf[{{ count }} published products"
+  module:
+    publish:
+      label: Publish
+      publish_this_version: Publish this version
+    unpublish:
+      label: Unpublish
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: The proposal has been applied successfully.
+      fail: "The proposal can't be applied due to the following error: {{ error }}"
+    reject:
+      success: The proposal has been rejected.
+    remove:
+      success: The proposal has been removed.
+    update:
+      success: Product draft has been successfully saved
+      fail: Product draft could not be updated
+    create:
+      success: Product draft sent for approval
+      fail: You cannot send this draft for approval
+  module:
+    create:
+      label: Save draft
+    proposal:
+      accept: Accept proposal
+      accept_selected: Accept selected proposal(s)
+      reject: Reject proposal
+      reject_selected: Reject selected proposal(s)
+      remove: Remove proposal
+      comment_title: Comment your proposal (optional - 255 characters max.)
+      comment_chars: chars.
+      confirm: Send
+    edit:
+      discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
+      discard_changes_title: Are you sure you want to send this draft?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publish
+      label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: The products will be published
+      warning: The {{ itemsCount }} selected products will be published.
+    unpublish:
+      label: Unpublish
+      label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      description: The products will be unpublished
+      warning: The {{ itemsCount }} selected products will be unpublished.
+pim_menu:
+  navigation:
+    published_products: Published products
+  item:
+    proposal: Proposals
+    published_product: Published products
+pim_title:
+  pimee_workflow_proposal_index: Proposals
+  pimee_workflow_published_product_index: Published products
+  pimee_workflow_published_product_view: Published product {{ product.label }} | View

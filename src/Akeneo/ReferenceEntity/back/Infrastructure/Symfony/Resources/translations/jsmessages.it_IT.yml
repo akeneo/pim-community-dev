@@ -34,9 +34,6 @@ pim_reference_entity:
       delete:
         button: Elimina entità
         confirm: Sei sicuro di voler eliminare questa entità?
-    index:
-      grid:
-        count: "{{ count }} risultati"
     create:
       header:
         title: Crea
@@ -95,10 +92,16 @@ pim_reference_entity:
       confirm: Sei sicuro di voler eliminare tutti i record di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
     grid:
       search: Cerca nell'etichetta, nel codice e nel testo degli attributi
+      filter:
+        completeness:
+          label: Completo
+          yes: true
+          no: false
       column:
         code: Codice
         image: Immagine
         label: Etichetta
+        complete: Completo
         action: Azioni
       more_result:
         title: Non è così!
@@ -118,6 +121,8 @@ pim_reference_entity:
       delete_all:
         success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
         fail: Si è verificato un errore durante la cancellazione di tutti i record dell'entità di riferimento
+    completeness:
+      label: Completo
   attribute:
     default:
       code: Codice
@@ -136,7 +141,6 @@ pim_reference_entity:
       header:
         title: Crea
       subtitle: Entità
-      title: Aggiungi un nuovo attributo
       input:
         code: Codice (richiesto)
         label: Etichetta
@@ -180,6 +184,9 @@ pim_reference_entity:
       delete:
         success: Attributo eliminato correttamente.
         fail: Si è verificato un errore durate la cancellazione dell'attributo
+    options:
+      helper:
+        title: Traduzioni etichetta
   modal:
     delete:
       subtitle: Conferma cancellazione

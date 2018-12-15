@@ -1,3 +1,5 @@
+user:
+  asset_delay_reminder: アセット遅延通知(日)
 pimee_product_asset:
   form:
     product:

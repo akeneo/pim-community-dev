@@ -1,4 +1,11 @@
 akeneo_suggest_data:
+  acl:
+    suggest_data:
+      index: Abonnement de produits à Franklin Insights
+    franklin:
+      title: Gérer la connection à Franklin Insights
+    settings:
+      mapping: Gérer les paramètres de Franklin Insights
   acl_group:
     suggest_data: Paramètres de Franklin Insights
   mapping_identifier:
@@ -8,3 +15,7 @@ job_execution.summary:
   configuration_validation: Configuration de Franklin Insights
   subscribed: abonné
   unsubscribed: non abonné
+pim_datagrid:
+  cells:
+    type:
+      suggest_data_fetch_products: Franklin Insights

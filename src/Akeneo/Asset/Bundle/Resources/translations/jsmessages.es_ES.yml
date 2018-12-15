@@ -1,3 +1,5 @@
+user:
+  asset_delay_reminder: Recordatorio de fecha límite de uso de recursos (en días)
 pimee_product_asset:
   form:
     product:

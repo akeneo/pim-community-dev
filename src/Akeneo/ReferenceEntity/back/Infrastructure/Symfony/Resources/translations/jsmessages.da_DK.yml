@@ -42,13 +42,21 @@ pim_reference_entity:
         label: Etiket
       confirm: Gem
     grid:
+      filter:
+        completeness:
+          label: Fuldført
+          yes: true
+          no: false
       column:
         code: Kode
         image: Billede
         label: Etiket
+        complete: Fuldført
         action: Aktioner
     tab:
       enrich: Berige
+    completeness:
+      label: Fuldført
   attribute:
     default:
       code: Kode
@@ -95,6 +103,9 @@ pim_reference_entity:
         success: Atributten blev oprettet.
       delete:
         success: Atributten blev slettet.
+    options:
+      helper:
+        title: Etiket oversættelser
   modal:
     delete:
       subtitle: Bekræft sletning

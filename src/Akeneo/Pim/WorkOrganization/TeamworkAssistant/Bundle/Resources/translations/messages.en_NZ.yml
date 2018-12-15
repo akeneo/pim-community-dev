@@ -1,0 +1,40 @@
+teamwork_assistant:
+  project:
+    required: This value should not be blank.
+    label_maxlength: This value is too long. It should have {{ max }} characters or less.
+    project_identifier: The project {{ project }} doesn't exist.
+    project_locale: The project's locale {{ locale }} must be enabled.
+    project_due_date: You can't select a date in the past.
+  notification:
+    project_calculation:
+      error: Project's calculation for <strong>%project_label%</strong> failed
+      warning: Project's calculation for <strong>%project_label%</strong> finished with some warnings
+      success: The project <strong>%project_label%</strong> is ready and the contributors are notified. Let's start!
+      start: Start
+    message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
+    project_finished:
+      contributor: Congrats! You're 100% of done product done with %project_label%.
+      owner: '%project_label% for the %due_date% is finished.'
+      show: Show
+    due_date:
+      contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
+      owner: '%project_label% for the %due_date% is not 100% done.'
+      start: Start
+  datagrid:
+    project_completeness: Project progress
+    contributor_todo: Todo
+    contributor_in_progress: In progress
+    contributor_done: Done
+    owner_todo: Todo (project overview)
+    owner_in_progress: In progress (project overview)
+    owner_done: Done (project overview)
+job_execution:
+  summary:
+    processed_products: Processed products
+pim_analytics:
+  info_type:
+    nb_projects: Number of projects
+pim_datagrid:
+  cells:
+    type:
+      project_calculation: Project calculation

@@ -2,6 +2,9 @@ pim_title:
   akeneo_suggest_data_connection_edit: 'Connexion à Franklin Insights'
   akeneo_suggest_data_identifiers_mapping_edit: 'Paramètres de Franklin Insights'
   akeneo_suggest_data_attributes_mapping_edit: 'Paramètres de Franklin Insights'
+pim_menu:
+  item:
+    franklin: Franklin Insights
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -25,12 +28,15 @@ akeneo_suggest_data:
           active: Actif
           inactive: Inactif
       constraint:
+        duplicate_attribute_code: "Un unique mapping est autorisé par attribut du catalogue"
         missing_or_invalid_identifiers: "Certains mappings d'identifiants sont manquants ou invalides. Attendus: \"{{ expected }}\", trouvé \"{{ given }}\"."
         attribute_not_found: "L'attribut avec le code \"{{ attributeCode }}\" pour le mapping d'identifiants n'existe pas."
+        mandatory_attribute_mapping: "Le mapping de la Marque et du MPN est obligatoire"
         attribute_type: "Ce type d'attribut ne peux pas être utilisé pour un identifiant"
     attributes_mapping:
       label: Mapping des attributs
       fields:
+        franklin_attribute: 'Attribut Franklin'
         suggest_data:
           label: Statut de l'attribut Franklin
           pending: En attente
@@ -46,6 +52,7 @@ akeneo_suggest_data:
           family_status:
             pending: 'Nouveaux attributs de Franklin à réviser'
             full: 'Tous les attributs Franklin sont passés en revue'
+          types_mismatch_warning: 'Avertissement: les types d''attributs ne correspondent pas.'
       constraint:
         missing_target_key: 'Clé cible manquante pour le mapping'
         missing_attribute_key: 'Clé {{ expectedKey }} manquante dans le mapping pour la cible "{{ targetKey }}"'
@@ -64,6 +71,7 @@ akeneo_suggest_data:
         no_identifiers_mapping: 'Veuillez d''abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d''abonner des produits.'
         insufficient_credits: "Désolé, impossible d'abonner ce produit à Franklin Insights. Vous n’avez pas assez de crédits."
         invalid_mapped_values: 'Désolé, impossible d''abonner ce produit à Franklin Insights. Veuillez vérifier que la combinaison des identifiants est valide.'
+        data_provider_error: 'Franklin a renvoyé une erreur lors de la tentative d''abonner le produit'
         not_subscribed: 'Le produit n’est pas abonné'
       module:
         product_edit_form:
@@ -95,6 +103,7 @@ akeneo_suggest_data:
         sub_title: 'Bienvenue dans <span class="AknDescriptionHeader-title--highlight">l''assistant IA des informations produit</span> !'
         description:
           first_step: 'La première étape de la connexion consiste à configurer le token de l''API.'
+          second_step: 'L''étape suivante dans le processus de connexion est de paramètrer le maping des <a class="AknDescriptionHeader-link link" href="#">identifiants de votre catalogue</a> avec les identifiants de l''assistant.'
       activation:
         label: 'Connecteur Franklin'
         activation_code: 'Code d''activation'
@@ -111,6 +120,7 @@ akeneo_suggest_data:
           second_step: 'Pendant que vous mappez vos identifiants, gardez à l''esprit que les attributs Brand et MPN vont de pair. <a href="#" class="AknDescriptionHeader-link">Voir plus</a>'
       inactive_connection:
         title: Désolé, rien à afficher pour le moment
+        sub_title: Veuillez activer votre compte dans Système > Connexion Franklin puis revenez sur cette page.
   mass_edit:
     product:
       operation:
@@ -124,6 +134,9 @@ akeneo_suggest_data:
             franklin_activation: "Vous devez <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activer</a> Franklin Insights avant d'abonner des produits."
             invalid_mapping: "Veuillez d'abord mapper les identifiants de votre catalog sur la page Paramètres > Franklin Insights avant d'abonner des produits."
 batch_jobs:
+  default_steps:
+    fetch_products: Récupérer les données de produit
+    create_proposals: Créer les propositions
   suggest_data_subscribe_products:
     label: Abonnement en masse à Franklin Insights
     validate_configuration.label: Valider la configuration de Franklin Insights
@@ -132,3 +145,10 @@ batch_jobs:
     label: Désabonnement en masse à Franklin Insights
     validate_configuration.label: Valider la configuration de Franklin Insights
     unsubscribe_products.label: Désabonner des produits
+  suggest_data_fetch_products:
+    label: Récupérer les données produit de Franklin Insights
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        suggest_data_fetch_products: Franklin Insights

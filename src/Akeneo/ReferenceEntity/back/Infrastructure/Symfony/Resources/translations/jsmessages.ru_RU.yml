@@ -40,13 +40,21 @@ pim_reference_entity:
         label: Метка
       confirm: Сохранить
     grid:
+      filter:
+        completeness:
+          label: Завершено
+          yes: true
+          no: false
       column:
         code: Код
         image: Изображение
         label: Метка
+        complete: Завершено
         action: Действия
     tab:
       enrich: Дополнить данные
+    completeness:
+      label: Завершено
   attribute:
     default:
       code: Код
@@ -89,6 +97,9 @@ pim_reference_entity:
         success: Атрибут успешно создан.
       delete:
         success: Атрибут успешно удалён.
+    options:
+      helper:
+        title: Переводы меток
   modal:
     delete:
       subtitle: Подтвердить удаление
