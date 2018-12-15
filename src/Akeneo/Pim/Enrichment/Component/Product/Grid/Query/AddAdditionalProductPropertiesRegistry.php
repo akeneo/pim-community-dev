@@ -18,7 +18,7 @@ final class AddAdditionalProductPropertiesRegistry
      */
     public function __construct(iterable $queries)
     {
-        $this->queries = (function(AddAdditionalProductProperties ...$query) {
+        $this->queries = (function (AddAdditionalProductProperties ...$query) {
             return $query;
         })(...$queries);
     }

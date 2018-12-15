@@ -20,7 +20,7 @@ class AdditionalProperties implements \IteratorAggregate
      */
     public function __construct(array $properties = [])
     {
-        $this->properties = (function(AdditionalProperty ...$property) {
+        $this->properties = (function (AdditionalProperty ...$property) {
             return $property;
         })(...$properties);
     }
