@@ -41,13 +41,21 @@ pim_reference_entity:
         label: Bezeichnung
       confirm: Speichern
     grid:
+      filter:
+        completeness:
+          label: Vollständig
+          yes: true
+          no: false
       column:
         code: Code
         image: Abbildung
         label: Bezeichnung
+        complete: Vollständig
         action: Aktionen
     tab:
       enrich: Anreichern
+    completeness:
+      label: Vollständig
   attribute:
     default:
       code: Code
@@ -94,6 +102,9 @@ pim_reference_entity:
         success: Attribut erfolgreich erstellt.
       delete:
         success: Attribut erfolgreich gelöscht.
+    options:
+      helper:
+        title: Feldbezeichner-Übersetzungen
   modal:
     delete:
       subtitle: Löschen bestätigen

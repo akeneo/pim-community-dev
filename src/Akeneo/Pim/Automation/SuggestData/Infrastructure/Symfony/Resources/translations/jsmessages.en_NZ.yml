@@ -1,0 +1,152 @@
+pim_title:
+  akeneo_suggest_data_connection_edit: 'Franklin Insights connection'
+  akeneo_suggest_data_identifiers_mapping_edit: 'Franklin Insights settings'
+  akeneo_suggest_data_attributes_mapping_edit: 'Franklin Insights settings'
+pim_menu:
+  item:
+    franklin: Franklin Insights
+akeneo_suggest_data:
+  entity:
+    identifier_mapping:
+      plural_label: Identifiers
+      flash:
+        update:
+          first: 'Thank you for mapping your catalog product identifiers. You can now subscribe products for enrichment with Franklin Insights.'
+          success: 'Identifiers mapping has been successfully saved.'
+          fail: 'Identifiers mapping not saved due to an error.'
+      fields:
+        identifier_label:
+          label: Franklin identifier
+          values:
+            brand: Brand
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
+        catalog_attribute: Catalog attribute
+        suggest_data: Franklin identifier status
+        status:
+          active: Active
+          inactive: Inactive
+      constraint:
+        duplicate_attribute_code: "One mapping allowed per catalog attribute"
+        missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
+        attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
+        mandatory_attribute_mapping: "Brand & MPN mapping required"
+        attribute_type: "The type of this attribute can not be set as identifier"
+    attributes_mapping:
+      label: Attributes mapping
+      fields:
+        franklin_attribute: 'Franklin attribute'
+        suggest_data:
+          label: Franklin attribute status
+          pending: Pending
+          mapped: Active
+          unmapped: Inactive
+        values_summary: "Values summary: {{ label }}"
+      module:
+        subscribe:
+          subscribe: 'Subscribe family to Franklin'
+          subscribed: 'Subscribed to Franklin'
+        index:
+          error: "You need to create a family in your catalog to access this page."
+          family_status:
+            pending: 'New Franklin attributes to review'
+            full: 'All Franklin attributes reviewed'
+      constraint:
+        missing_target_key: 'Missing target key for mapping'
+        missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'The external attribute type "{{ targetType }}" cannot be mapped to PIM attribute type "{{ pimType }}"'
+    product_subscription:
+      flash:
+        create:
+          success: 'Product successfully subscribed to Franklin'
+          fail: 'Impossible to subscribe product to Franklin'
+        delete:
+          success: 'Product successfully unsubscribed from Franklin'
+          fail: 'Impossible to unsubscribe product from Franklin'
+      constraint:
+        invalid_token: 'Sorry, failed to subscribe products to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help.'
+        family_required: 'Sorry, a product family is required in order to subscribe the product to Franklin Insights.'
+        no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
+        insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
+        invalid_mapped_values: 'Sorry, failed to subscribe product to Franklin Insights. Please subscribe the product with a valid combination of identifiers.'
+        not_subscribed: 'The product is not subscribed'
+      module:
+        product_edit_form:
+          family_required: 'Product family required.'
+          no_identifier_filled: 'Product identifiers required.'
+          invalid_mapping: "Identifiers mapping required."
+    attribute_options_mapping:
+      fields:
+        franklin_attribute_option: Franklin attribute option
+        catalog_attribute_option: Catalog attribute option
+        attribute_option_status: Franklin option status
+      module:
+        edit:
+          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'
+          sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
+          description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="" target="_blank">Read more</a>'
+  product:
+    edit:
+      btn.push: Suggest data
+      subscription_status_title: 'Franklin Subscription'
+  connection:
+    page_title: 'Franklin Insights Connection'
+    flash:
+      success: Franklin Insights activation code saved successfully.
+      invalid: Sorry, invalid activation code. Please try again with a valid one.
+      error: Sorry, an error occured.
+    module:
+      title:
+        sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
+        description:
+          first_step: 'The first step in the connection of the assistant is to configure the API token.'
+          second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link link">catalog product identifiers</a> to the assistant''s identifiers.'
+      activation:
+        label: 'Franklin Connector'
+        activation_code: 'Activation code'
+        paste_activation_code: 'Paste Activation Code'
+        activated: 'Activated'
+        activate: 'Activate'
+  settings:
+    page_title: 'Franklin Insights Settings'
+    module:
+      title:
+        sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
+        description:
+          first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers that match his.'
+          second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
+      inactive_connection:
+        title: Sorry, nothing to show here yet
+        sub_title: Please activate your account on System > Franklin connection and come back.
+  mass_edit:
+    product:
+      operation:
+        suggest_data:
+          label: 'Franklin Insights Subscriptions'
+          label_count: "{1}Manage Franklin Insights subscriptions for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+          description: Please select the action you want to apply on the products selected on the grid
+          subscribe_label: Subscribe
+          unsubscribe_label: Unsubscribe
+          constraint:
+            franklin_activation: "Please <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activate</a> Franklin Insights before subscribing products."
+            invalid_mapping: "Please map the product identifiers at Settings > Franklin Insights before subscribing products."
+batch_jobs:
+  default_steps:
+    fetch_products: Fetch product data
+    create_proposals: Create proposals
+  suggest_data_subscribe_products:
+    label: Franklin Insights bulk subscription
+    validate_configuration.label: Validate Franklin Insights configuration
+    subscribe_products.label: Subscribe products
+  suggest_data_unsubscribe_products:
+    label: Franklin Insights bulk unsubscription
+    validate_configuration.label: Validate Franklin Insights configuration
+    unsubscribe_products.label: Unsubscribe products
+  suggest_data_fetch_products:
+    label: Fetch product data from Franklin Insights
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        suggest_data_fetch_products: Franklin Insights

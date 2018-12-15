@@ -2,6 +2,8 @@ akeneo_suggest_data:
   acl:
     suggest_data:
       index: Subscripció de productes en massa a Franklin Insights
+    franklin:
+      title: Gestionar la connexió de Franklin Insights
     settings:
       mapping: Gestionar la configuració de Franklin Insights
   acl_group:
@@ -13,3 +15,7 @@ job_execution.summary:
   configuration_validation: Configuració de les estadístiques de Franklin
   subscribed: subscrit
   unsubscribed: subscripció cancel·lada
+pim_datagrid:
+  cells:
+    type:
+      suggest_data_fetch_products: Estadístiques de Franklin

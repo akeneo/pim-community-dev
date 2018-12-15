@@ -1,23 +1,30 @@
 pim_title:
   akeneo_reference_entities_reference_entity_index: Créer une nouvelle entité
+  akeneo_reference_entities_reference_entity_edit: Modifier une entité référentielle
   akeneo_reference_entities_record_edit: Modifier un enregistrement
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Supprimer l'image
+        download: Télécharger l'image
         upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       small:
         remove: Supprimer
         download: Téléchargement
+        upload: Glisser et déposer pour télécharger
   reference_entity:
     validation:
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Ce code existe déjà pour cette entité.'
+        limit_reached: 'Vous ne pouvez pas créer l’entité référentielle « {{ %reference_entity_label% }} » parce que vous avez atteint la limite de {{ %limit% }} entités référentielles'
     button:
       save: Enregistrer
       create: Créer
     title: Entités
+    breadcrumb: Entités référentielles
+    img: L’image principale de l’entité référentielle "{{ label }}"
     tab:
       records: Enregistrements
       attribute: Attributs
@@ -29,12 +36,17 @@ pim_reference_entity:
       image: Image
     attribute:
       title: Attributs d’enregistrement
+      attribute:
+        error:
+          render_list: 'Une erreur s’est produite pendant l''affichage de l’attribut « {{ %attribute_code% }} »'
+          render_edit: 'Une erreur s’est produite pendant l''affichage de l’attribut « {{ %attribute_code% }} »'
     module:
       delete:
+        button: Supprimer une entité
         confirm: Voulez-vous vraiment supprimer cette entité ?
     index:
       grid:
-        count: "{{ count }} résultats"
+        count: '{0}Aucune entité référentielle|{1}{{ count }} entité référentielle|]1,Inf[{{ count }} entités référentielles'
     create:
       header:
         title: Créer
@@ -45,18 +57,40 @@ pim_reference_entity:
         code: Code (requis)
       confirm: Enregistrer
     delete:
+      message: Êtes-vous sûr de vouloir supprimer l’entité «{{ referenceEntityLabel }} » ?
       title: Attribut
+    notification:
+      save:
+        success: Entité référentielle mise à jour avec succès.
+        fail: Une erreur s'est produite pendant la sauvegarde de l'entité référentielle
+      create:
+        success: Entité référentielle créée avec succès.
+        fail: Une erreur s'est produite pendant la création de l'entité référentielle
+      delete:
+        success: Entité référentielle supprimée avec succès.
+        fail: Une erreur s'est produite pendant la suppression de l'entité référentielle
   record:
     validation:
+      limit_reached: 'Vous ne pouvez pas créer l''enregistrement « {{ %record_label% }} » parce que vous avez atteint la limite de {{ %limit% }} enregistrements pour cette entité référentielle'
       code:
         pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
         should_be_unique: 'Ce code existe déjà pour cette entité.'
+    no_data:
+      title: Il n'y a aucun enregistrement pour {{ entityLabel }}
+      subtitle: Cliquez sur le bouton "Créer" pour ajouter le premier enregistrement
     no_result:
+      title: Il n'y a aucun résultat pour votre recherche
       subtitle: Essayez à nouveau avec d'autres critères de recherche.
+    selector:
+      no_value: Cliquer ici pour sélectionner un enregistrement.
+    error:
+      value: Oups, il semble que le rendu du champ «{{ fieldName }}» a échoué. Voir la console du développeur pour plus de détails.
     button:
       save: Enregistrer
       create: Créer
       delete: Supprimer
+      delete_all: Supprimer tous les enregistrements
+      back: Retour à la liste
     enrich:
       title: Attributs d’enregistrement
       code: Code
@@ -71,22 +105,49 @@ pim_reference_entity:
         label: Libellé
         code: Code (requis)
       confirm: Enregistrer
+    delete:
+      message: Êtes-vous sûr de vouloir supprimer l'enregistrement «{{ recordLabel }}» ? S'il est lié à des produits ou des enregistrements, les liens vers ces derniers seront supprimés.
+      title: Enregistrement
+    delete_all:
+      confirm: Êtes-vous sûr de vouloir supprimer tous les enregistrements "{{ entityIdentifier }}" ? S'il sont liés à des produits, les liens vers les produits seront supprimés.
     grid:
+      search: Rechercher sur le libellé, le code et les attributs texte
+      filter:
+        completeness:
+          label: Complet
+          all: TOUT
+          yes: true
+          no: false
       column:
         code: Code
         image: Image
         label: Libellé
+        complete: Complet
         action: Actions
+      more_result:
+        title: Ce n'est pas tout !
+        description: Vous avez fait défiler les 500 premiers résultats sur {{ total }} enregistrements. Pour en voir plus, essayez avec des critères de recherche plus précis.
     tab:
       enrich: Enrichir
     notification:
       save:
         success: Enregistrement mis à jour avec succès.
         fail: Une erreur s'est produite lors de la sauvegarde de l'enregistrement
+        validation_error: L'enregistrement n'a pas pu être mis à jour
       create:
         success: Enregistrement créé avec succès.
         fail: Une erreur s'est produite lors de la création de l'enregistrement
+      delete:
+        success: L'enregistrement «{{ code }}» a bien été supprimé.
+        fail: Une erreur s'est produite lors de la suppression de l'enregistrement
+      delete_all:
+        success: Tous les enregistrements de «{{ entityIdentifier }}» ont bien été supprimés.
+        fail: Une erreur s'est produite pendant la suppression de tous les enregistrements de cette entité référentielle
+    completeness:
+      label: Complet
   attribute:
+    validation:
+      limit_reached: 'Vous ne pouvez pas créer l''attribut « {{ %attribute_label% }} » parce que vous avez atteint la limite de {{ %limit% }} attributs pour cette entité référentielle'
     default:
       code: Code
       label: Libellé
@@ -94,6 +155,10 @@ pim_reference_entity:
     type:
       text: Texte
       image: Image
+      record: Lien simple vers une entité référentielle
+      record_collection: Lien multiple vers une entité référentielle
+      option: Option simple
+      option_collection: Options multiples
     is_required: requis pour la complétude
     no_data:
       title: Il n'y a aucun attribut personnalisé pour {{ entityLabel }}
@@ -104,7 +169,7 @@ pim_reference_entity:
       header:
         title: Créer
       subtitle: Entités
-      title: Ajouter un nouvel attribut
+      title: Ajouter un nouvel attribut d’enregistrement
       input:
         code: Code (requis)
         label: Libellé
@@ -114,6 +179,7 @@ pim_reference_entity:
       confirm: Enregistrer
     edit:
       delete: Supprimer l'attribut
+      title: Modifier l’attribut {{ code }}
       save: Enregistrer
       cancel: Annuler
       input:
@@ -130,6 +196,14 @@ pim_reference_entity:
         allowed_extensions: Extensions autorisées
         validation_rule: Règle de validation
         regular_expression: Expression régulière
+        manage_options:
+          confirmation:
+            discard_changes: Vous perdrez les modifications effectuées sur la liste d'options si vous quittez la page
+          quick_edit:
+            label: Gérer les options
+          option:
+            label:
+              placeholder: Ecrivez votre nouveau libellé d'option ici
         options:
           validation_rule:
             none: Aucun
@@ -137,17 +211,27 @@ pim_reference_entity:
             regular_expression: Expression régulière
             url: URL
     delete:
+      message: Êtes-vous sûr de vouloir supprimer l’attribut «{{ attributeLabel }} » ?
       title: Attribut
     notification:
+      list:
+        fail: Une erreur s'est produite pendant la mise à jour de l'attribut liste
       save:
         success: Attribut mis à jour avec succès.
         fail: Une erreur s'est produite pendant la sauvegarde de l'attribut
+        validation_error: L'attribut n'a pas pu être mis à jour
       create:
         success: Attribut créé avec succès.
         fail: Une erreur s'est produite pendant la création de l'attribut
+        validation_error: L'attribut n'a pas pu être créé
       delete:
         success: Attribut supprimé avec succès.
         fail: Une erreur s'est produite pendant la suppression de l'attribut
+    options:
+      no_value: Cliquez ici pour choisir une option.
+      sub_title: Entités référentielles
+      helper:
+        title: Traduction des libellés
   modal:
     delete:
       subtitle: Supprimer l'élément
@@ -160,5 +244,10 @@ pim_enrich:
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Lien multiple vers une entité référentielle
+          akeneo_reference_entity: Lien simple vers une entité référentielle
         section:
           type_specific: Paramètres spécifiques
+        reference_entity:
+          default_label: Veuillez sélectionner une entité référentielle

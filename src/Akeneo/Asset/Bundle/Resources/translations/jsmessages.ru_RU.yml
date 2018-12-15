@@ -1,3 +1,5 @@
+user:
+  asset_delay_reminder: Напоминание о медиафайлах (в днях)
 pimee_product_asset:
   form:
     product:

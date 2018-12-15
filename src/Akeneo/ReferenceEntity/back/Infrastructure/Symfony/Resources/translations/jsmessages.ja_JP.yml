@@ -42,13 +42,21 @@ pim_reference_entity:
         label: ラベル
       confirm: 保存
     grid:
+      filter:
+        completeness:
+          label: 網羅率
+          yes: true
+          no: false
       column:
         code: コード
         image: イメージ
         label: ラベル
+        complete: 網羅率
         action: アクション
     tab:
       enrich: マスタ
+    completeness:
+      label: 網羅率
   attribute:
     default:
       code: コード
@@ -95,6 +103,9 @@ pim_reference_entity:
         success: 属性を作成しました
       delete:
         success: 属性を削除しました
+    options:
+      helper:
+        title: ラベルの翻訳
   modal:
     delete:
       subtitle: 削除を確認する
