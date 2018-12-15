@@ -49,6 +49,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.subscribe_product'
             - '@akeneo_acceptance.context.suggest_data.data_fixtures'
             - '@__symfony__.akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.subscriber.unsubscribe_product_after_product_removal'
         tags:
             - { name: 'fob.context_service' }
 

@@ -31,18 +31,15 @@ class AttributesMappingNormalizer
      */
     public function normalize(array $attributesMapping): array
     {
-        $statusMapping = [
-            DomainAttributeMapping::ATTRIBUTE_PENDING => AttributeMapping::STATUS_PENDING,
-            DomainAttributeMapping::ATTRIBUTE_MAPPED => AttributeMapping::STATUS_ACTIVE,
-            DomainAttributeMapping::ATTRIBUTE_UNMAPPED => AttributeMapping::STATUS_INACTIVE,
-        ];
-
         $result = [];
         foreach ($attributesMapping as $attributeMapping) {
+            $status = DomainAttributeMapping::ATTRIBUTE_MAPPED === $attributeMapping->getStatus()
+                ? AttributeMapping::STATUS_ACTIVE : AttributeMapping::STATUS_INACTIVE;
+
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
                 'to' => $this->computeNormalizedAttribute($attributeMapping),
-                'status' => $statusMapping[$attributeMapping->getStatus()],
+                'status' => $status,
             ];
         }
 
@@ -68,12 +65,10 @@ class AttributesMappingNormalizer
                 }
             }
 
-            $attributeTypes = array_flip(DomainAttributeMapping::ATTRIBUTE_TYPES_MAPPING);
-
             $normalizedPimAttribute = [
                 'id' => $attribute->getCode(),
                 'label' => $labels,
-                'type' => $attributeTypes[$attribute->getType()],
+                'type' => DomainAttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS[$attribute->getType()],
             ];
 
             if (AttributeTypes::METRIC === $attribute->getType()) {

@@ -8,3 +8,18 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\SelectFamilyCodesByAttributeQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.find_family_attributes_not_in:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\FamilyAttribute\FindFamilyAttributesNotInQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_query:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\EmptySuggestedDataQuery'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_and_missing_mapping_query:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\EmptySuggestedDataAndMissingMappingQuery'
+        arguments:
+            - '@database_connection'

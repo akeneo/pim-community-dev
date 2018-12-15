@@ -24,7 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSub
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\Request;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\RequestCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
@@ -33,6 +33,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\I
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\FamilyNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -42,17 +43,17 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var SubscriptionApiInterface */
+    /** @var SubscriptionWebService */
     private $api;
 
     /**
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param SubscriptionApiInterface $api
+     * @param SubscriptionWebService $api
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        SubscriptionApiInterface $api,
+        SubscriptionWebService $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);
@@ -146,6 +147,22 @@ class SubscriptionProvider extends AbstractProvider implements SubscriptionProvi
             $this->api->unsubscribeProduct($subscriptionId);
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $subscriptionId
+     * @param FamilyInterface $family
+     */
+    public function updateFamilyInfos(string $subscriptionId, FamilyInterface $family): void
+    {
+        $this->api->setToken($this->getToken());
+        try {
+            $normalizer = new FamilyNormalizer();
+            $familyInfos = $normalizer->normalize($family);
+            $this->api->updateFamilyInfos($subscriptionId, $familyInfos);
+        } catch (ClientException $e) {
+            throw ProductSubscriptionException::dataProviderError();
         }
     }
 

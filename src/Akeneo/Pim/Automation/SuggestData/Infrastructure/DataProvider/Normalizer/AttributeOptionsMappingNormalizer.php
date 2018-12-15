@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normaliz
 
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
@@ -31,6 +32,7 @@ class AttributeOptionsMappingNormalizer
         $result = [];
 
         foreach ($attributeOptionsMapping as $optionMapping) {
+            /* @var AttributeOption $optionMapping */
             $result[] = [
                 'from' => [
                     'id' => $optionMapping->getFranklinOptionId(),
@@ -39,6 +41,7 @@ class AttributeOptionsMappingNormalizer
                     ],
                 ],
                 'to' => $this->computeTargetOptionMapping($optionMapping),
+                'status' => $optionMapping->isMapped() ? OptionMapping::STATUS_ACTIVE : OptionMapping::STATUS_INACTIVE,
             ];
         }
 

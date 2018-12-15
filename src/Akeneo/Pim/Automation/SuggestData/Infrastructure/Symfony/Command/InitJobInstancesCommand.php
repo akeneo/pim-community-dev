@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -24,12 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InitJobInstancesCommand extends ContainerAwareCommand
 {
+    /** @var string */
     public const NAME = 'pimee:suggest-data:init-job-instances';
-
-    private const SUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_subscribe_products';
-    private const UNSUBSCRIBE_PRODUCTS_JOB_NAME = 'suggest_data_unsubscribe_products';
-    private const FETCH_PRODUCTS_JOB_NAME = 'suggest_data_fetch_products';
-    private const REMOVE_ATTRIBUTE_FROM_MAPPING_JOB_NAME = 'suggest_data_remove_attribute_from_mapping';
 
     /** @var CommandLauncher */
     private $commandLauncher;
@@ -59,20 +56,20 @@ class InitJobInstancesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        if (!$this->isJobInstanceAlreadyCreated(self::SUBSCRIBE_PRODUCTS_JOB_NAME)) {
-            $this->createJobInstance(self::SUBSCRIBE_PRODUCTS_JOB_NAME, 'mass_edit');
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::SUBSCRIBE_PRODUCTS)) {
+            $this->createJobInstance(JobInstanceNames::SUBSCRIBE_PRODUCTS, 'mass_edit');
         }
 
-        if (!$this->isJobInstanceAlreadyCreated(self::UNSUBSCRIBE_PRODUCTS_JOB_NAME)) {
-            $this->createJobInstance(self::UNSUBSCRIBE_PRODUCTS_JOB_NAME, 'mass_edit');
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::UNSUBSCRIBE_PRODUCTS)) {
+            $this->createJobInstance(JobInstanceNames::UNSUBSCRIBE_PRODUCTS, 'mass_edit');
         }
 
-        if (!$this->isJobInstanceAlreadyCreated(self::FETCH_PRODUCTS_JOB_NAME)) {
-            $this->createJobInstance(self::FETCH_PRODUCTS_JOB_NAME, 'franklin_insights');
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::FETCH_PRODUCTS)) {
+            $this->createJobInstance(JobInstanceNames::FETCH_PRODUCTS, 'franklin_insights');
         }
 
-        if (!$this->isJobInstanceAlreadyCreated(self::REMOVE_ATTRIBUTE_FROM_MAPPING_JOB_NAME)) {
-            $this->createJobInstance(self::REMOVE_ATTRIBUTE_FROM_MAPPING_JOB_NAME, 'franklin_insights');
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING)) {
+            $this->createJobInstance(JobInstanceNames::REMOVE_ATTRIBUTES_FROM_MAPPING, 'franklin_insights');
         }
     }
 

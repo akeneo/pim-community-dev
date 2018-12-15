@@ -57,7 +57,7 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And a token invalid message for subscription should be sent
 
-  Scenario: Subscribe a product without enough money on Franklin account
+  Scenario: Fail to subscribe a product when there is not enough money on Franklin account
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
     And a predefined identifiers mapping as follows:
@@ -67,12 +67,6 @@ Feature: Subscribe a product to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And a not enough credit message should be sent
-
-#  Scenario: Fail to subscribe a product that does not exist
-#    Given Franklin is configured with a valid token
-#    And the product "fake" does not exist
-#    When I subscribe the product "fake" to Franklin
-#    Then the product "fake" should not be subscribed
 
   Scenario: Fail to subscribe a product with an invalid upc
     Given Franklin is configured with a valid token
@@ -95,7 +89,7 @@ Feature: Subscribe a product to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid MPN and Brand message should be sent
 
-  Scenario: Dealing with error on product subscription when Franklin server is down
+  Scenario: Fail to subscribe a product when Franklin server is down
     Given Franklin is configured with a valid token
     And the product "B00EYZY6AC" of the family "router"
     And a predefined identifiers mapping as follows:
@@ -105,3 +99,10 @@ Feature: Subscribe a product to Franklin
     When I subscribe the product "B00EYZY6AC" to Franklin
     Then the product "B00EYZY6AC" should not be subscribed
     And an invalid subscription message should be sent
+
+#  Scenario: Fail to subscribe a product variant to Franklin
+#    Given Franklin is configured with a valid token
+#    And the variant product "variant_product"
+#    When I subscribe the product "variant_product" to Franklin
+#    Then the product "variant_product" should not be subscribed
+#    And an invalid variant message should be sent

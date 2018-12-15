@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query;
 
 /**
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
-interface AuthenticatedApi
+interface EmptySuggestedDataQueryInterface
 {
     /**
-     * @param string $token
+     * Empty suggested data for all subscriptions.
      */
-    public function setToken(string $token): void;
+    public function execute(): void;
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -42,13 +43,12 @@ class AttributeMappingExceptionSpec extends ObjectBehavior
 
     public function it_throws_an_incompatible_attribute_type_mapping_message(): void
     {
-        $targetType = 'select';
-        $pimType = 'metric';
-        $this->beConstructedThrough('incompatibleAttributeTypeMapping', [$targetType, $pimType]);
+        $pimType = AttributeTypes::DATE;
+        $this->beConstructedThrough('incompatibleAttributeTypeMapping', [$pimType]);
 
         $this->getMessage()->shouldReturn(
             'akeneo_suggest_data.entity.attributes_mapping.constraint.invalid_attribute_type_mapping'
         );
-        $this->getMessageParams()->shouldReturn(['targetType' => $targetType, 'pimType' => $pimType]);
+        $this->getMessageParams()->shouldReturn(['pimType' => $pimType]);
     }
 }

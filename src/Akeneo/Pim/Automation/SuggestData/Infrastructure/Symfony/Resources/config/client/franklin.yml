@@ -35,13 +35,13 @@ services:
             - 'https://pim-ai.prod.cloud.akeneo.com'
 
     akeneo.pim.automation.suggest_data.franklin_client.subscription:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService'
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.franklin_client.http_client'
 
     akeneo.pim.automation.suggest_data.franklin_client.identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingApiWebService'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService'
         arguments:
             - '@akeneo.pim.automation.suggest_data.franklin_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.franklin_client.http_client'

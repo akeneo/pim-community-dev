@@ -16,10 +16,13 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMappingProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Write\AttributeMapping;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataAndMissingMappingQueryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class UpdateAttributesMappingByFamilyHandler
 {
     /** @var FamilyRepositoryInterface */
@@ -31,19 +34,25 @@ class UpdateAttributesMappingByFamilyHandler
     /** @var AttributesMappingProviderInterface */
     private $attributesMappingProvider;
 
+    /** @var EmptySuggestedDataAndMissingMappingQueryInterface */
+    private $emptySuggestedDataAndMissingMappingQuery;
+
     /**
      * @param FamilyRepositoryInterface $familyRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param AttributesMappingProviderInterface $attributesMappingProvider
+     * @param EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        AttributesMappingProviderInterface $attributesMappingProvider
+        AttributesMappingProviderInterface $attributesMappingProvider,
+        EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
     ) {
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->attributesMappingProvider = $attributesMappingProvider;
+        $this->emptySuggestedDataAndMissingMappingQuery = $emptySuggestedDataAndMissingMappingQuery;
     }
 
     /**
@@ -57,10 +66,11 @@ class UpdateAttributesMappingByFamilyHandler
             $command->getFamilyCode(),
             $command->getAttributesMapping()
         );
+        $this->emptySuggestedDataAndMissingMappingQuery->execute($command->getFamilyCode());
     }
 
     /**
-     * Validates that the family exists
+     * Validates that the family exists.
      * Validates that the attribute exists.
      *
      * @param UpdateAttributesMappingByFamilyCommand $command
@@ -92,27 +102,21 @@ class UpdateAttributesMappingByFamilyHandler
             );
         }
 
-        $this->validateAttributeTypesMapping($attributeMapping, $attribute);
+        $this->validateAttributeType($attribute->getType());
 
         $attributeMapping->setAttribute($attribute);
     }
 
     /**
-     * @param AttributeMapping $attributeMapping
-     * @param AttributeInterface $pimAttribute
+     * @param string $attributeType
      *
      * @throws AttributeMappingException
      */
-    private function validateAttributeTypesMapping(
-        AttributeMapping $attributeMapping,
-        AttributeInterface $pimAttribute
-    ): void {
-        $expectedAttributeType = AttributeMapping::ATTRIBUTE_TYPES_MAPPING[$attributeMapping->getTargetAttributeType()];
-        if ($pimAttribute->getType() !== $expectedAttributeType) {
-            throw AttributeMappingException::incompatibleAttributeTypeMapping(
-                $attributeMapping->getTargetAttributeType(),
-                $pimAttribute->getType()
-            );
+    private function validateAttributeType(string $attributeType): void
+    {
+        $authorizedPimAttributeTypes = array_keys(AttributeMapping::AUTHORIZED_ATTRIBUTE_TYPE_MAPPINGS);
+        if (!in_array($attributeType, $authorizedPimAttributeTypes)) {
+            throw AttributeMappingException::incompatibleAttributeTypeMapping($attributeType);
         }
     }
 }

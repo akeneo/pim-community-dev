@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\S
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AbstractApi;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
@@ -30,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInterface
+class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
      * {@inheritdoc}
@@ -128,6 +129,39 @@ class SubscriptionWebservice extends AbstractApi implements SubscriptionApiInter
 
             throw new BadRequestException(
                 sprintf('Something went wrong during product subscription: %s', $e->getMessage())
+            );
+        }
+    }
+
+    /**
+     * @param string $subscriptionId
+     * @param array $familyInfos
+     */
+    public function updateFamilyInfos(string $subscriptionId, array $familyInfos): void
+    {
+        $route = $this->uriGenerator->generate(
+            sprintf('/api/subscriptions/%s/family', $subscriptionId)
+        );
+
+        try {
+            $this->httpClient->request(
+                'PUT',
+                $route,
+                [
+                    'form_params' => $familyInfos,
+                ]
+            );
+        } catch (ServerException $e) {
+            throw new FranklinServerException(
+                sprintf('Something went wrong on Franklin side during subscription update: %s', $e->getMessage())
+            );
+        } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
+            throw new BadRequestException(
+                sprintf('Something went wrong during subscription update: %s', $e->getMessage())
             );
         }
     }

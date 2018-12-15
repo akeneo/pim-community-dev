@@ -27,6 +27,8 @@ class AttributeMapping
     /** The attribute was registered to not be mapped */
     public const ATTRIBUTE_UNMAPPED = 2;
 
+    private const UNKNOWN_ATTRIBUTE_TYPE = 'unknown';
+
     /** @var string */
     private $targetAttributeCode;
 
@@ -39,7 +41,7 @@ class AttributeMapping
     /** @var string */
     private $status;
 
-    /** @var string */
+    /** @var string|null */
     private $targetAttributeType;
 
     /** @var null|string[] */
@@ -48,7 +50,7 @@ class AttributeMapping
     /**
      * @param string $targetAttributeCode
      * @param null|string $targetAttributeLabel
-     * @param string $targetAttributeType
+     * @param null|string $targetAttributeType
      * @param null|string $pimAttributeCode
      * @param int $status
      * @param null|string[] $summary
@@ -56,7 +58,7 @@ class AttributeMapping
     public function __construct(
         string $targetAttributeCode,
         ?string $targetAttributeLabel,
-        string $targetAttributeType,
+        ?string $targetAttributeType,
         ?string $pimAttributeCode,
         int $status,
         ?array $summary
@@ -106,6 +108,10 @@ class AttributeMapping
      */
     public function getTargetAttributeType(): string
     {
+        if (null === $this->targetAttributeType) {
+            return self::UNKNOWN_ATTRIBUTE_TYPE;
+        }
+
         return $this->targetAttributeType;
     }
 

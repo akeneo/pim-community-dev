@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -25,28 +25,25 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AttributeDeletedSubscriber implements EventSubscriberInterface
 {
-    public const JOB_INSTANCE_NAME = 'suggest_data_remove_attribute_from_mapping';
-
     /** @var SelectFamilyCodesByAttributeQueryInterface */
     private $familyCodesByAttributeQuery;
 
-    /** @var array */
-    private $familyCodes;
+    /** @var RemoveAttributesFromMappingInterface */
+    private $removeAttributesFromMapping;
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
+    /** @var array */
+    private $familyCodes = [];
 
     /**
      * @param SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery
-     * @param JobLauncherInterface $jobLauncher
+     * @param RemoveAttributesFromMappingInterface $removeAttributesFromMapping
      */
     public function __construct(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        JobLauncherInterface $jobLauncher
+        RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ) {
         $this->familyCodesByAttributeQuery = $familyCodesByAttributeQuery;
-        $this->jobLauncher = $jobLauncher;
-        $this->familyCodes = [];
+        $this->removeAttributesFromMapping = $removeAttributesFromMapping;
     }
 
     /**
@@ -83,11 +80,6 @@ class AttributeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        foreach ($this->familyCodes as $familyCode) {
-            $this->jobLauncher->launch(self::JOB_INSTANCE_NAME, [
-                'pim_attribute_code' => $attribute->getCode(),
-                'family_code' => $familyCode,
-            ]);
-        }
+        $this->removeAttributesFromMapping->process($this->familyCodes, [$attribute->getCode()]);
     }
 }

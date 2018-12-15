@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AbstractApi;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionsMapping;
@@ -23,7 +24,7 @@ use GuzzleHttp\Exception\ServerException;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-class OptionsMappingWebService extends AbstractApi implements OptionsMappingInterface
+class OptionsMappingWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
      * {@inheritdoc}

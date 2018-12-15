@@ -91,7 +91,7 @@ Feature: Filter by project completeness in the product datagrid
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |
       | project-description | 2016 summer collection |
-      | project-due-date    | 12/13/2018             |
+      | project-due-date    | 12/13/2118             |
     And I press the "Save" button
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
@@ -105,7 +105,7 @@ Feature: Filter by project completeness in the product datagrid
     But I should not see the text "Project progress"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
-    And I should see the text "Due date: 12/13/2018"
+    And I should see the text "Due date: 12/13/2118"
     And I should see the text "0%"
 
   Scenario: Project overview options are hidden for contributors

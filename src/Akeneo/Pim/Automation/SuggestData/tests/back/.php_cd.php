@@ -32,9 +32,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
-
-            //Subscribers
-            'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+            'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -67,6 +65,7 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
 
@@ -163,6 +162,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
+            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool',

@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\Attribu
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\OptionsMapping\OptionsMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Converter\AttributeOptionsMappingConverter;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 
@@ -28,15 +28,15 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Att
  */
 class AttributeOptionsMappingProvider extends AbstractProvider implements AttributeOptionsMappingProviderInterface
 {
-    /** @var OptionsMappingInterface */
+    /** @var OptionsMappingWebService */
     private $api;
 
     /**
-     * @param OptionsMappingInterface $api
+     * @param OptionsMappingWebService $api
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(
-        OptionsMappingInterface $api,
+        OptionsMappingWebService $api,
         ConfigurationRepositoryInterface $configurationRepository
     ) {
         parent::__construct($configurationRepository);

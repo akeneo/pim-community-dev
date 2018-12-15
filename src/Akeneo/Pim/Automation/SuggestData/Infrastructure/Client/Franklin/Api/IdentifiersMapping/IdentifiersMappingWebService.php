@@ -14,13 +14,14 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\I
  */
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AbstractApi;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 
 /**
  * API Web Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class IdentifiersMappingApiWebService extends AbstractApi implements IdentifiersMappingApiInterface
+class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
      * {@inheritdoc}

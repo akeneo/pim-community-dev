@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApi;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InsufficientCreditsException;
@@ -34,7 +33,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * TODO: There are lot of spec to add.
  */
-class SubscriptionWebserviceSpec extends ObjectBehavior
+class SubscriptionWebServiceSpec extends ObjectBehavior
 {
     public function let(UriGenerator $uriGenerator, GuzzleClient $httpClient): void
     {
@@ -43,17 +42,17 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
 
     public function it_is_a_subscription_web_service(): void
     {
-        $this->shouldBeAnInstanceOf(SubscriptionWebservice::class);
+        $this->shouldBeAnInstanceOf(SubscriptionWebService::class);
     }
 
     public function it_is_an_authenticated_webservice(): void
     {
-        $this->shouldImplement(AuthenticatedApi::class);
+        $this->shouldImplement(AuthenticatedApiInterface::class);
     }
 
     public function it_is_a_subscription_api(): void
     {
-        $this->shouldImplement(SubscriptionApiInterface::class);
+        $this->shouldImplement(SubscriptionWebService::class);
     }
 
     public function it_calls_a_delete_request_on_subscription_id($uriGenerator, $httpClient): void

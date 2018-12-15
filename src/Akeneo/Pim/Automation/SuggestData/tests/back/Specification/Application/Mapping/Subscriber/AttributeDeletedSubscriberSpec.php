@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttributesFromMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeDeletedSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\Query\SelectFamilyCodesByAttributeQueryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -31,9 +31,9 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
 {
     public function let(
         SelectFamilyCodesByAttributeQueryInterface $familyCodesByAttributeQuery,
-        JobLauncherInterface $jobLauncher
+        RemoveAttributesFromMappingInterface $removeAttributesFromMapping
     ): void {
-        $this->beConstructedWith($familyCodesByAttributeQuery, $jobLauncher);
+        $this->beConstructedWith($familyCodesByAttributeQuery, $removeAttributesFromMapping);
     }
 
     public function it_is_a_product_family_removal_subscriber(): void
@@ -82,7 +82,7 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         GenericEvent $postRemoveEvent,
         AttributeInterface $attribute,
         $familyCodesByAttributeQuery,
-        $jobLauncher
+        $removeAttributesFromMapping
     ): void {
         $preRemoveEvent->getSubject()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute_code');
@@ -94,15 +94,9 @@ class AttributeDeletedSubscriberSpec extends ObjectBehavior
         $postRemoveEvent->getSubject()->willReturn($attribute);
         $attribute->getCode()->willReturn('attribute_code');
 
-        $jobLauncher->launch(AttributeDeletedSubscriber::JOB_INSTANCE_NAME, [
-            'pim_attribute_code' => 'attribute_code',
-            'family_code' => 'family_1',
-        ])->shouldBeCalled();
-
-        $jobLauncher->launch(AttributeDeletedSubscriber::JOB_INSTANCE_NAME, [
-            'pim_attribute_code' => 'attribute_code',
-            'family_code' => 'family_2',
-        ])->shouldBeCalled();
+        $removeAttributesFromMapping
+            ->process(['family_1', 'family_2'], ['attribute_code'])
+            ->shouldBeCalled();
 
         $this->onPostRemove($postRemoveEvent);
     }

@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FranklinAttributeId;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -168,6 +169,7 @@ class AttributeOptionsMappingContext implements Context
                     ],
                 ],
                 'to' => $to,
+                'status' => null === $to ? OptionMapping::STATUS_INACTIVE : OptionMapping::STATUS_ACTIVE,
             ];
         }
 

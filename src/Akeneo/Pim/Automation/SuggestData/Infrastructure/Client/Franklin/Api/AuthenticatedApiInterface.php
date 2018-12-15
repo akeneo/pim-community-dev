@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Launcher;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-interface JobLauncherInterface
+interface AuthenticatedApiInterface
 {
     /**
-     * @param string $jobInstanceName
-     * @param array $options
+     * @param string $token
      */
-    public function launch(string $jobInstanceName, array $options = []): void;
+    public function setToken(string $token): void;
 }

@@ -47,19 +47,27 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
      */
     public function save(IdentifiersMapping $identifiersMapping): void
     {
+        $identifiersMappingToSave = [];
         foreach ($identifiersMapping as $franklinCode => $attribute) {
             $identifierMapping = $this->em
                 ->getRepository(IdentifierMapping::class)
                 ->findOneBy(['franklinCode' => $franklinCode]);
 
             if (!$identifierMapping instanceof IdentifierMapping) {
-                $identifierMapping = new IdentifierMapping($franklinCode, $attribute);
+                $identifierMapping = new IdentifierMapping($franklinCode, null);
             }
-            $identifierMapping->setAttribute($attribute);
+            $identifierMapping->setAttribute(null);
+
+            $this->em->persist($identifierMapping);
+            $identifiersMappingToSave[$franklinCode] = $identifierMapping;
+        }
+        $this->em->flush();
+
+        foreach ($identifiersMappingToSave as $franklinCode => $identifierMapping) {
+            $identifierMapping->setAttribute($identifiersMapping->getIterator()[$franklinCode]);
 
             $this->em->persist($identifierMapping);
         }
-
         $this->em->flush();
     }
 
