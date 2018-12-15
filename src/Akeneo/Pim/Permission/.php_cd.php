@@ -143,6 +143,7 @@ $rules = [
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Webmozart\Assert',
         'Doctrine\Common',
         'Akeneo\Tool',
 
