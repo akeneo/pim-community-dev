@@ -119,7 +119,7 @@ pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV (kaikki määritteet)
+        csv_all: CSV (kaikki attribuutit)
         csv_grid_context: CSV (Ruudukon konteksti)
         xlsx_all: Excel (Kaikki attribuutit)
         xlsx_grid_context: Excel (Ruudukon konteksti)
