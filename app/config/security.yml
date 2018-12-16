@@ -54,7 +54,7 @@ security:
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
 
-        local:
+        main:
             pattern:                        ^/
             provider:                       chain_provider
             form_login:

@@ -1,0 +1,5 @@
+services:
+    akeneo_authentication.sso.configuration.repository:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Persistence\Sql\SqlRepository'
+        arguments:
+            - '@database_connection'
