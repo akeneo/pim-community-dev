@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber;
+namespace Specification\Akeneo\Asset\Bundle\EventSubscriber;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Bundle\EventSubscriber\ComputeCompletenessOfProductsLinkedToAssetsSubscriber;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
-use Akeneo\Pim\Automation\SuggestData\Application\Launcher\JobLauncherInterface;
 use Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -69,20 +69,6 @@ class ComputeCompletenessOfProductsLinkedToAssetsSubscriberSpec extends ObjectBe
 
         $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent(new \stdClass()));
         $this->computeCompletenessOfProductsLinkedToAssets(new GenericEvent([new \stdClass(), 'a_string']));
-    }
-
-    function it_removes_completenesses_if_compute_job_instance_does_not_exist(
-        $jobInstanceRepository,
-        $jobLauncher,
-        $completenessRemover,
-        AssetInterface $asset
-    ): void {
-        $jobInstanceRepository->findOneByIdentifier('compute_completeness_of_products_linked_to_assets')
-                              ->willReturn(null);
-        $completenessRemover->removeForAsset($asset)->shouldBeCalled();
-        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
-
-        $this->computeCompletenessOfProductsLinkedToAsset(new GenericEvent($asset->getWrappedObject()));
     }
 
     function it_does_not_launch_the_compute_completeness_job_if_no_product_is_impacted(
