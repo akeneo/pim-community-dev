@@ -5,7 +5,10 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigu
         identityProviderEntityId:
             - NotBlank: ~
             - Url: ~
-        identityProviderUrl:
+        identityProviderSignOnUrl:
+            - NotBlank: ~
+            - Url: ~
+        identityProviderLogoutUrl:
             - NotBlank: ~
             - Url: ~
         identityProviderPublicCertificate:

@@ -22,8 +22,10 @@ authentication:
                     label: SSO enabled
                 entity_id:
                     label: Entity ID
-                url:
-                    label: URL
+                sign_on_url:
+                    label: Sign-on URL
+                logout_url:
+                    label: Logout URL
                 public_certificate:
                     label: Public certificate
                 private_certificate:

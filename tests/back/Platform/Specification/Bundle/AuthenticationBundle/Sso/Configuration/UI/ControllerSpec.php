@@ -41,7 +41,8 @@ class ControllerSpec extends ObjectBehavior
             [
                 'is_enabled'                           => true,
                 'identity_provider_entity_id'          => 'https://idp.jambon.com',
-                'identity_provider_url'                => 'https://idp.jambon.com/',
+                'identity_provider_sign_on_url'        => 'https://idp.jambon.com/signon',
+                'identity_provider_logout_url'         => 'https://idp.jambon.com/logout',
                 'identity_provider_public_certificate' => 'public_certificate',
                 'service_provider_entity_id'           => 'https://sp.jambon.com',
                 'service_provider_public_certificate'  => 'public_certificate',
@@ -68,7 +69,8 @@ class ControllerSpec extends ObjectBehavior
             [
                 'is_enabled'                           => true,
                 'identity_provider_entity_id'          => '',
-                'identity_provider_url'                => 'https://idp.jambon.com/',
+                'identity_provider_sign_on_url'        => 'https://idp.jambon.com/signon',
+                'identity_provider_logout_url'         => 'https://idp.jambon.com/logout',
                 'identity_provider_public_certificate' => 'public_certificate',
                 'service_provider_entity_id'           => 'https://sp.jambon.com',
                 'service_provider_public_certificate'  => 'public_certificate',
@@ -81,7 +83,8 @@ class ControllerSpec extends ObjectBehavior
             'authentication_sso',
             true,
             '',
-            'https://idp.jambon.com/',
+            'https://idp.jambon.com/signon',
+            'https://idp.jambon.com/logout',
             'public_certificate',
             'https://sp.jambon.com',
             'public_certificate',
@@ -127,7 +130,8 @@ class ControllerSpec extends ObjectBehavior
             new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
-                new Url('https://idp.jambon.com/'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
                 new Certificate('public_certificate')
             ),
             new ServiceProvider(
@@ -142,7 +146,8 @@ class ControllerSpec extends ObjectBehavior
         $normalizedConfig = [
             'is_enabled'                           => true,
             'identity_provider_entity_id'          => 'https://idp.jambon.com',
-            'identity_provider_url'                => 'https://idp.jambon.com/',
+            'identity_provider_sign_on_url'        => 'https://idp.jambon.com/signon',
+            'identity_provider_logout_url'         => 'https://idp.jambon.com/logout',
             'identity_provider_public_certificate' => 'public_certificate',
             'service_provider_entity_id'           => 'https://sp.jambon.com',
             'service_provider_public_certificate'  => 'public_certificate',

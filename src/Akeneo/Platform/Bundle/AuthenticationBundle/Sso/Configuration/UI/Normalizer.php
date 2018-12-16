@@ -28,7 +28,8 @@ final class Normalizer implements NormalizerInterface
         return [
             'is_enabled'                           => $configArray['isEnabled'],
             'identity_provider_entity_id'          => $configArray['identityProvider']['entityId'],
-            'identity_provider_url'                => $configArray['identityProvider']['url'],
+            'identity_provider_sign_on_url'        => $configArray['identityProvider']['signOnUrl'],
+            'identity_provider_logout_url'         => $configArray['identityProvider']['logoutUrl'],
             'identity_provider_public_certificate' => $configArray['identityProvider']['publicCertificate'],
             'service_provider_entity_id'           => $configArray['serviceProvider']['entityId'],
             'service_provider_public_certificate'  => $configArray['serviceProvider']['publicCertificate'],

@@ -21,7 +21,8 @@ class ConfigurationSpec extends ObjectBehavior
             new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
-                new Url('https://idp.jambon.com/'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
                 new Certificate('public_certificate')
             ),
             new ServiceProvider(
@@ -41,7 +42,8 @@ class ConfigurationSpec extends ObjectBehavior
             new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
-                new Url('https://idp.jambon.com/'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
                 new Certificate('public_certificate')
             ),
             new ServiceProvider(
@@ -56,7 +58,8 @@ class ConfigurationSpec extends ObjectBehavior
                 'isEnabled'        => true,
                 'identityProvider' => [
                     'entityId'          => 'https://idp.jambon.com',
-                    'url'               => 'https://idp.jambon.com/',
+                    'signOnUrl'         => 'https://idp.jambon.com/signon',
+                    'logoutUrl'         => 'https://idp.jambon.com/logout',
                     'publicCertificate' => 'public_certificate',
                 ],
                 'serviceProvider' => [
@@ -77,7 +80,8 @@ class ConfigurationSpec extends ObjectBehavior
             new IsEnabled(true),
             new IdentityProvider(
                 new EntityId('https://idp.jambon.com'),
-                new Url('https://idp.jambon.com/'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
                 new Certificate('public_certificate')
             ),
             new ServiceProvider(
@@ -100,7 +104,8 @@ class ConfigurationSpec extends ObjectBehavior
                     'isEnabled'        => true,
                     'identityProvider' => [
                         'entityId'          => 'https://idp.jambon.com',
-                        'url'               => 'https://idp.jambon.com/',
+                        'signOnUrl'         => 'https://idp.jambon.com/signon',
+                        'logoutUrl'         => 'https://idp.jambon.com/logout',
                         'publicCertificate' => 'public_certificate',
                     ],
                     'serviceProvider' => [

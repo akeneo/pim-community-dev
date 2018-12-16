@@ -21,7 +21,10 @@ final class CreateOrUpdateConfiguration
     public $identityProviderEntityId;
 
     /** @var string */
-    public $identityProviderUrl;
+    public $identityProviderSignOnUrl;
+
+    /** @var string */
+    public $identityProviderLogoutUrl;
 
     /** @var string */
     public $identityProviderPublicCertificate;
@@ -39,7 +42,8 @@ final class CreateOrUpdateConfiguration
         string $code,
         bool $isEnabled,
         string $identityProviderEntityId,
-        string $identityProviderUrl,
+        string $identityProviderSignOnUrl,
+        string $identityProviderLogoutUrl,
         string $identityProviderPublicCertificate,
         string $serviceProviderEntityId,
         string $serviceProviderPublicCertificate,
@@ -49,7 +53,8 @@ final class CreateOrUpdateConfiguration
         $this->code = $code;
         $this->isEnabled = $isEnabled;
         $this->identityProviderEntityId = $identityProviderEntityId;
-        $this->identityProviderUrl = $identityProviderUrl;
+        $this->identityProviderSignOnUrl = $identityProviderSignOnUrl;
+        $this->identityProviderLogoutUrl = $identityProviderLogoutUrl;
         $this->identityProviderPublicCertificate = $identityProviderPublicCertificate;
         $this->serviceProviderEntityId = $serviceProviderEntityId;
         $this->serviceProviderPublicCertificate = $serviceProviderPublicCertificate;

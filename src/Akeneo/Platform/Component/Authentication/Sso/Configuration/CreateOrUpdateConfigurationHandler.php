@@ -28,7 +28,8 @@ class CreateOrUpdateConfigurationHandler
             new IsEnabled($command->isEnabled),
             new IdentityProvider(
                 new EntityId($command->identityProviderEntityId),
-                new Url($command->identityProviderUrl),
+                new Url($command->identityProviderSignOnUrl),
+                new Url($command->identityProviderLogoutUrl),
                 new Certificate($command->identityProviderPublicCertificate)
             ),
             new ServiceProvider(
