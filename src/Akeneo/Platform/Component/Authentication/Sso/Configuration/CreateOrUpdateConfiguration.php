@@ -49,7 +49,6 @@ final class CreateOrUpdateConfiguration
         string $serviceProviderPublicCertificate,
         string $serviceProviderPrivateCertificate
     ) {
-
         $this->code = $code;
         $this->isEnabled = $isEnabled;
         $this->identityProviderEntityId = $identityProviderEntityId;

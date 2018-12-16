@@ -21,3 +21,13 @@ services:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\UI\Normalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    onelogin_auth:
+        class: 'OneLogin\Saml2\Auth'
+        factory: 'onelogin_auth.factory:create'
+
+    onelogin_auth.factory:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\OneLoginAuthFactory'
+        arguments:
+            - '@akeneo_authentication.sso.configuration.repository'
+            - '%hslavich_onelogin_saml.settings%'
