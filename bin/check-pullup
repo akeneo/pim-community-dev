@@ -219,7 +219,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/PimEnterprise/Component/Enrich', Dispatched::mainEnterpriseBusinessTopics()),
 
         //tests folder
-        new ForbiddenDirectory('spec/Akeneo/Pim/Permission', new Moved('tests/back/Pim/Permission/Specification')),
+        new ForbiddenDirectory('spec/', new Dispatched(['tests/back/Pim/**/Specification','tests/back/Pim/**/spec'])),
     ]
 );
 
