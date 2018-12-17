@@ -13,29 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Connector\Distribution;
 
-use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributesByReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorAttributeOption;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -52,8 +47,8 @@ class GetConnectorAttributeOptionContext implements Context
     /** @var WebClientHelper */
     private $webClientHelper;
 
-    /** @var InMemoryFindConnectorAttributesByReferenceEntityIdentifier */
-    private $findConnectorReferenceEntityAttributes;
+    /** @var InMemoryFindConnectorAttributeOption */
+    private $findConnectorAttributeOption;
 
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
@@ -61,18 +56,99 @@ class GetConnectorAttributeOptionContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var ConnectorReferenceEntity */
+    private $referenceEntity;
+
+    /** @var OptionAttribute */
+    private $singleOptionAttribute;
+
+    /** @var null|Response **/
+    private $optionResponse;
+
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
         WebClientHelper $webClientHelper,
-        InMemoryFindConnectorAttributesByReferenceEntityIdentifier $findConnectorReferenceEntityAttributes,
+        InMemoryFindConnectorAttributeOption $findConnectorAttributeOption,
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->clientFactory = $clientFactory;
         $this->webClientHelper = $webClientHelper;
-        $this->findConnectorReferenceEntityAttributes = $findConnectorReferenceEntityAttributes;
+        $this->findConnectorAttributeOption = $findConnectorAttributeOption;
         $this->referenceEntityRepository = $referenceEntityRepository;
         $this->attributeRepository = $attributeRepository;
+    }
+
+    private function createBrandReferenceEntity()
+    {
+        $identifier = ReferenceEntityIdentifier::fromString('brand_2');
+
+        $referenceEntity = ReferenceEntity::create(
+            $identifier,
+            [
+                'fr_FR' => 'Marque',
+                'en_US' => 'Brand'
+            ],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
+
+        return $referenceEntity;
+    }
+
+    private function createSingleOptionAttribute(string $code)
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_2');
+        $attributeIdentifier = AttributeIdentifier::fromString('attribute_1');
+
+        $optionAttribute = OptionAttribute::create(
+            $attributeIdentifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        return $optionAttribute;
+    }
+
+    private function createOptionForSingleOptionAttribute()
+    {
+        $this->singleOptionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('French'),
+                LabelCollection::fromArray(['fr_FR' => 'Francais'])
+            ),
+        ]);
+
+        $connectorAttribute = new ConnectorAttribute(
+            AttributeCode::fromString('nationality'),
+            LabelCollection::fromArray([ 'fr_FR' => 'Nationalite', 'en_US' => 'Nationality']),
+            'option',
+            AttributeValuePerLocale::fromBoolean($this->singleOptionAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($this->singleOptionAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            [
+                'options' => array_map(
+                    function (AttributeOption $attributeOption) {
+                        return $attributeOption->normalize();
+                    },
+                    $this->singleOptionAttribute->getAttributeOptions()
+                ),
+            ]
+        );
+
+        $this->findConnectorAttributeOption->save(
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_2'),
+            AttributeCode::fromString('nationality'),
+            $connectorAttribute
+        );
     }
 
     /**
@@ -80,7 +156,8 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theNationalitySingleOptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $this->referenceEntity = $this->createBrandReferenceEntity();
+        $this->singleOptionAttribute = $this->createSingleOptionAttribute('nationality');
     }
 
     /**
@@ -88,7 +165,7 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theFrenchOptionThatIsOneOfTheOptionsOfTheNationalityAttribute()
     {
-        throw new PendingException();
+        $this->createOptionForSingleOptionAttribute();
     }
 
     /**
@@ -96,7 +173,12 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theConnectorRequestsTheFrenchOptionOfTheNationalityAttributeForTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->optionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_french_nationality_option_for_brand_reference_entity.json"
+        );
     }
 
     /**
@@ -104,7 +186,10 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function thePIMReturnsTheFrenchOption()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->optionResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_french_nationality_option_for_brand_reference_entity.json"
+        );
     }
 
     /**

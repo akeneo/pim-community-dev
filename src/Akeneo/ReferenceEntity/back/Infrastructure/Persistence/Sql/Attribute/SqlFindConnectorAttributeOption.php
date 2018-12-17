@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\Att
 use Doctrine\DBAL\Connection;
 use PhpParser\Node\Stmt\Label;
 
-class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
+class  SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
 {
     /** @var Connection */
     private $sqlConnection;

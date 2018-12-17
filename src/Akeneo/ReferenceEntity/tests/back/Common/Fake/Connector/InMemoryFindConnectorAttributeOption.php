@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Common\Fake\Connector;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
@@ -43,6 +44,30 @@ class InMemoryFindConnectorAttributeOption implements FindConnectorAttributeOpti
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
     {
-        return $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] ?? null;
+        // Return the matching attribute option instead
+        $connectorAttribute = $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] ?? null;
+
+        if (null === $connectorAttribute)
+        {
+            return null;
+        }
+        
+        $options = $connectorAttribute->normalize()['options'];
+
+        $matchingOption = current(array_filter($options, function ($option) use ($optionCode) {
+            return $option['code'] === $optionCode;
+        }));
+
+
+        if (!$matchingOption) {
+            return null;
+        }
+
+        $connectorOption = new ConnectorAttributeOption(
+            OptionCode::fromString($matchingOption['code']),
+            LabelCollection::fromArray($matchingOption['labels'])
+        );
+
+        return $connectorOption;
     }
 }
