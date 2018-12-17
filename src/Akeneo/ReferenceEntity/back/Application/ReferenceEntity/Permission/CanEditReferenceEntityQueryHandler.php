@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission;
 
-use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
 
 /**
@@ -30,7 +30,7 @@ class CanEditReferenceEntityQueryHandler
     public function __invoke(CanEditReferenceEntityQuery $query): bool
     {
         return ($this->canEditReferenceEntity)(
-            PrincipalIdentifier::fromString($query->principalIdentifier),
+            SecurityIdentifier::fromString($query->securityIdentifier),
             ReferenceEntityIdentifier::fromString($query->referenceEntityIdentifier)
         );
     }

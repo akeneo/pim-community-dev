@@ -84,7 +84,7 @@ class DeleteAction
     private function isUserAllowedToDelete(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
-        $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
         $query->referenceEntityIdentifier = $referenceEntityIdentifier;
 
         return $this->securityFacade->isGranted('akeneo_referenceentity_record_delete')

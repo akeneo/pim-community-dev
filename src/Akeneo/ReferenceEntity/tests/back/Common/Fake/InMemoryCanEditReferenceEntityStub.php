@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
 
 /**
@@ -16,7 +16,7 @@ class InMemoryCanEditReferenceEntityStub implements CanEditReferenceEntityInterf
 {
     private $isAllowed = true;
 
-    public function __invoke(PrincipalIdentifier $principalIdentifier, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    public function __invoke(SecurityIdentifier $principalIdentifier, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
     {
         return $this->isAllowed;
     }
