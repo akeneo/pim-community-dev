@@ -82,8 +82,8 @@ jobs:
 
             -   restore_cache:
                     keys:
-                        - node-modules-{{ checksum "yarn.lock" }}
-                        - node-modules-
+                        - node-modules-v2-{{ checksum "yarn.lock" }}
+                        - node-modules-v2-
 
             -   run:
                     name: Copy env file
@@ -151,8 +151,8 @@ jobs:
                         - vendors-
             -   restore_cache:
                     keys:
-                        - node-modules-{{ checksum "yarn.lock" }}
-                        - node-modules-
+                        - node-modules-v2-{{ checksum "yarn.lock" }}
+                        - node-modules-v2-
 
             -   run:
                     name: Setup tests results folder
