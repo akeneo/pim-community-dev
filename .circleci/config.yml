@@ -76,6 +76,11 @@ jobs:
 
             - checkout
 
+            -   run:
+                    name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+                    command: |
+                        chmod 777 ../project -R
+
             -   restore_cache:
                     keys:
                         - vendors-v3-{{ .Branch }}-{{ checksum "composer.lock" }}
@@ -137,6 +142,11 @@ jobs:
         parallelism: 2
         steps:
             - checkout
+
+            -   run:
+                    name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+                    command: |
+                        chmod 777 ../project -R
 
             -   restore_cache:
                     keys:
