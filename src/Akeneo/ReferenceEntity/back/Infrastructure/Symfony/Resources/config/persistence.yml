@@ -298,6 +298,16 @@ services:
         tags:
             - { name: akeneo_referenceentity.connector_value_transformer }
 
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.option_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\OptionConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
+    akeneo_referenceentity.infrastructure.persistence.record.transformer.option_collection_connector_value:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer\OptionCollectionConnectorValueTransformer
+        tags:
+            - { name: akeneo_referenceentity.connector_value_transformer }
+
     # Structure query functions
     akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
