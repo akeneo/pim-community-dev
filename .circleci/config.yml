@@ -33,13 +33,13 @@ jobs:
 
             -   restore_cache:
                     keys:
-                        - vendors-{{ checksum "composer.lock" }}
-                        - vendors-
+                        - vendors-v3-{{ .Branch }}-{{ checksum "composer.lock" }}
+                        - vendors-v3-{{ .Branch }}-
 
             -   restore_cache:
                     keys:
-                        - node-modules-v2-{{ checksum "yarn.lock" }}
-                        - node-modules-v2-
+                        - node-modules-v3-{{ .Branch }}-{{ checksum "yarn.lock" }}
+                        - node-modules-v3-{{ .Branch }}-
 
             -   run:
                     name: Start containers
@@ -53,14 +53,14 @@ jobs:
                         - ./app/config/parameters.yml
                         - ./app/config/parameters_test.yml
                         - ./vendor
-                    key: vendors-{{ checksum "composer.lock" }}
+                    key: vendors-v3-{{ .Branch }}-{{ checksum "composer.lock" }}
 
             -   save_cache:
                     paths:
                         - ./node_modules
                         - ./public/build
                         - ~/.cache/yarn
-                    key: node-modules-v2-{{ checksum "yarn.lock" }}
+                    key: node-modules-v3-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
     test_back:
         machine:
@@ -78,13 +78,11 @@ jobs:
 
             -   restore_cache:
                     keys:
-                        - vendors-{{ checksum "composer.lock" }}
-                        - vendors-
+                        - vendors-v3-{{ .Branch }}-{{ checksum "composer.lock" }}
 
             -   restore_cache:
                     keys:
-                        - node-modules-v2-{{ checksum "yarn.lock" }}
-                        - node-modules-v2-
+                        - node-modules-v3-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
             -   run:
                     name: Copy env file
@@ -142,12 +140,10 @@ jobs:
 
             -   restore_cache:
                     keys:
-                        - vendors-{{ checksum "composer.lock" }}
-                        - vendors-
+                        - vendors-v3-{{ .Branch }}-{{ checksum "composer.lock" }}
             -   restore_cache:
                     keys:
-                        - node-modules-v2-{{ checksum "yarn.lock" }}
-                        - node-modules-v2-
+                        - node-modules-v3-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
             -   run:
                     name: Setup tests results folder
