@@ -42,6 +42,7 @@ jobs:
     machine:
       enabled: true
     parallelism: 7
+    working_directory: ~/project/pim
     steps:
       - attach_workspace:
           at: .
