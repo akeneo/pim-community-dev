@@ -1,6 +1,6 @@
 version: 2
 jobs:
-    install:
+    build_app:
         machine:
             enabled: true
             docker_layer_caching: true
@@ -252,12 +252,12 @@ jobs:
 
 workflows:
     version: 2
-    workflow:
+    build_test:
         jobs:
-            - install
-            - test_back
-                requires:
-                    - install
-            - test_statis_back
-                requires:
-                    - install
+            - build_app
+            -   test_back:
+                    requires:
+                        - build_app
+            -   test_statis_back:
+                    requires:
+                        - build_app
