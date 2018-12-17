@@ -5,6 +5,10 @@ jobs:
       enabled: true
     steps:
       - checkout
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - project
       - run:
           name: Copy env file
           command: |
@@ -29,10 +33,6 @@ jobs:
             docker-compose run --rm node yarn run webpack-test
             mkdir -p var/logs
             mkdir -p /tmp/workspace
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - "*"
 
   test_back:
     machine:
