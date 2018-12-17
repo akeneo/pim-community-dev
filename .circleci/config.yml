@@ -8,11 +8,11 @@ jobs:
       - run:
           name: Create temp workspace directory
           command: |
-            mkdir -p /tmp/workspace
+            mkdir -p workspace
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: workspace
           paths:
-            - ~/project
+            - project
       - run:
           name: Copy env file
           command: |
