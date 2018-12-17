@@ -36,7 +36,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
-            - pim
+            - pim/*
 
   test_back:
     machine:
@@ -44,7 +44,7 @@ jobs:
     parallelism: 7
     steps:
       - attach_workspace:
-          at: project
+          at: .
       - run:
           name: Start containers
           command: |
