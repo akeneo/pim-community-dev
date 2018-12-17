@@ -14,5 +14,5 @@ class CanEditReferenceEntityQuery
     public $referenceEntityIdentifier;
 
     /** @var string */
-    public $principalIdentifier;
+    public $securityIdentifier;
 }

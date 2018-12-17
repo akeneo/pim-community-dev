@@ -81,7 +81,8 @@ class EditAction
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
-            return new JsonResponse($this->serializer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->serializer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editReferenceEntityHandler)($command);
@@ -102,7 +103,7 @@ class EditAction
     private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
-        $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
         $query->referenceEntityIdentifier = $referenceEntityIdentifier;
         $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
 

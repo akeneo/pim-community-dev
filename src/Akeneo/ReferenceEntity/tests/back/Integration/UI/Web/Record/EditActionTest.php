@@ -192,6 +192,33 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_record_collection_value.json');
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
+    {
+        $this->forbidsEdit();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_EDIT_ROUTE,
+            [
+                'recordCode' => 'celine_dion',
+                'referenceEntityIdentifier' => 'singer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
+        );
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    private function forbidsEdit(): void
+    {
+        $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity')
+            ->forbid();
+    }
+
     private function getRecordRepository(): RecordRepositoryInterface
     {
         return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');

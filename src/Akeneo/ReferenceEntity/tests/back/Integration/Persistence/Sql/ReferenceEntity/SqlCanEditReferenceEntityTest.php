@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -37,9 +37,9 @@ final class SqlCanEditReferenceEntityTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_a_user_is_allowed_to_edit_a_reference_entity()
     {
-        Assert::assertFalse(
+        Assert::assertTrue(
             ($this->canEditReferenceEntity)(
-                PrincipalIdentifier::fromString('julia'),
+                SecurityIdentifier::fromString('julia'),
                 ReferenceEntityIdentifier::fromString('brand')
             )
         );

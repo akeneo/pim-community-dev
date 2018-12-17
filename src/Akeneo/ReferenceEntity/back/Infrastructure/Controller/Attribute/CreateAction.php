@@ -16,6 +16,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -23,6 +25,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -51,10 +54,18 @@ class CreateAction
     /** @var CreateAttributeCommandFactoryRegistryInterface */
     private $attributeCommandFactoryRegistry;
 
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         CreateAttributeHandler $createAttributeHandler,
         FindAttributeNextOrderInterface $attributeNextOrder,
         CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
@@ -65,6 +76,8 @@ class CreateAction
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
         $this->attributeCommandFactoryRegistry = $attributeCommandFactoryRegistry;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -72,7 +85,7 @@ class CreateAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_referenceentity_attribute_create')) {
+        if (!$this->isUserAllowedToCreate($request->get('referenceEntityIdentifier'))) {
             throw new AccessDeniedException();
         }
         if (!$this->isAttributeTypeProvided($request)) {
@@ -95,6 +108,16 @@ class CreateAction
         ($this->createAttributeHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function isUserAllowedToCreate(string $referenceEntityIdentifier): bool
+    {
+        $query = new CanEditReferenceEntityQuery();
+        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+
+        return $this->securityFacade->isGranted('akeneo_referenceentity_attribute_create')
+            && ($this->canEditReferenceEntityQueryHandler)($query);
     }
 
     private function getCreateCommand(Request $request): AbstractCreateAttributeCommand

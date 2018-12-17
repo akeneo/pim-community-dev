@@ -7,10 +7,12 @@ namespace Akeneo\ReferenceEntity\Domain\Model;
 use Webmozart\Assert\Assert;
 
 /**
+ * Value that represents a unique, immutable identifier of a user or other security principal.
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class PrincipalIdentifier
+class SecurityIdentifier
 {
     /** @var string  */
     private $identifier;

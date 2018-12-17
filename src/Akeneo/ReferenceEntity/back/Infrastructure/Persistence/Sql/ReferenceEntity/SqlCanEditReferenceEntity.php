@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\ReferenceEntity\Domain\Model\PrincipalIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
 use Doctrine\DBAL\Driver\Connection;
 
@@ -23,8 +23,8 @@ class SqlCanEditReferenceEntity implements CanEditReferenceEntityInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(PrincipalIdentifier $principalIdentifier, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    public function __invoke(SecurityIdentifier $principalIdentifier, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
     {
-        return false;
+        return true;
     }
 }

@@ -14,12 +14,15 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -38,12 +41,22 @@ class DeleteAction
     /** @var SecurityFacade */
     private $securityFacade;
 
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         DeleteRecordHandler $deleteRecordHandler,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->deleteRecordHandler = $deleteRecordHandler;
         $this->securityFacade = $securityFacade;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode): Response
@@ -51,7 +64,7 @@ class DeleteAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_referenceentity_record_delete')) {
+        if (!$this->isUserAllowedToDelete($request->get('referenceEntityIdentifier'))) {
             throw new AccessDeniedException();
         }
 
@@ -66,5 +79,15 @@ class DeleteAction
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function isUserAllowedToDelete(string $referenceEntityIdentifier): bool
+    {
+        $query = new CanEditReferenceEntityQuery();
+        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+
+        return $this->securityFacade->isGranted('akeneo_referenceentity_record_delete')
+            && ($this->canEditReferenceEntityQueryHandler)($query);
     }
 }
