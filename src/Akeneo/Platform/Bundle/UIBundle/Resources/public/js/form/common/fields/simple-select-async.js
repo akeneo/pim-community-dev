@@ -14,19 +14,31 @@ define([
   'pim/initselect2',
   'pim/user-context',
   'pim/template/form/common/fields/simple-select-async',
-  'routing',
-], function($, _, BaseField, __, i18n, initSelect2, UserContext, template, Routing) {
+  'routing'
+],
+function (
+  $,
+  _,
+  BaseField,
+  __,
+  i18n,
+  initSelect2,
+  UserContext,
+  template,
+  Routing
+) {
   return BaseField.extend({
     events: {
-      'change input': function(event) {
-        this.errors = [];
-        this.updateModel(this.getFieldValue(event.target));
-        this.getRoot().render();
-      },
+        'change input': function (event) {
+            this.errors = [];
+            this.updateModel(this.getFieldValue(event.target));
+            this.getRoot().render();
+        }
     },
     template: _.template(template),
     choiceUrl: null,
     resultsPerPage: 20,
+    allowClear: false,
 
     /**
      * {@inheritdoc}
@@ -89,6 +101,7 @@ define([
         initSelection: this.select2InitSelection.bind(this),
         placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' ',
         dropdownCssClass: '',
+        allowClear: this.allowClear,
       };
     },
 
