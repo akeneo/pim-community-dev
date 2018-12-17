@@ -26,5 +26,5 @@ spec:
       dailyBackups: 10
       WeeklyBackups: 4
       MonthlyBackups: 12
-      MonthlyBackups: 10
+      YearlyBackups: 10
 {{ end}}
