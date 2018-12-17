@@ -5,11 +5,23 @@
 <% } %>
 <div class="AknButtonList AknButtonList--single">
     <div
-        class="operation-type AknButton AknButton--glued <%- !isActive ? 'AknButton--disabled AknButton--greyLight' : (('subscribe' === currentAction) ? 'AknButton--apply' : '') %>"
+        class="operation-type AknButton AknButton--glued <% if (!isActive) { %>
+            AknButton--disabled AknButton--greyLight
+        <% } else if ('subscribe' === currentAction) { %>
+            <%- readonly ? 'AknButton--disabled AknButton--grey' : 'AknButton--apply' %>
+        <% } else { %>
+            <%- readonly ? 'AknButton--disabled AknButton--greyLight' : '' %>
+        <% } %>"
         data-value="subscribe"
     ><%- subscribeLabel %></div><!--
     --><div
-        class="operation-type AknButton AknButton--glued <%- !isActive ? 'AknButton--disabled AknButton--greyLight' : (('unsubscribe' === currentAction) ? 'AknButton--apply' : '') %>"
+        class="operation-type AknButton AknButton--glued <% if (!isActive) { %>
+            AknButton--disabled AknButton--greyLight
+        <% } else if ('unsubscribe' === currentAction) { %>
+            <%- readonly ? 'AknButton--disabled AknButton--grey' : 'AknButton--apply' %>
+        <% } else { %>
+            <%- readonly ? 'AknButton--disabled AknButton--greyLight' : '' %>
+        <% } %>"
         data-value="unsubscribe"
     ><%- unsubscribeLabel %></div>
 </div>

@@ -89,7 +89,7 @@ akeneo_suggest_data:
                 edit:
                     title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribute options'
                     sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
-                    description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="" target="_blank">Read more</a>'
+                    description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="#" target="_blank" class="AknDescriptionHeader-link">Read more</a>'
 
     product:
         edit:

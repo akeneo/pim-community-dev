@@ -160,6 +160,6 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     Given I am logged in as "Julia"
     When I am on the products grid
     And I switch view selector type to "Projects"
+    And I open the view selector
     Then I should see the text "2016 summer collection"
-    When I open the view selector
-    Then I should see the text "50%"
+    And I should see the text "50%"
