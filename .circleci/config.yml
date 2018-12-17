@@ -1,45 +1,45 @@
 version: 2
 jobs:
+  build:
+    machine:
+      enabled: true
+      steps:
+      - checkout
+      - run:
+          name: Copy env file
+          command: |
+            cp .env.dist .env
+            cp behat.yml.dist behat.yml
+      - run:
+          name: Setup tests results folder
+          command: |
+            mkdir -p var/tests
+      - run:
+          name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: |
+            chmod 777 ../project -R
+      - run:
+          name: Start containers
+          command: |
+            set -x
+            docker-compose up -d
+            ./bin/docker/pim-dependencies.sh
+            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+            docker-compose run --rm node yarn run webpack-dev
+            docker-compose run --rm node yarn run webpack-test
+            mkdir -p var/logs
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+          - *
+
   test_back:
     machine:
         enabled: true
-        docker_layer_caching: true
     parallelism: 7
     steps:
-    - checkout
-    - run:
-        name: Copy env file
-        command: |
-          cp .env.dist .env
-          cp behat.yml.dist behat.yml
-    - run:
-        name: Setup tests results folder
-        command: |
-          mkdir -p var/tests
-#    - run:
-#        name: Create config files
-#        command: |
-#          cp ./app/config/parameters_test.yml.dist ./app/config/parameters_test.yml
-#          sed -i "s/database_host:                        localhost/database_host:                        mysql-behat/g" ./app/config/parameters_test.yml
-#          sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters_test.yml
-#          sed -i "s/product_index_name:                    akeneo_pim_product/product_index_name:                    test_akeneo_pim_product/g" ./app/config/parameters_test.yml
-#          sed -i "s/product_model_index_name:              akeneo_pim_product_model/product_model_index_name:              test_akeneo_pim_product_model/g" ./app/config/parameters_test.yml
-#          sed -i "s/product_and_product_model_index_name:  akeneo_pim_product_and_product_model/product_and_product_model_index_name:  test_akeneo_pim_product_and_product_model/g" ./app/config/parameters_test.yml
-#          cp ./app/config/parameters_test.yml ./app/config/parameters.yml
-    - run:
-        name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
-        command: |
-          chmod 777 ../project -R
-    - run:
-        name: Start containers
-        command: |
-          set -x
-          docker-compose up -d
-          ./bin/docker/pim-dependencies.sh
-          docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
-          docker-compose run --rm node yarn run webpack-dev
-          docker-compose run --rm node yarn run webpack-test
-          mkdir -p var/logs
+    - attach_workspace:
+        at: /tmp/workspace
     - run:
         name: PHPunit Integration
         command: |
@@ -182,8 +182,7 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - test_back
-#      - test_static_back
-#      - test_static_front
-#          requires:
-#            - test_static_back
+      - build
+      - test_back:
+          requires:
+              - build
