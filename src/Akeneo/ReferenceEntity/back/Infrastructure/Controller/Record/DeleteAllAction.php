@@ -71,7 +71,7 @@ class DeleteAllAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToDeleteAll(string $referenceEntityIdentifier): bool
+    private function isUserAllowedToDeleteAllRecords(string $referenceEntityIdentifier): bool
     {
         $query = new CanEditReferenceEntityQuery();
         $query->principalIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
