@@ -4,16 +4,7 @@ jobs:
     machine:
       enabled: true
     steps:
-      - run:
-          name: Create temp workspace directory
-          command: |
-            mkdir -p /tmp/workspace
-      - checkout:
-          path: /tmp/workspace/pim
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - pim
+      - checkout
       - run:
           name: Copy env file
           command: |
@@ -37,12 +28,21 @@ jobs:
             docker-compose run --rm node yarn run webpack-dev
             docker-compose run --rm node yarn run webpack-test
             mkdir -p var/logs
+      - run:
+          name: Create temp workspace directory
+          command: |
             mkdir -p /tmp/workspace
+            mv ~/project /tmp/workspace/pim
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - pim
 
   test_back:
     machine:
       enabled: true
     parallelism: 7
+    working_directory: ~/project/pim
     steps:
       - attach_workspace:
         at: /tmp/workspace
