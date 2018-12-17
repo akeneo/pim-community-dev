@@ -258,6 +258,6 @@ workflows:
             -   test_back:
                     requires:
                         - build_app
-            -   test_statis_back:
+            -   test_static_back:
                     requires:
                         - build_app
