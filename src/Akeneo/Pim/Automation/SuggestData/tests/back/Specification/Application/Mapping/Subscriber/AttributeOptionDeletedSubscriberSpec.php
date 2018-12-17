@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\RemoveAttribut
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Subscriber\AttributeOptionDeletedSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
