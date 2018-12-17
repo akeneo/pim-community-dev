@@ -59,6 +59,7 @@ jobs:
                     paths:
                         - ./node_modules
                         - ./public/build
+                        - ~/.cache/yarn
                     key: node-modules-v2-{{ checksum "yarn.lock" }}
 
     test_back:
@@ -137,12 +138,6 @@ jobs:
                 user: docker
         parallelism: 2
         steps:
-            -   restore_cache:
-                    keys:
-                        - source-{{ .Branch }}-{{ .Revision }}
-                        - source-{{ .Branch }}-
-                        - source-
-
             - checkout
 
             -   restore_cache:
