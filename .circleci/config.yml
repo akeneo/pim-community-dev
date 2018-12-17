@@ -28,6 +28,7 @@ jobs:
             docker-compose run --rm node yarn run webpack-dev
             docker-compose run --rm node yarn run webpack-test
             mkdir -p var/logs
+            mkdir -p /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
@@ -40,6 +41,12 @@ jobs:
     steps:
       - attach_workspace:
         at: /tmp/workspace
+      - run:
+          name: Start containers
+          command: |
+            set -x
+            docker-compose up -d
+            docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
           name: PHPunit Integration
           command: |
