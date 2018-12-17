@@ -44,7 +44,7 @@ class IdentifiersMappingValidatorSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_identifiers_mapping_is_empty($identifiersMappingRepo): void
     {
-        $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping([]));
+        $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping());
         $this->shouldThrow(new ValidationException('Identifiers mapping is empty'))
              ->during('validate', [Argument::any()]);
     }
@@ -53,7 +53,9 @@ class IdentifiersMappingValidatorSpec extends ObjectBehavior
         $identifiersMappingRepo,
         AttributeInterface $asin
     ): void {
-        $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping(['asin' => $asin]));
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('asin', $asin->getWrappedObject());
+        $identifiersMappingRepo->find()->willReturn($identifiersMapping);
         $this->validate(Argument::any())->shouldReturn(null);
     }
 }

@@ -66,7 +66,7 @@ class SubscriptionProviderSpec extends ObjectBehavior
         $subscriptionApi
     ): void {
         $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
         $this->shouldThrow(ProductSubscriptionException::class)->during('subscribe', [$productSubscriptionRequest]);
@@ -80,13 +80,10 @@ class SubscriptionProviderSpec extends ObjectBehavior
         ValueInterface $eanValue
     ): void {
         $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $identifiersMappingRepository->find()->willReturn(
-            new IdentifiersMapping(
-                [
-                    'upc' => $ean->getWrappedObject(),
-                ]
-            )
-        );
+
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('upc', $ean->getWrappedObject());
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(false);
@@ -125,14 +122,10 @@ class SubscriptionProviderSpec extends ObjectBehavior
         FamilyInterface $family
     ): void {
         $subscriptionApi->setToken(Argument::type('string'))->shouldBeCalled();
-        $identifiersMappingRepository->find()->willReturn(
-            new IdentifiersMapping(
-                [
-                    'upc' => $ean->getWrappedObject(),
-                    'asin' => $sku->getWrappedObject(),
-                ]
-            )
-        );
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('upc', $ean->getWrappedObject());
+        $identifiersMapping->map('asin', $sku->getWrappedObject());
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $ean->getCode()->willReturn('ean');
         $sku->getCode()->willReturn('sku');

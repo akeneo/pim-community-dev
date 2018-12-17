@@ -25,53 +25,77 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
 {
     public function test_it_creates_an_identifiers_mapping(): void
     {
-        $mapping = $this->updateMapping(['brand' => $this->getAttribute('sku')]);
+        $identifiersMapping = $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->find();
 
-        $this->assertEquals([
+        $this->createAttribute('test');
+        $identifiersMapping->map('asin', $this->getAttribute('sku'));
+        $identifiersMapping->map('upc', $this->getAttribute('test'));
+        $this->saveIdentifiersMapping($identifiersMapping);
+
+        $this->assertMappingEquals([
             [
                 'franklin_code' => 'brand',
+                'attribute_id' => null,
+            ],
+            [
+                'franklin_code' => 'mpn',
+                'attribute_id' => null,
+            ],
+            [
+                'franklin_code' => 'upc',
+                'attribute_id' => $this->getAttribute('test')->getId(),
+            ],
+            [
+                'franklin_code' => 'asin',
                 'attribute_id' => $this->getAttribute('sku')->getId(),
             ],
-        ], $mapping);
+        ]);
     }
 
     public function test_it_updates_an_identifiers_mapping(): void
     {
-        $identifiersMapping = new IdentifiersMapping([
-            'brand' => $this->getAttribute('sku'),
-        ]);
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('asin', $this->getAttribute('sku'));
         $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $this->createAttribute('ean');
-        $mapping = $this->updateMapping(['brand' => $this->getAttribute('ean')]);
+        $identifiersMapping = $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->find();
+        $identifiersMapping->map('upc', $this->getAttribute('ean'));
+        $this->saveIdentifiersMapping($identifiersMapping);
 
-        $this->assertEquals([
+        $this->assertMappingEquals([
             [
                 'franklin_code' => 'brand',
+                'attribute_id' => null,
+            ],
+            [
+                'franklin_code' => 'mpn',
+                'attribute_id' => null,
+            ],
+            [
+                'franklin_code' => 'upc',
                 'attribute_id' => $this->getAttribute('ean')->getId(),
             ],
-        ], $mapping);
+            [
+                'franklin_code' => 'asin',
+                'attribute_id' => $this->getAttribute('sku')->getId(),
+            ],
+        ]);
     }
 
     public function test_it_finds_identifiers_mapping(): void
     {
-        $identifiersMapping = new IdentifiersMapping([
-            'brand' => $this->getAttribute('sku'),
-        ]);
-
         $identifiersMappingRepository = $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping');
+
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('asin', $this->getAttribute('sku'));
         $identifiersMappingRepository->save($identifiersMapping);
 
         $this->get('doctrine.orm.entity_manager')->clear();
         $savedMapping = $identifiersMappingRepository->find();
 
         $this->assertEquals(
-            new IdentifiersMapping([
-                'brand' => $this->getAttribute('sku'),
-                'mpn' => null,
-                'upc' => null,
-                'asin' => null,
-            ]),
+            (new IdentifiersMapping())->map('asin', $this->getAttribute('sku')),
             $savedMapping
         );
     }
@@ -85,19 +109,26 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
     }
 
     /**
-     * @param array $newMapping
-     *
-     * @return array
+     * @param IdentifiersMapping $identifiersMapping
      */
-    private function updateMapping(array $newMapping): array
+    private function saveIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
-        $identifiersMapping = new IdentifiersMapping($newMapping);
-
         $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $entityManager->clear();
+    }
 
+    private function assertMappingEquals(array $expectedMapping): void
+    {
+        $databaseContent = $this->getIdentifiersMapping();
+
+        $this->assertEquals($expectedMapping, $databaseContent);
+    }
+
+    private function getIdentifiersMapping()
+    {
+        $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
             'SELECT franklin_code, attribute_id from pim_suggest_data_franklin_identifier_mapping;'
         );

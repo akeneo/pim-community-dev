@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -23,13 +25,18 @@ class IdentifiersMappingNormalizer
      *
      * @return array
      */
-    public function normalize(array $identifiers): array
+    public function normalize(IdentifiersMapping $mapping): array
     {
-        $normalizedData = [];
-        foreach ($identifiers as $identifier => $attribute) {
-            $normalizedData[$identifier] = (null !== $attribute) ? $attribute->getCode() : null;
+        $normalizedMapping = [];
+
+        foreach ($mapping->getIdentifiers() as $franklinIdentifierCode => $identifier) {
+            $normalizedMapping[$franklinIdentifierCode] = null;
+            $attribute = $identifier->getAttribute();
+            if (null !== $attribute) {
+                $normalizedMapping[$franklinIdentifierCode] = $attribute->getCode();
+            }
         }
 
-        return $normalizedData;
+        return $normalizedMapping;
     }
 }

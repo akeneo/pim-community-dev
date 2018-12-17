@@ -121,7 +121,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
             'value' => 'bar',
         ]];
         $suggestedData = new SuggestedData($suggestedValues);
-        $identifiersMapping = ['upc' => 'an_ean'];
 
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
@@ -132,7 +131,9 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('an_ean');
 
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping(['upc' => $ean->getWrappedObject()]));
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('upc', $ean->getWrappedObject());
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
@@ -142,7 +143,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $productSubscription = (new ProductSubscription(
             $productId,
             $subscriptionId,
-            $identifiersMapping
+            ['upc' => 'an_ean']
         ))->setSuggestedData($suggestedData);
         $createProposalHandler->handle(new CreateProposalCommand($productSubscription))->shouldBeCalled();
 

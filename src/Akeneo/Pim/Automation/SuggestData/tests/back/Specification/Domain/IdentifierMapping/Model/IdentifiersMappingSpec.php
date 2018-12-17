@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -27,77 +28,68 @@ class IdentifiersMappingSpec extends ObjectBehavior
         AttributeInterface $ean,
         AttributeInterface $sku
     ): void {
-        $this->beConstructedWith([
-            'brand' => $manufacturer,
-            'mpn' => $model,
-            'upc' => $ean,
-            'asin' => $sku,
-        ]);
     }
 
     public function it_gets_identifiers($manufacturer, $model, $ean, $sku): void
     {
-        $this->getIdentifiers()->shouldReturn([
-            'brand' => $manufacturer,
-            'mpn' => $model,
-            'upc' => $ean,
-            'asin' => $sku,
+        $this->map('brand', $manufacturer);
+        $this->map('mpn', $model);
+        $this->map('upc', $ean);
+        $this->map('asin', $sku);
+
+        $this->getIdentifiers()->shouldBeLike([
+            'brand' => new IdentifierMapping('brand', $manufacturer->getWrappedObject()),
+            'mpn' => new IdentifierMapping('mpn', $model->getWrappedObject()),
+            'upc' => new IdentifierMapping('upc', $ean->getWrappedObject()),
+            'asin' => new IdentifierMapping('asin', $sku->getWrappedObject()),
         ]);
     }
 
-    public function it_gets_an_identifier($manufacturer): void
+    public function it_is_valid_if_mapping_is_filled($manufacturer, $model, $ean, $sku): void
     {
-        $this->getIdentifier('brand')->shouldReturn($manufacturer);
-    }
+        $this->map('brand', $manufacturer);
+        $this->map('mpn', $model);
+        $this->map('upc', $ean);
+        $this->map('asin', $sku);
 
-    public function it_fails_to_get_an_unknown_identifier(): void
-    {
-        $this->getIdentifier('burger')->shouldReturn(null);
-    }
-
-    public function it_is_valid_if_mapping_is_filled(): void
-    {
         $this->isValid()->shouldReturn(true);
     }
 
     public function it_is_valid_if_mapping_is_filled_with_upc($ean): void
     {
-        $this->beConstructedWith(['upc' => $ean]);
-
+        $this->map('upc', $ean);
         $this->isValid()->shouldReturn(true);
     }
 
     public function it_is_valid_if_mapping_is_filled_with_asin($sku): void
     {
-        $this->beConstructedWith(['asin' => $sku]);
-
+        $this->map('asin', $sku);
         $this->isValid()->shouldReturn(true);
     }
 
     public function it_is_valid_if_mapping_is_filled_with_mpn_and_brand($manufacturer, $model): void
     {
-        $this->beConstructedWith(['mpn' => $model, 'brand' => $manufacturer]);
+        $this->map('brand', $manufacturer);
+        $this->map('mpn', $model);
 
         $this->isValid()->shouldReturn(true);
     }
 
     public function it_is_not_valid_if_mapping_is_not_filled(): void
     {
-        $this->beConstructedWith([]);
-
         $this->isValid()->shouldReturn(false);
     }
 
     public function it_is_not_valid_if_mapping_is_filled_only_with_brand($manufacturer): void
     {
-        $this->beConstructedWith(['brand' => $manufacturer]);
+        $this->map('brand', $manufacturer);
 
         $this->isValid()->shouldReturn(false);
     }
 
     public function it_is_not_valid_if_mapping_is_filled_only_with_mpn($model): void
     {
-        $this->beConstructedWith(['mpn' => $model]);
+        $this->map('mpn', $model);
 
         $this->isValid()->shouldReturn(false);
     }
@@ -109,15 +101,14 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
     }
 
-    public function it_can_checks_if_mapping_is_defined(): void
+    public function it_can_checks_if_mapping_is_defined($sku): void
     {
-        $this->beConstructedWith([
-            'brand' => null,
-            'mpn' => null,
-            'upc' => null,
-            'asin' => null,
-        ]);
+        $this->isEmpty()->shouldReturn(true);
 
+        $this->map('asin', $sku);
+        $this->isEmpty()->shouldReturn(false);
+
+        $this->map('asin', null);
         $this->isEmpty()->shouldReturn(true);
     }
 }

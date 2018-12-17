@@ -84,7 +84,7 @@ class IdentifiersMappingController
         $identifiersMapping = $this->getIdentifiersMappingHandler->handle(new GetIdentifiersMappingQuery());
 
         return new JsonResponse(
-            $identifiersMappingNormalizer->normalize($identifiersMapping->getIdentifiers())
+            $identifiersMappingNormalizer->normalize($identifiersMapping)
         );
     }
 }

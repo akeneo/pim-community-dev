@@ -157,3 +157,19 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | asin          | asin           |
     Then the identifiers mapping should not be saved
     And an invalid mapping message should be sent
+
+  Scenario: Fails to update an already existing mapping when Franklin is down
+    Given the predefined attributes pim_upc, EAN and ASIN
+    And a predefined identifiers mapping as follows:
+      | franklin_code | attribute_code |
+      | upc           | ean            |
+      | asin          | asin           |
+    And Franklin server is down
+    When the identifiers are mapped as follows:
+      | franklin_code | attribute_code |
+      | upc           | pim_upc        |
+    Then the retrieved identifiers mapping should be the following:
+      | franklin_code | attribute_code |
+      | upc           | ean            |
+      | asin          | asin           |
+    And an invalid mapping message should be sent

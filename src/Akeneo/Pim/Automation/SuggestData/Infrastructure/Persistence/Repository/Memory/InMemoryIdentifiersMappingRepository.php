@@ -22,14 +22,11 @@ use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\Identi
 class InMemoryIdentifiersMappingRepository implements IdentifiersMappingRepositoryInterface
 {
     /** @var IdentifiersMapping */
-    private $identifiers;
+    private $identifiersMapping;
 
-    /**
-     * @param IdentifiersMapping $identifiers
-     */
-    public function __construct(IdentifiersMapping $identifiers)
+    public function __construct()
     {
-        $this->identifiers = $identifiers;
+        $this->identifiersMapping = new IdentifiersMapping();
     }
 
     /**
@@ -37,7 +34,7 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
      */
     public function save(IdentifiersMapping $identifiersMapping): void
     {
-        $this->identifiers = $identifiersMapping;
+        $this->identifiersMapping = $identifiersMapping;
     }
 
     /**
@@ -45,6 +42,11 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
      */
     public function find(): IdentifiersMapping
     {
-        return $this->identifiers;
+        $newIdentifiersMapping = new IdentifiersMapping();
+        foreach ($this->identifiersMapping as $identifier) {
+            $newIdentifiersMapping->map($identifier->getFranklinCode(), $identifier->getAttribute());
+        }
+
+        return $newIdentifiersMapping;
     }
 }

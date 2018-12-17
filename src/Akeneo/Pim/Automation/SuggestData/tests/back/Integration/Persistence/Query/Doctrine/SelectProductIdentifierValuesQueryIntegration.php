@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Persistence\Q
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -38,14 +39,14 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_retrieves_product_identifier_values(): void
     {
-        $this->saveMapping(
-            [
-                'asin' => 'asin',
-                'upc' => 'ean',
-                'mpn' => 'pim_mpn',
-                'brand' => 'pim_brand',
-            ]
-        );
+        $mapping = $this->getFromTestContainer('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->find();
+        $mapping
+            ->map('asin', $this->getAttribute('asin'))
+            ->map('upc', $this->getAttribute('ean'))
+            ->map('mpn', $this->getAttribute('pim_mpn'))
+            ->map('brand', $this->getAttribute('pim_brand'));
+        $this->saveMapping($mapping);
+
         $product = $this->createProduct(
             'some_sku',
             [
@@ -69,14 +70,9 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_returns_null_if_the_product_does_not_exist(): void
     {
-        $this->saveMapping(
-            [
-                'asin' => null,
-                'upc' => 'ean',
-                'mpn' => null,
-                'brand' => null,
-            ]
-        );
+        $mapping = $this->getFromTestContainer('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->find();
+        $mapping->map('upc', $this->getAttribute('ean'));
+        $this->saveMapping($mapping);
 
         Assert::assertNull($this->getIdentifierValues(42));
     }
@@ -89,14 +85,10 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_completes_unmapped_identifiers(): void
     {
-        $this->saveMapping(
-            [
-                'asin' => null,
-                'upc' => 'ean',
-                'mpn' => null,
-                'brand' => null,
-            ]
-        );
+        $mapping = $this->getFromTestContainer('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->find();
+        $mapping->map('upc', $this->getAttribute('ean'));
+        $this->saveMapping($mapping);
+
         $product = $this->createProduct(
             'some_sku',
             [
@@ -120,14 +112,14 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
 
     public function test_that_it_completes_missing_identifier_values(): void
     {
-        $this->saveMapping(
-            [
-                'asin' => 'asin',
-                'upc' => 'ean',
-                'mpn' => 'pim_mpn',
-                'brand' => 'pim_brand',
-            ]
-        );
+        $mapping = $this->getFromTestContainer('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->find();
+        $mapping
+            ->map('asin', $this->getAttribute('asin'))
+            ->map('upc', $this->getAttribute('ean'))
+            ->map('mpn', $this->getAttribute('pim_mpn'))
+            ->map('brand', $this->getAttribute('pim_brand'));
+        $this->saveMapping($mapping);
+
         $product = $this->createProduct('some_sku', []);
 
         $this->assertIdentifierValues(
@@ -212,17 +204,13 @@ class SelectProductIdentifierValuesQueryIntegration extends TestCase
     /**
      * @param array $mapping
      */
-    private function saveMapping(array $mapping): void
+    private function saveMapping(IdentifiersMapping $mapping): void
     {
-        $attributeRepo = $this->getFromTestContainer('pim_catalog.repository.attribute');
-        $mappedIdentifiers = [];
-        foreach ($mapping as $franklinCode => $pimAttributeCode) {
-            $attribute = null !== $pimAttributeCode ? $attributeRepo->findOneByIdentifier($pimAttributeCode) : null;
-            $mappedIdentifiers[$franklinCode] = $attribute;
-        }
+        $this->getFromTestContainer('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($mapping);
+    }
 
-        $this->getFromTestContainer('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save(
-            new IdentifiersMapping($mappedIdentifiers)
-        );
+    private function getAttribute(string $name): ?AttributeInterface
+    {
+        return $this->getFromTestContainer('pim_catalog.repository.attribute')->findOneByIdentifier($name);
     }
 }

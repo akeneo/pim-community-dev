@@ -81,7 +81,12 @@ class UpdateIdentifiersMappingHandler
         $this->validateAttributeTypes($identifiers);
         $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
-        $identifiersMapping = new IdentifiersMapping($identifiers);
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+
+        foreach ($identifiers as $franklinIdentifier => $pimAttribute) {
+            $identifiersMapping->map($franklinIdentifier, $pimAttribute);
+        }
+
         $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
         $this->subscriptionRepository->emptySuggestedData();
         $this->identifiersMappingRepository->save($identifiersMapping);
