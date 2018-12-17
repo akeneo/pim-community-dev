@@ -4,15 +4,16 @@ jobs:
     machine:
       enabled: true
     steps:
-      - checkout
       - run:
           name: Create temp workspace directory
           command: |
-            mkdir -p workspace
+            mkdir -p /tmp/workspace
+      - checkout:
+          path: /tmp/workspace/pim
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/workspace
           paths:
-            - project
+            - pim
       - run:
           name: Copy env file
           command: |
