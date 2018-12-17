@@ -18,16 +18,16 @@ jobs:
           name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
             chmod 777 ../project -R
-      - run:
-          name: Start containers
-          command: |
-            set -x
-            docker-compose up -d
-            ./bin/docker/pim-dependencies.sh
-            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
-            docker-compose run --rm node yarn run webpack-dev
-            docker-compose run --rm node yarn run webpack-test
-            mkdir -p var/logs
+#      - run:
+#          name: Start containers
+#          command: |
+#            set -x
+#            docker-compose up -d
+#            ./bin/docker/pim-dependencies.sh
+#            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+#            docker-compose run --rm node yarn run webpack-dev
+#            docker-compose run --rm node yarn run webpack-test
+#            mkdir -p var/logs
       - run:
           name: Create temp workspace directory
           command: |
@@ -42,10 +42,9 @@ jobs:
     machine:
       enabled: true
     parallelism: 7
-    working_directory: ~/project/pim
     steps:
       - attach_workspace:
-        at: /tmp/workspace
+          at: project
       - run:
           name: Start containers
           command: |
