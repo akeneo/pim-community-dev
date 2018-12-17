@@ -10,9 +10,11 @@ jobs:
                         - source-{{ .Branch }}-{{ .Revision }}
                         - source-{{ .Branch }}-
                         - source-
+
             - checkout
+
             -   save_cache:
-                    key: source-v1-{{ .Branch }}-{{ .Revision }}
+                    key: source-{{ .Branch }}-{{ .Revision }}
                     paths:
                         - ".git"
             -   run:
@@ -33,10 +35,11 @@ jobs:
                     keys:
                         - vendors-{{ checksum "composer.lock" }}
                         - vendors-
+
             -   restore_cache:
                     keys:
-                        - node-modules-{{ checksum "yarn.lock" }}
-                        - node-modules-
+                        - node-modules-v2-{{ checksum "yarn.lock" }}
+                        - node-modules-v2-
 
             -   run:
                     name: Start containers
@@ -47,6 +50,8 @@ jobs:
 
             -   save_cache:
                     paths:
+                        - ./app/config/parameters.yml
+                        - ./app/config/parameters_test.yml
                         - ./vendor
                     key: vendors-{{ checksum "composer.lock" }}
 
@@ -54,7 +59,7 @@ jobs:
                     paths:
                         - ./node_modules
                         - ./public/build
-                    key: node-modules-{{ checksum "yarn.lock" }}
+                    key: node-modules-v2-{{ checksum "yarn.lock" }}
 
     test_back:
         machine:
@@ -74,6 +79,7 @@ jobs:
                     keys:
                         - vendors-{{ checksum "composer.lock" }}
                         - vendors-
+
             -   restore_cache:
                     keys:
                         - node-modules-{{ checksum "yarn.lock" }}
