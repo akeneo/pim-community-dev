@@ -97,9 +97,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 $rootProductModel->getId(),
                 ['total' => 1, 'complete' => 0],
                 null,
-                new ValueCollection([
-                    MediaValue::value('an_image', $akeneoImage),
-                ])
+                new ValueCollection([])
             ),
         ];
 

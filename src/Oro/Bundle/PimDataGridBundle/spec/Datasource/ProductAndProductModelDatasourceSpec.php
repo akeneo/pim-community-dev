@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
@@ -17,7 +18,11 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductAndProductModelDatasourceSpec extends ObjectBehavior
 {
@@ -25,9 +30,10 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         ObjectManager $objectManager,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $rowNormalizer,
+        ValidatorInterface $validator,
         Query\FetchProductAndProductModelRows $query
     ) {
-        $this->beConstructedWith($objectManager, $pqbFactory, $rowNormalizer, $query);
+        $this->beConstructedWith($objectManager, $pqbFactory, $rowNormalizer, $validator, $query);
 
         $this->setParameters(['dataLocale' => 'fr_FR']);
     }
@@ -47,10 +53,15 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $pqbFactory,
         $rowNormalizer,
         $query,
+        $validator,
         Datagrid $datagrid,
-        ProductQueryBuilderInterface $pqb,
-        CursorInterface $rowCursor
+        ProductQueryBuilderInterface $pqb
     ) {
+        $violations = new ConstraintViolationList();
+        $validator
+            ->validate(Argument::type(Query\FetchProductAndProductModelRowsParameters::class))
+            ->willReturn($violations);
+
         $config = [
             'displayed_attribute_ids' => [1, 2],
             'attributes_configuration' => [
@@ -137,6 +148,60 @@ class ProductAndProductModelDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(1);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
+    }
+
+    function it_does_not_fetch_rows_when_query_parameters_are_invalid(
+        $validator,
+        $pqbFactory,
+        ConstraintViolation $constraint,
+        Datagrid $datagrid,
+        ProductQueryBuilderInterface $pqb
+    ) {
+        $config = [
+            'displayed_attribute_ids' => [1, 2],
+            'attributes_configuration' => [
+                'attribute_1' => [
+                    'id' => 1,
+                    'code' => 'attribute_1'
+                ],
+                'attribute_2' => [
+                    'id' => 2,
+                    'code' => 'attribute_2'
+                ],
+                'attribute_3' => [
+                    'id' => 3,
+                    'code' => 'attribute_3'
+                ],
+            ],
+            'locale_code' => 'fr_FR',
+            'scope_code' => 'ecommerce',
+            PagerExtension::PER_PAGE_PARAM => 15
+        ];
+        $pqbFactory->create([
+            'repository_parameters' => [],
+            'repository_method'     => 'createQueryBuilder',
+            'limit'                 => 15,
+            'from'                  => 0,
+            'default_locale'        => 'fr_FR',
+            'default_scope'         => 'ecommerce',
+        ])->willReturn($pqb);
+
+        $pqb->getQueryBuilder()->shouldBeCalledTimes(1);
+        $this->process($datagrid, $config);
+
+        $violations = new ConstraintViolationList([$constraint->getWrappedObject()]);
+        $constraint->__toString()->willReturn('error');
+        $validator
+            ->validate(Argument::type(Query\FetchProductAndProductModelRowsParameters::class))
+            ->willReturn($violations);
+
+
+        $this->shouldThrow(
+            \LogicException::class
+        )->during(
+            'getResults',
+            []
+        );
     }
 
     public function getMatchers()

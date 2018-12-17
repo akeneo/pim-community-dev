@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -32,6 +33,11 @@ class RowsSpec extends ObjectBehavior
         );
 
         $this->beConstructedWith([$row], 100);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(Rows::class);
     }
 
     function it_has_the_total_number_of_returned_elements()
