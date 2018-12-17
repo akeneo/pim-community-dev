@@ -6,28 +6,28 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Copy env file
-        command: |
-          cp .env.dist .env
-          cp behat.yml.dist behat.yml
+          name: Copy env file
+          command: |
+            cp .env.dist .env
+            cp behat.yml.dist behat.yml
       - run:
-        name: Setup tests results folder
-        command: |
-          mkdir -p var/tests
+          name: Setup tests results folder
+          command: |
+            mkdir -p var/tests
       - run:
-        name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
-        command: |
-          chmod 777 ../project -R
+          name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: |
+            chmod 777 ../project -R
       - run:
-        name: Start containers
-        command: |
-          set -x
-          docker-compose up -d
-          ./bin/docker/pim-dependencies.sh
-          docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
-          docker-compose run --rm node yarn run webpack-dev
-          docker-compose run --rm node yarn run webpack-test
-          mkdir -p var/logs
+          name: Start containers
+          command: |
+            set -x
+            docker-compose up -d
+            ./bin/docker/pim-dependencies.sh
+            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+            docker-compose run --rm node yarn run webpack-dev
+            docker-compose run --rm node yarn run webpack-test
+            mkdir -p var/logs
       - persist_to_workspace:
         root: /tmp/workspace
         paths:
@@ -41,24 +41,24 @@ jobs:
       - attach_workspace:
         at: /tmp/workspace
       - run:
-        name: PHPunit Integration
-        command: |
-          TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
-          .circleci/run_phpunit.sh $TESTFILES
+          name: PHPunit Integration
+          command: |
+            TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
+            .circleci/run_phpunit.sh $TESTFILES
       - run:
-        name: PHPunit End to End
-        command: |
-          TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
-          .circleci/run_phpunit.sh $TESTFILES
+          name: PHPunit End to End
+          command: |
+            TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
+            .circleci/run_phpunit.sh $TESTFILES
       - run:
-        name: Behat
-        command: |
-          TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
-          .circleci/run_behat.sh $TESTFILES
+          name: Behat
+          command: |
+            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+            .circleci/run_behat.sh $TESTFILES
       - store_test_results:
-        path: var/tests
+          path: var/tests
       - store_artifacts:
-        path: var/tests
+          path: var/tests
 
   test_static_back:
     docker:
