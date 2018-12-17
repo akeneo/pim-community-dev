@@ -5,6 +5,10 @@ jobs:
       enabled: true
     steps:
       - checkout
+      - run:
+          name: Create temp workspace directory
+          command: |
+            mkdir -p /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
