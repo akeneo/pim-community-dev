@@ -103,9 +103,7 @@ class Header extends React.Component<HeaderProps> {
                   </div>
                   <div className="AknButtonList">
                     {secondaryActions()}
-                    { canEditReferenceEntity ? (
-                      <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
-                    ) : null }
+                    <div className="AknTitleContainer-rightButton">{primaryAction(this.defaultFocus)}</div>
                   </div>
                 </div>
               </div>
