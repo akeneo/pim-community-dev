@@ -83,6 +83,12 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
+  const hasNoSaveButton = async () => {
+    await page.waitForSelector('.AknButton--apply', {hidden: true});
+
+    return true;
+  };
+
   return {
     isLoaded,
     getSidebar,
@@ -94,6 +100,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     hasSuccessNotification,
     hasErrorNotification,
     hasNoNotification,
+    hasNoSaveButton,
   };
 };
 

@@ -25,6 +25,13 @@ const Properties = async (nodeElement, createElementDecorator, page) => {
     return await labelProperty.jsonValue();
   };
 
+  const labelIsReadOnly = async () => {
+    const label = await nodeElement.$('.AknTextField[name="label"]');
+    const labelProperty = await label.getProperty('readOnly');
+
+    debugger;
+  };
+
   const setLabel = async value => {
     const label = await nodeElement.$('.AknTextField[name="label"]');
     await page.evaluate(properties => {
@@ -34,7 +41,7 @@ const Properties = async (nodeElement, createElementDecorator, page) => {
     await label.type(value);
   };
 
-  return {isLoaded, getIdentifier, getLabel, setLabel, getTabCode};
+  return {isLoaded, getIdentifier, getLabel, setLabel, getTabCode, labelIsReadOnly};
 };
 
 module.exports = Properties;

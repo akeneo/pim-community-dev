@@ -93,3 +93,10 @@ Feature: Edit a reference entity
     And the saved reference entity "designer" will be:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+
+  @acceptance-front
+  Scenario: User can't edit a reference entity without the good rights
+    Given a valid reference entity
+    And the user doesn't have any rights
+    Then the label of the reference entity "designer" should be read only
+    And the save button shouldn't be displayed
