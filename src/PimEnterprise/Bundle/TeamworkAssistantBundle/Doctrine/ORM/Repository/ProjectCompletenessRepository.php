@@ -179,17 +179,14 @@ SQL;
         $parameters = $this->buildQueryParameters($project);
 
         $sql = <<<SQL
-SELECT `product`.`identifier`
-FROM 
-     `@pim_catalog.entity.product@` AS `product`
-      INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
-        ON `product`.`id` = `completeness_per_attribute_group`.`product_id` 
-        AND completeness_per_attribute_group.channel_id = :channel_id 
-        AND completeness_per_attribute_group.locale_id = :locale_id 
-      INNER JOIN `@pimee_teamwork_assistant.project_product@` AS `project_product`
-        ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
-        AND `project_product`.`project_id` = :project_id
-GROUP BY `product`.`identifier`
+SELECT `completeness_per_attribute_group`.`product_id`
+FROM `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+INNER JOIN `@pimee_teamwork_assistant.project_product@` AS `project_product`
+    ON `project_product`.`product_id` = `completeness_per_attribute_group`.`product_id`
+    AND `project_product`.`project_id` = :project_id
+WHERE completeness_per_attribute_group.channel_id = :channel_id 
+AND completeness_per_attribute_group.locale_id = :locale_id 
+GROUP BY `completeness_per_attribute_group`.`product_id`
 SQL;
 
         if ($status === ProjectCompletenessFilter::OWNER_TODO) {
@@ -217,7 +214,7 @@ SQL;
         $sql = $this->tableNameMapper->createQuery($sql);
         $productIds = $connection->fetchAll($sql, $parameters);
 
-        return array_column($productIds, 'identifier');
+        return array_column($productIds, 'product_id');
     }
 
     /**
