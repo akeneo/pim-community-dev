@@ -1,5 +1,5 @@
 Feature: Connection to MDM or ERP systems
-  In order to centralize the reference entity records that contributes to the good final product experience
+  In order to centralize the reference entity records that contribute to a good final product experience
   As a connector
   I want to collect the general properties of the reference entities that are already stored in a MDM or an ERP system
 
