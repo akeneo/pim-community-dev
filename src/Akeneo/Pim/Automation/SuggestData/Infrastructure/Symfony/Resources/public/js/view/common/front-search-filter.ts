@@ -30,6 +30,7 @@ class FrontSearchFilter extends BaseForm {
   private readonly template = _.template(template);
   private timer: number | null = null;
   private config: Config;
+  private value: string = '';
 
   /**
    * {@inheritdoc}
@@ -62,7 +63,11 @@ class FrontSearchFilter extends BaseForm {
       label: __('pim_datagrid.search', {
         label: __('akeneo_suggest_data.entity.attributes_mapping.fields.franklin_attribute'),
       }),
+      value: this.value,
     }));
+    this.delegateEvents();
+
+    this.doSearch();
 
     return this;
   }
@@ -79,19 +84,24 @@ class FrontSearchFilter extends BaseForm {
     }
 
     if (13 === event.keyCode) { // Enter key
-      this.doSearch();
+      this.storeValueAndDoSearch();
     } else {
-      this.timer = setTimeout(this.doSearch.bind(this), TIMEOUT_DELAY);
+      this.timer = setTimeout(this.storeValueAndDoSearch.bind(this), TIMEOUT_DELAY);
     }
+  }
+
+  private storeValueAndDoSearch() {
+    this.value = (this.$el.find('input').val() as string);
+
+    this.doSearch();
   }
 
   /**
    * Trigger an event to the grid to execute the search.
    */
   private doSearch() {
-    const value = (this.$el.find('input').val() as string);
     const filter: Filter = {
-      value,
+      value: this.value,
       type: FilterValue.Search,
       field: this.config.fieldName,
     };
