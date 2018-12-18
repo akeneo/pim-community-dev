@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderExcept
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -46,25 +46,25 @@ class UpdateIdentifiersMappingHandler
     /** @var IdentifiersMappingProviderInterface */
     private $identifiersMappingProvider;
 
-    /** @var EmptySuggestedDataQueryInterface */
-    private $emptySuggestedDataQuery;
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $subscriptionRepository;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param IdentifiersMappingProviderInterface $identifiersMappingProvider
-     * @param EmptySuggestedDataQueryInterface $emptySuggestedDataQuery
+     * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
-        EmptySuggestedDataQueryInterface $emptySuggestedDataQuery
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingProvider = $identifiersMappingProvider;
-        $this->emptySuggestedDataQuery = $emptySuggestedDataQuery;
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
     /**
@@ -83,7 +83,7 @@ class UpdateIdentifiersMappingHandler
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping);
-        $this->emptySuggestedDataQuery->execute();
+        $this->subscriptionRepository->emptySuggestedData();
         $this->identifiersMappingRepository->save($identifiersMapping);
     }
 

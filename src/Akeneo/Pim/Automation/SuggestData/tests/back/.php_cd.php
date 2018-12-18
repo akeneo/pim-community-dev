@@ -151,6 +151,7 @@ $rules = [
             // External dependencies
             'Doctrine',
 
+            'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             // TODO: link by ID instead of reference
             'Akeneo\Pim\Structure\Component\Model\Family',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',

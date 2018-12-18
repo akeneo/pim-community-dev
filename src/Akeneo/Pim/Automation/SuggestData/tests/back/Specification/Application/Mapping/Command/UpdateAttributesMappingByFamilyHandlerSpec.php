@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\AttributesMapping
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Exception\AttributeMappingException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataAndMissingMappingQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -35,13 +35,13 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributesMappingProviderInterface $attributesMappingProvider,
-        EmptySuggestedDataAndMissingMappingQueryInterface $emptySuggestedDataAndMissingMappingQuery
+        ProductSubscriptionRepository $subscriptionRepository
     ): void {
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $attributesMappingProvider,
-            $emptySuggestedDataAndMissingMappingQuery
+            $subscriptionRepository
         );
     }
 
@@ -107,7 +107,7 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $familyRepository,
         $attributeRepository,
         $attributesMappingProvider,
-        $emptySuggestedDataAndMissingMappingQuery,
+        $subscriptionRepository,
         AttributeInterface $memoryAttribute,
         AttributeInterface $weightAttribute
     ): void {
@@ -141,7 +141,9 @@ class UpdateAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
             ->updateAttributesMapping('router', $command->getAttributesMapping())
             ->shouldBeCalled();
 
-        $emptySuggestedDataAndMissingMappingQuery->execute($command->getFamilyCode())->shouldBeCalled();
+        $subscriptionRepository
+            ->emptySuggestedDataAndMissingMappingByFamily($command->getFamilyCode())
+            ->shouldBeCalled();
 
         $this->handle($command);
     }

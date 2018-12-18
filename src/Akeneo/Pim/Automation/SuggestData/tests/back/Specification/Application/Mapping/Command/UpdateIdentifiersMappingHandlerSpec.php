@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifi
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\EmptySuggestedDataQueryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -35,13 +35,13 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingProviderInterface $identifiersMappingProvider,
-        EmptySuggestedDataQueryInterface $emptySuggestedDataQuery
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ): void {
         $this->beConstructedWith(
             $attributeRepository,
             $identifiersMappingRepository,
             $identifiersMappingProvider,
-            $emptySuggestedDataQuery
+            $subscriptionRepository
         );
     }
 
@@ -79,7 +79,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
     public function it_saves_the_identifiers_mapping(
         $identifiersMappingProvider,
-        $emptySuggestedDataQuery,
+        $subscriptionRepository,
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeInterface $manufacturer,
@@ -117,7 +117,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         );
         $identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping)->shouldBeCalled();
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
-        $emptySuggestedDataQuery->execute()->shouldBeCalled();
+        $subscriptionRepository->emptySuggestedData()->shouldBeCalled();
 
         $this->handle($command);
     }
