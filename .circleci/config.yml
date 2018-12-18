@@ -76,39 +76,31 @@ jobs:
   test_static_back:
     machine:
         enabled: true
-    parallelism: 2
     steps:
       - attach_workspace:
           at: ~/
 
       - run:
-          name: Start containers
-          command: |
-              docker-compose up -d
-
-      - run:
           name: PhpSpec
-          command: |
-            TESTFILES=$(circleci tests split toto.txt)
-            vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
+          command: docker-compose run --rm fpm vendor/bin/phpspec run --format=junit > ~/test/results/phpspec/junit_output.xml
 
       - run:
           name: PhpCoupling Detector
           command: |
-            vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
+              docker-compose run --rm fpm vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
+              docker-compose run --rm fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
+              docker-compose run --rm fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
+              docker-compose run --rm fpm vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
 
       - run:
           name: PhpCsFixer
-          command: vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
+          command: docker-compose run --rm fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
       - run:
           name: PHPStan
-          command: vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+          command: docker-compose run --rm fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
       - run:
           name: Check Pullup
-          command: bin/check-pullup
+          command: docker-compose run --rm fpm bin/check-pullup
 
       - store_test_results:
           path: ~/test/results
