@@ -28,16 +28,18 @@ class DeleteModal extends React.Component<Props> {
     const {message, title, onConfirm, onCancel} = this.props;
 
     return (
-      <div className="modal modal--fullPage in" aria-hidden="false" style={{zIndex: 1041}}>
-        <div className="AknFullPage AknFullPage--modal AknFullPage--confirm">
-          <div className="AknFullPage-content AknFormContainer--withPadding AknFormContainer--centered AknFormContainer--expanded">
-            <div className="AknFullPage-left">
+      <div className="modal in" aria-hidden="false" style={{zIndex: 1041}}>
+        <div className="AknFullPage">
+          <div className="AknFullPage-content AknFullPage-content--withIllustration">
+            <div>
               <div className="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--delete" />
             </div>
-            <div className="AknFullPage-right">
-              <div className="AknFullPage-subTitle">{title}</div>
-              <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
-              <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
+            <div>
+              <div className="AknFullPage-titleContainer">
+                <div className="AknFullPage-subTitle">{title}</div>
+                <div className="AknFullPage-title">{__('pim_reference_entity.modal.delete.subtitle')}</div>
+                <div className="AknFullPage-description AknFullPage-description--bottom">{message}</div>
+              </div>
               <div className="AknButtonList">
                 <button
                   ref={this.cancelButton}

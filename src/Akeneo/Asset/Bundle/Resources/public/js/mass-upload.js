@@ -111,7 +111,7 @@ define(
                 this.clearModal();
 
                 const modal = new Backbone.BootstrapModal({
-                    className: 'modal modal--fullPage modal--topButton mass-upload-modal',
+                    className: 'modal mass-upload-modal',
                     allowCancel: false,
                     content: this.pageTemplate({
                         __,
@@ -121,7 +121,6 @@ define(
                 });
 
                 modal.open();
-                modal.$el.find('.modal-body').addClass('modal-body-full');
 
                 modal.$el.on('click', '.start:not(.AknButton--disabled)', this.startAll.bind(this));
                 modal.$el.on('click', '.remove:not(.AknButton--disabled)', this.cancelAll.bind(this));
@@ -130,7 +129,7 @@ define(
 
                 this.modal = modal;
 
-                $navbarButtons = $('.AknTitleContainer-rightButtons');
+                $navbarButtons = $('.navbar-buttons');
                 $importButton = $navbarButtons.find('.import');
                 $startButton = $navbarButtons.find('.start');
                 $cancelButton = $navbarButtons.find('.remove');

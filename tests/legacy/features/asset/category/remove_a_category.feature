@@ -95,7 +95,7 @@ Feature: Remove an asset category
     And I am on the "videos" asset category page
     When I press the secondary action "Delete"
     Then I should see a confirm dialog with the following content:
-      | title   | Delete confirmation                                                                        |
+      | title   | Confirm deletion                                                                           |
       | content | This category contains more products than allowed for this operation (20 products maximum) |
 
   Scenario: Remove an asset category with linked products limit exceeded including sub-categories
@@ -125,5 +125,5 @@ Feature: Remove an asset category
     And I am on the "videos" asset category page
     When I press the secondary action "Delete"
     Then I should see a confirm dialog with the following content:
-      | title   | Delete confirmation                                                                        |
+      | title   | Confirm deletion                                                                           |
       | content | This category contains more products than allowed for this operation (20 products maximum) |

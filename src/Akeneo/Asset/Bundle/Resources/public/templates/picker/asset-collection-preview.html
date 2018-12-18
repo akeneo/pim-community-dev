@@ -1,54 +1,48 @@
-<div class="modal-body">
-    <div class="AknFullPage-upperTitle">
-        <div class="AknFullPage-subTitle"><!-- TODO Put the title here. Need some work from Onboarder team --></div>
-        <div class="AknFullPage-title"><%- assetCollectionPreviewTitle %></div>
-        <div class="description AknFullPage-description">&nbsp;</div>
+<div class="AknAssetPreview">
+    <div class="AknAssetPreview-main">
+        <div class="AknAssetPreview-left browse-left"></div>
+        <div class="AknAssetPreview-imageContainer">
+            <img src="" class="AknAssetPreview-image main-preview"/>
+        </div>
+        <div class="AknAssetPreview-right browse-right"></div>
     </div>
-    <div class="AknAssetPreview">
-        <div class="AknAssetPreview-main">
-            <div class="AknAssetPreview-left browse-left"></div>
-            <div class="AknAssetPreview-imageContainer">
-                <img src="" class="AknAssetPreview-image main-preview"/>
-            </div>
-            <div class="AknAssetPreview-right browse-right"></div>
-        </div>
-        <div class="buttons AknAssetPreview-buttons">
-            <ul class="AknAssetCollectionField-list AknAssetCollectionField-list--unwrapped">
-                <% assets.forEach((asset) => { %>
-                <li class="asset-thumbnail-item AknAssetCollectionField-listItem AknAssetCollectionField-listItem--transparent" data-preview-url="<%- Routing.generate('pimee_product_asset_thumbnail', {
-                    code: asset.code,
-                    channelCode: scope,
-                    localeCode: locale,
-                    filter: 'preview',
-                 }) %>" data-download-url="<%- Routing.generate('pimee_product_asset_original', {
-                    code: asset.code,
-                    channelCode: scope,
-                    localeCode: locale
-                 }) %>" data-asset="<%- asset.code %>" data-description="<%- asset.description %>">
-                    <div class="AknAssetCollectionField-assetThumbnail asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
-                            code: asset.code,
-                            filter: thumbnailFilter,
-                            channelCode: scope,
-                            localeCode: locale
-                         }) %>')">
-                    </div>
-                </li>
-                <% }); %>
-            </ul>
-        </div>
+    <div class="buttons AknAssetPreview-buttons">
+        <ul class="AknAssetCollectionField-list AknAssetCollectionField-list--unwrapped">
+            <% assets.forEach((asset) => { %>
+            <li class="asset-thumbnail-item AknAssetCollectionField-listItem AknAssetCollectionField-listItem--transparent" data-preview-url="<%- Routing.generate('pimee_product_asset_thumbnail', {
+                code: asset.code,
+                channelCode: scope,
+                localeCode: locale,
+                filter: 'preview',
+             }) %>" data-download-url="<%- Routing.generate('pimee_product_asset_original', {
+                code: asset.code,
+                channelCode: scope,
+                localeCode: locale
+             }) %>" data-asset="<%- asset.code %>" data-description="<%- asset.description %>">
+                <div class="AknAssetCollectionField-assetThumbnail asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
+                        code: asset.code,
+                        filter: thumbnailFilter,
+                        channelCode: scope,
+                        localeCode: locale
+                     }) %>')">
+                </div>
+            </li>
+            <% }); %>
+        </ul>
     </div>
 </div>
-<div class="AknButtonList AknButtonList--right modal-footer">
-    <a class="AknButtonList-item AknButton AknButton--greyLight cancel"></a>
-    <% if (canRemoveAsset) { %>
-        <a class="AknButtonList-item AknButton AknButton--important remove"><%- removeLabel %></a>
-        <div class="AknAssetPreview-confirmation AknButtonList--hide remove-confirmation">
-            <span class="AknAssetPreview-confirmationText"><%- confirmLabel %></span>
-            <div class="AknButtonList AknButtonList--twoColumns">
-                <span class="AknButtonList-item AknButton AknButton--grey close"><%- noLabel %></span>
-                <span class="AknButtonList-item AknButton AknButton--important confirm"><%- yesLabel %></span>
+<div class="AknFullPage-ok">
+    <div class="AknButtonList AknButtonList--right">
+        <% if (canRemoveAsset) { %>
+            <a class="AknButtonList-item AknButton AknButton--important remove"><%- removeLabel %></a>
+            <div class="AknAssetPreview-confirmation AknButtonList--hide remove-confirmation">
+                <span class="AknAssetPreview-confirmationText"><%- confirmLabel %></span>
+                <div class="AknButtonList AknButtonList--twoColumns">
+                    <span class="AknButtonList-item AknButton AknButton--grey close"><%- noLabel %></span>
+                    <span class="AknButtonList-item AknButton AknButton--important confirm"><%- yesLabel %></span>
+                </div>
             </div>
-        </div>
-    <% } %>
-    <a class="AknButtonList-item AknButton AknButton--apply download"><%- downloadLabel %></a>
+        <% } %>
+        <a class="AknButtonList-item AknButton AknButton--apply download"><%- downloadLabel %></a>
+    </div>
 </div>

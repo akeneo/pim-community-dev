@@ -2,7 +2,7 @@ const Modal = require('../../delete/modal.decorator');
 
 const config = {
   Modal: {
-    selector: '.AknFullPage--modal',
+    selector: '.modal',
     decorator: Modal,
   },
 };

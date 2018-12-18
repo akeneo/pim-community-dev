@@ -6,8 +6,6 @@ extensions:
         module: pim/common/item-picker
         config:
             datagridName: asset-picker-grid
-            title: pimee_product_asset.form.product.asset.title
-            description: pimee_product_asset.form.product.asset.description
             categoryTreeRoute: pimee_asset_picker_categorytree
             columnName: code
             fetcher: asset

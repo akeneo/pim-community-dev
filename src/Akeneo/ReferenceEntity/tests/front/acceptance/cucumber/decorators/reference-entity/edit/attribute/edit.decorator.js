@@ -102,7 +102,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 
     const button = await nodeElement.$('.AknButton[data-code="manageOption"]');
     await button.click();
-    await page.waitForSelector('.AknFullPage--modal');
+    await page.waitForSelector('.modal');
   };
 
   const hasSuccessNotification = async () => {

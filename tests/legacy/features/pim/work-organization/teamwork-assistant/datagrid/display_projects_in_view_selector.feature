@@ -108,6 +108,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     And I open the category tree
     And I filter by "category" with operator "" and value "default"
     And I close the category tree
+    And I type "capacity" in the manage filter input
     And I show the filter "capacity"
     And I filter by "capacity" with operator "=" and value "8 Gigabyte"
     And I click on the create project button

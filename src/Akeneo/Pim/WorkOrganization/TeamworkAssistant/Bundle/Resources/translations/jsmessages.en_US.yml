@@ -25,7 +25,7 @@ teamwork_assistant:
         title: Edit project
     create_project_modal:
         saved: The project has been saved, you will be notified when the calculation is done.
-        title: Create project
+        title: Project
     widget:
         no_project: You have no current project
         no_project_create: create a new project
