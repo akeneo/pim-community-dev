@@ -15,6 +15,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Webmozart\Assert\Assert;
 
@@ -33,7 +34,7 @@ class OptionCollectionConnectorValueTransformer implements ConnectorValueTransfo
     {
         Assert::true($this->supports($attribute));
 
-        $existingOptions = $this->findExistingOptions($normalizedValue['data'], $attribute);
+        $existingOptions = $this->filterExistingOptions($normalizedValue['data'], $attribute);
 
         if (empty($existingOptions)) {
             return null;
@@ -46,14 +47,10 @@ class OptionCollectionConnectorValueTransformer implements ConnectorValueTransfo
         ];
     }
 
-    private function findExistingOptions(array $normalizedOptionCodes, OptionCollectionAttribute $attribute): array
+    private function filterExistingOptions(array $normalizedOptionCodes, OptionCollectionAttribute $attribute): array
     {
-        $attributeOptionCodes = array_reduce($attribute->getAttributeOptions(), function ($stack, AttributeOption $attributeOption) {
-            $stack[] = (string) $attributeOption->getCode();
-
-            return $stack;
-        }, []);
-
-        return array_values(array_intersect($normalizedOptionCodes, $attributeOptionCodes));
+        return array_values(array_filter($normalizedOptionCodes, function ($normalizedOptionCode) use ($attribute) {
+            return $attribute->hasAttributeOption(OptionCode::fromString($normalizedOptionCode));
+        }));
     }
 }

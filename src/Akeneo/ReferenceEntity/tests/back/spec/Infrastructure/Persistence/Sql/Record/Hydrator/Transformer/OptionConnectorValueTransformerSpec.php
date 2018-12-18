@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
@@ -35,14 +34,9 @@ class OptionConnectorValueTransformerSpec extends ObjectBehavior
         $this->supports($imageAttribute)->shouldReturn(false);
     }
 
-    function it_transforms_a_normalized_value_to_a_normalized_connector_value(
-        OptionAttribute $optionAttribute,
-        AttributeOption $attributeOption1,
-        AttributeOption $attributeOption2
-    ) {
-        $optionAttribute->getAttributeOptions()->willReturn([$attributeOption1, $attributeOption2]);
-        $attributeOption1->getCode()->willReturn(OptionCode::fromString('metal'));
-        $attributeOption2->getCode()->willReturn(OptionCode::fromString('plastic'));
+    function it_transforms_a_normalized_value_to_a_normalized_connector_value(OptionAttribute $optionAttribute)
+    {
+        $optionAttribute->hasAttributeOption(OptionCode::fromString('plastic'))->willReturn(true);
 
         $this->transform([
             'data'      => 'plastic',
@@ -56,14 +50,9 @@ class OptionConnectorValueTransformerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_returns_null_if_the_option_does_not_exist_in_the_attribute(
-        OptionAttribute $optionAttribute,
-        AttributeOption $attributeOption1,
-        AttributeOption $attributeOption2
-    ) {
-        $optionAttribute->getAttributeOptions()->willReturn([$attributeOption1, $attributeOption2]);
-        $attributeOption1->getCode()->willReturn(OptionCode::fromString('metal'));
-        $attributeOption2->getCode()->willReturn(OptionCode::fromString('plastic'));
+    function it_returns_null_if_the_option_does_not_exist_in_the_attribute(OptionAttribute $optionAttribute)
+    {
+        $optionAttribute->hasAttributeOption(OptionCode::fromString('wood'))->willReturn(false);
 
         $this->transform([
             'data'      => 'wood',

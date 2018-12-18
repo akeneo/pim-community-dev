@@ -36,15 +36,10 @@ class OptionCollectionConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_transforms_a_normalized_value_to_a_normalized_connector_value(
-        OptionCollectionAttribute $optionCollectionAttribute,
-        AttributeOption $attributeOption1,
-        AttributeOption $attributeOption2,
-        AttributeOption $attributeOption3
+        OptionCollectionAttribute $optionCollectionAttribute
     ) {
-        $optionCollectionAttribute->getAttributeOptions()->willReturn([$attributeOption1, $attributeOption2, $attributeOption3]);
-        $attributeOption1->getCode()->willReturn(OptionCode::fromString('metal'));
-        $attributeOption2->getCode()->willReturn(OptionCode::fromString('plastic'));
-        $attributeOption3->getCode()->willReturn(OptionCode::fromString('wood'));
+        $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString('metal'))->willReturn(true);
+        $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString('plastic'))->willReturn(true);
 
         $this->transform([
             'data'      => ['plastic', 'metal'],
@@ -59,13 +54,11 @@ class OptionCollectionConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_removes_options_that_do_not_exist_in_the_attribute(
-        OptionCollectionAttribute $optionCollectionAttribute,
-        AttributeOption $attributeOption1,
-        AttributeOption $attributeOption2
+        OptionCollectionAttribute $optionCollectionAttribute
     ) {
-        $optionCollectionAttribute->getAttributeOptions()->willReturn([$attributeOption1, $attributeOption2]);
-        $attributeOption1->getCode()->willReturn(OptionCode::fromString('metal'));
-        $attributeOption2->getCode()->willReturn(OptionCode::fromString('plastic'));
+        $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString('metal'))->willReturn(true);
+        $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString('plastic'))->willReturn(true);
+        $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString('wood'))->willReturn(false);
 
         $this->transform([
             'data'      => ['plastic', 'wood', 'metal'],
@@ -80,13 +73,9 @@ class OptionCollectionConnectorValueTransformerSpec extends ObjectBehavior
     }
 
     function it_returns_null_if_no_options_exist_in_the_attribute(
-        OptionCollectionAttribute $optionCollectionAttribute,
-        AttributeOption $attributeOption1,
-        AttributeOption $attributeOption2
+        OptionCollectionAttribute $optionCollectionAttribute
     ) {
-        $optionCollectionAttribute->getAttributeOptions()->willReturn([$attributeOption1, $attributeOption2]);
-        $attributeOption1->getCode()->willReturn(OptionCode::fromString('metal'));
-        $attributeOption2->getCode()->willReturn(OptionCode::fromString('plastic'));
+        $optionCollectionAttribute->hasAttributeOption(OptionCode::fromString('wood'))->willReturn(false);
 
         $this->transform([
             'data'      => ['wood'],

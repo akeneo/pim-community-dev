@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\Transformer;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
 use Webmozart\Assert\Assert;
 
@@ -32,7 +34,8 @@ class OptionConnectorValueTransformer implements ConnectorValueTransformerInterf
     {
         Assert::true($this->supports($attribute));
 
-        if (!$this->attributeOptionExists($normalizedValue['data'], $attribute)) {
+        $optionCode = OptionCode::fromString($normalizedValue['data']);
+        if (!$attribute->hasAttributeOption($optionCode)) {
             return null;
         }
 
@@ -41,16 +44,5 @@ class OptionConnectorValueTransformer implements ConnectorValueTransformerInterf
             'channel' => $normalizedValue['channel'],
             'data'    => $normalizedValue['data'],
         ];
-    }
-
-    private function attributeOptionExists(string $attributeOptionCode, OptionAttribute $attribute): bool
-    {
-        foreach ($attribute->getAttributeOptions() as $attributeOption) {
-            if ($attributeOptionCode === (string) $attributeOption->getCode()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
