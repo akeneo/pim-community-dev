@@ -5,19 +5,23 @@ jobs:
       enabled: true
     steps:
       - checkout
+
       - run:
           name: Copy env file
           command: |
             cp .env.dist .env
             cp behat.yml.dist behat.yml
+
       - run:
           name: Setup tests results folder and log folder
           command: |
             mkdir -p var/tests var/logs
+
       - run:
           name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
             chmod 777 ../project -R
+
       - run:
           name: Start containers
           command: |
@@ -26,6 +30,12 @@ jobs:
             docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
             docker-compose run --rm node yarn run webpack-dev
             docker-compose run --rm node yarn run webpack-test
+
+      - run:
+            name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+            command: |
+                sudo chmod 777 ../project -R
+
       - persist_to_workspace:
           root: ~/
           paths:
