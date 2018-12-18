@@ -16,8 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repositor
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
-use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
-use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -27,19 +27,19 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /** @var ProductSubscription[] */
     private $subscriptions = [];
 
-    /** @var InMemoryFamilyRepository */
+    /** @var FamilyRepositoryInterface */
     private $familyRepository;
 
-    /** @var InMemoryProductRepository */
+    /** @var ProductRepositoryInterface */
     private $productRepository;
 
     /**
-     * @param InMemoryFamilyRepository $familyRepository
-     * @param InMemoryProductRepository $productRepository
+     * @param FamilyRepositoryInterface $familyRepository
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
-        InMemoryFamilyRepository $familyRepository,
-        InMemoryProductRepository $productRepository
+        FamilyRepositoryInterface $familyRepository,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->familyRepository = $familyRepository;
         $this->productRepository = $productRepository;

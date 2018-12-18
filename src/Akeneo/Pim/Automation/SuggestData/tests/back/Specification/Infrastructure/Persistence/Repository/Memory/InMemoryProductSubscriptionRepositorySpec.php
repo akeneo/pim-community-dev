@@ -126,21 +126,4 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         Assert::true($subscription1->getSuggestedData()->isEmpty());
         Assert::true($subscription2->getSuggestedData()->isEmpty());
     }
-
-    public function it_empties_suggested_data_and_missing_mapping_by_family_code(): void
-    {
-        $subscription1 = new ProductSubscription(42, 'fake-id', []);
-        $subscription1->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'foo', 'value' => 'bar']]));
-        $subscription2 = new ProductSubscription(43, 'other-fake-id', []);
-        $subscription2->setSuggestedData(new SuggestedData([['pimAttributeCode' => 'bar', 'value' => 'baz']]));
-        Assert::false($subscription1->getSuggestedData()->isEmpty());
-        Assert::false($subscription2->getSuggestedData()->isEmpty());
-
-        $this->save($subscription1);
-        $this->save($subscription2);
-
-        $this->emptySuggestedData();
-        Assert::true($subscription1->getSuggestedData()->isEmpty());
-        Assert::true($subscription2->getSuggestedData()->isEmpty());
-    }
 }
