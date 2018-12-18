@@ -25,6 +25,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
@@ -62,8 +63,17 @@ class GetConnectorAttributeOptionContext implements Context
     /** @var OptionAttribute */
     private $singleOptionAttribute;
 
+    /** @var OptionCollectionAttribute */
+    private $multiOptionAttribute;
+
     /** @var null|Response **/
     private $optionResponse;
+
+    /** @var null|Response **/
+    private $multiOptionResponse;
+
+    /** @var null|Response **/
+    private $nonExistentAttributeOptionResponse;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -151,6 +161,60 @@ class GetConnectorAttributeOptionContext implements Context
         );
     }
 
+    private function createMultiOptionAttribute(string $code)
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_2');
+        $attributeIdentifier = AttributeIdentifier::fromString('attribute_2');
+
+        $optionAttribute = OptionCollectionAttribute::create(
+            $attributeIdentifier,
+            $referenceEntityIdentifier,
+            AttributeCode::fromString($code),
+            LabelCollection::fromArray([ 'fr_FR' => 'Ventes', 'en_US' => 'Sales area']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true)
+        );
+
+        $this->attributeRepository->create($optionAttribute);
+
+        return $optionAttribute;
+    }
+
+    private function createOptionForMultiOptionAttribute()
+    {
+        $this->multiOptionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('asia'),
+                LabelCollection::fromArray(['fr_FR' => 'Asia'])
+            ),
+        ]);
+
+        $connectorAttribute = new ConnectorAttribute(
+            AttributeCode::fromString('sales_area'),
+            LabelCollection::fromArray(['fr_FR' => 'Asia']),
+            'option',
+            AttributeValuePerLocale::fromBoolean($this->multiOptionAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($this->multiOptionAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            [
+                'options' => array_map(
+                    function (AttributeOption $attributeOption) {
+                        return $attributeOption->normalize();
+                    },
+                    $this->multiOptionAttribute->getAttributeOptions()
+                ),
+            ]
+        );
+
+        $this->findConnectorAttributeOption->save(
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand_2'),
+            AttributeCode::fromString('sales_area'),
+            $connectorAttribute
+        );
+    }
+
     /**
      * @Given /^the Nationality single option attribute that is part of the structure of the Brand reference entity$/
      */
@@ -197,7 +261,8 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theSalesAreaMultipleOptionsAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $this->referenceEntity = $this->createBrandReferenceEntity();
+        $this->multiOptionAttribute = $this->createMultiOptionAttribute('sales_area');
     }
 
     /**
@@ -205,7 +270,7 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theAsiaOptionThatIsOneOfTheOptionsOfTheSalesAreaAttribute()
     {
-        throw new PendingException();
+        $this->createOptionForMultiOptionAttribute();
     }
 
     /**
@@ -213,7 +278,12 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theConnectorRequestsTheAsiaOptionOfTheSalesAreaAttributeForTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->multiOptionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."successful_asia_sales_area_option_for_brand_reference_entity.json"
+        );
     }
 
     /**
@@ -221,7 +291,10 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function thePIMReturnsTheAsiaOption()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->multiOptionResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_asia_sales_area_option_for_brand_reference_entity.json"
+        );
     }
 
     /**
@@ -237,7 +310,12 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theConnectorRequestsANonExistentOptionForAGivenAttributeForAGivenReferenceEntity()
     {
-        throw new PendingException();
+        $client = $this->clientFactory->logIn('julia');
+
+        $this->nonExistentAttributeOptionResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR ."non_existent_option_for_reference_entity.json"
+        );
     }
 
     /**
@@ -245,6 +323,9 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function thePIMNotifiesTheConnectorAboutAnErrorIndicatingThatTheOptionIsNonExistentForTheNationalityAttributeAndTheBrandReferenceEntity()
     {
-        throw new PendingException();
+        $this->webClientHelper->assertJsonFromFile(
+            $this->nonExistentAttributeOptionResponse,
+            self::REQUEST_CONTRACT_DIR . "successful_french_nationality_option_for_brand_reference_entity.json"
+        );
     }
 }
