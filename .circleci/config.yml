@@ -43,9 +43,14 @@ jobs:
           - attach_workspace:
                 at: ~/
           - run:
+                name: Change permissions on project dir in order to archive the project into the workspace
+                command: |
+                    sudo chmod 777 ../project -R
+          - run:
                 name: Start containers
                 command: |
                     docker-compose up -d
+                    sleep 10 # wait mysql to be up
                     docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit Integration
@@ -70,9 +75,14 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+            name: Change permissions on project dir in order to archive the project into the workspace
+            command: |
+                sudo chmod 777 ../project -R
+      - run:
           name: Start containers
           command: |
             docker-compose up -d
+            sleep 10 # wait mysql to be up
             docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
           name: Behat
