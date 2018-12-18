@@ -93,6 +93,27 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | akeneo_reference_entity_collection |
       | akeneo_reference_entity            |
 
+  Scenario Outline: Fails to map Franklin identifiers with invalid PIM attributes properties
+    Given an empty identifiers mapping
+    And the following attribute:
+      | code    | type             | localizable   | scopable   | available_locales |
+      | pim_upc | pim_catalog_text | <localizable> | <scopable> | <locale_specific> |
+    When the identifiers are mapped as follows:
+      | franklin_code | attribute_code |
+      | upc           | pim_upc        |
+    Then the identifiers mapping should not be saved
+    #And an invalid mapping message should be display
+
+    Examples:
+      | localizable | scopable | locale_specific |
+      | true        | false    |                 |
+      | false       | true     |                 |
+      | false       | false    | en_US           |
+      | true        | true     |                 |
+      | true        | false    | en_US           |
+      | false       | true     | en_US           |
+      | true        | true     | en_US           |
+
   Scenario: Fails to map Franklin attribute with unexisting PIM attribute
     Given an empty identifiers mapping
     When the identifiers are mapped as follows:
