@@ -7,9 +7,7 @@ import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/c
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
 import ManageOptionsView from 'akeneoreferenceentity/application/component/attribute/edit/option';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntity, {
-  denormalizeReferenceEntity,
-} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {denormalizeReferenceEntity,} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
@@ -20,6 +18,7 @@ import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/
 import Key from 'akeneoreferenceentity/tools/key';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoreferenceentity/application/reducer/attribute/type/option';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
 const securityContext = require('pim/security-context');
 
@@ -27,9 +26,12 @@ interface StateProps {
   context: {
     locale: string;
   };
-  acls: {
-    createAttribute: boolean;
-    delete: boolean;
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    }
   };
   referenceEntity: ReferenceEntity;
   createAttribute: CreateState;
@@ -120,6 +122,7 @@ interface AttributeViewProps {
   attribute: NormalizedAttribute;
   onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   locale: string;
+  canEditAttribute: boolean;
 }
 
 class AttributeView extends React.Component<AttributeViewProps> {
@@ -131,7 +134,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
   }
 
   render() {
-    const {onAttributeEdit, locale} = this.props;
+    const {onAttributeEdit, locale, canEditAttribute} = this.props;
     const attribute = denormalizeAttribute(this.props.attribute);
     const icon = getAttributeIcon(attribute.getType());
 
@@ -163,13 +166,15 @@ class AttributeView extends React.Component<AttributeViewProps> {
             readOnly
             tabIndex={-1}
           />
-          <button
-            className="AknIconButton AknIconButton--edit"
-            onClick={() => onAttributeEdit(attribute.getIdentifier())}
-            onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
-            }}
-          />
+          {canEditAttribute ? (
+            <button
+              className="AknIconButton AknIconButton--edit"
+              onClick={() => onAttributeEdit(attribute.getIdentifier())}
+              onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+                if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
+              }}
+            />
+          ) : null}
         </div>
       </div>
     );
@@ -184,7 +189,7 @@ class AttributesView extends React.Component<CreateProps> {
           label={this.props.referenceEntity.getLabel(this.props.context.locale)}
           image={this.props.referenceEntity.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.acls.createAttribute ? (
+            return this.props.rights.attribute.create ? (
               <button
                 className="AknButton AknButton--action"
                 onClick={this.props.events.onAttributeCreationStart}
@@ -200,6 +205,7 @@ class AttributesView extends React.Component<CreateProps> {
           withChannelSwitcher={false}
           isDirty={false}
           breadcrumbConfiguration={breadcrumbConfiguration}
+          displayActions={this.props.rights.attribute.create}
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
@@ -222,13 +228,18 @@ class AttributesView extends React.Component<CreateProps> {
                           attribute={attribute}
                           onAttributeEdit={this.props.events.onAttributeEdit}
                           locale={this.props.context.locale}
+                          canEditAttribute={this.props.rights.attribute.edit}
                         />
                       </ErrorBoundary>
                     ))}
                   </React.Fragment>
                 )}
               </div>
-              {this.props.editAttribute ? <AttributeEditForm /> : null}
+              {this.props.editAttribute ? (
+                <AttributeEditForm
+                  canDeleteAttribute={this.props.rights.attribute.delete}
+                />
+              ) : null}
             </div>
           ) : (
             <React.Fragment>
@@ -267,9 +278,15 @@ export default connect(
       context: {
         locale,
       },
-      acls: {
-        createAttribute: true,
-        delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
+      rights: {
+        attribute: {
+          create: securityContext.isGranted('akeneo_referenceentity_attribute_create') && canEditReferenceEntity(),
+          edit: securityContext.isGranted('akeneo_referenceentity_attribute_edit') && canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_attribute_delete') &&
+            canEditReferenceEntity(),
+        }
       },
       referenceEntity,
       createAttribute: state.createAttribute,

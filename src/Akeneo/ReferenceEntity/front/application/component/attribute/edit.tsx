@@ -26,7 +26,12 @@ import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
-interface StateProps {
+
+interface OwnProps {
+  canDeleteAttribute: boolean;
+}
+
+interface StateProps extends OwnProps {
   context: {
     locale: string;
   };
@@ -221,18 +226,20 @@ class Edit extends React.Component<EditProps> {
               </ErrorBoundary>
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
-              <span
-                className="AknButton AknButton--delete"
-                tabIndex={0}
-                onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
-                  if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
-                }}
-                onClick={() => this.props.events.onOpenDeleteModal()}
-                style={{flex: 1}}
-              >
-                <Trash color="#D4604F" className="AknButton-animatedIcon" />
-                {__('pim_reference_entity.attribute.edit.delete')}
-              </span>
+              {this.props.canDeleteAttribute ? (
+                <span
+                  className="AknButton AknButton--delete"
+                  tabIndex={0}
+                  onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                    if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
+                  }}
+                  onClick={() => this.props.events.onOpenDeleteModal()}
+                  style={{flex: 1}}
+                >
+                  <Trash color="#D4604F" className="AknButton-animatedIcon" />
+                    {__('pim_reference_entity.attribute.edit.delete')}
+                </span>
+              ) : null}
               <span
                 title={__('pim_reference_entity.attribute.edit.cancel')}
                 className="AknButton AknButton--small AknButton--grey AknButton--spaced"
@@ -274,11 +281,12 @@ class Edit extends React.Component<EditProps> {
 }
 
 export default connect(
-  (state: EditState): StateProps => {
+  (state: EditState, ownProps: OwnProps): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
     const confirmDelete = state.confirmDelete;
 
     return {
+      ...ownProps,
       isActive: state.attribute.isActive,
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
