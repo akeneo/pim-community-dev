@@ -15,6 +15,9 @@ Feature: Delete an attribute linked to a reference entity
   @acceptance-front
   Scenario: Delete a text attribute linked to a reference entity
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
+      | akeneo_referenceentity_attribute_delete | true |
     And the following attributes for the reference entity "designer":
       | code     | type  | labels                                  |
       | name     | text  | {"en_US": "Name", "fr_FR": "Name"}      |
@@ -33,6 +36,9 @@ Feature: Delete an attribute linked to a reference entity
   @acceptance-front
   Scenario: Cannot delete a text attribute linked to a reference entity
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
+      | akeneo_referenceentity_attribute_delete | true |
     And the user asks for the reference entity "designer"
     Then there should be the following attributes:
       | code     | type  |
@@ -48,6 +54,9 @@ Feature: Delete an attribute linked to a reference entity
   @acceptance-front
   Scenario: Cancel a text attribute deletion
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | true |
+      | akeneo_referenceentity_attribute_delete | true |
     And the user asks for the reference entity "designer"
     Then there should be the following attributes:
       | code     | type  |
