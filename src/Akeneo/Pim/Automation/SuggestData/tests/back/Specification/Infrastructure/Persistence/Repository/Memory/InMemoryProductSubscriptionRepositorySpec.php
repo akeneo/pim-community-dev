@@ -17,8 +17,8 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscript
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
-use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
-use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -27,8 +27,10 @@ use Webmozart\Assert\Assert;
  */
 class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    public function let(InMemoryFamilyRepository $familyRepository, InMemoryProductRepository $productRepository): void
-    {
+    public function let(
+        FamilyRepositoryInterface $familyRepository,
+        ProductRepositoryInterface $productRepository
+    ): void {
         $this->beConstructedWith($familyRepository, $productRepository);
     }
 
