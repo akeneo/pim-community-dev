@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\Identifiers
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class ProductIdentifierValues
+final class ProductIdentifierValues
 {
     /** @var array */
     private $identifierValues;
