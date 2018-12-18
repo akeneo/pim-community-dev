@@ -53,6 +53,28 @@ class ParentFilterIntegration extends AbstractProductAndProductModelQueryBuilder
         $this->assert($result, []);
     }
 
+    public function testQueryParentInListCaseInsensitive()
+    {
+        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
+        $productModel = $entityBuilder->createProductModel(
+            'MODEL_test',
+            'clothing_color_size',
+            null,
+            []
+        );
+        $entityBuilder->createVariantProduct(
+            'variant_product',
+            'clothing',
+            'clothing_material_size',
+            $productModel,
+            []
+        );
+        $result = $this->executeFilter([['parent', Operators::IN_LIST, ['mOdEl_TeSt']]]);
+        $this->assert($result, [
+            'variant_product',
+        ]);
+    }
+
     public function testQueryParentEmptyAndAttributesInList()
     {
         $result = $this->executeFilter([
