@@ -30,7 +30,7 @@ interface StateProps {
     referenceEntity: {
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
   confirmDelete: {
     isActive: boolean;
@@ -146,13 +146,12 @@ export default connect(
       },
       rights: {
         referenceEntity: {
-          edit:
-            securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && canEditReferenceEntity(),
+          edit: securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && canEditReferenceEntity(),
           delete:
             securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
             securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
             canEditReferenceEntity(),
-        }
+        },
       },
       confirmDelete,
     };

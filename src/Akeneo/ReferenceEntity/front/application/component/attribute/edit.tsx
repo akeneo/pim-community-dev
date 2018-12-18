@@ -26,7 +26,6 @@ import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
-
 interface OwnProps {
   canDeleteAttribute: boolean;
 }
@@ -237,7 +236,7 @@ class Edit extends React.Component<EditProps> {
                   style={{flex: 1}}
                 >
                   <Trash color="#D4604F" className="AknButton-animatedIcon" />
-                    {__('pim_reference_entity.attribute.edit.delete')}
+                  {__('pim_reference_entity.attribute.edit.delete')}
                 </span>
               ) : null}
               <span

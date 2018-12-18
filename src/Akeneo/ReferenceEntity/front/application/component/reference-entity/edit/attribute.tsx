@@ -7,7 +7,9 @@ import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/c
 import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
 import ManageOptionsView from 'akeneoreferenceentity/application/component/attribute/edit/option';
 import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
-import ReferenceEntity, {denormalizeReferenceEntity,} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
@@ -31,7 +33,7 @@ interface StateProps {
       create: boolean;
       edit: boolean;
       delete: boolean;
-    }
+    };
   };
   referenceEntity: ReferenceEntity;
   createAttribute: CreateState;
@@ -236,9 +238,7 @@ class AttributesView extends React.Component<CreateProps> {
                 )}
               </div>
               {this.props.editAttribute ? (
-                <AttributeEditForm
-                  canDeleteAttribute={this.props.rights.attribute.delete}
-                />
+                <AttributeEditForm canDeleteAttribute={this.props.rights.attribute.delete} />
               ) : null}
             </div>
           ) : (
@@ -286,7 +286,7 @@ export default connect(
             securityContext.isGranted('akeneo_referenceentity_attribute_edit') &&
             securityContext.isGranted('akeneo_referenceentity_attribute_delete') &&
             canEditReferenceEntity(),
-        }
+        },
       },
       referenceEntity,
       createAttribute: state.createAttribute,
