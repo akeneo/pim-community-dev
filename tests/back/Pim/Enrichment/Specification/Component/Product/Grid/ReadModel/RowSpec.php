@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperties;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -12,6 +15,11 @@ use PhpSpec\ObjectBehavior;
 
 class RowSpec extends ObjectBehavior
 {
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(Row::class);
+    }
+
     function it_creates_a_row_from_a_product()
     {
         $this->beConstructedThrough(
@@ -48,6 +56,7 @@ class RowSpec extends ObjectBehavior
         $this->childrenCompleteness()->shouldReturn([]);
         $this->parentCode()->shouldReturn('parent_code');
         $this->values()->shouldBeLike(new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
+        $this->additionalProperties()->shouldBeLike(new AdditionalProperties([]));
     }
 
     function it_creates_a_row_from_a_product_model()
@@ -84,5 +93,32 @@ class RowSpec extends ObjectBehavior
         $this->childrenCompleteness()->shouldReturn([]);
         $this->parentCode()->shouldReturn('parent_code');
         $this->values()->shouldBeLike(new ValueCollection([ScalarValue::value('scalar_attribute', 'data')]));
+        $this->additionalProperties()->shouldBeLike(new AdditionalProperties([]));
+    }
+
+    function it_adds_an_additional_property()
+    {
+        $this->beConstructedThrough(
+            'fromProduct',
+            [
+                'identifier',
+                'family label',
+                ['group_1', 'group_2'],
+                true,
+                new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
+                new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
+                'data',
+                MediaValue::value('media_attribute', new FileInfo()),
+                90,
+                1,
+                'parent_code',
+                new ValueCollection([ScalarValue::value('scalar_attribute', 'data')])
+            ]
+        );
+
+        $row = $this->addAdditionalProperty(new AdditionalProperty('name', 'value'));
+        $row->additionalProperties()->shouldBeLike(new AdditionalProperties([
+            new AdditionalProperty('name', 'value')
+        ]));
     }
 }

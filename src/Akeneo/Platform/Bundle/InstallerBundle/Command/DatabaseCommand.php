@@ -172,18 +172,23 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function createNotMappedTables(OutputInterface $output)
     {
-        $output->writeln('<info>Create session table</info>');
+        $connection = $this->getContainer()->get('database_connection');
 
+        $output->writeln('<info>Create session table</info>');
         $sessionTableSql = "CREATE TABLE pim_session (
                 `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
                 `sess_data` BLOB NOT NULL,
                 `sess_time` INTEGER UNSIGNED NOT NULL,
                 `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
-            ) COLLATE utf8mb4_bin, ENGINE = InnoDB";
+            ) COLLATE utf8mb4_bin, ENGINE = InnoDB;";
+        $connection->exec($sessionTableSql);
 
-        $db = $this->getContainer()->get('doctrine');
-
-        $db->getConnection()->exec($sessionTableSql);
+        $output->writeln('<info>Create configuration table</info>');
+        $configTableSql = "CREATE TABLE pim_configuration (
+                `code` VARCHAR(128) NOT NULL PRIMARY KEY,
+                `values` JSON NOT NULL
+            ) COLLATE utf8mb4_unicode_ci, ENGINE = InnoDB;";
+        $connection->exec($configTableSql);
     }
 
     /**

@@ -101,7 +101,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
+        $values->getByCodes('name', null, 'fr_FR')->willreturn($nameValue);
 
         $nameValue->getAttributeCode()->willReturn('name');
         $nameValue->getScopeCode()->willReturn(null);
@@ -130,20 +130,12 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(true);
 
-        $values->toArray()->willreturn([
-            'name-ecommerce-fr_FR' => $ecommerceNameValue,
-            'name-mobile-fr_FR' => $mobileNameValue,
-        ]);
+        $values->getByCodes('name', 'mobile', 'fr_FR')->willreturn($mobileNameValue);
 
         $mobileNameValue->getAttributeCode()->willReturn('name');
         $mobileNameValue->getScopeCode()->willReturn('mobile');
         $mobileNameValue->getLocaleCode()->willReturn('fr_FR');
         $mobileNameValue->getData()->willReturn('Petite pelle');
-
-        $ecommerceNameValue->getAttributeCode()->willReturn('name');
-        $ecommerceNameValue->getScopeCode()->willReturn('ecommerce');
-        $ecommerceNameValue->getLocaleCode()->willReturn('fr_FR');
-        $ecommerceNameValue->getData()->willReturn('Petit outil agricole authentique');
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -179,7 +171,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->toArray()->willreturn([]);
+        $values->getByCodes('name', null, 'fr_FR')->willreturn(null);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -202,7 +194,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
 
         $nameValue->getAttributeCode()->willReturn('name');
         $nameValue->getScopeCode()->willReturn(null);
@@ -231,20 +223,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(true);
 
-        $values->toArray()->willreturn([
-            'name-ecommerce-fr_FR' => $ecommerceNameValue,
-            'name-mobile-fr_FR' => $mobileNameValue,
-        ]);
-
-        $mobileNameValue->getAttributeCode()->willReturn('name');
-        $mobileNameValue->getScopeCode()->willReturn('mobile');
-        $mobileNameValue->getLocaleCode()->willReturn('fr_FR');
-        $mobileNameValue->getData()->willReturn('Petite pelle');
-
-        $ecommerceNameValue->getAttributeCode()->willReturn('name');
-        $ecommerceNameValue->getScopeCode()->willReturn('ecommerce');
-        $ecommerceNameValue->getLocaleCode()->willReturn('fr_FR');
-        $ecommerceNameValue->getData()->willReturn('Petit outil agricole authentique');
+        $values->getByCodes('name', null, 'fr_FR')->willreturn(null);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -267,7 +246,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isUnique()->willReturn(false);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
+        $values->getByCodes('name', null, null)->willreturn($nameValue);
 
         $nameValue->getAttributeCode()->willReturn('name');
         $nameValue->getScopeCode()->willReturn(null);
@@ -293,7 +272,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsImage->getCode()->willReturn('picture');
         $attributeAsImage->isUnique()->willReturn(false);
 
-        $values->toArray()->willreturn(['picture-<all_channels>-<all_locales>' => $pictureValue]);
+        $values->getByCodes('picture', null, null)->willReturn($pictureValue);
 
         $pictureValue->getAttributeCode()->willReturn('picture');
         $pictureValue->getScopeCode()->willReturn(null);
@@ -329,7 +308,7 @@ class ProductModelSpec extends ObjectBehavior
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $attributeAsImage->getCode()->willReturn('picture');
 
-        $values->toArray()->willreturn([]);
+        $values->getByCodes('picture', null, null)->willreturn(null);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -397,7 +376,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->toArray()->willreturn([]);
+        $values->getByCodes('name', null, null)->willReturn(null);
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);

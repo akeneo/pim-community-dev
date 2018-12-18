@@ -54,11 +54,15 @@
             <div class="AknMessageBox AknMessageBox--warning AknMessageBox--withIcon">
                 <%- confirm %>
             </div>
-            <div class="AknButton AknButton--apply wizard-action" data-action-target="validate">
-                <%- confirmLabel %>
-            </div>
             <% } %>
             <div class="step"></div>
+            <% if (currentStep === 'confirm') { %>
+            <div class="AknButtonList AknButtonList--single">
+                <div class="AknButton AknButtonList-item AknButton--apply wizard-action" data-action-target="validate">
+                    <%- confirmLabel %>
+                </div>
+            </div>
+            <% } %>
         </div>
     </div>
     <% } %>

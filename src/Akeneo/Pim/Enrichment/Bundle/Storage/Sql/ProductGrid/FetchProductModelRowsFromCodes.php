@@ -23,10 +23,17 @@ final class FetchProductModelRowsFromCodes
     /** @var ValueCollectionFactoryInterface */
     private $valueCollectionFactory;
 
-    public function __construct(Connection $connection, ValueCollectionFactoryInterface $valueCollectionFactory)
-    {
+    /** @var ProductModelImagesFromCodes */
+    private $productModelImagesFromCodes;
+
+    public function __construct(
+        Connection $connection,
+        ValueCollectionFactoryInterface $valueCollectionFactory,
+        ProductModelImagesFromCodes $productModelImagesFromCodes
+    ) {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
+        $this->productModelImagesFromCodes = $productModelImagesFromCodes;
     }
 
     /**
@@ -48,7 +55,7 @@ final class FetchProductModelRowsFromCodes
         $rows = array_replace_recursive(
             $this->getProperties($codes),
             $this->getLabels($codes, $valueCollections, $channelCode, $localeCode),
-            $this->getAttributeAsImage($codes, $valueCollections),
+            ($this->productModelImagesFromCodes)($codes, $channelCode, $localeCode),
             $this->getChildrenCompletenesses($codes, $channelCode, $localeCode),
             $this->getFamilyLabels($codes, $localeCode),
             $valueCollections
@@ -151,46 +158,6 @@ SQL;
         return $result;
     }
 
-    private function getAttributeAsImage(array $codes, array $valueCollections): array
-    {
-        $result = [];
-        foreach ($codes as $code) {
-            $result[$code]['image'] = null;
-        }
-
-        /**
-         * @TODO image from first variant product or sub-product model when not at product model level
-         *        ex for product model "model-tshirt-divided"  :
-         *          the code of the image attribute of the family is "variation_image"
-         *          but "variation_image" is the image of the variant product. So it's the attribute "image" that is used
-         */
-        $sql = <<<SQL
-            SELECT 
-                pm.code,
-                a_image.code as image_code
-            FROM
-                pim_catalog_product_model pm
-                JOIN pim_catalog_family_variant fv ON fv.id = pm.family_variant_id
-                JOIN pim_catalog_family f ON f.id = fv.family_id
-                JOIN pim_catalog_attribute a_image ON a_image.id = f.image_attribute_id
-            WHERE 
-                pm.code IN (:codes)
-SQL;
-
-        $rows = $this->connection->executeQuery(
-            $sql,
-            ['codes' => $codes],
-            ['codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAll();
-
-        foreach ($rows as $row) {
-            $image = $valueCollections[$row['code']]['value_collection']->getByCodes($row['image_code']);
-            $result[$row['code']]['image'] = $image ?? null;
-        }
-
-        return $result;
-    }
-
     private function getChildrenCompletenesses(array $codes, string $channelCode, string $localeCode): array
     {
         $result = [];
@@ -282,14 +249,12 @@ SQL;
             SELECT 
                 pm.code,
                 a_label.code attribute_as_label_code,
-                a_image.code attribute_as_image_code,
                 JSON_MERGE(COALESCE(parent.raw_values, '{}'), pm.raw_values) as raw_values
             FROM
                 pim_catalog_product_model pm
                 JOIN pim_catalog_family_variant fv ON fv.id = pm.family_variant_id
                 JOIN pim_catalog_family f ON f.id = fv.family_id
                 LEFT JOIN pim_catalog_attribute a_label ON a_label.id = f.label_attribute_id
-                LEFT JOIN pim_catalog_attribute a_image ON a_image.id = f.image_attribute_id
                 LEFT JOIN pim_catalog_product_model parent on parent.id = pm.parent_id
             WHERE 
                 pm.code IN (:codes)
@@ -308,7 +273,7 @@ SQL;
             $attributeCodesToKeep = array_filter(
                 array_merge(
                     $attributeCodes,
-                    [$row['attribute_as_label_code'], $row['attribute_as_image_code']]
+                    [$row['attribute_as_label_code']]
                 )
             );
 
