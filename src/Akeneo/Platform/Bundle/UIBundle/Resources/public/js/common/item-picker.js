@@ -112,8 +112,6 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    title: this.title,
-                    description: __(this.config.description),
                     locale: this.getLocale(),
                     datagridIdentifier: this.datagrid.name
                 }));

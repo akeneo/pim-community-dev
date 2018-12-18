@@ -1,0 +1,27 @@
+<div class="AknColumnConfigurator">
+    <div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
+        <div class="AknColumnConfigurator-columnHeader"><%- attributeGroupsLabel %></div>
+        <div class="AknColumnConfigurator-listContainer" data-attributes>
+            <ul class="AknVerticalList nav-list">
+                <li class="AknVerticalList-item AknVerticalList-item--selectable tab active" data-group data-value="">
+                    All Groups
+                </li>
+                <% _.each(groups, (group) => { %>
+                <li class="AknVerticalList-item AknVerticalList-item--selectable tab" data-group data-value="<%- group.code %>">
+                    <%- group.label %><span class="AknBadge"><%- group.count %></span>
+                </li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+    <div class="AknColumnConfigurator-column">
+        <div class="AknColumnConfigurator-columnHeader"> <input class="AknTextField AknColumnConfigurator-searchInput" type="search" placeholder="<%- _.__('pim_datagrid.column_configurator.search') %>"/> </div>
+        <div class="AknColumnConfigurator-listContainer more" data-columns></div>
+    </div>
+    <div class="AknColumnConfigurator-column">
+        <div class="AknColumnConfigurator-columnHeader"><%- _.__("pim_datagrid.column_configurator.displayed_columns") %>
+            <button class="AknButton AknButton--grey reset"><%- _.__("pim_datagrid.column_configurator.clear") %></button>
+        </div>
+        <div class="AknColumnConfigurator-listContainer" data-columns-selected></div>
+    </div>
+</div>

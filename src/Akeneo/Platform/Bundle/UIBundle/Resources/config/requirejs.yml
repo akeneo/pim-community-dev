@@ -9,7 +9,7 @@ config:
     jstree/nested_switch:
       deps:
       - jquery.jstree
-    translator:
+    oro/translator:
       exports: Translator
     jquery-ui:
       deps:
@@ -36,7 +36,7 @@ config:
       - jquery
       - underscore
       exports: Backbone
-    backbone/bootstrap-modal:
+    bootstrap-modal:
       deps:
       - jquery
       - underscore
@@ -314,11 +314,6 @@ config:
         pim_enrich_channel_create:
           module: pim/controller/channel/edit
           aclResourceId: pim_enrich_channel_create
-        pim_enrich_channel_index:
-          module: pim/controller/common/index
-          aclResourceId: pim_enrich_channel_index
-          config:
-            entity: channel
         pim_enrich_grouptype_edit:
           module: pim/controller/group-type
           aclResourceId: pim_enrich_grouptype_edit
@@ -431,9 +426,6 @@ config:
         pim_enrich_group_history:
           module: pim/controller/template
           aclResourceId: pim_enrich_group_history
-        pim_enrich_associationtype_index:
-          module: pim/controller/template
-          aclResourceId: pim_enrich_associationtype_index
         pim_enrich_associationtype_create:
           module: pim/controller/template
           aclResourceId: pim_enrich_associationtype_create
@@ -528,7 +520,7 @@ config:
     jquery.jstree:                 pimui/lib/jstree/jquery.jstree
     jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
     bootstrap:                     pimui/lib/bootstrap/js/bootstrap
-    backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
+    bootstrap-modal:               pimui/lib/bootstrap-modal/bootstrap-modal
     oro/app:                       pimui/js/oro-app
     oro/error:                     pimui/js/error
     oro/init-layout:               pimui/js/init-layout
@@ -555,7 +547,6 @@ config:
     pim/saveformstate:         pimui/js/pim-saveformstate
     pim/fileinput:             pimui/js/pim-fileinput
     pim/dialogform:            pimui/js/pim-dialogform
-    oro/error:                 pimui/js/pim-error
     pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
 
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
@@ -575,9 +566,7 @@ config:
     pim/init-translator:                pimui/js/init-translator
 
     pimuser/js/init-signin: pimuser/js/init-signin
-    bootstrap-modal: pimui/lib/bootstrap-modal
     translator-lib: pimui/lib/translator
-    translator: pimui/js/translator
     routing: pimui/js/fos-routing-wrapper
     pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
     jquery-setup: pimui/js/jquery-setup.js
@@ -631,7 +620,6 @@ config:
     pim/user-context:                   pimui/js/user-context
     pim/date-context:                   pimui/js/date-context
     pim/error:                          pimui/js/error/error
-    translator:                         pimui/lib/translator
     oro/translator:                     pimui/js/translator
     pim/common/property:                pimui/js/common/property
     pim/common/select2/family:          pimui/js/common/select2/family
@@ -713,7 +701,6 @@ config:
     pim/channel-edit-form/properties/general/locales:       pimui/js/channel/form/properties/general/locales
     pim/channel-edit-form/properties/general/category-tree: pimui/js/channel/form/properties/general/category-tree
     pim/channel-edit-form/properties/conversion-unit:       pimui/js/channel/form/properties/conversion-unit
-    pim/channel-edit-form/properties/general/category-tree: pimui/js/channel/form/properties/general/category-tree.js
 
     # Family
     pim/family-edit-form/delete:                                        pimui/js/family/form/delete
@@ -727,16 +714,13 @@ config:
     pim/family-edit-form/attributes/toolbar/add-select/attribute:       pimui/js/family/form/attributes/toolbar/add-select/attribute/select
     pim/family-edit-form/attributes/toolbar:                            pimui/js/family/form/attributes/toolbar
     pim/family-edit-form/attributes/attributes:                         pimui/js/family/form/attributes/attributes
-    pim/family-edit-form/attributes/toolbar:                            pimui/js/family/form/attributes/toolbar
     pim/family-edit-form/attributes:                                    pimui/js/family/form/attributes
     pim/family-edit-form/properties/general:                            pimui/js/family/form/properties/general
-    pim/family-edit-form/attributes:                                    pimui/js/family/form/attributes
     pim/family-edit-form/add-family-variant:                            pimui/js/family/form/variants/add-family-variant
     pim/family-edit-form/add-family-variant-form:                       pimui/js/family/form/variants/add-family-variant-form
     pim/family-edit-form/add-family-variant-header:                     pimui/js/family/form/variants/add-family-variant-header
     pim/family-edit-form/add-family-variant-fields-container:           pimui/js/family/form/variants/add-family-variant-fields-container
 
-    pim/family-variant-edit-form/edit:                                  pimui/js/family-variant/form/edit
     pim/family-variant-edit-form/attribute-set:                         pimui/js/family-variant/form/attribute-set
     pim/family-variant-edit-form/labels-container:                      pimui/js/family-variant/form/labels-container
     pim/family-variant-edit-form/save:                                  pimui/js/family-variant/form/save
@@ -750,9 +734,6 @@ config:
     pim/job-instance-import-edit-form/save: pimui/js/job/import/edit/save
     pim/job-instance/import/switcher:       pimui/js/job/import/switcher
     pim/job-instance/import/switcher-item:  pimui/js/job/import/switcher-item
-
-    # Group
-    pim/group-edit-form/save: pimui/js/group/form/save
 
     # Product
     pim/product-edit-form/product-label:                     pimui/js/product/form/product-label
@@ -1070,6 +1051,8 @@ config:
     pim/template/common/item-picker:                          pimui/templates/common/item-picker.html
     pim/template/common/item-picker-basket:                   pimui/templates/common/item-picker-basket.html
     pim/template/common/description-header:                   pimui/templates/common/description-header.html
+    pim/template/common/modal-with-illustration:              pimui/templates/common/modal-with-illustration.html
+    pim/template/common/modal-centered:                       pimui/templates/common/modal-centered.html
 
     pim/template/form/group-selector:                         pimui/templates/form/group-selector.html
     pim/template/form/save:                                   pimui/templates/form/save.html
@@ -1214,7 +1197,6 @@ config:
     pim/template/i18n/flag:                              pimui/templates/i18n/flag.html
     pim/template/error/error:                            pimui/templates/error/error.html
     pim/template/grid/mass-actions:                      pimui/templates/grid/mass-actions.html
-    pim/template/grid/mass-actions-confirm:              pimui/templates/grid/mass-actions-confirm.html
 
     pim/template/mass-edit/form:                                             pimui/templates/mass-edit/form.html
     pim/template/mass-edit/choose:                                           pimui/templates/mass-edit/choose.html

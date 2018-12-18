@@ -27,11 +27,7 @@ class ConfigurationPopin extends Element
     {
         $dropZone = $this->spin(function () {
             return $this->find('css', '#column-selection');
-        }, 'Cannot find the drop zone');
-
-        $searchInput = $this->spin(function () {
-            return $this->find('css', 'input[type="search"]');
-        }, 'Column search input not found');
+        }, 'Cannot find the drop zone to add columns');
 
         $this->loadAllColumns();
 
@@ -60,7 +56,7 @@ class ConfigurationPopin extends Element
     {
         $dropZone = $this->spin(function () {
             return $this->find('css', '#column-list');
-        }, 'Cannot find the drop zone');
+        }, 'Cannot find the drop zone to remove columns');
 
         foreach ($labels as $label) {
             $item = $this->getItemForLabel($label);

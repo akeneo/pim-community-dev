@@ -241,6 +241,7 @@ pim_enrich.export.product:
                 ALL: No condition on completeness
                 ">=": Complete on at least one selected locale
                 "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
+                "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complete on at least one selected locale
                 LOWER THAN ON ALL LOCALES: Not complete on all selected locales
                 AT LEAST COMPLETE: At least one child product complete on one selected locale
                 ALL COMPLETE: All children products complete on all selected locales

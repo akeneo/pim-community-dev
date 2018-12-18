@@ -1,6 +1,8 @@
 extensions:
     pim-family-variant-edit-form:
-        module: pim/family-variant-edit-form/edit
+        module: pim/form/common/edit-form
+        config:
+            template: pim/template/family-variant/edit
 
     pim-family-variant-edit-form-cache-invalidator:
         module: pim/cache-invalidator
@@ -17,7 +19,6 @@ extensions:
 
     pim-family-variant-edit-form-tabs:
         module: pim/form/common/form-tabs
-        module: pim/family-variant-edit-form/attribute-set
         parent: pim-family-variant-edit-form
         targetZone: content
         position: 90

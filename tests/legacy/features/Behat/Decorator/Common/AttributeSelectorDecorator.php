@@ -38,7 +38,7 @@ class AttributeSelectorDecorator extends ElementDecorator
 
             $dropZone = $this->spin(function () {
                 return $this->find('css', '.selected-attributes ul');
-            }, sprintf('Cannot find the drop zone', $attribute));
+            }, 'Cannot find the drop zone to select attributes');
 
             $this->dragElementTo($attributeItem, $dropZone);
         }
@@ -50,7 +50,7 @@ class AttributeSelectorDecorator extends ElementDecorator
     public function close()
     {
         $button = $this->spin(function () {
-            return $this->find('css', '.modal-footer .ok');
+            return $this->find('css', '.modal .ok');
         }, 'Cannot find the close button');
 
         $button->click();

@@ -158,6 +158,7 @@ config:
         # Remover
         pim/remover/datagrid-view: pimdatagrid/js/remover/datagrid-view-remover
 
+        # Templates
         pim/template/datagrid/action-launcher-button:    pimdatagrid/templates/datagrid/action-launcher-button.html
         pim/template/datagrid/action-launcher-list-item: pimdatagrid/templates/datagrid/action-launcher-list-item.html
         pim/template/datagrid/action-configure-columns:  pimdatagrid/templates/datagrid/action-configure-columns.html
@@ -184,5 +185,8 @@ config:
         pim/template/datagrid/row/product:               pimdatagrid/templates/datagrid/row/product.html
         pim/template/datagrid/row/product-thumbnail:     pimdatagrid/templates/datagrid/row/product-thumbnail.html
         pim/template/datagrid/cell/image-cell:           pimdatagrid/templates/datagrid/cell/image-cell.html
-
         pim/template/datagrid/cell/product-and-product-model-image-cell: pimdatagrid/templates/datagrid/cell/product-and-product-model-image-cell.html
+        pim/template/datagrid/column-selector/button:    pimdatagrid/templates/datagrid/column-selector/button.html
+        pim/template/datagrid/column-selector/columns:   pimdatagrid/templates/datagrid/column-selector/columns.html
+        pim/template/datagrid/column-selector/modal:     pimdatagrid/templates/datagrid/column-selector/modal.html
+        pim/template/datagrid/column-selector/selected:  pimdatagrid/templates/datagrid/column-selector/selected.html

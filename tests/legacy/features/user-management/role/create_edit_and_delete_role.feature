@@ -22,7 +22,7 @@ Feature: Create and delete a user role
     When I am on the role index page
     And I click on the "Delete" action of the row which contains "VeryDummyRole"
     Then I should see a confirm dialog with the following content:
-      | title   | Delete Confirmation                        |
+      | title   | Confirm deletion                           |
       | content | Are you sure you want to delete this role? |
     When I confirm the deletion
     Then I should not see "VeryDummyRole"
