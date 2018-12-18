@@ -16,6 +16,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
@@ -105,9 +106,18 @@ class IdentifiersMappingContext implements Context
         try {
             $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
             $this->updateIdentifiersMappingHandler->handle($command);
-        } catch (InvalidMappingException $e) {
-            $this->thrownException = $e;
+        } catch (InvalidMappingException | DataProviderException $exception) {
+            $this->thrownException = $exception;
         }
+    }
+
+    /**
+     * @Then an invalid mapping message should be sent
+     */
+    public function anInvalidMappingMessageShouldBeSent(): void
+    {
+        Assert::assertInstanceOf(\Exception::class, $this->thrownException);
+        Assert::assertNotEmpty($this->thrownException->getMessage());
     }
 
     /**
