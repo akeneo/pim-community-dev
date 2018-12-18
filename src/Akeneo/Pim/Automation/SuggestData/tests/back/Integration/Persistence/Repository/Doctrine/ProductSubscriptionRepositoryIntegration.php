@@ -188,7 +188,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertNull($subscription);
     }
 
-    public function test_it_empties_suggested_data_for_specified_ids(): void
+    public function test_it_empties_suggested_data_for_specified_product_ids(): void
     {
         $product1 = $this->createProduct('product_1');
         $this->insertSubscription(
@@ -196,6 +196,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'subscription_to_empty',
             [['pimAttributeCode' => 'foo', 'value' => 'bar']]
         );
+
         $product2 = $this->createProduct('product_2');
         $this->insertSubscription(
             $product2->getId(),
@@ -204,10 +205,60 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         );
 
         $repo = $this->getRepository();
-        $repo->emptySuggestedData([$product1->getId()]);
+        $repo->emptySuggestedDataByProducts([$product1->getId()]);
 
         Assert::assertTrue($repo->findOneByProductId($product1->getId())->getSuggestedData()->isEmpty());
         Assert::assertFalse($repo->findOneByProductId($product2->getId())->getSuggestedData()->isEmpty());
+    }
+
+    public function test_it_empties_suggested_data(): void
+    {
+        $product1 = $this->createProduct('product_1');
+        $this->insertSubscription(
+            $product1->getId(),
+            'subscription_to_empty',
+            [['pimAttributeCode' => 'foo', 'value' => 'bar']]
+        );
+
+        $product2 = $this->createProduct('product_2');
+        $this->insertSubscription(
+            $product2->getId(),
+            'other-subscription',
+            [['pimAttributeCode' => 'bar', 'value' => 'baz']]
+        );
+
+        $repo = $this->getRepository();
+        $repo->emptySuggestedData();
+
+        Assert::assertTrue($repo->findOneByProductId($product1->getId())->getSuggestedData()->isEmpty());
+        Assert::assertTrue($repo->findOneByProductId($product2->getId())->getSuggestedData()->isEmpty());
+    }
+
+    public function test_it_empties_suggested_data_by_family(): void
+    {
+        $this->createFamily('test_family');
+        $this->createFamily('another_family');
+
+        $product1 = $this->createProduct('product_1', 'test_family');
+        $this->insertSubscription(
+            $product1->getId(),
+            'subscription_to_empty',
+            [['pimAttributeCode' => 'foo', 'value' => 'bar']]
+        );
+
+        $product2 = $this->createProduct('product_2', 'another_family');
+        $this->insertSubscription(
+            $product2->getId(),
+            'other-subscription',
+            [['pimAttributeCode' => 'bar', 'value' => 'baz']]
+        );
+
+        $product3 = $this->createProduct('product_3');
+        $this->insertSubscription(
+            $product3->getId(),
+            'another-subscription',
+            [['pimAttributeCode' => 'bar', 'value' => 'baz']]
+        );
     }
 
     /**
@@ -220,16 +271,36 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 
     /**
      * @param string $identifier
+     * @param string $familyCode
      *
      * @return ProductInterface
      */
-    private function createProduct(string $identifier): ProductInterface
+    private function createProduct(string $identifier, string $familyCode = null): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
         $this->get('validator')->validate($product);
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    /**
+     * @param string $familyCode
+     */
+    private function createFamily(string $familyCode): void
+    {
+        $familyData = [
+            'code' => $familyCode,
+            'attributes' => ['sku'],
+        ];
+
+        $family = $this
+            ->getFromTestContainer('akeneo_ee_integration_tests.builder.family')
+            ->build($familyData);
+
+        $this->getFromTestContainer('validator')->validate($family);
+
+        $this->getFromTestContainer('pim_catalog.saver.family')->save($family);
     }
 
     /**
