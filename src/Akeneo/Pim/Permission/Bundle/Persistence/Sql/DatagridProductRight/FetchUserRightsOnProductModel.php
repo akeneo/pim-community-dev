@@ -56,16 +56,16 @@ class FetchUserRightsOnProductModel
                 ) as product_model_categories
                 LEFT JOIN 
                  (
-					SELECT
-						pca.category_id,
-						pca.edit_items, 
-						pca.own_items
-					FROM pimee_security_product_category_access pca 
-					JOIN oro_access_group ag ON pca.user_group_id = ag.id
-					JOIN oro_user_access_group uag ON uag.group_id = ag.id AND uag.user_id = :user_id
+                    SELECT
+                        pca.category_id,
+                        pca.edit_items, 
+                        pca.own_items
+                    FROM pimee_security_product_category_access pca 
+                    JOIN oro_access_group ag ON pca.user_group_id = ag.id
+                    JOIN oro_user_access_group uag ON uag.group_id = ag.id AND uag.user_id = :user_id
                 ) access ON access.category_id = product_model_categories.category_id
             GROUP BY 
-				product_model_categories.product_model_code
+                product_model_categories.product_model_code
 SQL;
 
         $result = $this->connection->executeQuery(
