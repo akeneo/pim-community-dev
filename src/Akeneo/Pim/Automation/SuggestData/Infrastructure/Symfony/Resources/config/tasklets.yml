@@ -17,3 +17,12 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
+
+    akeneo.pim.automation.suggest_data.connector.tasklet.remove_option_from_attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Tasklet\RemoveOptionFromAttributeOptionsMappingTasklet'
+        public: false
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.select_family_codes_by_attribute_query'
+            - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.suggest_data.handler.get_attribute_options_mapping_by_family_and_attribute'
+            - '@akeneo.pim.automation.suggest_data.handler.save_attribute_options_mapping'
