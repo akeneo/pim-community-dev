@@ -3,21 +3,16 @@
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttributeOption;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
-use PhpParser\Node\Stmt\Label;
 
-class  SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
+class SqlFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -72,7 +67,7 @@ SQL;
      */
     private function hydrateAttributeOption(array $result, string $optionCode): ?ConnectorAttributeOption
     {
-        // @TODO - maybe check the attribute type too
+        // @TODO - If the attribute type is not option, don't hydrate
         $additionalProperties = json_decode($result['additional_properties'], true);
 
         $options = $additionalProperties['options'];

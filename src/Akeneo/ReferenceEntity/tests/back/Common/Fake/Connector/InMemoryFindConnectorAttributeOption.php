@@ -44,23 +44,18 @@ class InMemoryFindConnectorAttributeOption implements FindConnectorAttributeOpti
      */
     public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode, OptionCode $optionCode): ?ConnectorAttributeOption
     {
-        // Return the matching attribute option instead
         $connectorAttribute = $this->attributes[(string) $referenceEntityIdentifier][(string) $attributeCode] ?? null;
 
-        if (null === $connectorAttribute)
-        {
+        if (null === $connectorAttribute) {
             return null;
         }
-        
+
         $options = $connectorAttribute->normalize()['options'];
 
         $matchingOption = current(array_filter($options, function ($option) use ($optionCode) {
-            var_dump($option['code'], $optionCode, '\n\n');
             return $option['code'] === (string) $optionCode;
         }));
 
-
-        var_dump($matchingOption);
 
         if (!$matchingOption) {
             return null;
