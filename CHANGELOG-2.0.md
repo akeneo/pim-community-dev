@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.45 (2018-12-18)
+
 ## Bug fixes
 
 - GITHUB-7932: Fix the requirements with mysql port - cheers @Schwierig !
