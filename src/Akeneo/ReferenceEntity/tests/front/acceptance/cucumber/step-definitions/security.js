@@ -27,4 +27,8 @@ module.exports = async function(cucumber) {
       return new Promise((resolve) => securityContext.initialize().then(resolve));
     });
   });
+
+  Given('the user doesn\'t have any rights',  async function () {
+    listAcls(this.page, []);
+  });
 };

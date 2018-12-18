@@ -3,6 +3,11 @@ akeneo_referenceentity_reference_entity_create:
     label: akeneo_referenceentity.acl.reference_entity.create
     group_name: akeneo_referenceentity.acl_group.reference_entity
 
+akeneo_referenceentity_reference_entity_edit:
+    type: action
+    label: akeneo_referenceentity.acl.reference_entity.edit
+    group_name: akeneo_referenceentity.acl_group.reference_entity
+
 akeneo_referenceentity_reference_entity_delete:
     type: action
     label: akeneo_referenceentity.acl.reference_entity.delete

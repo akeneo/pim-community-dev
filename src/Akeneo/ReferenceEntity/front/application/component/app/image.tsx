@@ -15,6 +15,7 @@ class Image extends React.Component<
     image: FileModel;
     alt: string;
     wide?: boolean;
+    readOnly?: boolean;
     onImageChange?: (image: FileModel) => void;
   },
   {
@@ -29,6 +30,7 @@ class Image extends React.Component<
   public uploadingFile = null;
   static defaultProps = {
     wide: false,
+    readOnly: false,
   };
 
   private stopEvent = (event: any) => {
@@ -123,6 +125,7 @@ class Image extends React.Component<
       ${this.state.dropping && !this.state.loading ? 'AknImage--dropping' : ''}
       ${this.state.focusing ? 'AknImage--focusing' : ''}
       ${wide ? 'AknImage--wide' : ''}
+      ${this.props.readOnly ? 'AknImage--readOnly' : ''}
     `;
 
     const style =
@@ -148,6 +151,7 @@ class Image extends React.Component<
           onDragLeave={this.dragStop.bind(this)}
           type="file"
           value=""
+          disabled={this.props.readOnly}
         />
         {!this.props.image.isEmpty() ? (
           <div className="AknImage-action">
