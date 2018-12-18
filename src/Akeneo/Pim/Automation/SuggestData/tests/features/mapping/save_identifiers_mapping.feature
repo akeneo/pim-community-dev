@@ -91,6 +91,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | pim_catalog_number                 |
       | pim_catalog_simpleselect           |
       | akeneo_reference_entity_collection |
+      | akeneo_reference_entity            |
 
   Scenario: Fails to map Franklin attribute with unexisting PIM attribute
     Given an empty identifiers mapping
