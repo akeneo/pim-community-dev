@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.45 (2018-12-18)
+
 ## Bug fixes
 
 - PIM-7903: replace mb_ereg_replace function call by a preg_replace because mbstring is not an extension required by the PIM
