@@ -11,29 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\ConnectorAttribute;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeByIdentifierAndCodeInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
-class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTestCase
+class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
 {
     /** @var ReferenceEntityRepositoryInterface */
     private $referenceEntityRepository;
@@ -41,8 +40,8 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var FindConnectorAttributeByIdentifierAndCodeInterface*/
-    private $findConnectorReferenceEntityAttribute;
+    /** @var FindConnectorAttributeOptionInterface*/
+    private $findConnectorAttributeOption;
 
     protected function setUp(): void
     {
@@ -50,35 +49,43 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
 
         $this->referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
         $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
-        $this->findConnectorReferenceEntityAttribute = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_by_identifier_and_code');
+        $this->findConnectorAttributeOption = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_option');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_finds_a_connector_attribute_for_a_reference_entity()
+    public function it_finds_an_option_for_an_attribute()
     {
         $referenceEntityIdentifier = 'reference_entity';
         $this->createReferenceEntity($referenceEntityIdentifier);
-        $connectorAttribute = $this->createConnectorAttribute($referenceEntityIdentifier);
+        $this->createConnectorAttribute($referenceEntityIdentifier);
 
-        $foundAttribute = ($this->findConnectorReferenceEntityAttribute)(
+        $foundAttributeOption = ($this->findConnectorAttributeOption)(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            AttributeCode::fromString('image')
+            AttributeCode::fromString('attribute_1_code'),
+            OptionCode::fromString('french')
         );
 
-        $this->assertSame($connectorAttribute->normalize(), $foundAttribute->normalize());
+        $this->assertSame(
+            AttributeOption::create(
+                OptionCode::fromString('french'),
+                LabelCollection::fromArray(['fr_FR' => 'Francais'])
+            )->normalize(),
+            $foundAttributeOption->normalize()
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_no_attribute_found()
+    public function it_returns_null_if_no_option_found()
     {
-        $foundAttribute = ($this->findConnectorReferenceEntityAttribute)(
+        $foundAttribute = ($this->findConnectorAttributeOption)(
             ReferenceEntityIdentifier::fromString('reference_entity'),
-            AttributeCode::fromString('none')
+            AttributeCode::fromString('none'),
+            OptionCode::fromString('whatever')
         );
 
         $this->assertSame(null, $foundAttribute);
@@ -91,48 +98,56 @@ class SqlFindConnectorAttributeByIdentifierAndCodeTest extends SqlIntegrationTes
 
     private function createConnectorAttribute(string $referenceEntityIdentifier)
     {
-        $imageAttribute = ImageAttribute::create(
-            AttributeIdentifier::create($referenceEntityIdentifier, 'image', 'test'),
+        $optionCollectionAttribute = OptionCollectionAttribute::create(
+            AttributeIdentifier::create($referenceEntityIdentifier, 'attribute_1', 'test'),
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
-            AttributeCode::fromString('image'),
-            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            AttributeCode::fromString('attribute_1_code'),
+            LabelCollection::fromArray(['en_US' => 'Attribute']),
             AttributeOrder::fromInteger(2),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxFileSize::fromString('10'),
-            AttributeAllowedExtensions::fromList(['jpg'])
+            AttributeValuePerLocale::fromBoolean(false)
         );
 
-        $this->attributeRepository->create($imageAttribute);
+        $optionCollectionAttribute->setOptions([
+            AttributeOption::create(
+                OptionCode::fromString('french'),
+                LabelCollection::fromArray(['fr_FR' => 'Francais'])
+            ),
+            AttributeOption::create(
+                OptionCode::fromString('english'),
+                LabelCollection::fromArray(['fr_FR' => 'Angalis'])
+            )
+        ]);
+
+        $this->attributeRepository->create($optionCollectionAttribute);
 
         return new ConnectorAttribute(
-                $imageAttribute->getCode(),
-                LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
-                'image',
-                AttributeValuePerLocale::fromBoolean($imageAttribute->hasValuePerLocale()),
-                AttributeValuePerChannel::fromBoolean($imageAttribute->hasValuePerChannel()),
-                AttributeIsRequired::fromBoolean(true),
-                [
-                    'max_file_size' => '10',
-                    'allowed_extensions' => ['jpg']
-                ]
-            );
+            $optionCollectionAttribute->getCode(),
+            LabelCollection::fromArray(['en_US' => 'Photo', 'fr_FR' => 'Photo']),
+            'image',
+            AttributeValuePerLocale::fromBoolean($optionCollectionAttribute->hasValuePerLocale()),
+            AttributeValuePerChannel::fromBoolean($optionCollectionAttribute->hasValuePerChannel()),
+            AttributeIsRequired::fromBoolean(true),
+            [
+                'options' => array_map(
+                    function (AttributeOption $attributeOption) {
+                        return $attributeOption->normalize();
+                    },
+                    $optionCollectionAttribute->getAttributeOptions()
+                ),
+            ]
+        );
     }
 
     private function createReferenceEntity(string $rawIdentifier): ReferenceEntity
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawIdentifier);
 
-        $imageInfo = new FileInfo();
-        $imageInfo
-            ->setOriginalFilename(sprintf('image_%s', $rawIdentifier))
-            ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
-
         $referenceEntity = ReferenceEntity::create(
             $referenceEntityIdentifier,
             ['en_US' => $rawIdentifier],
-            Image::fromFileInfo($imageInfo)
+            Image::createEmpty()
         );
 
         $this->referenceEntityRepository->create($referenceEntity);
