@@ -122,7 +122,7 @@ class GetConnectorAttributeOptionContext implements Context
     {
         $this->singleOptionAttribute->setOptions([
             AttributeOption::create(
-                OptionCode::fromString('French'),
+                OptionCode::fromString('french'),
                 LabelCollection::fromArray(['fr_FR' => 'Francais'])
             ),
         ]);
