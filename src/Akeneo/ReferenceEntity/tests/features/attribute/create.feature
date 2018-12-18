@@ -131,6 +131,11 @@ Feature: Create an attribute linked to a reference entity
     And the user saves the valid option collection attribute
     Then the user should not see any validation error
 
+  @acceptance-front
+  Scenario: User can't create an attribute without the good rights
+    Given the user doesn't have any rights
+    Then the user should not see the add attribute button
+
   @acceptance-back
   Scenario: Cannot create more text attributes than the limit
     Given 100 random attributes for a reference entity

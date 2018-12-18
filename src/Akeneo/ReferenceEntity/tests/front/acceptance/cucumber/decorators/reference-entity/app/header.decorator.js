@@ -32,7 +32,13 @@ const Header = async (nodeElement, createElementDecorator, page) => {
     return null !== (await nodeElement.$('.AknSecondaryActions .AknDropdown-menuLink'));
   };
 
-  return {clickOnCreateButton, isCreateButtonVisible, isDeleteButtonVisible, clickOnDeleteButton};
+  const hasNoCreateButton = async () => {
+    await page.waitForSelector('.AknTitleContainer-mainContainer .AknButton', {hidden: true});
+
+    return true;
+  };
+
+  return {clickOnCreateButton, isCreateButtonVisible, isDeleteButtonVisible, clickOnDeleteButton, hasNoCreateButton};
 };
 
 module.exports = Header;

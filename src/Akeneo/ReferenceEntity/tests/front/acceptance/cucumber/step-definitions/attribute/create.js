@@ -29,7 +29,7 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const startCreate = async function(page) {
+  const loadAttributeTab = async function(page) {
     await page.evaluate(async () => {
       const Controller = require('pim/controller/reference-entity/edit');
       const controller = new Controller();
@@ -38,6 +38,11 @@ module.exports = async function(cucumber) {
     });
 
     page.waitFor('.AknTitleContainer-title');
+  };
+
+  const startCreate = async function(page) {
+    await loadAttributeTab(page);
+
     const header = await await getElement(page, 'Header');
     await header.clickOnCreateButton();
   };
@@ -198,5 +203,13 @@ module.exports = async function(cucumber) {
 
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
+  });
+
+  Then('the user should not see the add attribute button', async function () {
+    await answerChannelList.apply(this);
+    await loadAttributeTab(this.page);
+    debugger;
+    const header = await await getElement(this.page, 'Header');
+    await header.hasNoCreateButton();
   });
 };
