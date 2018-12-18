@@ -50,7 +50,7 @@ jobs:
                 name: Start containers
                 command: |
                     docker-compose up -d
-                    sleep 10 # wait mysql to be up
+                    sleep 25 # wait mysql to be up
                     docker-compose exec fpm bin/console --env=behat pim:install:db
           - run:
                 name: PHPunit Integration
@@ -81,7 +81,7 @@ jobs:
           name: Start containers
           command: |
             docker-compose up -d
-            sleep 10 # wait mysql to be up
+            sleep 25 # wait mysql to be up
             docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
           name: Behat
