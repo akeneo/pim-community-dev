@@ -11,17 +11,13 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\Authorization\Query\FetchUserRightsOnProductModel;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Row actions configurator for product grid
@@ -95,14 +91,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         $user = $this->userContext->getUser();
         $userRight = $this->fetchUserRightsOnProductModel->fetch($record->getValue('identifier'), $user->getId());
-
-        $test = [
-            'show'            => !($userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable()),
-            'edit'            => $userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable(),
-            'edit_categories' => $userRight->isProductModelEditable(),
-            'delete'          => $userRight->isProductModelEditable(),
-            'toggle_status'   => $userRight->isProductModelEditable()
-        ];
 
         return [
             'show'            => !($userRight->canApplyDraftOnProductModel() || $userRight->isProductModelEditable()),

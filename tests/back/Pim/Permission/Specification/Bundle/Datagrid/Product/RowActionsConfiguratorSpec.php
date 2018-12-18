@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
 use Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\FetchUserRightsOnProduct;
-use Akeneo\Pim\Permission\Bundle\Persistence\Sql\FetchUserRightsOnProductModel;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProduct;
+use Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;

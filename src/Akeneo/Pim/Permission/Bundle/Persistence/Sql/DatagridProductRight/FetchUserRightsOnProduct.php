@@ -11,13 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Permission\Bundle\Persistence\Sql;
+namespace Akeneo\Pim\Permission\Bundle\Persistence\Sql\DatagridProductRight;
 
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
-use Akeneo\Pim\Permission\Component\Authorization\Query;
 use Doctrine\DBAL\Connection;
 
-class FetchUserRightsOnProduct implements Query\FetchUserRightsOnProduct
+class FetchUserRightsOnProduct
 {
     /** @var Connection */
     private $connection;
