@@ -302,7 +302,8 @@ class GetConnectorAttributeOptionContext implements Context
      */
     public function theNationalitySingleOptionAttributeThatIsPartOfTheStructureOfTheBrandReferenceEntityButHasNoOptionsYet()
     {
-        throw new PendingException();
+        $this->referenceEntity = $this->createBrandReferenceEntity();
+        $this->singleOptionAttribute = $this->createSingleOptionAttribute('nationality');
     }
 
     /**
@@ -314,7 +315,7 @@ class GetConnectorAttributeOptionContext implements Context
 
         $this->nonExistentAttributeOptionResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."non_existent_option_for_reference_entity.json"
+            self::REQUEST_CONTRACT_DIR ."non_existent_option_for_reference_entity_attribute.json"
         );
     }
 
@@ -325,7 +326,7 @@ class GetConnectorAttributeOptionContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->nonExistentAttributeOptionResponse,
-            self::REQUEST_CONTRACT_DIR . "successful_french_nationality_option_for_brand_reference_entity.json"
+            self::REQUEST_CONTRACT_DIR . "non_existent_option_for_reference_entity_attribute.json"
         );
     }
 }
