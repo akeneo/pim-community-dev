@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\IdentifiersMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
@@ -52,8 +52,8 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
 
         try {
             $this->api->update($normalizer->normalize($identifiersMapping));
-        } catch (FranklinServerException $e) {
-            throw IdentifiersMappingException::askFranklinServerIsDown(static::class);
+        } catch (FranklinServerException $exception) {
+            throw DataProviderException::serverIsDown($exception);
         }
     }
 }

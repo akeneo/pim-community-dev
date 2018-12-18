@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifi
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetIdentifiersMappingQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\IdentifiersMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer\IdentifiersMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -60,13 +60,13 @@ class IdentifiersMappingController
             $this->updateIdentifiersMappingHandler->handle($command);
 
             return new JsonResponse(json_encode($identifiersMapping));
-        } catch (InvalidMappingException | IdentifiersMappingException $exception) {
+        } catch (InvalidMappingException | DataProviderException $exception) {
             return new JsonResponse(
                 [
                     [
                         'message' => $exception->getMessage(),
                         'messageParams' => $exception->getMessageParams(),
-                        'path' => $exception->getPath(),
+                        'path' => null,
                         'global' => false,
                     ],
                 ],

@@ -11,65 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class IdentifiersMappingException extends \Exception
+class DataProviderException extends \Exception
 {
     private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
-
-    /** @var string */
-    private $className;
-
-    /** @var string */
-    private $path;
 
     /** @var array */
     private $messageParams;
 
     /**
-     * @param string $className
      * @param string $message
      * @param array $messageParams
-     * @param string|null $path
      * @param int $code
-     * @param \Exception|null $previous
+     * @param \Exception $previous
      */
     public function __construct(
-        ?string $className,
-        string $message = '',
-        array $messageParams = [],
-        string $path = null,
-        int $code = 400,
-        ?\Exception $previous = null
+        string $message,
+        array $messageParams,
+        int $code,
+        ?\Exception $previous
     ) {
         parent::__construct($message, $code, $previous);
 
-        $this->className = $className;
         $this->messageParams = $messageParams;
-        $this->path = $path;
     }
 
     /**
-     * @param string $className
+     * @param \Exception $previousException
      *
-     * @return IdentifiersMappingException
+     * @return DataProviderException
      */
-    public static function askFranklinServerIsDown(string $className): self
+    public static function serverIsDown(\Exception $previousException): self
     {
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'ask_franklin_down');
 
-        return new static($className, $message);
-    }
-
-    /**
-     * @return string
-     */
-    public function getClassName(): string
-    {
-        return $this->className;
+        return new static($message, [], 500, $previousException);
     }
 
     /**
@@ -78,13 +58,5 @@ class IdentifiersMappingException extends \Exception
     public function getMessageParams(): array
     {
         return $this->messageParams;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPath(): ?string
-    {
-        return $this->path;
     }
 }

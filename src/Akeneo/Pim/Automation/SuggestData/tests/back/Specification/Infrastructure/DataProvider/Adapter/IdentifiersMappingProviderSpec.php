@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\IdentifiersMappingProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\IdentifiersMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
@@ -61,9 +61,10 @@ class IdentifiersMappingProviderSpec extends ObjectBehavior
         $api->setToken(Argument::type('string'))->shouldBeCalled();
         $mapping->getIdentifiers()->willReturn([]);
 
-        $api->update(Argument::any())->willThrow(FranklinServerException::class);
+        $catchedException = new FranklinServerException();
+        $api->update(Argument::any())->willThrow($catchedException);
 
-        $exception = IdentifiersMappingException::askFranklinServerIsDown(IdentifiersMappingProvider::class);
-        $this->shouldThrow($exception)->during('updateIdentifiersMapping', [$mapping]);
+        $thrownException = DataProviderException::serverIsDown($catchedException);
+        $this->shouldThrow($thrownException)->during('updateIdentifiersMapping', [$mapping]);
     }
 }

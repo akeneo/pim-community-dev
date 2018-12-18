@@ -26,26 +26,26 @@ use PhpSpec\ObjectBehavior;
  */
 class AuthenticationWebServiceSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         UriGenerator $uriGenerator,
         ClientInterface $httpClient
-    ) {
+    ): void {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
-    function it_is_an_authentication_web_service()
+    public function it_is_an_authentication_web_service(): void
     {
         $this->shouldHaveType(AuthenticationWebService::class);
     }
 
-    function it_can_set_a_token($httpClient)
+    public function it_can_set_a_token($httpClient): void
     {
         $this->setToken('a-token');
 
         $httpClient->setToken('a-token')->shouldHaveBeenCalled();
     }
 
-    function it_authenticates_on_franklin_insights($uriGenerator, $httpClient)
+    public function it_authenticates_on_franklin_insights($uriGenerator, $httpClient): void
     {
         $uriGenerator->generate('/api/stats')->willReturn('https://domain.name/api/stats');
 
@@ -56,7 +56,7 @@ class AuthenticationWebServiceSpec extends ObjectBehavior
         $this->authenticate('a-token')->shouldReturn(true);
     }
 
-    function it_does_not_authenticate_if_response_is_not_OK($uriGenerator, $httpClient)
+    public function it_does_not_authenticate_if_response_is_not_OK($uriGenerator, $httpClient): void
     {
         $uriGenerator->generate('/api/stats')->willReturn('https://domain.name/api/stats');
 
@@ -65,7 +65,7 @@ class AuthenticationWebServiceSpec extends ObjectBehavior
         $this->authenticate(null)->shouldReturn(false);
     }
 
-    function it_does_not_authenticate_if_a_client_exception_was_thrown($uriGenerator, $httpClient)
+    public function it_does_not_authenticate_if_a_client_exception_was_thrown($uriGenerator, $httpClient): void
     {
         $uriGenerator->generate('/api/stats')->willReturn('https://domain.name/api/stats');
 
@@ -74,7 +74,7 @@ class AuthenticationWebServiceSpec extends ObjectBehavior
         $this->authenticate(null)->shouldReturn(false);
     }
 
-    function it_does_not_authenticate_if_a_server_exception_was_thrown($uriGenerator, $httpClient)
+    public function it_does_not_authenticate_if_a_server_exception_was_thrown($uriGenerator, $httpClient): void
     {
         $uriGenerator->generate('/api/stats')->willReturn('https://domain.name/api/stats');
 

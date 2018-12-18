@@ -11,31 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception\IdentifiersMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderException;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class IdentifiersMappingExceptionSpec extends ObjectBehavior
+class DataProviderExceptionSpec extends ObjectBehavior
 {
     public function it_is_an_identifier_mapping_exception(): void
     {
-        $this->beConstructedWith('');
+        $this->beConstructedWith('', [], 0, new \Exception());
 
-        $this->shouldHaveType(IdentifiersMappingException::class);
+        $this->shouldHaveType(DataProviderException::class);
         $this->shouldHaveType(\Exception::class);
     }
 
     public function it_builds_an_exception_if_ask_franklin_server_is_down(): void
     {
-        $this->beConstructedThrough('askFranklinServerIsDown', ['A\Fake\Class']);
+        $previousException = new \Exception();
+        $this->beConstructedThrough('serverIsDown', [$previousException]);
 
         $this->getMessage()->shouldReturn('akeneo_suggest_data.entity.identifier_mapping.constraint.ask_franklin_down');
-        $this->getClassName()->shouldReturn('A\Fake\Class');
         $this->getMessageParams()->shouldReturn([]);
-        $this->getPath()->shouldReturn(null);
+        $this->getCode()->shouldReturn(500);
+        $this->getPrevious()->shouldReturn($previousException);
     }
 }

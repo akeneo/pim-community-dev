@@ -42,7 +42,7 @@ class AuthenticationWebService extends AbstractApi
             if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return false;
             }
-        } catch (ServerException|ClientException $e) {
+        } catch (ServerException | ClientException $e) {
             return false;
         }
 
