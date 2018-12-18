@@ -10,6 +10,7 @@ export type View = React.SFC<{
   onSubmit: () => void;
   errors: ValidationError[];
   locale: string;
+  readOnly: boolean;
 }>;
 export type Reducer = (
   normalizedAttribute: NormalizedAttribute,

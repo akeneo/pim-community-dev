@@ -27,6 +27,7 @@ import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 
 interface OwnProps {
+  canEditAttribute: boolean;
   canDeleteAttribute: boolean;
 }
 
@@ -63,7 +64,8 @@ const getAdditionalProperty = (
   onAdditionalPropertyUpdated: (property: string, value: any) => void,
   onSubmit: () => void,
   errors: ValidationError[],
-  locale: string
+  locale: string,
+  readOnly: boolean
 ): JSX.Element => {
   const AttributeView = getAttributeView(attribute);
 
@@ -74,6 +76,7 @@ const getAdditionalProperty = (
       onSubmit={onSubmit}
       errors={errors}
       locale={locale}
+      readOnly={readOnly}
     />
   );
 };
@@ -151,6 +154,7 @@ class Edit extends React.Component<EditProps> {
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
+                    disabled={!this.props.canEditAttribute}
                   />
                   <Flag
                     locale={createLocaleFromCode(this.props.context.locale)}
@@ -202,10 +206,13 @@ class Edit extends React.Component<EditProps> {
                       id="pim_reference_entity.attribute.edit.input.is_required"
                       value={this.props.attribute.isRequired}
                       onChange={this.props.events.onIsRequiredUpdated}
+                      readOnly={!this.props.canEditAttribute}
                     />
                     <span
                       onClick={() => {
-                        this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
+                        if (this.props.canEditAttribute) {
+                          this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
+                        }
                       }}
                     >
                       {__('pim_reference_entity.attribute.edit.input.is_required')}
@@ -220,7 +227,8 @@ class Edit extends React.Component<EditProps> {
                   this.props.events.onAdditionalPropertyUpdated,
                   this.props.events.onSubmit,
                   this.props.errors,
-                  this.props.context.locale
+                  this.props.context.locale,
+                  !this.props.canEditAttribute
                 )}
               </ErrorBoundary>
             </div>
@@ -250,17 +258,19 @@ class Edit extends React.Component<EditProps> {
               >
                 {__('pim_reference_entity.attribute.edit.cancel')}
               </span>
-              <span
-                title={__('pim_reference_entity.attribute.edit.save')}
-                className="AknButton AknButton--small AknButton--apply AknButton--spaced"
-                tabIndex={0}
-                onClick={this.props.events.onSubmit}
-                onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
-                  if (Key.Space === event.key) this.props.events.onSubmit();
-                }}
-              >
-                {__('pim_reference_entity.attribute.edit.save')}
-              </span>
+              {this.props.canEditAttribute ? (
+                <span
+                  title={__('pim_reference_entity.attribute.edit.save')}
+                  className="AknButton AknButton--small AknButton--apply AknButton--spaced"
+                  tabIndex={0}
+                  onClick={this.props.events.onSubmit}
+                  onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
+                    if (Key.Space === event.key) this.props.events.onSubmit();
+                  }}
+                >
+                  {__('pim_reference_entity.attribute.edit.save')}
+                </span>
+              ) : null}
             </footer>
           </div>
         </div>

@@ -176,7 +176,15 @@ class AttributeView extends React.Component<AttributeViewProps> {
                 if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
               }}
             />
-          ) : null}
+          ) : (
+            <button
+              className="AknIconButton AknIconButton--view"
+              onClick={() => onAttributeEdit(attribute.getIdentifier())}
+              onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
+                if (Key.Space === event.key) onAttributeEdit(attribute.getIdentifier());
+              }}
+            />
+          )}
         </div>
       </div>
     );
@@ -238,7 +246,10 @@ class AttributesView extends React.Component<CreateProps> {
                 )}
               </div>
               {this.props.editAttribute ? (
-                <AttributeEditForm canDeleteAttribute={this.props.rights.attribute.delete} />
+                <AttributeEditForm
+                  canEditAttribute={this.props.rights.attribute.edit}
+                  canDeleteAttribute={this.props.rights.attribute.delete}
+                />
               ) : null}
             </div>
           ) : (

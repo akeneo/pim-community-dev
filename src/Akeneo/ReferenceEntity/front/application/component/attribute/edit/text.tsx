@@ -59,11 +59,13 @@ const TextView = ({
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
+  readOnly
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
+  readOnly: boolean;
 }) => {
   return (
     <React.Fragment>
@@ -79,6 +81,7 @@ const TextView = ({
             className="AknTextField AknTextField--light"
             id="pim_reference_entity.attribute.edit.input.max_length"
             name="max_length"
+            readOnly={readOnly}
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
