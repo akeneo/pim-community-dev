@@ -16,6 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repositor
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\ValueObject\SuggestedData;
+use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -24,6 +26,24 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
 {
     /** @var ProductSubscription[] */
     private $subscriptions = [];
+
+    /** @var InMemoryFamilyRepository */
+    private $familyRepository;
+
+    /** @var InMemoryProductRepository */
+    private $productRepository;
+
+    /**
+     * @param InMemoryFamilyRepository $familyRepository
+     * @param InMemoryProductRepository $productRepository
+     */
+    public function __construct(
+        InMemoryFamilyRepository $familyRepository,
+        InMemoryProductRepository $productRepository
+    ) {
+        $this->familyRepository = $familyRepository;
+        $this->productRepository = $productRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -81,7 +101,17 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /**
      * {@inheritdoc}
      */
-    public function emptySuggestedData(array $productIds): void
+    public function emptySuggestedData(): void
+    {
+        foreach ($this->subscriptions as $subscription) {
+            $subscription->setSuggestedData(new SuggestedData([]));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function emptySuggestedDataByProducts(array $productIds): void
     {
         foreach ($this->subscriptions as $subscription) {
             if (in_array($subscription->getProductId(), $productIds)) {
@@ -91,13 +121,18 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     }
 
     /**
-     * Returns all subscriptions
-     * This method can be useful to make some modifications on subscriptions from query functions or somewhere else.
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getSubscriptions(): array
+    public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void
     {
-        return $this->subscriptions;
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+
+        foreach ($this->subscriptions as $subscription) {
+            $product = $this->productRepository->find($subscription->getProductId());
+            if ($product->getFamily()->getId() === $family->getId()) {
+                $subscription->setSuggestedData(new SuggestedData([]));
+                $subscription->markAsMissingMapping(true);
+            }
+        }
     }
 }
