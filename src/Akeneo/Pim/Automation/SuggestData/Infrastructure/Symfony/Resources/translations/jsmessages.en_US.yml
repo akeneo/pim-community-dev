@@ -125,8 +125,11 @@ akeneo_suggest_data:
                     first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers that match his.'
                     second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
             inactive_connection:
-                title: Sorry, nothing to show here yet
-                sub_title: Please activate your account on System > Franklin connection and come back.
+                title: 'Sorry, nothing to show here yet'
+                sub_title: 'Please activate your account on System > Franklin connection and come back.'
+            no_active_english_locale:
+                title: 'Franklin insights is only available for English locales.'
+                sub_title: 'Stay tuned, locales are coming.'
 
     mass_edit:
         product:

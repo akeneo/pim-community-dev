@@ -4,7 +4,7 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_suggest_data_connection_edit:
-                    module: akeneo/suggest-data/controller/index
+                    module: akeneo/suggest-data/controller/connection
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: franklin-connection
@@ -13,7 +13,6 @@ config:
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-identifiers-mapping
-                        inactiveForm: pimee-suggest-data-settings-index-inactive-connection
                 akeneo_suggest_data_attributes_mapping_index:
                     module: akeneo/suggest-data/controller/attributes-mapping-index
                     aclResourceId: akeneo_suggest_data_settings_mapping
@@ -54,7 +53,7 @@ config:
         pimee/common/filterable: akeneosuggestdata/js/common/filterable.ts
 
         # Controller
-        akeneo/suggest-data/controller/index: akeneosuggestdata/js/controller/index.ts
+        akeneo/suggest-data/controller/connection: akeneosuggestdata/js/controller/index.ts
         akeneo/suggest-data/controller/identifiers-mapping: akeneosuggestdata/js/controller/identifiers-mapping.ts
         akeneo/suggest-data/controller/attributes-mapping-index: akeneosuggestdata/js/controller/attributes-mapping-index.ts
         akeneo/suggest-data/controller/attributes-mapping-edit: akeneosuggestdata/js/controller/attributes-mapping-edit.ts
