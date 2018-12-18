@@ -82,7 +82,7 @@ jobs:
 
       - run:
           name: PhpSpec
-          command: docker-compose run --rm fpm vendor/bin/phpspec run --format=junit > ~/test/results/phpspec/junit_output.xml
+          command: docker-compose run --rm fpm vendor/bin/phpspec run --format=junit > var/tests/junit_output.xml
 
       - run:
           name: PhpCoupling Detector
@@ -94,7 +94,7 @@ jobs:
 
       - run:
           name: PhpCsFixer
-          command: docker-compose run --rm fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
+          command: docker-compose run --rm fpm vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > var/tests/junit_output.xml
       - run:
           name: PHPStan
           command: docker-compose run --rm fpm vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
@@ -103,10 +103,10 @@ jobs:
           command: docker-compose run --rm fpm bin/check-pullup
 
       - store_test_results:
-          path: ~/test/results
+          path: var/tests
 
       - store_artifacts:
-          path: ~/test/results
+          path: var/tests
 
   test_static_front:
     docker:
