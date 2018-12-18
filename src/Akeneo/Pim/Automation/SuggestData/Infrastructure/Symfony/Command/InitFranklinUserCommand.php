@@ -116,7 +116,10 @@ final class InitFranklinUserCommand extends Command
         $violations = $this->validator->validate($user);
 
         if (0 < count($violations)) {
-            throw new \InvalidArgumentException((string) $violations);
+            foreach ($violations as $violation) {
+                $output->writeln('<error>' . $violation->__toString() . '</error>');
+            }
+            throw new \InvalidArgumentException();
         }
 
         $this->userSaver->save($user);
