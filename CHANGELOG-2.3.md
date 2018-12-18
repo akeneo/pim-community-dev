@@ -5,7 +5,12 @@
 - PIM-7924: Raise more information for error messages on command lines for asset variation generations
 - PIM-7922: Fix commandline for asset variation generation by using by default the asset reference.
 - PIM-7869: Fix asset invalid code when mass uploading an asset with a "." in the filename
+- PIM-7910: Search parent filter is now case insensitive
 
+ ## Elasticsearch
+ 
+ - Please re-index the products and product models by launching the commands `console akeneo:elasticsearch:reset-indexes -e prod` and `pim:product:index --all -e prod`.
+ 
 # 2.3.21 (2018-12-07)
 
 # 2.3.20 (2018-12-06)
