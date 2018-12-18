@@ -71,21 +71,20 @@ jobs:
         user: docker
     parallelism: 2
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/
+
       - run:
-          name: Composer
-          command: composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
-      - run:
-          name: Setup tests results folder
+          name: Start containers
           command: |
-            mkdir -p ~/test/results/phpspec
-            mkdir -p ~/test/results/phpcsfixer
-            mkdir -p var/logs
+              docker-compose up -d
+
       - run:
           name: PhpSpec
           command: |
             TESTFILES=$(circleci tests split toto.txt)
             vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
+
       - run:
           name: PhpCoupling Detector
           command: |
@@ -93,6 +92,7 @@ jobs:
             vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
             vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
             vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
+
       - run:
           name: PhpCsFixer
           command: vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
@@ -102,11 +102,10 @@ jobs:
       - run:
           name: Check Pullup
           command: bin/check-pullup
-      #    - run:
-      #        name: Acceptance
-      #        command: vendor/bin/behat --strict -p acceptance -vv
+
       - store_test_results:
           path: ~/test/results
+
       - store_artifacts:
           path: ~/test/results
 
@@ -172,6 +171,6 @@ workflows:
       - build:
           requires:
 #              - wait_for_user_approval
-      - test_back:
+      - test_static_back:
           requires:
             - build
