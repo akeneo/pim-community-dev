@@ -22,7 +22,7 @@ interface OwnProps {
   withChannelSwitcher: boolean;
   isDirty: boolean;
   isLoading?: boolean;
-  canEditReferenceEntity?: boolean; // @todo : It will be mandatory (more convenience for the spike)
+  displayActions?: boolean; // @todo : It will be mandatory (more convenience for the spike)
   breadcrumbConfiguration: BreadcrumbConfiguration;
   onLocaleChanged?: (locale: Locale) => void;
   onChannelChanged?: (channel: Channel) => void;
@@ -51,7 +51,7 @@ interface HeaderProps extends StateProps, DispatchProps {}
 class Header extends React.Component<HeaderProps> {
   private defaultFocus: React.RefObject<any>;
   static defaultProps = {
-    canEditReferenceEntity: true,
+    displayActions: true,
   };
 
   constructor(props: HeaderProps) {
@@ -76,7 +76,7 @@ class Header extends React.Component<HeaderProps> {
       withLocaleSwitcher,
       isDirty,
       isLoading,
-      canEditReferenceEntity,
+      displayActions,
       breadcrumbConfiguration,
       context,
       structure,
@@ -98,7 +98,7 @@ class Header extends React.Component<HeaderProps> {
                   <div className="user-menu">
                     <PimView
                       className={`AknTitleContainer-userMenu ${
-                        canEditReferenceEntity ? '' : 'AknTitleContainer--readOnly'
+                        displayActions ? '' : 'AknTitleContainer--withoutMargin'
                       }`}
                       viewName="pim-reference-entity-index-user-navigation"
                     />
