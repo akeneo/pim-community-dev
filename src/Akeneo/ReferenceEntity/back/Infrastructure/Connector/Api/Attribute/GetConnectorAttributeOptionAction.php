@@ -48,7 +48,6 @@ class GetConnectorAttributeOptionAction
         $attributeCode = AttributeCode::fromString($attributeCode);
         $optionCode = OptionCode::fromString($optionCode);
 
-        // @TODO - Check that the attribute exists first too
         $attributeOption = ($this->findConnectorAttributeOptionQuery)($referenceEntityIdentifier, $attributeCode, $optionCode);
 
         if (null === $attributeOption) {

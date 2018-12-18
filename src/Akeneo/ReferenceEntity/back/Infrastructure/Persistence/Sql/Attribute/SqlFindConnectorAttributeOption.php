@@ -67,7 +67,6 @@ SQL;
      */
     private function hydrateAttributeOption(array $result, string $optionCode): ?ConnectorAttributeOption
     {
-        // @TODO - If the attribute type is not option, don't hydrate
         $additionalProperties = json_decode($result['additional_properties'], true);
 
         $options = $additionalProperties['options'];
