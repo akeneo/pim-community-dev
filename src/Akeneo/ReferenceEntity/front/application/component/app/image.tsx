@@ -153,7 +153,7 @@ class Image extends React.Component<
           value=""
           disabled={this.props.readOnly}
         />
-        { !this.props.image.isEmpty() ? (
+        {!this.props.image.isEmpty() ? (
           <div className="AknImage-action">
             <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
               <Trash color="#ffffff" className="AknImage-actionItemIcon" />{' '}

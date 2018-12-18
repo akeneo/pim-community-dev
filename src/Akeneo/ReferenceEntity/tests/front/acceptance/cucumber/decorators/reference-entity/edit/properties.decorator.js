@@ -27,7 +27,7 @@ const Properties = async (nodeElement, createElementDecorator, page) => {
 
   const labelIsReadOnly = async () => {
     const label = await nodeElement.$('.AknTextField[name="label"]');
-    const labelProperty = await label.getProperty('readOnly');
+    await label.getProperty('readOnly');
   };
 
   const setLabel = async value => {

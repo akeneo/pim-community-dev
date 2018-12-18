@@ -1,3 +1,3 @@
-export const editPermission =  () => {
+export const editPermission = () => {
   return true;
-}
+};

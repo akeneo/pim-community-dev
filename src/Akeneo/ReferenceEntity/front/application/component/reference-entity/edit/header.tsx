@@ -97,7 +97,9 @@ class Header extends React.Component<HeaderProps> {
                   <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
                   <div className="user-menu">
                     <PimView
-                      className={`AknTitleContainer-userMenu ${canEditReferenceEntity ? '' : 'AknTitleContainer--readOnly'}`}
+                      className={`AknTitleContainer-userMenu ${
+                        canEditReferenceEntity ? '' : 'AknTitleContainer--readOnly'
+                      }`}
                       viewName="pim-reference-entity-index-user-navigation"
                     />
                   </div>

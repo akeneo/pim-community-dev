@@ -143,8 +143,10 @@ export default connect(
         locale,
       },
       rights: {
-        editReferenceEntity: securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && editPermission(),
-        deleteReferenceEntity: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') && editPermission(),
+        editReferenceEntity:
+          securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && editPermission(),
+        deleteReferenceEntity:
+          securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') && editPermission(),
       },
       confirmDelete,
     };
