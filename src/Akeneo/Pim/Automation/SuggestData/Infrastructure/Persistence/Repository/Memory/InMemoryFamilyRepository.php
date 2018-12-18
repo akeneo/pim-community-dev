@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repositor
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\FamilyCollection;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Repository\FamilyRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\Family as StructureFamily;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface as StructureFamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface as StructureFamilyRepositoryInterface;
 
 /**
@@ -103,7 +103,7 @@ final class InMemoryFamilyRepository implements FamilyRepositoryInterface
             return $families;
         }
 
-        $families = array_filter($families, function (StructureFamily $family) use ($search) {
+        $families = array_filter($families, function (StructureFamilyInterface $family) use ($search) {
             if ($this->stringContains($family->getCode(), $search)
                 || $this->stringContains($family->getLabel(), $search)
             ) {

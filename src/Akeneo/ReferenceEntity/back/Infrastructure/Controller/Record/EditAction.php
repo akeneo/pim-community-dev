@@ -15,6 +15,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +24,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditRecordCommandFactory  */
+    /** @var EditRecordCommandFactory */
     private $editRecordCommandFactory;
 
     /** @var EditRecordHandler */
@@ -45,15 +49,25 @@ class EditAction
     /** @var NormalizerInterface */
     private $normalizer;
 
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
         ValidatorInterface $validator,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage,
         NormalizerInterface $normalizer
     ) {
         $this->editRecordCommandFactory = $editRecordCommandFactory;
         $this->editRecordHandler = $editRecordHandler;
         $this->validator = $validator;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
     }
 
@@ -61,6 +75,9 @@ class EditAction
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->isUserAllowedToEdit($request->get('referenceEntityIdentifier'))) {
+            throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifiers($request)) {
             return new JsonResponse(
@@ -83,6 +100,15 @@ class EditAction
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
+    {
+        $query = new CanEditReferenceEntityQuery();
+        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+
+        return ($this->canEditReferenceEntityQueryHandler)($query);
     }
 
     /**

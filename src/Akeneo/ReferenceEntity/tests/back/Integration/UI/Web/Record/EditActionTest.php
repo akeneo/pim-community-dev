@@ -28,6 +28,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
@@ -158,6 +160,65 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_image_value.json');
     }
 
+    /**
+     * @test
+     */
+    public function it_edits_a_record_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'record_value_ok.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_if_we_send_an_invalid_record_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_record_value.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_edits_a_record_collection_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'record_collection_value_ok.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_if_we_send_an_invalid_record_collection_value()
+    {
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'invalid_record_collection_value.json');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
+    {
+        $this->forbidsEdit();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_EDIT_ROUTE,
+            [
+                'recordCode' => 'celine_dion',
+                'referenceEntityIdentifier' => 'singer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
+        );
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    private function forbidsEdit(): void
+    {
+        $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity')
+            ->forbid();
+    }
+
     private function getRecordRepository(): RecordRepositoryInterface
     {
         return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
@@ -256,6 +317,74 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
             ->create($portraitAttribute);
+
+        $ikeaRecord = Record::create(
+            RecordIdentifier::create('brand', 'ikea', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('ikea'),
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $repository->create($ikeaRecord);
+
+        // record attribute
+        $recordAttribute = RecordAttribute::create(
+            AttributeIdentifier::create('designer', 'linked_brand', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('linked_brand'),
+            LabelCollection::fromArray(['fr_FR' => 'Marque liée', 'en_US' => 'Linked brand']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            ReferenceEntityIdentifier::fromString('brand')
+        );
+        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->create($recordAttribute);
+
+        $parisRecord = Record::create(
+            RecordIdentifier::create('city', 'paris', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('city'),
+            RecordCode::fromString('paris'),
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $repository->create($parisRecord);
+        $lisbonneRecord = Record::create(
+            RecordIdentifier::create('city', 'lisbonne', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('city'),
+            RecordCode::fromString('lisbonne'),
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $repository->create($lisbonneRecord);
+        $moscouRecord = Record::create(
+            RecordIdentifier::create('city', 'moscou', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('city'),
+            RecordCode::fromString('moscou'),
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $repository->create($moscouRecord);
+
+        // record collection attribute
+        $recordCollectionAttribute = RecordCollectionAttribute::create(
+            AttributeIdentifier::create('designer', 'linked_cities', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('linked_cities'),
+            LabelCollection::fromArray(['fr_FR' => 'Ville', 'en_US' => 'Cities']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(true),
+            ReferenceEntityIdentifier::fromString('city')
+        );
+        $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute')
+            ->create($recordCollectionAttribute);
 
         $activatedLocales = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
         $activatedLocales->save(LocaleIdentifier::fromCode('en_US'));

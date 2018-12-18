@@ -1,3 +1,5 @@
+user:
+  asset_delay_reminder: Recordatori de retard de recurs (en dies)
 pimee_product_asset:
   form:
     product:

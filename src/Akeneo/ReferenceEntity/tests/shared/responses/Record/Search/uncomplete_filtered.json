@@ -48,11 +48,32 @@
                     "values": [],
                     "completeness": {
                         "complete": 0,
-                        "required": 1
+                        "required": 2
+                    }
+                },
+                {
+                    "identifier": "designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2",
+                    "reference_entity_identifier": "designer",
+                    "code": "starck",
+                    "labels": {
+                        "en_US": "Starck"
+                    },
+                    "image": null,
+                    "values": {
+                        "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2_ecommerce_en_US": {
+                            "attribute": "description_designer_29aea250-bc94-49b2-8259-bbc116410eb2",
+                            "channel": "ecommerce",
+                            "locale": "en_US",
+                            "data": "an awesome designer!"
+                        }
+                    },
+                    "completeness": {
+                        "complete": 1,
+                        "required": 2
                     }
                 }
             ],
-            "total": 1
+            "total": 2
         }
     }
 }

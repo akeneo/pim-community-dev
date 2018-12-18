@@ -62,4 +62,20 @@ final class AttributeOptionsMapping
     {
         return $this->mapping;
     }
+
+    /**
+     * @param string $attributeOptionCode
+     *
+     * @return bool
+     */
+    public function hasPimAttributeOption(string $attributeOptionCode): bool
+    {
+        foreach ($this->mapping as $attributeOption) {
+            if ($attributeOption->catalogAttributeCode() === $attributeOptionCode) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

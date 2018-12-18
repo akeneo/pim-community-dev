@@ -9,7 +9,6 @@ $builder = new RuleBuilder();
 
 $rules = [
     $builder->only([
-        'Akeneo\ReferenceEntity',
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert',
         'Symfony\Component\EventDispatcher\Event'
@@ -25,15 +24,16 @@ $rules = [
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',
-        'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
-        'PDO',
         'Akeneo\Platform\Bundle\InstallerBundle',
         'Ramsey\Uuid\Uuid',
         'Symfony',
         'Webmozart\Assert\Assert',
         'JsonSchema\Validator',
+
+        // TODO: reference entities should not depend on PIM
+        'Akeneo\Pim\Enrichment\ReferenceEntity\Component',
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 

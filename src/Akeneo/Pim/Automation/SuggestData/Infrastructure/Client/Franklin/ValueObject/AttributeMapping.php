@@ -67,9 +67,9 @@ class AttributeMapping
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getTargetAttributeType(): string
+    public function getTargetAttributeType(): ?string
     {
         return $this->attributeData['from']['type'];
     }

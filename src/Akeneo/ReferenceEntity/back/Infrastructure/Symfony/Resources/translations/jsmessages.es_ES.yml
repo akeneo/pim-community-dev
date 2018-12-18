@@ -22,9 +22,6 @@ pim_reference_entity:
       identifier: Código
       label: Etiqueta
       image: Imagen
-    index:
-      grid:
-        count: "{{ count }} resultados"
     create:
       header:
         title: Crear
@@ -56,10 +53,16 @@ pim_reference_entity:
         code: Código (requerido)
       confirm: Guardar
     grid:
+      filter:
+        completeness:
+          label: Completo
+          yes: true
+          no: false
       column:
         code: Código
         image: Imagen
         label: Etiqueta
+        complete: Completo
         action: Acciones
     tab:
       enrich: Enriquecer
@@ -70,6 +73,8 @@ pim_reference_entity:
       create:
         success: Registro creado correctamente.
         fail: Un error ha ocurrido durante la creación del registro
+    completeness:
+      label: Completo
   attribute:
     default:
       code: Código
@@ -119,6 +124,9 @@ pim_reference_entity:
         success: Atributo creado exitosamente.
       delete:
         success: Atributo exitosamente borrado.
+    options:
+      helper:
+        title: Traducciones de etiqueta
   modal:
     delete:
       subtitle: Confirmar la eliminación

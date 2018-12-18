@@ -18,7 +18,6 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecord
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
-use PDO;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -60,7 +59,7 @@ SQL;
     private function doesReferenceEntityHaveRecords(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $hasRecords = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['has_records'], $platform);
 
         return $hasRecords;

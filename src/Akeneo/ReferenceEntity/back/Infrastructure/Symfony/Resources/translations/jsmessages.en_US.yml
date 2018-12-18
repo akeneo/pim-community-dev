@@ -105,6 +105,7 @@ pim_reference_entity:
       input:
         label: Label
         code: Code (required)
+        create_another: Create another record
       confirm: Save
     delete:
       message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products or records, the links will be removed.
@@ -123,10 +124,16 @@ pim_reference_entity:
         code: Code
         image: Image
         label: Label
+        complete: Complete
         action: Actions
       more_result:
         title: That's not it!
         description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
+      completeness:
+        title_no_required: No attribute required
+        title_non_complete: 0 out of {{ required }} attributes complete
+        title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+        title_complete: All {{ required }} attributes complete
     tab:
       enrich: Enrich
     notification:
@@ -189,7 +196,7 @@ pim_reference_entity:
         code: Code (required)
         label: Label
         type: Attribute type
-        record_type: Related reference entity
+        record_type: Related reference entity (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
         is_required: Required for completeness
@@ -255,5 +262,5 @@ pim_enrich:
         section:
           type_specific: Type specific parameters
         reference_entity:
-          identifier: Related reference entity
+          identifier: Related reference entity (required)
           default_label: Please select a reference entity

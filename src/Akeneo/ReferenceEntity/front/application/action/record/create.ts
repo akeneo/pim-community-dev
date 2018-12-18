@@ -3,7 +3,11 @@ import {
   notifyRecordWellCreated,
 } from 'akeneoreferenceentity/application/action/record/notify';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import {recordCreationErrorOccured, recordCreationSucceeded} from 'akeneoreferenceentity/domain/event/record/create';
+import {
+  recordCreationErrorOccured,
+  recordCreationSucceeded,
+  recordCreationStart,
+} from 'akeneoreferenceentity/domain/event/record/create';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
@@ -14,8 +18,12 @@ import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
 import {redirectToRecord} from 'akeneoreferenceentity/application/action/record/router';
+import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
 
-export const createRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const createRecord = (createAnother: boolean) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
   const referenceEntity = getState().form.data;
   const {code, labels} = getState().createRecord.data;
   const record = recordFactory(
@@ -42,9 +50,14 @@ export const createRecord = () => async (dispatch: any, getState: () => EditStat
     return;
   }
 
-  dispatch(recordCreationSucceeded());
   dispatch(notifyRecordWellCreated());
-  dispatch(redirectToRecord(record.getReferenceEntityIdentifier(), record.getCode()));
+  if (createAnother) {
+    dispatch(updateRecordResults());
+    dispatch(recordCreationStart());
+  } else {
+    dispatch(recordCreationSucceeded());
+    dispatch(redirectToRecord(record.getReferenceEntityIdentifier(), record.getCode()));
+  }
 
   return;
 };

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionsCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebservice;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Subscription\SubscriptionWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\Subscription;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class SubscriptionsCollectionSpec extends ObjectBehavior
 {
-    public function it_is_initializable(SubscriptionWebservice $webservice): void
+    public function it_is_initializable(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
@@ -20,7 +20,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->shouldImplement(\Iterator::class);
     }
 
-    public function it_rewinds_the_index(SubscriptionWebservice $webservice): void
+    public function it_rewinds_the_index(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
@@ -34,21 +34,21 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->key()->shouldReturn(0);
     }
 
-    public function it_says_it_has_next_page_if_it_has_one(SubscriptionWebservice $webservice): void
+    public function it_says_it_has_next_page_if_it_has_one(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
         $this->hasNextPage()->shouldReturn(true);
     }
 
-    public function it_says_it_has_not_next_page_if_it_has_not_one(SubscriptionWebservice $webservice): void
+    public function it_says_it_has_not_next_page_if_it_has_not_one(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
         $this->hasNextPage()->shouldReturn(false);
     }
 
-    public function it_returns_the_current_value_if_it_has_one(SubscriptionWebservice $webservice): void
+    public function it_returns_the_current_value_if_it_has_one(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
@@ -63,7 +63,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
     }
 
     public function it_is_able_to_get_next_page(
-        SubscriptionWebservice $webservice,
+        SubscriptionWebService $webservice,
         SubscriptionsCollection $nextPage
     ): void {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
@@ -72,7 +72,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->getNextPage()->shouldReturn($nextPage);
     }
 
-    public function it_returns_null_if_has_not_next_page(SubscriptionWebservice $webservice): void
+    public function it_returns_null_if_has_not_next_page(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
@@ -81,7 +81,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->getNextPage()->shouldReturn(null);
     }
 
-    public function it_says_if_it_is_valid_or_not(SubscriptionWebservice $webservice): void
+    public function it_says_if_it_is_valid_or_not(SubscriptionWebService $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 

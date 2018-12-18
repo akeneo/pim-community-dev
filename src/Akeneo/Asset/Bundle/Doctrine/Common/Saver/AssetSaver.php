@@ -34,22 +34,16 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CompletenessRemoverInterface */
-    protected $completenessRemover;
-
     /**
      * @param ObjectManager                  $objectManager
      * @param EventDispatcherInterface       $eventDispatcher
-     * @param CompletenessRemoverInterface $completenessRemover
      */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        CompletenessRemoverInterface $completenessRemover
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->completenessRemover = $completenessRemover;
     }
 
     /**
@@ -65,7 +59,6 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($asset);
         $this->objectManager->flush();
-        $this->completenessRemover->removeForAsset($asset);
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($asset, $options));
     }

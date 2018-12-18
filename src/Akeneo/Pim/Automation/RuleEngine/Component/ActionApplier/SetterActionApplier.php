@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
@@ -79,7 +78,7 @@ class SetterActionApplier implements ActionApplierInterface
     ): void {
         $field = $action->getField();
 
-        if (PropertiesNormalizer::FIELD_CATEGORIES === $field) {
+        if ('categories' === $field) {
             $newCategoryCodes = $action->getValue();
             $parent = $entityWithFamilyVariant->getParent();
 

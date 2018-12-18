@@ -39,7 +39,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $this->beConstructedWith($getAttributesMappingHandler, $updateAttributesMappingHandler);
 
         $stepExecution->getJobParameters()->willReturn(new JobParameters([
-            'pim_attribute_code' => 'pim_color',
+            'pim_attribute_codes' => ['pim_color', 'pim_size'],
             'family_code' => 'router',
         ]));
 
@@ -67,12 +67,12 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $updateAttributesMappingHandler->handle(new UpdateAttributesMappingByFamilyCommand('router', [
             'franklin_size' => [
                 'franklinAttribute' => ['type' => 'text'],
-                'attribute' => 'pim_size',
+                'attribute' => null,
+                'status' => WriteAttributeMapping::ATTRIBUTE_PENDING,
             ],
             'franklin_color' => [
                 'franklinAttribute' => ['type' => 'text'],
                 'attribute' => null,
-                'status' => WriteAttributeMapping::ATTRIBUTE_PENDING,
             ],
             'franklin_weight' => [
                 'franklinAttribute' => ['type' => 'text'],
@@ -88,7 +88,7 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $updateAttributesMappingHandler
     ): void {
         $franklinResponse = new AttributesMappingResponse();
-        $franklinResponse->addAttribute(new AttributeMapping('franklin_size', null, 'text', 'pim_size', 1, null));
+        $franklinResponse->addAttribute(new AttributeMapping('franklin_weight', null, 'text', 'pim_weight', 1, null));
 
         $getAttributesMappingHandler
             ->handle(new GetAttributesMappingByFamilyQuery('router'))
@@ -110,5 +110,19 @@ class RemoveAttributeFromAttributeMappingTaskletSpec extends ObjectBehavior
         $updateAttributesMappingHandler->handle()->shouldNotBeCalled();
 
         $this->execute();
+    }
+
+    public function it_throws_an_exception_if_there_is_no_job_parameters($stepExecution): void
+    {
+        $stepExecution->getJobParameters()->willReturn(null);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
+    }
+
+    public function it_throws_an_exception_if_one_parameter_is_missing($stepExecution): void
+    {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'wrong_key' => 'wrong_value',
+        ]));
+        $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
     }
 }

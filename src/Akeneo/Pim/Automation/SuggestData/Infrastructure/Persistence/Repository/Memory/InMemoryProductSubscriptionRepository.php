@@ -89,4 +89,15 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
             }
         }
     }
+
+    /**
+     * Returns all subscriptions
+     * This method can be useful to make some modifications on subscriptions from query functions or somewhere else.
+     *
+     * @return array
+     */
+    public function getSubscriptions(): array
+    {
+        return $this->subscriptions;
+    }
 }

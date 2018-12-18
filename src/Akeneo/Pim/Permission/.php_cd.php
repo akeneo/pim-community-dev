@@ -16,6 +16,13 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
+        'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
+
+        // it implements a CE query differently for permissions
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
+        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
+        'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
 
         //TODO: It uses the PQB
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
@@ -23,28 +30,29 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface',
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
 
-        //TODO: We should integrate by database instead of using external repository
+        // TODO: we should integrate by database instead of using external repository
         'Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
-        'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository',
-        'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository',
-        'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
+        // TODO: we put everything related to permissions at the same place
+        'Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface',
+        'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository',
+        'Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository',
+        'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
+
         //TODO: Link by id instead of reference
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Asset\Component\Model\CategoryInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\Locale',
+        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
@@ -63,21 +71,22 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController',
-        'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface',
 
-        //TODO: It shouldn't rely on model to do join
+        //TODO: It shouldn't rely on model to do join (bounded contexts integration)
         'Akeneo\UserManagement\Component\Model\Group',
 
         //TODO: Public constants
         'Akeneo\UserManagement\Component\Model\User',
         'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
 
-        //TODO: It uses jobs
+        //TODO: It uses jobs (maybe ImportExportBundle is not part of the Platform)
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents',
-        'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents',
         'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobProfileEvents',
         'Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager',
+        //TODO: we listen to this event to save the permissions
+        'Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents',
+        'Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents',
 
         //TODO: It hides content for PDF Rendering
         'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface',
@@ -88,13 +97,13 @@ $rules = [
         'Liip\ImagineBundle\Imagine\Filter\FilterManager',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper',
 
-        //TODO: It overrides filter
+        //TODO: It uses filters
         'Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ProductEditDataFilter',
 
-        //TODO: it overrides Processors
+        //TODO: it overrides Processors => good examples to show what should not be overriden
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddAttributeValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\EditAttributesProcessor',
@@ -103,7 +112,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\UpdateProductValueProcessor',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable',
 
-        //TODO: Because it overrides normalizer
+        //TODO: Because it overrides normalizer => good examples to show what should not be overriden
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer',
@@ -123,22 +132,18 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
 
-        //TODO: It overrides Query
-        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
-        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',
-        'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory',
-        'Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct',
-
-        //TODO: Misc
+        //TODO: just because we override ProductFieldsBuilder
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
+        //TODO: RegisterSerializerPass should go in Tool
         'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
-        'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
-        'Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents',
+        //TODO: we should not inject the userContext as a service
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+        //TODO: just because we override ProductController
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder'
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Webmozart\Assert',
         'Doctrine\Common',
         'Akeneo\Tool',
 
@@ -153,9 +158,11 @@ $rules = [
         //TODO: Link by id instead of reference
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+
+        // TODO: review the voters/filters implementation
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
-        'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
@@ -164,7 +171,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
 
-        //TODO: It overrides default behavior
+        //TODO: It overrides a default behavior
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface',

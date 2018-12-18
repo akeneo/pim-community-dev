@@ -7,7 +7,7 @@ import ValueCollection from 'akeneoreferenceentity/domain/model/record/value-col
 import {NormalizedValue, NormalizedMinimalValue} from 'akeneoreferenceentity/domain/model/record/value';
 import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
-import Completeness from 'akeneoreferenceentity/domain/model/record/completeness';
+import Completeness, {NormalizedCompleteness} from 'akeneoreferenceentity/domain/model/record/completeness';
 
 interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
@@ -19,6 +19,11 @@ interface CommonNormalizedRecord {
 
 export interface NormalizedRecord extends CommonNormalizedRecord {
   values: NormalizedValue[];
+}
+
+export interface NormalizedItemRecord extends CommonNormalizedRecord {
+  values: NormalizedValue[];
+  completeness: NormalizedCompleteness;
 }
 
 export interface NormalizedMinimalRecord extends CommonNormalizedRecord {

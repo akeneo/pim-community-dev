@@ -32,16 +32,14 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
-
-            //Subscribers
-            'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-            'Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface',
-            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent',
 
             // TODO remove all links by reference
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
+
             // TODO relationship between bounded context (query data though repository)
             'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
             'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
@@ -69,6 +67,7 @@ $rules = [
             // Akeneo external bounded contexts
             'Akeneo\Tool\Component\Batch',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             // TODO: should be removed see with JJ and AL
             'Akeneo\Tool\Bundle\BatchBundle',
 
@@ -151,12 +150,21 @@ $rules = [
 
             // External dependencies
             'Doctrine',
+
+            // TODO: link by ID instead of reference
+            'Akeneo\Pim\Structure\Component\Model\Family',
+            'Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface',
+            'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+
+            // Oro config is used
+            'Oro\Bundle\ConfigBundle\Entity\Config',
         ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository'),
+    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence'),
 
     $builder->only(
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
+            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobInstanceNames',
 
             // Akeneo external bounded contexts
             'Akeneo\Tool',

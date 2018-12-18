@@ -145,43 +145,76 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 AttributeRegularExpression::createEmpty()
             )
         );
+        $attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create('designer', 'nickname', '29aea250-bc94-49b2-8259-bbc116410eb2'),
+                ReferenceEntityIdentifier::fromString('designer'),
+                AttributeCode::fromString('nickname'),
+                LabelCollection::fromArray(['fr_FR' => 'Surnom']),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(512),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
 
-        $recordCode = RecordCode::fromString('starck');
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+
+        // STARCK
+        $recordCode = RecordCode::fromString('starck');
         $identifier = RecordIdentifier::fromString('designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2');
-        $descriptionValue = Value::create(
+
+        $starckDescriptionValue = Value::create(
             AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
             TextData::fromString('an awesome designer!')
         );
+
         $recordStarck = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck'],
             Image::createEmpty(),
-            ValueCollection::fromValues([$descriptionValue])
+            ValueCollection::fromValues([$starckDescriptionValue])
         );
         $recordRepository->create($recordStarck);
 
+        // COCO
         $recordCode = RecordCode::fromString('coco');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
         $identifier = RecordIdentifier::fromString('brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd');
+
+        $cocoDescriptionValue = Value::create(
+            AttributeIdentifier::fromString('description_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('You will love coco.')
+        );
+        $cocoNicknameValue = Value::create(
+            AttributeIdentifier::fromString('nickname_designer_29aea250-bc94-49b2-8259-bbc116410eb2'),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
+            TextData::fromString('Mr coco')
+        );
+
         $recordCoco = Record::create(
             $identifier,
             $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Coco Chanel', 'fr_FR' => 'Coco Chanel'],
             Image::createEmpty(),
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([$cocoDescriptionValue, $cocoNicknameValue])
         );
-
         $recordRepository->create($recordCoco);
 
+        // DYSON
         $recordCode = RecordCode::fromString('dyson');
-        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $identifier = RecordIdentifier::fromString('designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd');
+
         $recordDyson = Record::create(
             $identifier,
             $referenceEntityIdentifier,
@@ -190,7 +223,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
             Image::createEmpty(),
             ValueCollection::fromValues([])
         );
-
         $recordRepository->create($recordDyson);
 
         /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocale $findRequiredKeyCollectionQuery */

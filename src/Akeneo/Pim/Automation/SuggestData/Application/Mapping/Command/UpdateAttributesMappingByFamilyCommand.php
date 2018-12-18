@@ -86,13 +86,10 @@ class UpdateAttributesMappingByFamilyCommand
                 throw InvalidMappingException::expectedKey($targetKey, 'attribute');
             }
 
-            $status = $mappingRow['status'] ?? null;
-
             $this->attributesMapping[] = new AttributeMapping(
                 $targetKey,
                 $mappingRow['franklinAttribute']['type'],
-                $mappingRow['attribute'],
-                $status
+                $mappingRow['attribute']
             );
         }
     }

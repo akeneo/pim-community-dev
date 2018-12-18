@@ -46,9 +46,9 @@ SELECT
     f.code, 
     JSON_OBJECTAGG(ft.locale, ft.label) as labels, 
     SUM(s.misses_mapping) as misses_mapping 
-FROM pim_suggest_data_product_subscription s
-INNER JOIN pim_catalog_product p ON s.product_id = p.id
-INNER JOIN pim_catalog_family f ON p.family_id = f.id
+FROM pim_catalog_family f
+INNER JOIN pim_catalog_product p ON p.family_id = f.id
+INNER JOIN pim_suggest_data_product_subscription s ON s.product_id = p.id
 INNER JOIN pim_catalog_family_translation ft ON f.id = ft.foreign_key
 WHERE f.code like :search OR ft.label like :search
 GROUP BY f.code ORDER BY f.id LIMIT :limit OFFSET :offset;
@@ -67,15 +67,25 @@ SQL;
 
         $statement = $this->connection->executeQuery($query, $queryParameters, $types);
 
-        $families = $statement->fetchAll();
+        return $this->hydrate($statement->fetchAll());
+    }
 
+    /**
+     * Hydrates family read models from SQL result.
+     *
+     * @param array $familyRows
+     *
+     * @return FamilyCollection
+     */
+    private function hydrate(array $familyRows): FamilyCollection
+    {
         $familyCollection = new FamilyCollection();
-        foreach ($families as $family) {
+        foreach ($familyRows as $familyRow) {
             $familyCollection->add(
                 new Family(
-                    $family['code'],
-                    json_decode($family['labels'], true),
-                    (bool) $family['misses_mapping'] ? Family::MAPPING_PENDING : Family::MAPPING_FULL
+                    $familyRow['code'],
+                    json_decode($familyRow['labels'], true),
+                    (bool) $familyRow['misses_mapping'] ? Family::MAPPING_PENDING : Family::MAPPING_FULL
                 )
             );
         }

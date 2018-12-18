@@ -115,7 +115,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                     ],
                     'type' => 'multiselect',
                 ],
-                'status' => AttributeMapping::STATUS_PENDING,
+                'status' => AttributeMapping::STATUS_INACTIVE,
             ],
             [
                 'from' => ['id' => 'size_target'],

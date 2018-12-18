@@ -9,6 +9,20 @@ services:
             - '@event_dispatcher'
             - '@pim_connector.doctrine.cache_clearer'
 
+    akeneo.pim.automation.suggest_data.application.mapping.service.remove_attributes_from_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobLauncher\RemoveAttributesFromMapping'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+
+    akeneo.pim.automation.suggest_data.application.mapping.service.remove_option_from_attribute_options_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\JobLauncher\RemoveAttributeOptionFromMapping'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+
     akeneo.pim.automation.suggest_data.proposal.factory.suggested_data:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Factory\ProposalSuggestedDataFactory'
         arguments:
@@ -20,4 +34,4 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@security.token_storage'
-            
+

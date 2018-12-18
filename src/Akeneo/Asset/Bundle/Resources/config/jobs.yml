@@ -14,6 +14,7 @@ parameters:
     pimee_product_asset.job_name.xlsx_asset_export: 'xlsx_asset_export'
     pimee_product_asset.job_name.xlsx_asset_category_export: 'xlsx_asset_category_export'
     pimee_product_asset.job_name.xlsx_asset_variation_export: 'xlsx_asset_variation_export'
+    pimee_product_asset.job_name.compute_completeness_of_products_linked_to_assets: 'compute_completeness_of_products_linked_to_assets'
     pimee_product_asset.job_name.classify_assets: 'classify_assets'
     pimee_product_asset.job_name.add_tags_to_assets: 'add_tags_to_assets'
     pimee_product_asset.job.mass_upload_type: mass_upload
@@ -209,3 +210,39 @@ services:
                 - '@pimee_product_asset.step.add_tags_to_assets.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    # Completeness ----------------------------------------------------------------------------------------------------
+    pimee_product_asset.tasklet.compute_completeness_of_products_linked_to_assets:
+        class: 'Akeneo\Asset\Bundle\Job\ComputeCompletenessOfProductsLinkedToAssetsTasklet'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - 'pim_catalog_completeness'
+        public: false
+
+    pimee_product_asset.step.compute_completeness_of_products_linked_to_assets:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'compute_completeness_of_products_linked_to_assets'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_product_asset.tasklet.compute_completeness_of_products_linked_to_assets'
+        public: false
+
+    pimee_product_asset.job.compute_completeness_of_products_linked_to_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'compute_completeness_of_products_linked_to_assets'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.compute_completeness_of_products_linked_to_assets'
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'compute completeness of products linked to assets'
+                type: 'compute_completeness_of_products_linked_to_assets'

@@ -14,6 +14,7 @@ const {
 module.exports = async function(cucumber) {
   const {Given, When, Then} = cucumber;
   const assert = require('assert');
+  let currentRequestContract;
 
   const config = {
     Sidebar: {
@@ -165,6 +166,25 @@ module.exports = async function(cucumber) {
     await showRecordTab(this.page);
   });
 
+  Given('the user asks for a list of records having different completenesses', async function() {
+    const requestContract = getRequestContract('ReferenceEntity/ReferenceEntityDetails/ok.json');
+    await listenRequest(this.page, requestContract);
+    currentRequestContract = getRequestContract('Record/Search/not_filtered.json');
+    await listenRequest(this.page, currentRequestContract);
+
+    await askForReferenceEntity.apply(this, ['designer']);
+    await showRecordTab(this.page);
+  });
+
+  Then('the user should see that {string} is complete at {int}%', async function(recordCode, completeLevel) {
+    const recordList = await await getElement(this.page, 'Records');
+
+    const starckRecord = currentRequestContract.response.body.items.find(item => item.code === recordCode);
+    const completeness = await recordList.getRecordCompleteness(starckRecord.identifier);
+
+    assert.strictEqual(completeness, completeLevel);
+  });
+
   When('the user searches for {string}', async function(searchInput) {
     const requestContract = getRequestContract(
       's' === searchInput ? 'Record/Search/ok.json' : 'Record/Search/no_result.json'
@@ -176,7 +196,7 @@ module.exports = async function(cucumber) {
     await recordList.search(searchInput);
   });
 
-  When('the user filters on the complete records', async function () {
+  When('the user filters on the complete records', async function() {
     const requestContract = getRequestContract('Record/Search/complete_filtered.json');
 
     await listenRequest(this.page, requestContract);
@@ -185,7 +205,7 @@ module.exports = async function(cucumber) {
     await recordList.completeFilter('yes');
   });
 
-  When('the user filters on the uncomplete records', async function () {
+  When('the user filters on the uncomplete records', async function() {
     const requestContract = getRequestContract('Record/Search/uncomplete_filtered.json');
 
     await listenRequest(this.page, requestContract);
@@ -225,21 +245,21 @@ module.exports = async function(cucumber) {
     }
   });
 
-  Then('the user should see a list of complete records', async function () {
+  Then('the user should see a list of complete records', async function() {
     const recordList = await await getElement(this.page, 'Records');
-    const isValid = await [
-      'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
-    ].reduce(async (isValid, expectedRecord) => {
-      return (await isValid) && (await recordList.hasRecord(expectedRecord));
-    }, true);
-    assert.strictEqual(isValid, true);
+
+    const expectedRecordIdentifiers = ['brand_coco_0134dc3e-3def-4afr-85ef-e81b2d6e95fd'];
+
+    for (const expectedRecordIdentifier of expectedRecordIdentifiers) {
+      const isValid = await recordList.hasRecord(expectedRecordIdentifier);
+
+      assert.strictEqual(isValid, true);
+    }
   });
 
-  Then('the user should see a list of uncomplete records', async function () {
+  Then('the user should see a list of uncomplete records', async function() {
     const recordList = await await getElement(this.page, 'Records');
-    const expectedRecordIdentifiers = [
-      'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
-    ];
+    const expectedRecordIdentifiers = ['designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd'];
 
     for (const expectedRecordIdentifier of expectedRecordIdentifiers) {
       await recordList.hasRecord(expectedRecordIdentifier);

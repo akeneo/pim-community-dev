@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataPro
 
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOption;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeOption\Model\Write\AttributeOptionsMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\ValueObject\OptionMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributeOptionsMappingNormalizer;
 use PhpSpec\ObjectBehavior;
 
@@ -50,6 +51,7 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
                         'en_US' => 'red',
                     ],
                 ],
+                'status' => OptionMapping::STATUS_ACTIVE,
             ],
             [
                 'from' => [
@@ -59,6 +61,7 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'to' => null,
+                'status' => OptionMapping::STATUS_INACTIVE,
             ],
             [
                 'from' => [
@@ -71,6 +74,7 @@ class AttributeOptionsMappingNormalizerSpec extends ObjectBehavior
                     'id' => 'color_3',
                     'label' => null,
                 ],
+                'status' => OptionMapping::STATUS_ACTIVE,
             ],
         ];
 

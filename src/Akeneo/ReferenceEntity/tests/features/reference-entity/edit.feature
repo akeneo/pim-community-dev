@@ -3,7 +3,7 @@ Feature: Edit a reference entity
   As a user
   I want see the details of a reference entity and update them
 
-  @acceptance-back @acceptance-front
+  @acceptance-back
   Scenario: Updating a reference entity labels
     Given a valid reference entity
     When the user updates the reference entity "designer" with:
@@ -44,8 +44,21 @@ Feature: Edit a reference entity
       | "/path/image.jpg" | 150            | This value should be of type string. |
 
   @acceptance-front
+  Scenario: Updating a reference entity labels
+    Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit | true |
+    When the user updates the reference entity "designer" with:
+      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+    Then the reference entity "designer" should be:
+      | identifier | labels                                    |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+
+  @acceptance-front
   Scenario: Updating a reference entity with unexpected backend answer
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit | true |
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the saved reference entity "designer" will be:
@@ -61,6 +74,8 @@ Feature: Edit a reference entity
   @acceptance-front
   Scenario: Updating a reference entity when the backend answer an error
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit | true |
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the reference entity "designer" save will fail
@@ -70,9 +85,18 @@ Feature: Edit a reference entity
   @acceptance-front
   Scenario: Display updated edit form message
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit | true |
     When the user changes the reference entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the user should be notified that modification have been made
     And the saved reference entity "designer" will be:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+
+  @acceptance-front
+  Scenario: User can't edit a reference entity without the good rights
+    Given a valid reference entity
+    And the user doesn't have any rights
+    Then the label of the reference entity "designer" should be read only
+    And the save button shouldn't be displayed

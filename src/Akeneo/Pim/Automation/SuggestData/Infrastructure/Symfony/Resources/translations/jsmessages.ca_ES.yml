@@ -2,6 +2,9 @@ pim_title:
   akeneo_suggest_data_connection_edit: 'Connexió de les estadístiques de Franklin'
   akeneo_suggest_data_identifiers_mapping_edit: 'Configuració de les estadístiques de Franklin'
   akeneo_suggest_data_attributes_mapping_edit: 'Configuració de les estadístiques de Franklin'
+pim_menu:
+  item:
+    franklin: Estadístiques de Franklin
 akeneo_suggest_data:
   entity:
     identifier_mapping:
@@ -33,6 +36,7 @@ akeneo_suggest_data:
     attributes_mapping:
       label: Mapatge dels atributs
       fields:
+        franklin_attribute: 'Atribut de Franklin'
         suggest_data:
           label: Estatus d'atribut de Franklin
           pending: Pendent
@@ -66,6 +70,7 @@ akeneo_suggest_data:
         no_identifiers_mapping: 'Si us plau, mapa els teus identificadors de producte de catàleg a Configuració > Abans de subscriure''s productes a Franklin Insights.'
         insufficient_credits: "Ho sentim, no ha pogut subscriure el producte a les estadístiques de Franklin. No té prou crèdit."
         invalid_mapped_values: 'Ho sentim, ha fallat la subscripció del producte a les estadístiques de Franklin. Si us plau subscriu el producte amb una combinació d''identificadors vàlid.'
+        data_provider_error: 'Franklin ha retornat un error en intentar subscriure el producte'
         not_subscribed: 'El producte no està subscrit'
       module:
         product_edit_form:
@@ -128,6 +133,9 @@ akeneo_suggest_data:
             franklin_activation: "Si us plau <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activar</a> Franklin Insights abans de subscriure's als productes."
             invalid_mapping: "Si us plau, mapa els teus identificadors de productes a Configuració > Abans de subscriure's productes a Franklin Insights."
 batch_jobs:
+  default_steps:
+    fetch_products: Obtindre dades del producte
+    create_proposals: Crear propostes
   suggest_data_subscribe_products:
     label: Subscripció en massa a Franklin Insights
     validate_configuration.label: Validar la configuració de les estadístiques de Franklin
@@ -136,3 +144,10 @@ batch_jobs:
     label: Cancel·lada subscripció en massa a Franklin Insights
     validate_configuration.label: Validar la configuració de les estadístiques de Franklin
     unsubscribe_products.label: Anul·lar la subscripció de productes
+  suggest_data_fetch_products:
+    label: Buscar dades del producte de les estadístiques de Franklin
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        suggest_data_fetch_products: Estadístiques de Franklin

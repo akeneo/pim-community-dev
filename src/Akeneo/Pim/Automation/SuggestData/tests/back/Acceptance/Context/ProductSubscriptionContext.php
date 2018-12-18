@@ -17,12 +17,14 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\Su
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Subscriber\ProductRemovalSubscriber;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -50,25 +52,31 @@ class ProductSubscriptionContext implements Context
     /** @var null|\Exception */
     private $thrownException;
 
+    /** @var ProductRemovalSubscriber */
+    private $productRemovalSubscriber;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
      * @param SubscribeProductHandler $subscribeProductHandler
      * @param DataFixturesContext $dataFixturesContext
      * @param UnsubscribeProductHandler $unsubscribeProductHandler
+     * @param ProductRemovalSubscriber $productRemovalSubscriber
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
         InMemoryProductSubscriptionRepository $productSubscriptionRepository,
         SubscribeProductHandler $subscribeProductHandler,
         DataFixturesContext $dataFixturesContext,
-        UnsubscribeProductHandler $unsubscribeProductHandler
+        UnsubscribeProductHandler $unsubscribeProductHandler,
+        ProductRemovalSubscriber $productRemovalSubscriber
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscribeProductHandler = $subscribeProductHandler;
         $this->dataFixturesContext = $dataFixturesContext;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
+        $this->productRemovalSubscriber = $productRemovalSubscriber;
     }
 
     /**
@@ -83,7 +91,7 @@ class ProductSubscriptionContext implements Context
         try {
             $command = new SubscribeProductCommand($product->getId());
             $this->subscribeProductHandler->handle($command);
-        } catch (ProductSubscriptionException $e) {
+        } catch (\Exception $e) {
             $this->thrownException = $e;
         }
     }
@@ -92,8 +100,6 @@ class ProductSubscriptionContext implements Context
      * @When I unsubscribe the product :identifier
      *
      * @param string $identifier
-     *
-     * @throws ProductSubscriptionException
      */
     public function iUnsubscribeTheProduct(string $identifier): void
     {
@@ -103,11 +109,28 @@ class ProductSubscriptionContext implements Context
         try {
             $command = new UnsubscribeProductCommand($product->getId());
             $this->unsubscribeProductHandler->handle($command);
-        } catch (ProductSubscriptionException $e) {
-            $this->thrownException = $e;
-        } catch (ProductNotSubscribedException $e) {
+        } catch (\Exception $e) {
             $this->thrownException = $e;
         }
+    }
+
+    /**
+     * Here, we are directly calling the subscriber. We should instead just
+     * dispatch the post remove event, and let the subscriber stack do its job.
+     * However, this is not possible for now, as Elasticsearch is also plugged to
+     * this event (to remove the product from its index), and it is absolutely
+     * not handled in our acceptance tests stack for now.
+     *
+     * @When I delete the product :identifier
+     *
+     * @param string $identifier
+     */
+    public function iDeleteTheProduct(string $identifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        Assert::isInstanceOf($product, ProductInterface::class);
+
+        $this->productRemovalSubscriber->onPostRemove(new RemoveEvent($product, $product->getId()));
     }
 
     /**
@@ -128,22 +151,27 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Then /^the product "([^"]*)" should(| not) be subscribed$/
+     * @Then the product ":identifier" should be subscribed
      *
      * @param string $identifier
-     * @param bool $not
      */
-    public function theProductShouldBeSubscribed(string $identifier, bool $not): void
+    public function theProductShouldBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        Assert::isInstanceOf($productSubscription, ProductSubscription::class);
+    }
 
-        if ($not) {
-            Assert::null($productSubscription);
-        } else {
-            Assert::isInstanceOf($productSubscription, ProductSubscription::class);
-        }
+    /**
+     * @Then the product ":identifier" should not be subscribed
+     *
+     * @param string $identifier
+     */
+    public function theProductShouldNotBeSubscribed(string $identifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        Assert::null($productSubscription);
     }
 
     /**

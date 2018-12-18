@@ -106,6 +106,7 @@ class SuggestDataOperation extends Operation {
         errorMessage,
         currentAction: this.getFormData().action,
         isActive: connectionStatus.isActive && connectionStatus.isIdentifiersMappingValid,
+        readonly: this.readOnly,
       }));
 
       this.delegateEvents();

@@ -195,6 +195,8 @@
 - Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Processor\UpdateProductValueWithPermissionProcessor`. Remove arguments `Akeneo\UserManagement\Bundle\Manager\UserManager` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Change constructor of `Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor`. Add argument `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
 - Change constructor of `Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor`. Add argument `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface`
+- Change constructor of `Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetReferenceSaver`. Remove argument `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`.
+- Change constructor of `Akeneo\Asset\Bundle\Doctrine\Common/Saver/AssetSaver`. Remove argument `Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface`.
 
 ## Security
 

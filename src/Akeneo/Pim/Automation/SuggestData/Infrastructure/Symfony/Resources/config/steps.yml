@@ -63,3 +63,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.suggest_data.connector.tasklet.remove_attribute_from_attributes_mapping'
+
+    akeneo.pim.automation.suggest_data.connector.step.remove_option_from_attribute_options_mapping:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'update_attribute_options_mapping'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.suggest_data.connector.tasklet.remove_option_from_attribute_options_mapping'

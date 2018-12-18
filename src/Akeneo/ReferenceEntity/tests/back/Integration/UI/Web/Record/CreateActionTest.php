@@ -169,24 +169,61 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::CREATE_RECORD_ROUTE,
             [
-                'referenceEntityIdentifier' => 'michel',
+                'referenceEntityIdentifier' => 'brand',
             ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
+                'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'identifier' => 'michel_sardoux_a1677570-a278-444b-ab46-baa1db199392',
-                'reference_entity_identifier' => 'michel',
-                'labels'     => [
-                    'fr_FR' => 'Starck',
-                    'en_US' => 'Starck',
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'reference_entity_identifier' => 'brand',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
                 ],
             ]
         );
 
         $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_if_user_does_not_have_the_permissions_to_edit_the_reference_entity()
+    {
+        $this->forbidsEdit();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_RECORD_ROUTE,
+            [
+                'referenceEntityIdentifier' => 'brand',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            [
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
+                'reference_entity_identifier' => 'brand',
+                'code' => 'intel',
+                'labels' => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+            ]
+        );
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    private function forbidsEdit(): void
+    {
+        $this->get('akeneo.referencentity.infrastructure.persistence.permission.query.can_edit_reference_entity')
+            ->forbid();
     }
 
     private function loadFixtures(): void
@@ -234,26 +271,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
                     $longIdentifier, $longIdentifier, $longIdentifier
                 ),
-            ],
-            'Reference Entity Identifier has a dash character'                                            => [
-                'intel',
-                'invalid-code',
-                'invalid-code',
-                '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"invalid-code","code":"intel","labels":[]},"propertyPath":"referenceEntityIdentifier","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
-            'Reference Entity Identifier is 256 characters long'                                          => [
-                'intel',
-                $longIdentifier,
-                $longIdentifier,
-                sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"referenceEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier
-                ),
-            ],
-            'Reference Entity Identifier in the URL is different from the one in the body of the Request' => [
-                'intel',
-                'brand',
-                'brandy',
-                '"Reference Entity Identifier provided in the route and the one given in the body of your request are different"',
             ],
         ];
     }

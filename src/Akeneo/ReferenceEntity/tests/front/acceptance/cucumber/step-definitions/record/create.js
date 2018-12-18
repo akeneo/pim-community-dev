@@ -10,7 +10,7 @@ const {
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
 module.exports = async function(cucumber) {
-  const {When, Then} = cucumber;
+  const {When, Then, Given} = cucumber;
   const assert = require('assert');
 
   const config = {
@@ -103,6 +103,16 @@ module.exports = async function(cucumber) {
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
       await modal.fillField('pim_reference_entity.record.create.input.label', record.labels.en_US);
     }
+  });
+
+  Given('the user toggles the sequantial creation', async function() {
+    const modal = await await getElement(this.page, 'Modal');
+    await modal.toggleCreateAnother();
+  });
+
+  Then('the record creation form should be displayed', async function() {
+    await this.page.waitFor(1000);
+    await this.page.waitFor('.modal--fullPage .AknFullPage-content .AknFieldContainer');
   });
 
   When('the user saves the record', async function() {

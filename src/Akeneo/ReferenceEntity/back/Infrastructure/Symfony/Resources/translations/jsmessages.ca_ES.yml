@@ -43,9 +43,6 @@ pim_reference_entity:
       delete:
         button: Eliminar entitat
         confirm: Segur que voleu suprimir aquesta entitat?
-    index:
-      grid:
-        count: "{{ count }} resultats"
     create:
       header:
         title: Crear
@@ -105,16 +102,21 @@ pim_reference_entity:
         code: Codi (requerit)
       confirm: Desar
     delete:
-      message: Esteu segur que voleu suprimir el registre "{{ recordLabel }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
       title: Registre
     delete_all:
       confirm: Esteu segur que voleu suprimir tots els registres "{{ entityIdentifier }}"? Si està vinculat a productes, es suprimiran els enllaços dels productes.
     grid:
       search: Cerca a l'etiqueta, el codi i el text dels atributs
+      filter:
+        completeness:
+          label: Complet
+          yes: true
+          no: false
       column:
         code: Codi
         image: Imatge
         label: Etiqueta
+        complete: Complet
         action: Accions
       more_result:
         title: Això no és!
@@ -135,6 +137,8 @@ pim_reference_entity:
       delete_all:
         success: Tots el registres de "{{ entityIdentifier }}" s'han eliminat correctament.
         fail: S'ha produït un error durant l'eliminació de tots els registres de l'entitat de referència
+    completeness:
+      label: Complet
   attribute:
     validation:
       limit_reached: 'Vostè no pot crear l''atribut "{{ %attribute_label% }}" perquè vostè ha arribat al límit d''atributs de {{ %limit% }} per a aquesta entitat de referència'
@@ -147,8 +151,6 @@ pim_reference_entity:
       image: Imatge
       record: Enllaç simple de l'entitat de referència
       record_collection: Enllaç múltiple d'entitat de referència
-      option: Opció
-      option_collection: Col·lecció d'opció
     is_required: necessaris per a la integritat
     no_data:
       title: No hi ha atributs personalitzats per {{ entityLabel }}
@@ -159,12 +161,10 @@ pim_reference_entity:
       header:
         title: Crear
       subtitle: Entitats
-      title: Afegir un nou atribut
       input:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
-        record_type: Entitat de referència per enllaçar
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
       confirm: Desar
@@ -177,7 +177,6 @@ pim_reference_entity:
         code: Codi (requerit)
         label: Etiqueta
         type: Tipus d'atribut
-        record_type: Entitat de referència relacionat
         value_per_locale: Valor per local
         value_per_channel: Valor per canal
         is_required: Necessaris per a la integritat
@@ -211,6 +210,9 @@ pim_reference_entity:
       delete:
         success: Atribut eliminat correctament.
         fail: S'ha produït un error durant l'eliminació de l'atribut
+    options:
+      helper:
+        title: Traduccions d'etiquetes
   modal:
     delete:
       subtitle: Confirmar l'eliminació
@@ -229,5 +231,4 @@ pim_enrich:
         section:
           type_specific: Escriu els paràmetres específics
         reference_entity:
-          identifier: Entitat de referència relacionat
           default_label: Si us plau, selecciona una entitat de referència

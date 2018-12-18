@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Common\ValueObject\FamilyCode;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -140,6 +139,7 @@ final class AttributesMappingContext implements Context
             $attributesMapping[] = [
                 'target_attribute_code' => $attribute->getTargetAttributeCode(),
                 'target_attribute_label' => $attribute->getTargetAttributeLabel(),
+                'target_attribute_type' => $attribute->getTargetAttributeType(),
                 'pim_attribute_code' => $attribute->getPimAttributeCode(),
                 'status' => $attribute->getStatus(),
             ];

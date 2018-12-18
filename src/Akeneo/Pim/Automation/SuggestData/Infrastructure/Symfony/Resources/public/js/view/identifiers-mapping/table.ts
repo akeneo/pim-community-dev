@@ -81,8 +81,11 @@ class EditIdentifiersMappingView extends BaseView {
       this.triggerUpdateIdentifierStatuses.bind(this),
     );
 
+    const identifiersMappingFetcher = FetcherRegistry.getFetcher('identifiers-mapping');
+    identifiersMappingFetcher.clear();
+
     return $.when(
-      FetcherRegistry.getFetcher('identifiers-mapping')
+      identifiersMappingFetcher
         .fetchAll()
         .then((identifiersMapping: { [franklinIdentifier: string]: (string | null) }) => {
           this.setData(identifiersMapping);

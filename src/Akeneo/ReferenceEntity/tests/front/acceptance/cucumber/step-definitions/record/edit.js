@@ -60,6 +60,20 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
+  Given('a valid record with a reference entity single link attribute', async function () {
+    const requestContract = getRequestContract('Record/RecordDetails/ok/record.json');
+    currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
+  });
+
+  Given('a valid record with a reference entity multiple link attribute', async function () {
+    const requestContract = getRequestContract('Record/RecordDetails/ok/record_collection.json');
+    currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
+  });
+
   const answerMedia = async function() {
     await this.page.on('request', request => {
       if ('http://pim.com/rest/media/' === request.url() && 'POST' === request.method()) {
@@ -287,6 +301,38 @@ module.exports = async function(cucumber) {
     await modalPage.confirmDeletion();
   });
 
+  When('the user saves the valid record with a single record linked', async function () {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/record_value_ok.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillRecordSelectField('pim_reference_entity.record.enrich.linked_brand', 'ikea');
+    await editPage.save();
+  });
+
+  When('the user saves the valid record with a multiple record linked', async function () {
+    await answerLocaleList.apply(this);
+    await askForRecord.apply(this, [
+      currentRequestContract.request.query.recordCode,
+      currentRequestContract.request.query.referenceEntityIdentifier,
+    ]);
+
+    const requestContract = getRequestContract('Record/Edit/record_collection_value_ok.json');
+
+    await listenRequest(this.page, requestContract);
+    const editPage = await await getElement(this.page, 'Edit');
+    const enrich = await editPage.getEnrich();
+    await enrich.fillRecordSelectField('pim_reference_entity.record.enrich.linked_cities', 'paris,lisbonne,moscou');
+    await editPage.save();
+  });
+
   Then('the user should see a success message on the edit page', async function() {
     const edit = await await getElement(this.page, 'Edit');
     const hasSuccessNotification = await edit.hasSuccessNotification();
@@ -335,10 +381,10 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isFilled, true);
   });
 
-  Then('the user should see the completeness percentage with a value of {string}', async function (value) {
+  Then('the user should see the completeness percentage with a value of {string}', async function(value) {
     const editPage = await await getElement(this.page, 'Edit');
     const completenessValue = await editPage.getCompletenessValue();
 
-    assert.strictEqual(completenessValue, value);
+    assert.strictEqual(completenessValue, 'Complete: ' + value);
   });
 };

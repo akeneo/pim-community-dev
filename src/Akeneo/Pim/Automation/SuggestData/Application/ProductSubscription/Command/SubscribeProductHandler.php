@@ -124,7 +124,7 @@ class SubscribeProductHandler
     {
         $product = $this->productRepository->find($productId);
         if (null === $product) {
-            throw new ProductSubscriptionException(
+            throw new \InvalidArgumentException(
                 sprintf('Could not find product with id "%d"', $productId)
             );
         }
@@ -138,8 +138,6 @@ class SubscribeProductHandler
                 sprintf('The product with id "%d" is already subscribed', $productId)
             );
         }
-
-        // TODO: check that product is not variant
 
         return $product;
     }

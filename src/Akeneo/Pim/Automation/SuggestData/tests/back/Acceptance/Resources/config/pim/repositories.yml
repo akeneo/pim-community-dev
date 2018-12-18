@@ -17,10 +17,3 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Memory\InMemoryFamilyRepository'
         arguments:
             - '@pim_catalog.repository.family'
-
-    akeneo.pim.automation.suggest_data.proposal.create_proposal:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert'
-        arguments:
-            - '@pim_catalog.repository.product_without_permission'
-            - '@pimee_workflow.updater.product_without_permission'
-            - '@event_dispatcher'

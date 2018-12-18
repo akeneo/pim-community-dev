@@ -35,21 +35,17 @@ class AttributeMappingException extends \Exception
     }
 
     /**
-     * Thrown exception when target attribute type and PIM attribute type are not compatible.
+     * Thrown exception when a Franklin attribute is mapped to an invalid PIM attribute type.
      *
-     * @param string $targetAttributeType
      * @param string $pimAttributeType
      *
      * @return AttributeMappingException
      */
-    public static function incompatibleAttributeTypeMapping(string $targetAttributeType, string $pimAttributeType): self
+    public static function incompatibleAttributeTypeMapping(string $pimAttributeType): self
     {
         $message = sprintf(static::CONSTRAINT_KEY, 'invalid_attribute_type_mapping');
 
-        return new static(
-            $message,
-            ['targetType' => $targetAttributeType, 'pimType' => $pimAttributeType]
-        );
+        return new static($message, ['pimType' => $pimAttributeType]);
     }
 
     /**

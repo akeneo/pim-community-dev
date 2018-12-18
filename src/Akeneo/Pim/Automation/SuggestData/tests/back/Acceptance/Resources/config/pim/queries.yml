@@ -1,0 +1,5 @@
+services:
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.empty_suggested_data_query:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\InMemory\EmptySuggestedDataQuery'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'

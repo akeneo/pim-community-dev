@@ -16,9 +16,9 @@ Feature: Map the PIM attributes with Franklin attributes
       | product_weight        |                    | pending |
       | color                 | product_color      | active  |
     Then the retrieved attributes mapping for the family "router" should be:
-      | target_attribute_code | target_attribute_label | pim_attribute_code | status  |
-      | product_weight        | Product Weight         |                    | pending |
-      | color                 | Color                  | product color      | active  |
+      | target_attribute_code | target_attribute_label | target_attribute_type | pim_attribute_code | status  |
+      | product_weight        | Product Weight         | metric                |                    | pending |
+      | color                 | Color                  | multiselect           | product color      | active  |
 
     #Then Franklin attribute "product_weight" should not be mapped (inactive)
     #And Franklin attribute "color" should be mapped to PIM "product_color" (activated)

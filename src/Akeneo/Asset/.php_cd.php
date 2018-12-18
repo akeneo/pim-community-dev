@@ -55,7 +55,9 @@ $rules = [
         // TODO: we must not depend on PIM BC
         'Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
+        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController', // We should not use public constant
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end

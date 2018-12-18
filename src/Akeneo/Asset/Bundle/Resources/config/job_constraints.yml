@@ -74,3 +74,9 @@ services:
                 - 'add_tags_to_assets'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+  # Completeness ----------------------------------------------------------------------------------------------------
+    pimee_product_asset.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_linked_to_assets:
+        class: 'Akeneo\Asset\Bundle\Job\JobParameters\ConstraintCollectionProvider\ComputeCompletenessOfProductsLinkedToAssets'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

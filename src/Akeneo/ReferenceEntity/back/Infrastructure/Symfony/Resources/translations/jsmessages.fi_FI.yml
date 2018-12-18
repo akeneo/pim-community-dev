@@ -42,13 +42,21 @@ pim_reference_entity:
         label: Nimike
       confirm: Tallenna
     grid:
+      filter:
+        completeness:
+          label: Valmis
+          yes: true
+          no: false
       column:
         code: Koodi
         image: Kuva
         label: Nimike
+        complete: Valmis
         action: Toiminnot
     tab:
       enrich: Rikastuta
+    completeness:
+      label: Valmis
   attribute:
     default:
       code: Koodi
@@ -95,6 +103,9 @@ pim_reference_entity:
         success: Attribuutin luominen onnistui.
       delete:
         success: Attribuutin poistaminen onnistui.
+    options:
+      helper:
+        title: Nimikkeiden käännökset
   modal:
     delete:
       subtitle: Vahvista poisto

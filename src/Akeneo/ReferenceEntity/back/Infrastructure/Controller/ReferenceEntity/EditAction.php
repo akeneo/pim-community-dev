@@ -14,10 +14,14 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,12 +42,22 @@ class EditAction
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var CanEditReferenceEntityQueryHandler */
+    private $canEditReferenceEntityQueryHandler;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     public function __construct(
         EditReferenceEntityHandler $editReferenceEntityHandler,
+        CanEditReferenceEntityQueryHandler $canEditReferenceEntityQueryHandler,
+        TokenStorageInterface $tokenStorage,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
+        $this->canEditReferenceEntityQueryHandler = $canEditReferenceEntityQueryHandler;
+        $this->tokenStorage = $tokenStorage;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
@@ -59,12 +73,16 @@ class EditAction
                 Response::HTTP_BAD_REQUEST
             );
         }
+        if (!$this->isUserAllowedToEdit($request->get('identifier'))) {
+            throw new AccessDeniedHttpException();
+        }
 
         $command = $this->serializer->deserialize($request->getContent(), EditReferenceEntityCommand::class, 'json');
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
-            return new JsonResponse($this->serializer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->serializer->normalize($violations, 'internal_api'),
+                Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editReferenceEntityHandler)($command);
@@ -80,5 +98,15 @@ class EditAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $normalizedCommand['identifier'] !== $request->get('identifier');
+    }
+
+    private function isUserAllowedToEdit(string $referenceEntityIdentifier): bool
+    {
+        $query = new CanEditReferenceEntityQuery();
+        $query->securityIdentifier = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $query->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $isAllowedToEdit = ($this->canEditReferenceEntityQueryHandler)($query);
+
+        return $isAllowedToEdit; // && add Check of ACLs
     }
 }

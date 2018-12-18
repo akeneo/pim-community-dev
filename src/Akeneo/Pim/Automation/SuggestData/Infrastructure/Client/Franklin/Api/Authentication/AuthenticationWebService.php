@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AuthenticationWebService extends AbstractApi implements AuthenticationApiInterface
+class AuthenticationWebService extends AbstractApi
 {
     /**
      * {@inheritdoc}

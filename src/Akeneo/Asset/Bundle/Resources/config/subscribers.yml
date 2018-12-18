@@ -28,3 +28,15 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_product_asset.subscriber.compute_completeness_of_products_linked_to_assets:
+        class: 'Akeneo\Asset\Bundle\EventSubscriber\ComputeCompletenessOfProductsLinkedToAssetsSubscriber'
+        arguments:
+                - '@akeneo_batch.job.job_instance_repository'
+                - '@pim_catalog.repository.attribute'
+                - '@pim_catalog.query.product_query_builder_factory'
+                - '@akeneo_batch_queue.launcher.queue_job_launcher'
+                - '@security.token_storage'
+                - '@pimee_product_asset.remover.completeness'
+        tags:
+                - { name: kernel.event_subscriber }

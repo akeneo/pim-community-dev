@@ -1,6 +1,6 @@
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 
-type NormalizedCompleteness = {complete: number; required: number};
+export type NormalizedCompleteness = {complete: number; required: number};
 
 class Completeness {
   private constructor(private complete: number, private required: number) {
@@ -37,6 +37,18 @@ class Completeness {
 
   public getRequiredAttributeCount() {
     return this.required;
+  }
+
+  public hasRequiredAttribute() {
+    return this.required > 0;
+  }
+
+  public hasCompleteAttribute() {
+    return this.complete > 0;
+  }
+
+  public isComplete() {
+    return this.complete === this.required;
   }
 
   public getRatio() {

@@ -32,3 +32,8 @@ mappings:
                     path_match: 'complete_value_keys.*'
                     mapping:
                         type: 'boolean'
+            -
+                links:
+                    path_match: 'links.*.*'
+                    mapping:
+                        type: 'keyword'

@@ -2,14 +2,13 @@
 
 namespace Specification\Akeneo\Asset\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Asset\Component\Completeness\CompletenessRemoverInterface;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -17,10 +16,9 @@ class AssetReferenceSaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        CompletenessRemoverInterface $completenessRemover
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $eventDispatcher, $completenessRemover);
+        $this->beConstructedWith($objectManager, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -29,17 +27,15 @@ class AssetReferenceSaverSpec extends ObjectBehavior
         $this->shouldHaveType(BulkSaverInterface::class);
     }
 
-    function it_persists_the_reference_and_flushes_the_unit_of_work_and_schedule_completeness_for_the_asset(
+    function it_persists_the_reference_and_flushes_the_unit_of_work(
         $objectManager,
         $eventDispatcher,
-        $completenessRemover,
         ReferenceInterface $reference,
         AssetInterface $asset
     ) {
         $objectManager->persist($reference)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $reference->getAsset()->willReturn($asset);
-        $completenessRemover->removeForAsset($asset)->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
@@ -47,16 +43,14 @@ class AssetReferenceSaverSpec extends ObjectBehavior
         $this->save($reference);
     }
 
-    function it_persists_the_references_and_flushes_the_unit_of_work_and_does_not_schedule_completeness(
+    function it_persists_the_references_and_flushes_the_unit_of_work(
         $objectManager,
         $eventDispatcher,
-        $completenessRemover,
         ReferenceInterface $reference1,
         ReferenceInterface $reference2
     ) {
         $objectManager->persist($reference1)->shouldBeCalled();
         $objectManager->persist($reference2)->shouldBeCalled();
-        $completenessRemover->removeForAsset(Argument::any())->shouldNotBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();

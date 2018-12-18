@@ -238,4 +238,18 @@ module.exports = async function(cucumber) {
 
     assert.strictEqual(isDeleteButtonVisible, false);
   });
+
+  Then('the label of the reference entity {string} should be read only', async function (identifier) {
+    await askForReferenceEntity.apply(this, [identifier]);
+    const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    await properties.isLoaded();
+
+    await properties.labelIsReadOnly();
+  });
+
+  Then('the save button shouldn\'t be displayed', async function () {
+    const editPage = await await getElement(this.page, 'Edit');
+    await editPage.hasNoSaveButton();
+  });
 };

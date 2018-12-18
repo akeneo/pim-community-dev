@@ -30,7 +30,7 @@ Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription:
         isMappingMissing:
             type: boolean
             column: misses_mapping
-            nullable: false
+            nullable: true
         requestedAsin:
             type: string
             column: requested_asin
