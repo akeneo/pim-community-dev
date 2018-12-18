@@ -11,45 +11,36 @@ jobs:
             cp .env.dist .env
             cp behat.yml.dist behat.yml
       - run:
-          name: Setup tests results folder
+          name: Setup tests results folder and log folder
           command: |
-            mkdir -p var/tests
+            mkdir -p var/tests var/logs
       - run:
           name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
             chmod 777 ../project -R
-#      - run:
-#          name: Start containers
-#          command: |
-#            set -x
-#            docker-compose up -d
-#            ./bin/docker/pim-dependencies.sh
-#            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
-#            docker-compose run --rm node yarn run webpack-dev
-#            docker-compose run --rm node yarn run webpack-test
-#            mkdir -p var/logs
       - run:
-          name: Create temp workspace directory
+          name: Start containers
           command: |
-            mkdir -p /tmp/workspace
-            mv ~/project /tmp/workspace/pim
+            docker-compose up -d
+            ./bin/docker/pim-dependencies.sh
+            docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
+            docker-compose run --rm node yarn run webpack-dev
+            docker-compose run --rm node yarn run webpack-test
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: ~/
           paths:
-            - pim/*
+            - project
 
   test_back:
     machine:
       enabled: true
     parallelism: 7
-    working_directory: ~/project/pim
     steps:
       - attach_workspace:
-          at: .
+          at: ~/
       - run:
           name: Start containers
           command: |
-            set -x
             docker-compose up -d
             docker-compose exec fpm bin/console --env=behat pim:install:db
       - run:
@@ -172,29 +163,15 @@ jobs:
           yarn run webpack-test
           MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features
 
-        #  test_back_with_bdd:
-#    docker:
-#      - image: akeneo/fpm:php-7.2
-#        environment:
-#          COMPOSER_MEMORY_LIMIT: 5G
-#        user: docker
-#      - image: mysql:5.7
-#        environment:
-#          MYSQL_ROOT_PASSWORD: 'root'
-#          MYSQL_USER: 'akeneo_pim'
-#          MYSQL_PASSWORD: 'akeneo_pim'
-#          MYSQL_DATABASE: 'akeneo_pim'
-#      - image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
-#        environment:
-#          ES_JAVA_OPTS: '-Xms512m -Xmx512m'
-#          discovery.type: 'single-node'
-
-
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+#      - wait_for_user_approval:
+#          type: approval
+      - build:
+          requires:
+#              - wait_for_user_approval
       - test_back:
           requires:
             - build
