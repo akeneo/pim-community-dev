@@ -19,12 +19,16 @@ use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\AttributeOption;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOption\OptionCode;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\RecordCollectionAttribute;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
@@ -38,6 +42,8 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionCollectionData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\OptionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordCollectionData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\RecordData;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
@@ -113,7 +119,21 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
                         'channel' => null,
                         'data'    => ['lexon', 'kartell', 'cogip'],
                     ]
-                ]
+                ],
+                'favorite_color' => [
+                    [
+                        'locale'  => null,
+                        'channel' => null,
+                        'data'    => 'black',
+                    ]
+                ],
+                'materials' => [
+                    [
+                        'locale'  => null,
+                        'channel' => null,
+                        'data'    => ['plastic', 'metal'],
+                    ]
+                ],
             ]
         );
 
@@ -196,6 +216,18 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
                     LocaleReference::noReference(),
                     RecordCollectionData::createFromNormalize(['kartell', 'lexon', 'cogip'])
                 ),
+                Value::create(
+                    AttributeIdentifier::fromString('favorite_color_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    OptionData::createFromNormalize('black')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('materials_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    OptionCollectionData::createFromNormalize(['plastic', 'metal'])
+                ),
             ])
         );
 
@@ -268,11 +300,46 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
             ReferenceEntityIdentifier::fromString('brand')
         );
 
+        $favoriteColor = OptionAttribute::create(
+            AttributeIdentifier::create('designer', 'favorite_color', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('favorite_color'),
+            LabelCollection::fromArray(['en_US' => 'Favorite color']),
+            AttributeOrder::fromInteger(4),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $favoriteColor->setOptions([
+            AttributeOption::create(OptionCode::fromString('red'), LabelCollection::fromArray([])),
+            AttributeOption::create(OptionCode::fromString('black'), LabelCollection::fromArray([])),
+        ]);
+
+        $materials = OptionCollectionAttribute::create(
+            AttributeIdentifier::create('designer', 'materials', 'fingerprint'),
+            ReferenceEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('materials'),
+            LabelCollection::fromArray(['en_US' => 'Materials']),
+            AttributeOrder::fromInteger(5),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false)
+        );
+
+        $materials->setOptions([
+            AttributeOption::create(OptionCode::fromString('metal'), LabelCollection::fromArray([])),
+            AttributeOption::create(OptionCode::fromString('plastic'), LabelCollection::fromArray([])),
+            AttributeOption::create(OptionCode::fromString('wood'), LabelCollection::fromArray([])),
+        ]);
+
         $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
         $attributesRepository->create($country);
         $attributesRepository->create($brands);
+        $attributesRepository->create($favoriteColor);
+        $attributesRepository->create($materials);
 
         $countryRecord = Record::create(
             RecordIdentifier::fromString('country_france_fingerprint'),
