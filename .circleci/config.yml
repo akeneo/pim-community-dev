@@ -39,7 +39,7 @@ jobs:
   test_phpunit:
       machine:
           enabled: true
-      parallelism: 7
+      parallelism: 1
       steps:
           - attach_workspace:
                 at: ~/
@@ -55,12 +55,7 @@ jobs:
           - run:
                 name: PHPunit Integration
                 command: |
-                    TESTFILES=$(circleci tests glob "tests/back/**/*Integration.php" | circleci tests split)
-                    .circleci/run_phpunit.sh $TESTFILES
-          - run:
-                name: PHPunit End to End
-                command: |
-                    TESTFILES=$(circleci tests glob "tests/back/**/*EndToEnd.php" | circleci tests split)
+                    TESTFILES=$(cat .circleci/phpunit.txt | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
           - store_test_results:
                 path: var/tests/phpunit
