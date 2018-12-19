@@ -7,24 +7,25 @@
  * file that was distributed with this source code.
  */
 
-import * as JQuery from 'jquery';
-
-const Routing = require('routing');
+import BaseFetcher = require('pim/base-fetcher');
 
 /**
- * @author Damien Carcel <damien.carcel@akeneo.com>
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
+class SubscriptionFetcher extends BaseFetcher {
+  /**
+   * Count elements
+   *
+   * @param {Object} searchOptions
+   * @return {Promise}
+   */
+  public count(searchOptions: any): JQueryPromise<any> {
+    const url = this.options.urls.count;
 
-/**
- * Gets the subscription status of a product.
- *
- * @param {number} productId
- */
-export function getSubscriptionStatus(productId: number): JQueryPromise<any> {
-  const url = Routing.generate(
-    'akeneo_suggest_data_franklin_subscription_status',
-    {productId},
-  );
+    return this.getJSON(url, searchOptions).then((result) => {
+      console.log(result);
 
-  return JQuery.get(url);
+      return 123456;
+    }).promise();
+  }
 }
