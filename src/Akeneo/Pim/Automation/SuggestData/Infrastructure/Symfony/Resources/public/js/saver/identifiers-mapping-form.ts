@@ -48,13 +48,15 @@ class MappingSave extends BaseSave {
 
   /**
    * {@inheritdoc}
+   *
+   * Displays a confirmation modal if there is subscribed products. If not, just save.
    */
   public save(): void {
     FetcherRegistry.getFetcher('subscription').count().then((count: number) => {
       if (count > 0) {
         Dialog.confirm(
-          'Changing the mapping may impact ' + count + ' subscriptions. Are you sure?',
-          'Warning',
+          __('akeneo_suggest_data.settings.module.save.warning', { count }, count),
+          __('akeneo_suggest_data.settings.module.save.title'),
           this.executeSave,
           null,
           null,

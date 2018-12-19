@@ -120,6 +120,6 @@ class ProductSubscriptionController
     {
         // TODO.
 
-        return new JsonResponse(['count' => 0]);
+        return new JsonResponse(['count' => 10]);
     }
 }

@@ -130,6 +130,9 @@ akeneo_suggest_data:
             no_active_english_locale:
                 title: 'Franklin insights is only available for English locales.'
                 sub_title: 'Stay tuned, locales are coming.'
+            save:
+                warning: '{1}Changing the mapping may impact 1 subscription. Are you sure?|]1,+Inf[Changing the mapping may impact {{ count }} subscriptions. Are you sure?'
+                title: 'Warning!'
 
     mass_edit:
         product:
