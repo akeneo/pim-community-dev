@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Persistence\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Repository\Doctrine\ConfigurationRepository;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -54,7 +54,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $this->get('doctrine.orm.entity_manager')->clear();
 
         $configuration->setToken(new Token('a_new_token'));
-        $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
+        $this->getRepository()->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
@@ -75,15 +75,31 @@ class ConfigurationRepositoryIntegration extends TestCase
         $configuration = new Configuration();
         $configuration->setToken(new Token($tokenString));
 
-        $repository = $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
-        $repository->save($configuration);
+        $this->getRepository()->save($configuration);
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
-        $retrievedConfiguration = $repository->find();
+        $retrievedConfiguration = $this->getRepository()->find();
         $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
         $this->assertInstanceOf(Token::class, $retrievedConfiguration->getToken());
         $this->assertSame($tokenString, (string) $retrievedConfiguration->getToken());
+    }
+
+    public function test_it_removes_a_suggest_data_configuration(): void
+    {
+        $tokenString = 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj';
+        $configuration = new Configuration();
+        $configuration->setToken(new Token($tokenString));
+
+        $this->getRepository()->save($configuration);
+        $this->get('doctrine.orm.entity_manager')->clear();
+
+        $this->getRepository()->clear();
+        $this->get('doctrine.orm.entity_manager')->clear();
+
+        $retrievedConfiguration = $this->getRepository()->find();
+        $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
+        $this->assertNull($retrievedConfiguration->getToken());
     }
 
     /**
@@ -95,9 +111,9 @@ class ConfigurationRepositoryIntegration extends TestCase
     }
 
     /**
-     * @return ConfigurationRepository
+     * @return ConfigurationRepositoryInterface
      */
-    private function getRepository()
+    private function getRepository(): ConfigurationRepositoryInterface
     {
         return $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
     }

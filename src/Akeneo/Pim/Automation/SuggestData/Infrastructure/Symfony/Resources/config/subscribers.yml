@@ -44,3 +44,11 @@ services:
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo.pim.automation.suggest_data.subscriber.channel_update:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Channel\ChannelUpdateSubscriber'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@akeneo.pim.automation.suggest_data.application.configuration.command.deactivate_connection_handler'
+        tags:
+            - { name: kernel.event_subscriber }

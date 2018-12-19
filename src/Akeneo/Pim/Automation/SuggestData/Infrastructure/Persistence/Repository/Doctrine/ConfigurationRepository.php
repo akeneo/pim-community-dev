@@ -69,6 +69,18 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function clear(): void
+    {
+        $currentOroConfig = $this->findOroConfig();
+        if (null !== $currentOroConfig) {
+            $this->entityManager->remove($currentOroConfig);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
      * Retrieves an oro config entity from database or creates a new one, then
      * updates it.
      *
