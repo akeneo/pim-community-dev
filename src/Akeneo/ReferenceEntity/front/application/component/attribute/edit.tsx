@@ -124,6 +124,10 @@ class Edit extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
+    const textInputClassName = `AknTextField AknTextField--light
+      ${!this.props.canEditAttribute ? 'AknTextField--disabled' : ''}
+    `;
+
     return (
       <React.Fragment>
         <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
@@ -148,13 +152,13 @@ class Edit extends React.Component<EditProps> {
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
-                    className="AknTextField AknTextField--light"
+                    className={textInputClassName}
                     id="pim_reference_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
-                    disabled={!this.props.canEditAttribute}
+                    readOnly={!this.props.canEditAttribute}
                   />
                   <Flag
                     locale={createLocaleFromCode(this.props.context.locale)}

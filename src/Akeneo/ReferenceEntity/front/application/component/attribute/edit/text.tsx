@@ -59,14 +59,18 @@ const TextView = ({
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
-  readOnly
+  canEditAttribute
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
-  readOnly: boolean;
+  canEditAttribute: boolean;
 }) => {
+  const textInputClassName = `AknTextField AknTextField--light
+      ${!canEditAttribute ? 'AknTextField--disabled' : ''}
+    `;
+
   return (
     <React.Fragment>
       <div className="AknFieldContainer" data-code="maxLength">
@@ -78,10 +82,10 @@ const TextView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className="AknTextField AknTextField--light"
+            className={textInputClassName}
             id="pim_reference_entity.attribute.edit.input.max_length"
             name="max_length"
-            readOnly={readOnly}
+            readOnly={!canEditAttribute}
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
@@ -106,6 +110,7 @@ const TextView = ({
             htmlFor="pim_reference_entity.attribute.edit.input.textarea"
           >
             <Checkbox
+              readOnly={!canEditAttribute}
               id="pim_reference_entity.attribute.edit.input.textarea"
               value={attribute.isTextarea.booleanValue()}
               onChange={(isTextarea: boolean) =>
@@ -114,10 +119,12 @@ const TextView = ({
             />
             <span
               onClick={() => {
-                onAdditionalPropertyUpdated(
-                  'is_textarea',
-                  IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
-                );
+                if (canEditAttribute) {
+                  onAdditionalPropertyUpdated(
+                    'is_textarea',
+                    IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
+                  );
+                }
               }}
             >
               {__('pim_reference_entity.attribute.edit.input.textarea')}
