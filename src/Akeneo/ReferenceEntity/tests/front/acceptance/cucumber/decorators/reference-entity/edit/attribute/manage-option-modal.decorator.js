@@ -45,8 +45,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   const save = async () => {
     await page.evaluate(edit => {
-      const button = edit.querySelector('.AknButton.AknButton--apply.AknButtonList-item');
-
+      const button = edit.querySelector('.AknButton.AknButton--apply');
       button.style.width = '100px';
       button.style.height = '100px';
     }, nodeElement);
@@ -56,7 +55,13 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
   };
 
   const cancel = async () => {
-    const cancelButton = await nodeElement.$('.AknButtonList-item.cancel');
+    await page.evaluate(edit => {
+      const button = edit.querySelector('.AknFullPage-cancel');
+      button.style.width = '100px';
+      button.style.height = '100px';
+    }, nodeElement);
+
+    const cancelButton = await nodeElement.$('.AknFullPage-cancel');
     await cancelButton.click();
   };
 
