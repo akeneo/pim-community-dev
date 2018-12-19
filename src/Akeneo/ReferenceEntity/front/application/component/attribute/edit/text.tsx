@@ -180,6 +180,7 @@ const TextView = ({
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Dropdown
+              readOnly={!rights.attribute.edit}
               ItemView={AttributeValidationRuleItemView}
               label={__('pim_reference_entity.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
