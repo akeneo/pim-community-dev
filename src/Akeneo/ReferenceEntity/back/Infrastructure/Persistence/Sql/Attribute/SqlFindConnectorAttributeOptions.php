@@ -68,17 +68,17 @@ SQL;
             return null;
         }
 
-        return $this->hydrateAttributeOption($result);
+        return $this->hydrateAttributeOptions($result);
     }
 
     /**
      * @return ConnectorAttribute
      */
-    private function hydrateAttributeOption(array $result): ?array
+    private function hydrateAttributeOptions(array $result): ?array
     {
-        $additionalProperties = json_decode($result['additional_properties'], true);
+        $additionalProperties = json_decode($result['additional_properties'], true) ?? [];
 
-        $options = $additionalProperties['options'];
+        $options = $additionalProperties['options'] ?? null;
 
         if (null === $options || empty($options)) {
             return null;

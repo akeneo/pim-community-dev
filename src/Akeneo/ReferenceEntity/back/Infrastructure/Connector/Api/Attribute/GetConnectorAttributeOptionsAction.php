@@ -13,12 +13,12 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute;
 
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\Connector\FindConnectorAttributeOptionsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 
 class GetConnectorAttributeOptionsAction
 {
@@ -67,8 +67,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeExists = $this->attributeExists->withReferenceEntityAndCode($referenceEntityIdentifier, $attributeCode);
 
-        if (false === $attributeExists)
-        {
+        if (false === $attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for reference entity "%s".',
                 (string) $attributeCode,
@@ -78,6 +77,10 @@ class GetConnectorAttributeOptionsAction
 
         $attributeOptions = ($this->findConnectorAttributeOptionsQuery)($referenceEntityIdentifier, $attributeCode);
         $normalizedAttributeOptions = [];
+
+        if (null === $attributeOptions) {
+            throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
+        }
 
         foreach ($attributeOptions as $attributeOption) {
             $normalizedAttributeOptions[] = $attributeOption->normalize();
