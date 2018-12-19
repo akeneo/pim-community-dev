@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "GET",
+    "route": "akeneo_reference_entities_reference_entity_attribute_options_rest_connector_get",
+    "query": {
+      "referenceEntityIdentifier": "brand_3",
+      "attributeCode": "nationality"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "code": "french",
+        "labels": {
+          "fr_FR": "Francais"
+        }
+      },
+      {
+        "code": "australian",
+        "labels": {
+          "en_US": "Australian"
+        }
+      },
+      {
+        "code": "lebanese",
+        "labels": {
+          "ar_LB": "Lebanese"
+        }
+      },
+      {
+        "code": "cat",
+        "labels": {
+          "cat_CAT": "Cat"
+        }
+      }
+    ]
+  }
+}

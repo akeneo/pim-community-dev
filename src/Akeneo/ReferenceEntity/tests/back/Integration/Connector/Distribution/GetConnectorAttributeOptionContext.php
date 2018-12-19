@@ -35,7 +35,6 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\Connector\ConnectorRefer
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetConnectorAttributeOptionContext implements Context

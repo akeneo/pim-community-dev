@@ -9,7 +9,7 @@ Feature: Connection to e-commerce platforms and marketplaces
     And the Nationality single option attribute that is part of the structure of the Brand reference entity
     And the 4 options of the Nationality single option attribute
     When the connector requests all the options of the Nationality attribute for the Brand reference entity
-    Then the PIM returns the 4 options of the Nationality attributes for the Brand reference entity
+    Then the PIM returns the 4 options of the Nationality attribute for the Brand reference entity
 
   @integration-back
   Scenario: Get all the options of a given multiple options attribute for a given reference entity
@@ -17,6 +17,7 @@ Feature: Connection to e-commerce platforms and marketplaces
     And the Sales Area multiple options attribute that is part of the structure of the Brand reference entity
     And the 4 options of the Sales Area multiple options attribute
     When the connector requests all the options of the Sales Area attribute for the Brand reference entity
+    Then the PIM returns the 4 options of the Sales Area attribute for the Brand Reference entity
 
   @integration-back
   Scenario: Notify an error when collecting the options of an attribute for a non-existent reference entity

@@ -70,7 +70,7 @@ class GetConnectorAttributeOptionsAction
         if (false === $attributeExists)
         {
             throw new NotFoundHttpException(sprintf(
-                'Attribute "%s" does not exist for reference entity "%s"',
+                'Attribute "%s" does not exist for reference entity "%s".',
                 (string) $attributeCode,
                 (string) $referenceEntityIdentifier
             ));
