@@ -262,3 +262,10 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
+
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity_attribute_options.get:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorAttributeOptionsAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_connector_attribute_options'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.attribute_exists'
