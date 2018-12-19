@@ -48,8 +48,7 @@ class GetConnectorAttributeOptionAction
         try {
             $attributeCode = AttributeCode::fromString($attributeCode);
             $optionCode = OptionCode::fromString($optionCode);
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             throw new UnprocessableEntityHttpException($e->getMessage());
         }
 
