@@ -51,6 +51,9 @@ class IdentifiersMappingContext implements Context
     /** @var \Exception */
     private $thrownException;
 
+    /** @var array */
+    private $originalIdentifiersMapping;
+
     /**
      * @param GetIdentifiersMappingHandler $getIdentifiersMappingHandler
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
@@ -90,9 +93,9 @@ class IdentifiersMappingContext implements Context
      */
     public function aPredefinedIdentifiersMapping(TableNode $table): void
     {
-        $identifiersMapping = $this->extractIdentifiersMappingFromTable($table);
+        $this->originalIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
-        $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
+        $command = new UpdateIdentifiersMappingCommand($this->originalIdentifiersMapping);
         $this->updateIdentifiersMappingHandler->handle($command);
     }
 
@@ -151,44 +154,49 @@ class IdentifiersMappingContext implements Context
      */
     public function theIdentifiersMappingShouldNotBeSaved(): void
     {
-        $this->assertIdentifiersMappingIsEmpty();
+        if (null === $this->originalIdentifiersMapping) {
+            $this->assertIdentifiersMappingIsEmpty();
+        } else {
+            $this->assertIdentifiersMappingPersisted($this->originalIdentifiersMapping);
+            $this->assertIdentifiersMappingSentToFranklin($this->originalIdentifiersMapping);
+        }
     }
 
     /**
-     * @Then an invalid identifier :pimAttribute attribute type message should be sent
+     * @Then an invalid identifier :pimAttributeCode attribute type message should be sent
      *
-     * @param mixed $pimAttribute
+     * @param string $pimAttributeCode
      */
-    public function anInvalidIdentifierAttributeTypeMessageShouldBeSent($pimAttribute): void
+    public function anInvalidIdentifierAttributeTypeMessageShouldBeSent(string $pimAttributeCode): void
     {
         Assert::assertEquals(
-            InvalidMappingException::attributeType('foo', $pimAttribute)->getMessage(),
+            InvalidMappingException::attributeType('foo', $pimAttributeCode)->getMessage(),
             $this->thrownException->getMessage()
         );
     }
 
     /**
-     * @Then an invalid identifier :pimAttribute localizable message should be sent
+     * @Then an invalid identifier :pimAttributeCode localizable message should be sent
      *
-     * @param mixed $pimAttribute
+     * @param string $pimAttributeCode
      */
-    public function anInvalidIdentifierLocalizableMessageShouldBeSent($pimAttribute): void
+    public function anInvalidIdentifierLocalizableMessageShouldBeSent(string $pimAttributeCode): void
     {
         Assert::assertEquals(
-            InvalidMappingException::localizableNotAllowed('foo', $pimAttribute)->getMessage(),
+            InvalidMappingException::localizableNotAllowed($pimAttributeCode)->getMessage(),
             $this->thrownException->getMessage()
         );
     }
 
     /**
-     * @Then an invalid identifier :pimAttribute scopable message should be sent
+     * @Then an invalid identifier :pimAttributeCode scopable message should be sent
      *
-     * @param mixed $pimAttribute
+     * @param string $pimAttributeCode
      */
-    public function anInvalidIdentifierScopableMessageShouldBeSent($pimAttribute): void
+    public function anInvalidIdentifierScopableMessageShouldBeSent(string $pimAttributeCode): void
     {
         Assert::assertEquals(
-            InvalidMappingException::scopableNotAllowed('foo', $pimAttribute)->getMessage(),
+            InvalidMappingException::scopableNotAllowed($pimAttributeCode)->getMessage(),
             $this->thrownException->getMessage()
         );
     }
@@ -221,6 +229,14 @@ class IdentifiersMappingContext implements Context
             InvalidMappingException::mandatoryAttributeMapping('foo', 'brand')->getMessage(),
             $this->thrownException->getMessage()
         );
+    }
+
+    /**
+     * @Then a token invalid message for identifiers mapping should be sent
+     */
+    public function aTokenInvalidMessageForIdentifiersMappingShouldBeSent(): void
+    {
+        var_dump($this->thrownException->getMessage());
     }
 
     /**

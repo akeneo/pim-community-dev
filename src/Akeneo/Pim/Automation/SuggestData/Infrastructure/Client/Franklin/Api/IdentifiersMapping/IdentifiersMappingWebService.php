@@ -17,8 +17,10 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\Abstrac
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\AuthenticatedApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * API Web Service to manage identifiers mapping.
@@ -32,6 +34,7 @@ class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedA
      *
      * @throws BadRequestException
      * @throws FranklinServerException
+     * @throws InvalidTokenException
      */
     public function update(array $mapping): void
     {
@@ -43,12 +46,16 @@ class IdentifiersMappingWebService extends AbstractApi implements AuthenticatedA
             ]);
         } catch (ServerException $e) {
             throw new FranklinServerException(sprintf(
-                'Something went wrong on Franklin side when updating the attribute mapping : %s',
+                'Something went wrong on Franklin side when updating the identifiers mapping : %s',
                 $e->getMessage()
             ));
         } catch (ClientException $e) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
+                throw new InvalidTokenException('The Franklin token is missing or invalid');
+            }
+
             throw new BadRequestException(sprintf(
-                'Something went wrong when updating the attribute mapping : %s',
+                'Something went wrong when updating the identifiers mapping : %s',
                 $e->getMessage()
             ));
         }
