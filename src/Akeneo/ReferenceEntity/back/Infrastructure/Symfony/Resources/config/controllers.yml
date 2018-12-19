@@ -171,6 +171,15 @@ services:
             - '@akeneo_referenceentity.infrasctucture.connector.add_hal_download_link_to_reference_entity_image'
             - '%reference_entity_connector_reference_entities_limit_per_page%'
 
+    akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\CreateOrUpdateReferenceEntityAction
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - '@validator'
+            - '@akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
+            - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
+            - '@router'
+
     akeneo_referenceentity.infrastructure.connector.action.record.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordAction
         arguments:
