@@ -16,6 +16,9 @@ class DownloadMediaFileIntegration extends AbstractMediaFileTestCase
         $this->createMedia(new \SplFileInfo($this->getFixturePath('akeneo.jpg')));
     }
 
+    /**
+     * @critical
+     */
     public function testDownloadAMediaFile()
     {
         $client = $this->createAuthenticatedClient();
