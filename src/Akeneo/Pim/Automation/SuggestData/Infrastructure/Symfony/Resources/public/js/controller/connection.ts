@@ -27,8 +27,8 @@ class ConnectionController extends BaseIndexController {
   public renderForm(): object {
     return FetcherRegistry.getFetcher('locale').fetchActivated().then((locales: Locale[]) => {
       const formToBuild = this.containsAnEnglishLocale(locales)
-        ? 'akeneo-suggest-data-' + this.options.config.entity + '-index'
-        : 'akeneo-suggest-data-' + this.options.config.entity + '-index-no-active-english-locale';
+        ? 'akeneo-suggest-data-franklin-connection-index'
+        : 'akeneo-suggest-data-franklin-connection-index-no-active-english-locale';
 
       return FormBuilder.build(formToBuild)
         .then((form: any) => {

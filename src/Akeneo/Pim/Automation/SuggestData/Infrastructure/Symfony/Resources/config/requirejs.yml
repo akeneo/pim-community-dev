@@ -6,18 +6,12 @@ config:
                 akeneo_suggest_data_connection_edit:
                     module: akeneo/suggest-data/controller/connection
                     aclResourceId: akeneo_suggest_data_connection
-                    config:
-                        entity: franklin-connection
                 akeneo_suggest_data_identifiers_mapping_edit:
                     module: akeneo/suggest-data/controller/identifiers-mapping
                     aclResourceId: akeneo_suggest_data_settings_mapping
-                    config:
-                        entity: suggest-data-settings-identifiers-mapping
                 akeneo_suggest_data_attributes_mapping_index:
                     module: akeneo/suggest-data/controller/attributes-mapping-index
                     aclResourceId: akeneo_suggest_data_settings_mapping
-                    config:
-                        entity: suggest-data-settings-attributes-mapping
                 akeneo_suggest_data_attributes_mapping_edit:
                     module: akeneo/suggest-data/controller/attributes-mapping-edit
                     aclResourceId: akeneo_suggest_data_settings_mapping
