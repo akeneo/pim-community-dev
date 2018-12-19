@@ -46,4 +46,12 @@ final class InMemoryConfigurationRepository implements ConfigurationRepositoryIn
     {
         $this->configuration = $configuration;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clear(): void
+    {
+        $this->configuration = new Configuration();
+    }
 }

@@ -95,3 +95,12 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
         tags:
             - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.channel:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ChannelContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.channel'
+            - '@__symfony__.pim_catalog.updater.channel'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.subscriber.channel_update'
+        tags:
+            - { name: 'fob.context_service' }

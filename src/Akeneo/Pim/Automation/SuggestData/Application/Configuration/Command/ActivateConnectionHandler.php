@@ -47,7 +47,7 @@ class ActivateConnectionHandler
     }
 
     /**
-     * @param ActivateConnectionCommand $saveConfiguration
+     * @param ActivateConnectionCommand $command
      *
      * @throws ConnectionConfigurationException
      */

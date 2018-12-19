@@ -10,6 +10,11 @@ services:
             - '@akeneo.pim.automation.suggest_data.application.configuration.validator.connection'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
+    akeneo.pim.automation.suggest_data.application.configuration.command.deactivate_connection_handler:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\DeactivateConnectionHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
     akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler'
         arguments:
