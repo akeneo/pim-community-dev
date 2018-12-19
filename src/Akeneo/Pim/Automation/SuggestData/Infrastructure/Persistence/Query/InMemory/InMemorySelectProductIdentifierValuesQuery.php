@@ -53,11 +53,12 @@ class InMemorySelectProductIdentifierValuesQuery implements SelectProductIdentif
 
         $mappedIdentifiers = [];
 
-        if (0 === count($mapping->getIdentifiers()) || null === $product) {
+        if ($mapping->isEmpty() || null === $product) {
             return null;
         }
 
-        foreach ($mapping as $franklinCode => $mappedAttribute) {
+        foreach ($mapping as $franklinCode => $identifierMapping) {
+            $mappedAttribute = $identifierMapping->getAttribute();
             if (null === $mappedAttribute) {
                 continue;
             }

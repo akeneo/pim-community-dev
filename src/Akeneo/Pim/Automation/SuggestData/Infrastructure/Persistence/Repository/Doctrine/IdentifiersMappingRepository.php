@@ -47,28 +47,17 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
      */
     public function save(IdentifiersMapping $identifiersMapping): void
     {
-        $identifiersMappingToSave = [];
-        foreach ($identifiersMapping as $franklinCode => $attribute) {
-            $identifierMapping = $this->em
-                ->getRepository(IdentifierMapping::class)
-                ->findOneBy(['franklinCode' => $franklinCode]);
+        $this->em->beginTransaction();
 
-            if (!$identifierMapping instanceof IdentifierMapping) {
-                $identifierMapping = new IdentifierMapping($franklinCode, null);
-            }
-            $identifierMapping->setAttribute(null);
+        $tableName = $this->em->getClassMetadata(IdentifierMapping::class)->getTableName();
+        $this->em->getConnection()->executeQuery(sprintf('DELETE FROM %s', $tableName));
 
-            $this->em->persist($identifierMapping);
-            $identifiersMappingToSave[$franklinCode] = $identifierMapping;
+        foreach ($identifiersMapping as $identifier) {
+            $this->em->persist($identifier);
         }
-        $this->em->flush();
 
-        foreach ($identifiersMappingToSave as $franklinCode => $identifierMapping) {
-            $identifierMapping->setAttribute($identifiersMapping->getIterator()[$franklinCode]);
-
-            $this->em->persist($identifierMapping);
-        }
         $this->em->flush();
+        $this->em->commit();
     }
 
     /**
@@ -78,11 +67,12 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     {
         $identifiers = $this->em->getRepository(IdentifierMapping::class)->findAll();
 
-        $identifiersArray = array_fill_keys(IdentifiersMapping::FRANKLIN_IDENTIFIERS, null);
+        $identifiersMapping = new IdentifiersMapping();
+
         foreach ($identifiers as $identifier) {
-            $identifiersArray[$identifier->getFranklinCode()] = $identifier->getAttribute();
+            $identifiersMapping->map($identifier->getFranklinCode(), $identifier->getAttribute());
         }
 
-        return new IdentifiersMapping($identifiersArray);
+        return $identifiersMapping;
     }
 }

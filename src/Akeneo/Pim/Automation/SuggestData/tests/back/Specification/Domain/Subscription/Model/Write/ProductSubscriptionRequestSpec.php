@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Write\ProductSubscriptionRequest;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -56,11 +57,13 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $product->getValue('ean')->willReturn($eanValue);
         $product->getId()->willReturn(42);
 
-        $this->getMappedValues(new IdentifiersMapping([
-            'upc' => $ean->getWrappedObject(),
-            'brand' => $manufacturer->getWrappedObject(),
-            'mpn' => $model->getWrappedObject(),
-        ]))->shouldReturn([
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping
+            ->map('upc', $ean->getWrappedObject())
+            ->map('brand', $manufacturer->getWrappedObject())
+            ->map('mpn', $model->getWrappedObject());
+
+        $this->getMappedValues($identifiersMapping)->shouldReturn([
             'upc' => '123456789123',
         ]);
     }
@@ -79,7 +82,7 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
 
         $mapping->getIterator()->willReturn(
             new \ArrayIterator([
-                'upc' => $ean->getWrappedObject(),
+                'upc' => new IdentifierMapping('upc', $ean->getWrappedObject()),
                 'asin' => null,
                 'brand' => null,
                 'mpn' => null,
@@ -95,7 +98,6 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
 
     public function it_handles_mpn_and_brand_as_one_identifier(
         $product,
-        IdentifiersMapping $mapping,
         AttributeInterface $brand,
         AttributeInterface $mpn,
         ValueInterface $brandValue,
@@ -112,14 +114,11 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $product->getValue('brand')->willReturn($brandValue);
         $product->getValue('mpn')->willReturn($mpnValue);
 
-        $mapping->getIterator()->willReturn(
-            new \ArrayIterator([
-                'upc' => null,
-                'asin' => null,
-                'brand' => $brand->getWrappedObject(),
-                'mpn' => $mpn->getWrappedObject(),
-            ])
-        );
+        $mapping = new IdentifiersMapping();
+        $mapping->map('upc', null);
+        $mapping->map('asin', null);
+        $mapping->map('brand', $brand->getWrappedObject());
+        $mapping->map('mpn', $mpn->getWrappedObject());
 
         $this->getMappedValues($mapping)->shouldReturn([
             'brand' => 'qwertee',

@@ -80,8 +80,8 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     public function it_saves_the_identifiers_mapping(
         $identifiersMappingProvider,
         $subscriptionRepository,
+        $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
@@ -107,14 +107,15 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $ean->getType()->willReturn('pim_catalog_text');
         $id->getType()->willReturn('pim_catalog_text');
 
-        $identifiersMapping = new IdentifiersMapping(
-            [
-                'brand' => $manufacturer->getWrappedObject(),
-                'mpn' => $model->getWrappedObject(),
-                'upc' => $ean->getWrappedObject(),
-                'asin' => $id->getWrappedObject(),
-            ]
-        );
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping
+            ->map('brand', $manufacturer->getWrappedObject())
+            ->map('mpn', $model->getWrappedObject())
+            ->map('upc', $ean->getWrappedObject())
+            ->map('asin', $id->getWrappedObject())
+        ;
+
         $identifiersMappingProvider->updateIdentifiersMapping($identifiersMapping)->shouldBeCalled();
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
         $subscriptionRepository->emptySuggestedData()->shouldBeCalled();

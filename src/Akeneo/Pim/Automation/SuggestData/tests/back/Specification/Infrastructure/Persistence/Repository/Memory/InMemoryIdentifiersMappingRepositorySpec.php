@@ -25,31 +25,31 @@ class InMemoryIdentifiersMappingRepositorySpec extends ObjectBehavior
 {
     public function it_is_an_identifiers_mapping_repository(): void
     {
-        $this->beConstructedWith(new IdentifiersMapping([]));
+        $this->beConstructedWith(new IdentifiersMapping());
         $this->shouldBeAnInstanceOf(IdentifiersMappingRepositoryInterface::class);
     }
 
     public function it_is_an_in_memory_identifiers_mapping_repository(): void
     {
-        $this->beConstructedWith(new IdentifiersMapping([]));
+        $this->beConstructedWith(new IdentifiersMapping());
         $this->shouldBeAnInstanceOf(InMemoryIdentifiersMappingRepository::class);
     }
 
     public function it_finds_an_identifiers_mapping(): void
     {
-        $identifiersMapping = new IdentifiersMapping([]);
+        $identifiersMapping = new IdentifiersMapping();
         $this->beConstructedWith($identifiersMapping);
 
-        $this->find()->shouldReturn($identifiersMapping);
+        $this->find()->shouldBeLike($identifiersMapping);
     }
 
     public function it_saves_an_identifiers_mapping(): void
     {
-        $mappingUsedForContruction = new IdentifiersMapping([]);
+        $mappingUsedForContruction = new IdentifiersMapping();
         $this->beConstructedWith($mappingUsedForContruction);
 
-        $newMapping = new IdentifiersMapping([]);
+        $newMapping = new IdentifiersMapping();
         $this->save($newMapping);
-        $this->find()->shouldReturn($newMapping);
+        $this->find()->shouldBeLike($newMapping);
     }
 }

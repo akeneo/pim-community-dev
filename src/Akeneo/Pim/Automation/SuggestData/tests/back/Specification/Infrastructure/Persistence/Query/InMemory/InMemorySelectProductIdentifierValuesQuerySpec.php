@@ -40,7 +40,7 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $identifiersMappingRepository
     ): void {
         $productRepository->find(42)->willReturn(new Product());
-        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
+        $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping());
 
         $this->execute(42)->shouldReturn(null);
     }
@@ -79,16 +79,14 @@ class InMemorySelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $mpn->getCode()->willReturn('mpn');
         $brand->getCode()->willReturn('brand');
 
-        $identifiersMappingRepository->find()->willReturn(
-            new IdentifiersMapping(
-                [
-                    'asin' => $asin->getWrappedObject(),
-                    'upc' => $ean->getWrappedObject(),
-                    'mpn' => $mpn->getWrappedObject(),
-                    'brand' => $brand->getWrappedObject(),
-                ]
-            )
-        );
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping
+            ->map('asin', $asin->getWrappedObject())
+            ->map('upc', $ean->getWrappedObject())
+            ->map('mpn', $mpn->getWrappedObject())
+            ->map('brand', $brand->getWrappedObject())
+        ;
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $asinValue->hasData()->willReturn(true);
         $asinValue->getData()->willReturn('ABC123');

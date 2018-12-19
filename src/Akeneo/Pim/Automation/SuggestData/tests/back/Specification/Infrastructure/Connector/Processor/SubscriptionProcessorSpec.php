@@ -39,9 +39,9 @@ class SubscriptionProcessorSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         AttributeInterface $asin
     ): void {
-        $identifiersMappingRepository->find()->willReturn(
-            new IdentifiersMapping(['asin' => $asin->getWrappedObject()])
-        );
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping->map('asin', $asin->getWrappedObject());
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $this->beConstructedWith($productSubscriptionRepository, $identifiersMappingRepository, $productRepository);
         $this->initialize();
     }

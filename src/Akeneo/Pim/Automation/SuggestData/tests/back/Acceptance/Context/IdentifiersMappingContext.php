@@ -241,11 +241,11 @@ class IdentifiersMappingContext implements Context
         Assert::assertCount(count($expectedMappings), $persistedMappings);
 
         foreach ($expectedMappings as $expectedFranklinCode => $expectedPimCode) {
-            $persistedMapping = $persistedMappings->getIdentifier($expectedFranklinCode);
-            if (null === $persistedMapping) {
+            $mappedAttribute = $persistedMappings->getMappedAttribute($expectedFranklinCode);
+            if (null === $mappedAttribute) {
                 Assert::assertNull($expectedPimCode);
             } else {
-                Assert::assertEquals($expectedPimCode, $persistedMapping->getCode());
+                Assert::assertEquals($expectedPimCode, $mappedAttribute->getCode());
             }
         }
     }
@@ -255,9 +255,8 @@ class IdentifiersMappingContext implements Context
      */
     private function assertIdentifiersMappingIsEmpty(): void
     {
-        $persistedIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
-
-        Assert::assertEquals([], $persistedIdentifiers);
+        $persistedIdentifiersMapping = $this->identifiersMappingRepository->find();
+        Assert::assertTrue($persistedIdentifiersMapping->isEmpty());
         Assert::assertEquals([], $this->fakeClient->getIdentifiersMapping());
     }
 

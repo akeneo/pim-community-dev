@@ -92,7 +92,8 @@ class GetProductSubscriptionStatusHandler
     private function isMappingFilled(ProductInterface $product): bool
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
-        foreach ($identifiersMapping->getIdentifiers() as $pimAttributeCode) {
+        foreach ($identifiersMapping->getIdentifiers() as $identifierMapping) {
+            $pimAttributeCode = $identifierMapping->getAttribute();
             if (null !== $pimAttributeCode &&
                 null !== $product->getValue($pimAttributeCode->getCode()) &&
                 null !== $product->getValue($pimAttributeCode->getCode())->getData()

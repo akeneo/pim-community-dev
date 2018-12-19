@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -32,12 +33,14 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $ean->getCode()->willReturn('ean');
         $sku->getCode()->willReturn('sku');
 
-        $this->normalize([
-            'brand' => $manufacturer,
-            'mpn' => $model,
-            'upc' => $ean,
-            'asin' => $sku,
-        ])->shouldReturn([
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping
+            ->map('brand', $manufacturer->getWrappedObject())
+            ->map('mpn', $model->getWrappedObject())
+            ->map('upc', $ean->getWrappedObject())
+            ->map('asin', $sku->getWrappedObject());
+
+        $this->normalize($identifiersMapping)->shouldReturn([
             'brand' => 'brand',
             'mpn' => 'mpn',
             'upc' => 'ean',
@@ -47,7 +50,12 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_empty_identifiers_mapping(): void
     {
-        $this->normalize([])->shouldReturn([]);
+        $this->normalize(new IdentifiersMapping())->shouldReturn([
+            'brand' => null,
+            'mpn' => null,
+            'upc' => null,
+            'asin' => null,
+        ]);
     }
 
     public function it_normalizes_incomplete_identifiers_mapping(
@@ -59,12 +67,14 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         $manufacturer->getCode()->willReturn('brand');
         $ean->getCode()->willReturn('ean');
 
-        $this->normalize([
-            'brand' => $manufacturer,
-            'mpn' => $model,
-            'upc' => $ean,
-            'asin' => $sku,
-        ])->shouldReturn([
+        $identifiersMapping = new IdentifiersMapping();
+        $identifiersMapping
+            ->map('brand', $manufacturer->getWrappedObject())
+            ->map('mpn', $model->getWrappedObject())
+            ->map('upc', $ean->getWrappedObject())
+            ->map('asin', $sku->getWrappedObject());
+
+        $this->normalize($identifiersMapping)->shouldReturn([
             'brand' => 'brand',
             'mpn' => null,
             'upc' => 'ean',
