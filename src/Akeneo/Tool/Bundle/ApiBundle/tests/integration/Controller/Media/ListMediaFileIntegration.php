@@ -128,6 +128,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    /**
+     * @critical
+     */
     public function testPaginatedListOfMediaFiles()
     {
         $client = $this->createAuthenticatedClient();
