@@ -44,6 +44,7 @@ Feature: Apply a add to products to existing product model
     Then I should see the text "COMPLETED"
     And I should see the text "The variant product family must be the same than its parent"
 
+  @critical
   Scenario: Successfully adds products to product model
     Given I am on the "1111111171" product page
     When I visit the "Product" group
@@ -62,7 +63,7 @@ Feature: Apply a add to products to existing product model
     Then I should see the text "COMPLETED"
     And I should see the text "Processed 1"
     And the parent of the product "1111111171" should be "model-braided-hat"
-    
+
   Scenario: Fail to adds products to product model with null metric axis
     Given I am on the products page
     And the following attributes:

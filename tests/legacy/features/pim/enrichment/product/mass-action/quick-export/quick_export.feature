@@ -69,6 +69,7 @@ Feature: Quick export many products from datagrid
       sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
       """
 
+  @critical
   Scenario: Successfully quick export selected products as a XLSX file
     Given I am on the products grid
     When I select rows boots, sneakers
