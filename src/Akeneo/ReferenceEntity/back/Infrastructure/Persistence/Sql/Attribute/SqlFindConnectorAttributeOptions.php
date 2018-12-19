@@ -80,7 +80,7 @@ SQL;
 
         $options = $additionalProperties['options'] ?? null;
 
-        if (null === $options || empty($options)) {
+        if (null === $options) {
             return null;
         }
 
