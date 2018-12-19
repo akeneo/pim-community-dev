@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductNotSubscribedException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
@@ -62,6 +63,8 @@ class UnsubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInt
             try {
                 $this->unsubscribeHandler->handle(new UnsubscribeProductCommand($item->getId()));
                 $this->stepExecution->incrementSummaryInfo('unsubscribed');
+            } catch (ProductNotSubscribedException $e) {
+                $this->stepExecution->incrementSummaryInfo('unsubscription_skipped_not_subscribed');
             } catch (ProductSubscriptionException $e) {
                 throw new InvalidItemException(
                     sprintf('Could not unsubscribe product: %s', $e->getMessage()),
