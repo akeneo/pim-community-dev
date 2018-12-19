@@ -72,9 +72,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
         $identifiersMappingProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(
-            InvalidMappingException::attributeNotFound('attributeNotFound', UpdateIdentifiersMappingHandler::class)
-        )->during('handle', [$command]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
     public function it_saves_the_identifiers_mapping(

@@ -54,7 +54,6 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
     public function it_is_thrown_if_identifier_mapping_is_missing_or_invalid(): void
     {
         $this->beConstructedThrough('missingOrInvalidIdentifiersInMapping', [
-            ['expected_attribute_code_1', 'expected_code_attribute_2'],
             ['an_attribute_code', 'another_attribute_code'],
             'className',
         ]);
@@ -78,7 +77,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('mandatoryAttributeMapping', ['foo', 'brand']);
 
         $this->getMessage()->shouldReturn(
-            'akeneo_suggest_data.entity.identifier_mapping.constraint.mandatory_attribute_mapping'
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.mandatory_identifier_mapping'
         );
         $this->getPath()->shouldReturn('brand');
     }
