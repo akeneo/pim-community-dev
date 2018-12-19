@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Proposal\ValueObject\ProposalAuthor;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -36,13 +37,10 @@ final class InitFranklinUserCommand extends Command
     /** @var array */
     private $userData = [
         'username' => ProposalAuthor::USERNAME,
-        'first_name' => 'PIM',
-        'middle_name' => 'dot',
-        'last_name' => 'ai',
+        'first_name' => 'Franklin',
+        'last_name' => 'Insights',
         'email' => 'admin@akeneo.com',
         'enabled' => false,
-        'user_default_locale' => 'en_US',
-        'catalog_default_locale' => 'en_US',
     ];
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -60,25 +58,31 @@ final class InitFranklinUserCommand extends Command
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $userRepository
      * @param SimpleFactoryInterface $userFactory
      * @param ObjectUpdaterInterface $userUpdater
      * @param SaverInterface $userSaver
      * @param ValidatorInterface $validator
+     * @param LocaleRepositoryInterface $localeRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $userRepository,
         SimpleFactoryInterface $userFactory,
         ObjectUpdaterInterface $userUpdater,
         SaverInterface $userSaver,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->userRepository = $userRepository;
         $this->userFactory = $userFactory;
         $this->userUpdater = $userUpdater;
         $this->userSaver = $userSaver;
         $this->validator = $validator;
+        $this->localeRepository = $localeRepository;
 
         parent::__construct();
     }
@@ -108,15 +112,33 @@ final class InitFranklinUserCommand extends Command
         }
 
         $user = $this->userFactory->create();
-        $this->userUpdater->update($user, array_merge($this->userData, ['password' => uniqid()]));
+        $this->userUpdater->update($user, $this->getUserData());
         $violations = $this->validator->validate($user);
 
         if (0 < count($violations)) {
-            throw new \InvalidArgumentException($violations);
+            throw new \InvalidArgumentException((string) $violations);
         }
 
         $this->userSaver->save($user);
 
         $output->writeln(sprintf('<info>Successfully created user "%s"</info>', ProposalAuthor::USERNAME));
+    }
+
+    /**
+     * @return array
+     */
+    private function getUserData(): array
+    {
+        $activeLocaleCodes = $this->localeRepository->getActivatedLocaleCodes();
+        $userLocale = in_array('en_US', $activeLocaleCodes) ? 'en_US' : $activeLocaleCodes[0];
+
+        return array_merge(
+            $this->userData,
+            [
+                'password' => uniqid(),
+                'user_default_locale' => $userLocale,
+                'catalog_default_locale' => $userLocale,
+            ]
+        );
     }
 }
