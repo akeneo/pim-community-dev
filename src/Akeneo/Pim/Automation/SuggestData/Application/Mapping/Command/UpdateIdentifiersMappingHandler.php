@@ -107,7 +107,9 @@ class UpdateIdentifiersMappingHandler
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
                 if (!$attribute instanceof AttributeInterface) {
-                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class, $franklinCode);
+                    throw new \InvalidArgumentException(
+                        sprintf('Attribute "%s" does not exist', $attributeCode)
+                    );
                 }
 
                 $identifiers[$franklinCode] = $attribute;

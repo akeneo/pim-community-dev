@@ -59,7 +59,6 @@ class UpdateIdentifiersMappingCommand
 
         if ($expectedKeys !== $mappingKeys) {
             throw InvalidMappingException::missingOrInvalidIdentifiersInMapping(
-                $expectedKeys,
                 $mappingKeys,
                 static::class
             );

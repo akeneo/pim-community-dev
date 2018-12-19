@@ -35,7 +35,7 @@ akeneo_suggest_data:
                 duplicate_attribute_code: "One mapping allowed per catalog attribute"
                 missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
                 attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
-                mandatory_attribute_mapping: "Brand & MPN mapping required"
+                mandatory_identifier_mapping: "Brand & MPN mapping required"
                 attribute_type: "The type of this attribute can not be set as identifier"
                 localizable_not_allowed: "Localizable attributes are not allowed as identifier"
                 scopable_not_allowed: "Scopable attributes are not allowed as identifier"

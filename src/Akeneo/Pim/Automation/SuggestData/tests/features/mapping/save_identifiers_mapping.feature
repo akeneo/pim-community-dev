@@ -17,7 +17,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | mpn           | mpn            |
       | upc           | ean            |
       | asin          | asin           |
-    Then the retrieved identifiers mapping should be the following:
+    Then the identifiers mapping should be saved as follows:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
@@ -38,7 +38,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | mpn           | mpn            |
       | upc           | sku            |
       | asin          | identifier     |
-    Then the retrieved identifiers mapping should be the following:
+    Then the identifiers mapping should be saved as follows:
       | franklin_code | attribute_code |
       | brand         | pim_brand      |
       | mpn           | mpn            |
@@ -53,7 +53,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
     When the identifiers are mapped as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
-    Then the retrieved identifiers mapping should be the following:
+    Then the identifiers mapping should be saved as follows:
       | franklin_code | attribute_code |
       | brand         |                |
       | mpn           |                |
@@ -74,6 +74,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
     Then the identifiers mapping should not be saved
+    And an invalid identifier pim_upc attribute type message should be sent
 
     Examples:
       | attribute_type                     |
@@ -93,22 +94,38 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | akeneo_reference_entity_collection |
       | akeneo_reference_entity            |
 
-  Scenario Outline: Fails to map Franklin identifiers with invalid PIM attributes properties
+  Scenario: Fails to map Franklin identifiers with localizable PIM attributes
     Given an empty identifiers mapping
     And the following attribute:
-      | code    | type             | localizable   | scopable   |
-      | pim_upc | pim_catalog_text | <localizable> | <scopable> |
+      | code    | type             | localizable |
+      | pim_upc | pim_catalog_text | true        |
     When the identifiers are mapped as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
     Then the identifiers mapping should not be saved
-    #And an invalid mapping message should be display
+    And an invalid identifier pim_upc localizable message should be sent
 
-    Examples:
-      | localizable | scopable |
-      | true        | false    |
-      | false       | true     |
-      | true        | true     |
+  Scenario: Fails to map Franklin identifiers with scopable PIM attributes
+    Given an empty identifiers mapping
+    And the following attribute:
+      | code    | type             | scopable |
+      | pim_upc | pim_catalog_text | true        |
+    When the identifiers are mapped as follows:
+      | franklin_code | attribute_code |
+      | upc           | pim_upc        |
+    Then the identifiers mapping should not be saved
+    And an invalid identifier pim_upc scopable message should be sent
+
+#  Scenario: Fails to map Franklin identifiers with locale specific PIM attributes
+#    Given an empty identifiers mapping
+#    And the following attribute:
+#      | code    | type             | locale specific |
+#      | pim_upc | pim_catalog_text | en_US           |
+#    When the identifiers are mapped as follows:
+#      | franklin_code | attribute_code |
+#      | upc           | pim_upc        |
+#    Then the identifiers mapping should not be saved
+#    And an invalid identifier pim_upc locale specific message should be sent
 
   Scenario: Fails to map Franklin identifiers with unexisting PIM attribute
     Given an empty identifiers mapping
@@ -116,6 +133,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | franklin_code | attribute_code |
       | brand         | burger         |
     Then the identifiers mapping should not be saved
+    And a not existing identifier attribute message should be sent
 
   Scenario: Fails to save an identifiers mapping with the brand without the MPN
     Given the predefined attributes pim_brand and EAN
@@ -125,6 +143,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | brand         | pim_brand      |
       | upc           | ean            |
     Then the identifiers mapping should not be saved
+    And an invalid brand mpn identifier message should be sent
 
   Scenario: Fails to save an identifiers mapping with the MPN without the brand
     Given the predefined attributes MPN and EAN
@@ -134,11 +153,13 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | mpn           | mpn            |
       | upc           | ean            |
     Then the identifiers mapping should not be saved
+    And an invalid brand mpn identifier message should be sent
 
   Scenario: Fails to save an empty identifiers mapping
     Given an empty identifiers mapping
     When the identifiers are mapped with empty values
     Then the identifiers mapping should not be saved
+    And a missing or invalid identifiers message should be sent
 
   Scenario: Fails to empty an identifiers mapping
     Given the predefined attributes ASIN
@@ -146,9 +167,11 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | franklin_code | attribute_code |
       | asin          | asin           |
     When the identifiers are mapped with empty values
-    Then the retrieved identifiers mapping should be the following:
-      | franklin_code | attribute_code |
-      | asin          | asin           |
+    Then the identifiers mapping should not be saved
+    And an invalid brand mpn identifier message should be sent
+    ### TODO
+
+  Scenario: Fails to map twice the same attribute on different identifiers
 
 #  Scenario: Fails to map identifiers mapping when the token is invalid
 #    Given the predefined attributes pim_brand, MPN, EAN and ASIN
@@ -186,8 +209,5 @@ Feature: Map the PIM identifiers with Franklin identifiers
     When the identifiers are mapped as follows:
       | franklin_code | attribute_code |
       | upc           | pim_upc        |
-    Then the retrieved identifiers mapping should be the following:
-      | franklin_code | attribute_code |
-      | upc           | ean            |
-      | asin          | asin           |
-    And an invalid mapping message should be sent
+    Then the identifiers mapping should not be saved
+    And a data provider error message should be sent

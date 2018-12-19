@@ -85,6 +85,7 @@ class IdentifiersMappingContext implements Context
      *
      * @param TableNode $table
      *
+     * @throws DataProviderException
      * @throws InvalidMappingException
      */
     public function aPredefinedIdentifiersMapping(TableNode $table): void
@@ -106,8 +107,21 @@ class IdentifiersMappingContext implements Context
         try {
             $command = new UpdateIdentifiersMappingCommand($identifiersMapping);
             $this->updateIdentifiersMappingHandler->handle($command);
-        } catch (InvalidMappingException | DataProviderException $exception) {
+        } catch (\Exception $exception) {
             $this->thrownException = $exception;
+        }
+    }
+
+    /**
+     * @When the identifiers are mapped with empty values
+     */
+    public function theIdentifiersMappingIsSavedWithEmptyValues(): void
+    {
+        try {
+            $command = new UpdateIdentifiersMappingCommand([]);
+            $this->updateIdentifiersMappingHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
         }
     }
 
@@ -133,19 +147,6 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @When the identifiers are mapped with empty values
-     */
-    public function theIdentifiersMappingIsSavedWithEmptyValues(): void
-    {
-        try {
-            $command = new UpdateIdentifiersMappingCommand([]);
-            $this->updateIdentifiersMappingHandler->handle($command);
-        } catch (InvalidMappingException $e) {
-            $this->thrownException = $e;
-        }
-    }
-
-    /**
      * @Then the identifiers mapping should not be saved
      */
     public function theIdentifiersMappingShouldNotBeSaved(): void
@@ -154,12 +155,83 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @Then the retrieved identifiers mapping should be the following:
+     * @Then an invalid identifier :pimAttribute attribute type message should be sent
+     *
+     * @param mixed $pimAttribute
+     */
+    public function anInvalidIdentifierAttributeTypeMessageShouldBeSent($pimAttribute): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::attributeType('foo', $pimAttribute)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid identifier :pimAttribute localizable message should be sent
+     *
+     * @param mixed $pimAttribute
+     */
+    public function anInvalidIdentifierLocalizableMessageShouldBeSent($pimAttribute): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::localizableNotAllowed('foo', $pimAttribute)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid identifier :pimAttribute scopable message should be sent
+     *
+     * @param mixed $pimAttribute
+     */
+    public function anInvalidIdentifierScopableMessageShouldBeSent($pimAttribute): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::scopableNotAllowed('foo', $pimAttribute)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then a not existing identifier attribute message should be sent
+     */
+    public function aNotExistingIdentifierAttributeMessageShouldBeSent(): void
+    {
+        Assert::assertInstanceOf(\InvalidArgumentException::class, $this->thrownException);
+    }
+
+    /**
+     * @Then a missing or invalid identifiers message should be sent
+     */
+    public function aMissingOrInvalidIdentifiersMessageShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::missingOrInvalidIdentifiersInMapping([], 'foo')->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then an invalid brand mpn identifier message should be sent
+     */
+    public function anInvalidBrandMpnIdentifierMessageShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::mandatoryAttributeMapping('foo', 'brand')->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
+     * @Then the identifiers mapping should be saved as follows:
      *
      * @param TableNode $table
      */
-    public function theRetrievedIdentifiersMappingIsTheFollowing(TableNode $table): void
+    public function theIdentifiersMappingShouldBeSavedAsFollows(TableNode $table): void
     {
+        Assert::assertNull($this->thrownException);
+
         $expectedIdentifiersMapping = $this->extractIdentifiersMappingFromTable($table);
 
         $this->assertIdentifiersMappingSentToFranklin($expectedIdentifiersMapping);
