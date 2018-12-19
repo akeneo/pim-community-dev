@@ -19,7 +19,7 @@ module.exports = async function (cucumber) {
       decorator: Header,
     },
     Modal: {
-      selector: '.modal--fullPage',
+      selector: '.modal',
       decorator: Modal,
     },
     Grid: {
