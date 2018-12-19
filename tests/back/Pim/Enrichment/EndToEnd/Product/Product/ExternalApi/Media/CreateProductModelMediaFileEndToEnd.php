@@ -25,6 +25,9 @@ class CreateProductModelMediaFileEndToEnd extends ApiTestCase
     /*** @var FilesystemInterface */
     private $fileSystem;
 
+    /**
+     * @critical
+     */
     public function testCreateAMediaFile()
     {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
