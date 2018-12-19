@@ -45,8 +45,13 @@ class GetConnectorAttributeOptionAction
             throw new NotFoundHttpException(sprintf('Reference entity "%s" does not exist.', $referenceEntityIdentifier));
         }
 
-        $attributeCode = AttributeCode::fromString($attributeCode);
-        $optionCode = OptionCode::fromString($optionCode);
+        try {
+            $attributeCode = AttributeCode::fromString($attributeCode);
+            $optionCode = OptionCode::fromString($optionCode);
+        } catch (\Exception $e)
+        {
+            throw new UnprocessableEntityHttpException($e->getMessage());
+        }
 
         $attributeOption = ($this->findConnectorAttributeOptionQuery)($referenceEntityIdentifier, $attributeCode, $optionCode);
 
