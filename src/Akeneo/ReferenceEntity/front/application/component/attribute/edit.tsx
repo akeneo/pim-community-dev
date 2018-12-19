@@ -25,10 +25,16 @@ import {getAttributeView} from 'akeneoreferenceentity/application/configuration/
 import Key from 'akeneoreferenceentity/tools/key';
 import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
+import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 interface OwnProps {
-  canEditAttribute: boolean;
-  canDeleteAttribute: boolean;
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  };
 }
 
 interface StateProps extends OwnProps {
@@ -65,7 +71,13 @@ const getAdditionalProperty = (
   onSubmit: () => void,
   errors: ValidationError[],
   locale: string,
-  readOnly: boolean
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  }
 ): JSX.Element => {
   const AttributeView = getAttributeView(attribute);
 
@@ -76,7 +88,7 @@ const getAdditionalProperty = (
       onSubmit={onSubmit}
       errors={errors}
       locale={locale}
-      readOnly={readOnly}
+      rights={rights}
     />
   );
 };
@@ -124,9 +136,6 @@ class Edit extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] | null {
     const label = this.props.attribute.getLabel(this.props.context.locale);
-    const textInputClassName = `AknTextField AknTextField--light
-      ${!this.props.canEditAttribute ? 'AknTextField--disabled' : ''}
-    `;
 
     return (
       <React.Fragment>
@@ -152,13 +161,13 @@ class Edit extends React.Component<EditProps> {
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
-                    className={textInputClassName}
+                    className={getTextInputClassName(this.props.rights.attribute.edit)}
                     id="pim_reference_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
-                    readOnly={!this.props.canEditAttribute}
+                    readOnly={!this.props.rights.attribute.edit}
                   />
                   <Flag
                     locale={createLocaleFromCode(this.props.context.locale)}
@@ -210,11 +219,11 @@ class Edit extends React.Component<EditProps> {
                       id="pim_reference_entity.attribute.edit.input.is_required"
                       value={this.props.attribute.isRequired}
                       onChange={this.props.events.onIsRequiredUpdated}
-                      readOnly={!this.props.canEditAttribute}
+                      readOnly={!this.props.rights.attribute.edit}
                     />
                     <span
                       onClick={() => {
-                        if (this.props.canEditAttribute) {
+                        if (this.props.rights.attribute.edit) {
                           this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
                         }
                       }}
@@ -232,12 +241,12 @@ class Edit extends React.Component<EditProps> {
                   this.props.events.onSubmit,
                   this.props.errors,
                   this.props.context.locale,
-                  !this.props.canEditAttribute
+                  this.props.rights
                 )}
               </ErrorBoundary>
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
-              {this.props.canDeleteAttribute ? (
+              {this.props.rights.attribute.delete ? (
                 <span
                   className="AknButton AknButton--delete"
                   tabIndex={0}
@@ -262,7 +271,7 @@ class Edit extends React.Component<EditProps> {
               >
                 {__('pim_reference_entity.attribute.edit.cancel')}
               </span>
-              {this.props.canEditAttribute ? (
+              {this.props.rights.attribute.edit ? (
                 <span
                   title={__('pim_reference_entity.attribute.edit.save')}
                   className="AknButton AknButton--small AknButton--apply AknButton--spaced"

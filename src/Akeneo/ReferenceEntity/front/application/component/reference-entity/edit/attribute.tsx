@@ -124,7 +124,13 @@ interface AttributeViewProps {
   attribute: NormalizedAttribute;
   onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   locale: string;
-  canEditAttribute: boolean;
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  };
 }
 
 class AttributeView extends React.Component<AttributeViewProps> {
@@ -136,7 +142,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
   }
 
   render() {
-    const {onAttributeEdit, locale, canEditAttribute} = this.props;
+    const {onAttributeEdit, locale, rights} = this.props;
     const attribute = denormalizeAttribute(this.props.attribute);
     const icon = getAttributeIcon(attribute.getType());
 
@@ -168,7 +174,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             readOnly
             tabIndex={-1}
           />
-          {canEditAttribute ? (
+          {rights.attribute.edit ? (
             <button
               className="AknIconButton AknIconButton--edit"
               onClick={() => onAttributeEdit(attribute.getIdentifier())}
@@ -238,7 +244,7 @@ class AttributesView extends React.Component<CreateProps> {
                           attribute={attribute}
                           onAttributeEdit={this.props.events.onAttributeEdit}
                           locale={this.props.context.locale}
-                          canEditAttribute={this.props.rights.attribute.edit}
+                          rights={this.props.rights}
                         />
                       </ErrorBoundary>
                     ))}
@@ -247,8 +253,7 @@ class AttributesView extends React.Component<CreateProps> {
               </div>
               {this.props.editAttribute ? (
                 <AttributeEditForm
-                  canEditAttribute={this.props.rights.attribute.edit}
-                  canDeleteAttribute={this.props.rights.attribute.delete}
+                  rights={this.props.rights}
                 />
               ) : null}
             </div>
