@@ -16,9 +16,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class DataProviderException extends \Exception
+final class DataProviderException extends \Exception
 {
-    private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
+    private const CONSTRAINT_KEY = 'akeneo_suggest_data.entity.data_provider.constraint.%s';
 
     /** @var array */
     private $messageParams;
@@ -33,7 +33,7 @@ class DataProviderException extends \Exception
         string $message,
         array $messageParams,
         int $code,
-        ?\Exception $previous
+        \Exception $previous
     ) {
         parent::__construct($message, $code, $previous);
 
@@ -47,7 +47,7 @@ class DataProviderException extends \Exception
      */
     public static function serverIsDown(\Exception $previousException): self
     {
-        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'ask_franklin_down');
+        $message = sprintf(self::CONSTRAINT_KEY, 'ask_franklin_down');
 
         return new static($message, [], 500, $previousException);
     }

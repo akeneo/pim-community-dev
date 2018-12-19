@@ -138,6 +138,30 @@ class InvalidMappingException extends \Exception
     }
 
     /**
+     * @param string $attributeCode
+     *
+     * @return InvalidMappingException
+     */
+    public static function localizableNotAllowed(string $attributeCode): self
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'localizable_not_allowed');
+
+        return new static(self::class, $message, [], $attributeCode);
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return InvalidMappingException
+     */
+    public static function scopableNotAllowed(string $attributeCode): self
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'scopable_not_allowed');
+
+        return new static(self::class, $message, [], $attributeCode);
+    }
+
+    /**
      * @return string
      */
     public function getClassName(): string

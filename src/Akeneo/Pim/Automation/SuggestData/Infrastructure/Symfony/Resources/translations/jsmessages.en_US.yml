@@ -9,6 +9,8 @@ pim_menu:
 
 akeneo_suggest_data:
     entity:
+        data_provider:
+            ask_franklin_down: "Your request has not been delivered. Ask Franklin server does not respond."
         identifier_mapping:
             plural_label: Identifiers
             flash:
@@ -35,7 +37,8 @@ akeneo_suggest_data:
                 attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
                 mandatory_attribute_mapping: "Brand & MPN mapping required"
                 attribute_type: "The type of this attribute can not be set as identifier"
-                ask_franklin_down: "Identifiers mapping cannot be saved, as Ask Franklin does not respond."
+                localizable_not_allowed: "Localizable attributes are not allowed as identifier"
+                scopable_not_allowed: "Scopable attributes are not allowed as identifier"
         attributes_mapping:
             label: Attributes mapping
             fields:

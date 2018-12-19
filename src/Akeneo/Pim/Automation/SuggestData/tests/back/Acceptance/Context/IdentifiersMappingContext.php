@@ -121,6 +121,18 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
+     * @Then a data provider error message should be sent
+     */
+    public function aDataProviderErrorMessageShouldBeSent(): void
+    {
+        Assert::assertInstanceOf(DataProviderException::class, $this->thrownException);
+        Assert::assertEquals(
+            DataProviderException::serverIsDown(new \Exception())->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
      * @When the identifiers are mapped with empty values
      */
     public function theIdentifiersMappingIsSavedWithEmptyValues(): void

@@ -78,7 +78,7 @@ class UpdateIdentifiersMappingHandler
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
         $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
-        $this->validateAttributeTypes($identifiers);
+        $this->validateAttributes($identifiers);
         $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
@@ -120,7 +120,7 @@ class UpdateIdentifiersMappingHandler
     /**
      * @param array $identifiers
      */
-    private function validateAttributeTypes(array $identifiers): void
+    private function validateAttributes(array $identifiers): void
     {
         foreach ($identifiers as $identifier => $attribute) {
             if (empty($attribute)) {
@@ -132,6 +132,14 @@ class UpdateIdentifiersMappingHandler
                     static::class,
                     $identifier
                 );
+            }
+
+            if ($attribute->isLocalizable()) {
+                throw InvalidMappingException::localizableNotAllowed($identifier, $attribute->getCode());
+            }
+
+            if ($attribute->isScopable()) {
+                throw new InvalidMappingException(null);
             }
         }
     }
