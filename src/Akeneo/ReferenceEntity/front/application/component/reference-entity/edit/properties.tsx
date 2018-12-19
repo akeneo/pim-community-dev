@@ -115,7 +115,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
               locale={this.props.context.locale}
               data={this.props.form.data}
               errors={this.props.form.errors}
-              canEditReferenceEntity={this.props.rights.referenceEntity.edit}
+              rights={this.props.rights}
             />
           </div>
         </div>

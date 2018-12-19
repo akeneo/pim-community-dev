@@ -1,3 +1,4 @@
+
 Feature: Lists all attributes related to a reference entity
   In order to see the structure of a reference entity
   As a user

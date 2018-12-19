@@ -59,7 +59,7 @@ const TextView = ({
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
-  canEditAttribute
+  canEditAttribute,
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;
