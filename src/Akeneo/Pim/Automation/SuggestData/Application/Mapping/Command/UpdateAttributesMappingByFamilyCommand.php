@@ -77,6 +77,10 @@ class UpdateAttributesMappingByFamilyCommand
      */
     private function validate(array $mapping): void
     {
+        if (empty($mapping)) {
+            throw InvalidMappingException::emptyMapping();
+        }
+
         foreach ($mapping as $targetKey => $mappingRow) {
             if (!is_string($targetKey)) {
                 throw InvalidMappingException::expectedTargetKey();

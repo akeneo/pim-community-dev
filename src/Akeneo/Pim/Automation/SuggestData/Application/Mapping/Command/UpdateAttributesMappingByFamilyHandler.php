@@ -104,6 +104,18 @@ class UpdateAttributesMappingByFamilyHandler
 
         $this->validateAttributeType($attribute->getType());
 
+        if ($attribute->isLocalizable()) {
+            throw AttributeMappingException::localizableAttributeNotAllowed();
+        }
+
+        if ($attribute->isScopable()) {
+            throw AttributeMappingException::scopableAttributeNotAllowed();
+        }
+
+        if ($attribute->isLocaleSpecific()) {
+            throw AttributeMappingException::localeSpecificAttributeNotAllowed();
+        }
+
         $attributeMapping->setAttribute($attribute);
     }
 

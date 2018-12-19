@@ -66,6 +66,16 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
+     * @return InvalidMappingException
+     */
+    public static function emptyMapping()
+    {
+        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'empty_mapping');
+
+        return new self(null, $message, [], '', 400);
+    }
+
+    /**
      * @param mixed $targetKey
      * @param mixed $expectedKey
      *
