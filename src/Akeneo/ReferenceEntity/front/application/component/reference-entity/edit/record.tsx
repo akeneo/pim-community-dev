@@ -53,6 +53,7 @@ interface StateProps {
   rights: {
     record: {
       create: boolean;
+      edit: boolean;
       deleteAll: boolean;
       delete: boolean;
     }
@@ -168,6 +169,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
             grid={grid}
             cellViews={this.state.cellViews}
             referenceEntity={referenceEntity}
+            rights={rights}
           />
         ) : (
           <div className="AknGridContainer-noData">
@@ -249,9 +251,13 @@ export default connect(
         record: {
           create: securityContext.isGranted('akeneo_referenceentity_record_create') &&
             canEditReferenceEntity(),
-          deleteAll: securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
             canEditReferenceEntity(),
-          delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
+          deleteAll: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_records_delete_all') &&
+            canEditReferenceEntity(),
+          delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
             canEditReferenceEntity(),
         }
       },

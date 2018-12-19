@@ -16,7 +16,7 @@ import {
 } from 'akeneoreferenceentity/application/action/record/edit';
 import {deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
-const securityContext = require('pim/security-context');
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 import File from 'akeneoreferenceentity/domain/model/file';
 import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
@@ -31,6 +31,8 @@ import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-r
 import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 import CompletenessLabel from '../app/completeness';
 
+const securityContext = require('pim/security-context');
+
 interface StateProps {
   sidebar: {
     tabs: Tab[];
@@ -43,9 +45,12 @@ interface StateProps {
     locale: string;
     channel: string;
   };
-  acls: {
-    create: boolean;
-    delete: boolean;
+  rights: {
+    record: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    }
   };
   record: NormalizedRecord;
   structure: {
@@ -179,7 +184,7 @@ class RecordEditView extends React.Component<EditProps> {
                             />
                           </div>
                           <div className="AknButtonList">
-                            {this.getSecondaryActions(this.props.acls.delete)}
+                            {this.getSecondaryActions(this.props.rights.record.delete)}
                             <div className="AknTitleContainer-rightButton">
                               <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
                                 {__('pim_reference_entity.record.button.save')}
@@ -266,9 +271,16 @@ export default connect(
         locales: state.structure.locales,
         channels: state.structure.channels,
       },
-      acls: {
-        create: securityContext.isGranted('akeneo_referenceentity_record_create'),
-        delete: securityContext.isGranted('akeneo_referenceentity_record_delete'),
+      rights: {
+        record: {
+          create: securityContext.isGranted('akeneo_referenceentity_record_create') &&
+            canEditReferenceEntity(),
+          edit: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            canEditReferenceEntity(),
+          delete: securityContext.isGranted('akeneo_referenceentity_record_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_record_delete') &&
+            canEditReferenceEntity(),
+        }
       },
       confirmDelete,
     };

@@ -32,6 +32,14 @@ interface TableState {
   cellViews: CellViews;
   recordCount: number;
   referenceEntity: ReferenceEntity;
+  rights: {
+    record: {
+      create: boolean;
+      edit: boolean;
+      deleteAll: boolean;
+      delete: boolean;
+    }
+  };
 }
 
 const columnCollectionsAreDifferent = (firstCollumnCollection: Column[], secondColumnCollection: Column[]): boolean => {
@@ -167,7 +175,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews} = this.props;
+    const {grid, locale, channel, onRedirectToRecord, onDeleteRecord, recordCount, cellViews, rights} = this.props;
     const userSearch = getFilter(grid.filters, 'full_text').value;
     const completenessValue = getCompletenessFilter(grid.filters);
     const columnsToDisplay = this.getColumnsToDisplay(grid.columns, channel, locale);
@@ -251,6 +259,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
                     onRedirectToRecord={onRedirectToRecord}
                     onDeleteRecord={onDeleteRecord}
                     recordCount={recordCount}
+                    rights={rights}
                   />
                 </tbody>
               </table>

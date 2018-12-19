@@ -10,14 +10,21 @@ const memo = (React as any).memo;
 const ActionRow = memo(
   ({
     record,
-    placeholder = false,
     locale,
+    placeholder = false,
+    rights,
     onRedirectToRecord,
     onDeleteRecord,
   }: {
     record: NormalizedRecord;
     locale: string;
     placeholder?: boolean;
+    rights: {
+      record: {
+        edit: boolean;
+        delete: boolean;
+      }
+    };
   } & {
     onRedirectToRecord: (record: NormalizedRecord) => void;
     onDeleteRecord: (recordCode: RecordCode, label: string) => void;
@@ -42,6 +49,9 @@ const ActionRow = memo(
         : '';
 
     const label = getLabel(record.labels, locale, record.code);
+    const accesButtonClassName = (rights.record.edit) ?
+      "AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item":
+      "AknIconButton AknIconButton--small AknIconButton--view AknButtonList-item";
 
     return (
       <tr
@@ -50,25 +60,27 @@ const ActionRow = memo(
       >
         <td className="AknGrid-bodyCell AknGrid-bodyCell--action">
           <div className="AknButtonList AknButtonList--right">
-            <span
-              tabIndex={0}
-              onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                event.preventDefault();
+            {rights.record.delete ? (
+              <span
+                tabIndex={0}
+                onKeyPress={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                  event.preventDefault();
 
-                onDeleteRecord(RecordCode.create(record.code), label);
+                  onDeleteRecord(RecordCode.create(record.code), label);
 
-                return false;
-              }}
-              className="AknIconButton AknIconButton--small AknIconButton--trash AknButtonList-item"
-              data-identifier={record.identifier}
-              onClick={event => {
-                event.preventDefault();
+                  return false;
+                }}
+                className="AknIconButton AknIconButton--small AknIconButton--trash AknButtonList-item"
+                data-identifier={record.identifier}
+                onClick={event => {
+                  event.preventDefault();
 
-                onDeleteRecord(RecordCode.create(record.code), label);
+                  onDeleteRecord(RecordCode.create(record.code), label);
 
-                return false;
-              }}
-            />
+                  return false;
+                }}
+              />
+            ) : null}
             <a
               tabIndex={0}
               href={path}
@@ -78,7 +90,7 @@ const ActionRow = memo(
 
                 return false;
               }}
-              className="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item"
+              className={accesButtonClassName}
               data-identifier={record.identifier}
               onClick={event => {
                 event.preventDefault();
@@ -103,6 +115,7 @@ const ActionRows = memo(
     onRedirectToRecord,
     onDeleteRecord,
     recordCount,
+    rights,
   }: {
     records: NormalizedRecord[];
     locale: string;
@@ -110,6 +123,12 @@ const ActionRows = memo(
     onRedirectToRecord: (record: NormalizedRecord) => void;
     onDeleteRecord: (recordCode: RecordCode, label: string) => void;
     recordCount: number;
+    rights: {
+      record: {
+        edit: boolean;
+        delete: boolean;
+      }
+    };
   }) => {
     if (placeholder) {
       const record = {
@@ -131,6 +150,7 @@ const ActionRows = memo(
           locale={locale}
           onRedirectToRecord={() => {}}
           onDeleteRecord={() => {}}
+          rights={rights}
         />
       ));
     }
@@ -144,6 +164,7 @@ const ActionRows = memo(
           locale={locale}
           onRedirectToRecord={onRedirectToRecord}
           onDeleteRecord={onDeleteRecord}
+          rights={rights}
         />
       );
     });
