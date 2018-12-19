@@ -278,7 +278,11 @@ class AttributesView extends React.Component<CreateProps> {
             </React.Fragment>
           )}
           {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
-          {this.props.options.isActive ? <ManageOptionsView /> : null}
+          {this.props.options.isActive ? (
+            <ManageOptionsView
+              rights={this.props.rights}
+            />
+          ) : null}
         </div>
       </React.Fragment>
     );
