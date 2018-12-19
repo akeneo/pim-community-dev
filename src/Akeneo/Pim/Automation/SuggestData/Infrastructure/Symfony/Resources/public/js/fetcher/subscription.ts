@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import BaseFetcher = require('pim/base-fetcher');
+const BaseFetcher = require('pim/base-fetcher');
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -22,10 +22,12 @@ class SubscriptionFetcher extends BaseFetcher {
   public count(searchOptions: any): JQueryPromise<any> {
     const url = this.options.urls.count;
 
-    return this.getJSON(url, searchOptions).then((result) => {
+    return this.getJSON(url, searchOptions).then((result: any) => {
       console.log(result);
 
       return 123456;
     }).promise();
   }
 }
+
+export = SubscriptionFetcher;

@@ -11,6 +11,7 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
 const MappingSaver = require('akeneo/suggest-data/saver/identifiers-mapping');
+const Dialog = require('pim/dialog');
 
 interface Mapping {
   [franklinAttribute: string]: (string | null);
@@ -49,6 +50,21 @@ class MappingSave extends BaseSave {
    * {@inheritdoc}
    */
   public save(): void {
+    Dialog.confirm(
+      'Changing the mapping may impact x subscriptions. Are you sure?',
+      'Warning',
+      () => { this.executeSave(); },
+      null,
+      null,
+      null,
+      'robot'
+    );
+  }
+
+  /**
+   * Execute for real the query to save mapping.
+   */
+  private executeSave(): void {
     let identifiersMapping = $.extend(true, {}, this.getFormData());
     this.showLoadingMask();
     this.getRoot().trigger('pim_enrich:form:entity:pre_save');
