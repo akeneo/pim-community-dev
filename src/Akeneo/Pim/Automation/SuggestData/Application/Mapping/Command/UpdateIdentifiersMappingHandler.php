@@ -78,7 +78,7 @@ class UpdateIdentifiersMappingHandler
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
         $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
-        $this->validateAttributes($identifiers);
+        $this->validateMappedIdentifiers($identifiers);
         $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
@@ -122,7 +122,7 @@ class UpdateIdentifiersMappingHandler
     /**
      * @param array $identifiers
      */
-    private function validateAttributes(array $identifiers): void
+    private function validateMappedIdentifiers(array $identifiers): void
     {
         foreach ($identifiers as $identifier => $attribute) {
             if (empty($attribute)) {
