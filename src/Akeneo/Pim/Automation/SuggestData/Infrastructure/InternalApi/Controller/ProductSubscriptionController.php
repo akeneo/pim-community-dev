@@ -110,4 +110,16 @@ class ProductSubscriptionController
             return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+
+    /**
+     * // TODO ACL ?
+     *
+     * @return JsonResponse
+     */
+    public function countAction(): JsonResponse
+    {
+        // TODO.
+
+        return new JsonResponse(['count' => 0]);
+    }
 }

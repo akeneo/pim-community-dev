@@ -19,13 +19,11 @@ class SubscriptionFetcher extends BaseFetcher {
    * @param {Object} searchOptions
    * @return {Promise}
    */
-  public count(searchOptions: any): JQueryPromise<any> {
+  public count(searchOptions: any): JQueryPromise<number> {
     const url = this.options.urls.count;
 
-    return this.getJSON(url, searchOptions).then((result: any) => {
-      console.log(result);
-
-      return 123456;
+    return this.getJSON(url, searchOptions).then((result: {count: number}) => {
+      return result.count;
     }).promise();
   }
 }

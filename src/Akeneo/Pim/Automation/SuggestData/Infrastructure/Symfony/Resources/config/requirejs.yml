@@ -45,7 +45,7 @@ config:
                     module: akeneo/suggest-data/fetcher/subscription
                     options:
                         urls:
-                            count: akeneo_suggest_data_susbscription_count
+                            count: akeneo_suggest_data_franklin_subsbscription_count
 
     paths:
         # Common

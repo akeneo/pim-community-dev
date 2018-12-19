@@ -50,15 +50,21 @@ class MappingSave extends BaseSave {
    * {@inheritdoc}
    */
   public save(): void {
-    Dialog.confirm(
-      'Changing the mapping may impact x subscriptions. Are you sure?',
-      'Warning',
-      () => { this.executeSave(); },
-      null,
-      null,
-      null,
-      'robot'
-    );
+    FetcherRegistry.getFetcher('subscription').count().then((count: number) => {
+      if (count > 0) {
+        Dialog.confirm(
+          'Changing the mapping may impact ' + count + ' subscriptions. Are you sure?',
+          'Warning',
+          this.executeSave,
+          null,
+          null,
+          null,
+          'robot'
+        );
+      } else {
+        this.executeSave();
+      }
+    });
   }
 
   /**
