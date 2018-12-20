@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Exception;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
+
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -69,7 +71,6 @@ class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param array $expectedIdentifiers
      * @param array $givenIdentifiers
      * @param string $className
      * @param string|null $path
@@ -77,14 +78,13 @@ class InvalidMappingException extends \Exception
      * @return static
      */
     public static function missingOrInvalidIdentifiersInMapping(
-        array $expectedIdentifiers,
         array $givenIdentifiers,
         string $className,
         string $path = null
     ) {
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'missing_or_invalid_identifiers');
         $messageParams = [
-            'expected' => implode($expectedIdentifiers, ', '),
+            'expected' => implode(IdentifiersMapping::FRANKLIN_IDENTIFIERS, ', '),
             'given' => implode($givenIdentifiers, ', '),
         ];
 
@@ -119,7 +119,7 @@ class InvalidMappingException extends \Exception
      */
     public static function mandatoryAttributeMapping(string $className, string $missingAttributeCode)
     {
-        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'mandatory_attribute_mapping');
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'mandatory_identifier_mapping');
 
         return new static($className, $message, [], $missingAttributeCode);
     }
@@ -135,6 +135,42 @@ class InvalidMappingException extends \Exception
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'attribute_type');
 
         return new static($className, $message, [], $attributeCode);
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return InvalidMappingException
+     */
+    public static function localizableAttributeNotAllowed(string $attributeCode): self
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'localizable_not_allowed');
+
+        return new static(self::class, $message, [], $attributeCode);
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return InvalidMappingException
+     */
+    public static function scopableAttributeNotAllowed(string $attributeCode): self
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'scopable_not_allowed');
+
+        return new static(self::class, $message, [], $attributeCode);
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return InvalidMappingException
+     */
+    public static function localeSpecificAttributeNotAllowed(string $attributeCode): self
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'locale_specific_not_allowed');
+
+        return new static(self::class, $message, [], $attributeCode);
     }
 
     /**

@@ -72,9 +72,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
         $identifiersMappingProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(
-            InvalidMappingException::attributeNotFound('attributeNotFound', UpdateIdentifiersMappingHandler::class)
-        )->during('handle', [$command]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$command]);
     }
 
     public function it_saves_the_identifiers_mapping(
@@ -103,9 +101,24 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('id')->willReturn($id);
 
         $manufacturer->getType()->willReturn('pim_catalog_text');
+        $manufacturer->isLocalizable()->willReturn(false);
+        $manufacturer->isScopable()->willReturn(false);
+        $manufacturer->isLocaleSpecific()->willReturn(false);
+
         $model->getType()->willReturn('pim_catalog_text');
+        $model->isLocalizable()->willReturn(false);
+        $model->isScopable()->willReturn(false);
+        $model->isLocaleSpecific()->willReturn(false);
+
         $ean->getType()->willReturn('pim_catalog_text');
+        $ean->isLocalizable()->willReturn(false);
+        $ean->isScopable()->willReturn(false);
+        $ean->isLocaleSpecific()->willReturn(false);
+
         $id->getType()->willReturn('pim_catalog_text');
+        $id->isLocalizable()->willReturn(false);
+        $id->isScopable()->willReturn(false);
+        $id->isLocaleSpecific()->willReturn(false);
 
         $identifiersMapping = new IdentifiersMapping();
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
@@ -162,8 +175,16 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
         $manufacturer->getType()->willReturn('pim_catalog_text');
+        $manufacturer->isLocalizable()->willReturn(false);
+        $manufacturer->isScopable()->willReturn(false);
+        $manufacturer->isLocaleSpecific()->willReturn(false);
+
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
         $ean->getType()->willReturn('pim_catalog_text');
+        $ean->isLocalizable()->willReturn(false);
+        $ean->isScopable()->willReturn(false);
+        $ean->isLocaleSpecific()->willReturn(false);
+
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
         $identifiersMappingProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
@@ -171,11 +192,11 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_mpn_is_saved_without_brand(
+        $identifiersMappingRepository,
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingWebService $identifiersMappingWebService,
         AttributeInterface $model,
-        AttributeInterface $ean,
-        $identifiersMappingRepository
+        AttributeInterface $ean
     ): void {
         $command = new UpdateIdentifiersMappingCommand(
             [
@@ -188,11 +209,109 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $model->getType()->willReturn('pim_catalog_text');
+        $model->isLocalizable()->willReturn(false);
+        $model->isScopable()->willReturn(false);
+        $model->isLocaleSpecific()->willReturn(false);
+
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
         $ean->getType()->willReturn('pim_catalog_text');
+        $ean->isLocalizable()->willReturn(false);
+        $ean->isScopable()->willReturn(false);
+        $ean->isLocaleSpecific()->willReturn(false);
+
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
         $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_when_mapped_attribute_is_localizable(
+        $identifiersMappingRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingWebService $identifiersMappingWebService,
+        AttributeInterface $attrEan
+    ): void {
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'brand' => null,
+                'mpn' => null,
+                'upc' => 'ean',
+                'asin' => null,
+            ]
+        );
+
+        $attributeRepository->findOneByIdentifier('ean')->willReturn($attrEan);
+        $attrEan->getCode()->willReturn('ean');
+        $attrEan->getType()->willReturn('pim_catalog_text');
+        $attrEan->isLocalizable()->willReturn(true);
+        $attrEan->isScopable()->willReturn(false);
+        $attrEan->isLocaleSpecific()->willReturn(false);
+
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow(InvalidMappingException::localizableAttributeNotAllowed('ean'))
+            ->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_when_mapped_attribute_is_scopable(
+        $identifiersMappingRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingWebService $identifiersMappingWebService,
+        AttributeInterface $attrAsin
+    ): void {
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'brand' => null,
+                'mpn' => null,
+                'upc' => null,
+                'asin' => 'pim_asin',
+            ]
+        );
+
+        $attributeRepository->findOneByIdentifier('pim_asin')->willReturn($attrAsin);
+        $attrAsin->getCode()->willReturn('pim_asin');
+        $attrAsin->getType()->willReturn('pim_catalog_text');
+        $attrAsin->isLocalizable()->willReturn(false);
+        $attrAsin->isScopable()->willReturn(true);
+        $attrAsin->isLocaleSpecific()->willReturn(false);
+
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow(InvalidMappingException::scopableAttributeNotAllowed('pim_asin'))
+            ->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_when_mapped_attribute_is_locale_specific(
+        $identifiersMappingRepository,
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingWebService $identifiersMappingWebService,
+        AttributeInterface $attrAsin
+    ): void {
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'brand' => null,
+                'mpn' => null,
+                'upc' => null,
+                'asin' => 'pim_asin',
+            ]
+        );
+
+        $attributeRepository->findOneByIdentifier('pim_asin')->willReturn($attrAsin);
+        $attrAsin->getCode()->willReturn('pim_asin');
+        $attrAsin->getType()->willReturn('pim_catalog_text');
+        $attrAsin->isLocalizable()->willReturn(false);
+        $attrAsin->isScopable()->willReturn(false);
+        $attrAsin->isLocaleSpecific()->willReturn(true);
+
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
+
+        $this
+            ->shouldThrow(InvalidMappingException::localeSpecificAttributeNotAllowed('pim_asin'))
+            ->during('handle', [$command]);
     }
 }

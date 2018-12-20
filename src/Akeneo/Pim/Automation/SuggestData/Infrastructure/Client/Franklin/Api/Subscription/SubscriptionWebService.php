@@ -34,7 +34,14 @@ use Symfony\Component\HttpFoundation\Response;
 class SubscriptionWebService extends AbstractApi implements AuthenticatedApiInterface
 {
     /**
-     * {@inheritdoc}
+     * @param RequestCollection $request
+     *
+     * @throws BadRequestException
+     * @throws FranklinServerException
+     * @throws InsufficientCreditsException
+     * @throws InvalidTokenException
+     *
+     * @return ApiResponse
      */
     public function subscribe(RequestCollection $request): ApiResponse
     {

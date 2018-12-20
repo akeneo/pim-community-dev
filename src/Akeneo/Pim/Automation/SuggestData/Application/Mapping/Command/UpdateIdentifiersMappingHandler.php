@@ -78,7 +78,7 @@ class UpdateIdentifiersMappingHandler
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
         $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
-        $this->validateAttributeTypes($identifiers);
+        $this->validateMappedIdentifiers($identifiers);
         $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
         $identifiersMapping = $this->identifiersMappingRepository->find();
@@ -95,7 +95,7 @@ class UpdateIdentifiersMappingHandler
     /**
      * @param array $identifiers
      *
-     * @throws InvalidMappingException If attribute does not exist
+     * @throws \InvalidArgumentException If attribute does not exist
      *
      * @return array
      */
@@ -107,7 +107,9 @@ class UpdateIdentifiersMappingHandler
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
                 if (!$attribute instanceof AttributeInterface) {
-                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class, $franklinCode);
+                    throw new \InvalidArgumentException(
+                        sprintf('Attribute "%s" does not exist', $attributeCode)
+                    );
                 }
 
                 $identifiers[$franklinCode] = $attribute;
@@ -119,8 +121,10 @@ class UpdateIdentifiersMappingHandler
 
     /**
      * @param array $identifiers
+     *
+     * @throws InvalidMappingException
      */
-    private function validateAttributeTypes(array $identifiers): void
+    private function validateMappedIdentifiers(array $identifiers): void
     {
         foreach ($identifiers as $identifier => $attribute) {
             if (empty($attribute)) {
@@ -132,6 +136,18 @@ class UpdateIdentifiersMappingHandler
                     static::class,
                     $identifier
                 );
+            }
+
+            if ($attribute->isLocalizable()) {
+                throw InvalidMappingException::localizableAttributeNotAllowed($attribute->getCode());
+            }
+
+            if ($attribute->isScopable()) {
+                throw InvalidMappingException::scopableAttributeNotAllowed($attribute->getCode());
+            }
+
+            if ($attribute->isLocaleSpecific()) {
+                throw InvalidMappingException::localeSpecificAttributeNotAllowed($attribute->getCode());
             }
         }
     }

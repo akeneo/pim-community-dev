@@ -77,7 +77,6 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
 
         $this->shouldThrow(
             InvalidMappingException::missingOrInvalidIdentifiersInMapping(
-                $expected,
                 $given,
                 UpdateIdentifiersMappingCommand::class
             )

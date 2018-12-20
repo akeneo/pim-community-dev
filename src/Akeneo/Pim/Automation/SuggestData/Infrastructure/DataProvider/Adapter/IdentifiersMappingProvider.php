@@ -18,7 +18,9 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Common\Exception\DataProviderExcept
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Api\IdentifiersMapping\IdentifiersMappingWebService;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\FranklinServerException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -52,8 +54,12 @@ class IdentifiersMappingProvider extends AbstractProvider implements Identifiers
 
         try {
             $this->api->update($normalizer->normalize($identifiersMapping));
-        } catch (FranklinServerException $exception) {
-            throw DataProviderException::serverIsDown($exception);
+        } catch (FranklinServerException $e) {
+            throw DataProviderException::serverIsDown($e);
+        } catch (InvalidTokenException $e) {
+            throw DataProviderException::authenticationError($e);
+        } catch (BadRequestException $e) {
+            throw DataProviderException::badRequestError($e);
         }
     }
 }

@@ -9,6 +9,10 @@ pim_menu:
 
 akeneo_suggest_data:
     entity:
+        data_provider:
+            ask_franklin_down: "Your request has not been delivered. Franklin Insights server does not respond."
+            authentication_error: "Sorry, failed to authenticate to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help."
+            bad_request_error: "Sorry, an problem occured communicating with Franklin Insights. Please contact your administrator."
         identifier_mapping:
             plural_label: Identifiers
             flash:
@@ -32,10 +36,11 @@ akeneo_suggest_data:
             constraint:
                 duplicate_attribute_code: "One mapping allowed per catalog attribute"
                 missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
-                attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
-                mandatory_attribute_mapping: "Brand & MPN mapping required"
+                mandatory_identifier_mapping: "Brand & MPN mapping required"
                 attribute_type: "The type of this attribute can not be set as identifier"
-                ask_franklin_down: "Identifiers mapping cannot be saved, as Ask Franklin does not respond."
+                localizable_not_allowed: "Localizable attributes are not allowed as identifier"
+                scopable_not_allowed: "Scopable attributes are not allowed as identifier"
+                locale_specific_not_allowed: "Locale specific attributes are not allowed as identifier"
         attributes_mapping:
             label: Attributes mapping
             fields:
@@ -69,7 +74,6 @@ akeneo_suggest_data:
                     success: 'Product successfully unsubscribed from Franklin'
                     fail: 'Impossible to unsubscribe product from Franklin'
             constraint:
-                invalid_token: 'Sorry, failed to subscribe products to Franklin Insights, your token is invalid. Please enter a valid token or contact us for help.'
                 family_required: 'Sorry, a product family is required in order to subscribe the product to Franklin Insights.'
                 no_identifiers_mapping: 'Please map your catalog product identifiers at Settings > Franklin Insights before subscribing products.'
                 insufficient_credits: "Sorry, failed to subscribe product to Franklin Insights. You don't have enough credit."
