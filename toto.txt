@@ -1,2 +1,0 @@
-tests/back/Pim/Enrichment/Specification/Component/Product/Builder/EntityWithValuesBuilderSpec.php
-tests/back/Pim/Enrichment/Specification/Component/Product/Builder/ProductBuilderSpec.php
