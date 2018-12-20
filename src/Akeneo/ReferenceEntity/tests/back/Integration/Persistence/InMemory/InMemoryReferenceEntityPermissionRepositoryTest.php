@@ -25,7 +25,7 @@ class InMemoryReferenceEntityPermissionRepositoryTest extends TestCase
     /**
      * @test
      */
-    function it_saves_a_reference_entity_permission()
+    public function it_saves_a_reference_entity_permission()
     {
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 

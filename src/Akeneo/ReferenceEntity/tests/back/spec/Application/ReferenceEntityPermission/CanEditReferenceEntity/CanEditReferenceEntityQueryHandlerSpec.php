@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission;
+namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity;
 
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
 use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;

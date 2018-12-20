@@ -29,7 +29,6 @@ class CanEditReferenceEntityQueryHandler
 
     public function __invoke(CanEditReferenceEntityQuery $query): bool
     {
-        // Operator || between each permissions of the
         return ($this->canEditReferenceEntity)(
             SecurityIdentifier::fromString($query->securityIdentifier),
             ReferenceEntityIdentifier::fromString($query->referenceEntityIdentifier)
