@@ -57,3 +57,5 @@ package-lock.json
 .yarn-metadata.json
 yarn-error.log
 coverage/*
+app/config/parameters.yml
+app/config/parameters_test.yml
