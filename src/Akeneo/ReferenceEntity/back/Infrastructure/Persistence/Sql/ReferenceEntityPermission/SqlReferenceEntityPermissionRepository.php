@@ -36,7 +36,7 @@ class SqlReferenceEntityPermissionRepository implements ReferenceEntityPermissio
                 DELETE FROM akeneo_reference_entity_reference_entity_permissions
                 WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
-            $affectedRows = $connection->executeUpdate(
+            $connection->executeUpdate(
                 $deleteSql,
                 [
                     'reference_entity_identifier' => $referenceEntityIdentifier
@@ -54,6 +54,9 @@ SQL;
                     $insertSql,
                     $normalizedPermission
                 );
+                if ($affectedRows === 0) {
+                    throw new \RuntimeException('Expected to create reference entity permissions, but none were inserted.');
+                }
             }
         });
     }

@@ -113,8 +113,8 @@ class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implemen
         $sql = <<<SQL
 DROP TABLE IF EXISTS `akeneo_reference_entity_attribute`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_record`;
-DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity_permissions`;
+DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity`;
 
 CREATE TABLE `akeneo_reference_entity_reference_entity` (
     `identifier` VARCHAR(255) NOT NULL,
@@ -633,5 +633,7 @@ SQL;
         SELECT r.identifier as reference_entity_identifier, g.id as user_group_identifier, 'edit' as right_level
         FROM akeneo_reference_entity_reference_entity r, oro_access_group g;
 SQL;
+
+        $this->dbal->executeUpdate($sql);
     }
 }
