@@ -12,7 +12,7 @@ const DefaultButtonView = ({
   onClick,
   allowEmpty = false,
   placeholder = null,
-  readOnly
+  readOnly,
 }: {
   open: boolean;
   selectedElement: DropdownElement;
@@ -47,7 +47,7 @@ const DefaultItemView = ({
   isOpen,
   element,
   isActive,
-  onClick
+  onClick,
 }: {
   isOpen: boolean;
   element: DropdownElement;
@@ -139,7 +139,7 @@ class Dropdown extends React.Component<Props, State> {
       label: string,
       allowEmpty?: boolean,
       placeholder?: string,
-      readOnly?: boolean,
+      readOnly?: boolean
     ) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 

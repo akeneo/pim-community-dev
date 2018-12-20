@@ -251,11 +251,7 @@ class AttributesView extends React.Component<CreateProps> {
                   </React.Fragment>
                 )}
               </div>
-              {this.props.editAttribute ? (
-                <AttributeEditForm
-                  rights={this.props.rights}
-                />
-              ) : null}
+              {this.props.editAttribute ? <AttributeEditForm rights={this.props.rights} /> : null}
             </div>
           ) : (
             <React.Fragment>
@@ -278,11 +274,7 @@ class AttributesView extends React.Component<CreateProps> {
             </React.Fragment>
           )}
           {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
-          {this.props.options.isActive ? (
-            <ManageOptionsView
-              rights={this.props.rights}
-            />
-          ) : null}
+          {this.props.options.isActive ? <ManageOptionsView rights={this.props.rights} /> : null}
         </div>
       </React.Fragment>
     );

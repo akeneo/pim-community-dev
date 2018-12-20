@@ -60,7 +60,7 @@ const TextView = ({
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
-  rights
+  rights,
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;

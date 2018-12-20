@@ -207,7 +207,7 @@ const optionRow = ({
             </div>
           </td>
           <td>
-            { displayDeleteRowButton ? (
+            {displayDeleteRowButton ? (
               <Close
                 onClick={() => onOptionEditionDelete(index)}
                 onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
@@ -427,7 +427,7 @@ class ManageOptionsView extends React.Component<ManageOptionsProps> {
               </div>
             </div>
             <div className="AknButtonList AknButtonList--right modal-footer">
-              { this.props.rights.attribute.edit ? (
+              {this.props.rights.attribute.edit ? (
                 <button
                   className="AknButton AknButton--apply AknFullPage-ok ok confirm"
                   onClick={this.props.events.onOptionEditionSubmission}

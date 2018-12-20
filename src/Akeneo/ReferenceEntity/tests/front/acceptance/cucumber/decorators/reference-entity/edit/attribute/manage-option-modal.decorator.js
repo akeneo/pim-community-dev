@@ -15,7 +15,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     return null !== codeInput.$('.AknTextField--disabled');
   };
 
-  const hasNewOption = async code => {
+  const hasNewOption = async () => {
     try {
       await page.waitForSelector('tr[data-code=""] input[name="code"]', {timeout: 2000});
     } catch (error) {
@@ -60,7 +60,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     await removeOptionButton.click();
   };
 
-  const hasRemoveOptionButton = async () => {
+  const hasRemoveOptionButton = async code => {
     try {
       await page.waitForSelector(`tr[data-code="${code}"] .AknOptionEditor-remove`, {timeout: 2000});
     } catch (error) {
