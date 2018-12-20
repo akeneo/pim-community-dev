@@ -31,6 +31,17 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "RegularExpression" with value "nice!"
 
   @acceptance-front
+  Scenario: User can't edit the text attribute
+    Given a valid reference entity
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "name"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+    And the user can't edit the attribute property "MaxLength"
+    And the user can't edit the attribute property "IsTextarea"
+    And the user can't edit the attribute property "ValidationRule"
+
+  @acceptance-front
   Scenario: Edit the image attribute
     Given a valid reference entity
     And the user has the following rights:
@@ -48,6 +59,16 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "AllowedExtensions" with value "gif"
 
   @acceptance-front
+  Scenario: User can't edit the image attribute
+    Given a valid reference entity
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "portrait"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+    And the user can't edit the attribute property "MaxFileSize"
+    And the user can't edit the attribute property "AllowedExtensions"
+
+  @acceptance-front
   Scenario: Edit the option attribute
     Given a valid reference entity
     And the user has the following rights:
@@ -63,6 +84,14 @@ Feature: Lists all attributes related to a reference entity
     And the user edits the attribute property "IsRequired" with value "true"
 
   @acceptance-front
+  Scenario: User can't edit the option attribute
+    Given a valid reference entity
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "favorite_color"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
+
+  @acceptance-front
   Scenario: Edit the option collection attribute
     Given a valid reference entity
     And the user has the following rights:
@@ -76,6 +105,14 @@ Feature: Lists all attributes related to a reference entity
     And the attribute property "maxLength" should not be visible
     Then the user edits the attribute property "Label" with value "Nice Name"
     And the user edits the attribute property "IsRequired" with value "true"
+
+  @acceptance-front
+  Scenario: User can't edit the option attribute
+    Given a valid reference entity
+    When the user asks for the reference entity "designer"
+    And the user looks at the attribute "colors"
+    Then the user can't edit the attribute property "Label"
+    And the user can't edit the attribute property "IsRequired"
 
   @acceptance-front
   Scenario: Manage the list of options by adding a new option code
@@ -187,7 +224,7 @@ Feature: Lists all attributes related to a reference entity
     Then the user cannot save the options successfully because the option is not valid
     And there is an error message next to the "gre-een" field
 
-#  @acceptance-front
+  #  @acceptance-front
   Scenario: A validation occured because the code is duplicated
     Given a valid reference entity
     And the user has the following rights:
@@ -210,3 +247,14 @@ Feature: Lists all attributes related to a reference entity
     And the user manages the options of the attribute
     When the user cannot save the options successfully because the limit of options is reached
     Then there is an error message next to the translator
+
+  @acceptance-front
+  Scenario: Manage the list of options by adding a new option code
+    Given a valid reference entity
+    And the user asks for the reference entity "designer"
+    And the user looks at the attribute "favorite_color"
+    When the user manages the options of the attribute
+    Then the code of the "red" option should be locked
+    And the label of the "red" option should be locked
+    And the user cannot remove the "red" option
+    And the user cannot add a new option

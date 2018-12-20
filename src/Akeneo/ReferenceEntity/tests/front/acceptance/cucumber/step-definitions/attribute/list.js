@@ -121,16 +121,25 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasAllAttribute, true);
   });
 
-  const editAttribute = async function(page, attributeIdentifier) {
+  const editAttribute = async function(page, attributeIdentifier, editMode) {
     await showAttributesTab(page);
 
     const attributes = await await getElement(page, 'Attributes');
 
-    await attributes.edit(attributeIdentifier);
+    if (editMode) {
+      await attributes.edit(attributeIdentifier);
+    } else {
+      await attributes.view(attributeIdentifier);
+    }
+
   };
 
   Then('the user edit the attribute {string}', async function(attributeIdentifier) {
-    await editAttribute(this.page, attributeIdentifier);
+    await editAttribute(this.page, attributeIdentifier, true);
+  });
+
+  Then('the user looks at the attribute {string}', async function(attributeIdentifier) {
+    await editAttribute(this.page, attributeIdentifier, false);
   });
 
   Then('the list of attributes should be empty', async function() {

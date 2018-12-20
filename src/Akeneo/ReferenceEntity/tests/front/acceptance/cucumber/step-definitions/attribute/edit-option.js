@@ -44,6 +44,11 @@ module.exports = async function(cucumber) {
     await manageOption.isLockedOptionCode(code);
   });
 
+  Then('the label of the {string} option should be locked', async function (code) {
+    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    await manageOption.isLockedOptionLabel(code);
+  });
+
   When('the user adds the new option label {string}', async function(label) {
     const manageOption = await await getElement(this.page, 'ManageOptionModal');
     await manageOption.newOptionLabel(label);
@@ -187,6 +192,20 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
     const manageOption = await await getElement(this.page, 'ManageOptionModal');
     await manageOption.save();
+  });
+
+  Then('the user cannot remove the {string} option', async function (code) {
+    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const hasRemoveOptionButton = await manageOption.hasRemoveOptionButton(code);
+
+    assert.strictEqual(hasRemoveOptionButton, false);
+  });
+
+  Then('the user cannot add a new option', async function () {
+    const manageOption = await await getElement(this.page, 'ManageOptionModal');
+    const hasNewOption = await manageOption.hasNewOption();
+
+    assert.strictEqual(hasNewOption, false);
   });
 
   Then('there is an error message next to the {string} field', async function(code) {
