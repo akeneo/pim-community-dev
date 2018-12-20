@@ -1,3 +1,6 @@
+import {getConnectionStatus} from '../fetcher/franklin-connection';
+import ConnectionStatus from '../model/connection-status';
+
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,6 +14,7 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const BaseSave = require('pim/form/common/save');
 const MappingSaver = require('akeneo/suggest-data/saver/identifiers-mapping');
+const Dialog = require('pim/dialog');
 
 interface Mapping {
   [franklinAttribute: string]: (string | null);
@@ -47,8 +51,35 @@ class MappingSave extends BaseSave {
 
   /**
    * {@inheritdoc}
+   *
+   * Displays a confirmation modal if there is subscribed products. If not, just save.
    */
   public save(): void {
+    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
+      if (connectionStatus.productSubscriptionCount > 0) {
+        Dialog.confirm(
+          __(
+            'akeneo_suggest_data.settings.module.save.warning',
+            { count: connectionStatus.productSubscriptionCount },
+            connectionStatus.productSubscriptionCount,
+          ),
+          __('akeneo_suggest_data.settings.module.save.title'),
+          this.executeSave,
+          null,
+          null,
+          null,
+          'robot',
+        );
+      } else {
+        this.executeSave();
+      }
+    });
+  }
+
+  /**
+   * Execute for real the query to save mapping.
+   */
+  private executeSave(): void {
     let identifiersMapping = $.extend(true, {}, this.getFormData());
     this.showLoadingMask();
     this.getRoot().trigger('pim_enrich:form:entity:pre_save');

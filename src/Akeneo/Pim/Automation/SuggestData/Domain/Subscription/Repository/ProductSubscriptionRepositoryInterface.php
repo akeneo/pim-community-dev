@@ -59,4 +59,9 @@ interface ProductSubscriptionRepositoryInterface
      * @param string $familyCode
      */
     public function emptySuggestedDataAndMissingMappingByFamily(string $familyCode): void;
+
+    /**
+     * @return int
+     */
+    public function count(): int;
 }

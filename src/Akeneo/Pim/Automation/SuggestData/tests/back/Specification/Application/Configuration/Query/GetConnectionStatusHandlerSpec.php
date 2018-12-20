@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\Repository\Configurat
 use Akeneo\Pim\Automation\SuggestData\Domain\Configuration\ValueObject\Token;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\IdentifierMapping\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -31,9 +32,15 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
     public function let(
         ConfigurationRepositoryInterface $configurationRepository,
         AuthenticationProviderInterface $authenticationProvider,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
     ): void {
-        $this->beConstructedWith($configurationRepository, $authenticationProvider, $identifiersMappingRepository);
+        $this->beConstructedWith(
+            $configurationRepository,
+            $authenticationProvider,
+            $identifiersMappingRepository,
+            $productSubscriptionRepository
+        );
     }
 
     public function it_checks_that_a_connection_is_active(
@@ -41,7 +48,8 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         GetConnectionStatusQuery $query,
         $authenticationProvider,
         $configurationRepository,
-        $identifiersMappingRepository
+        $identifiersMappingRepository,
+        $productSubscriptionRepository
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('bar'));
@@ -52,6 +60,8 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isValid()->willReturn(false);
 
+        $productSubscriptionRepository->count()->willReturn(0);
+
         $this->handle($query)->shouldReturnAnActiveStatus();
     }
 
@@ -60,7 +70,8 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         GetConnectionStatusQuery $query,
         $authenticationProvider,
         $configurationRepository,
-        $identifiersMappingRepository
+        $identifiersMappingRepository,
+        $productSubscriptionRepository
     ): void {
         $configuration = new Configuration();
         $configuration->setToken(new Token('bar'));
@@ -71,6 +82,8 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isValid()->willReturn(false);
 
+        $productSubscriptionRepository->count()->willReturn(0);
+
         $this->handle($query)->shouldReturnAnInactiveStatus();
     }
 
@@ -78,13 +91,16 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         IdentifiersMapping $identifiersMapping,
         GetConnectionStatusQuery $query,
         $configurationRepository,
-        $identifiersMappingRepository
+        $identifiersMappingRepository,
+        $productSubscriptionRepository
     ): void {
         $configuration = new Configuration();
         $configurationRepository->find()->willReturn($configuration);
 
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isValid()->willReturn(true);
+
+        $productSubscriptionRepository->count()->willReturn(0);
 
         $this->handle($query)->shouldReturnValidIdentifiersMappingStatus();
     }
@@ -93,7 +109,8 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         IdentifiersMapping $identifiersMapping,
         GetConnectionStatusQuery $query,
         $configurationRepository,
-        $identifiersMappingRepository
+        $identifiersMappingRepository,
+        $productSubscriptionRepository
     ): void {
         $configuration = new Configuration();
         $configurationRepository->find()->willReturn($configuration);
@@ -101,7 +118,27 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isValid()->willReturn(false);
 
+        $productSubscriptionRepository->count()->willReturn(0);
+
         $this->handle($query)->shouldReturnInvalidIdentifiersMappingStatus();
+    }
+
+    public function it_checks_that_it_counts_product_subscriptions(
+        IdentifiersMapping $identifiersMapping,
+        GetConnectionStatusQuery $query,
+        $configurationRepository,
+        $identifiersMappingRepository,
+        $productSubscriptionRepository
+    ): void {
+        $configuration = new Configuration();
+        $configurationRepository->find()->willReturn($configuration);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(true);
+
+        $productSubscriptionRepository->count()->willReturn(42);
+
+        $this->handle($query)->shouldReturnProductSubscriptions();
     }
 
     /**
@@ -121,6 +158,9 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
             },
             'returnInvalidIdentifiersMappingStatus' => function (ConnectionStatus $connectionStatus) {
                 return !$connectionStatus->isIdentifiersMappingValid();
+            },
+            'returnProductSubscriptions' => function (ConnectionStatus $connectionStatus) {
+                return 42 === $connectionStatus->productSubscriptionCount();
             },
         ];
     }

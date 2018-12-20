@@ -135,4 +135,12 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
             }
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        return count($this->subscriptions);
+    }
 }
