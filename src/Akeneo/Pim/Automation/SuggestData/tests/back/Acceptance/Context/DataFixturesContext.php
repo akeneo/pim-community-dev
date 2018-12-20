@@ -325,6 +325,32 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @param string $attributeType
+     * @param string $attributeCode
+     * @param string $localeCode
+     *
+     * @Given the following :attributeType attribute ":attributeCode" specific to locale :localeCode
+     */
+    public function theFollowingAttributeSpecificToLocale(
+        string $attributeType,
+        string $attributeCode,
+        string $localeCode
+    ): void {
+        if (null === $this->attributeGroupRepository->findOneByIdentifier('MANDATORY_ATTRIBUTE_GROUP_CODE')) {
+            $group = $this->attributeGroupBuilder->build(['code' => 'MANDATORY_ATTRIBUTE_GROUP_CODE']);
+            $this->attributeGroupRepository->save($group);
+        }
+
+        $attribute = $this->attributeBuilder->build([
+            'code' => $attributeCode,
+            'type' => 'pim_catalog_' . $attributeType,
+            'group' => 'MANDATORY_ATTRIBUTE_GROUP_CODE',
+            'available_locales' => [$localeCode],
+        ]);
+        $this->attributeRepository->save($attribute);
+    }
+
+    /**
      * Loads attributes according to a provided list of attribute codes and a default attribute group.
      * Fixture content is in a file in "Resources/config/fixtures/attributes/".
      *

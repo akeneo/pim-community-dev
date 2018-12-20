@@ -91,4 +91,14 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
         $this->getPath()->shouldReturn('brand');
     }
+
+    public function it_is_thrown_in_case_of_locale_specific_attribute(): void
+    {
+        $this->beConstructedThrough('localeSpecificAttributeNotAllowed', ['foobar']);
+
+        $this->getMessage()->shouldReturn(
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.locale_specific_not_allowed'
+        );
+        $this->getPath()->shouldReturn('foobar');
+    }
 }

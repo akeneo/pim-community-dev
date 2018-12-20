@@ -95,7 +95,7 @@ class UpdateIdentifiersMappingHandler
     /**
      * @param array $identifiers
      *
-     * @throws InvalidMappingException If attribute does not exist
+     * @throws \InvalidArgumentException If attribute does not exist
      *
      * @return array
      */
@@ -121,6 +121,8 @@ class UpdateIdentifiersMappingHandler
 
     /**
      * @param array $identifiers
+     *
+     * @throws InvalidMappingException
      */
     private function validateMappedIdentifiers(array $identifiers): void
     {
@@ -142,6 +144,10 @@ class UpdateIdentifiersMappingHandler
 
             if ($attribute->isScopable()) {
                 throw InvalidMappingException::scopableNotAllowed($attribute->getCode());
+            }
+
+            if ($attribute->isLocaleSpecific()) {
+                throw InvalidMappingException::localeSpecificAttributeNotAllowed($attribute->getCode());
             }
         }
     }

@@ -162,6 +162,18 @@ class InvalidMappingException extends \Exception
     }
 
     /**
+     * @param string $attributeCode
+     *
+     * @return InvalidMappingException
+     */
+    public static function localeSpecificAttributeNotAllowed(string $attributeCode): self
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'locale_specific_not_allowed');
+
+        return new static(self::class, $message, [], $attributeCode);
+    }
+
+    /**
      * @return string
      */
     public function getClassName(): string
