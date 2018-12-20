@@ -7,7 +7,17 @@ import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribut
 import RichTextEditor from 'akeneoreferenceentity/application/component/app/rich-text-editor';
 import Key from 'akeneoreferenceentity/tools/key';
 
-const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Value) => void; onSubmit: () => void}) => {
+const View = ({value, onChange, onSubmit, rights}: {
+  value: Value;
+  onChange: (value: Value) => void;
+  onSubmit: () => void;
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    }
+  };
+}) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
     return null;
   }
@@ -27,25 +37,32 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
     <React.Fragment>
       {value.attribute.isTextarea.booleanValue() ? (
         value.attribute.isRichTextEditor.booleanValue() ? (
-          <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} />
+          <RichTextEditor
+            value={value.data.stringValue()}
+            onChange={onValueChange}
+            readOnly={!rights.record.edit}
+          />
         ) : (
           <textarea
             id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
-            className={`AknTextareaField AknTextareaField--light ${
-              value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''
-            }`}
+            className={`AknTextareaField AknTextareaField--light
+            ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}
+            ${!rights.record.edit ? 'AknTextField--disabled' : ''}
+            `}
             value={value.data.stringValue()}
             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
               onValueChange(event.currentTarget.value);
             }}
+            readOnly={!rights.record.edit}
           />
         )
       ) : (
         <input
           id={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
-          className={`AknTextField AknTextField--narrow AknTextField--light ${
-            value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''
-          }`}
+          className={`AknTextField AknTextField--narrow AknTextField--light
+            ${value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''}
+            ${!rights.record.edit ? 'AknTextField--disabled' : ''}
+            `}
           value={value.data.stringValue()}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);
@@ -53,6 +70,8 @@ const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Valu
           onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
             if (Key.Enter === event.key) onSubmit();
           }}
+          disabled={!rights.record.edit}
+          readOnly={!rights.record.edit}
         />
       )}
       {value.attribute.valuePerLocale ? (

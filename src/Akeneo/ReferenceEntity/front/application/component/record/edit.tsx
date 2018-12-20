@@ -185,11 +185,13 @@ class RecordEditView extends React.Component<EditProps> {
                           </div>
                           <div className="AknButtonList">
                             {this.getSecondaryActions(this.props.rights.record.delete)}
-                            <div className="AknTitleContainer-rightButton">
-                              <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
-                                {__('pim_reference_entity.record.button.save')}
-                              </button>
-                            </div>
+                            {this.props.rights.record.edit ? (
+                              <div className="AknTitleContainer-rightButton">
+                                <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
+                                  {__('pim_reference_entity.record.button.save')}
+                                </button>
+                              </div>
+                            ) : null}
                           </div>
                         </div>
                       </div>

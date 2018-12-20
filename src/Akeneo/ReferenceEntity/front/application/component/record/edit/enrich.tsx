@@ -13,7 +13,6 @@ import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel
 import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
 import Value from 'akeneoreferenceentity/domain/model/record/value';
 import Key from 'akeneoreferenceentity/tools/key';
-import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
 const securityContext = require('pim/security-context');
@@ -30,7 +29,6 @@ interface StateProps {
       delete: boolean;
     }
   };
-
 }
 
 interface DispatchProps {
@@ -64,8 +62,6 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
   render() {
     const record = denormalizeRecord(this.props.form.data);
 
-    const textInputClassName = getTextInputClassName(this.props.rights.record.edit);
-
     return (
       <div className="AknSubsection">
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
@@ -84,7 +80,9 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 type="text"
                 name="label"
                 id="pim_reference_entity.record.enrich.label"
-                className={textInputClassName}
+                className={`AknTextField AknTextField--narrow AknTextField--light
+                  ${!this.props.rights.record.edit ? 'AknTextField--disabled' : ''}
+                `}
                 value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}
@@ -102,7 +100,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
             createLocaleReference(this.props.context.locale),
             this.props.form.errors,
             this.props.events.form.onValueChange,
-            this.props.events.form.onSubmit
+            this.props.events.form.onSubmit,
+            this.props.rights
           )}
         </div>
       </div>

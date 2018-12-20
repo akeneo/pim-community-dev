@@ -9,7 +9,17 @@ import OptionCollectionData, {
 import {OptionCollectionAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/option-collection';
 import __ from 'akeneoreferenceentity/tools/translator';
 
-const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference; onChange: (value: Value) => void}) => {
+const View = ({value, onChange, locale, rights}: {
+  value: Value;
+  locale: LocaleReference;
+  onChange: (value: Value) => void;
+  rights: {
+    record: {
+      edit: boolean;
+      delete: boolean;
+    }
+  };
+}) => {
   if (!(value.data instanceof OptionCollectionData)) {
     return null;
   }
@@ -33,7 +43,7 @@ const View = ({value, onChange, locale}: {value: Value; locale: LocaleReference;
         data={formatedOptions}
         value={data.isEmpty() ? [] : data.normalize()}
         multiple={true}
-        readOnly={false}
+        readOnly={!rights.record.edit}
         configuration={{
           allowClear: true,
           placeholder: __('pim_reference_entity.attribute.options.no_value'),
