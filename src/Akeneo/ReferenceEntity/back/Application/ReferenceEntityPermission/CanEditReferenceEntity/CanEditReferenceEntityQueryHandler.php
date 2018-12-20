@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity;
 
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
@@ -29,6 +29,7 @@ class CanEditReferenceEntityQueryHandler
 
     public function __invoke(CanEditReferenceEntityQuery $query): bool
     {
+        // Operator || between each permissions of the
         return ($this->canEditReferenceEntity)(
             SecurityIdentifier::fromString($query->securityIdentifier),
             ReferenceEntityIdentifier::fromString($query->referenceEntityIdentifier)

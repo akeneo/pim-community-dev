@@ -23,7 +23,7 @@ class SqlCanEditReferenceEntity implements CanEditReferenceEntityInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(SecurityIdentifier $principalIdentifier, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
+    public function __invoke(SecurityIdentifier $securityIdentifier, ReferenceEntityIdentifier $referenceEntityIdentifier): bool
     {
         return true;
     }

@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQuery;
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\Permission\CanEditReferenceEntityQueryHandler;
-use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
+use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQuery;
+use Akeneo\ReferenceEntity\Application\ReferenceEntityPermission\CanEditReferenceEntity\CanEditReferenceEntityQueryHandler;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\SecurityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\CanEditReferenceEntityInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
