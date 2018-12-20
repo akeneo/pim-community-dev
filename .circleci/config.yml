@@ -25,6 +25,7 @@ jobs:
       - run:
           name: Pim installation
           command: |
+            cp .circleci/parameters_test.yml app/config/parameters_test.yml
             docker-compose exec fpm bin/console --env=behat pim:install --force --symlink --clean
             docker-compose run --rm node yarn run webpack-dev
             docker-compose run --rm node yarn run webpack-test
