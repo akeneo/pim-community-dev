@@ -113,6 +113,7 @@ class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implemen
         $sql = <<<SQL
 DROP TABLE IF EXISTS `akeneo_reference_entity_attribute`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_record`;
+DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity_permissions`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity`;
 
 CREATE TABLE `akeneo_reference_entity_reference_entity` (
@@ -151,6 +152,17 @@ CREATE TABLE `akeneo_reference_entity_attribute` (
     CONSTRAINT attribute_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
       ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `akeneo_reference_entity_reference_entity_permissions` (
+    `reference_entity_identifier` VARCHAR(255) NOT NULL,
+    `user_group_identifier` INT NOT NULL,
+    `right_level` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`reference_entity_identifier`, `user_group_identifier`),
+    CONSTRAINT permissions_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
+      ON DELETE CASCADE,
+    CONSTRAINT user_group_foreign_key FOREIGN KEY (`user_group_identifier`) REFERENCES `oro_access_group` (id)
+      ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 
         $this->dbal->exec($sql);
@@ -172,6 +184,7 @@ SQL;
         $this->loadCountries();
         $this->loadMaterials();
         $this->loadFakeCities();
+        $this->allowEditOnAllReferenceEntities();
         $this->indexRecords();
     }
 
@@ -611,5 +624,16 @@ SQL;
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the reference entities.');
         }
+    }
+
+    private function allowEditOnAllReferenceEntities(): void
+    {
+        $sql = <<<SQL
+        INSERT INTO akeneo_reference_entity_reference_entity_permissions (reference_entity_identifier, user_group_identifier, right_level)
+        SELECT r.identifier as reference_entity_identifier, g.id as user_group_identifier, 'edit' as right_level
+        FROM akeneo_reference_entity_reference_entity r, oro_access_group g;
+SQL;
+
+        $this->dbal->executeUpdate($sql);
     }
 }

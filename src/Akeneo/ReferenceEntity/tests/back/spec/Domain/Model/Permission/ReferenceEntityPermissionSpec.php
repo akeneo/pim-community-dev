@@ -41,7 +41,17 @@ class ReferenceEntityPermissionSpec extends ObjectBehavior
             ]
         ]);
     }
-    
+
+    function it_throws_an_error_if_there_is_no_user_group_permission_set()
+    {
+        $this->beConstructedThrough('create', [
+            ReferenceEntityIdentifier::fromString('designer'),
+            [ ]
+        ]);
+
+        $this->shouldThrow('InvalidArgumentException')->duringInstantiation();
+    }
+
     function it_throws_an_error_if_the_same_user_group_is_used_twice()
     {
         $this->beConstructedThrough('create', [

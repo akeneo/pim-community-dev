@@ -48,9 +48,11 @@ class DatabaseHelper
             DELETE FROM akeneo_reference_entity_attribute;
             DELETE FROM akeneo_reference_entity_record;
             DELETE FROM akeneo_reference_entity_reference_entity;
+            DELETE FROM akeneo_reference_entity_reference_entity_permissions;
             DELETE FROM pim_catalog_attribute_group;
             DELETE FROM pim_catalog_attribute;
             DELETE FROM oro_user;
+            DELETE FROM oro_access_group;
             DELETE FROM pim_catalog_channel;
             DELETE FROM pim_catalog_category;
             DELETE FROM pimee_product_asset_category;
@@ -67,7 +69,7 @@ SQL;
         VALUES
             (1, 'de_DE', 1),
             (2, 'en_US', 1),
-            (3, 'fr_FR', 1);
+            (3, 'fr_FR', 1),
             (4, 'az_Cyrl_AZ', 0);
 SQL;
         $this->sqlConnection->executeQuery($resetLocale);
