@@ -32,6 +32,9 @@ use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilderInterface;
+use PimEnterprise\Component\ProductAsset\Builder\VariationBuilder;
+use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -127,28 +130,13 @@ class ProductAssetController extends Controller
     /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @param AssetRepositoryInterface         $assetRepository
-     * @param ReferenceRepositoryInterface     $referenceRepository
-     * @param VariationRepositoryInterface     $variationRepository
-     * @param FileMetadataRepositoryInterface  $metadataRepository
-     * @param LocaleRepositoryInterface        $localeRepository
-     * @param ChannelRepositoryInterface       $channelRepository
-     * @param VariationFileGeneratorInterface  $variationFileGenerator
-     * @param FilesUpdaterInterface            $assetFilesUpdater
-     * @param SaverInterface                   $assetSaver
-     * @param SaverInterface                   $referenceSaver
-     * @param SaverInterface                   $variationSaver
-     * @param RemoverInterface                 $assetRemover
-     * @param EventDispatcherInterface         $eventDispatcher
-     * @param AssetFactory                     $assetFactory
-     * @param FileInfoFactoryInterface         $fileInfoFactory
-     * @param UserContext                      $userContext
-     * @param FileController                   $fileController
-     * @param AssetCategoryRepositoryInterface $assetCategoryRepo
-     * @param CategoryRepositoryInterface      $categoryRepository
-     * @param CategoryManager                  $categoryManager
-     */
+    /** @var ReferenceBuilderInterface */
+    protected $referenceBuilder;
+
+    /** @var VariationBuilderInterface */
+    protected $variationBuilder;
+
+    // TODO merge master: remove ReferenceBuilder & VariationBuilder = null
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         ReferenceRepositoryInterface $referenceRepository,
@@ -169,7 +157,9 @@ class ProductAssetController extends Controller
         FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        ReferenceBuilderInterface $referenceBuilder = null,
+        VariationBuilderInterface $variationBuilder = null
     ) {
         $this->assetRepository = $assetRepository;
         $this->referenceRepository = $referenceRepository;
@@ -191,6 +181,8 @@ class ProductAssetController extends Controller
         $this->assetCategoryRepo = $assetCategoryRepo;
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
+        $this->referenceBuilder = $referenceBuilder;
+        $this->variationBuilder = $variationBuilder;
     }
 
     /**
@@ -496,6 +488,15 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
+
+        // TODO merge master: remove condition
+        if (null !== $this->referenceBuilder && null !== $this->variationBuilder) {
+            $this->referenceBuilder->buildMissingLocalized($productAsset);
+            foreach ($productAsset->getReferences() as $reference) {
+                $this->variationBuilder->buildMissing($reference);
+            }
+        }
+
         if ($this->isGranted(Attributes::EDIT, $productAsset)) {
             return $this->edit($request, $id);
         }

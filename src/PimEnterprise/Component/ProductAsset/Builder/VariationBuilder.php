@@ -73,6 +73,7 @@ class VariationBuilder implements VariationBuilderInterface
 
         $variation = new $this->variationClass();
         $variation->setReference($reference);
+        $variation->setSourceFileInfo($reference->getFileInfo());
         $variation->setChannel($channel);
 
         return $variation;

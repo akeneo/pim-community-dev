@@ -6,6 +6,9 @@
 - PIM-7922: Fix commandline for asset variation generation by using by default the asset reference.
 - PIM-7869: Fix asset invalid code when mass uploading an asset with a "." in the filename
 - PIM-7910: Search parent filter is now case insensitive
+- PIM-7928: Asset variations are well generate through the command `pim:asset:generate-variation-files-from-reference`.
+- PIM-7929: Asset variations are well generate through the command `pim:asset:generate-missing-variation-files`.
+- PIM-7931: When a new Channel or Locale is added, assets are well updated.
 
  ## Elasticsearch
  
