@@ -65,7 +65,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
-    parallelism: 7
+    parallelism: 1
     steps:
       - attach_workspace:
           at: ~/
@@ -197,9 +197,9 @@ workflows:
       - build:
           requires:
 #              - wait_for_user_approval
-      - test_phpunit:
-          requires:
-            - build
+#      - test_phpunit:
+#          requires:
+#            - build
       - test_legacy_behat:
           requires:
-            - test_phpunit
+            - build
