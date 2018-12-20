@@ -34,3 +34,10 @@ Feature: Connection to MDM or ERP systems
     When the connector collects these records from the ERP to synchronize them with the PIM
     Then the records that existed only in the ERP are correctly created in the PIM
     And the records existing both in the ERP and the PIM are correctly synchronized in the PIM with the information from the ERP
+
+  @integration-back
+  Scenario: Notify errors when collecting records whose data do not comply with the business rules
+    Given some records of the Brand reference entity existing in the ERP but not in the PIM
+    And some records of the Brand reference entity existing in the ERP and in the PIM but with different information
+    When the connector collects records from the ERP among which some records have data that do not comply with the business rules
+    Then the PIM notifies the connector which records have data that do not comply with the business rules and what are the errors

@@ -414,6 +414,29 @@ class CreateOrUpdateRecordContext implements Context
         \PHPUnit\Framework\Assert::assertEquals($expectedLexonRecord, $lexonRecord);
     }
 
+    /**
+     * @When the connector collects records from the ERP among which some records have data that do not comply with the business rules
+     */
+    public function theConnectorCollectsRecordsFromTheErpAmongWhichSomeRecordsHaveDataThatDoNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'collect_brand_records_with_unprocessable_records.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector which records have data that do not comply with the business rules and what are the errors
+     */
+    public function thePimNotifiesTheConnectorWhichRecordsHaveDataThatDoNotComplyWithTheBusinessRulesAndWhatAreTheErrors()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'collect_brand_records_with_unprocessable_records.json'
+        );
+    }
+
     private function loadBrandReferenceEntity(): void
     {
         $referenceEntity = ReferenceEntity::create(

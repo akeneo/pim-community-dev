@@ -203,6 +203,7 @@ services:
             - '@akeneo_referenceentity.application.record.create_record_handler'
             - '@router'
             - '@validator'
+            - '@pim_api.normalizer.exception.violation'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorReferenceEntityAttributesAction

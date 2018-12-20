@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -58,6 +59,9 @@ class CreateOrUpdateRecordsAction
     /** @var ValidatorInterface */
     private $recordDataValidator;
 
+    /** @var NormalizerInterface */
+    private $violationNormalizer;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         RecordExistsInterface $recordExists,
@@ -65,7 +69,8 @@ class CreateOrUpdateRecordsAction
         EditRecordHandler $editRecordHandler,
         CreateRecordHandler $createRecordHandler,
         Router $router,
-        ValidatorInterface $recordDataValidator
+        ValidatorInterface $recordDataValidator,
+        NormalizerInterface $violationNormalizer
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->recordExists = $recordExists;
@@ -74,6 +79,7 @@ class CreateOrUpdateRecordsAction
         $this->createRecordHandler = $createRecordHandler;
         $this->router = $router;
         $this->recordDataValidator = $recordDataValidator;
+        $this->violationNormalizer = $violationNormalizer;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -94,13 +100,18 @@ class CreateOrUpdateRecordsAction
         foreach ($normalizedRecords as $normalizedRecord) {
             try {
                 $responseData = $this->createOrUpdateRecord($referenceEntityIdentifier, $normalizedRecord);
-            } catch (\InvalidArgumentException | ViolationHttpException $exception) {
+            } catch (\InvalidArgumentException $exception) {
                 $responseData = [
                     'code'        => $normalizedRecord['code'],
                     'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'message'     => $exception->getMessage()
                 ];
-                // TODO: format violations errors for the ViolationHttpException
+            } catch (ViolationHttpException $exception) {
+                $responseData = [
+                    'code'        => $normalizedRecord['code'],
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
+                ];
+                $responseData += $this->violationNormalizer->normalize($exception);
             }
 
             $responsesData[] = $responseData;
