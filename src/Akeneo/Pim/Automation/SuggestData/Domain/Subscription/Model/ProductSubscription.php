@@ -128,6 +128,21 @@ class ProductSubscription
     }
 
     /**
+     * @return array
+     */
+    public function requestedIdentifierValues(): array
+    {
+        return array_filter(
+            [
+                'asin' => $this->requestedAsin,
+                'upc' => $this->requestedUpc,
+                'brand' => $this->requestedBrand,
+                'mpn' => $this->requestedMpn,
+            ]
+        );
+    }
+
+    /**
      * @param array $productIdentifiers
      */
     private function fillProductIdentifiers(array $productIdentifiers): void

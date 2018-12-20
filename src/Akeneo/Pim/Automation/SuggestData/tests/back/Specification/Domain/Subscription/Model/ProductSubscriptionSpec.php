@@ -24,7 +24,7 @@ class ProductSubscriptionSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith(42, 'foobar', ['sku' => '72527273070']);
+        $this->beConstructedWith(42, 'foobar', ['asin' => '72527273070']);
     }
 
     public function it_is_a_product_subscription(): void
@@ -72,5 +72,14 @@ class ProductSubscriptionSpec extends ObjectBehavior
     public function it_gets_missing_mapping(): void
     {
         $this->isMappingMissing()->shouldReturn(false);
+    }
+
+    public function it_exposes_requested_identifier_values(): void
+    {
+        $this->requestedIdentifierValues()->shouldReturn(
+            [
+                'asin' => '72527273070',
+            ]
+        );
     }
 }
