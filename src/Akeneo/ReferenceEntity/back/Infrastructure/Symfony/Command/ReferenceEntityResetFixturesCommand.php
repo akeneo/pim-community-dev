@@ -184,6 +184,7 @@ SQL;
         $this->loadCountries();
         $this->loadMaterials();
         $this->loadFakeCities();
+        $this->allowEditOnAllReferenceEntities();
         $this->indexRecords();
     }
 
@@ -623,5 +624,14 @@ SQL;
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the reference entities.');
         }
+    }
+
+    private function allowEditOnAllReferenceEntities(): void
+    {
+        $sql = <<<SQL
+        INSERT INTO akeneo_reference_entity_reference_entity_permissions (reference_entity_identifier, user_group_identifier, right_level)
+        SELECT r.identifier as reference_entity_identifier, g.id as user_group_identifier, 'edit' as right_level
+        FROM akeneo_reference_entity_reference_entity r, oro_access_group g;
+SQL;
     }
 }
