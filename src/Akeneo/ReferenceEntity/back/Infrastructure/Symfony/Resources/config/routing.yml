@@ -131,3 +131,8 @@ akeneo_reference_entities_record_rest_connector_patch:
     path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records/{code}'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.record.create_or_update }
     methods: [PATCH]
+
+akeneo_reference_entities_records_rest_connector_create_or_update:
+    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/records'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.records.create_or_update }
+    methods: [PATCH]
