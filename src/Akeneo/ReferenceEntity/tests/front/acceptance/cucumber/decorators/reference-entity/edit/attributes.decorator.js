@@ -49,6 +49,16 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     await modalPage.confirmDeletion();
   };
 
+  const hasRemoveButton = async () => {
+    try {
+      await page.waitForSelector('.AknQuickEdit .AknButton--delete', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const edit = async attributeIdentifier => {
     await page.waitFor(
       `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--edit`
@@ -111,7 +121,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     await deleteButton.click();
   };
 
-  return {hasAttribute, isLoaded, isEmpty, remove, cancelDeletion, edit, view};
+  return {hasAttribute, isLoaded, isEmpty, remove, cancelDeletion, edit, view, hasRemoveButton};
 };
 
 module.exports = Attributes;
