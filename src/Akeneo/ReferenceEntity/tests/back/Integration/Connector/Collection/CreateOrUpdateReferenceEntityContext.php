@@ -121,4 +121,64 @@ class CreateOrUpdateReferenceEntityContext implements Context
 
         Assert::assertEquals($brand, $expectedBrand);
     }
+
+    /**
+     * @Given the Brand reference entity existing in the ERP and the PIM with different properties
+     */
+    public function theBrandReferenceEntityExistingInTheErpAndInThePimWithDifferentProperties()
+    {
+        $this->requestContract = 'successful_brand_reference_entity_update.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
+            [
+                'en_US' => 'It is an english label'
+            ],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    /**
+     * @When the connector collects the Brand reference entity from the ERP to synchronize it with the PIM
+     */
+    public function theConnectorCollectsTheBrandReferenceEntityFromTheErpToSynchronizeItWithThePim()
+    {
+        Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
+
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then the properties of the reference entity are correctly synchronized in the PIM with the information from the ERP
+     */
+    public function thePropertiesOfTheReferenceEntityAreCorrectlySynchornizedInThePimWithTheInformationFromTheErp()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'successful_brand_reference_entity_update.json'
+        );
+
+        $brand = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
+        $expectedBrand = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
+            [
+                'en_US' => 'Brand english label',
+                'fr_FR' => 'Brand french label',
+            ],
+            Image::createEmpty()
+        );
+
+        Assert::assertEquals($brand, $expectedBrand);
+    }
 }
