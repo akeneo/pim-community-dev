@@ -23,6 +23,8 @@ services:
 
     akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlReferenceEntityPermissionRepository
+        arguments:
+            - '@database_connection'
 
     # Reference entities query functions
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:

@@ -114,6 +114,7 @@ class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implemen
 DROP TABLE IF EXISTS `akeneo_reference_entity_attribute`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_record`;
 DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity`;
+DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity_permissions`;
 
 CREATE TABLE `akeneo_reference_entity_reference_entity` (
     `identifier` VARCHAR(255) NOT NULL,
@@ -149,6 +150,17 @@ CREATE TABLE `akeneo_reference_entity_attribute` (
     UNIQUE `attribute_identifier_index` (`code`, `reference_entity_identifier`),
     UNIQUE `attribute_reference_entity_order_index` (`reference_entity_identifier`, `attribute_order`),
     CONSTRAINT attribute_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
+      ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `akeneo_reference_entity_reference_entity_permissions` (
+    `reference_entity_identifier` VARCHAR(255) NOT NULL,
+    `user_group_identifier` INT NOT NULL,
+    `right_level` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`reference_entity_identifier`, `user_group_identifier`),
+    CONSTRAINT permissions_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
+      ON DELETE CASCADE,
+    CONSTRAINT user_group_foreign_key FOREIGN KEY (`user_group_identifier`) REFERENCES `oro_access_group` (id)
       ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;

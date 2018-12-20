@@ -36,6 +36,7 @@ class ReferenceEntityPermission
         array $permissions
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
+        Assert::minCount($permissions, 1, 'There should be at least one permission to set for the reference entity');
 
         $userGroup = [];
         foreach ($permissions as $permission) {
@@ -68,7 +69,7 @@ class ReferenceEntityPermission
     {
         return [
             self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
-            self::PERMISSIONS => array_map(function (UserGroupPermission $userGroupPermission) {
+            self::PERMISSIONS                 => array_map(function (UserGroupPermission $userGroupPermission) {
                 return $userGroupPermission->normalize();
             }, $this->permissions),
         ];
@@ -77,5 +78,13 @@ class ReferenceEntityPermission
     public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
     {
         return $this->referenceEntityIdentifier;
+    }
+
+    /**
+     * @return UserGroupPermission[]
+     */
+    public function getPermissions(): array
+    {
+        return $this->permissions;
     }
 }
