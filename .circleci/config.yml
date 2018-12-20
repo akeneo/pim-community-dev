@@ -57,6 +57,7 @@ jobs:
                 command: |
                     TESTFILES=$(cat .circleci/phpunit.txt | circleci tests split)
                     .circleci/run_phpunit.sh $TESTFILES
+
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
