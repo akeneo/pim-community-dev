@@ -102,7 +102,7 @@ class CreateOrUpdateReferenceEntityContext implements Context
     /**
      * @Then the reference entity is created with its properties in the PIM with the information from the ERP
      */
-    public function theReferenceEntityIsCreated ()
+    public function theReferenceEntityIsCreated()
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
