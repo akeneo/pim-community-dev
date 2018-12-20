@@ -50,6 +50,8 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
                 $locale = $this->retrieveLocale($localeCode);
             }
 
+            $this->buildAsset($asset);
+            $this->getAssetSaver()->save($asset);
             $reference = $this->retrieveReference($asset, $locale);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));

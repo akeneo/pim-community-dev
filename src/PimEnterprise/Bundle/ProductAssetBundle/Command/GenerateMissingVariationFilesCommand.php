@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Connection;
+use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
@@ -28,6 +30,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFileCommand
 {
+    const BATCH_SIZE = 100;
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +57,18 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
             $asset = null;
             if (null !== $assetCode = $input->getOption('asset')) {
                 $asset = $this->retrieveAsset($assetCode);
+
+                $this->buildAsset($asset);
+                $this->getAssetSaver()->save($asset);
+            } else {
+                $assetsCodes = $this->getAllAssetsCodes();
+                $chunks = array_chunk($assetsCodes, static::BATCH_SIZE);
+                foreach ($chunks as $assetCodes) {
+                    $assets = $this->buildAssets($assetCodes);
+
+                    $this->getAssetSaver()->saveAll($assets);
+                    $this->detachAll($assets);
+                }
             }
 
             $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
@@ -72,7 +88,6 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
         $processedList = $generator->generate($missingVariations, true);
 
         $processedAssets = [];
-
         foreach ($processedList as $item) {
             $variation = $item->getItem();
 
@@ -147,5 +162,55 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     protected function getCompletenessRemover()
     {
         return $this->getContainer()->get('pimee_product_asset.remover.completeness');
+    }
+
+    /**
+     * @param array $assetCodes asset codes
+     *
+     * @return array|ArrayCollection
+     */
+    protected function buildAssets($assetCodes)
+    {
+        $assets = $this->fetchAssetsByCode($assetCodes);
+        foreach ($assets as $asset) {
+            $this->buildAsset($asset);
+        }
+
+        return $assets;
+    }
+
+    /**
+     * @param array $assetCodes
+     *
+     * @return array|ArrayCollection
+     */
+    protected function fetchAssetsByCode($assetCodes)
+    {
+        $assetRepository = $this->getContainer()->get('pimee_product_asset.repository.asset');
+
+        return $assetRepository->findByIdentifiers($assetCodes);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAllAssetsCodes()
+    {
+        $connection = $this->getContainer()->get('database_connection');
+        $sql = <<<SQL
+            SELECT code
+            FROM pimee_product_asset_asset
+SQL;
+        $statement = $connection->query($sql);
+
+        return array_column($statement->fetchAll(), 'code');
+    }
+
+    /**
+     * @param array $objects
+     */
+    protected function detachAll($objects)
+    {
+        $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher')->detachAll($objects);
     }
 }

@@ -46,9 +46,11 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
 
             $locale = null;
             if (null !== $localeCode = $input->getArgument('locale')) {
-                $this->retrieveLocale($localeCode);
+                $locale = $this->retrieveLocale($localeCode);
             }
 
+            $this->buildAsset($asset);
+            $this->getAssetSaver()->save($asset);
             $reference = $this->retrieveReference($asset, $locale);
             $variation = $this->retrieveVariation($reference, $channel);
         } catch (\LogicException $e) {

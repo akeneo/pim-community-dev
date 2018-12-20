@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Builder;
 
+use Akeneo\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -38,6 +39,7 @@ class VariationBuilderSpec extends ObjectBehavior
         ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn(null);
+        $reference->getFileInfo()->willReturn(new FileInfo());
 
         $reference->hasVariation($ecommerce)->willReturn(false);
         $reference->hasVariation($print)->willReturn(true);
@@ -58,6 +60,7 @@ class VariationBuilderSpec extends ObjectBehavior
         ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn($en_US);
+        $reference->getFileInfo()->willReturn(new FileInfo());
         $ecommerce->hasLocale($en_US)->willReturn(true);
         $print->hasLocale($en_US)->willReturn(false);
         $mobile->hasLocale($en_US)->willReturn(true);
@@ -120,6 +123,7 @@ class VariationBuilderSpec extends ObjectBehavior
         ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn(null);
+        $reference->getFileInfo()->willReturn(new FileInfo());
 
         $reference->addVariation(Argument::any())->shouldBeCalledTimes(3);
 
@@ -136,6 +140,7 @@ class VariationBuilderSpec extends ObjectBehavior
         ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn($en_US);
+        $reference->getFileInfo()->willReturn(new FileInfo());
         $ecommerce->hasLocale($en_US)->willReturn(true);
         $print->hasLocale($en_US)->willReturn(false);
         $mobile->hasLocale($en_US)->willReturn(true);
