@@ -116,16 +116,15 @@ Feature: Map the PIM identifiers with Franklin identifiers
     Then the identifiers mapping should not be saved
     And an invalid identifier pim_upc scopable message should be sent
 
-#  Scenario: Fails to map Franklin identifiers with locale specific PIM attributes
-#    Given an empty identifiers mapping
-#    And the following attribute:
-#      | code    | type             | locale specific |
-#      | pim_upc | pim_catalog_text | en_US           |
-#    When the identifiers are mapped as follows:
-#      | franklin_code | attribute_code |
-#      | upc           | pim_upc        |
-#    Then the identifiers mapping should not be saved
-#    And an invalid identifier pim_upc locale specific message should be sent
+  Scenario: Fails to map Franklin identifiers with locale specific PIM attributes
+    Given an empty identifiers mapping
+    And the following locales "en_US"
+    And the following text attribute "pim_upc" specific to locale en_US
+    When the identifiers are mapped as follows:
+      | franklin_code | attribute_code |
+      | upc           | pim_upc        |
+    Then the identifiers mapping should not be saved
+    And an invalid identifier pim_upc locale specific message should be sent
 
   Scenario: Fails to map Franklin identifiers with unexisting PIM attribute
     Given an empty identifiers mapping

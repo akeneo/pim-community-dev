@@ -38,6 +38,7 @@ akeneo_suggest_data:
                 attribute_type: "The type of this attribute can not be set as identifier"
                 localizable_not_allowed: "Localizable attributes are not allowed as identifier"
                 scopable_not_allowed: "Scopable attributes are not allowed as identifier"
+                locale_specific_not_allowed: "Locale specific attributes are not allowed as identifier"
         attributes_mapping:
             label: Attributes mapping
             fields:
