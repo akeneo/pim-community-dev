@@ -48,10 +48,14 @@ class AttributeOptionsMappingContext implements Context
 
     /** @var SaveAttributeOptionsMappingHandler */
     private $saveAttributeOptionsMappingHandler;
+
     /**
      * @var FakeClient
      */
     private $fakeClient;
+
+    /** @var \Exception */
+    private $thrownException;
 
     /**
      * @param GetAttributeOptionsMappingHandler $getAttributeOptionsMappingHandler
@@ -66,6 +70,14 @@ class AttributeOptionsMappingContext implements Context
         $this->getAttributeOptionsMappingHandler = $getAttributeOptionsMappingHandler;
         $this->saveAttributeOptionsMappingHandler = $saveAttributeOptionsMappingHandler;
         $this->fakeClient = $fakeClient;
+    }
+
+    /**
+     * @Given a predefined options mapping between Franklin attribute :attrId and PIM attribute :attrCode for family :family as follows:
+     */
+    public function aPredefinedAttributeOptionsMapping($attrId, $attrCode, $family, TableNode $optionsMapping)
+    {
+        $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, $optionsMapping);
     }
 
     /**
@@ -103,24 +115,15 @@ class AttributeOptionsMappingContext implements Context
         $family,
         TableNode $optionsMapping
     ): void {
-        $attributeOptions = [];
-        foreach ($optionsMapping->getHash() as $option) {
-            $attributeOptions[$option['franklin_attribute_option_id']] = [
-                'franklinAttributeOptionCode' => [
-                    'label' => $option['franklin_attribute_option_label'],
-                ],
-                'catalogAttributeOptionCode' => $option['catalog_attribute_option_code'],
-                'status' => 'active' == $option['status'] ? 1 : 0,
-            ];
-        }
+        $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, $optionsMapping);
+    }
 
-        $command = new SaveAttributeOptionsMappingCommand(
-            new FamilyCode($family),
-            new AttributeCode($attrCode),
-            new FranklinAttributeId($attrId),
-            new AttributeOptions($attributeOptions)
-        );
-        $this->saveAttributeOptionsMappingHandler->handle($command);
+    /**
+     * @When the Franklin :attrId options are mapped to the PIM :family :attrCode options with an empty mapping
+     */
+    public function theAttributeOptionsAreMappedWithAnEmptyMapping($attrId, $attrCode, $family)
+    {
+        $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, new TableNode([]));
     }
 
     /**
@@ -177,6 +180,17 @@ class AttributeOptionsMappingContext implements Context
     }
 
     /**
+     * @Then the attribute options mapping should not be saved
+     */
+    public function theAttributeOptionsMappingShouldNotBeSaved()
+    {
+        $clientAttributeOptionsMapping = $this->fakeClient->getOptionsMapping();
+
+        Assert::isEmpty($clientAttributeOptionsMapping);
+        Assert::isInstanceOf($this->thrownException, \Exception::class);
+    }
+
+    /**
      * Asserts status.
      *
      * @param string $expectedStatus
@@ -195,7 +209,33 @@ class AttributeOptionsMappingContext implements Context
                 Assert::eq(AttributeOptionMapping::STATUS_INACTIVE, $status);
                 break;
             default:
-                throw \Exception(sprintf('Status "%s" does not match any expected value', $expectedStatus));
+                throw new \Exception(sprintf('Status "%s" does not match any expected value', $expectedStatus));
+        }
+    }
+
+    private function saveAttributeOptionsMapping($attrId, $attrCode, $family, TableNode $optionsMapping): void
+    {
+        $attributeOptions = [];
+        foreach ($optionsMapping->getHash() as $option) {
+            $attributeOptions[$option['franklin_attribute_option_id']] = [
+                'franklinAttributeOptionCode' => [
+                    'label' => $option['franklin_attribute_option_label'],
+                ],
+                'catalogAttributeOptionCode' => $option['catalog_attribute_option_code'],
+                'status' => 'active' == $option['status'] ? 1 : 0,
+            ];
+        }
+
+        try {
+            $command = new SaveAttributeOptionsMappingCommand(
+                new FamilyCode($family),
+                new AttributeCode($attrCode),
+                new FranklinAttributeId($attrId),
+                new AttributeOptions($attributeOptions)
+            );
+            $this->saveAttributeOptionsMappingHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
         }
     }
 }
