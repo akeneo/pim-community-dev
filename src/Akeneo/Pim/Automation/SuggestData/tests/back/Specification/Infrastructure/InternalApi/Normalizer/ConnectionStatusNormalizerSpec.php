@@ -29,18 +29,20 @@ class ConnectionStatusNormalizerSpec extends ObjectBehavior
 
     public function it_normalizes_a_connection_status(): void
     {
-        $connectionStatus = new ConnectionStatus(true, true);
+        $connectionStatus = new ConnectionStatus(true, true, 42);
 
         $this->normalize($connectionStatus)->shouldReturn([
             'isActive' => true,
             'isIdentifiersMappingValid' => true,
+            'productSubscriptionCount' => 42,
         ]);
 
-        $anotherConnectionStatus = new ConnectionStatus(false, false);
+        $anotherConnectionStatus = new ConnectionStatus(false, false, 42);
 
         $this->normalize($anotherConnectionStatus)->shouldReturn([
             'isActive' => false,
             'isIdentifiersMappingValid' => false,
+            'productSubscriptionCount' => 42,
         ]);
     }
 }

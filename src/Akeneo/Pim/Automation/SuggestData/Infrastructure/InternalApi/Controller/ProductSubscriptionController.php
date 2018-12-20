@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetP
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Normalizer as InternalApi;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\ProductSubscriptionCountQuery;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,9 +42,6 @@ class ProductSubscriptionController
     /** @var InternalApi\ProductSubscriptionStatusNormalizer */
     private $productSubscriptionStatusNormalizer;
 
-    /** @var ProductSubscriptionCountQuery */
-    private $productSubscriptionCountQuery;
-
     /**
      * @param SubscribeProductHandler $subscribeProductHandler
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
@@ -56,14 +52,12 @@ class ProductSubscriptionController
         SubscribeProductHandler $subscribeProductHandler,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler,
-        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer,
-        ProductSubscriptionCountQuery $productSubscriptionCountQuery
+        InternalApi\ProductSubscriptionStatusNormalizer $productSubscriptionStatusNormalizer
     ) {
         $this->subscribeProductHandler = $subscribeProductHandler;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
         $this->unsubscribeProductHandler = $unsubscribeProductHandler;
         $this->productSubscriptionStatusNormalizer = $productSubscriptionStatusNormalizer;
-        $this->productSubscriptionCountQuery = $productSubscriptionCountQuery;
     }
 
     /**
@@ -115,15 +109,5 @@ class ProductSubscriptionController
         } catch (ProductSubscriptionException $e) {
             return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-    }
-
-    /**
-     * Get the product subscriptions count.
-     * 
-     * @return JsonResponse
-     */
-    public function countAction(): JsonResponse
-    {
-        return new JsonResponse(['count' => $this->productSubscriptionCountQuery->execute()]);
     }
 }

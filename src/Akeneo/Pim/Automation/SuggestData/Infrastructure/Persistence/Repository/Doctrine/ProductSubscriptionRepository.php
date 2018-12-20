@@ -129,4 +129,18 @@ AND f.code = :familyCode;
 SQL;
         $this->em->getConnection()->executeQuery($query, ['familyCode' => $familyCode]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        $sql = <<<SQL
+SELECT COUNT(1) AS product_subscription_count from pim_suggest_data_product_subscription;
+SQL;
+        $statement = $this->em->getConnection()->executeQuery($sql);
+        $result = $statement->fetch();
+
+        return intval($result['product_subscription_count']);
+    }
 }

@@ -24,14 +24,22 @@ final class ConnectionStatus
     /** @var bool */
     private $isIdentifiersMappingValid;
 
+    /** @var int */
+    private $productSubscriptionCount;
+
     /**
      * @param bool $isActive
      * @param bool $isIdentifiersMappingValid
+     * @param int  $productSubscriptionCount
      */
-    public function __construct(bool $isActive, bool $isIdentifiersMappingValid)
-    {
+    public function __construct(
+        bool $isActive,
+        bool $isIdentifiersMappingValid,
+        int $productSubscriptionCount
+    ) {
         $this->isActive = $isActive;
         $this->isIdentifiersMappingValid = $isIdentifiersMappingValid;
+        $this->productSubscriptionCount = $productSubscriptionCount;
     }
 
     /**
@@ -42,8 +50,19 @@ final class ConnectionStatus
         return $this->isActive;
     }
 
+    /**
+     * @return bool
+     */
     public function isIdentifiersMappingValid(): bool
     {
         return $this->isIdentifiersMappingValid;
+    }
+
+    /**
+     * @return int
+     */
+    public function productSubscriptionCount()
+    {
+        return $this->productSubscriptionCount;
     }
 }

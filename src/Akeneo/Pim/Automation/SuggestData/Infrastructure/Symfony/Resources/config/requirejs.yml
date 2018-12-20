@@ -41,11 +41,6 @@ config:
                     options:
                         urls:
                             get: akeneo_suggest_data_attribute_options_mapping_get
-                subscription:
-                    module: akeneo/suggest-data/fetcher/subscription
-                    options:
-                        urls:
-                            count: akeneo_suggest_data_franklin_subsbscription_count
 
     paths:
         # Common
@@ -56,9 +51,6 @@ config:
         akeneo/suggest-data/controller/identifiers-mapping: akeneosuggestdata/js/controller/identifiers-mapping.ts
         akeneo/suggest-data/controller/attributes-mapping-index: akeneosuggestdata/js/controller/attributes-mapping-index.ts
         akeneo/suggest-data/controller/attributes-mapping-edit: akeneosuggestdata/js/controller/attributes-mapping-edit.ts
-
-        # Fetchers
-        akeneo/suggest-data/fetcher/subscription: akeneosuggestdata/js/fetcher/subscription.ts
 
         # Savers
         akeneo/suggest-data/saver/franklin-connection: akeneosuggestdata/js/saver/franklin-connection

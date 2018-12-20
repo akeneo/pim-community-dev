@@ -12,8 +12,3 @@ akeneo_suggest_data_franklin_subscription_status:
     path: /{productId}/status
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:getProductSubscriptionStatusAction }
     methods: [GET]
-
-akeneo_suggest_data_franklin_subsbscription_count:
-    path: /count
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:countAction }
-    methods: [GET]

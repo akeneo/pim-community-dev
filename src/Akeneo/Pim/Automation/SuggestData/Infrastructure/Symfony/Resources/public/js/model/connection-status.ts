@@ -16,4 +16,5 @@
 export default interface ConnectionStatus {
   isActive: boolean;
   isIdentifiersMappingValid: boolean;
+  productSubscriptionCount: number;
 }

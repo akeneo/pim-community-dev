@@ -1,3 +1,6 @@
+import {getConnectionStatus} from "../fetcher/franklin-connection";
+import ConnectionStatus from "../model/connection-status";
+
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -52,10 +55,14 @@ class MappingSave extends BaseSave {
    * Displays a confirmation modal if there is subscribed products. If not, just save.
    */
   public save(): void {
-    FetcherRegistry.getFetcher('subscription').count().then((count: number) => {
-      if (count > 0) {
+    getConnectionStatus().then((connectionStatus: ConnectionStatus) => {
+      if (connectionStatus.productSubscriptionCount > 0) {
         Dialog.confirm(
-          __('akeneo_suggest_data.settings.module.save.warning', { count }, count),
+          __(
+            'akeneo_suggest_data.settings.module.save.warning',
+            { count: connectionStatus.productSubscriptionCount },
+            connectionStatus.productSubscriptionCount
+          ),
           __('akeneo_suggest_data.settings.module.save.title'),
           this.executeSave,
           null,

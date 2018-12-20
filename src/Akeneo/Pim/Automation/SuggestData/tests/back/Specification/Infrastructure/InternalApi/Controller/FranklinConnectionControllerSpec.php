@@ -110,7 +110,7 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
     ): void {
         $request->get('identifier')->willReturn(null);
         $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-        $connectionStatus = new ConnectionStatus(true, true);
+        $connectionStatus = new ConnectionStatus(true, true, 42);
         $getConnectionStatusHandler
             ->handle(Argument::type(GetConnectionStatusQuery::class))
             ->willReturn($connectionStatus);
@@ -123,6 +123,7 @@ class FranklinConnectionControllerSpec extends ObjectBehavior
             [
                 'isActive' => true,
                 'isIdentifiersMappingValid' => true,
+                'productSubscriptionCount' => 42,
             ],
             json_decode($response->getContent()->getWrappedObject(), true)
         );
