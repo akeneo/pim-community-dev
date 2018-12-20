@@ -137,11 +137,11 @@ class UpdateIdentifiersMappingHandler
             }
 
             if ($attribute->isLocalizable()) {
-                throw InvalidMappingException::localizableNotAllowed($attribute->getCode());
+                throw InvalidMappingException::localizableAttributeNotAllowed($attribute->getCode());
             }
 
             if ($attribute->isScopable()) {
-                throw InvalidMappingException::scopableNotAllowed($attribute->getCode());
+                throw InvalidMappingException::scopableAttributeNotAllowed($attribute->getCode());
             }
         }
     }

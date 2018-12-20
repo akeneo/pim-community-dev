@@ -183,7 +183,7 @@ class IdentifiersMappingContext implements Context
     public function anInvalidIdentifierLocalizableMessageShouldBeSent(string $pimAttributeCode): void
     {
         Assert::assertEquals(
-            InvalidMappingException::localizableNotAllowed($pimAttributeCode)->getMessage(),
+            InvalidMappingException::localizableAttributeNotAllowed($pimAttributeCode)->getMessage(),
             $this->thrownException->getMessage()
         );
     }
@@ -196,7 +196,7 @@ class IdentifiersMappingContext implements Context
     public function anInvalidIdentifierScopableMessageShouldBeSent(string $pimAttributeCode): void
     {
         Assert::assertEquals(
-            InvalidMappingException::scopableNotAllowed($pimAttributeCode)->getMessage(),
+            InvalidMappingException::scopableAttributeNotAllowed($pimAttributeCode)->getMessage(),
             $this->thrownException->getMessage()
         );
     }
@@ -237,6 +237,7 @@ class IdentifiersMappingContext implements Context
     public function aTokenInvalidMessageForIdentifiersMappingShouldBeSent(): void
     {
         var_dump($this->thrownException->getMessage());
+        throw new \Exception('TO DEVELOP');
     }
 
     /**

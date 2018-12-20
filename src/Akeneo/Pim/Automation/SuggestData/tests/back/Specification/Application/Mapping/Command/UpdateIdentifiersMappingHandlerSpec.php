@@ -242,7 +242,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(InvalidMappingException::localizableNotAllowed('ean'))
+            ->shouldThrow(InvalidMappingException::localizableAttributeNotAllowed('ean'))
             ->during('handle', [$command]);
     }
 
@@ -271,7 +271,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(InvalidMappingException::scopableNotAllowed('pim_asin'))
+            ->shouldThrow(InvalidMappingException::scopableAttributeNotAllowed('pim_asin'))
             ->during('handle', [$command]);
     }
 }
