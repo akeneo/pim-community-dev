@@ -54,6 +54,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
     return (
       <React.Fragment>
         <Editor
+          toolbarHidden={this.props.readOnly}
           toolbar={{
             options: [
               'inline',
