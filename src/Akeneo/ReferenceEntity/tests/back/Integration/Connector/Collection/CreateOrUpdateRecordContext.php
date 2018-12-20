@@ -337,14 +337,23 @@ class CreateOrUpdateRecordContext implements Context
             RecordCode::fromString('fatboy')
         );
 
-        Assert::same('Fatboy label', $fatboyRecord->getLabel('en_US'));
+        $expectedFatboyRecord = Record::create(
+            $fatboyRecord->getIdentifier(),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('fatboy'),
+            ['en_US' => 'Fatboy label'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Fatboy name')
+                )
+            ])
+        );
 
-        $englishNameValue = $fatboyRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ChannelReference::noReference(),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::same('Fatboy name', $englishNameValue->getData()->normalize());
+        \PHPUnit\Framework\Assert::assertEquals($expectedFatboyRecord, $fatboyRecord);
     }
 
     /**
@@ -352,54 +361,57 @@ class CreateOrUpdateRecordContext implements Context
      */
     public function theRecordsExistingBothInTheErpAndThePimAreCorrectlySynchronizedInThePimWithTheInformationFromTheErp()
     {
+        $expectedKartellRecord = Record::create(
+            RecordIdentifier::fromString('brand_kartell_fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('kartell'),
+            ['en_US' => 'Kartell updated english label', 'fr_FR' => 'Kartell updated french label'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell updated english name')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('description_brand_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Kartell english description')
+                )
+            ])
+        );
+
         $kartellRecord = $this->recordRepository->getByReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('kartell')
         );
 
-        Assert::same('Kartell updated english label', $kartellRecord->getLabel('en_US'));
-        Assert::same('Kartell updated french label', $kartellRecord->getLabel('fr_FR'));
+        \PHPUnit\Framework\Assert::assertEquals($expectedKartellRecord, $kartellRecord);
 
-        $kartellEnglishDescriptionValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::same('Kartell english description', $kartellEnglishDescriptionValue->getData()->normalize());
-
-        $kartellEnglishNameValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ChannelReference::noReference(),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::same('Updated english name', $kartellEnglishNameValue->getData()->normalize());
-
-        $kartellFrenchNameValue = $kartellRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ChannelReference::noReference(),
-            LocaleReference::createFromNormalized('fr_FR')
-        ));
-        Assert::null($kartellFrenchNameValue);
+        $expectedLexonRecord = Record::create(
+            RecordIdentifier::fromString('brand_lexon_fingerprint'),
+            ReferenceEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('lexon'),
+            ['en_US' => 'Lexon updated english label'],
+            Image::createEmpty(),
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_brand_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Updated Lexon english name')
+                )
+            ])
+        );
 
         $lexonRecord = $this->recordRepository->getByReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('lexon')
         );
-        Assert::same('Lexon updated english label', $lexonRecord->getLabel('en_US'));
 
-        $lexonNameValue = $lexonRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'name', 'fingerprint'),
-            ChannelReference::noReference(),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::same('Updated Lexon english name', $lexonNameValue->getData()->normalize());
-
-        $lexonDescriptionValue = $lexonRecord->getValues()->findValue(ValueKey::create(
-            AttributeIdentifier::create('brand', 'description', 'fingerprint'),
-            ChannelReference::createfromNormalized('ecommerce'),
-            LocaleReference::createFromNormalized('en_US')
-        ));
-        Assert::null($lexonDescriptionValue);
+        \PHPUnit\Framework\Assert::assertEquals($expectedLexonRecord, $lexonRecord);
     }
 
     private function loadBrandReferenceEntity(): void
@@ -500,7 +512,7 @@ class CreateOrUpdateRecordContext implements Context
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('description_brand_fingerprint'),
-                    ChannelReference::noReference(),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('Lexon description')
                 )

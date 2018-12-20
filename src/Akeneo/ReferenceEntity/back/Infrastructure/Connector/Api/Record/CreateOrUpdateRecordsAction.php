@@ -16,7 +16,6 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\Connector\EditRecordCommandFactory;
-use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -93,7 +92,18 @@ class CreateOrUpdateRecordsAction
         $responsesData = [];
 
         foreach ($normalizedRecords as $normalizedRecord) {
-            $responsesData[] = $this->createOrUpdateRecord($referenceEntityIdentifier, $normalizedRecord);
+            try {
+                $responseData = $this->createOrUpdateRecord($referenceEntityIdentifier, $normalizedRecord);
+            } catch (\InvalidArgumentException | ViolationHttpException $exception) {
+                $responseData = [
+                    'code'        => $normalizedRecord['code'],
+                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'message'     => $exception->getMessage()
+                ];
+                // TODO: format violations errors for the ViolationHttpException
+            }
+
+            $responsesData[] = $responseData;
         }
 
         return new JsonResponse($responsesData);
@@ -113,68 +123,37 @@ class CreateOrUpdateRecordsAction
     private function createOrUpdateRecord(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
     {
         $recordCode = RecordCode::fromString($normalizedRecord['code']);
-        $responseData = ['code' => $normalizedRecord['code']];
+        $shouldBeCreated = !$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
+        $createRecordCommand = null;
 
-        try {
-            if (!$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)) {
-                $responseData['status_code'] = Response::HTTP_CREATED;
-                $this->createRecord($referenceEntityIdentifier, $normalizedRecord);
-            } else {
-                $responseData['status_code'] = Response::HTTP_NO_CONTENT;
-                $this->updateRecord($referenceEntityIdentifier, $normalizedRecord);
+        if (true === $shouldBeCreated) {
+            $createRecordCommand = new CreateRecordCommand();
+            $createRecordCommand->code = $normalizedRecord['code'];
+            $createRecordCommand->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
+            $createRecordCommand->labels = [];
+
+            $violations = $this->recordDataValidator->validate($createRecordCommand);
+            if ($violations->count() > 0) {
+                throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
             }
-        } catch (\InvalidArgumentException | ViolationHttpException $exception) {
-            $responseData['status_code'] = Response::HTTP_UNPROCESSABLE_ENTITY;
-            $responseData['message'] = $exception->getMessage();
-            // TODO: format violations errors for the ViolationHttpException
         }
 
-        return $responseData;
-    }
-
-    private function createRecord(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): void
-    {
-        $createRecordCommand = $this->createValidatedRecordCommand($referenceEntityIdentifier, $normalizedRecord);
-        $editRecordCommand = $this->createValidatedEditCommand($referenceEntityIdentifier, $normalizedRecord);
-
-        ($this->createRecordHandler)($createRecordCommand);
-        ($this->editRecordHandler)($editRecordCommand);
-    }
-
-    private function updateRecord(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): void
-    {
-        $editRecordCommand = $this->createValidatedEditCommand($referenceEntityIdentifier, $normalizedRecord);
-        ($this->editRecordHandler)($editRecordCommand);
-    }
-
-    private function createValidatedRecordCommand(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): CreateRecordCommand
-    {
-        $command = new CreateRecordCommand();
-        $command->code = $normalizedRecord['code'];
-        $command->referenceEntityIdentifier = $referenceEntityIdentifier->normalize();
-        $command->labels = [];
-
-        $violations = $this->recordDataValidator->validate($command);
-        if ($violations->count() > 0) {
-            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
-        }
-
-        return $command;
-    }
-
-    private function createValidatedEditCommand(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): EditRecordCommand
-    {
-        try {
-            $editRecordCommand = $this->editRecordCommandFactory->create($referenceEntityIdentifier, $normalizedRecord);
-        } catch (\InvalidArgumentException $exception) {
-            throw new UnprocessableEntityHttpException($exception->getMessage());
-        }
+        $editRecordCommand = $this->editRecordCommandFactory->create($referenceEntityIdentifier, $normalizedRecord);
 
         $violations = $this->recordDataValidator->validate($editRecordCommand);
         if ($violations->count() > 0) {
             throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
         }
 
-        return $editRecordCommand;
+        if (true === $shouldBeCreated) {
+            ($this->createRecordHandler)($createRecordCommand);
+        }
+
+        ($this->editRecordHandler)($editRecordCommand);
+
+        return [
+            'code' => (string) $recordCode,
+            'status_code' => $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT,
+        ];
     }
 }
