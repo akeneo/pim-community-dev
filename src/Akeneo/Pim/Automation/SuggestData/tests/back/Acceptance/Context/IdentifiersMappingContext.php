@@ -221,6 +221,17 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
+     * @Then a duplicate identifiers attribute message should be sent
+     */
+    public function aDuplicateIdentifiersAttributeMessageShouldBeSent(): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::duplicateAttributeCode('', '')->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
      * @Then an invalid brand mpn identifier message should be sent
      */
     public function anInvalidBrandMpnIdentifierMessageShouldBeSent(): void
@@ -232,12 +243,14 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @Then a token invalid message for identifiers mapping should be sent
+     * @Then an authentication error message should be sent
      */
     public function aTokenInvalidMessageForIdentifiersMappingShouldBeSent(): void
     {
-        var_dump($this->thrownException->getMessage());
-        throw new \Exception('TO DEVELOP');
+        Assert::assertEquals(
+            DataProviderException::authenticationError(new \Exception())->getMessage(),
+            $this->thrownException->getMessage()
+        );
     }
 
     /**

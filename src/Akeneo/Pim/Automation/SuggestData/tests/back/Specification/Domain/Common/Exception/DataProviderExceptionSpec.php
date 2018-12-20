@@ -39,4 +39,26 @@ class DataProviderExceptionSpec extends ObjectBehavior
         $this->getCode()->shouldReturn(500);
         $this->getPrevious()->shouldReturn($previousException);
     }
+
+    public function it_builds_an_exception_for_authentication_error(): void
+    {
+        $previousException = new \Exception();
+        $this->beConstructedThrough('authenticationError', [$previousException]);
+
+        $this->getMessage()->shouldReturn('akeneo_suggest_data.entity.data_provider.constraint.authentication_error');
+        $this->getMessageParams()->shouldReturn([]);
+        $this->getCode()->shouldReturn(403);
+        $this->getPrevious()->shouldReturn($previousException);
+    }
+
+    public function it_builds_an_exception_for_bad_request_error(): void
+    {
+        $previousException = new \Exception();
+        $this->beConstructedThrough('badRequestError', [$previousException]);
+
+        $this->getMessage()->shouldReturn('akeneo_suggest_data.entity.data_provider.constraint.bad_request_error');
+        $this->getMessageParams()->shouldReturn([]);
+        $this->getCode()->shouldReturn(500);
+        $this->getPrevious()->shouldReturn($previousException);
+    }
 }

@@ -171,6 +171,14 @@ Feature: Map the PIM identifiers with Franklin identifiers
     And a missing or invalid identifiers message should be sent
 
   Scenario: Fails to map twice the same attribute on different identifiers
+    Given the predefined attributes asin
+    And an empty identifiers mapping
+    When the identifiers are mapped as follows:
+      | franklin_code | attribute_code |
+      | upc           | asin           |
+      | asin          | asin           |
+    Then the identifiers mapping should not be saved
+    And a duplicate identifiers attribute message should be sent
 
   Scenario: Fails to map identifiers mapping when the token is invalid
     Given the predefined attributes pim_brand, mpn, ean and asin
@@ -183,7 +191,7 @@ Feature: Map the PIM identifiers with Franklin identifiers
       | upc           | ean            |
       | asin          | asin           |
     Then the identifiers mapping should not be saved
-    #And a token invalid message for identifiers mapping should be sent
+    And an authentication error message should be sent
 
   Scenario: Fails to map identifiers mapping when Franklin is down
     Given the predefined attributes pim_brand, mpn, ean and asin

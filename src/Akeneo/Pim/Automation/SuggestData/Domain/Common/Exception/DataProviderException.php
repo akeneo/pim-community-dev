@@ -53,6 +53,30 @@ final class DataProviderException extends \Exception
     }
 
     /**
+     * @param \Exception $previousException
+     *
+     * @return DataProviderException
+     */
+    public static function authenticationError(\Exception $previousException): self
+    {
+        $message = sprintf(self::CONSTRAINT_KEY, 'authentication_error');
+
+        return new static($message, [], 403, $previousException);
+    }
+
+    /**
+     * @param \Exception $previousException
+     *
+     * @return DataProviderException
+     */
+    public static function badRequestError(\Exception $previousException): self
+    {
+        $message = sprintf(self::CONSTRAINT_KEY, 'bad_request_error');
+
+        return new static($message, [], 500, $previousException);
+    }
+
+    /**
      * @return array
      */
     public function getMessageParams(): array
