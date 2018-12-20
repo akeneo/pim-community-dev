@@ -52,6 +52,9 @@ class RecordDetails
     /** @var array */
     private $values;
 
+//    TODO
+//    private $rights; // ['edit' => true|false]
+
     public function __construct(
         RecordIdentifier $identifier,
         ReferenceEntityIdentifier $referenceEntityIdentifier,

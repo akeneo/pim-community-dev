@@ -47,6 +47,9 @@ class ReferenceEntityDetails
     /** @var AttributeDetails[] */
     public $attributes;
 
+//    TODO
+//    private $rights; // ['edit' => true|false]
+
     public function normalize(): array
     {
         return [
