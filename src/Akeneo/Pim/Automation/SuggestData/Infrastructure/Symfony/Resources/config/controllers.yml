@@ -6,6 +6,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.handler.get_product_subscription_status'
             - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
             - '@akeneo.pim.automation.suggest_data.normalizer.product_subscription_status'
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product_subscription_count_query'
 
     akeneo.pim.automation.suggest_data.controller.franklin:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\InternalApi\Controller\FranklinConnectionController'

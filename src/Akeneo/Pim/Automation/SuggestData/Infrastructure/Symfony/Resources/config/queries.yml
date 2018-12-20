@@ -18,3 +18,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\SelectProductIdentifierValuesQuery'
         arguments:
             - '@database_connection'
+
+    akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product_subscription_count_query:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Persistence\Query\Doctrine\ProductSubscriptionCountQuery'
+        arguments:
+            - '@database_connection'
