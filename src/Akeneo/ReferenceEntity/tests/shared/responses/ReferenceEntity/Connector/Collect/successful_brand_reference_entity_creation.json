@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "route": "akeneo_reference_entities_reference_entity_rest_connector_patch",
+    "route": "akeneo_reference_entities_reference_entity_rest_connector_create_or_update",
     "query": {
       "referenceEntityIdentifier": "brand"
     },

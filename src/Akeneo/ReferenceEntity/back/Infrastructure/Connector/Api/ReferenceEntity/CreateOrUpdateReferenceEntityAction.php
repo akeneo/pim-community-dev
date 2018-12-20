@@ -73,10 +73,10 @@ class CreateOrUpdateReferenceEntityAction
         }
 
         $createReferenceEntityCommand = null;
-        $shouldBeCreated = $this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
+        $shouldBeCreated = !$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier);
         if (true === $shouldBeCreated) {
             $createReferenceEntityCommand = new CreateReferenceEntityCommand();
-            $createReferenceEntityCommand->code = $referenceEntityIdentifier;
+            $createReferenceEntityCommand->code = $normalizedReferenceEntity['code'];
             $createReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
 
             $violations = $this->validator->validate($createReferenceEntityCommand);
@@ -86,7 +86,7 @@ class CreateOrUpdateReferenceEntityAction
         }
 
         $editReferenceEntityCommand = new EditReferenceEntityCommand();
-        $editReferenceEntityCommand->identifier = $referenceEntityIdentifier;
+        $editReferenceEntityCommand->identifier = $normalizedReferenceEntity['code'];
         $editReferenceEntityCommand->labels = $normalizedReferenceEntity['labels'];
         // TODO: to fix as the command does not accept a code
         $editReferenceEntityCommand->image = null;
@@ -104,7 +104,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $headers = [
             'location' => $this->router->generate('akeneo_reference_entities_reference_entity_rest_connector_get', [
-                'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
+                'code' => (string) $referenceEntityIdentifier,
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 

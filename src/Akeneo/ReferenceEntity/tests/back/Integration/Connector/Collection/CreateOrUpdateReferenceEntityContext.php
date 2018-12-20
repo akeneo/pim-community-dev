@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
@@ -108,14 +109,14 @@ class CreateOrUpdateReferenceEntityContext implements Context
             self::REQUEST_CONTRACT_DIR . 'successful_brand_reference_entity_creation.json'
         );
 
-        $brand = $this->referenceEntityRepository->getByIdentifier('brand');
+        $brand = $this->referenceEntityRepository->getByIdentifier(ReferenceEntityIdentifier::fromString('brand'));
         $expectedBrand = ReferenceEntity::create(
             ReferenceEntityIdentifier::fromString('brand'),
             [
                 'en_US' => 'Brand english label',
                 'fr_FR' => 'Brand french label',
             ],
-            null
+            Image::createEmpty()
         );
 
         Assert::assertEquals($brand, $expectedBrand);
