@@ -3,9 +3,9 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   const isLockedOptionCode = async code => {
     await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
-    const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);
+    await nodeElement.$(`tr[data-code="${code}"] input[name="code"].AknTextField--disabled`);
 
-    return null !== codeInput.$('.AknTextField--disabled');
+    return true;
   };
 
   const newOptionCode = async code => {

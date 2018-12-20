@@ -41,7 +41,7 @@ module.exports = async function(cucumber) {
 
   Then('the code of the {string} option should be locked', async function(code) {
     const manageOption = await await getElement(this.page, 'ManageOptionModal');
-    await manageOption.isLockedOptionCode(code);
+    assert.strictEqual(true, await manageOption.isLockedOptionCode(code));
   });
 
   When('the user adds the new option label {string}', async function(label) {
