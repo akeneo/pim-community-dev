@@ -60,18 +60,20 @@ class IdentifiersMappingController
             $this->updateIdentifiersMappingHandler->handle($command);
 
             return new JsonResponse(json_encode($identifiersMapping));
-        } catch (InvalidMappingException | DataProviderException $exception) {
+        } catch (InvalidMappingException $exception) {
             return new JsonResponse(
                 [
                     [
                         'message' => $exception->getMessage(),
                         'messageParams' => $exception->getMessageParams(),
-                        'path' => null,
+                        'path' => $exception->getPath(),
                         'global' => false,
                     ],
                 ],
                 $exception->getCode()
             );
+        } catch (DataProviderException $exception) {
+            return new JsonResponse(['errors' => $exception->getMessage()], $exception->getCode());
         }
     }
 

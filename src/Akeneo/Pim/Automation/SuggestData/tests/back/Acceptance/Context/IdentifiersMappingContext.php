@@ -202,6 +202,19 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
+     * @Then an invalid identifier :pimAttributeCode locale specific message should be sent
+     *
+     * @param string $pimAttributeCode
+     */
+    public function anInvalidIdentifierLocaleSpecificMessageShouldBeSent(string $pimAttributeCode): void
+    {
+        Assert::assertEquals(
+            InvalidMappingException::localeSpecificAttributeNotAllowed($pimAttributeCode)->getMessage(),
+            $this->thrownException->getMessage()
+        );
+    }
+
+    /**
      * @Then a not existing identifier attribute message should be sent
      */
     public function aNotExistingIdentifierAttributeMessageShouldBeSent(): void
