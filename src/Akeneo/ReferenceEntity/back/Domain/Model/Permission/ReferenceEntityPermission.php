@@ -73,4 +73,9 @@ class ReferenceEntityPermission
             }, $this->permissions),
         ];
     }
+
+    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
+    {
+        return $this->referenceEntityIdentifier;
+    }
 }

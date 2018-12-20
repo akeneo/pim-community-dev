@@ -21,6 +21,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
             - '@event_dispatcher'
 
+    akeneo_referenceentity.infrastructure.persistence.repository.reference_entity_permission:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntityPermission\SqlReferenceEntityPermissionRepository
+
     # Reference entities query functions
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityExists
