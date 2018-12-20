@@ -182,6 +182,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
+            'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
             // TODO public constant
             'Akeneo\Pim\Structure\Component\AttributeTypes',
