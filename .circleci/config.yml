@@ -39,7 +39,7 @@ jobs:
   test_phpunit:
       machine:
           enabled: true
-      parallelism: 1
+      parallelism: 7
       steps:
           - attach_workspace:
                 at: ~/
@@ -65,7 +65,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
-    parallelism: 1
+    parallelism: 7
     steps:
       - attach_workspace:
           at: ~/
