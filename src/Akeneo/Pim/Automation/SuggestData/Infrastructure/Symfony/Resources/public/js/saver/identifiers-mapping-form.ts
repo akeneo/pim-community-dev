@@ -1,5 +1,5 @@
-import {getConnectionStatus} from "../fetcher/franklin-connection";
-import ConnectionStatus from "../model/connection-status";
+import {getConnectionStatus} from '../fetcher/franklin-connection';
+import ConnectionStatus from '../model/connection-status';
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -61,14 +61,14 @@ class MappingSave extends BaseSave {
           __(
             'akeneo_suggest_data.settings.module.save.warning',
             { count: connectionStatus.productSubscriptionCount },
-            connectionStatus.productSubscriptionCount
+            connectionStatus.productSubscriptionCount,
           ),
           __('akeneo_suggest_data.settings.module.save.title'),
           this.executeSave,
           null,
           null,
           null,
-          'robot'
+          'robot',
         );
       } else {
         this.executeSave();

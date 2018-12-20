@@ -123,6 +123,24 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
         $this->handle($query)->shouldReturnInvalidIdentifiersMappingStatus();
     }
 
+    public function it_checks_that_it_counts_product_subscriptions(
+        IdentifiersMapping $identifiersMapping,
+        GetConnectionStatusQuery $query,
+        $configurationRepository,
+        $identifiersMappingRepository,
+        $productSubscriptionRepository
+    ): void {
+        $configuration = new Configuration();
+        $configurationRepository->find()->willReturn($configuration);
+
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isValid()->willReturn(true);
+
+        $productSubscriptionRepository->count()->willReturn(42);
+
+        $this->handle($query)->shouldReturnProductSubscriptions();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -140,6 +158,9 @@ class GetConnectionStatusHandlerSpec extends ObjectBehavior
             },
             'returnInvalidIdentifiersMappingStatus' => function (ConnectionStatus $connectionStatus) {
                 return !$connectionStatus->isIdentifiersMappingValid();
+            },
+            'returnProductSubscriptions' => function (ConnectionStatus $connectionStatus) {
+                return 42 === $connectionStatus->productSubscriptionCount();
             },
         ];
     }

@@ -30,7 +30,7 @@ final class ConnectionStatus
     /**
      * @param bool $isActive
      * @param bool $isIdentifiersMappingValid
-     * @param int  $productSubscriptionCount
+     * @param int $productSubscriptionCount
      */
     public function __construct(
         bool $isActive,
