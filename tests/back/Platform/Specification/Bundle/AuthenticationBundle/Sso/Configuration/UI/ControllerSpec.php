@@ -12,8 +12,10 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateCon
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\EntityId;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IdentityProvider;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\IsEnabled;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProvider;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProviderDefaultConfiguration;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Url;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -30,9 +32,10 @@ class ControllerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         NormalizerInterface $normalizer,
         CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
-        Repository $repository
+        Repository $repository,
+        ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration
     ) {
-        $this->beConstructedWith($validator, $normalizer, $createOrUpdateConfigHandler, $repository);
+        $this->beConstructedWith($validator, $normalizer, $createOrUpdateConfigHandler, $repository, $serviceProviderDefaultConfiguration);
     }
 
     function it_saves_configuration($validator, $createOrUpdateConfigHandler)
@@ -159,5 +162,31 @@ class ControllerSpec extends ObjectBehavior
         $normalizer->normalize($config, 'internal_api')->willReturn($normalizedConfig);
 
         $this->getAction()->shouldBeLike(new JsonResponse($normalizedConfig));
+    }
+
+    function it_gives_a_default_configuration($repository, $serviceProviderDefaultConfiguration)
+    {
+        $repository->find('authentication_sso')->willThrow(ConfigurationNotFound::class);
+
+        $serviceProviderConfiguration = new ServiceProvider(
+            new EntityId('https://sp.jambon.com/saml/metadata'),
+            new Certificate('default_public_certificate'),
+            new Certificate('default_private_certificate')
+        );
+
+        $serviceProviderDefaultConfiguration->getServiceProvider()->willReturn($serviceProviderConfiguration);
+
+        $defaultConfig = [
+            'is_enabled'                           => false,
+            'identity_provider_entity_id'          => '',
+            'identity_provider_sign_on_url'        => '',
+            'identity_provider_logout_url'         => '',
+            'identity_provider_public_certificate' => '',
+            'service_provider_entity_id'           => 'https://sp.jambon.com/saml/metadata',
+            'service_provider_public_certificate'  => 'default_public_certificate',
+            'service_provider_private_certificate' => 'default_private_certificate',
+        ];
+
+        $this->getAction()->shouldBeLike(new JsonResponse($defaultConfig));
     }
 }

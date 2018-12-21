@@ -9,6 +9,7 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateCon
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigurationHandler;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
+use Akeneo\Platform\Component\Authentication\Sso\Configuration\ServiceProviderDefaultConfiguration;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,6 +40,9 @@ final class Controller
     /** @var Repository */
     private $repository;
 
+    /** @var ServiceProviderDefaultConfiguration */
+    private $serviceProviderDefaultConfiguration;
+
     /** @var CreateArchive */
     private $createArchive;
 
@@ -47,12 +51,14 @@ final class Controller
         NormalizerInterface $normalizer,
         CreateOrUpdateConfigurationHandler $createOrUpdateConfigHandler,
         Repository $repository,
+        ServiceProviderDefaultConfiguration $serviceProviderDefaultConfiguration,
         CreateArchive $createArchive
     ) {
         $this->validator = $validator;
         $this->normalizer = $normalizer;
         $this->createOrUpdateConfigHandler = $createOrUpdateConfigHandler;
         $this->repository = $repository;
+        $this->serviceProviderDefaultConfiguration = $serviceProviderDefaultConfiguration;
         $this->createArchive = $createArchive;
     }
 
@@ -100,15 +106,18 @@ final class Controller
 
             return new JsonResponse($normalizedConfig);
         } catch (ConfigurationNotFound $e) {
+
+            $serviceProvider = $this->serviceProviderDefaultConfiguration->getServiceProvider()->toArray();
+
             return new JsonResponse([
                 'is_enabled'                           => false,
                 'identity_provider_entity_id'          => '',
                 'identity_provider_sign_on_url'        => '',
                 'identity_provider_logout_url'         => '',
                 'identity_provider_public_certificate' => '',
-                'service_provider_entity_id'           => '',
-                'service_provider_public_certificate'  => '',
-                'service_provider_private_certificate' => '',
+                'service_provider_entity_id'           => $serviceProvider['entityId'],
+                'service_provider_public_certificate'  => $serviceProvider['publicCertificate'],
+                'service_provider_private_certificate' => $serviceProvider['privateCertificate'],
             ]);
         }
     }
