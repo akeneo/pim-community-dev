@@ -179,6 +179,7 @@ services:
             - '@akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'
             - '@akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler'
             - '@router'
+            - '@akeneo_referenceentity.infrastructure.connector.api.reference_entity_validator'
 
     akeneo_referenceentity.infrastructure.connector.action.record.create_or_update:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\CreateOrUpdateRecordAction
