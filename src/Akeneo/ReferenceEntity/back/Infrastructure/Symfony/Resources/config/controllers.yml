@@ -206,6 +206,7 @@ services:
             - '@pim_api.normalizer.exception.violation'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_list_validator'
+            - '%reference_entity_connector_maximum_records_to_process_per_request%'
 
     akeneo_referenceentity.infrastructure.connector.action.reference_entity_attributes.get:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Attribute\GetConnectorReferenceEntityAttributesAction

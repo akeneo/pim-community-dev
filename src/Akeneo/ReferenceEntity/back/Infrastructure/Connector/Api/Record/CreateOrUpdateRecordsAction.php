@@ -71,6 +71,9 @@ class CreateOrUpdateRecordsAction
     /** @var RecordListValidator */
     private $recordListValidator;
 
+    /** @var int */
+    private $maximumRecordsPerRequest;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         RecordExistsInterface $recordExists,
@@ -81,7 +84,8 @@ class CreateOrUpdateRecordsAction
         ValidatorInterface $recordDataValidator,
         ViolationNormalizer $violationNormalizer,
         RecordValidator $recordStructureValidator,
-        RecordListValidator $recordListValidator
+        RecordListValidator $recordListValidator,
+        int $maximumRecordsPerRequest
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->recordExists = $recordExists;
@@ -93,6 +97,7 @@ class CreateOrUpdateRecordsAction
         $this->violationNormalizer = $violationNormalizer;
         $this->recordStructureValidator = $recordStructureValidator;
         $this->recordListValidator = $recordListValidator;
+        $this->maximumRecordsPerRequest = $maximumRecordsPerRequest;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -116,6 +121,13 @@ class CreateOrUpdateRecordsAction
                 'message' => 'The list of records has an invalid format.',
                 'errors'  => JsonSchemaErrorsFormatter::format($structureErrors),
             ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (count($normalizedRecords) > $this->maximumRecordsPerRequest) {
+            return new JsonResponse([
+                'code'    => Response::HTTP_REQUEST_ENTITY_TOO_LARGE,
+                'message' => sprintf('Too many resources to process, %d is the maximum allowed.', $this->maximumRecordsPerRequest),
+            ], Response::HTTP_REQUEST_ENTITY_TOO_LARGE);
         }
 
         $responsesData = [];

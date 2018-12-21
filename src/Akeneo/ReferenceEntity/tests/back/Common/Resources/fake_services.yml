@@ -1,6 +1,7 @@
 parameters:
     reference_entity_connector_records_limit_per_page: 3
     reference_entity_connector_reference_entities_limit_per_page: 3
+    reference_entity_connector_maximum_records_to_process_per_request: 10
 
 services:
     # Repositories

@@ -41,3 +41,9 @@ Feature: Connection to MDM or ERP systems
     And some records of the Brand reference entity existing in the ERP and in the PIM but with different information
     When the connector collects records from the ERP among which some records have data that do not comply with the business rules
     Then the PIM notifies the connector which records have data that do not comply with the business rules and what are the errors
+
+  @integration-back
+  Scenario: Notify an error when collecting a number of records exceeding the maximum number of records in one request
+    Given the Brand reference entity with some records
+    When the connector collects a number of records exceeding the maximum number of records in one request
+    Then the PIM notifies the connector that there were too many records to collect in one request
