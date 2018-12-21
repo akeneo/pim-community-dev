@@ -10,8 +10,7 @@
       "labels": {
         "en_US": "Brand english label",
         "fr_FR": "Brand french label"
-      },
-      "image": null
+      }
     }
   },
   "response": {

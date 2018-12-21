@@ -80,7 +80,6 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->requestContract = 'successful_brand_reference_entity_creation.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
     }
@@ -130,7 +129,6 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->requestContract = 'successful_brand_reference_entity_update.json';
 
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
-        $this->activatedLocalesPerChannels->save('ecommerce', ['en_US', 'fr_FR']);
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
@@ -180,5 +178,53 @@ class CreateOrUpdateReferenceEntityContext implements Context
         );
 
         Assert::assertEquals($brand, $expectedBrand);
+    }
+
+    /**
+     * @Given some reference entities
+     */
+    public function someReferenceEntities()
+    {
+        $this->requestContract = 'unprocessable_brand_reference_entity_for_invalid_format.json';
+
+        $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
+        $this->activatedLocales->save(LocaleIdentifier::fromCode('de_DE'));
+
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
+            [
+                'en_US' => 'It is an english label'
+            ],
+            Image::createEmpty()
+        );
+
+        $this->referenceEntityRepository->create($referenceEntity);
+    }
+
+    /**
+     * @When the connector collects a reference entity that has an invalid format
+     */
+    public function collectAReferenceEntityWithAnInvalidFormat()
+    {
+        Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
+
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . $this->requestContract
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about an error indicating that the reference entity has an invalid format
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheReferenceEntityHasAnInvalidFormat()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_format.json'
+        );
     }
 }

@@ -19,9 +19,13 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditR
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\ReferenceEntity\JsonSchema\ReferenceEntityValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
@@ -44,32 +48,37 @@ class CreateOrUpdateReferenceEntityAction
     /** @var Router */
     private $router;
 
+    /** @var ReferenceEntityValidator */
+    private $jsonSchemaValidator;
+
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
         ValidatorInterface $validator,
         CreateReferenceEntityHandler $createReferenceEntityHandler,
         EditReferenceEntityHandler $editReferenceEntityHandler,
-        Router $router
+        Router $router,
+        ReferenceEntityValidator $jsonSchemaValidator
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->validator = $validator;
         $this->createReferenceEntityHandler = $createReferenceEntityHandler;
         $this->editReferenceEntityHandler = $editReferenceEntityHandler;
         $this->router = $router;
+        $this->jsonSchemaValidator = $jsonSchemaValidator;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
-        $normalizedReferenceEntity = json_decode($request->getContent(), true);
-        $inBodyReferenceEntityIdentifier = $normalizedReferenceEntity['code'] ?? null;
-        if ($referenceEntityIdentifier !== $inBodyReferenceEntityIdentifier) {
-            throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
-        }
-
         try {
             $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
+        $normalizedReferenceEntity = $this->getNormalizedReferenceEntity($request->getContent());
+        $invalidFormatResponse = $this->validateReferenceEntityFormat($referenceEntityIdentifier, $normalizedReferenceEntity);
+        if (null !== $invalidFormatResponse) {
+            return $invalidFormatResponse;
         }
 
         $createReferenceEntityCommand = null;
@@ -111,5 +120,37 @@ class CreateOrUpdateReferenceEntityAction
         $responseStatusCode = true === $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
         return Response::create('', $responseStatusCode, $headers);
+    }
+
+    private function getNormalizedReferenceEntity(string $content): array
+    {
+        $normalizedReferenceEntity = json_decode($content, true);
+        if (null === $normalizedReferenceEntity) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        return $normalizedReferenceEntity;
+    }
+
+    public function validateReferenceEntityFormat(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
+        array $normalizedReferenceEntity
+    ): ?Response {
+        $invalidFormatErrors = $this->jsonSchemaValidator->validate($normalizedReferenceEntity);
+
+        if (!empty($invalidFormatErrors)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The reference entity has an invalid format.',
+                'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $referenceEntityIdentifierInBody = $normalizedReferenceEntity['code'] ?? null;
+        if ((string) $referenceEntityIdentifier !== $referenceEntityIdentifierInBody) {
+            throw new UnprocessableEntityHttpException('The code of the record provided in the URI must be the same as the one provided in the request body.');
+        }
+
+        return null;
     }
 }
