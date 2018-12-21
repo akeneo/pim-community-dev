@@ -506,12 +506,15 @@ class Form extends Base
     {
         foreach ($fields as $fieldCode => $value) {
             $field = $this->spin(function () use ($fieldCode) {
-                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $fieldCode));
+                $label = $this->find('css', sprintf('.modal label:contains("%s")', $fieldCode));
+                if ($label === null) {
+                    return false;
+                }
+
+                return $this->getClosest($label, 'AknFieldContainer')->find('css', 'input');
             }, sprintf('Cannot find "%s" in popin field', $fieldCode));
 
             $field->setValue($value);
-            $this->getSession()
-                ->executeScript(sprintf('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');', $fieldCode));
         }
     }
 
