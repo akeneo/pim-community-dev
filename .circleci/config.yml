@@ -81,112 +81,112 @@ jobs:
       - run:
           name: Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+            TESTFILES=$(cat .circleci/behat.txt | circleci tests split)
             .circleci/run_behat.sh $TESTFILES
       - store_test_results:
           path: var/tests/behat
       - store_artifacts:
           path: var/tests/behat
 
-  test_static_back:
-    docker:
-      - image: akeneo/fpm:php-7.2
-        environment:
-          COMPOSER_MEMORY_LIMIT: 5G
-        user: docker
-    parallelism: 2
-    steps:
-      - checkout
-      - run:
-          name: Composer
-          command: composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
-      - run:
-          name: Setup tests results folder
-          command: |
-            mkdir -p ~/test/results/phpspec
-            mkdir -p ~/test/results/phpcsfixer
-            mkdir -p var/logs
-      - run:
-          name: PhpSpec
-          command: |
-            TESTFILES=$(circleci tests split toto.txt)
-            vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
-      - run:
-          name: PhpCoupling Detector
-          command: |
-            vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
-            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
-      - run:
-          name: PhpCsFixer
-          command: vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
-      - run:
-          name: PHPStan
-          command: vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
-      - run:
-          name: Check Pullup
-          command: bin/check-pullup
-      #    - run:
-      #        name: Acceptance
-      #        command: vendor/bin/behat --strict -p acceptance -vv
-      - store_test_results:
-          path: ~/test/results
-      - store_artifacts:
-          path: ~/test/results
-
-  test_static_front:
-    docker:
-    - image: akeneo/fpm:php-7.2
-      environment:
-        COMPOSER_MEMORY_LIMIT: 5G
-      user: docker
-    steps:
-    - run:
-        name: Install all that is necessary for nodejs
-        command: |
-          sudo curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
-          sudo curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-          sudo sh -c 'echo "deb https://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/nodesource.list'
-          sudo sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list'
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends nodejs yarn
-          sudo apt-get install -yq libgconf-2-4
-          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont --no-install-recommends
-          sudo apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3
-          sudo apt-get install -y --no-install-recommends libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4
-          sudo apt-get install -y --no-install-recommends libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1
-          sudo apt-get install -y --no-install-recommends libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6
-          sudo apt-get install -y --no-install-recommends fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
-    - checkout
-    - run:
-        name: Install dependencies
-        command: |
-          cp ./app/config/parameters.yml.dist ./app/config/parameters.yml
-          sed -i "s/database_host:                        localhost/database_host:                        mysql-behat/g" ./app/config/parameters.yml
-          sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters.yml
-          sed -i "s/product_index_name:                    akeneo_pim_product/product_index_name:                    test_akeneo_pim_product/g" ./app/config/parameters.yml
-          sed -i "s/product_model_index_name:              akeneo_pim_product_model/product_model_index_name:              test_akeneo_pim_product_model/g" ./app/config/parameters.yml
-          sed -i "s/product_and_product_model_index_name:  akeneo_pim_product_and_product_model/product_and_product_model_index_name:  test_akeneo_pim_product_and_product_model/g" ./app/config/parameters.yml
-          composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
-          yarn install
-          mkdir ./web/js
-          bin/console pim:installer:dump-extensions --env=prod
-          bin/console pim:install:assets --env=prod --symlink
-    - run:
-        name: Yarn Lint
-        command: yarn run lint
-    - run:
-        name: Yarn Unit
-        command: yarn run unit
-    - run:
-        name: Yarn acceptance
-        command: |
-          yarn run webpack-test
-          MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features
+#  test_static_back:
+#    docker:
+#      - image: akeneo/fpm:php-7.2
+#        environment:
+#          COMPOSER_MEMORY_LIMIT: 5G
+#        user: docker
+#    parallelism: 2
+#    steps:
+#      - checkout
+#      - run:
+#          name: Composer
+#          command: composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
+#      - run:
+#          name: Setup tests results folder
+#          command: |
+#            mkdir -p ~/test/results/phpspec
+#            mkdir -p ~/test/results/phpcsfixer
+#            mkdir -p var/logs
+#      - run:
+#          name: PhpSpec
+#          command: |
+#            TESTFILES=$(circleci tests split toto.txt)
+#            vendor/bin/phpspec run ${TESTFILES} --format=junit > ~/test/results/phpspec/junit_output.xml
+#      - run:
+#          name: PhpCoupling Detector
+#          command: |
+#            vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src
+#            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Structure/.php_cd.php src/Akeneo/Pim/Structure
+#            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement
+#            vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel
+#      - run:
+#          name: PhpCsFixer
+#          command: vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ~/test/results/phpcsfixer/junit_output.xml
+#      - run:
+#          name: PHPStan
+#          command: vendor/bin/phpstan analyse src/Akeneo/Pim -l 0
+#      - run:
+#          name: Check Pullup
+#          command: bin/check-pullup
+#      #    - run:
+#      #        name: Acceptance
+#      #        command: vendor/bin/behat --strict -p acceptance -vv
+#      - store_test_results:
+#          path: ~/test/results
+#      - store_artifacts:
+#          path: ~/test/results
+#
+#  test_static_front:
+#    docker:
+#    - image: akeneo/fpm:php-7.2
+#      environment:
+#        COMPOSER_MEMORY_LIMIT: 5G
+#      user: docker
+#    steps:
+#    - run:
+#        name: Install all that is necessary for nodejs
+#        command: |
+#          sudo curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+#          sudo curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+#          sudo sh -c 'echo "deb https://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/nodesource.list'
+#          sudo sh -c 'echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list'
+#          sudo apt-get update
+#          sudo apt-get install -y --no-install-recommends nodejs yarn
+#          sudo apt-get install -yq libgconf-2-4
+#          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+#          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+#          sudo apt-get update
+#          sudo apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont --no-install-recommends
+#          sudo apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3
+#          sudo apt-get install -y --no-install-recommends libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4
+#          sudo apt-get install -y --no-install-recommends libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1
+#          sudo apt-get install -y --no-install-recommends libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6
+#          sudo apt-get install -y --no-install-recommends fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+#    - checkout
+#    - run:
+#        name: Install dependencies
+#        command: |
+#          cp ./app/config/parameters.yml.dist ./app/config/parameters.yml
+#          sed -i "s/database_host:                        localhost/database_host:                        mysql-behat/g" ./app/config/parameters.yml
+#          sed -i "s/localhost: 9200/elastic:changeme@elasticsearch:9200/g" ./app/config/parameters.yml
+#          sed -i "s/product_index_name:                    akeneo_pim_product/product_index_name:                    test_akeneo_pim_product/g" ./app/config/parameters.yml
+#          sed -i "s/product_model_index_name:              akeneo_pim_product_model/product_model_index_name:              test_akeneo_pim_product_model/g" ./app/config/parameters.yml
+#          sed -i "s/product_and_product_model_index_name:  akeneo_pim_product_and_product_model/product_and_product_model_index_name:  test_akeneo_pim_product_and_product_model/g" ./app/config/parameters.yml
+#          composer update --no-ansi --no-scripts --no-interaction --no-progress --prefer-dist --no-suggest
+#          yarn install
+#          mkdir ./web/js
+#          bin/console pim:installer:dump-extensions --env=prod
+#          bin/console pim:install:assets --env=prod --symlink
+#    - run:
+#        name: Yarn Lint
+#        command: yarn run lint
+#    - run:
+#        name: Yarn Unit
+#        command: yarn run unit
+#    - run:
+#        name: Yarn acceptance
+#        command: |
+#          yarn run webpack-test
+#          MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features
 
 workflows:
   version: 2
@@ -194,12 +194,13 @@ workflows:
     jobs:
 #      - wait_for_user_approval:
 #          type: approval
-      - build:
-          requires:
-#              - wait_for_user_approval
-#      - test_phpunit:
+      - build
 #          requires:
-#            - build
+#              - wait_for_user_approval
+      - test_phpunit:
+          requires:
+            - build
       - test_legacy_behat:
           requires:
             - build
+            - test_phpunit
