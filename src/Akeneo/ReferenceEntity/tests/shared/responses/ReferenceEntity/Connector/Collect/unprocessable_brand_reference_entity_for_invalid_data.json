@@ -17,15 +17,11 @@
         "status": 422,
         "body": {
             "code": 422,
-            "message": "The record has an invalid format.",
+            "message": "The reference entity has data that does not comply with the business rules.",
             "errors": [
                 {
-                    "property": "labels.fr_FR",
-                    "message": "NULL value found, but a string is required"
-                },
-                {
-                    "property": "values",
-                    "message": "Array value found, but an object is required"
+                    "property": "labels",
+                    "message": "The locale \"de_AU\" is not activated."
                 }
             ]
         }

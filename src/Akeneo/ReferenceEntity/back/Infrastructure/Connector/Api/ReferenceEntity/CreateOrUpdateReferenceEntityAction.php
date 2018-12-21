@@ -148,7 +148,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $referenceEntityIdentifierInBody = $normalizedReferenceEntity['code'] ?? null;
         if ((string) $referenceEntityIdentifier !== $referenceEntityIdentifierInBody) {
-            throw new UnprocessableEntityHttpException('The code of the record provided in the URI must be the same as the one provided in the request body.');
+            throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
         }
 
         return null;

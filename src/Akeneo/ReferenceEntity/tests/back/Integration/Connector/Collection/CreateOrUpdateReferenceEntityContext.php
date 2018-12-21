@@ -185,8 +185,6 @@ class CreateOrUpdateReferenceEntityContext implements Context
      */
     public function someReferenceEntities()
     {
-        $this->requestContract = 'unprocessable_brand_reference_entity_for_invalid_format.json';
-
         $this->channelExists->save(ChannelIdentifier::fromCode('ecommerce'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
@@ -208,12 +206,10 @@ class CreateOrUpdateReferenceEntityContext implements Context
      */
     public function collectAReferenceEntityWithAnInvalidFormat()
     {
-        Assert::assertNotNull($this->requestContract, 'The request contract must be defined first.');
-
         $client = $this->clientFactory->logIn('julia');
         $this->pimResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR . $this->requestContract
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_format.json'
         );
     }
 
@@ -225,6 +221,29 @@ class CreateOrUpdateReferenceEntityContext implements Context
         $this->webClientHelper->assertJsonFromFile(
             $this->pimResponse,
             self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_format.json'
+        );
+    }
+
+    /**
+     * @When the connector collects a reference entity whose data does not comply with the business rules
+     */
+    public function theConnectorCollectsAReferenceEntityWhoseDataDoesNotComplyWithTheBusinessRules()
+    {
+        $client = $this->clientFactory->logIn('julia');
+        $this->pimResponse = $this->webClientHelper->requestFromFile(
+            $client,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_data.json'
+        );
+    }
+
+    /**
+     * @Then the PIM notifies the connector about an error indicating that the reference entity has data that does not comply with the business rules
+     */
+    public function thePimNotifiesTheConnectorAboutAnErrorIndicatingThatTheReferenceEntityHasDataThatDoesNotComplyWithTheBusinessRules()
+    {
+        $this->webClientHelper->assertJsonFromFile(
+            $this->pimResponse,
+            self::REQUEST_CONTRACT_DIR . 'unprocessable_brand_reference_entity_for_invalid_data.json'
         );
     }
 }
