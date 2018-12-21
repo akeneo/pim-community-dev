@@ -116,6 +116,14 @@ class FakeClient implements ClientInterface
     /**
      * @return array
      */
+    public function getAttributesMapping(): array
+    {
+        return $this->attributesMapping;
+    }
+
+    /**
+     * @return array
+     */
     public function getOptionsMapping(): array
     {
         return $this->optionsMapping;

@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMap
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\AttributeMapping\Model\Read\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Franklin\FakeClient;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -38,6 +39,9 @@ final class AttributesMappingContext implements Context
     /** @var SearchFamiliesHandler */
     private $searchFamiliesHandler;
 
+    /** @var FakeClient */
+    private $fakeClient;
+
     /** @var array */
     private $retrievedFamilies;
 
@@ -47,21 +51,43 @@ final class AttributesMappingContext implements Context
     /** @var \Exception */
     private $thrownException;
 
+    /** @var array */
+    private $originalAttributesMapping;
+
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
      * @param SearchFamiliesHandler $searchFamiliesHandler
+     * @param FakeClient $fakeClient
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
-        SearchFamiliesHandler $searchFamiliesHandler
+        SearchFamiliesHandler $searchFamiliesHandler,
+        FakeClient $fakeClient
     ) {
         $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
+        $this->fakeClient = $fakeClient;
 
+        $this->originalAttributesMapping = null;
         $this->retrievedFamilies = [];
+    }
+
+    /**
+     * @Given a predefined attributes mapping for the family :familyCode as follows:
+     *
+     * @param string $familyCode
+     * @param TableNode $table
+     */
+    public function aPredefinedAttributesMapping(string $familyCode, TableNode $table): void
+    {
+        $requestAttributesMapping = $this->buildAttributesMappingRequest($table);
+        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestAttributesMapping);
+        $this->updateAttributesMappingByFamilyHandler->handle($command);
+
+        $this->originalAttributesMapping = $this->fakeClient->getAttributesMapping();
     }
 
     /**
@@ -72,17 +98,7 @@ final class AttributesMappingContext implements Context
      */
     public function theAttributesAreMappedForTheFamilyAsFollows(string $familyCode, TableNode $table): void
     {
-        $requestMapping = [];
-        foreach ($table->getColumnsHash() as $mapping) {
-            $requestMapping[$mapping['target_attribute_code']] = [
-                'franklinAttribute' => [
-                    'label' => 'A label',
-                    'type' => 'text',
-                ],
-                'attribute' => $mapping['pim_attribute_code'],
-                'status' => (int) $this->getStatusMapping()[$mapping['status']],
-            ];
-        }
+        $requestMapping = $this->buildAttributesMappingRequest($table);
 
         try {
             $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
@@ -113,7 +129,7 @@ final class AttributesMappingContext implements Context
     }
 
     /**
-     * @When I retrieves the attributes mapping for the family :familyCode
+     * @When I retrieve the attributes mapping for the family :familyCode
      *
      * @param mixed $familyCode
      */
@@ -121,6 +137,21 @@ final class AttributesMappingContext implements Context
     {
         $query = new GetAttributesMappingByFamilyQuery($familyCode);
         $this->retrievedAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle($query);
+    }
+
+    /**
+     * @When the attributes mapping for the family :familyCode is updated with an empty mapping
+     *
+     * @param string $familyCode
+     */
+    public function theAttributesMappingIsUpdatedWithAnEmptyMapping(string $familyCode): void
+    {
+        try {
+            $command = new UpdateAttributesMappingByFamilyCommand($familyCode, []);
+            $this->updateAttributesMappingByFamilyHandler->handle($command);
+        } catch (\Exception $e) {
+            $this->thrownException = $e;
+        }
     }
 
     /**
@@ -149,6 +180,18 @@ final class AttributesMappingContext implements Context
     }
 
     /**
+     * @Then the attributes mapping should be saved as follows:
+     *
+     * @param TableNode $expectedMapping
+     */
+    public function theAttributesMappingShouldBeSavedAsFollows(TableNode $expectedMapping): void
+    {
+        $clientMapping = $this->fakeClient->getAttributesMapping();
+
+        $this->assertAttributesMappingSentToFranklin($expectedMapping, $clientMapping);
+    }
+
+    /**
      * @param string $families
      *
      * @Then /^I should have the famil(?:y|ies) (.*)$/
@@ -168,6 +211,22 @@ final class AttributesMappingContext implements Context
             }
             Assert::true($found);
         }
+    }
+
+    /**
+     * @Then the attributes mapping should not be saved
+     */
+    public function theAttributesMappingShouldNotBeSaved(): void
+    {
+        $clientMapping = $this->fakeClient->getAttributesMapping();
+
+        if (null !== $this->originalAttributesMapping) {
+            Assert::eq($this->originalAttributesMapping, $clientMapping);
+        } else {
+            Assert::isEmpty($clientMapping);
+        }
+
+        Assert::isInstanceOf($this->thrownException, \Exception::class);
     }
 
     /**
@@ -197,5 +256,48 @@ final class AttributesMappingContext implements Context
             'active' => AttributeMapping::ATTRIBUTE_MAPPED,
             'inactive' => AttributeMapping::ATTRIBUTE_UNMAPPED,
         ];
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @return array
+     */
+    private function buildAttributesMappingRequest(TableNode $table): array
+    {
+        $requestAttributesMapping = [];
+        foreach ($table->getColumnsHash() as $mapping) {
+            $requestAttributesMapping[$mapping['target_attribute_code']] = [
+                'franklinAttribute' => [
+                    'label' => 'A label',
+                    'type' => 'text',
+                ],
+                'attribute' => $mapping['pim_attribute_code'],
+                'status' => (int) $this->getStatusMapping()[$mapping['status']],
+            ];
+        }
+
+        return $requestAttributesMapping;
+    }
+
+    /**
+     * @param TableNode $expectedMapping
+     * @param $clientMapping
+     */
+    private function assertAttributesMappingSentToFranklin(TableNode $expectedMapping, $clientMapping): void
+    {
+        $statusMapping = $this->getStatusMapping();
+
+        $attributesMapping = [];
+        foreach ($clientMapping as $attribute) {
+            $attributesMapping[] = [
+                'target_attribute_code' => $attribute['from']['id'],
+                'pim_attribute_code' => !empty($attribute['to']['id']) ? $attribute['to']['id'] : '',
+                'pim_attribute_type' => $attribute['to']['type'] ?? '',
+                'status' => $statusMapping[$attribute['status']],
+            ];
+        }
+
+        Assert::eq($this->buildExpectedAttributesMapping($expectedMapping), $attributesMapping);
     }
 }

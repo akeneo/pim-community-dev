@@ -75,6 +75,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_families'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.franklin_client.http_client'
         tags:
             - { name: 'fob.context_service' }
 

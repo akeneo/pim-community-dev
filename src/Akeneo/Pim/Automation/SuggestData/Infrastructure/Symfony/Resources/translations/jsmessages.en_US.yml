@@ -65,6 +65,10 @@ akeneo_suggest_data:
                 missing_target_key: 'Missing target key for mapping'
                 missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
                 invalid_attribute_type_mapping: 'Franklin attributes cannot be mapped to PIM attribute type "{{ pimType }}"'
+                empty_mapping: 'Franklin attributes cannot be mapped with an empty mapping"'
+                localizable_not_allowed: 'Franklin attributes cannot be mapped to a PIM Localizable attribute'
+                scopable_not_allowed: 'Franklin attributes cannot be mapped to a PIM scopable attribute'
+                locale_specific_not_allowed: 'Franklin attributes cannot be mapped to a PIM locale specific attribute'
         product_subscription:
             flash:
                 create:
