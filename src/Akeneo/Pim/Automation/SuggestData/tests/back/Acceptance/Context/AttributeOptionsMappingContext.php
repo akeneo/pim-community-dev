@@ -74,8 +74,12 @@ class AttributeOptionsMappingContext implements Context
 
     /**
      * @Given a predefined options mapping between Franklin attribute :attrId and PIM attribute :attrCode for family :family as follows:
+     *
+     * @param mixed $attrId
+     * @param mixed $attrCode
+     * @param mixed $family
      */
-    public function aPredefinedAttributeOptionsMapping($attrId, $attrCode, $family, TableNode $optionsMapping)
+    public function aPredefinedAttributeOptionsMapping($attrId, $attrCode, $family, TableNode $optionsMapping): void
     {
         $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, $optionsMapping);
     }
@@ -120,8 +124,12 @@ class AttributeOptionsMappingContext implements Context
 
     /**
      * @When the Franklin :attrId options are mapped to the PIM :family :attrCode options with an empty mapping
+     *
+     * @param mixed $attrId
+     * @param mixed $attrCode
+     * @param mixed $family
      */
-    public function theAttributeOptionsAreMappedWithAnEmptyMapping($attrId, $attrCode, $family)
+    public function theAttributeOptionsAreMappedWithAnEmptyMapping($attrId, $attrCode, $family): void
     {
         $this->saveAttributeOptionsMapping($attrId, $attrCode, $family, new TableNode([]));
     }
@@ -182,7 +190,7 @@ class AttributeOptionsMappingContext implements Context
     /**
      * @Then the attribute options mapping should not be saved
      */
-    public function theAttributeOptionsMappingShouldNotBeSaved()
+    public function theAttributeOptionsMappingShouldNotBeSaved(): void
     {
         $clientAttributeOptionsMapping = $this->fakeClient->getOptionsMapping();
 
