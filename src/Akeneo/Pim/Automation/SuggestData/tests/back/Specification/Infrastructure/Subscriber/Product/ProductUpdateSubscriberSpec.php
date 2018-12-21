@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\Read\ProductIdentifierValues;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
@@ -21,9 +22,10 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
 {
     public function let(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery
+        SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
+        ResubscribeProductsInterface $resubscribeProducts
     ): void {
-        $this->beConstructedWith($subscriptionRepository, $selectProductIdentifierValuesQuery);
+        $this->beConstructedWith($subscriptionRepository, $selectProductIdentifierValuesQuery, $resubscribeProducts);
     }
 
     public function it_is_an_event_subscriber(): void
@@ -43,31 +45,36 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
 
     public function it_only_processes_products(
         $subscriptionRepository,
-        $selectProductIdentifierValuesQuery
+        $selectProductIdentifierValuesQuery,
+        $resubscribeProducts
     ): void {
         $subscriptionRepository->findOneByProductId(Argument::any())->shouldNotBeCalled();
         $selectProductIdentifierValuesQuery->execute(Argument::any())->shouldNotBeCalled();
 
-        // TODO APAI-501: remove the shouldReturn() test
-        $this->computeImpactedSubscriptions(new GenericEvent([new \stdClass(), new Attribute()]))->shouldReturn([]);
+        $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
+
+        $this->computeImpactedSubscriptions(new GenericEvent([new \stdClass(), new Attribute()]));
     }
 
     public function it_does_not_process_unsubscribed_products(
         $subscriptionRepository,
         $selectProductIdentifierValuesQuery,
+        $resubscribeProducts,
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
         $subscriptionRepository->findOneByProductId(42)->willReturn(null);
         $selectProductIdentifierValuesQuery->execute(42)->shouldNotBeCalled();
 
-        // TODO APAI-501: remove the shouldReturn() test
-        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]))->shouldReturn([]);
+        $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
+
+        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]));
     }
 
     public function it_does_not_process_products_with_unchanged_identifier_values(
         $subscriptionRepository,
         $selectProductIdentifierValuesQuery,
+        $resubscribeProducts,
         ProductInterface $product
     ): void {
         $product->getId()->willReturn(42);
@@ -80,16 +87,19 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
             )
         );
 
-        // TODO APAI-501: remove the shouldReturn() test
-        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]))->shouldReturn([]);
+        $resubscribeProducts->process(Argument::any())->shouldNotBeCalled();
+
+        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]));
     }
 
     public function it_processes_products_with_changed_identifier_values(
         $subscriptionRepository,
         $selectProductIdentifierValuesQuery,
-        ProductInterface $product
+        $resubscribeProducts,
+        ProductInterface $product1,
+        ProductInterface $product2
     ): void {
-        $product->getId()->willReturn(42);
+        $product1->getId()->willReturn(42);
         $subscriptionRepository->findOneByProductId(42)->willReturn(
             new ProductSubscription(42, 'abc-123', ['asin' => 'ABC123', 'upc' => '987654321'])
         );
@@ -99,7 +109,20 @@ class ProductUpdateSubscriberSpec extends ObjectBehavior
             )
         );
 
-        // TODO APAI-501: remove the shouldReturn() test
-        $this->computeImpactedSubscriptions(new GenericEvent([$product->getWrappedObject()]))->shouldReturn([42]);
+        $product2->getId()->willReturn(44);
+        $subscriptionRepository->findOneByProductId(44)->willReturn(
+            new ProductSubscription(42, 'abc-123', ['asin' => 'DEF987'])
+        );
+        $selectProductIdentifierValuesQuery->execute(42)->willReturn(
+            new ProductIdentifierValues(
+                ['asin' => 'DEF987']
+            )
+        );
+
+        $resubscribeProducts->process([42])->shouldBeCalled();
+
+        $this->computeImpactedSubscriptions(
+            new GenericEvent([$product1->getWrappedObject(), $product2->getWrappedObject()])
+        );
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\ResubscribeProductsInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Query\Product\SelectProductIdentifierValuesQueryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Subscription\Repository\ProductSubscriptionRepositoryInterface;
@@ -32,16 +33,22 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     /** @var SelectProductIdentifierValuesQueryInterface */
     private $selectProductIdentifierValuesQuery;
 
+    /** @var ResubscribeProductsInterface */
+    private $resubscribeProducts;
+
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository
      * @param SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery
+     * @param ResubscribeProductsInterface $resubscribeProducts
      */
     public function __construct(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery
+        SelectProductIdentifierValuesQueryInterface $selectProductIdentifierValuesQuery,
+        ResubscribeProductsInterface $resubscribeProducts
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->selectProductIdentifierValuesQuery = $selectProductIdentifierValuesQuery;
+        $this->resubscribeProducts = $resubscribeProducts;
     }
 
     /**
@@ -56,10 +63,8 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
 
     /**
      * @param GenericEvent $event
-     *
-     * @return array
      */
-    public function computeImpactedSubscriptions(GenericEvent $event): array
+    public function computeImpactedSubscriptions(GenericEvent $event): void
     {
         $impactedProductIds = [];
         foreach ($event->getSubject() as $product) {
@@ -79,9 +84,6 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
         if (!empty($impactedProductIds)) {
             $this->launchResubscriptionJob($impactedProductIds);
         }
-
-        // TODO APAI-501: to remove (only useful for the spec)
-        return $impactedProductIds;
     }
 
     /**
@@ -118,6 +120,6 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
      */
     private function launchResubscriptionJob(array $productIds): void
     {
-        // TODO APAI-501: implement
+        $this->resubscribeProducts->process($productIds);
     }
 }

@@ -32,4 +32,7 @@ final class JobInstanceNames
 
     /** @var string */
     public const FETCH_PRODUCTS = 'suggest_data_fetch_products';
+
+    /** @var string */
+    public const RESUBSCRIBE_PRODUCTS = 'suggest_data_resubscribe_products';
 }

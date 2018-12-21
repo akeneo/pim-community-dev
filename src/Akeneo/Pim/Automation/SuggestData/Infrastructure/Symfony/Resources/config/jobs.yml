@@ -25,6 +25,19 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'mass_edit' }
 
+    akeneo.pim.automation.suggest_data.connector.job.resubscribe_products:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'suggest_data_resubscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.suggest_data.connector.step.validate_configuration.subscription'
+                - '@akeneo.pim.automation.suggest_data.connector.step.unsubscribe_products'
+                - '@akeneo.pim.automation.suggest_data.connector.step.subscribe_products'
+        tags:
+            - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'mass_edit' }
+
     akeneo.pim.automation.suggest_data.connector.job.fetch_products:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -66,6 +79,7 @@ services:
             -
                 - 'suggest_data_subscribe_products'
                 - 'suggest_data_unsubscribe_products'
+                - 'suggest_data_resubscribe_products'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -100,6 +114,7 @@ services:
             -
                 - 'suggest_data_subscribe_products'
                 - 'suggest_data_unsubscribe_products'
+                - 'suggest_data_resubscribe_products'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
