@@ -76,9 +76,14 @@ class CreateOrUpdateReferenceEntityAction
         }
 
         $normalizedReferenceEntity = $this->getNormalizedReferenceEntity($request->getContent());
-        $invalidFormatResponse = $this->validateReferenceEntityFormat($referenceEntityIdentifier, $normalizedReferenceEntity);
-        if (null !== $invalidFormatResponse) {
-            return $invalidFormatResponse;
+        $invalidFormatErrors = $this->validateReferenceEntityFormat($referenceEntityIdentifier, $normalizedReferenceEntity);
+
+        if (!empty($invalidFormatErrors)) {
+            return new JsonResponse([
+                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message' => 'The reference entity has an invalid format.',
+                'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $createReferenceEntityCommand = null;
@@ -132,25 +137,19 @@ class CreateOrUpdateReferenceEntityAction
         return $normalizedReferenceEntity;
     }
 
-    public function validateReferenceEntityFormat(
+    private function validateReferenceEntityFormat(
         ReferenceEntityIdentifier $referenceEntityIdentifier,
         array $normalizedReferenceEntity
-    ): ?Response {
+    ): array {
         $invalidFormatErrors = $this->jsonSchemaValidator->validate($normalizedReferenceEntity);
 
-        if (!empty($invalidFormatErrors)) {
-            return new JsonResponse([
-                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => 'The reference entity has an invalid format.',
-                'errors' => JsonSchemaErrorsFormatter::format($invalidFormatErrors),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        if (empty($invalidFormatErrors)) {
+            $inBodyReferenceEntityIdentifier = $normalizedReferenceEntity['code'] ?? null;
+            if ((string) $referenceEntityIdentifier !== $inBodyReferenceEntityIdentifier) {
+                throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
+            }
         }
 
-        $referenceEntityIdentifierInBody = $normalizedReferenceEntity['code'] ?? null;
-        if ((string) $referenceEntityIdentifier !== $referenceEntityIdentifierInBody) {
-            throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
-        }
-
-        return null;
+        return $invalidFormatErrors;
     }
 }
