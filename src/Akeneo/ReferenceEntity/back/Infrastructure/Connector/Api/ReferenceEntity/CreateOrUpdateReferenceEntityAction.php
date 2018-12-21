@@ -61,9 +61,9 @@ class CreateOrUpdateReferenceEntityAction
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
         $normalizedReferenceEntity = json_decode($request->getContent(), true);
-        $referenceEntityIdentifierInBody = $normalizedReferenceEntity['code'] ?? null;
-        if ($referenceEntityIdentifier !== $referenceEntityIdentifierInBody) {
-            throw new UnprocessableEntityHttpException('The code of the record provided in the URI must be the same as the one provided in the request body.');
+        $inBodyReferenceEntityIdentifier = $normalizedReferenceEntity['code'] ?? null;
+        if ($referenceEntityIdentifier !== $inBodyReferenceEntityIdentifier) {
+            throw new UnprocessableEntityHttpException('The code of the reference entity provided in the URI must be the same as the one provided in the request body.');
         }
 
         try {
@@ -81,7 +81,7 @@ class CreateOrUpdateReferenceEntityAction
 
             $violations = $this->validator->validate($createReferenceEntityCommand);
             if ($violations->count() > 0) {
-                throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
+                throw new ViolationHttpException($violations, 'The reference entity has data that does not comply with the business rules.');
             }
         }
 
@@ -93,7 +93,7 @@ class CreateOrUpdateReferenceEntityAction
 
         $violations = $this->validator->validate($editReferenceEntityCommand);
         if ($violations->count() > 0) {
-            throw new ViolationHttpException($violations, 'The record has data that does not comply with the business rules.');
+            throw new ViolationHttpException($violations, 'The reference entity has data that does not comply with the business rules.');
         }
 
         if (true === $shouldBeCreated) {
