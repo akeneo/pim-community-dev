@@ -68,7 +68,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
-    parallelism: 7
+    parallelism: 3
     steps:
       - attach_workspace:
           at: ~/
@@ -84,7 +84,7 @@ jobs:
       - run:
           name: Behat
           command: |
-            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --list-scenarios -p legacy | circleci tests split)
+            TESTFILES=$(docker-compose exec -T fpm vendor/bin/behat --tags=~skip-circle --list-scenarios -p legacy | circleci tests split)
             .circleci/run_behat.sh $TESTFILES
       - store_test_results:
           path: var/tests/behat

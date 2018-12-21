@@ -52,6 +52,7 @@ Feature: Define user rights
       | Create a group type        | group types       | Create group type       |
       | Create an attribute        | attributes        | Create attribute        |
 
+  @skip-circle
   Scenario Outline: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"
     And I am on the "Administrator" role page

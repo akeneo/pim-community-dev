@@ -295,7 +295,7 @@ Feature: Edit common attributes of many products at once
     And I move to the confirm page
     Then I should not see the text "Add Attribute"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6271
+  @skip-circle @jira https://akeneo.atlassian.net/browse/PIM-6271
   Scenario: Successfully keep mass edit form fields disabled after switching groups
     Given I am on the products grid
     And I select rows boots, sandals and sneakers

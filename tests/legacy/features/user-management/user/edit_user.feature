@@ -19,6 +19,7 @@ Feature: Edit a user
     Then the field First name should contain "John"
     And the field Phone should contain "+33755337788"
 
+  @skip-circle
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
