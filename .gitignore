@@ -1,4 +1,5 @@
 web/bundles/*
+!web/bundles/.gitkeep
 web/media/*
 web/css/*
 web/js/*
