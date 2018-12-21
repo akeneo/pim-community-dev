@@ -203,4 +203,3 @@ workflows:
       - test_legacy_behat:
           requires:
             - build
-            - test_phpunit
