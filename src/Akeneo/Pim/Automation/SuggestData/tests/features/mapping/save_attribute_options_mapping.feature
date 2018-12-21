@@ -28,10 +28,10 @@ Feature: Map some attribute options with Franklin attribute options
       | color1 |
       | color2 |
       | color3 |
-    And a predefined options mapping between Franklin attribute "color" and PIM attribute "color" for family "family" as follows:
+    And a predefined options mapping between Franklin attribute "product color" and PIM attribute "color" for family "router" as follows:
       | franklin_attribute_option_id | franklin_attribute_option_label | catalog_attribute_option_code | status   |
       | color_1                      | red                             | color1                        | active   |
-    When the Franklin "color" options are mapped to the PIM "color" options for the family "router" as follows:
+    When the Franklin "product color" options are mapped to the PIM "color" options for the family "router" as follows:
       | franklin_attribute_option_id | franklin_attribute_option_label | catalog_attribute_option_code | status   |
       | color_1                      | red                             | color1                        | active   |
       | color_2                      | blue                            | color2                        | active   |
