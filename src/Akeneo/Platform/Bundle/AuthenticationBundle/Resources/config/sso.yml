@@ -31,3 +31,11 @@ services:
         arguments:
             - '@akeneo_authentication.sso.configuration.repository'
             - '%hslavich_onelogin_saml.settings%'
+
+    akeneno_authentication.sso.firewall_map:
+        class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\FirewallMap'
+        decorates: 'security.firewall.map'
+        decoration_inner_name: 'security.firewall.map.inner'
+        arguments:
+            - '@security.firewall.map.inner'
+            - '@akeneo_authentication.sso.configuration.repository'

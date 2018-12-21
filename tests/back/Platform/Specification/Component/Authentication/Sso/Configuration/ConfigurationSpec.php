@@ -94,6 +94,29 @@ class ConfigurationSpec extends ObjectBehavior
         $this->code()->shouldReturn($code);
     }
 
+    function it_exposes_its_enabled_status()
+    {
+        $isEnabled = new IsEnabled(true);
+
+        $this->beConstructedWith(
+            new Code('jambon'),
+            $isEnabled,
+            new IdentityProvider(
+                new EntityId('https://idp.jambon.com'),
+                new Url('https://idp.jambon.com/signon'),
+                new Url('https://idp.jambon.com/logout'),
+                new Certificate('public_certificate')
+            ),
+            new ServiceProvider(
+                new EntityId('https://sp.jambon.com'),
+                new Certificate('public_certificate'),
+                new Certificate('private_certificate')
+            )
+        );
+
+        $this->isEnabled()->shouldReturn($isEnabled);
+    }
+
     function it_can_be_built_from_an_array()
     {
         $this->beConstructedThrough(

@@ -68,4 +68,9 @@ final class Configuration
     {
         return $this->code;
     }
+
+    public function isEnabled(): IsEnabled
+    {
+        return $this->isEnabled;
+    }
 }

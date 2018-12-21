@@ -9,3 +9,5 @@ config:
         pim/authentication/sso/configuration/controller: akeneoauthentication/js/sso/configuration/controller.ts
         pim/authentication/sso/configuration/fields/text: akeneoauthentication/js/sso/configuration/fields/text.ts
         pim/authentication/sso/configuration/fields/textarea: akeneoauthentication/js/sso/configuration/fields/textarea.ts
+
+        pim/template/authentication/sso/configuration/warning: akeneoauthentication/templates/sso/configuration/warning.html
