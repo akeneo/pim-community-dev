@@ -1,0 +1,33 @@
+{
+    "request": {
+        "method": "PATCH",
+        "route": "akeneo_reference_entities_reference_entity_rest_connector_create_or_update",
+        "query": {
+            "referenceEntityIdentifier": "brand"
+        },
+        "body": {
+            "code": "brand",
+            "labels": {
+                "de_DE": "Label for an activated locale",
+                "de_AU": "Label for an activated locale that is not activated"
+            }
+        }
+    },
+    "response": {
+        "status": 422,
+        "body": {
+            "code": 422,
+            "message": "The record has an invalid format.",
+            "errors": [
+                {
+                    "property": "labels.fr_FR",
+                    "message": "NULL value found, but a string is required"
+                },
+                {
+                    "property": "values",
+                    "message": "Array value found, but an object is required"
+                }
+            ]
+        }
+    }
+}
