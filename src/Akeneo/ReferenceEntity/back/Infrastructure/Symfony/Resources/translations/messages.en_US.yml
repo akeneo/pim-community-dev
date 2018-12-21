@@ -4,12 +4,16 @@ akeneo_referenceentity:
     acl:
         reference_entity:
             create: Create an entity
-            edit: Edit an entity
+            edit: Edit the entity properties
             delete: Delete an entity
         record:
             create: Create a record
+            edit: Edit the records
             delete: Delete a record
             delete_all: Delete all entity records
         attribute:
             create: Add an attribute to a reference entity
             edit: Edit an attribute of a reference entity
+        options:
+            edit: Edit options
+            delete: Remove an option

@@ -19,7 +19,7 @@ import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
 import {openDeleteModal, cancelDeleteModal} from 'akeneoreferenceentity/application/event/confirmDelete';
-import {editPermission} from 'akeneoreferenceentity/infrastructure/permission/edit';
+import {canEditReferenceEntity} from 'akeneoreferenceentity/infrastructure/permission/edit';
 
 interface StateProps {
   form: EditionFormState;
@@ -27,8 +27,10 @@ interface StateProps {
     locale: string;
   };
   rights: {
-    editReferenceEntity: boolean;
-    deleteReferenceEntity: boolean;
+    referenceEntity: {
+      edit: boolean;
+      delete: boolean;
+    };
   };
   confirmDelete: {
     isActive: boolean;
@@ -82,7 +84,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           label={referenceEntity.getLabel(this.props.context.locale)}
           image={referenceEntity.getImage()}
           primaryAction={(defaultFocus: React.RefObject<any>) => {
-            return this.props.rights.editReferenceEntity ? (
+            return this.props.rights.referenceEntity.edit ? (
               <button
                 className="AknButton AknButton--apply"
                 onClick={this.props.events.onSaveEditForm}
@@ -93,13 +95,13 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             ) : null;
           }}
           secondaryActions={() => {
-            return this.props.rights.deleteReferenceEntity ? this.getSecondaryActions() : null;
+            return this.props.rights.referenceEntity.delete ? this.getSecondaryActions() : null;
           }}
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={this.props.form.state.isDirty}
           breadcrumbConfiguration={breadcrumbConfiguration}
-          canEditReferenceEntity={this.props.rights.editReferenceEntity}
+          displayActions={this.props.rights.referenceEntity.edit}
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title">
@@ -113,7 +115,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
               locale={this.props.context.locale}
               data={this.props.form.data}
               errors={this.props.form.errors}
-              canEditReferenceEntity={this.props.rights.editReferenceEntity}
+              rights={this.props.rights}
             />
           </div>
         </div>
@@ -143,10 +145,13 @@ export default connect(
         locale,
       },
       rights: {
-        editReferenceEntity:
-          securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && editPermission(),
-        deleteReferenceEntity:
-          securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') && editPermission(),
+        referenceEntity: {
+          edit: securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') && canEditReferenceEntity(),
+          delete:
+            securityContext.isGranted('akeneo_referenceentity_reference_entity_edit') &&
+            securityContext.isGranted('akeneo_referenceentity_reference_entity_delete') &&
+            canEditReferenceEntity(),
+        },
       },
       confirmDelete,
     };

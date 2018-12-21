@@ -24,6 +24,7 @@ Feature: Delete a reference entity
   @acceptance-front
   Scenario: Delete a reference entity from the edit view
     Given the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit   | true |
       | akeneo_referenceentity_reference_entity_delete | true |
     And the user asks for the reference entity "designer"
     When the user deletes the reference entity "designer"
@@ -32,6 +33,7 @@ Feature: Delete a reference entity
   @acceptance-front
   Scenario: Dismiss the deletion of a reference entity from the edit view
     Given the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit   | true |
       | akeneo_referenceentity_reference_entity_delete | true |
     And the user asks for the reference entity "designer"
     When the user refuses to delete the current reference entity
@@ -40,6 +42,7 @@ Feature: Delete a reference entity
   @acceptance-front
   Scenario: The user can't delete the entity if he doesn't have the permission
     Given the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit   | true |
       | akeneo_referenceentity_reference_entity_delete | false |
     And the user asks for the reference entity "designer"
     Then the user should not see the deletion button
@@ -47,6 +50,7 @@ Feature: Delete a reference entity
   @acceptance-front
   Scenario: The user is notified if the deletion goes wrong
     Given the user has the following rights:
+      | akeneo_referenceentity_reference_entity_edit   | true |
       | akeneo_referenceentity_reference_entity_delete | true |
     And the user asks for the reference entity "designer"
     When the user fails to delete the reference entity "designer"

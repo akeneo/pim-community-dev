@@ -14,6 +14,7 @@ import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text
 import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import Key from 'akeneoreferenceentity/tools/key';
+import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -59,11 +60,19 @@ const TextView = ({
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
+  rights,
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: TextAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  };
 }) => {
   return (
     <React.Fragment>
@@ -76,9 +85,10 @@ const TextView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className="AknTextField AknTextField--light"
+            className={getTextInputClassName(rights.attribute.edit)}
             id="pim_reference_entity.attribute.edit.input.max_length"
             name="max_length"
+            readOnly={!rights.attribute.edit}
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
               if (Key.Enter === event.key) onSubmit();
@@ -103,6 +113,7 @@ const TextView = ({
             htmlFor="pim_reference_entity.attribute.edit.input.textarea"
           >
             <Checkbox
+              readOnly={!rights.attribute.edit}
               id="pim_reference_entity.attribute.edit.input.textarea"
               value={attribute.isTextarea.booleanValue()}
               onChange={(isTextarea: boolean) =>
@@ -111,10 +122,12 @@ const TextView = ({
             />
             <span
               onClick={() => {
-                onAdditionalPropertyUpdated(
-                  'is_textarea',
-                  IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
-                );
+                if (rights.attribute.edit) {
+                  onAdditionalPropertyUpdated(
+                    'is_textarea',
+                    IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
+                  );
+                }
               }}
             >
               {__('pim_reference_entity.attribute.edit.input.textarea')}
@@ -167,6 +180,7 @@ const TextView = ({
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Dropdown
+              readOnly={!rights.attribute.edit}
               ItemView={AttributeValidationRuleItemView}
               label={__('pim_reference_entity.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
@@ -193,7 +207,7 @@ const TextView = ({
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
-                className="AknTextField AknTextField--light"
+                className={getTextInputClassName(rights.attribute.edit)}
                 id="pim_reference_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"
                 placeholder="/[a-z]+[0-9]*/"

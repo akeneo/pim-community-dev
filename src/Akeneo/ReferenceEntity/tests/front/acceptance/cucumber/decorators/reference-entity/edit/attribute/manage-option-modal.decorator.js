@@ -8,6 +8,23 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
+  const isLockedOptionLabel = async code => {
+    await page.waitForSelector(`.AknOptionEditor-translator tr[data-code="${code}"]`, {timeout: 2000});
+    const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="label"]`);
+
+    return null !== codeInput.$('.AknTextField--disabled');
+  };
+
+  const hasNewOption = async () => {
+    try {
+      await page.waitForSelector('tr[data-code=""] input[name="code"]', {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
+  };
+
   const newOptionCode = async code => {
     const newCodeInput = await nodeElement.$('tr[data-code=""] input[name="code"]');
 
@@ -41,6 +58,16 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
   const removeOption = async code => {
     const removeOptionButton = await nodeElement.$(`tr[data-code="${code}"] .AknOptionEditor-remove`);
     await removeOptionButton.click();
+  };
+
+  const hasRemoveOptionButton = async code => {
+    try {
+      await page.waitForSelector(`tr[data-code="${code}"] .AknOptionEditor-remove`, {timeout: 2000});
+    } catch (error) {
+      return false;
+    }
+
+    return true;
   };
 
   const save = async () => {
@@ -146,11 +173,14 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
 
   return {
     isLockedOptionCode,
+    isLockedOptionLabel,
+    hasNewOption,
     newOptionCode,
     newOptionLabel,
     getOptionCodeValue,
     removeOption,
     hasOption,
+    hasRemoveOptionButton,
     save,
     cancel,
     codeHasLabel,

@@ -12,12 +12,14 @@ const DefaultButtonView = ({
   onClick,
   allowEmpty = false,
   placeholder = null,
+  readOnly,
 }: {
   open: boolean;
   selectedElement: DropdownElement;
   onClick: () => void;
   allowEmpty?: boolean;
   placeholder?: string;
+  readOnly: boolean;
 }) => {
   const hasPlaceholder = allowEmpty && placeholder && selectedElement.identifier === null;
   const highlight = hasPlaceholder ? placeholder : selectedElement.label;
@@ -35,7 +37,7 @@ const DefaultButtonView = ({
         aria-label={selectedElement.label}
       >
         <span className="AknActionButton-highlight">{highlight}</span>
-        <span className="AknActionButton-caret" />
+        {!readOnly ? <span className="AknActionButton-caret" /> : null}
       </div>
     </React.Fragment>
   );
@@ -88,6 +90,7 @@ interface Props {
   onSelectionChange: (element: DropdownElement) => void;
   allowEmpty?: boolean;
   placeholder?: string;
+  readOnly?: boolean;
 }
 
 interface State {
@@ -131,7 +134,13 @@ class Dropdown extends React.Component<Props, State> {
 
   render() {
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
-    const dropdownButton = (selectedElement: string, label: string, allowEmpty?: boolean, placeholder?: string) => {
+    const dropdownButton = (
+      selectedElement: string,
+      label: string,
+      allowEmpty?: boolean,
+      placeholder?: string,
+      readOnly?: boolean
+    ) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
       return (
@@ -141,6 +150,7 @@ class Dropdown extends React.Component<Props, State> {
           onClick={this.open.bind(this)}
           allowEmpty={allowEmpty}
           placeholder={placeholder}
+          readOnly={readOnly}
         />
       );
     };
@@ -162,11 +172,19 @@ class Dropdown extends React.Component<Props, State> {
     return (
       <div className={`AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
         {this.state.isOpen ? <div className="AknDropdown-mask" onClick={this.close.bind(this)} /> : null}
-        {dropdownButton(this.state.selectedElement, this.props.label, this.props.allowEmpty, this.props.placeholder)}
-        <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass}`}>
-          <div className="AknDropdown-menuTitle">{this.props.label}</div>
-          {ElementViews}
-        </div>
+        {dropdownButton(
+          this.state.selectedElement,
+          this.props.label,
+          this.props.allowEmpty,
+          this.props.placeholder,
+          this.props.readOnly
+        )}
+        {!this.props.readOnly ? (
+          <div className={`AknDropdown-menu AknDropdown-menu--heightLimited ${openClass}`}>
+            <div className="AknDropdown-menuTitle">{this.props.label}</div>
+            {ElementViews}
+          </div>
+        ) : null}
       </div>
     );
   }

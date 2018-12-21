@@ -125,7 +125,6 @@ class Image extends React.Component<
       ${this.state.dropping && !this.state.loading ? 'AknImage--dropping' : ''}
       ${this.state.focusing ? 'AknImage--focusing' : ''}
       ${wide ? 'AknImage--wide' : ''}
-      ${this.props.readOnly ? 'AknImage--readOnly' : ''}
     `;
 
     const style =
@@ -155,10 +154,12 @@ class Image extends React.Component<
         />
         {!this.props.image.isEmpty() ? (
           <div className="AknImage-action">
-            <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
-              <Trash color="#ffffff" className="AknImage-actionItemIcon" />{' '}
-              {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
-            </span>
+            {!this.props.readOnly ? (
+              <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
+                <Trash color="#ffffff" className="AknImage-actionItemIcon" />{' '}
+                {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
+              </span>
+            ) : null}
             {this.props.image.isInStorage() ? (
               <a className="AknImage-actionItem" href={getImageDownloadUrl(this.props.image)} tabIndex={-1}>
                 <Download color="#ffffff" className="AknImage-actionItemIcon" />{' '}

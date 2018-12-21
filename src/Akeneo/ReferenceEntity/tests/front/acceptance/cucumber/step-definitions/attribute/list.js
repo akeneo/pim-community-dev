@@ -121,16 +121,25 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasAllAttribute, true);
   });
 
-  const editAttribute = async function(page, attributeIdentifier) {
+  const editAttribute = async function(page, attributeIdentifier, editMode) {
     await showAttributesTab(page);
 
     const attributes = await await getElement(page, 'Attributes');
 
-    await attributes.edit(attributeIdentifier);
+    if (editMode) {
+      await attributes.edit(attributeIdentifier);
+    } else {
+      await attributes.view(attributeIdentifier);
+    }
+
   };
 
   Then('the user edit the attribute {string}', async function(attributeIdentifier) {
-    await editAttribute(this.page, attributeIdentifier);
+    await editAttribute(this.page, attributeIdentifier, true);
+  });
+
+  Then('the user looks at the attribute {string}', async function(attributeIdentifier) {
+    await editAttribute(this.page, attributeIdentifier, false);
   });
 
   Then('the list of attributes should be empty', async function() {
@@ -146,11 +155,13 @@ module.exports = async function(cucumber) {
     attributeIdentifier,
     referenceEntityIdentifier
   ) {
+    debugger;
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
-    await editAttribute(this.page, attributeIdentifier);
+    await editAttribute(this.page, attributeIdentifier, true);
     this.page.on('request', request => {
+      debugger;
       const baseUrl = 'http://pim.com/rest/reference_entity';
       const identifier = `${referenceEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
       const deleteUrl = `${baseUrl}/${referenceEntityIdentifier}/attribute/${identifier}`;
@@ -167,19 +178,19 @@ module.exports = async function(cucumber) {
   When('the user cancel the deletion of attribute {string}', async function(attributeIdentifier) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
-    await editAttribute(this.page, attributeIdentifier);
+    await editAttribute(this.page, attributeIdentifier, true);
 
     await attributes.cancelDeletion();
   });
 
-  When('the user cannot deletes the attribute {string} linked to the reference entity {string}', async function(
+  When('the user cannot delete the attribute {string} linked to the reference entity {string}', async function(
     attributeIdentifier,
     referenceEntityIdentifier
   ) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
-    await editAttribute(this.page, attributeIdentifier);
+    await editAttribute(this.page, attributeIdentifier, true);
 
     this.page.on('request', request => {
       const baseUrl = 'http://pim.com/rest/reference_entity';
@@ -197,6 +208,16 @@ module.exports = async function(cucumber) {
     await listenRequest(this.page, requestContract);
 
     await attributes.remove(attributeIdentifier);
+  });
+
+  Then('the user cannot delete the attribute {string}', async function (attributeIdentifier) {
+    await showAttributesTab(this.page);
+    await editAttribute(this.page, attributeIdentifier, false);
+
+    const attributes = await await getElement(this.page, 'Attributes');
+    const hasRemoveButton = await attributes.hasRemoveButton();
+
+    assert.strictEqual(hasRemoveButton, false);
   });
 
   Then('there should not be the following attributes:', async function(expectedAttributes) {

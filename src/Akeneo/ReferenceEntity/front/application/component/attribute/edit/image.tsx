@@ -10,17 +10,26 @@ import {
 } from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
 import {MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import Key from 'akeneoreferenceentity/tools/key';
+import {getTextInputClassName} from 'akeneoreferenceentity/tools/css-tools';
 
 const ImageView = ({
   attribute,
   onAdditionalPropertyUpdated,
   onSubmit,
   errors,
+  rights,
 }: {
   attribute: ImageAttribute;
   onAdditionalPropertyUpdated: (property: string, value: ImageAdditionalProperty) => void;
   onSubmit: () => void;
   errors: ValidationError[];
+  rights: {
+    attribute: {
+      create: boolean;
+      edit: boolean;
+      delete: boolean;
+    };
+  };
 }) => {
   return (
     <React.Fragment>
@@ -33,7 +42,7 @@ const ImageView = ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className="AknTextField AknTextField--light"
+            className={getTextInputClassName(rights.attribute.edit)}
             id="pim_reference_entity.attribute.edit.input.max_file_size"
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
@@ -49,6 +58,7 @@ const ImageView = ({
 
               onAdditionalPropertyUpdated('max_file_size', MaxFileSize.createFromString(event.currentTarget.value));
             }}
+            readOnly={!rights.attribute.edit}
           />
         </div>
         {getErrorsView(errors, 'maxFileSize')}
@@ -69,7 +79,7 @@ const ImageView = ({
             data={(AllowedExtensionsOptions as any) as {[choiceValue: string]: string}}
             value={attribute.allowedExtensions.arrayValue()}
             multiple={true}
-            readOnly={false}
+            readOnly={!rights.attribute.edit}
             configuration={{
               allowClear: true,
             }}
