@@ -33,6 +33,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: User can't edit the text attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
     When the user asks for the reference entity "designer"
     And the user looks at the attribute "name"
     Then the user can't edit the attribute property "Label"
@@ -61,6 +63,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: User can't edit the image attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
     When the user asks for the reference entity "designer"
     And the user looks at the attribute "portrait"
     Then the user can't edit the attribute property "Label"
@@ -86,6 +90,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: User can't edit the option attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
     When the user asks for the reference entity "designer"
     And the user looks at the attribute "favorite_color"
     Then the user can't edit the attribute property "Label"
@@ -109,6 +115,8 @@ Feature: Lists all attributes related to a reference entity
   @acceptance-front
   Scenario: User can't edit the option attribute
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
     When the user asks for the reference entity "designer"
     And the user looks at the attribute "colors"
     Then the user can't edit the attribute property "Label"

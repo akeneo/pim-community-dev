@@ -54,6 +54,9 @@ Feature: Delete an attribute linked to a reference entity
   @acceptance-front
   Scenario: User doesn't have the right to delete a text attribute linked to a reference entity
     Given a valid reference entity
+    And the user has the following rights:
+      | akeneo_referenceentity_attribute_edit   | false |
+      | akeneo_referenceentity_attribute_delete | false |
     And the user asks for the reference entity "designer"
     Then there should be the following attributes:
       | code     | type  |
