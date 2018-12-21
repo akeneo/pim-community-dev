@@ -58,6 +58,7 @@ Feature: Define user rights
     And I visit the "Permissions" tab
     When I revoke rights to resource <permission>
     And I save the role
+    And I should not see the text "There are unsaved changes."
     And I am on the <page> page
     Then I should not see the text "<button>"
 

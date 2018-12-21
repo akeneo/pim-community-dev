@@ -8,6 +8,7 @@ use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Decorator\Page\GridCapableDecorator;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
 class NavigationContext extends PimContext implements PageObjectAware
@@ -279,10 +280,19 @@ class NavigationContext extends PimContext implements PageObjectAware
      */
     public function iAmOnTheRedoEntityEditPage($identifier, $page)
     {
-        $this->openPage(
-            sprintf('%s edit', ucfirst($page)),
-            ['code' => $identifier]
-        );
+        $this->spin(function () use ($identifier, $page) {
+            try {
+                $this->openPage(
+                    sprintf('%s edit', ucfirst($page)),
+                    ['code' => $identifier]
+                );
+
+                return true;
+            } catch (UnexpectedPageException $e) {
+            }
+
+            return false;
+        }, sprintf('Impossible to go to the page %s %s page', $identifier, $page));
     }
 
     /**
