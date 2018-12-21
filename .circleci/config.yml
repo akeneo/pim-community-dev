@@ -68,7 +68,7 @@ jobs:
   test_legacy_behat:
     machine:
       enabled: true
-    parallelism: 3
+    parallelism: 7
     steps:
       - attach_workspace:
           at: ~/
