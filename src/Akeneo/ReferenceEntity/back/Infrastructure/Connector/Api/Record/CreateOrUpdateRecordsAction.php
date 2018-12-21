@@ -21,7 +21,11 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\JsonSchemaErrorsFormatter;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordListValidator;
+use Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValidator;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +33,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -59,8 +62,14 @@ class CreateOrUpdateRecordsAction
     /** @var ValidatorInterface */
     private $recordDataValidator;
 
-    /** @var NormalizerInterface */
+    /** @var ViolationNormalizer */
     private $violationNormalizer;
+
+    /** @var RecordValidator */
+    private $recordStructureValidator;
+
+    /** @var RecordListValidator */
+    private $recordListValidator;
 
     public function __construct(
         ReferenceEntityExistsInterface $referenceEntityExists,
@@ -70,7 +79,9 @@ class CreateOrUpdateRecordsAction
         CreateRecordHandler $createRecordHandler,
         Router $router,
         ValidatorInterface $recordDataValidator,
-        NormalizerInterface $violationNormalizer
+        ViolationNormalizer $violationNormalizer,
+        RecordValidator $recordStructureValidator,
+        RecordListValidator $recordListValidator
     ) {
         $this->referenceEntityExists = $referenceEntityExists;
         $this->recordExists = $recordExists;
@@ -80,6 +91,8 @@ class CreateOrUpdateRecordsAction
         $this->router = $router;
         $this->recordDataValidator = $recordDataValidator;
         $this->violationNormalizer = $violationNormalizer;
+        $this->recordStructureValidator = $recordStructureValidator;
+        $this->recordListValidator = $recordListValidator;
     }
 
     public function __invoke(Request $request, string $referenceEntityIdentifier): Response
@@ -95,8 +108,17 @@ class CreateOrUpdateRecordsAction
         }
 
         $normalizedRecords = $this->getNormalizedRecordsFromRequest($request);
-        $responsesData = [];
+        $structureErrors = $this->recordListValidator->validate($normalizedRecords);
 
+        if (!empty($structureErrors)) {
+            return new JsonResponse([
+                'code'    => Response::HTTP_BAD_REQUEST,
+                'message' => 'The list of records has an invalid format.',
+                'errors'  => JsonSchemaErrorsFormatter::format($structureErrors),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $responsesData = [];
         foreach ($normalizedRecords as $normalizedRecord) {
             try {
                 $responseData = $this->createOrUpdateRecord($referenceEntityIdentifier, $normalizedRecord);
@@ -133,6 +155,17 @@ class CreateOrUpdateRecordsAction
 
     private function createOrUpdateRecord(ReferenceEntityIdentifier $referenceEntityIdentifier, array $normalizedRecord): array
     {
+        $structureErrors = $this->recordStructureValidator->validate($referenceEntityIdentifier, $normalizedRecord);
+
+        if (!empty($structureErrors)) {
+            return [
+                'code'        => $normalizedRecord['code'] ?? '',
+                'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'message'     => 'The record has an invalid format.',
+                'errors'      => JsonSchemaErrorsFormatter::format($structureErrors),
+            ];
+        }
+
         $recordCode = RecordCode::fromString($normalizedRecord['code']);
         $shouldBeCreated = !$this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $createRecordCommand = null;

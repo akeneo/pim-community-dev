@@ -5,6 +5,9 @@ services:
             - '@akeneo_referenceentity.infrastructure.connector.api.record_properties_validator'
             - '@akeneo_referenceentity.infrastructure.connector.api.record_values_validator'
 
+    akeneo_referenceentity.infrastructure.connector.api.record_list_validator:
+        class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordListValidator
+
     akeneo_referenceentity.infrastructure.connector.api.record_values_validator:
         class: Akeneo\ReferenceEntity\Infrastructure\Connector\Api\Record\JsonSchema\RecordValuesValidator
         arguments:
