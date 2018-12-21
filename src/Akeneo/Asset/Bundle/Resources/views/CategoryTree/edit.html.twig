@@ -1,0 +1,50 @@
+{% block content %}
+    <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
+        {% include 'AkeneoPimEnrichmentBundle:CategoryTree:form.html.twig' with {'form': form} %}
+    </div>
+
+    {% include "AkeneoPimEnrichmentBundle:CategoryTree:_scripts.html.twig" %}
+{% endblock %}
+
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
+
+<script>
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder',
+            'pim/page-title'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder,
+            PageTitle
+        ) {
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: 'pim-menu-enrich-asset-category'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                PageTitle.set({ 'category.label': '{{ form.vars.value.label }}' });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                        $('.user-menu').append(form.el);
+                        form.render();
+                    }.bind(this));
+                });
+            });
+        }
+    );
+</script>
