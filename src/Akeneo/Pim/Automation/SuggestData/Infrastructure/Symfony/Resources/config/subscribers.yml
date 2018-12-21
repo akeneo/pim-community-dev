@@ -52,3 +52,14 @@ services:
             - '@akeneo.pim.automation.suggest_data.application.configuration.command.deactivate_connection_handler'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo.pim.automation.suggest_data.subscriber.product_update:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductUpdateSubscriber'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.infrastructure.persistence.query.product.select_product_identifier_values_query'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
