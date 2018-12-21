@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "PATCH",
+    "route": "akeneo_reference_entities_reference_entity_rest_connector_create_or_update",
+    "query": {
+      "referenceEntityIdentifier": "brand"
+    },
+    "body": {
+      "code": "brand",
+      "labels": {
+        "en_US": "Brand english label",
+        "fr_FR": "Brand french label"
+      },
+      "image": null
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": "",
+    "headers": {
+      "location": "http://localhost/api/rest/v1/reference-entities/brand"
+    }
+  }
+}
+

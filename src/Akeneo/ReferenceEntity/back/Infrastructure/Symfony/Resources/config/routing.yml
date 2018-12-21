@@ -92,6 +92,9 @@ akeneo_reference_entities_reference_entities_rest_connector_get:
     path: '/api/rest/v1/reference-entities'
     defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entities.get }
 
+akeneo_reference_entities_reference_entity_rest_connector_create_or_update:
+    path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.connector.action.reference_entity.create_or_update }
 
 akeneo_reference_entities_reference_entity_attributes_rest_connector_get:
     path: '/api/rest/v1/reference-entities/{referenceEntityIdentifier}/attributes'

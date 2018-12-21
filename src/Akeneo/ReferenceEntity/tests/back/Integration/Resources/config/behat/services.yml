@@ -98,3 +98,15 @@ services:
             - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: fob.context_service }
+
+    akeneo_referenceentity.tests.back.integration.connector.collection.create_or_update_reference_entity_context:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Collection\CreateOrUpdateReferenceEntityContext
+        arguments:
+            - '@__symfony__.akeneoreference_entity.tests.helper.oauth_authenticated_client_factory'
+            - '@__symfony__.akeneoreference_entity.tests.helper.web_client_helper'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@__symfony__.akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
+        tags:
+            - { name: fob.context_service }
