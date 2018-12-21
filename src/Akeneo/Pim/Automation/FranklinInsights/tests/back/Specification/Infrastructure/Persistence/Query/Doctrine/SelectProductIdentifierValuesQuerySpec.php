@@ -33,7 +33,7 @@ class SelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $connection,
         Statement $statement
     ): void {
-        $statement->fetchAll()->willReturn([]);
+        $statement->fetch()->willReturn(false);
         $connection->executeQuery(Argument::type('string'), ['product_id' => 42])->willReturn($statement);
 
         $this->execute(42)->shouldReturn(null);
@@ -43,16 +43,10 @@ class SelectProductIdentifierValuesQuerySpec extends ObjectBehavior
         $connection,
         Statement $statement
     ): void {
-        $statement->fetchAll()->willReturn(
+        $statement->fetch()->willReturn(
             [
-                [
-                    'identifier' => 'asin',
-                    'value' => 'ABC456789',
-                ],
-                [
-                    'identifier' => 'upc',
-                    'value' => '012345678912',
-                ],
+                'id' => '42',
+                'mapped_identifier_values' => '{"asin":"ABC456789","upc":"012345678912"}',
             ]
         );
         $connection->executeQuery(Argument::type('string'), ['product_id' => 42])->willReturn($statement);

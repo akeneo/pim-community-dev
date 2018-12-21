@@ -39,29 +39,25 @@ class SelectProductIdentifierValuesQuery implements SelectProductIdentifierValue
     public function execute(int $productId): ?ProductIdentifierValues
     {
         $sql = <<<SQL
-SELECT m.franklin_code AS identifier, JSON_UNQUOTE(
+SELECT p.id, JSON_OBJECTAGG(
+  m.franklin_code,
   JSON_EXTRACT(p.raw_values, REPLACE('$.%identifier%."<all_channels>"."<all_locales>"', '%identifier%', a.code))
-) AS value
-FROM pim_catalog_product p
-INNER JOIN pim_franklin_insights_franklin_identifier_mapping m
+) AS mapped_identifier_values
+FROM pim_catalog_product p, pim_franklin_insights_franklin_identifier_mapping m
 LEFT JOIN pim_catalog_attribute a ON m.attribute_id = a.id
-WHERE p.id = :product_id;
+WHERE p.id = :product_id
+GROUP BY p.id;
 SQL;
         $bindParams = [
             'product_id' => $productId,
         ];
         $statement = $this->connection->executeQuery($sql, $bindParams);
-        $result = $statement->fetchAll();
+        $result = $statement->fetch();
 
-        if (empty($result)) {
+        if (!$result) {
             return null;
         }
 
-        $identifiers = [];
-        foreach ($result as $row) {
-            $identifiers[$row['identifier']] = $row['value'];
-        }
-
-        return new ProductIdentifierValues($identifiers);
+        return new ProductIdentifierValues(json_decode($result['mapped_identifier_values'], true));
     }
 }
