@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7899: Remove Date of Birth field
+
 # 2.3.22 (2018-12-21)
 
 ## Bug fixes
