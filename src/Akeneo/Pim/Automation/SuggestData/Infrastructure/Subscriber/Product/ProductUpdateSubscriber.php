@@ -66,6 +66,7 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
             if (!$product instanceof ProductInterface) {
                 continue;
             }
+            // TODO: find many subscriptions by product ids in order to avoid too may queries
             $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
             if (null === $subscription) {
                 continue;
@@ -84,7 +85,8 @@ class ProductUpdateSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Compare requested identifier values with new identifier values.
+     * Compare requested identifier values with new identifier values. Here we only want to compare the non-empty
+     * values of the original subscription (we don't want to re-subscribe a product if an identifier value was added).
      *
      * @param ProductSubscription $subscription
      *

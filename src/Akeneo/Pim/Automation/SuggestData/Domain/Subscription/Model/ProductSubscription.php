@@ -128,6 +128,8 @@ class ProductSubscription
     }
 
     /**
+     * Returns non-empty requested identifier values, i.e the ones used in the subscription request.
+     *
      * @return array
      */
     public function requestedIdentifierValues(): array

@@ -53,7 +53,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo.pim.automation.suggest_data.subscriber.unsubscribe_and_subscribe_products_after_identifiers_change:
+    akeneo.pim.automation.suggest_data.subscriber.product_update:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Subscriber\Product\ProductUpdateSubscriber'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'

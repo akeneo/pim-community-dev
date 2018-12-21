@@ -76,10 +76,11 @@ class ProductSubscriptionSpec extends ObjectBehavior
 
     public function it_exposes_requested_identifier_values(): void
     {
-        $this->requestedIdentifierValues()->shouldReturn(
-            [
-                'asin' => '72527273070',
-            ]
-        );
+        $requestedIdentifierValues = $this->requestedIdentifierValues();
+
+        $requestedIdentifierValues->shouldHaveKeyWithValue('asin', '72527273070');
+        $requestedIdentifierValues->shouldNotHaveKey('upc');
+        $requestedIdentifierValues->shouldNotHaveKey('mpn');
+        $requestedIdentifierValues->shouldNotHaveKey('brand');
     }
 }
