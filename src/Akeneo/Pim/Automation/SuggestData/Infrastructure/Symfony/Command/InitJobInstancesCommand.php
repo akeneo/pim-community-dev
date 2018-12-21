@@ -75,6 +75,10 @@ class InitJobInstancesCommand extends ContainerAwareCommand
         if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::REMOVE_ATTRIBUTE_OPTION_FROM_MAPPING)) {
             $this->createJobInstance(JobInstanceNames::REMOVE_ATTRIBUTE_OPTION_FROM_MAPPING, 'franklin_insights');
         }
+
+        if (!$this->isJobInstanceAlreadyCreated(JobInstanceNames::RESUBSCRIBE_PRODUCTS)) {
+            $this->createJobInstance(JobInstanceNames::RESUBSCRIBE_PRODUCTS, 'franklin_insights');
+        }
     }
 
     /**
