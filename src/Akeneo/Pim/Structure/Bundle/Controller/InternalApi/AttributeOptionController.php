@@ -273,7 +273,7 @@ class AttributeOptionController
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $data
      *
-     * @return FormInterface
+     * @return JsonResponse
      */
     protected function manageFormSubmission(AttributeOptionInterface $attributeOption, array $data = [])
     {

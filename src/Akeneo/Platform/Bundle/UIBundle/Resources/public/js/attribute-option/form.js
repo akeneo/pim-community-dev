@@ -3,13 +3,14 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'backbone',
         'pim/form',
         'pim/template/attribute-option/form',
         'pim/user-context',
         'pim/i18n'
     ],
-    function (_, Backbone, BaseForm, template, UserContext, i18n) {
+    function (_, __, Backbone, BaseForm, template, UserContext, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -38,7 +39,8 @@ define(
                     this.template({
                         locale: UserContext.get('catalogLocale'),
                         i18n: i18n,
-                        option: this.getFormData()
+                        option: this.getFormData(),
+                        __
                     })
                 );
 

@@ -8,7 +8,8 @@ define(
         'routing',
         'pim/form-builder',
         'oro/messenger',
-        'pim/template/attribute-option/validation-error'
+        'pim/template/attribute-option/validation-error',
+        'pim/template/common/modal-with-illustration'
     ],
     function (
         $,
@@ -17,37 +18,34 @@ define(
         Routing,
         FormBuilder,
         messenger,
-        errorTemplate
+        errorTemplate,
+        templateModal,
     ) {
         var CreateOptionView = Backbone.View.extend({
             errorTemplate: _.template(errorTemplate),
             attribute: null,
+            innerTemplateModal: _.template(templateModal),
+
             initialize: function (options) {
                 this.attribute = options.attribute;
             },
             createOption: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pim-attribute-option-form').done(function (form) {
+                FormBuilder.build('pim-attribute-option-form').done((form) => {
                     var modal = new Backbone.BootstrapModal({
-                        modalOptions: {
-                            backdrop: 'static',
-                            keyboard: false
-                        },
-                        allowCancel: true,
-                        okCloses: false,
-                        title: _.__('pim_enrich.form.product.module.attribute.add_attribute_option'),
-                        content: '',
+                        title: _.__('pim_enrich.entity.product.module.attribute.add_attribute_option'),
+                        content: form,
                         cancelText: _.__('pim_common.cancel'),
-                        okText: _.__('pim_common.add')
+                        okText: _.__('pim_common.add'),
+                        template: this.innerTemplateModal,
+                        picture: 'illustrations/Attribute.svg',
+                        okCloses: false
                     });
                     modal.open();
 
-                    form.setElement(modal.$('.modal-body')).render();
-
                     modal.on('cancel', deferred.reject);
-                    modal.on('ok', function () {
-                        form.$('.validation-errors').remove();
+                    modal.on('ok', () => {
                         $.ajax({
                             method: 'POST',
                             url: Routing.generate(
@@ -55,14 +53,14 @@ define(
                                 { attributeId: this.attribute.meta.id }
                             ),
                             data: JSON.stringify(form.getFormData())
-                        }).done(function (option) {
+                        }).success((option) => {
                             modal.close();
                             messenger.notify(
                                 'success',
                                 _.__('pim_enrich.entity.attribute_option.flash.create.success')
                             );
                             deferred.resolve(option);
-                        }).fail(function (xhr) {
+                        }).fail((xhr) => {
                             var response = xhr.responseJSON;
 
                             if (response.code) {
@@ -77,9 +75,9 @@ define(
                                     _.__('pim_enrich.entity.attribute_option.flash.create.fail')
                                 );
                             }
-                        }.bind(this));
-                    }.bind(this));
-                }.bind(this));
+                        });
+                    });
+                });
 
                 return deferred.promise();
             }
