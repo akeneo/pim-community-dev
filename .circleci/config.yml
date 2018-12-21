@@ -14,11 +14,11 @@ jobs:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpunit var/tests/behat var/tests/phpspec var/tests/csfixer var/logs
       - run:
-          name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
-          command: chmod 777 ../project -R
-      - run:
             name: Setup the parameters.yml files
             command: ./bin/docker/pim-setup.sh
+      - run:
+            name: Change permissions on project dir (default user = circleci (1001) and docker needs uid 1000)
+            command: chmod 777 ../project -R
       - run:
           name: Start containers
           command: docker-compose up -d
