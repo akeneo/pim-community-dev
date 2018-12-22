@@ -13,6 +13,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Doctrine',
+        'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Symfony\Component',
         'Akeneo\Tool',
         'Akeneo\Asset',

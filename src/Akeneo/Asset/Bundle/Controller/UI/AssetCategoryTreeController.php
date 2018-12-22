@@ -34,7 +34,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Templating\EngineInterface;
-use function var_dump;
 
 /**
  * @author Anael Chardan <anael.chardan@akeneo.com>
@@ -81,9 +80,6 @@ class AssetCategoryTreeController
     protected $tokenStorage;
 
     /** @var EngineInterface */
-    private $templating;
-
-    /** @var EngineInterface */
     private $engine;
 
     /** @var FormFactoryInterface */
@@ -120,7 +116,6 @@ class AssetCategoryTreeController
         FormFactoryInterface $formFactory,
         SessionInterface $session
     ) {
-
         $this->eventDispatcher = $eventDispatcher;
         $this->userContext = $userContext;
         $this->categorySaver = $categorySaver;
@@ -175,10 +170,7 @@ class AssetCategoryTreeController
                 $selectNode = $this->userContext->getAccessibleUserTree();
             }
 
-            $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds(
-                $this->tokenStorage->getToken()->getUser(),
-                Attributes::VIEW_ITEMS
-            );
+            $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($this->tokenStorage->getToken()->getUser(), Attributes::VIEW_ITEMS);
 
             $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
         }
@@ -482,8 +474,7 @@ class AssetCategoryTreeController
             }
         } else {
             $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds(
-                $this->tokenStorage->getToken()->getUser()
-                , Attributes::VIEW_ITEMS
+                $this->tokenStorage->getToken()->getUser(), Attributes::VIEW_ITEMS
             );
 
             if (null !== $selectNode) {
