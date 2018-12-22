@@ -30,8 +30,6 @@ akeneo_suggest_data:
       constraint:
         duplicate_attribute_code: "Un mapatge admet l'atribut de catàleg"
         missing_or_invalid_identifiers: "Alguns mapatges d'identificadors clau falten o són invàlids. Esperant: \"{{ expected }}\", que tingui \"{{ given }}\"."
-        attribute_not_found: "Atribut amb codi d'atribut \"{{ attributeCode }}\" pels mapatges d'identificadors no existeixen."
-        mandatory_attribute_mapping: "Mapatge de Marca i MPN requerits"
         attribute_type: "No es pot definir el tipus d'aquest atribut com a identificador"
     attributes_mapping:
       label: Mapatge dels atributs
@@ -55,7 +53,6 @@ akeneo_suggest_data:
       constraint:
         missing_target_key: 'Falta l''objectiu clau pel mapatge'
         missing_attribute_key: 'Falta {{ expectedKey }} clau pel mapatge amb l''objectiu clau "{{ targetKey }}"'
-        invalid_attribute_type_mapping: 'El tipus d''atribut extern "{{ targetType }}" no es pot fer el mapatge al tipus d''atribut PIM "{{ pimType }}"'
     product_subscription:
       flash:
         create:
@@ -65,7 +62,6 @@ akeneo_suggest_data:
           success: 'S''ha cancel·lat correctament la subscripció del producte de Franklin'
           fail: 'Impossible cancel·lar la subscripció del producte de Franklin'
       constraint:
-        invalid_token: 'Ho sentim, no ha pogut subscriure els productes a les estadístiques de Franklin, el seu token no és vàlid. Introduïu un token vàlid o contacteu amb nosaltres per obtenir ajuda.'
         family_required: 'Ho sentim, una família de producte és necessària per subscriure el producte a les estadístiques de Franklin.'
         no_identifiers_mapping: 'Si us plau, mapa els teus identificadors de producte de catàleg a Configuració > Abans de subscriure''s productes a Franklin Insights.'
         insufficient_credits: "Ho sentim, no ha pogut subscriure el producte a les estadístiques de Franklin. No té prou crèdit."
@@ -86,7 +82,6 @@ akeneo_suggest_data:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opcions d''atribut'
           sub_title: 'Conegueu a Franklin, el teu <span class="AknDescriptionHeader-title--highlight">El teu Assistent IA d''Informació de Producte</span>!'
-          description: 'Per tal d''ajudar a enriquir el seu catàleg, Franklin haurà de saber les seves opcions d''atribut del catàleg que coincideixen amb la seva. <a href="" target="_blank">llegir més</a>'
   product:
     edit:
       btn.push: Suggerència de dades
@@ -118,8 +113,8 @@ akeneo_suggest_data:
           first_step: 'Per tal d''ajudar a enriquir el seu catàleg, Franklin haurà de saber el seus identificadors de catàleg que coincideixen amb el seu.'
           second_step: 'Mentre mapeja els vostres identificadors, si us plau, tingueu en compte que la marca i el MPN han d''anar junts. <a href="#" class="AknDescriptionHeader-link">Llegir més</a>'
       inactive_connection:
-        title: Ho sentim, no hi ha res que mostrar ara mateix
-        sub_title: Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.
+        title: 'Ho sentim, no hi ha res que mostrar ara mateix'
+        sub_title: 'Si us plau, activa el compte en el Sistema > Connexió Franklin i torna de nou.'
   mass_edit:
     product:
       operation:

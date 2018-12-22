@@ -104,6 +104,7 @@ pim_reference_entity:
       input:
         label: Libellé
         code: Code (requis)
+        create_another: Créer un autre enregistrement
       confirm: Enregistrer
     delete:
       message: Êtes-vous sûr de vouloir supprimer l'enregistrement «{{ recordLabel }}» ? S'il est lié à des produits ou des enregistrements, les liens vers ces derniers seront supprimés.
@@ -127,6 +128,8 @@ pim_reference_entity:
       more_result:
         title: Ce n'est pas tout !
         description: Vous avez fait défiler les 500 premiers résultats sur {{ total }} enregistrements. Pour en voir plus, essayez avec des critères de recherche plus précis.
+      completeness:
+        title_no_required: Aucun attribut requis
     tab:
       enrich: Enrichir
     notification:
