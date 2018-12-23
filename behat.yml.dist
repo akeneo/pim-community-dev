@@ -290,6 +290,7 @@ acceptance:
                 - test.product_asset.asset_context
                 - test.product_asset.asset_category_context
                 - test.product_asset.asset_category_tree_context
+                - test.authentication.sso_context
             filters:
                 tags: '@acceptance-back'
     extensions:
@@ -300,6 +301,7 @@ acceptance:
                - 'tests/back/Asset/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/ReferenceEntity/tests/back/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'tests/back/Platform/Acceptance/Resources/config/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

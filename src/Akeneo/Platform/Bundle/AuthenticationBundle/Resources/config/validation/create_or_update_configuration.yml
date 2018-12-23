@@ -13,10 +13,12 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateConfigu
             - Url: ~
         identityProviderPublicCertificate:
             - NotBlank: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
         serviceProviderEntityId:
             - NotBlank: ~
             - Url: ~
         serviceProviderPublicCertificate:
             - NotBlank: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsCertificateValid: ~
         serviceProviderPrivateCertificate:
             - NotBlank: ~
