@@ -223,6 +223,7 @@ pim_enrich.export.product:
         ALL: Ingen betingelse på fuldstændighed
         ">=": Komplet på mindst én valgte landestandard
         "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Komplet på mindst én valgte landestandard
         LOWER THAN ON ALL LOCALES: Ikke komplet på alle valgte landestandarder
         AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard
         ALL COMPLETE: Alle underliggende produkter komplet på alle valgte landestandarder

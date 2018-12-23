@@ -234,6 +234,7 @@ pim_enrich.export.product:
         ALL: Cap condició sobre integritat
         ">=": Completar almenys a una configuració regional seleccionada
         "GREATER OR EQUALS THAN ON ALL LOCALES": Completar a totes les configuracions regionals seleccionades
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completar almenys a una configuració regional seleccionada
         LOWER THAN ON ALL LOCALES: No completar a totes les configuracions regionals seleccionades
         AT LEAST COMPLETE: Al menys un fill de producte complet en un local seleccionat
         ALL COMPLETE: Tots els fills de producte complets en tots els locals seleccionats

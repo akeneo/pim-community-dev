@@ -208,6 +208,7 @@ pim_enrich.export.product:
         ALL: 完全性の条件なし
         ">=": 少なくとも1つの選択されたローケルで完了します
         "GREATER OR EQUALS THAN ON ALL LOCALES": 全ての選択されたローケルで完了します
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 少なくとも1つの選択されたローケルで完了します
         LOWER THAN ON ALL LOCALES: 全ての選択されたローケルで完了しません
       empty_selection: ファミリーを選択
     category:

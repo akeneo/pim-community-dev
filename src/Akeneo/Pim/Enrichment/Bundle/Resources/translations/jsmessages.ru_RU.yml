@@ -188,6 +188,7 @@ pim_enrich.export.product:
         ALL: Нет условия
         ">=": Закончен по хотя бы одной локали
         "GREATER OR EQUALS THAN ON ALL LOCALES": Закончен по всем выбранным локалям
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Закончен по хотя бы одной локали
         LOWER THAN ON ALL LOCALES: Незакончен ни по одной локали
         AT LEAST COMPLETE: Как минимум один дочерний продукт заполнен в одной выбранной локали
         ALL COMPLETE: Все продукты-потомки заполнены по всем выбранным локалям

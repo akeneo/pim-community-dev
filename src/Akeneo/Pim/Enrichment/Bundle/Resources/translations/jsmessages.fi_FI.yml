@@ -222,6 +222,7 @@ pim_enrich.export.product:
         ALL: Ei valmiusaste-ehtoa
         ">=": Valmis ainakin yhdessä valituista lokaatioista
         "GREATER OR EQUALS THAN ON ALL LOCALES": Valmis kaikissa valituissa lokaatiossa
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Valmis ainakin yhdessä valituista lokaatioista
         LOWER THAN ON ALL LOCALES: Ei valmis kaikissa lokaatioissa
         AT LEAST COMPLETE: Vähintään yksi variantti valmis valitulla lokaatiolla
         ALL COMPLETE: Kaikki variantit valmiita valitulla lokaatiolla
