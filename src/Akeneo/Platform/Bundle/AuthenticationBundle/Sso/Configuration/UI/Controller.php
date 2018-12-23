@@ -9,7 +9,9 @@ use Akeneo\Platform\Component\Authentication\Sso\Configuration\CreateOrUpdateCon
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\ConfigurationNotFound;
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Persistence\Repository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -46,8 +48,12 @@ final class Controller
         $this->repository = $repository;
     }
 
-    public function saveAction(Request $request): JsonResponse
+    public function saveAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $data = json_decode($request->getContent(), true);
 
         $createOrUpdateConfig = new CreateOrUpdateConfiguration(
